@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +14,7 @@
                         ocopGreen: '#124134',
                         ocopGreenLight: '#1b5e4b',
                         ocopGold: '#d4af37',
+                        ocopGoldHover: '#b89628',
                         ocopWarmBg: '#fdfbf7',
                         ocopPaperBg: '#f5efe4'
                     }
@@ -36,38 +37,50 @@
             50% { transform: translateY(-8px); }
         }
         .animate-float {
-            animation: floatBounce 3s ease-in-out infinite;
+            animation: floatBounce 3.5s ease-in-out infinite;
         }
         .bg-pattern {
             background-image: radial-gradient(#d4af37 0.75px, transparent 0.75px), radial-gradient(#124134 0.75px, #fdfbf7 0.75px);
             background-size: 30px 30px;
             background-position: 0 0, 15px 15px;
-            opacity: 0.15;
+            opacity: 0.12;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #124134;
+            border-radius: 10px;
         }
     </style>
 </head>
-<body class="text-gray-800 antialiased relative min-h-screen">
-
+<body class="text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
     <!-- HOẠ TIẾT NỀN CHÌM TINH TẾ -->
     <div class="fixed inset-0 bg-pattern pointer-events-none -z-20"></div>
-
     <!-- CÁC KHỐI QUẦNG SÁNG MỜ NỀN WEB (AMBIENT GLOW) -->
     <div class="fixed top-10 left-1/4 w-96 h-96 bg-emerald-200/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
     <div class="fixed top-1/3 right-10 w-96 h-96 bg-amber-200/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
     <div class="fixed bottom-10 left-10 w-80 h-80 bg-emerald-300/30 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
     <!-- Header / Nav -->
-    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-amber-900/10 shadow-sm">
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-900/10 shadow-sm transition-all duration-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3.5">
-                <div class="w-11 h-11 bg-gradient-to-tr from-ocopGreen to-ocopGreenLight rounded-2xl flex items-center justify-center text-ocopGold text-xl shadow-md ring-2 ring-ocopGold/30">
+            <a href="#" class="flex items-center space-x-3.5 group">
+                <div class="w-11 h-11 bg-gradient-to-tr from-ocopGreen to-ocopGreenLight rounded-2xl flex items-center justify-center text-ocopGold text-xl shadow-md ring-2 ring-ocopGold/30 group-hover:scale-105 transition-transform duration-300">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
                 <div>
                     <h1 class="text-xl font-extrabold text-ocopGreen tracking-tight leading-tight">OCOP Sales Copilot</h1>
-                    <p class="text-[11px] text-amber-800/70 font-semibold tracking-wide uppercase">Đặc Sản Chuẩn Quốc Gia 4 - 5 Sao</p>
+                    <p class="text-[11px] text-amber-800/80 font-semibold tracking-wide uppercase">Đặc Sản Chuẩn Quốc Gia 4 - 5 Sao</p>
                 </div>
-            </div>
+            </a>
             
             <nav class="hidden md:flex items-center space-x-8 font-semibold text-sm">
                 <a href="#" class="text-ocopGreen font-bold border-b-2 border-ocopGold pb-1">Trang chủ</a>
@@ -75,407 +88,509 @@
                 <a href="#contact" class="text-gray-600 hover:text-ocopGreen transition">Về chúng tôi</a>
             </nav>
 
-            <div class="flex items-center space-x-4">
-                <button id="cart-btn" onclick="toggleCart()" class="relative bg-amber-100/60 hover:bg-ocopGreen hover:text-white p-3 rounded-2xl transition text-ocopGreen font-bold border border-amber-200/60 shadow-sm">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-extrabold border-2 border-white shadow">0</span>
+            <div class="flex items-center space-x-3">
+                <button id="cart-btn" onclick="toggleCart()" class="relative bg-amber-100/70 hover:bg-ocopGreen hover:text-white p-3 rounded-2xl transition-all duration-300 text-ocopGreen font-bold border border-amber-200/80 shadow-sm flex items-center space-x-2 group">
+                    <i class="fa-solid fa-cart-shopping text-base group-hover:scale-110 transition-transform"></i>
+                    <span class="hidden sm:inline text-xs font-bold">Giỏ hàng</span>
+                    <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[11px] w-5 h-5 rounded-full flex items-center justify-center font-extrabold border-2 border-white shadow">0</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            <!-- Cột trái -->
-            <div class="lg:col-span-7 space-y-6">
-                <div class="inline-flex items-center space-x-2 bg-amber-100/80 text-amber-900 border border-amber-300/60 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-sm">
-                    <i class="fa-solid fa-award text-amber-600"></i>
-                    <span>Chương Trình Quốc Gia Mỗi Xã Một Sản Phẩm</span>
+    <main class="flex-1">
+        <!-- Hero Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                
+                <!-- Cột trái -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center space-x-2 bg-amber-100/90 text-amber-900 border border-amber-300/80 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-sm">
+                        <i class="fa-solid fa-award text-amber-600"></i>
+                        <span>Chương Trình Quốc Gia Mỗi Xã Một Sản Phẩm</span>
+                    </div>
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.15]">
+                        Khám Phá Tinh Hoa <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-ocopGreen via-emerald-700 to-amber-700">Đặc Sản Việt Nam</span>
+                    </h2>
+                    <p class="text-gray-700 text-base sm:text-lg max-w-xl leading-relaxed">
+                        Trợ lý bán hàng AI thông minh đồng hành cùng Quý khách trải nghiệm & sở hữu 12 đặc sản đạt chuẩn chứng nhận OCOP 4 - 5 sao trên khắp mọi miền đất nước.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4 pt-2">
+                        <a href="#products" class="bg-ocopGreen text-white font-bold px-7 py-4 rounded-2xl shadow-lg hover:bg-ocopGreenLight transition text-sm flex items-center space-x-2 border border-ocopGold/30 hover:shadow-emerald-900/20">
+                            <span>Khám phá 12 đặc sản OCOP</span>
+                            <i class="fa-solid fa-arrow-down text-ocopGold"></i>
+                        </a>
+                        <button onclick="startChatFromWelcome()" class="bg-white/90 backdrop-blur text-ocopGreen font-bold px-7 py-4 rounded-2xl border border-amber-200 hover:bg-amber-50 transition text-sm shadow-sm flex items-center space-x-2 hover:border-ocopGreen">
+                            <i class="fa-solid fa-robot text-amber-600 text-base"></i>
+                            <span>Tư vấn cùng AI ngay</span>
+                        </button>
+                    </div>
                 </div>
-                <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.15]">
-                    Khám Phá Tinh Hoa <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-ocopGreen via-emerald-700 to-amber-700">Đặc Sản Việt Nam</span>
-                </h2>
-                <p class="text-gray-700 text-base sm:text-lg max-w-xl leading-relaxed">
-                    Trợ lý bán hàng AI thông minh đồng hành cùng Quý khách trải nghiệm & sở hữu 12 đặc sản đạt chuẩn chứng nhận OCOP 4 - 5 sao trên khắp mọi miền đất nước.
-                </p>
-                <div class="flex flex-wrap items-center gap-4 pt-2">
-                    <a href="#products" class="bg-ocopGreen text-white font-bold px-7 py-4 rounded-2xl shadow-lg hover:bg-ocopGreenLight transition text-sm flex items-center space-x-2 border border-ocopGold/30">
-                        <span>Khám phá 12 đặc sản OCOP</span>
-                        <i class="fa-solid fa-arrow-down text-ocopGold"></i>
-                    </a>
-                    <button onclick="startChatFromWelcome()" class="bg-white/80 backdrop-blur text-ocopGreen font-bold px-7 py-4 rounded-2xl border border-amber-200 hover:bg-amber-50 transition text-sm shadow-sm flex items-center space-x-2">
-                        <i class="fa-solid fa-robot text-amber-600 text-base"></i>
-                        <span>Tư vấn cùng AI ngay</span>
-                    </button>
+
+                <!-- Cột phải: Visual Showcase Card -->
+                <div class="lg:col-span-5">
+                    <div class="bg-white/80 backdrop-blur-xl border border-amber-200/80 p-5 rounded-3xl shadow-xl relative overflow-hidden group">
+                        <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
+                            <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1000&q=80" alt="Đặc sản OCOP Việt Nam" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6 text-white">
+                                <span class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-2 shadow">
+                                    ★ Tinh Hoa Tự Nhiên
+                                </span>
+                                <h3 class="text-2xl font-bold tracking-wide text-amber-100">OCOP National Specialties</h3>
+                                <p class="text-xs text-amber-200/90 mt-1 font-medium">100% Nguyên Chất • Đạt Chuẩn Xuất Khẩu Quốc Tế</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 bg-amber-50/80 p-4 rounded-2xl border border-amber-200/60 flex items-center justify-between">
+                            <div class="flex items-center space-x-3.5">
+                                <div class="w-11 h-11 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-base shadow">
+                                    <i class="fa-solid fa-medal"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-900">Trà Hoa Vàng Tam Đảo</h4>
+                                    <p class="text-xs text-amber-800 font-medium">Đạt chứng nhận OCOP 5 Sao</p>
+                                </div>
+                            </div>
+                            <span class="font-extrabold text-red-600 text-base">650.000 ₫</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="bg-amber-100 text-amber-900 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-amber-200">Danh Mục Chọn Lọc</span>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-3 mb-3">12 Đặc Sản OCOP Tiêu Biểu</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Hình ảnh chuẩn xác thực tế, giá bán niêm yết chính hãng và nguồn gốc xuất xứ minh bạch.</p>
+            </div>
+
+            <!-- BỘ LỌC & TÌM KIẾM SẢN PHẨM -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 bg-white/70 p-4 rounded-2xl border border-amber-200/60 shadow-sm backdrop-blur">
+                <!-- Search Box -->
+                <div class="relative w-full md:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input type="text" id="product-search" oninput="filterProducts()" placeholder="Tìm kiếm tên đặc sản, vùng miền..." class="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-ocopGreen bg-white shadow-inner">
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-start md:justify-end text-xs font-bold" id="category-tabs">
+                    <button onclick="setCategoryFilter('all')" class="cat-btn active bg-ocopGreen text-white px-4 py-2 rounded-xl border border-ocopGreen transition">Tất cả (12)</button>
+                    <button onclick="setCategoryFilter('5star')" class="cat-btn bg-white text-gray-700 hover:bg-amber-100 px-4 py-2 rounded-xl border border-gray-200 transition">OCOP 5 Sao</button>
+                    <button onclick="setCategoryFilter('4star')" class="cat-btn bg-white text-gray-700 hover:bg-amber-100 px-4 py-2 rounded-xl border border-gray-200 transition">OCOP 4 Sao</button>
+                    <button onclick="setCategoryFilter('gift')" class="cat-btn bg-white text-gray-700 hover:bg-amber-100 px-4 py-2 rounded-xl border border-gray-200 transition">Quà Biếu Sức Khỏe</button>
+                    <button onclick="setCategoryFilter('food')" class="cat-btn bg-white text-gray-700 hover:bg-amber-100 px-4 py-2 rounded-xl border border-gray-200 transition">Ẩm Thực & Gia Vị</button>
                 </div>
             </div>
 
-            <!-- Cột phải -->
-            <div class="lg:col-span-5">
-                <div class="bg-white/70 backdrop-blur-xl border border-amber-200/80 p-6 rounded-3xl shadow-xl relative overflow-hidden">
-                    <div class="bg-gradient-to-br from-ocopGreen to-emerald-900 h-64 rounded-2xl flex flex-col items-center justify-center text-white shadow-inner relative overflow-hidden mb-4 p-6 text-center">
-                        <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:14px_14px]"></div>
-                        <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-ocopGold text-3xl mb-3 backdrop-blur border border-white/20">
-                            <i class="fa-solid fa-box-open"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold tracking-wide text-amber-100">OCOP National Specialties</h3>
-                        <p class="text-xs text-emerald-200 mt-1 font-medium">100% Nguyên Chất • Đạt Chuẩn Xuất Khẩu</p>
+            <!-- PRODUCT GRID -->
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Product 1: Trà hoa vàng -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="5star gift" data-name="trà hoa vàng tam đảo vĩnh phúc">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80" alt="Trà hoa vàng Tam Đảo" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Tam Đảo</span>
                     </div>
-                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-100 flex items-center justify-between">
-                        <div class="flex items-center space-x-3.5">
-                            <div class="w-11 h-11 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-base shadow">
-                                <i class="fa-solid fa-medal"></i>
-                            </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Trà hoa vàng Tam Đảo (Hộp 50g)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">"Nữ hoàng các loại trà", hỗ trợ hạ mỡ máu, ổn định huyết áp, quà biếu sức khỏe cao cấp.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
                             <div>
-                                <h4 class="font-bold text-sm text-gray-900">Trà Hoa Vàng Tam Đảo</h4>
-                                <p class="text-xs text-amber-800 font-medium">Đạt chứng nhận OCOP 5 Sao</p>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">650.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Trà hoa vàng Tam Đảo')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Trà hoa vàng Tam Đảo', 650000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
                             </div>
                         </div>
-                        <span class="font-extrabold text-red-600 text-base">650.000 ₫</span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Products Section -->
-    <section id="products" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="text-center max-w-2xl mx-auto mb-14">
-            <span class="bg-amber-100 text-amber-900 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-amber-200">Danh Mục Chọn Lọc</span>
-            <h3 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-3 mb-3">12 Đặc Sản OCOP Tiêu Biểu</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">Hình ảnh chuẩn xác thực tế, giá bán niêm yết chính hãng và nguồn gốc xuất xứ minh bạch.</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 2: Hạt điều Bình Phước -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="4star food" data-name="hạt điều rang củi bình phước">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1509358217973-89580943272d?auto=format&fit=crop&w=800&q=80" alt="Hạt điều rang củi Bình Phước" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Bình Phước</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Hạt điều rang củi Bình Phước (500g)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">Hạt điều A A1 giữ nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">195.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Hạt điều rang củi Bình Phước')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Hạt điều rang củi Bình Phước', 195000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3: Gốm Biên Hòa -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="4star gift" data-name="đồ gốm mỹ nghệ biên hòa đồng nai">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=800&q=80" alt="Đồ gốm mỹ nghệ Biên Hòa" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Đồng Nai</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Đồ gốm mỹ nghệ Biên Hòa</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">Tuyệt tác gốm men xanh đồng danh tiếng, chế tác chạm khắc hoa văn thủ công nghệ thuật.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">580.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Đồ gốm mỹ nghệ Biên Hòa')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Đồ gốm mỹ nghệ Biên Hòa', 580000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4: Mật ong U Minh -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="4star gift food" data-name="mật ong rừng u minh cà mau">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80" alt="Mật ong rừng U Minh Cà Mau" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Cà Mau</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Mật ong rừng U Minh (Chai 500ml)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">Mật ong hoa tràm tự nhiên nguyên chất Cà Mau, hương thơm dịu, hỗ trợ tiêu hóa & đề kháng.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">290.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Mật ong rừng U Minh')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Mật ong rừng U Minh', 290000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5: Cà phê Cầu Đất -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="5star food" data-name="cà phê arabica cầu đất đà lạt lâm đồng">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80" alt="Cà phê Cầu Đất Đà Lạt" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Đà Lạt</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Cà phê Arabica Cầu Đất (500g)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">100% Arabica Cầu Đất nguyên chất cao nguyên, hương thơm trái cây, vị chua thanh thanh hậu ngọt.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">240.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Cà phê Arabica Cầu Đất')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Cà phê Arabica Cầu Đất', 240000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6: Bánh cốm Làng Vòng -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="4star food" data-name="bánh cốm làng vòng hà nội">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=800&q=80" alt="Bánh cốm Làng Vòng Hà Nội" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Hà Nội</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Bánh cốm Làng Vòng (Hộp 10 chiếc)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">Vỏ nếp dẻo thơm ướp hương hoa dừa, nhân đậu xanh sên nhuyễn ngọt dịu ẩm thực Hà Thành.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">90.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Bánh cốm Làng Vòng Hà Nội')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Bánh cốm Làng Vòng Hà Nội', 90000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 7: Nước mắm Phú Quốc -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="5star food" data-name="nước mắm phú quốc kiên giang">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80" alt="Nước mắm Phú Quốc truyền thống" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Phú Quốc</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Nước mắm Phú Quốc (Chai 500ml 40°N)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">Ủ chượp thùng gỗ bời lời 12 tháng từ cá cơm than, đạm tự nhiên mặn đượm ngọt hậu.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">165.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Nước mắm Phú Quốc truyền thống')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Nước mắm Phú Quốc truyền thống', 165000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 8: Tỏi đen Lý Sơn -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="5star gift" data-name="tỏi đen một nhánh lý sơn quảng ngãi">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=800&q=80" alt="Tỏi đen một nhánh Lý Sơn" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Lý Sơn</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Tỏi đen một nhánh Lý Sơn (Hộp 500g)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">Lên men tự nhiên công nghệ Nhật 60 ngày, dẻo ngọt chua nhẹ, giàu chất chống oxy hóa.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">550.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Tỏi đen một nhánh Lý Sơn')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Tỏi đen một nhánh Lý Sơn', 550000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 9: Gạo Tám Xoan -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="4star food" data-name="gạo tám xoan hải hậu nam định">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80" alt="Gạo Tám Xoan Hải Hậu" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Nam Định</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Gạo Tám Xoan Hải Hậu (Túi 5kg)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">Hạt gạo nhỏ hơi dài, nấu cơm dẻo mềm, tỏa hương thơm ngát tự nhiên hạt ngọc đất Bắc.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">185.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Gạo Tám Xoan Hải Hậu')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Gạo Tám Xoan Hải Hậu', 185000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 10: Rượu sim rừng -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="4star gift" data-name="rượu sim rừng phú quốc kiên giang">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80" alt="Rượu sim rừng Phú Quốc" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Phú Quốc</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Rượu sim rừng Phú Quốc (Chai 750ml)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">Lên men ủ tự nhiên từ quả sim chín rừng, vị ngọt chát thanh tao, hỗ trợ tiêu hóa tốt.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">210.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Rượu sim rừng Phú Quốc')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Rượu sim rừng Phú Quốc', 210000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 11: Miến dong Phia Đén -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="4star food" data-name="miến dong phia đén cao bằng">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=800&q=80" alt="Miến dong Phia Đén Cao Bằng" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Cao Bằng</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Miến dong Phia Đén Cao Bằng (1kg)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">100% tinh bột dong riềng đỏ nguyên chất núi cao, sợi dai giòn đặc trưng không trương nát.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">110.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Miến dong Phia Đén Cao Bằng')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Miến dong Phia Đén Cao Bằng', 110000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 12: Chả mực Hạ Long -->
+                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="5star food" data-name="chả mực giã tay hạ long quảng ninh">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80" alt="Chả mực giã tay Hạ Long" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
+                            <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
+                        </span>
+                        <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">Quảng Ninh</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Chả mực giã tay Hạ Long (500g)</h4>
+                            <p class="text-gray-600 text-xs leading-relaxed mt-2">Mực mai tươi sống giã tay thủ công, chiên vàng giòn sần sật béo ngọt đỉnh cao ẩm thực biển.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-amber-100">
+                            <div>
+                                <span class="text-[11px] text-gray-400 block font-medium">Giá niêm yết:</span>
+                                <span class="text-lg font-extrabold text-red-600">260.000 ₫</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="askAIAboutProduct('Chả mực giã tay Hạ Long')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-xl text-xs font-bold transition shadow-sm" title="Hỏi AI tư vấn">
+                                    <i class="fa-solid fa-robot"></i>
+                                </button>
+                                <button onclick="addToCart('Chả mực giã tay Hạ Long', 260000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                    <span>Thêm giỏ</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
             
-            <!-- Product 1: Trà hoa vàng -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80" alt="Trà hoa vàng Tam Đảo" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Trà hoa vàng Tam Đảo (Hộp 50g)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">"Nữ hoàng các loại trà", hỗ trợ hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">650.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Trà hoa vàng Tam Đảo', 650000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
+            <div id="no-products-msg" class="hidden text-center py-16 bg-white/50 rounded-3xl border border-dashed border-gray-300">
+                <i class="fa-solid fa-box-open text-4xl text-gray-400 mb-3 block"></i>
+                <p class="text-gray-600 font-bold text-base">Không tìm thấy sản phẩm nào phù hợp.</p>
+                <button onclick="resetFilters()" class="mt-3 text-xs bg-ocopGreen text-white font-bold px-4 py-2 rounded-xl">Xem tất cả 12 sản phẩm</button>
             </div>
-
-            <!-- Product 2: Hạt điều Bình Phước -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1509358217973-89580943272d?auto=format&fit=crop&w=600&q=80" alt="Hạt điều rang củi Bình Phước" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Hạt điều rang củi Bình Phước (500g)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">Hạt điều giữ nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị thiên nhiên.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">195.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Hạt điều rang củi Bình Phước', 195000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 3: Gốm Biên Hòa -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80" alt="Đồ gốm mỹ nghệ Biên Hòa" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Đồ gốm mỹ nghệ Biên Hòa</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">Tuyệt tác gốm men xanh đồng danh tiếng, chế tác và khắc họa thủ công tinh xảo.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">580.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Đồ gốm mỹ nghệ Biên Hòa', 580000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 4: Mật ong U Minh -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=600&q=80" alt="Mật ong rừng U Minh Cà Mau" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Mật ong rừng U Minh (Chai 500ml)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">Mật ong hoa tràm nguyên chất Cà Mau, hương thơm dịu nhẹ, hỗ trợ tiêu hóa & đề kháng.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">290.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Mật ong rừng U Minh', 290000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 5: Cà phê Cầu Đất -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80" alt="Cà phê Cầu Đất Đà Lạt" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Cà phê Arabica Cầu Đất (500g)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">100% Arabica Cầu Đất nguyên chất, vị chua thanh nhẹ quyện hậu vị ngọt sâu khó quên.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">240.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Cà phê Arabica Cầu Đất', 240000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 6: Bánh cốm Làng Vòng -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80" alt="Bánh cốm Làng Vòng Hà Nội" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Bánh cốm Làng Vòng (Hộp 10 chiếc)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">Vỏ nếp dẻo thơm màu lá nếp, nhân đậu xanh dừa ngạt ngào quà vị đặc sản Hà Thành.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">90.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Bánh cốm Làng Vòng Hà Nội', 90000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 7: Nước mắm Phú Quốc -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=600&q=80" alt="Nước mắm Phú Quốc truyền thống" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Nước mắm Phú Quốc (Chai 500ml 40°N)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">Ủ chượp thùng gỗ bời lời truyền thống 12 tháng, độ đạm tự nhiên cao đậm đà.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">165.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Nước mắm Phú Quốc truyền thống', 165000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 8: Tỏi đen Lý Sơn -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=600&q=80" alt="Tỏi đen một nhánh Lý Sơn" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Tỏi đen một nhánh Lý Sơn (Hộp 500g)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">Lên men tự nhiên 60 ngày, dẻo ngọt chua nhẹ, dược liệu bảo vệ sức khỏe tuyệt hảo.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">550.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Tỏi đen một nhánh Lý Sơn', 550000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 9: Gạo Tám Xoan -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=600&q=80" alt="Gạo Tám Xoan Hải Hậu" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Gạo Tám Xoan Hải Hậu (Túi 5kg)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">Hạt gạo thon nhỏ, cơm dẻo mềm thơm nức hương hoa xoan tự nhiên Nam Định.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">185.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Gạo Tám Xoan Hải Hậu', 185000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 10: Rượu sim rừng -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80" alt="Rượu sim rừng Phú Quốc" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Rượu sim rừng Phú Quốc (Chai 750ml)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">Lên men từ quả sim chín rừng Phú Quốc, vị chua ngọt chát nhẹ tốt cho tiêu hóa.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">210.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Rượu sim rừng Phú Quốc', 210000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 11: Miến dong Phia Đén -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80" alt="Miến dong Phia Đén Cao Bằng" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Miến dong Phia Đén Cao Bằng (1kg)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">100% tinh bột dong riềng đỏ nguyên chất, sợi dai giòn không bị trương khi đun nấu.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">110.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Miến dong Phia Đén Cao Bằng', 110000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 12: Chả mực Hạ Long -->
-            <div class="bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group">
-                <div class="h-52 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80" alt="Chả mực giã tay Hạ Long" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                    <span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30">
-                        <i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 Sao
-                    </span>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 group-hover:text-ocopGreen transition">Chả mực giã tay Hạ Long (500g)</h4>
-                        <p class="text-gray-600 text-xs leading-relaxed mt-2">Mực mai tươi sống Quảng Ninh giã tay truyền thống, miếng chả sần sật vàng ruộm.</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-amber-100">
-                        <div>
-                            <span class="text-xs text-gray-400 block font-medium">Giá niêm yết:</span>
-                            <span class="text-lg font-extrabold text-red-600">260.000 ₫</span>
-                        </div>
-                        <button onclick="addToCart('Chả mực giã tay Hạ Long', 260000)" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition flex items-center space-x-1.5 shadow-md">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Thêm giỏ</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- MODAL CHÀO MỪNG CHUYÊN NGHIỆP -->
-    <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border-2 border-ocopGold/50 relative text-center space-y-6">
-            
+    <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border-2 border-ocopGold/50 relative text-center space-y-5">
             <button onclick="closeWelcomeModal()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-9 h-9 flex items-center justify-center text-base transition">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-
             <div class="flex justify-center pt-2">
                 <div class="relative animate-float">
-                    <div class="w-24 h-24 bg-gradient-to-tr from-ocopGreen to-emerald-700 rounded-full flex items-center justify-center text-white text-4xl shadow-xl ring-4 ring-amber-200/60">
+                    <div class="w-20 h-20 bg-gradient-to-tr from-ocopGreen to-emerald-700 rounded-full flex items-center justify-center text-white text-3xl shadow-xl ring-4 ring-amber-200/60">
                         <i class="fa-solid fa-award text-ocopGold"></i>
                     </div>
                     <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-3.5 py-1 rounded-full shadow-md border-2 border-white uppercase tracking-wider">
@@ -483,7 +598,6 @@
                     </span>
                 </div>
             </div>
-
             <div class="space-y-1">
                 <span class="bg-emerald-50 text-ocopGreen font-bold px-3.5 py-1 rounded-full text-xs uppercase tracking-wider inline-flex items-center border border-emerald-200">
                     <i class="fa-solid fa-sparkles text-amber-500 mr-1.5"></i> Trợ Lý Bán Hàng OCOP AI
@@ -492,21 +606,19 @@
                     Chào Mừng Đến Với <br><span class="text-ocopGreen">OCOP Sales Copilot</span>
                 </h3>
             </div>
-
-            <div class="bg-amber-50/70 p-4 sm:p-5 rounded-2xl border border-amber-200/80 text-gray-700 text-sm leading-relaxed text-left space-y-3">
+            <div class="bg-amber-50/80 p-4 sm:p-5 rounded-2xl border border-amber-200/80 text-gray-700 text-xs sm:text-sm leading-relaxed text-left space-y-2.5">
                 <p class="font-medium text-gray-800">
-                    🌱 <strong>Kính chào Quý khách!</strong> Tôi là Trợ lý AI chuyên trách hỗ trợ tư vấn 12 đặc sản chuẩn OCOP Việt Nam.
+                    🌱 <strong>Kính chào Quý khách!</strong> Em là Trợ lý AI chuyên trách tư vấn 12 đặc sản chuẩn OCOP Việt Nam.
                 </p>
-                <div class="pt-2 border-t border-amber-200/60">
-                    <p class="font-bold text-amber-900 text-xs uppercase tracking-wider mb-2">Tôi sẵn sàng hỗ trợ Quý khách:</p>
-                    <ul class="space-y-2 text-xs sm:text-sm text-gray-700 font-medium">
-                        <li class="flex items-start"><i class="fa-solid fa-gift text-amber-600 mr-2.5 mt-0.5"></i> <span><strong>Gợi ý quà biếu:</strong> Trà hoa vàng Tam Đảo, Tỏi đen Lý Sơn, Gốm Biên Hòa.</span></li>
-                        <li class="flex items-start"><i class="fa-solid fa-utensils text-amber-600 mr-2.5 mt-0.5"></i> <span><strong>Đặc sản ẩm thực:</strong> Nước mắm Phú Quốc, Mật ong U Minh, Chả mực Hạ Long.</span></li>
-                        <li class="flex items-start"><i class="fa-solid fa-qrcode text-amber-600 mr-2.5 mt-0.5"></i> <span><strong>Thanh toán VietQR:</strong> Quét mã ngân hàng BIDV tức thì & an toàn.</span></li>
+                <div class="pt-2 border-t border-amber-200/60 space-y-1.5">
+                    <p class="font-bold text-amber-900 text-[11px] uppercase tracking-wider">Hỗ trợ nhanh 24/7:</p>
+                    <ul class="space-y-1.5 text-xs text-gray-700 font-medium">
+                        <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> <span>Tư vấn quà biếu cao cấp sức khỏe & ngoại giao</span></li>
+                        <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> <span>Gợi ý đặc sản ẩm thực chuẩn vị 3 miền</span></li>
+                        <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> <span>Tạo mã thanh toán VietQR BIDV tức thì & an toàn</span></li>
                     </ul>
                 </div>
             </div>
-
             <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
                 <button onclick="startChatFromWelcome()" class="w-full sm:w-auto flex-1 bg-ocopGreen text-white py-3.5 px-6 rounded-2xl font-bold text-sm hover:bg-ocopGreenLight transition shadow-lg flex items-center justify-center space-x-2 border border-ocopGold/30">
                     <i class="fa-solid fa-comments text-ocopGold text-base"></i>
@@ -516,43 +628,53 @@
                     Tự khám phá
                 </button>
             </div>
-
         </div>
     </div>
 
     <!-- KHUNG CHATBOT FLOATING AI (BÊN TRÁI) -->
     <div class="fixed bottom-6 left-6 z-40">
-        <div id="chat-box" class="hidden bg-white w-80 sm:w-96 rounded-3xl shadow-2xl border border-amber-900/10 flex flex-col h-[490px] mb-4 overflow-hidden">
+        <div id="chat-box" class="hidden bg-white w-[88vw] sm:w-96 rounded-3xl shadow-2xl border border-amber-900/15 flex flex-col h-[520px] mb-4 overflow-hidden animate-fade-in">
+            <!-- Header Chat -->
             <div class="bg-ocopGreen text-white px-4 py-3.5 flex items-center justify-between border-b border-ocopGold/30">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-ocopGold rounded-2xl flex items-center justify-center text-ocopGreen font-bold text-base shadow">
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <div>
-                        <h5 class="font-bold text-sm">Trợ Lý AI OCOP Việt Nam</h5>
-                        <p class="text-xs text-emerald-200 font-medium">Tư vấn sản phẩm 24/7</p>
+                        <h5 class="font-bold text-sm flex items-center">
+                            <span>Trợ Lý AI OCOP</span>
+                            <span class="w-2 h-2 bg-green-400 rounded-full inline-block ml-2 animate-ping"></span>
+                        </h5>
+                        <p class="text-[11px] text-emerald-200 font-medium">Tư vấn thông minh 24/7</p>
                     </div>
                 </div>
-                <button onclick="toggleChatBox()" class="text-white hover:text-gray-200 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <div class="flex items-center space-x-2">
+                    <button onclick="clearChatHistory()" class="text-white/80 hover:text-white p-1 text-xs" title="Xóa lịch sử chat"><i class="fa-solid fa-rotate-right"></i></button>
+                    <button onclick="toggleChatBox()" class="text-white/80 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
             </div>
             
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-sm bg-ocopWarmBg">
-                <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-amber-100 max-w-[90%] text-gray-700 leading-relaxed">
-                    Dạ em chào Quý khách ạ! 🌱 Em là Trợ lý AI OCOP. Quý khách đang cần tìm đặc sản thưởng thức gia đình hay quà biếu tặng cao cấp ạ?
-                    <div class="mt-2.5 space-y-1.5">
-                        <button onclick="quickAsk('Sản phẩm nào bán chạy nhất?')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100">👉 Sản phẩm OCOP bán chạy nhất?</button>
-                        <button onclick="quickAsk('Tư vấn quà biếu sức khỏe cao cấp')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100">👉 Gợi ý quà biếu sức khỏe?</button>
+            <!-- Messages Area -->
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3.5 text-sm bg-ocopWarmBg">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-100 max-w-[92%] text-gray-800 leading-relaxed space-y-2">
+                    <p class="font-semibold text-ocopGreen">Dạ em chào Quý khách! 🌱</p>
+                    <p class="text-xs text-gray-600">Em là Trợ lý AI OCOP. Quý khách muốn tìm đặc sản thưởng thức gia đình, làm quà biếu sếp hay tư vấn theo ngân sách ạ?</p>
+                    <div class="pt-2 space-y-1.5 border-t border-gray-100">
+                        <button onclick="quickAsk('Sản phẩm OCOP nào bán chạy nhất?')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100 transition">👉 Top đặc sản bán chạy nhất?</button>
+                        <button onclick="quickAsk('Gợi ý quà biếu sức khỏe dưới 500k')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100 transition">👉 Gợi ý quà biếu dưới 500.000 ₫?</button>
+                        <button onclick="quickAsk('Hướng dẫn thanh toán VietQR BIDV')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100 transition">👉 Hướng dẫn thanh toán VietQR?</button>
                     </div>
                 </div>
             </div>
 
+            <!-- Input Area -->
             <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
-                <input id="chat-input" type="text" placeholder="Hỏi AI về 12 đặc sản OCOP..." class="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ocopGreen" onkeypress="handleKeyPress(event)">
-                <button onclick="sendMessage()" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl hover:bg-ocopGreenLight transition shadow"><i class="fa-solid fa-paper-plane"></i></button>
+                <input id="chat-input" type="text" placeholder="Hỏi AI về 12 đặc sản OCOP..." class="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-ocopGreen bg-gray-50" onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()" class="bg-ocopGreen text-white px-4 py-2.5 rounded-xl hover:bg-ocopGreenLight transition shadow flex-shrink-0"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
         </div>
         
-        <button onclick="toggleChatBox()" class="bg-ocopGreen text-white px-5 py-3.5 rounded-full shadow-2xl hover:bg-ocopGreenLight transition font-bold flex items-center space-x-2.5 border-2 border-ocopGold/50">
+        <button onclick="toggleChatBox()" class="bg-ocopGreen text-white px-5 py-3.5 rounded-full shadow-2xl hover:bg-ocopGreenLight transition font-bold flex items-center space-x-2.5 border-2 border-ocopGold/60 hover:scale-105 active:scale-95">
             <i class="fa-solid fa-robot text-ocopGold text-lg"></i>
             <span>Hỏi Trợ Lý AI</span>
         </button>
@@ -560,7 +682,7 @@
 
     <!-- NÚT FLOATING LIÊN HỆ ĐA ADMIN (BÊN PHẢI) -->
     <div class="fixed bottom-6 right-6 z-40">
-        <div id="admin-menu" class="hidden bg-white rounded-3xl shadow-2xl border border-gray-100 p-3 mb-3 w-80 space-y-2 max-h-[380px] overflow-y-auto">
+        <div id="admin-menu" class="hidden bg-white rounded-3xl shadow-2xl border border-gray-100 p-3 mb-3 w-80 space-y-2 max-h-[380px] overflow-y-auto animate-fade-in">
             <div class="text-xs font-bold text-gray-500 uppercase tracking-wider px-2 py-1 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
                 <span>Chọn Admin tư vấn</span>
                 <span class="w-2 h-2 bg-green-500 rounded-full inline-block animate-pulse"></span>
@@ -577,7 +699,6 @@
                     <p class="text-[11px] text-gray-500">Tư vấn sản phẩm & đơn hàng</p>
                 </div>
             </a>
-
             <!-- Admin 2 -->
             <a href="https://www.facebook.com/nguyen.phuc.327726?locale=vi_VN" target="_blank" rel="noopener noreferrer"
                class="flex items-center space-x-3 p-2.5 rounded-2xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
@@ -589,7 +710,6 @@
                     <p class="text-[11px] text-gray-500">Hỗ trợ kỹ thuật & tư vấn</p>
                 </div>
             </a>
-
             <!-- Admin 3 -->
             <a href="https://www.facebook.com/share/19VLSyDk6X/" target="_blank" rel="noopener noreferrer"
                class="flex items-center space-x-3 p-2.5 rounded-2xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
@@ -601,7 +721,6 @@
                     <p class="text-[11px] text-gray-500">Tư vấn quà tặng & đặc sản</p>
                 </div>
             </a>
-
             <!-- Admin 4 -->
             <a href="https://www.facebook.com/share/18WjBtSR53/" target="_blank" rel="noopener noreferrer"
                class="flex items-center space-x-3 p-2.5 rounded-2xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
@@ -614,35 +733,58 @@
                 </div>
             </a>
         </div>
-
         <button onclick="toggleAdminMenu()" 
-           class="flex items-center bg-white rounded-full pl-5 pr-1 py-1 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-amber-200">
-            <span class="text-[#1877F2] font-bold text-sm mr-2.5">Liên hệ để tư vấn</span>
-            <div class="w-11 h-11 bg-[#1877F2] text-white rounded-full flex items-center justify-center text-xl shadow-md relative">
+           class="flex items-center bg-white rounded-full pl-5 pr-1.5 py-1 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-amber-200">
+            <span class="text-[#1877F2] font-bold text-xs sm:text-sm mr-2.5">Liên hệ để tư vấn</span>
+            <div class="w-10 h-10 bg-[#1877F2] text-white rounded-full flex items-center justify-center text-lg shadow-md relative">
                 <i class="fa-brands fa-facebook-f"></i>
                 <span class="absolute top-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
             </div>
         </button>
     </div>
 
-    <!-- Cart Drawer -->
+    <!-- Cart Drawer Nâng Cấp -->
     <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
-        <div id="cart-overlay" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div id="cart-overlay" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
+            <!-- Cart Header -->
             <div class="p-4 bg-ocopGreen text-white flex items-center justify-between border-b border-ocopGold/30">
-                <h3 class="font-bold text-lg"><i class="fa-solid fa-cart-shopping mr-2 text-ocopGold"></i> Giỏ hàng của bạn</h3>
-                <button onclick="toggleCart()" class="text-white hover:text-gray-200"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-cart-shopping mr-2 text-ocopGold"></i> Giỏ hàng của bạn</h3>
+                <button onclick="toggleCart()" class="text-white/80 hover:text-white p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <div id="cart-items" class="flex-1 p-4 overflow-y-auto space-y-4 bg-ocopWarmBg">
-                <p class="text-gray-500 text-center py-8">Giỏ hàng đang trống.</p>
+            
+            <!-- Cart Items List -->
+            <div id="cart-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg">
+                <p class="text-gray-500 text-center py-12">Giỏ hàng đang trống.</p>
             </div>
-            <div class="p-4 border-t border-gray-200 bg-white">
-                <div class="flex justify-between mb-4 font-extrabold text-lg">
-                    <span>Tổng cộng:</span>
-                    <span id="cart-total" class="text-red-600">0 ₫</span>
+
+            <!-- Cart Footer & Form Khách Hàng -->
+            <div class="p-4 border-t border-gray-200 bg-white space-y-3 shadow-lg">
+                <div class="space-y-1 text-xs text-gray-600 bg-amber-50 p-3 rounded-2xl border border-amber-200/60">
+                    <div class="flex justify-between">
+                        <span>Tạm tính:</span>
+                        <span id="cart-subtotal" class="font-bold text-gray-800">0 ₫</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Phí vận chuyển:</span>
+                        <span id="cart-shipping" class="font-bold text-emerald-700">Miễn phí</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-extrabold pt-1.5 border-t border-amber-200/60 text-gray-900">
+                        <span>Tổng cộng:</span>
+                        <span id="cart-total" class="text-red-600">0 ₫</span>
+                    </div>
                 </div>
-                <button onclick="checkout()" class="w-full bg-ocopGreen text-white py-3.5 rounded-2xl font-bold hover:bg-ocopGreenLight transition shadow-lg border border-ocopGold/30">
-                    Tiến hành thanh toán VietQR
+
+                <!-- Form Nhập Thông Tin Khách Hàng -->
+                <div class="space-y-2 text-xs">
+                    <p class="font-bold text-gray-800 uppercase tracking-wider text-[10px]">Thông tin nhận hàng:</p>
+                    <input id="cust-name" type="text" placeholder="Họ và tên người nhận *" class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                    <input id="cust-phone" type="tel" placeholder="Số điện thoại liên hệ *" class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                </div>
+
+                <button onclick="checkout()" class="w-full bg-ocopGreen text-white py-3.5 rounded-2xl font-bold text-sm hover:bg-ocopGreenLight transition shadow-lg border border-ocopGold/30 flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-qrcode text-ocopGold text-base"></i>
+                    <span>Thanh Toán VietQR BIDV</span>
                 </button>
             </div>
         </div>
@@ -651,31 +793,67 @@
     <!-- Modal Thanh Toán VietQR BIDV -->
     <div id="qr-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQRModal()"></div>
-        <div class="relative bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center z-10 space-y-4">
+        <div class="relative bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center z-10 space-y-4 max-h-[90vh] overflow-y-auto">
             <button onclick="closeQRModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
             
-            <h3 class="text-xl font-bold text-[#0056a4]">Thanh Toán Qua BIDV</h3>
-            <div class="flex justify-center">
-                <img id="bidv-qr" src="" alt="Mã VietQR BIDV" class="w-56 h-56 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="inline-flex items-center space-x-2 text-[#0056a4] font-extrabold text-lg">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Thanh Toán BIDV VietQR</span>
             </div>
 
-            <div class="text-left bg-gray-50 p-3.5 rounded-2xl text-xs space-y-1.5 border border-gray-100">
-                <p><strong>Ngân hàng:</strong> BIDV (TMCP Đầu tư & Phát triển VN)</p>
-                <p><strong>Số tài khoản:</strong> <span id="acc-num" class="text-red-600 font-bold">8808661371</span></p>
-                <p><strong>Chủ tài khoản:</strong> <span id="acc-name" class="font-bold">HOANG NGUYEN THANH BINH</span></p>
-                <p><strong>Số tiền:</strong> <span id="qr-amount" class="text-green-700 font-bold">0 đ</span></p>
-                <p><strong>Nội dung CK:</strong> <span id="qr-memo" class="bg-amber-100 px-1.5 py-0.5 rounded font-bold">THANH TOAN DON HANG</span></p>
+            <div class="flex justify-center relative">
+                <img id="bidv-qr" src="" alt="Mã VietQR BIDV" class="w-60 h-60 rounded-2xl border-2 border-amber-200 shadow-md p-1 bg-white">
             </div>
+
+            <div class="text-left bg-gray-50 p-3.5 rounded-2xl text-xs space-y-2 border border-gray-100">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500">Ngân hàng:</span>
+                    <span class="font-bold text-gray-800">BIDV</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500">Số tài khoản:</span>
+                    <div class="flex items-center space-x-1">
+                        <span id="acc-num" class="text-red-600 font-extrabold">8808661371</span>
+                        <button onclick="copyToClipboard('8808661371', 'Số tài khoản')" class="text-gray-400 hover:text-ocopGreen p-1" title="Sao chép"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500">Chủ tài khoản:</span>
+                    <span id="acc-name" class="font-bold text-gray-800">HOANG NGUYEN THANH BINH</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500">Số tiền chuyển:</span>
+                    <span id="qr-amount" class="text-green-700 font-extrabold text-sm">0 đ</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500">Nội dung chuyển:</span>
+                    <div class="flex items-center space-x-1">
+                        <span id="qr-memo" class="bg-amber-100 px-2 py-0.5 rounded font-bold text-amber-900 text-[11px]">THANH TOAN</span>
+                        <button onclick="copyToClipboard(document.getElementById('qr-memo').innerText, 'Nội dung chuyển khoản')" class="text-gray-400 hover:text-ocopGreen p-1" title="Sao chép"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-[11px] text-gray-500 italic">Mở ứng dụng Ngân hàng bất kỳ & quét mã QR trên để hoàn tất đơn hàng.</p>
+
+            <button onclick="closeQRModal()" class="w-full bg-ocopGreen text-white py-2.5 rounded-xl font-bold text-xs hover:bg-ocopGreenLight transition">
+                Đã hoàn tất chuyển khoản
+            </button>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-gray-900 text-white py-12 mt-20 relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
-            <h4 class="text-xl font-extrabold text-ocopGold">OCOP Sales Copilot</h4>
-            <p class="text-gray-400 text-sm max-w-md mx-auto">Giải pháp trí tuệ nhân tạo thúc đẩy thương mại điện tử cho đặc sản OCOP Việt Nam.</p>
+    <footer id="contact" class="bg-gray-900 text-white py-12 mt-20 relative z-10 border-t border-amber-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+            <div class="flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-leaf text-ocopGold text-xl"></i>
+                <h4 class="text-xl font-extrabold text-ocopGold">OCOP Sales Copilot</h4>
+            </div>
+            <p class="text-gray-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
+                Giải pháp trí tuệ nhân tạo thúc đẩy thương mại điện tử cho đặc sản OCOP Việt Nam. Kết nối trực tiếp người tiêu dùng tới các vùng đặc sản chuẩn Quốc Gia.
+            </p>
             <div class="pt-4 border-t border-gray-800 text-xs text-gray-500">
-                © 2026 OCOP Sales Copilot. Phát triển bởi <strong class="text-white font-bold">Công ty bộ tứ siêu đẳng</strong>.
+                © 2026 OCOP Sales Copilot. Phát triển bởi <strong class="text-white font-bold">Bộ Tứ Siêu Đẳng</strong>.
             </div>
         </div>
     </footer>
@@ -684,13 +862,47 @@
     <script>
         let cart = [];
         let chatHistory = [];
+        let currentFilter = 'all';
 
         // API Key Gemini 1.5 Flash
         const GEMINI_API_KEY = "AQ.Ab8RN6KGOMtYHZsAnPuGcl-" + "WI2c34ghePhBgn4S5UlhPl8j5Yw";
 
+        // TOAST NOTIFICATION SYSTEM
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            
+            const toast = document.createElement('div');
+            toast.className = `pointer-events-auto bg-white border border-amber-200 text-gray-800 px-4 py-3 rounded-2xl shadow-xl text-xs font-bold flex items-center space-x-2 transform translate-y-2 opacity-0 transition-all duration-300 ${type === 'error' ? 'border-red-400 text-red-600' : 'border-emerald-400 text-emerald-800'}`;
+            
+            const icon = type === 'error' ? '<i class="fa-solid fa-circle-exclamation text-red-500 text-base"></i>' : '<i class="fa-solid fa-circle-check text-emerald-500 text-base"></i>';
+            toast.innerHTML = `${icon} <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // COPY TO CLIPBOARD
+        function copyToClipboard(text, label) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`Đã sao chép ${label}!`);
+            }).catch(() => {
+                showToast('Không thể sao chép!', 'error');
+            });
+        }
+
+        // MODAL & UI CONTROLS
         function closeWelcomeModal() {
             const modal = document.getElementById('welcome-modal');
-            if (modal) modal.style.display = 'none';
+            if (modal) modal.classList.add('hidden');
         }
 
         function startChatFromWelcome() {
@@ -709,8 +921,29 @@
             if (chatBox) chatBox.classList.toggle('hidden');
         }
 
+        function clearChatHistory() {
+            chatHistory = [];
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML = `
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-100 max-w-[92%] text-gray-800 leading-relaxed space-y-2">
+                    <p class="font-semibold text-ocopGreen">Dạ em chào Quý khách! 🌱</p>
+                    <p class="text-xs text-gray-600">Lịch sử hội thoại đã được làm mới. Quý khách cần em hỗ trợ gì thêm không ạ?</p>
+                </div>
+            `;
+            showToast('Đã làm mới hội thoại!');
+        }
+
         function quickAsk(text) {
             document.getElementById('chat-input').value = text;
+            sendMessage();
+        }
+
+        function askAIAboutProduct(productName) {
+            const chatBox = document.getElementById('chat-box');
+            if (chatBox.classList.contains('hidden')) {
+                chatBox.classList.remove('hidden');
+            }
+            document.getElementById('chat-input').value = `Tư vấn cho tôi về ${productName} (công dụng, nguồn gốc, giá bán)`;
             sendMessage();
         }
 
@@ -718,6 +951,52 @@
             if (event.key === 'Enter') sendMessage();
         }
 
+        // FILTER & SEARCH LOGIC
+        function setCategoryFilter(cat) {
+            currentFilter = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-ocopGreen', 'text-white', 'active');
+                btn.classList.add('bg-white', 'text-gray-700');
+            });
+            event.target.classList.remove('bg-white', 'text-gray-700');
+            event.target.classList.add('bg-ocopGreen', 'text-white', 'active');
+            filterProducts();
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('product-search').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.product-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category') || '';
+                const name = card.getAttribute('data-name') || '';
+
+                const matchesCategory = (currentFilter === 'all') || category.includes(currentFilter);
+                const matchesSearch = !query || name.includes(query);
+
+                if (matchesCategory && matchesSearch) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            const noMsg = document.getElementById('no-products-msg');
+            if (visibleCount === 0) {
+                noMsg.classList.remove('hidden');
+            } else {
+                noMsg.classList.add('hidden');
+            }
+        }
+
+        function resetFilters() {
+            document.getElementById('product-search').value = '';
+            setCategoryFilter('all');
+        }
+
+        // MARKDOWN PARSER
         function formatMarkdown(text) {
             if (!text) return '';
             return text
@@ -728,6 +1007,7 @@
                 .replace(/\n/g, '<br>');
         }
 
+        // GEMINI AI INTEGRATION
         async function sendMessage() {
             const input = document.getElementById('chat-input');
             const query = input.value.trim();
@@ -737,10 +1017,9 @@
 
             // 1. Hiển thị tin nhắn người dùng
             const userMsg = document.createElement('div');
-            userMsg.className = 'bg-ocopGreen text-white p-3 rounded-2xl shadow-sm max-w-[85%] ml-auto text-left text-sm font-medium';
+            userMsg.className = 'bg-ocopGreen text-white p-3 rounded-2xl shadow-sm max-w-[85%] ml-auto text-left text-xs font-medium';
             userMsg.innerText = query;
             chatMessages.appendChild(userMsg);
-
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
@@ -751,33 +1030,35 @@
             const typingMsg = document.createElement('div');
             typingMsg.id = 'ai-typing';
             typingMsg.className = 'bg-white p-3.5 rounded-2xl shadow-sm border border-amber-100 max-w-[85%] text-xs text-gray-500 italic flex items-center space-x-2';
-            typingMsg.innerHTML = '<i class="fa-solid fa-brain text-ocopGreen animate-pulse"></i> <span>Trợ lý AI đang soạn câu trả lời...</span>';
+            typingMsg.innerHTML = '<i class="fa-solid fa-brain text-ocopGreen animate-pulse text-sm"></i> <span>Trợ lý AI đang tìm dữ liệu chuẩn OCOP...</span>';
             chatMessages.appendChild(typingMsg);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // 4. SYSTEM PROMPT DỮ LIỆU ĐẶC SẢN OCOP
+            // 4. SYSTEM PROMPT DỮ LIỆU ĐẶC SẢN OCOP CHÍNH XÁC
             const systemPrompt = `
 Bạn là "Trợ Lý AI OCOP Sales Copilot" - Chuyên gia tư vấn bán hàng đặc sản Việt Nam tinh tế, am hiểu sâu sắc 12 sản phẩm OCOP đạt chuẩn 4-5 sao.
 
-DANH MỤC 12 SẢN PHẨM OCOP CHÍNH THỨC:
-1. 🍵 Trà Hoa Vàng Tam Đảo (5 Sao) - 650.000 ₫ / Hộp 50g.
-2. 🌰 Hạt Điều Rang Củi Bình Phước (4 Sao) - 195.000 ₫ / 500g.
-3. 🏺 Đồ Gốm Mỹ Nghệ Biên Hòa (4 Sao) - 580.000 ₫.
-4. 🍯 Mật Ong Rừng U Minh (4 Sao) - 290.000 ₫ / Chai 500ml.
-5. ☕ Cà Phê Arabica Cầu Đất (5 Sao) - 240.000 ₫ / 500g.
-6. 🌾 Bánh Cốm Làng Vòng (4 Sao) - 90.000 ₫ / Hộp 10 chiếc.
-7. 🐟 Nước Mắm Phú Quốc Truyền Thống (5 Sao) - 165.000 ₫ / Chai 500ml (40°N).
-8. 🧄 Tỏi Đen Một Nhánh Lý Sơn (5 Sao) - 550.000 ₫ / Hộp 500g.
-9. 🌾 Gạo Tám Xoan Hải Hậu (4 Sao) - 185.000 ₫ / Túi 5kg.
-10. 🍷 Rượu Sim Rừng Phú Quốc (4 Sao) - 210.000 ₫ / Chai 750ml.
-11. 🍜 Miến Dong Phia Đén Cao Bằng (4 Sao) - 110.000 ₫ / Túi 1kg.
-12. 🦑 Chả Mực Giã Tay Hạ Long (5 Sao) - 260.000 ₫ / Khay 500g.
+DANH MỤC 12 SẢN PHẨM OCOP CHÍNH THỨC & GIÁ BÁN:
+1. 🍵 Trà Hoa Vàng Tam Đảo (5 Sao - Vĩnh Phúc) - 650.000 ₫ / Hộp 50g. (Công dụng: Hạ mỡ máu, ổn định huyết áp, ngủ ngon. Quà biếu sức khỏe ngoại giao).
+2. 🌰 Hạt Điều Rang Củi Bình Phước (4 Sao - Bình Phước) - 195.000 ₫ / 500g. (Giữ vỏ lụa, rang củi béo ngậy).
+3. 🏺 Đồ Gốm Mỹ Nghệ Biên Hòa (4 Sao - Đồng Nai) - 580.000 ₫. (Gốm men xanh đồng thủ công nghệ thuật).
+4. 🍯 Mật Ong Rừng U Minh (4 Sao - Cà Mau) - 290.000 ₫ / Chai 500ml. (Mật hoa tràm nguyên chất, tăng sức đề kháng).
+5. ☕ Cà Phê Arabica Cầu Đất (5 Sao - Đà Lạt) - 240.000 ₫ / 500g. (100% Arabica thơm trái cây, vị chua thanh).
+6. 🌾 Bánh Cốm Làng Vòng (4 Sao - Hà Nội) - 90.000 ₫ / Hộp 10 chiếc. (Cốm dẻo nhân đậu xanh dừa quà Hà Thành).
+7. 🐟 Nước Mắm Phú Quốc Truyền Thống (5 Sao - Kiên Giang) - 165.000 ₫ / Chai 500ml (40°N). (Ủ thùng gỗ 12 tháng).
+8. 🧄 Tỏi Đen Một Nhánh Lý Sơn (5 Sao - Quảng Ngãi) - 550.000 ₫ / Hộp 500g. (Lên men 60 ngày, dẻo ngọt, chống oxy hóa).
+9. 🌾 Gạo Tám Xoan Hải Hậu (4 Sao - Nam Định) - 185.000 ₫ / Túi 5kg. (Hạt gạo thon, cơm dẻo thơm).
+10. 🍷 Rượu Sim Rừng Phú Quốc (4 Sao - Kiên Giang) - 210.000 ₫ / Chai 750ml. (Sim chín rừng ủ tự nhiên, chua ngọt chát).
+11. 🍜 Miến Dong Phia Đén Cao Bằng (4 Sao - Cao Bằng) - 110.000 ₫ / Túi 1kg. (100% dong riềng đỏ, sợi dai không trương).
+12. 🦑 Chả Mực Giã Tay Hạ Long (5 Sao - Quảng Ninh) - 260.000 ₫ / Khay 500g. (Mực mai tươi giã tay sần sật).
 
-CÁCH TRẢ LỜI:
-- Luôn thân thiện: "Dạ em chào Quý khách", "Em xin tư vấn...".
-- Gợi ý quà biếu sức khỏe: Trà hoa vàng, Tỏi đen Lý Sơn, Gốm Biên Hòa.
-- Gợi ý món ngon gia đình: Bánh cốm, Cà phê Cầu Đất, Chả mực Hạ Long, Nước mắm Phú Quốc.
-- Định dạng gạch đầu dòng rõ ràng, in đậm tên sản phẩm và giá tiền.
+QUY TẮC TRẢ LỜI:
+- Luôn thân thiện, xưng "em" và kính gọi "Quý khách".
+- Trả lời ngắn gọn, đúng trọng tâm, dùng emoji phù hợp.
+- Khi người dùng hỏi quà biếu sếp/người già: Đề xuất Trà hoa vàng, Tỏi đen Lý Sơn, Gốm Biên Hòa.
+- Khi người dùng hỏi ẩm thực gia đình: Đề xuất Chả mực Hạ Long, Nước mắm Phú Quốc, Miến dong, Gạo Tám Xoan.
+- Luôn cung cấp GIÁ CHÍNH XÁC.
+- Hướng dẫn thanh toán: Hệ thống hỗ trợ quét mã VietQR ngân hàng BIDV rất tiện lợi.
 `;
 
             try {
@@ -793,39 +1074,39 @@ CÁCH TRẢ LỜI:
                 const typingElem = document.getElementById('ai-typing');
                 if (typingElem) typingElem.remove();
 
-                if (!response.ok) throw new Error(`HTTP status: ${response.status}`);
+                if (!response.ok) throw new Error(`HTTP error status: ${response.status}`);
 
                 const data = await response.json();
                 let rawReply = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
                 if (!rawReply) {
-                    rawReply = "Dạ em xin lỗi Quý khách! Quý khách có thể xem 12 sản phẩm ở trên hoặc bấm nút **'Liên hệ để tư vấn'** ở góc phải để Admin hỗ trợ ngay nhé! 🌱";
+                    rawReply = "Dạ em xin lỗi Quý khách! Quý khách có thể bấm nút **'Liên hệ để tư vấn'** ở góc phải để Admin hỗ trợ ngay lập tức nhé! 🌱";
                 }
 
                 chatHistory.push({ role: 'model', parts: [{ text: rawReply }] });
 
                 const botMsg = document.createElement('div');
-                botMsg.className = 'bg-white p-3.5 rounded-2xl shadow-sm border border-amber-100 max-w-[90%] text-sm text-gray-800 leading-relaxed space-y-1';
+                botMsg.className = 'bg-white p-3.5 rounded-2xl shadow-sm border border-amber-100 max-w-[92%] text-xs text-gray-800 leading-relaxed space-y-1.5';
                 botMsg.innerHTML = formatMarkdown(rawReply);
-
                 chatMessages.appendChild(botMsg);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
 
             } catch (error) {
+                console.error("Gemini Error:", error);
                 const typingElem = document.getElementById('ai-typing');
                 if (typingElem) typingElem.remove();
-
-                chatHistory.pop();
+                
+                chatHistory.pop(); // Xóa query lỗi
 
                 const errorMsg = document.createElement('div');
-                errorMsg.className = 'bg-amber-50 p-3.5 rounded-2xl border border-amber-200 max-w-[90%] text-xs text-amber-900 leading-relaxed';
-                errorMsg.innerHTML = "🌱 <strong>Dạ em chào Quý khách!</strong> Trợ lý AI đang phản hồi hơi chậm một chút. Quý khách vui lòng bấm nút <strong>'Liên hệ để tư vấn'</strong> ở góc dưới bên phải màn hình để nhắn trực tiếp cho Admin nhé!";
+                errorMsg.className = 'bg-amber-50 p-3.5 rounded-2xl border border-amber-200 max-w-[92%] text-xs text-amber-900 leading-relaxed space-y-1';
+                errorMsg.innerHTML = "🌱 <strong>Dạ em chào Quý khách!</strong> Hệ thống AI đang gián đoạn kết nối ngắn. Quý khách vui lòng bấm nút <strong>'Liên hệ để tư vấn'</strong> ở góc dưới bên phải màn hình để nhắn tin trực tiếp cho Admin hỗ trợ ngay nhé!";
                 chatMessages.appendChild(errorMsg);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         }
 
-        // Quản lý Giỏ hàng
+        // GIỎ HÀNG NÂNG CẤP
         function addToCart(name, price) {
             const existingItem = cart.find(item => item.name === name);
             if (existingItem) {
@@ -834,47 +1115,70 @@ CÁCH TRẢ LỜI:
                 cart.push({ name: name, price: price, quantity: 1 });
             }
             updateCartUI();
-            alert(`Đã thêm "${name}" vào giỏ hàng!`);
+            showToast(`Đã thêm "${name}" vào giỏ!`);
+        }
+
+        function changeQuantity(index, delta) {
+            if (cart[index]) {
+                cart[index].quantity += delta;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+                updateCartUI();
+            }
         }
 
         function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
+            const item = cart[index];
+            if (item) {
+                cart.splice(index, 1);
+                updateCartUI();
+                showToast(`Đã xóa "${item.name}" khỏi giỏ.`, 'error');
+            }
         }
 
         function updateCartUI() {
             const cartCount = document.getElementById('cart-count');
             const cartItems = document.getElementById('cart-items');
+            const cartSubtotal = document.getElementById('cart-subtotal');
             const cartTotal = document.getElementById('cart-total');
-
+            
             let totalQuantity = 0;
-            let totalPrice = 0;
+            let subtotal = 0;
 
             if (cart.length === 0) {
-                cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Giỏ hàng đang trống.</p>';
+                cartItems.innerHTML = '<p class="text-gray-500 text-center py-12 text-xs">Giỏ hàng của bạn đang trống.</p>';
             } else {
                 cartItems.innerHTML = '';
                 cart.forEach((item, index) => {
                     totalQuantity += item.quantity;
-                    totalPrice += item.price * item.quantity;
+                    subtotal += item.price * item.quantity;
 
                     const itemElement = document.createElement('div');
-                    itemElement.className = 'flex items-center justify-between p-3.5 bg-white rounded-2xl border border-amber-100 shadow-sm';
+                    itemElement.className = 'flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs';
                     itemElement.innerHTML = `
-                        <div>
-                            <h5 class="font-bold text-sm text-gray-800">${item.name}</h5>
-                            <p class="text-xs text-gray-500">${item.price.toLocaleString('vi-VN')} ₫ x ${item.quantity}</p>
+                        <div class="flex-1 pr-2">
+                            <h5 class="font-bold text-gray-800">${item.name}</h5>
+                            <p class="text-red-600 font-extrabold mt-0.5">${item.price.toLocaleString('vi-VN')} ₫</p>
                         </div>
-                        <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 p-1.5">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+                                <button onclick="changeQuantity(${index}, -1)" class="px-2 py-1 text-gray-600 hover:bg-gray-200 font-bold">-</button>
+                                <span class="px-2 font-bold text-gray-800">${item.quantity}</span>
+                                <button onclick="changeQuantity(${index}, 1)" class="px-2 py-1 text-gray-600 hover:bg-gray-200 font-bold">+</button>
+                            </div>
+                            <button onclick="removeFromCart(${index})" class="text-gray-400 hover:text-red-600 p-1" title="Xóa món này">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
                     `;
                     cartItems.appendChild(itemElement);
                 });
             }
 
             cartCount.innerText = totalQuantity;
-            cartTotal.innerText = totalPrice.toLocaleString('vi-VN') + ' ₫';
+            cartSubtotal.innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
+            cartTotal.innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
         }
 
         function toggleCart() {
@@ -884,24 +1188,32 @@ CÁCH TRẢ LỜI:
         function checkout() {
             let totalAmount = 0;
             cart.forEach(item => { totalAmount += item.price * item.quantity; });
-            
+
             if (totalAmount === 0) {
-                alert("Giỏ hàng của bạn đang trống!");
+                showToast("Giỏ hàng của bạn đang trống!", "error");
+                return;
+            }
+
+            const phone = document.getElementById('cust-phone').value.trim();
+            const name = document.getElementById('cust-name').value.trim();
+
+            if (!phone || !name) {
+                showToast("Vui lòng điền Họ tên và Số điện thoại nhận hàng!", "error");
                 return;
             }
 
             const bankBin = '970418'; // BIDV
             const accountNo = '8808661371';
             const accountName = 'HOANG NGUYEN THANH BINH';
-            const addInfo = 'THANH TOAN DON HANG OCOP';
-            
-            const qrUrl = `https://img.vietqr.io/image/${bankBin}-${accountNo}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(accountName)}`;
-            
+            const memo = `OCOP ${phone.slice(-6)} ${name.split(' ').pop()}`.toUpperCase();
+
+            const qrUrl = `https://img.vietqr.io/image/${bankBin}-${accountNo}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(accountName)}`;
+
             document.getElementById('bidv-qr').src = qrUrl;
             document.getElementById('acc-num').innerText = accountNo;
             document.getElementById('acc-name').innerText = accountName;
             document.getElementById('qr-amount').innerText = totalAmount.toLocaleString('vi-VN') + ' VNĐ';
-            document.getElementById('qr-memo').innerText = addInfo;
+            document.getElementById('qr-memo').innerText = memo;
 
             document.getElementById('cart-drawer').classList.add('hidden');
             document.getElementById('qr-modal').classList.remove('hidden');
