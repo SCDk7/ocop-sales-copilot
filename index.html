@@ -201,15 +201,31 @@
             </div>
         </div>
         
-        <!-- Nút mở chat dạng viên thuốc có kèm chữ "Hỏi Copilot AI" giống yêu cầu -->
-        <button id="toggle-chat" class="bg-ocopGreen text-white pl-3 pr-4 py-3 rounded-full shadow-2xl flex items-center space-x-2.5 hover:scale-105 transition float-animation font-medium text-sm">
-            <div class="w-8 h-8 bg-ocopGold rounded-full flex items-center justify-center text-ocopGreen font-bold">
-                <i class="fa-solid fa-robot text-base"></i>
-            </div>
-            <span>Hỏi Copilot AI</span>
-        </button>
+        <!-- Khung nút bấm mở chat ở góc dưới màn hình -->
+<button id="chatbot-toggle-btn" class="...">
+    <i class="fa-solid fa-robot"></i> Hỏi Copilot AI
+</button>
+
+<!-- Cửa sổ khung chat -->
+<div id="chat-widget" class="chat-widget-container">
+    <div class="chat-header">
+        <span>OCOP Sales Copilot</span>
+        <button id="chat-close-btn">&times;</button>
+    </div>
+    
+    <!-- Khu vực hiển thị tin nhắn -->
+    <div id="chat-messages" class="chat-messages">
+        <div class="bot-msg">
+            <strong>Copilot AI:</strong> Xin chào! Tôi là trợ lý ảo OCOP. Bạn cần tìm sản phẩm đặc sản vùng miền nào hay cần tư vấn thông tin gì không?
+        </div>
     </div>
 
+    <!-- Khu vực nhập tin nhắn -->
+    <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Nhập tin nhắn...">
+        <button id="send-btn">Gửi</button>
+    </div>
+</div>
     <!-- Cart Drawer / Modal -->
     <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
         <div id="cart-overlay" class="absolute inset-0 bg-black/50"></div>
