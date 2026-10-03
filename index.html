@@ -274,7 +274,7 @@
         </button>
     </div>
 
-    <!-- NÚT FLOATING FACEBOOK ĐẸP THEO YÊU CẦU (BÊN PHẢI) -->
+    <!-- NÚT FLOATING FACEBOOK BÊN PHẢI -->
     <div class="fixed bottom-6 right-6 z-40">
         <a href="https://www.facebook.com/binh.hoang.882202" target="_blank" rel="noopener noreferrer" 
            class="flex items-center bg-white rounded-full pl-5 pr-1 py-1 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-gray-100 group">
@@ -342,23 +342,31 @@
     <script>
         let cart = [];
         
-        // Tách chuỗi nối để tránh bị GitHub Secret Scanning chặn
+        // Tránh bị GitHub scan API key
         const GEMINI_API_KEY = "AQ.Ab8RN6KGOMtYHZsAnPuGcl-" + "WI2c34ghePhBgn4S5UlhPl8j5Yw";
 
         // 1. Quản lý Modal Chào mừng
         function closeWelcomeModal() {
-            document.getElementById('welcome-modal').style.display = 'none';
+            const modal = document.getElementById('welcome-modal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
         }
 
         function startChatFromWelcome() {
             closeWelcomeModal();
             const chatBox = document.getElementById('chat-box');
-            chatBox.classList.remove('hidden');
+            if (chatBox) {
+                chatBox.classList.remove('hidden');
+            }
         }
 
         // 2. Quản lý Khung Chat & Gọi Gemini AI
         function toggleChatBox() {
-            document.getElementById('chat-box').classList.toggle('hidden');
+            const chatBox = document.getElementById('chat-box');
+            if (chatBox) {
+                chatBox.classList.toggle('hidden');
+            }
         }
 
         function quickAsk(text) {
@@ -371,10 +379,11 @@
         }
 
         function formatMarkdown(text) {
+            if (!text) return '';
             return text
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/^\*\s(.*)$/gmf, '• $1')
-                .replace(/^- (.*)$/gmf, '• $1')
+                .replace(/^\*\s(.*)$/gm, '• $1')
+                .replace(/^- (.*)$/gm, '• $1')
                 .replace(/\n/g, '<br>');
         }
 
@@ -385,7 +394,7 @@
 
             const chatMessages = document.getElementById('chat-messages');
 
-            // Hiển thị câu hỏi của khách hàng
+            // Hiển thị câu hỏi người dùng
             const userMsg = document.createElement('div');
             userMsg.className = 'bg-ocopGreen text-white p-3 rounded-2xl shadow-sm max-w-[85%] ml-auto text-left text-sm';
             userMsg.innerText = query;
@@ -394,7 +403,7 @@
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Hiển thị trạng thái AI đang suy nghĩ
+            // Đang suy nghĩ
             const typingMsg = document.createElement('div');
             typingMsg.id = 'ai-typing';
             typingMsg.className = 'bg-white p-3 rounded-2xl shadow-sm border border-gray-100 max-w-[85%] text-xs text-gray-400 italic flex items-center space-x-2';
@@ -402,37 +411,17 @@
             chatMessages.appendChild(typingMsg);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // KHO KIẾN THỨC NẠP CHO AI
             const systemPrompt = `
                 Bạn là Trợ Lý Bán Hàng AI chuyên nghiệp của trang web "OCOP Sales Copilot".
                 Hãy đóng vai một chuyên gia tư vấn đặc sản Việt Nam cực kỳ am hiểu, lịch sự, chu đáo và thân thiện.
 
-                DANH SÁCH TẤT CẢ SẢN PHẨM & THÔNG TIN CỬA HÀNG:
-                
-                1. Trà hoa vàng Tam Đảo
-                   - Chứng nhận: OCOP 5 Sao (Đặc sản Quốc gia cao cấp).
-                   - Giá bán: 450.000 ₫
-                   - Đặc điểm: Thảo dược quý hiếm từ vùng núi Tam Đảo (Vĩnh Phúc). Giúp thanh lọc cơ thể, hạ huyết áp, ngủ ngon giấc, chống lão hóa. Rất thích hợp làm quà biếu sang trọng cho sếp, đối tác, ông bà cha mẹ.
+                DANH SÁCH SẢN PHẨM & CỬA HÀNG:
+                1. Trà hoa vàng Tam Đảo: OCOP 5 Sao, 450.000 ₫. Bổ dưỡng, làm quà biếu cao cấp.
+                2. Hạt điều rang củi Bình Phước: OCOP 4 Sao, 180.000 ₫. Thơm ngon, giòn bùi.
+                3. Đồ gốm mỹ nghệ Biên Hòa: OCOP 4 Sao, 650.000 ₫. Thủ công tinh xảo, quà tặng tân gia.
 
-                2. Hạt điều rang củi Bình Phước
-                   - Chứng nhận: OCOP 4 Sao.
-                   - Giá bán: 180.000 ₫
-                   - Đặc điểm: Hạt điều chọn lọc thơm ngon, giòn rụm, bùi béo, được rang củi truyền thống giữ nguyên hương vị tự nhiên. Món ăn vặt thơm ngon, bổ dưỡng cho gia đình, bạn bè.
-
-                3. Đồ gốm mỹ nghệ Biên Hòa
-                   - Chứng nhận: OCOP 4 Sao.
-                   - Giá bán: 650.000 ₫
-                   - Đặc điểm: Tinh hoa nghệ thuật gốm sứ truyền thống lâu đời tại Đồng Nai. Men gốm độc đáo, hoa văn chế tác thủ công tinh xảo. Rất thích hợp trang trí phòng khách, quà tặng tân gia hoặc kỷ niệm.
-
-                4. Phương thức thanh toán & Đơn hàng:
-                   - Hỗ trợ thanh toán tự động qua mã VietQR Ngân hàng BIDV.
-                   - Chủ tài khoản: HOANG NGUYEN THANH BINH (STK: 8808661371).
-                   - Khách hàng cũng có thể nhấn nút "Chat Facebook" ở góc phải để liên hệ trực tiếp.
-
-                QUY TẮC TRẢ LỜI CỦA AI:
-                - Dùng ngôn ngữ Tiếng Việt tự nhiên, thân thiện. Luôn mở đầu xưng "Dạ" hoặc "Chào Anh/Chị/Quý khách".
-                - Khi người dùng hỏi "có gì ngon", "nên mua gì", "tư vấn quà tặng",... hãy phân tích nhu cầu và gợi ý cụ thể từng sản phẩm tương ứng kèm mức giá.
-                - Trả lời ngắn gọn, rõ ràng (3 đến 5 câu), dùng gạch đầu dòng khi liệt kê sản phẩm.
+                Thanh toán: VietQR BIDV (STK: 8808661371 - HOANG NGUYEN THANH BINH).
+                Khách cũng có thể bấm "Chat Facebook" góc phải để gặp trực tiếp shop.
             `;
 
             try {
@@ -443,16 +432,17 @@
                         contents: [
                             {
                                 role: 'user',
-                                parts: [{ text: systemPrompt + "\n\nCâu hỏi của khách hàng: " + query }]
+                                parts: [{ text: systemPrompt + "\n\nCâu hỏi: " + query }]
                             }
                         ]
                     })
                 });
 
                 const data = await response.json();
-                document.getElementById('ai-typing')?.remove();
+                const typingElem = document.getElementById('ai-typing');
+                if (typingElem) typingElem.remove();
 
-                let rawReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Dạ em chưa hiểu rõ ý Quý khách, Quý khách có thể nói rõ hơn nhu cầu chọn đặc sản OCOP được không ạ?";
+                let rawReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Dạ em chưa hiểu rõ ý Quý khách, Quý khách có thể nói rõ hơn nhu cầu được không ạ?";
                 
                 const botMsg = document.createElement('div');
                 botMsg.className = 'bg-white p-3.5 rounded-2xl shadow-sm border border-gray-100 max-w-[90%] text-sm text-gray-800 leading-relaxed space-y-1';
@@ -462,12 +452,13 @@
                 chatMessages.scrollTop = chatMessages.scrollHeight;
 
             } catch (error) {
-                document.getElementById('ai-typing')?.remove();
+                const typingElem = document.getElementById('ai-typing');
+                if (typingElem) typingElem.remove();
                 console.error("Lỗi Gemini API:", error);
 
                 const errorMsg = document.createElement('div');
                 errorMsg.className = 'bg-white p-3.5 rounded-2xl shadow-sm border border-gray-100 max-w-[90%] text-sm text-red-600';
-                errorMsg.innerText = "Dạ hệ thống AI đang bận một chút, Quý khách vui lòng thử lại sau vài giây nhé!";
+                errorMsg.innerText = "Dạ hệ thống AI đang bận một chút, Quý khách thử lại sau vài giây nhé!";
                 chatMessages.appendChild(errorMsg);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
