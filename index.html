@@ -28,7 +28,9 @@
                     animation: {
                         'fade-in': 'fadeIn 0.2s ease-out forwards',
                         'pop-in': 'popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
-                        'pulse-glow': 'pulseGlow 2s infinite'
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'float-slow': 'floatSlow 3s ease-in-out infinite',
+                        'wiggle': 'wiggle 2s ease-in-out infinite'
                     },
                     keyframes: {
                         fadeIn: {
@@ -42,6 +44,17 @@
                         pulseGlow: {
                             '0%, 100%': { boxShadow: '0 0 15px rgba(212, 175, 55, 0.4)' },
                             '50%': { boxShadow: '0 0 30px rgba(212, 175, 55, 0.8)' }
+                        },
+                        floatSlow: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' }
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(0deg)' },
+                            '10%': { transform: 'rotate(12deg)' },
+                            '20%': { transform: 'rotate(-12deg)' },
+                            '30%': { transform: 'rotate(8deg)' },
+                            '40%': { transform: 'rotate(0deg)' }
                         }
                     }
                 }
@@ -75,6 +88,26 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #F4EFE6; }
         ::-webkit-scrollbar-thumb { background: #0F382C; border-radius: 10px; }
+
+        /* VÒNG SÓNG TỎA (PULSE RING EFFECT DÀNH CHO NÚT HỖ TRỢ) */
+        .ring-wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: ringExpand 2s infinite ease-out;
+        }
+        .ring-wave-1 { animation-delay: 0s; background-color: rgba(37, 99, 235, 0.35); }
+        .ring-wave-2 { animation-delay: 0.6s; background-color: rgba(37, 99, 235, 0.2); }
+
+        @keyframes ringExpand {
+            0% { width: 100%; height: 100%; opacity: 0.8; }
+            100% { width: 210%; height: 210%; opacity: 0; }
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
@@ -227,6 +260,7 @@
                 </div>
             </div>
         </section>
+        
         <!-- 4. SIDEBAR & DANH SÁCH SẢN PHẨM -->
         <section id="products-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="flex flex-col lg:flex-row gap-8">
@@ -312,7 +346,7 @@
                 <!-- LƯỚI SẢN PHẨM -->
                 <div class="flex-1">
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <!-- Render JS -->
+                        <!-- Render bằng JavaScript -->
                     </div>
                     <div id="no-products-msg" style="display: none;" class="text-center py-16 bg-white/80 rounded-3xl border border-dashed border-gray-300 shadow-sm animate-fade-in">
                         <i class="fa-solid fa-box-open text-4xl text-gray-400 mb-3 block"></i>
@@ -323,15 +357,16 @@
             </div>
         </section>
     </main>
-    <!-- 5. WIDGET CHATBOT AI -->
-    <div id="ai-chat-widget" class="fixed bottom-6 left-6 z-50 flex flex-col items-start">
+
+    <!-- 5. WIDGET CHATBOT AI (BÊN TRÁI) -->
+    <div id="ai-chat-widget" class="fixed bottom-6 left-6 z-50 flex flex-col items-start animate-float-slow">
         <!-- Khung Cửa Sổ Chatbot AI -->
         <div id="ai-chat-window" class="hidden w-80 sm:w-96 h-[540px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-ocopGold flex flex-col overflow-hidden mb-4 animate-pop-in">
             <!-- Header Chatbot -->
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
                     <div class="relative w-10 h-10">
-                        <img src="6f41063f-6f9c-4961-a5fa-21220ee840b1.png" alt="Chuyên Gia OCOP AI" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-ocopGold shadow">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Chuyên Gia OCOP AI" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-ocopGold shadow">
                         <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
                     <div>
@@ -348,7 +383,7 @@
             <div id="ai-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
                 <!-- Tin nhắn chào mừng -->
                 <div class="flex items-start space-x-2">
-                    <img src="6f41063f-6f9c-4961-a5fa-21220ee840b1.png" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
                         Dạ em chào anh/chị! Em là **Trợ lý AI Tư vấn OCOP Việt Nam**. 
                         <br><br>
@@ -365,78 +400,94 @@
             </div>
             <!-- Khung Nhập Căn Bản -->
             <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
-                <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Hỏi AI (VD: quà biếu, trà ngủ ngon, Cà Mau, dưới 300k...)" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
+                <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Hỏi AI (VD: quà biếu, trà ngủ ngon, Cà Mau...)" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
                 <button onclick="sendAIMessage()" class="w-9 h-9 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow"><i class="fa-solid fa-paper-plane text-xs"></i></button>
             </div>
         </div>
         <!-- Nút Tròn Bật/Tắt Chatbot Floating -->
-        <button onclick="toggleAIChat()" class="relative group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 transition duration-300 animate-pulse-glow">
-            <img src="6f41063f-6f9c-4961-a5fa-21220ee840b1.png" alt="AI Avatar" class="w-12 h-12 rounded-full object-cover p-0.5 border border-ocopGold/60">
+        <button onclick="toggleAIChat()" class="relative group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 transition duration-300">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="AI Avatar" class="w-12 h-12 rounded-full object-cover p-0.5 border border-ocopGold/60">
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow">AI</span>
         </button>
     </div>
-    <!-- 5.2. WIDGET LIÊN HỆ HỖ TRỢ ADMIN FACEBOOK (GÓC DƯỚI BÊN PHẢI) -->
-    <div id="admin-support-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+
+    <!-- 5.2. WIDGET LIÊN HỆ 4 ADMIN FACEBOOK CÓ SÓNG LAN TỎA & NẢY BỒNG BỀNH (GÓC DƯỚI BÊN PHẢI) -->
+    <div id="admin-support-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end animate-float-slow">
         <!-- Khung danh sách Admin Links -->
-        <div id="admin-support-menu" class="hidden w-72 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-blue-500 overflow-hidden mb-3 animate-pop-in">
+        <div id="admin-support-menu" class="hidden w-80 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-blue-500 overflow-hidden mb-3 animate-pop-in">
             <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-3.5 flex items-center justify-between border-b border-blue-400">
                 <div class="flex items-center space-x-2">
-                    <i class="fa-brands fa-facebook-messenger text-xl text-blue-200"></i>
-                    <h4 class="font-extrabold text-xs tracking-wide">Liên Hệ Hỗ Trợ Admin</h4>
+                    <i class="fa-brands fa-facebook-messenger text-2xl text-blue-200 animate-bounce"></i>
+                    <div>
+                        <h4 class="font-extrabold text-xs tracking-wide">Tư Vấn Trực Tiếp Facebook</h4>
+                        <p class="text-[9px] text-blue-100">Chọn Admin để inbox ngay lập tức</p>
+                    </div>
                 </div>
                 <button onclick="toggleAdminSupport()" class="text-white/80 hover:text-white p-1 text-base"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="p-3 space-y-2 text-xs">
-                <p class="text-[11px] text-gray-500 font-medium text-center pb-1">Vui lòng chọn Admin để gửi tin nhắn hỗ trợ trực tiếp:</p>
-                
-                <a href="https://www.facebook.com/share/1879V94U7W/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs">
-                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-105 transition">
+                <!-- Admin Link 1 -->
+                <a href="https://www.facebook.com/share/1879V94U7W/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs hover:translate-x-1">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-110 transition shadow">
                         <i class="fa-brands fa-facebook-f"></i>
                     </div>
                     <div class="flex-1">
-                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 1</span>
-                        <span class="block text-[10px] text-gray-500 font-normal">Hỗ trợ tư vấn Facebook</span>
+                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 1 - Tư Vấn OCOP</span>
+                        <span class="block text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-circle text-[7px] mr-1"></i>Đang hoạt động</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-blue-600 text-xs"></i>
+                    <i class="fa-solid fa-paper-plane text-blue-500 group-hover:translate-x-1 transition text-xs"></i>
                 </a>
-                <a href="https://www.facebook.com/share/17gZ4YfQp9/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs">
-                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-105 transition">
+
+                <!-- Admin Link 2 -->
+                <a href="https://www.facebook.com/share/17gZ4YfQp9/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs hover:translate-x-1">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-110 transition shadow">
                         <i class="fa-brands fa-facebook-f"></i>
                     </div>
                     <div class="flex-1">
-                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 2</span>
-                        <span class="block text-[10px] text-gray-500 font-normal">Hỗ trợ tư vấn Facebook</span>
+                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 2 - Hỗ Trợ Đơn Hàng</span>
+                        <span class="block text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-circle text-[7px] mr-1"></i>Đang hoạt động</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-blue-600 text-xs"></i>
+                    <i class="fa-solid fa-paper-plane text-blue-500 group-hover:translate-x-1 transition text-xs"></i>
                 </a>
-                <a href="https://www.facebook.com/share/12M1f95zC1C/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs">
-                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-105 transition">
+
+                <!-- Admin Link 3 -->
+                <a href="https://www.facebook.com/share/12M1f95zC1C/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs hover:translate-x-1">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-110 transition shadow">
                         <i class="fa-brands fa-facebook-f"></i>
                     </div>
                     <div class="flex-1">
-                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 3</span>
-                        <span class="block text-[10px] text-gray-500 font-normal">Hỗ trợ tư vấn Facebook</span>
+                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 3 - Báo Giá Sỉ & Quà Biếu</span>
+                        <span class="block text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-circle text-[7px] mr-1"></i>Đang hoạt động</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-blue-600 text-xs"></i>
+                    <i class="fa-solid fa-paper-plane text-blue-500 group-hover:translate-x-1 transition text-xs"></i>
                 </a>
-                <a href="https://www.facebook.com/share/183x4r3tD8/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs">
-                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-105 transition">
+
+                <!-- Admin Link 4 -->
+                <a href="https://www.facebook.com/share/183x4r3tD8/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs hover:translate-x-1">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-110 transition shadow">
                         <i class="fa-brands fa-facebook-f"></i>
                     </div>
                     <div class="flex-1">
-                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 4</span>
-                        <span class="block text-[10px] text-gray-500 font-normal">Hỗ trợ tư vấn Facebook</span>
+                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 4 - Chăm Sóc Khách Hàng</span>
+                        <span class="block text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-circle text-[7px] mr-1"></i>Đang hoạt động</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-blue-600 text-xs"></i>
+                    <i class="fa-solid fa-paper-plane text-blue-500 group-hover:translate-x-1 transition text-xs"></i>
                 </a>
             </div>
         </div>
-        <!-- Nút Tròn Mở Liên Hệ Admin Floating -->
-        <button onclick="toggleAdminSupport()" class="bg-gradient-to-tr from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-white hover:scale-110 transition duration-300">
-            <i class="fa-brands fa-facebook-messenger text-2xl"></i>
+
+        <!-- Nút Tròn Mở Liên Hệ Admin Có Vòng Sóng Tỏa & Hiệu Ứng Rung Lắc -->
+        <button onclick="toggleAdminSupport()" class="relative group bg-gradient-to-tr from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-white transition duration-300">
+            <!-- Các vòng sóng lan tỏa (Pulse Rings) -->
+            <span class="ring-wave ring-wave-1"></span>
+            <span class="ring-wave ring-wave-2"></span>
+
+            <i class="fa-brands fa-facebook-messenger text-2xl animate-wiggle"></i>
+            <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow animate-pulse">4 Admin</span>
         </button>
     </div>
+
     <!-- 6. MODAL ĐĂNG KÝ / ĐĂNG NHẬP TÀI KHOẢN -->
     <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleAuthModal()"></div>
@@ -480,6 +531,7 @@
             </button>
         </div>
     </div>
+
     <!-- 7. DRAWER LỊCH SỬ MUA HÀNG -->
     <div id="orders-drawer" class="fixed inset-0 z-50 hidden">
         <div onclick="toggleOrdersModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -491,6 +543,7 @@
             <div id="orders-container" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg"></div>
         </div>
     </div>
+
     <!-- 8. POPUP QUICK VIEW CHI TIẾT SẢN PHẨM -->
     <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
@@ -499,6 +552,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2" id="quickview-content"></div>
         </div>
     </div>
+
     <!-- 9. DRAWER YÊU THÍCH (WISHLIST) -->
     <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
         <div onclick="toggleWishlistDrawer()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -510,6 +564,7 @@
             <div id="wishlist-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg"></div>
         </div>
     </div>
+
     <!-- 10. DRAWER GIỎ HÀNG (CART) -->
     <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
         <div id="cart-overlay" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -548,6 +603,7 @@
             </div>
         </div>
     </div>
+
     <!-- 11. MODAL THANH TOÁN VIETQR -->
     <div id="qr-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQRModal()"></div>
@@ -599,6 +655,7 @@
             </button>
         </div>
     </div>
+
     <!-- 12. FOOTER -->
     <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -663,7 +720,7 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT CORE -->
+    <!-- JAVASCRIPT LOGIC TRỌN BỘ SỬA LỖI -->
     <script>
         let currentLang = 'vi';
         let wishlist = [];
@@ -681,7 +738,6 @@
             }
         ];
         let currentPendingOrder = null;
-        const AI_AVATAR_URL = "6f41063f-6f9c-4961-a5fa-21220ee840b1.png";
 
         function toggleAdminSupport() {
             const menu = document.getElementById('admin-support-menu');
@@ -844,9 +900,7 @@
             toast.className = 'bg-ocopGreen text-white px-4 py-2.5 rounded-2xl shadow-xl text-xs border border-ocopGold/50 flex items-center space-x-2 pointer-events-auto animate-fade-in';
             toast.innerHTML = `<i class="fa-solid fa-circle-check text-ocopGold"></i> <span>${message}</span>`;
             container.appendChild(toast);
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
+            setTimeout(() => { toast.remove(); }, 3000);
         }
 
         function renderProductsList() {
@@ -1178,17 +1232,14 @@
             const countEl = document.getElementById('cart-count');
             const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
             if (countEl) countEl.innerText = totalCount;
-
             const container = document.getElementById('cart-items');
             if (!container) return;
-
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">${i18n[currentLang].cartEmpty}</p>`;
                 document.getElementById('cart-subtotal').innerText = '0 ₫';
                 document.getElementById('cart-total').innerText = '0 ₫';
                 return;
             }
-
             let subtotal = 0;
             container.innerHTML = cart.map(item => {
                 const p = products.find(prod => prod.id === item.id);
@@ -1206,59 +1257,62 @@
                             </div>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <button onclick="updateCartQuantity(${p.id}, -1)" class="w-6 h-6 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-xs">-</button>
-                            <span class="text-xs font-bold">${item.quantity}</span>
-                            <button onclick="updateCartQuantity(${p.id}, 1)" class="w-6 h-6 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-xs">+</button>
+                            <div class="flex items-center border border-gray-200 rounded-xl bg-gray-50">
+                                <button onclick="updateCartQuantity(${p.id}, -1)" class="px-2 py-1 text-gray-600 hover:text-black font-bold text-xs">-</button>
+                                <span class="px-2 text-xs font-bold">${item.quantity}</span>
+                                <button onclick="updateCartQuantity(${p.id}, 1)" class="px-2 py-1 text-gray-600 hover:text-black font-bold text-xs">+</button>
+                            </div>
+                            <button onclick="updateCartQuantity(${p.id}, -${item.quantity})" class="text-red-500 hover:bg-red-50 p-1.5 rounded-lg text-xs"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                 `;
             }).join('');
-
-            document.getElementById('cart-subtotal').innerText = `${subtotal.toLocaleString('vi-VN')} ₫`;
-            document.getElementById('cart-total').innerText = `${subtotal.toLocaleString('vi-VN')} ₫`;
+            
+            document.getElementById('cart-subtotal').innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
+            document.getElementById('cart-total').innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
         }
 
         function checkout() {
             if (cart.length === 0) {
-                showToast("Giỏ hàng của bạn đang trống!");
+                alert("Giỏ hàng của bạn đang trống!");
                 return;
             }
-            const nameInput = document.getElementById('cust-name').value.trim();
-            const phoneInput = document.getElementById('cust-phone').value.trim();
-            if (!nameInput || !phoneInput) {
-                showToast("Vui lòng điền họ tên và số điện thoại nhận hàng!");
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            if (!name || !phone) {
+                alert("Vui lòng nhập tên và số điện thoại người nhận.");
                 return;
             }
 
-            const total = cart.reduce((sum, item) => {
+            const totalAmount = cart.reduce((sum, item) => {
                 const p = products.find(prod => prod.id === item.id);
                 return sum + (p ? p.price * item.quantity : 0);
             }, 0);
 
-            const orderCode = "OCOP-" + Math.floor(100000 + Math.random() * 900000);
-            const memo = `THANH TOAN ${orderCode}`;
-            
-            currentPendingOrder = {
-                orderCode: orderCode,
-                date: new Date().toLocaleString('vi-VN'),
-                customer: nameInput,
-                phone: phoneInput,
-                items: cart.map(i => {
-                    const p = products.find(prod => prod.id === i.id);
-                    return { nameVi: p.nameVi, quantity: i.quantity, price: p.price };
-                }),
-                total: total,
-                status: "Chờ xác nhận"
-            };
+            const orderId = "OCOP-" + Math.floor(100000 + Math.random() * 900000);
+            const memo = `OCOP ${orderId} ${phone}`.substring(0, 25);
 
-            const qrUrl = `https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=${total}&addInfo=${encodeURIComponent(memo)}&accountName=HOANG%20NGUYEN%20THANH%20BINH`;
-            
+            // Tạo VietQR Link BIDV chuẩn
+            const qrUrl = `https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(memo)}&accountName=HOANG%20NGUYEN%20THANH%20BINH`;
+
             document.getElementById('bidv-qr').src = qrUrl;
-            document.getElementById('qr-order-code').innerText = `#${orderCode}`;
-            document.getElementById('qr-amount').innerText = `${total.toLocaleString('vi-VN')} ₫`;
+            document.getElementById('qr-order-code').innerText = "#" + orderId;
+            document.getElementById('qr-amount').innerText = totalAmount.toLocaleString('vi-VN') + " ₫";
             document.getElementById('qr-memo').innerText = memo;
 
-            toggleCart();
+            currentPendingOrder = {
+                orderCode: orderId,
+                date: new Date().toLocaleString('vi-VN'),
+                customer: name,
+                phone: phone,
+                items: cart.map(i => {
+                    const p = products.find(pr => pr.id === i.id);
+                    return { nameVi: p.nameVi, quantity: i.quantity, price: p.price };
+                }),
+                total: totalAmount,
+                status: "Chờ xác nhận CK"
+            };
+
             document.getElementById('qr-modal').classList.remove('hidden');
         }
 
@@ -1275,7 +1329,8 @@
             cart = [];
             updateCartUI();
             closeQRModal();
-            showToast("Cảm ơn bạn! Đơn hàng đã được ghi nhận thành công.");
+            toggleCart();
+            showToast("Đơn hàng của bạn đã gửi thành công!");
         }
 
         function copyToClipboard(text, label) {
@@ -1284,7 +1339,7 @@
             });
         }
 
-        /* --- XỬ LÝ CHATBOT AI --- */
+        /* --- LOGIC TRỢ LÝ AI CHAT --- */
         function sendQuickPrompt(promptText) {
             const input = document.getElementById('ai-chat-input');
             if (input) {
@@ -1295,57 +1350,54 @@
 
         function sendAIMessage() {
             const input = document.getElementById('ai-chat-input');
-            const messagesContainer = document.getElementById('ai-chat-messages');
-            if (!input || !messagesContainer) return;
+            const container = document.getElementById('ai-chat-messages');
+            if (!input || !container) return;
+            const msg = input.value.trim();
+            if (!msg) return;
 
-            const userText = input.value.trim();
-            if (!userText) return;
-
-            // Render tin nhắn của User
-            const userMsgHtml = `
-                <div class="flex items-start justify-end space-x-2">
-                    <div class="bg-ocopGreen text-white p-3.5 rounded-2xl shadow-sm leading-relaxed max-w-[85%]">
-                        ${userText}
+            // Tin nhắn của User
+            const userHtml = `
+                <div class="flex items-end justify-end space-x-2">
+                    <div class="bg-ocopGreen text-white p-3 rounded-2xl shadow-xs max-w-[85%] leading-relaxed">
+                        ${msg}
                     </div>
                 </div>
             `;
-            messagesContainer.innerHTML += userMsgHtml;
+            container.insertAdjacentHTML('beforeend', userHtml);
             input.value = '';
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            container.scrollTop = container.scrollHeight;
 
-            // Xử lý phản hồi AI tự động đơn giản
+            // Giả lập AI trả lời
             setTimeout(() => {
-                let aiResponse = "Dạ, em đã nhận được thông tin. Em gợi ý anh/chị có thể tham khảo danh sách các đặc sản chuẩn OCOP 4-5 sao bên trên ạ!";
-                const q = userText.toLowerCase();
-
-                if (q.includes("top 5 sao") || q.includes("5 sao")) {
-                    aiResponse = "Các đặc sản 5 sao nổi bật nhất gồm có:<br>• **Yến Sào Khánh Hòa**<br>• **Trà Đinh Tân Cương**<br>• **Sâm Ngọc Linh**<br>• **Chả Mực Hạ Long**.<br>Anh/chị có thể bấm xem trực tiếp trên danh sách nhé!";
-                } else if (q.includes("combo") || q.includes("quà biếu")) {
-                    aiResponse = "Bộ quà biếu sang trọng khuyên dùng:<br>🎁 **Combo Sức Khỏe**: Yến sào + Trà hoa vàng Tam Đảo + Tỏi đen Lý Sơn (Giá khoảng 3.5tr).";
-                } else if (q.includes("dưới 200k") || q.includes("200k")) {
-                    aiResponse = "Đặc sản mức giá bình dân dưới 200k:<br>• Hạt điều Bình Phước (195k)<br>• Nước mắm Phú Quốc (165k)<br>• Bánh cốm Làng Vòng (90k)<br>• Mật ong U Minh (290k - cực kỳ hời).";
-                } else if (q.includes("trà") || q.includes("sức khỏe")) {
-                    aiResponse = "Danh mục Trà & Dược liệu tốt nhất:<br>🍵 Trà hoa vàng Tam Đảo (Ngủ ngon, hạ mỡ máu)<br>🍵 Trà Đinh Tân Cương (Thơm chát đậm vị)<br>🍵 Cao Atiso Đà Lạt (Mát gan).";
+                let aiReply = "Dạ, em hiểu nhu cầu của anh/chị. Anh/chị có thể xem danh sách 40 đặc sản OCOP đạt chuẩn 4-5 sao ngay trên trang web hoặc bấm nút **Messenger** góc phải để chat trực tiếp với Admin hỗ trợ nhé!";
+                
+                const lower = msg.toLowerCase();
+                if (lower.includes('top') || lower.includes('5 sao')) {
+                    aiReply = "Top đặc sản OCOP 5 Sao hot nhất gồm: **Yến Sào Khánh Hòa**, **Sâm Ngọc Linh**, **Trà Hoa Vàng Tam Đảo**, và **Trà Đinh Tân Cương**. Đây đều là lựa chọn thượng hạng để làm quà biếu!";
+                } else if (lower.includes('combo') || lower.includes('quà')) {
+                    aiReply = "Em gợi ý Combo Quà Biếu Sức Khỏe: **Yến Sào Khánh Hòa + Sâm Ngọc Linh + Trà Hoa Vàng**. Sang trọng, đẳng cấp và giàu giá trị sức khỏe!";
+                } else if (lower.includes('dưới 200k') || lower.includes('rẻ')) {
+                    aiReply = "Các món đặc sản cực ngon dưới 200k: **Hạt điều Bình Phước (195k)**, **Tỏi đen Lý Sơn**, **Bánh pía Sóc Trăng (125k)**, **Bánh cốm Làng Vòng (90k)**.";
+                } else if (lower.includes('trà')) {
+                    aiReply = "Bên em có nhiều loại trà sức khỏe nổi tiếng: **Trà hoa vàng Tam Đảo**, **Trà Đinh Thái Nguyên**, **Trà Oolong Mộc Châu**, và **Chè Shan Tuyết cổ thụ Suối Giàng**.";
                 }
 
-                const aiMsgHtml = `
-                    <div class="flex items-start space-x-2">
-                        <img src="${AI_AVATAR_URL}" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
+                const aiHtml = `
+                    <div class="flex items-start space-x-2 animate-fade-in">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
                         <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
-                            ${aiResponse}
+                            ${aiReply}
                         </div>
                     </div>
                 `;
-                messagesContainer.innerHTML += aiMsgHtml;
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                container.insertAdjacentHTML('beforeend', aiHtml);
+                container.scrollTop = container.scrollHeight;
             }, 600);
         }
 
-        // Khởi tạo trang web
+        // Tự động khởi chạy khi load trang
         window.addEventListener('DOMContentLoaded', () => {
             renderProductsList();
-            updateWishlistUI();
-            updateCartUI();
         });
     </script>
 </body>
