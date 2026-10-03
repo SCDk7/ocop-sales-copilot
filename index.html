@@ -180,12 +180,10 @@
     <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
         <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border-2 border-ocopGold/50 relative text-center space-y-6">
             
-            <!-- Nút đóng X -->
             <button onclick="closeWelcomeModal()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-9 h-9 flex items-center justify-center text-base transition">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <!-- Icon -->
             <div class="flex justify-center pt-2">
                 <div class="relative animate-float">
                     <div class="w-24 h-24 bg-gradient-to-tr from-ocopGreen to-emerald-600 rounded-full flex items-center justify-center text-white text-4xl shadow-xl ring-4 ring-amber-200/60">
@@ -197,7 +195,6 @@
                 </div>
             </div>
 
-            <!-- Tiêu đề -->
             <div class="space-y-1">
                 <span class="bg-emerald-50 text-ocopGreen font-bold px-3.5 py-1 rounded-full text-xs uppercase tracking-wider inline-flex items-center">
                     <i class="fa-solid fa-sparkles text-amber-500 mr-1.5"></i> Trợ Lý Thông Minh OCOP
@@ -207,7 +204,6 @@
                 </h3>
             </div>
 
-            <!-- Nội dung -->
             <div class="bg-amber-50/60 p-4 sm:p-5 rounded-2xl border border-amber-200/60 text-gray-700 text-sm leading-relaxed text-left space-y-3">
                 <p class="font-medium text-gray-800">
                     🌱 <strong>Kính chào Quý khách!</strong> Tôi là Trợ lý AI OCOP, chuyên gia tư vấn các đặc sản vùng miền đạt chứng nhận 4 - 5 sao trên toàn quốc.
@@ -222,7 +218,6 @@
                 </div>
             </div>
 
-            <!-- Nút bấm CTA -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
                 <button onclick="startChatFromWelcome()" class="w-full sm:w-auto flex-1 bg-ocopGreen text-white py-3.5 px-6 rounded-xl font-bold text-sm hover:bg-opacity-95 transition shadow-lg flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-comments text-ocopGold text-base"></i>
@@ -254,7 +249,7 @@
             
             <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-sm bg-gray-50">
                 <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-gray-100 max-w-[90%] text-gray-700">
-                    Dạ xin chào! Tôi là Trợ Lý AI. Quý khách cần tư vấn chọn đặc sản OCOP nào hôm nay ạ?
+                    Dạ em chào Quý khách ạ! 🌱 Em là Trợ lý AI OCOP. Quý khách đang cần tìm đặc sản thưởng thức hay quà biếu tặng cao cấp ạ?
                     <div class="mt-2 space-y-1">
                         <button onclick="quickAsk('Sản phẩm nào ngon và đáng mua nhất?')" class="text-xs bg-emerald-50 text-ocopGreen hover:bg-emerald-100 px-2.5 py-1 rounded-lg block text-left w-full border border-emerald-100">👉 Sản phẩm nào ngon và đáng mua nhất?</button>
                         <button onclick="quickAsk('Có quà gì biếu người thân cao cấp không?')" class="text-xs bg-emerald-50 text-ocopGreen hover:bg-emerald-100 px-2.5 py-1 rounded-lg block text-left w-full border border-emerald-100">👉 Quà biếu cao cấp 5 sao?</button>
@@ -274,19 +269,18 @@
         </button>
     </div>
 
-    <!-- NÚT FLOATING LIÊN HỆ ĐA ADMIN (BÊN PHẢI) -->
+    <!-- NÚT FLOATING LIÊN HỆ ĐA ADMIN (BÊN PHẢI - 4 LINK FACEBOOK) -->
     <div class="fixed bottom-6 right-6 z-40">
-        <!-- Menu chọn Admin (Mặc định ẩn) -->
-        <div id="admin-menu" class="hidden bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 mb-3 w-72 space-y-2 animate-bounce-short">
-            <div class="text-xs font-bold text-gray-500 uppercase tracking-wider px-2 py-1 border-b border-gray-100 flex items-center justify-between">
+        <div id="admin-menu" class="hidden bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 mb-3 w-80 space-y-2 max-h-[380px] overflow-y-auto">
+            <div class="text-xs font-bold text-gray-500 uppercase tracking-wider px-2 py-1 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
                 <span>Chọn Admin tư vấn</span>
                 <span class="w-2 h-2 bg-green-500 rounded-full inline-block animate-pulse"></span>
             </div>
             
-            <!-- Admin 1: Thanh Bình -->
+            <!-- Admin 1 -->
             <a href="https://www.facebook.com/binh.hoang.882202" target="_blank" rel="noopener noreferrer"
                class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
-                <div class="w-10 h-10 bg-[#1877F2] text-white rounded-full flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition">
+                <div class="w-10 h-10 bg-[#1877F2] text-white rounded-full flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition flex-shrink-0">
                     <i class="fa-brands fa-facebook-f"></i>
                 </div>
                 <div>
@@ -295,10 +289,10 @@
                 </div>
             </a>
 
-            <!-- Admin 2: Vĩnh Phúc -->
+            <!-- Admin 2 -->
             <a href="https://www.facebook.com/nguyen.phuc.327726?locale=vi_VN" target="_blank" rel="noopener noreferrer"
                class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
-                <div class="w-10 h-10 bg-emerald-600 text-white rounded-full flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition">
+                <div class="w-10 h-10 bg-emerald-600 text-white rounded-full flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition flex-shrink-0">
                     <i class="fa-brands fa-facebook-f"></i>
                 </div>
                 <div>
@@ -306,15 +300,37 @@
                     <p class="text-[11px] text-gray-500">Hỗ trợ kỹ thuật & tư vấn</p>
                 </div>
             </a>
+
+            <!-- Admin 3 (Mới thêm) -->
+            <a href="https://www.facebook.com/share/19VLSyDk6X/" target="_blank" rel="noopener noreferrer"
+               class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
+                <div class="w-10 h-10 bg-indigo-600 text-white rounded-full flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition flex-shrink-0">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </div>
+                <div>
+                    <h6 class="font-bold text-sm text-gray-800 group-hover:text-indigo-600">Admin CSKH OCOP 1</h6>
+                    <p class="text-[11px] text-gray-500">Tư vấn quà tặng & đặc sản</p>
+                </div>
+            </a>
+
+            <!-- Admin 4 (Mới thêm) -->
+            <a href="https://www.facebook.com/share/18WjBtSR53/" target="_blank" rel="noopener noreferrer"
+               class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
+                <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition flex-shrink-0">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </div>
+                <div>
+                    <h6 class="font-bold text-sm text-gray-800 group-hover:text-purple-600">Admin CSKH OCOP 2</h6>
+                    <p class="text-[11px] text-gray-500">Hỗ trợ đặt hàng 24/7</p>
+                </div>
+            </a>
         </div>
 
-        <!-- Nút bấm chính toggle Menu -->
         <button onclick="toggleAdminMenu()" 
            class="flex items-center bg-white rounded-full pl-5 pr-1 py-1 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-gray-100">
             <span class="text-[#1877F2] font-bold text-sm mr-2.5">Liên hệ để tư vấn</span>
             <div class="w-11 h-11 bg-[#1877F2] text-white rounded-full flex items-center justify-center text-xl shadow-md relative">
                 <i class="fa-brands fa-facebook-f"></i>
-                <!-- Chấm xanh Online -->
                 <span class="absolute top-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
             </div>
         </button>
@@ -374,40 +390,29 @@
     <!-- JAVASCRIPT & GEMINI AI INTEGRATION -->
     <script>
         let cart = [];
-        
-        // Tránh bị GitHub scan API key
+        let chatHistory = [];
+
         const GEMINI_API_KEY = "AQ.Ab8RN6KGOMtYHZsAnPuGcl-" + "WI2c34ghePhBgn4S5UlhPl8j5Yw";
 
-        // 1. Quản lý Modal Chào mừng
         function closeWelcomeModal() {
             const modal = document.getElementById('welcome-modal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
+            if (modal) modal.style.display = 'none';
         }
 
         function startChatFromWelcome() {
             closeWelcomeModal();
             const chatBox = document.getElementById('chat-box');
-            if (chatBox) {
-                chatBox.classList.remove('hidden');
-            }
+            if (chatBox) chatBox.classList.remove('hidden');
         }
 
-        // 2. Toggle Menu Chọn Admin
         function toggleAdminMenu() {
             const menu = document.getElementById('admin-menu');
-            if (menu) {
-                menu.classList.toggle('hidden');
-            }
+            if (menu) menu.classList.toggle('hidden');
         }
 
-        // 3. Quản lý Khung Chat & Gọi Gemini AI
         function toggleChatBox() {
             const chatBox = document.getElementById('chat-box');
-            if (chatBox) {
-                chatBox.classList.toggle('hidden');
-            }
+            if (chatBox) chatBox.classList.toggle('hidden');
         }
 
         function quickAsk(text) {
@@ -435,7 +440,6 @@
 
             const chatMessages = document.getElementById('chat-messages');
 
-            // Hiển thị câu hỏi người dùng
             const userMsg = document.createElement('div');
             userMsg.className = 'bg-ocopGreen text-white p-3 rounded-2xl shadow-sm max-w-[85%] ml-auto text-left text-sm';
             userMsg.innerText = query;
@@ -444,40 +448,51 @@
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Đang suy nghĩ
+            chatHistory.push({ role: 'user', parts: [{ text: query }] });
+
             const typingMsg = document.createElement('div');
             typingMsg.id = 'ai-typing';
             typingMsg.className = 'bg-white p-3 rounded-2xl shadow-sm border border-gray-100 max-w-[85%] text-xs text-gray-400 italic flex items-center space-x-2';
-            typingMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-ocopGreen"></i> <span>Trợ lý AI đang trả lời...</span>';
+            typingMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-ocopGreen"></i> <span>Trợ lý AI đang suy nghĩ câu trả lời...</span>';
             chatMessages.appendChild(typingMsg);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
             const systemPrompt = `
-                Bạn là Trợ Lý Bán Hàng AI chuyên nghiệp của trang web "OCOP Sales Copilot".
-                Hãy đóng vai một chuyên gia tư vấn đặc sản Việt Nam cực kỳ am hiểu, lịch sự, chu đáo và thân thiện.
+Bạn là "Trợ Lý AI OCOP Việt Nam" - chuyên viên tư vấn bán hàng tài ba, tinh tế và cực kỳ linh hoạt.
+Bạn KHÔNG trả lời rập khuôn hay máy móc, mà biết TỰ SUY NGHĨ, PHÂN TÍCH Ý ĐỊNH và NHỚ NGỮ CẢNH trò chuyện của khách hàng.
 
-                DANH SÁCH SẢN PHẨM & CỬA HÀNG:
-                1. Trà hoa vàng Tam Đảo: OCOP 5 Sao, 450.000 ₫. Bổ dưỡng, làm quà biếu cao cấp.
-                2. Hạt điều rang củi Bình Phước: OCOP 4 Sao, 180.000 ₫. Thơm ngon, giòn bùi.
-                3. Đồ gốm mỹ nghệ Biên Hòa: OCOP 4 Sao, 650.000 ₫. Thủ công tinh xảo, quà tặng tân gia.
+QUY TẮC TƯ DUY VÀ PHẢN HỒI:
+1. XỬ LÝ LỜI CHÀO & CÂU NGẮN (Alo, Hi, Shop ơi, Chào, 123...):
+   - Đáp lại ngay với sự niềm nở, lịch sự và chủ động gợi mở: "Dạ em chào Quý khách ạ! 🌱 Em có thể hỗ trợ thông tin đặc sản OCOP hay quà tặng biếu gì cho mình hôm nay ạ?"
 
-                Thanh toán: VietQR BIDV (STK: 8808661371 - HOANG NGUYEN THANH BINH).
-                Khách hàng có thể bấm "Liên hệ để tư vấn" góc phải màn hình để chọn nhắn tin trực tiếp cho Admin qua Facebook:
-                - Admin Thanh Bình: Tư vấn Bán hàng & Đặt hàng
-                - Admin Vĩnh Phúc: Hỗ trợ Kỹ thuật & Tư vấn
-            `;
+2. TỰ PHÂN TÍCH NHU CẦU ĐỂ TƯ VẤN:
+   - Sức khỏe / Người cao tuổi / Quà biếu sang trọng -> Gợi ý "Trà hoa vàng Tam Đảo" (OCOP 5 Sao, 450.000₫) vì có công dụng hỗ trợ hạ mỡ máu, ngủ ngon, dưỡng nhan.
+   - Thưởng thức / Nhâm nhi / Ăn vặt -> Gợi ý "Hạt điều rang củi Bình Phước" (OCOP 4 Sao, 180.000₫) thơm bùi giòn rụm.
+   - Quà tặng kỷ niệm / Tân gia -> Gợi ý "Đồ gốm mỹ nghệ Biên Hòa" (OCOP 4 Sao, 650.000₫) tinh xảo, giá trị nghệ thuật cao.
+
+3. NHỚ NGỮ CẢNH CŨ:
+   - Nếu khách nói nối tiếp câu trước (VD: "Lấy cho tôi 2 hộp đó"), hãy tự hiểu "đó" là sản phẩm vừa được thảo luận ở các tin nhắn trước.
+
+4. GIỌNG VĂN:
+   - Thân thiện, chu đáo, lễ phép (dùng "Dạ", "Quý khách", icon 🌱 ☕ 🎁 ✨), trả lời ngắn gọn, đúng trọng tâm và kết thúc bằng 1 câu hỏi gợi mở khéo léo.
+
+DANH SÁCH SẢN PHẨM & DỊCH VỤ:
+- Trà hoa vàng Tam Đảo: OCOP 5 Sao, 450.000 ₫/hộp.
+- Hạt điều rang củi Bình Phước: OCOP 4 Sao, 180.000 ₫/hũ.
+- Đồ gốm mỹ nghệ Biên Hòa: OCOP 4 Sao, 650.000 ₫/bộ.
+- Thanh toán VietQR BIDV (STK: 8808661371 - HOANG NGUYEN THANH BINH).
+- Đội ngũ Admin: Nút "Liên hệ để tư vấn" góc phải màn hình liên kết với các Facebook Admin.
+`;
 
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [
-                            {
-                                role: 'user',
-                                parts: [{ text: systemPrompt + "\n\nCâu hỏi: " + query }]
-                            }
-                        ]
+                        systemInstruction: {
+                            parts: [{ text: systemPrompt }]
+                        },
+                        contents: chatHistory
                     })
                 });
 
@@ -485,8 +500,10 @@
                 const typingElem = document.getElementById('ai-typing');
                 if (typingElem) typingElem.remove();
 
-                let rawReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Dạ em chưa hiểu rõ ý Quý khách, Quý khách có thể nói rõ hơn nhu cầu được không ạ?";
+                let rawReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Dạ em chào Quý khách ạ! 🌱 Em có thể giúp gì cho mình hôm nay ạ?";
                 
+                chatHistory.push({ role: 'model', parts: [{ text: rawReply }] });
+
                 const botMsg = document.createElement('div');
                 botMsg.className = 'bg-white p-3.5 rounded-2xl shadow-sm border border-gray-100 max-w-[90%] text-sm text-gray-800 leading-relaxed space-y-1';
                 botMsg.innerHTML = formatMarkdown(rawReply);
@@ -499,15 +516,17 @@
                 if (typingElem) typingElem.remove();
                 console.error("Lỗi Gemini API:", error);
 
+                chatHistory.pop();
+
                 const errorMsg = document.createElement('div');
-                errorMsg.className = 'bg-white p-3.5 rounded-2xl shadow-sm border border-gray-100 max-w-[90%] text-sm text-red-600';
-                errorMsg.innerText = "Dạ hệ thống AI đang bận một chút, Quý khách thử lại sau vài giây nhé!";
+                errorMsg.className = 'bg-white p-3.5 rounded-2xl shadow-sm border border-gray-100 max-w-[90%] text-sm text-gray-800';
+                errorMsg.innerText = "Dạ em chào Quý khách ạ! 🌱 Hệ thống AI đang cập nhật thông tin một chút, Quý khách bấm nút 'Liên hệ để tư vấn' góc phải màn hình để nhắn tin cho Admin tư vấn ngay nhé!";
                 chatMessages.appendChild(errorMsg);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         }
 
-        // 4. Quản lý Giỏ hàng
+        // Quản lý giỏ hàng
         function addToCart(name, price) {
             const existingItem = cart.find(item => item.name === name);
             if (existingItem) {
@@ -563,7 +582,6 @@
             document.getElementById('cart-drawer').classList.toggle('hidden');
         }
 
-        // 5. Thanh toán VietQR BIDV
         function checkout() {
             let totalAmount = 0;
             cart.forEach(item => { totalAmount += item.price * item.quantity; });
