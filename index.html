@@ -80,6 +80,7 @@
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+    
     <!-- 1. TOP ANNOUNCEMENT BAR -->
     <div class="bg-ocopGreen text-amber-100 text-[11px] font-semibold py-2 px-4 border-b border-ocopGold/30 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
         <div class="hidden md:flex items-center space-x-5 text-xs">
@@ -96,6 +97,7 @@
             <a href="#products-section" class="hover:text-ocopGold transition" id="i18n-top-specs">40 Đặc sản</a>
         </div>
     </div>
+    
     <!-- 2. HEADER -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-900/10 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
@@ -122,6 +124,7 @@
                 <a href="#products-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-products">Danh mục 40 Đặc sản</a>
                 <a href="#contact-footer" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-contact">Liên hệ & Hỗ hỗ trợ</a>
             </nav>
+            
             <!-- Quick Action Icons -->
             <div class="flex items-center space-x-3 sm:space-x-4">
                 <div class="hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
@@ -155,6 +158,7 @@
             </div>
         </div>
     </header>
+
     <main class="flex-1">
         <!-- 3. HERO BANNER SECTION -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative">
@@ -224,6 +228,7 @@
                 </div>
             </div>
         </section>
+
         <!-- 4. SIDEBAR & DANH SÁCH SẢN PHẨM -->
         <section id="products-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="flex flex-col lg:flex-row gap-8">
@@ -305,6 +310,7 @@
                         </div>
                     </div>
                 </aside>
+                
                 <!-- LƯỚI SẢN PHẨM -->
                 <div class="flex-1">
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -319,6 +325,7 @@
             </div>
         </section>
     </main>
+
     <!-- 5. WIDGET CHATBOT AI -->
     <div id="ai-chat-widget" class="fixed bottom-6 left-6 z-50 flex flex-col items-start">
         <!-- Khung Cửa Sổ Chatbot AI -->
@@ -371,6 +378,74 @@
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow">AI</span>
         </button>
     </div>
+
+    <!-- 5.2. WIDGET LIÊN HỆ HỖ TRỢ ADMIN FACEBOOK (GÓC DƯỚI BÊN PHẢI) -->
+    <div id="admin-support-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        <!-- Khung danh sách Admin Links -->
+        <div id="admin-support-menu" class="hidden w-72 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-blue-500 overflow-hidden mb-3 animate-pop-in">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-3.5 flex items-center justify-between border-b border-blue-400">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-brands fa-facebook-messenger text-xl text-blue-200"></i>
+                    <h4 class="font-extrabold text-xs tracking-wide">Liên Hệ Hỗ Trợ Admin</h4>
+                </div>
+                <button onclick="toggleAdminSupport()" class="text-white/80 hover:text-white p-1 text-base"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="p-3 space-y-2 text-xs">
+                <p class="text-[11px] text-gray-500 font-medium text-center pb-1">Vui lòng chọn Admin để gửi tin nhắn hỗ trợ trực tiếp:</p>
+                
+                <a href="https://www.facebook.com/share/1879V94U7W/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-105 transition">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <div class="flex-1">
+                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 1</span>
+                        <span class="block text-[10px] text-gray-500 font-normal">Hỗ trợ tư vấn Facebook</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-blue-600 text-xs"></i>
+                </a>
+
+                <a href="https://www.facebook.com/share/17gZ4YfQp9/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-105 transition">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <div class="flex-1">
+                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 2</span>
+                        <span class="block text-[10px] text-gray-500 font-normal">Hỗ trợ tư vấn Facebook</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-blue-600 text-xs"></i>
+                </a>
+
+                <a href="https://www.facebook.com/share/12M1f95zC1C/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-105 transition">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <div class="flex-1">
+                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 3</span>
+                        <span class="block text-[10px] text-gray-500 font-normal">Hỗ trợ tư vấn Facebook</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-blue-600 text-xs"></i>
+                </a>
+
+                <a href="https://www.facebook.com/share/183x4r3tD8/" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-105 transition">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <div class="flex-1">
+                        <span class="block text-xs font-extrabold text-gray-800 group-hover:text-blue-700">Admin 4</span>
+                        <span class="block text-[10px] text-gray-500 font-normal">Hỗ trợ tư vấn Facebook</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-400 group-hover:text-blue-600 text-xs"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Nút Tròn Mở Liên Hệ Admin Floating -->
+        <button onclick="toggleAdminSupport()" class="bg-gradient-to-tr from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-white hover:scale-110 transition duration-300">
+            <i class="fa-brands fa-facebook-messenger text-2xl"></i>
+        </button>
+    </div>
+
     <!-- 6. MODAL ĐĂNG KÝ / ĐĂNG NHẬP TÀI KHOẢN -->
     <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleAuthModal()"></div>
@@ -414,6 +489,7 @@
             </button>
         </div>
     </div>
+
     <!-- 7. DRAWER LỊCH SỬ MUA HÀNG -->
     <div id="orders-drawer" class="fixed inset-0 z-50 hidden">
         <div onclick="toggleOrdersModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -425,6 +501,7 @@
             <div id="orders-container" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg"></div>
         </div>
     </div>
+
     <!-- 8. POPUP QUICK VIEW CHI TIẾT SẢN PHẨM -->
     <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
@@ -433,6 +510,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2" id="quickview-content"></div>
         </div>
     </div>
+
     <!-- 9. DRAWER YÊU THÍCH (WISHLIST) -->
     <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
         <div onclick="toggleWishlistDrawer()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -444,6 +522,7 @@
             <div id="wishlist-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg"></div>
         </div>
     </div>
+
     <!-- 10. DRAWER GIỎ HÀNG (CART) -->
     <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
         <div id="cart-overlay" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -482,6 +561,7 @@
             </div>
         </div>
     </div>
+
     <!-- 11. MODAL THANH TOÁN VIETQR -->
     <div id="qr-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQRModal()"></div>
@@ -533,6 +613,7 @@
             </button>
         </div>
     </div>
+
     <!-- 12. FOOTER -->
     <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -596,6 +677,7 @@
             </div>
         </div>
     </footer>
+
     <!-- JAVASCRIPT CORE -->
     <script>
         let currentLang = 'vi';
@@ -615,6 +697,17 @@
         ];
         let currentPendingOrder = null;
         const AI_AVATAR_URL = "6f41063f-6f9c-4961-a5fa-21220ee840b1.png";
+
+        function toggleAdminSupport() {
+            const menu = document.getElementById('admin-support-menu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+
+        function toggleAIChat() {
+            const win = document.getElementById('ai-chat-window');
+            if (win) win.classList.toggle('hidden');
+        }
+
         const i18n = {
             vi: {
                 topGuarantee: "Cam kết 100% OCOP Chính Hãng",
@@ -709,6 +802,7 @@
                 ratingLabel: "Certification:"
             }
         };
+
         const products = [
             { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
             { id: 2, nameVi: "Hạt điều rang củi Bình Phước (500g)", nameEn: "Binh Phuoc Wood-Roasted Cashews (500g)", price: 195000, star: 4, provinceVi: "Bình Phước", provinceEn: "Binh Phuoc", category: "snack 4star food", image: "https://images.unsplash.com/photo-1608797178974-15b35a6405f8?auto=format&fit=crop&w=800&q=80", descVi: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.", descEn: "Silk-husked cashews, hand wood-roasted, rich, crunchy, naturally flavorful." },
@@ -829,7 +923,6 @@
         function toggleAuthModal() {
             document.getElementById('auth-modal').classList.toggle('hidden');
         }
-
         function switchAuthTab(mode) {
             currentAuthMode = mode;
             const tabLogin = document.getElementById('tab-login');
@@ -851,7 +944,6 @@
                 title.innerText = "Tạo Tài Khoản Mới";
             }
         }
-
         function handleAuthSubmit(e) {
             e.preventDefault();
             const email = document.getElementById('auth-email').value.trim();
@@ -864,7 +956,6 @@
             toggleAuthModal();
             showToast(currentAuthMode === 'login' ? `Xin chào, ${name}!` : "Đăng ký thành công!");
         }
-
         function mockGoogleLogin() {
             currentUser = { email: "user.ocop@gmail.com", name: "Nguyễn Minh Đức" };
             document.getElementById('cust-name').value = currentUser.name;
@@ -874,12 +965,10 @@
             toggleAuthModal();
             showToast("Đăng nhập Google thành công!");
         }
-
         function toggleOrdersModal() {
             renderOrdersHistory();
             document.getElementById('orders-drawer').classList.toggle('hidden');
         }
-
         function renderOrdersHistory() {
             const container = document.getElementById('orders-container');
             if (!container) return;
@@ -909,13 +998,11 @@
                 </div>
             `).join('');
         }
-
         function filterProductsGlobal(query) {
             const queryInput = document.getElementById('product-search');
             if (queryInput) queryInput.value = query;
             filterProducts();
         }
-
         function setCategoryFilter(cat, btnElem) {
             currentFilter = cat;
             document.querySelectorAll('.cat-side-btn').forEach(b => {
@@ -928,7 +1015,6 @@
             }
             filterProducts();
         }
-
         function filterProducts() {
             const queryInput = document.getElementById('product-search');
             const query = queryInput ? queryInput.value.toLowerCase().trim() : '';
@@ -951,13 +1037,11 @@
                 noMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
             }
         }
-
         function resetFilters() {
             const queryInput = document.getElementById('product-search');
             if (queryInput) queryInput.value = '';
             setCategoryFilter('all');
         }
-
         function toggleLanguage() {
             currentLang = (currentLang === 'vi') ? 'en' : 'vi';
             document.getElementById('lang-btn').innerText = currentLang.toUpperCase();
@@ -972,7 +1056,6 @@
             updateCartUI();
             showToast(currentLang === 'en' ? "Language changed to English!" : "Đã chuyển sang Tiếng Việt!");
         }
-
         function openQuickView(id) {
             const p = products.find(item => item.id === id);
             if (!p) return;
@@ -1010,11 +1093,9 @@
             `;
             document.getElementById('quickview-modal').classList.remove('hidden');
         }
-
         function closeQuickView() {
             document.getElementById('quickview-modal').classList.add('hidden');
         }
-
         function toggleWishlist(id) {
             const index = wishlist.indexOf(id);
             const p = products.find(item => item.id === id);
@@ -1029,13 +1110,13 @@
             updateWishlistUI();
             renderProductsList();
         }
-
         function updateWishlistUI() {
-            document.getElementById('wishlist-count').innerText = wishlist.length;
+            const countEl = document.getElementById('wishlist-count');
+            if (countEl) countEl.innerText = wishlist.length;
             const container = document.getElementById('wishlist-items');
             if (!container) return;
             if (wishlist.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">Chưa có sản phẩm yêu thích nào.</p>`;
+                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">Chưa có sản phẩm yêu thích.</p>`;
                 return;
             }
             container.innerHTML = wishlist.map(id => {
@@ -1043,228 +1124,186 @@
                 if (!p) return '';
                 const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
                 return `
-                <div class="flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs hover:border-ocopGold/50 transition">
-                    <div class="flex items-center space-x-3 flex-1 pr-2">
-                        <img src="${p.image}" alt="${name}" 
-                             onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" 
-                             class="w-12 h-12 rounded-xl object-cover flex-shrink-0">
-                        <div>
-                            <h5 class="font-bold text-gray-800 line-clamp-1">${name}</h5>
-                            <p class="text-red-600 font-extrabold mt-0.5">${p.price.toLocaleString('vi-VN')} ₫</p>
+                    <div class="flex items-center space-x-3 bg-white p-3 rounded-2xl border border-amber-200 shadow-xs">
+                        <img src="${p.image}" class="w-12 h-12 rounded-xl object-cover">
+                        <div class="flex-1">
+                            <h5 class="font-bold text-xs text-gray-900 line-clamp-1">${name}</h5>
+                            <span class="text-red-600 font-extrabold text-xs">${p.price.toLocaleString('vi-VN')} ₫</span>
                         </div>
+                        <button onclick="addToCart(${p.id})" class="text-ocopGreen hover:text-ocopGreenLight p-1"><i class="fa-solid fa-cart-plus"></i></button>
+                        <button onclick="toggleWishlist(${p.id})" class="text-gray-400 hover:text-red-500 p-1"><i class="fa-solid fa-trash"></i></button>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-2.5 py-1.5 rounded-lg text-[11px] font-bold hover:bg-ocopGreenLight transition">
-                            +
-                        </button>
-                        <button onclick="toggleWishlist(${p.id})" class="text-gray-400 hover:text-red-600 p-1">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                </div>
                 `;
             }).join('');
         }
-
         function toggleWishlistDrawer() {
+            updateWishlistUI();
             document.getElementById('wishlist-drawer').classList.toggle('hidden');
         }
-
         function addToCart(id) {
+            const item = cart.find(c => c.id === id);
             const p = products.find(item => item.id === id);
-            if (!p) return;
-            const existing = cart.find(item => item.id === id);
-            if (existing) {
-                existing.quantity += 1;
+            const pName = p ? ((currentLang === 'en') ? p.nameEn : p.nameVi) : 'Specialty';
+            if (item) {
+                item.quantity++;
             } else {
-                cart.push({ id: p.id, nameVi: p.nameVi, nameEn: p.nameEn, price: p.price, quantity: 1 });
+                cart.push({ id, quantity: 1 });
             }
             updateCartUI();
-            const pName = (currentLang === 'en') ? p.nameEn : p.nameVi;
             showToast(`Đã thêm "${pName}" vào giỏ hàng!`);
         }
-
-        function changeQuantity(index, delta) {
-            if (cart[index]) {
-                cart[index].quantity += delta;
-                if (cart[index].quantity <= 0) cart.splice(index, 1);
-                updateCartUI();
-            }
-        }
-
-        function removeFromCart(index) {
-            if (cart[index]) {
-                cart.splice(index, 1);
-                updateCartUI();
-            }
-        }
-
         function updateCartUI() {
-            const cartCount = document.getElementById('cart-count');
-            const cartItems = document.getElementById('cart-items');
-            const cartSubtotal = document.getElementById('cart-subtotal');
-            const cartTotal = document.getElementById('cart-total');
-            const t = i18n[currentLang];
-            
-            let totalQuantity = 0;
+            const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const countEl = document.getElementById('cart-count');
+            if (countEl) countEl.innerText = totalQty;
+            const container = document.getElementById('cart-items');
+            if (!container) return;
             let subtotal = 0;
             if (cart.length === 0) {
-                cartItems.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${t.cartEmpty}</p>`;
+                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">${i18n[currentLang].cartEmpty}</p>`;
             } else {
-                cartItems.innerHTML = '';
-                cart.forEach((item, index) => {
-                    totalQuantity += item.quantity;
-                    subtotal += item.price * item.quantity;
-                    const name = (currentLang === 'en') ? item.nameEn : item.nameVi;
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs hover:border-ocopGold/50 transition';
-                    itemElement.innerHTML = `
-                        <div class="flex-1 pr-2">
-                            <h5 class="font-bold text-gray-800">${name}</h5>
-                            <p class="text-red-600 font-extrabold mt-0.5">${item.price.toLocaleString('vi-VN')} ₫</p>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
-                                <button onclick="changeQuantity(${index}, -1)" class="px-2 py-1 text-gray-600 font-bold">-</button>
-                                <span class="px-2 font-bold text-gray-800">${item.quantity}</span>
-                                <button onclick="changeQuantity(${index}, 1)" class="px-2 py-1 text-gray-600 font-bold">+</button>
+                container.innerHTML = cart.map(c => {
+                    const p = products.find(item => item.id === c.id);
+                    if (!p) return '';
+                    const itemTotal = p.price * c.quantity;
+                    subtotal += itemTotal;
+                    const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
+                    return `
+                        <div class="flex items-center space-x-3 bg-white p-3 rounded-2xl border border-amber-200 shadow-xs">
+                            <img src="${p.image}" class="w-12 h-12 rounded-xl object-cover">
+                            <div class="flex-1">
+                                <h5 class="font-bold text-xs text-gray-900 line-clamp-1">${name}</h5>
+                                <span class="text-red-600 font-extrabold text-xs">${p.price.toLocaleString('vi-VN')} ₫</span>
                             </div>
-                            <button onclick="removeFromCart(${index})" class="text-gray-400 hover:text-red-600 p-1">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
+                            <div class="flex items-center space-x-1.5 bg-gray-100 rounded-lg px-2 py-0.5 text-xs font-bold">
+                                <button onclick="changeQty(${p.id}, -1)">-</button>
+                                <span>${c.quantity}</span>
+                                <button onclick="changeQty(${p.id}, 1)">+</button>
+                            </div>
                         </div>
                     `;
-                    cartItems.appendChild(itemElement);
-                });
+                }).join('');
             }
-            if (cartCount) cartCount.innerText = totalQuantity;
-            if (cartSubtotal) cartSubtotal.innerText = `${subtotal.toLocaleString('vi-VN')} ₫`;
-            if (cartTotal) cartTotal.innerText = `${subtotal.toLocaleString('vi-VN')} ₫`;
+            document.getElementById('cart-subtotal').innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
+            document.getElementById('cart-total').innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
         }
-
+        function changeQty(id, delta) {
+            const item = cart.find(c => c.id === id);
+            if (!item) return;
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(c => c.id !== id);
+            }
+            updateCartUI();
+        }
         function toggleCart() {
+            updateCartUI();
             document.getElementById('cart-drawer').classList.toggle('hidden');
         }
-
         function checkout() {
             if (cart.length === 0) {
                 showToast("Giỏ hàng của bạn đang trống!");
                 return;
             }
-            const custName = document.getElementById('cust-name').value.trim() || "Khách Hàng";
-            const custPhone = document.getElementById('cust-phone').value.trim();
-
-            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const orderCode = "OCOP-" + Math.floor(100000 + Math.random() * 900000);
-
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            if (!name || !phone) {
+                showToast("Vui lòng nhập Họ tên và Số điện thoại!");
+                return;
+            }
+            const subtotal = cart.reduce((sum, c) => {
+                const p = products.find(item => item.id === c.id);
+                return sum + (p ? p.price * c.quantity : 0);
+            }, 0);
+            const orderCode = 'OCOP-' + Math.floor(100000 + Math.random() * 900000);
+            const memo = `THANH TOAN ${orderCode}`;
+            
             currentPendingOrder = {
-                orderCode: orderCode,
+                orderCode,
                 date: new Date().toLocaleString('vi-VN'),
-                customer: custName,
-                phone: custPhone,
-                items: [...cart],
+                customer: name,
+                items: cart.map(c => {
+                    const p = products.find(item => item.id === c.id);
+                    return { nameVi: p ? p.nameVi : '', quantity: c.quantity, price: p ? p.price : 0 };
+                }),
                 total: subtotal,
-                status: "Đang xử lý"
+                status: "Chờ xác nhận"
             };
 
-            const bankId = "BIDV";
-            const accountNo = "8808661371";
-            const accountName = "HOANG NGUYEN THANH BINH";
-            const memo = orderCode;
-            const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${subtotal}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(accountName)}`;
-
+            const qrUrl = `https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=${subtotal}&addInfo=${encodeURIComponent(memo)}&accountName=HOANG%20NGUYEN%20THANH%20BINH`;
             document.getElementById('bidv-qr').src = qrUrl;
             document.getElementById('qr-order-code').innerText = `#${orderCode}`;
-            document.getElementById('qr-amount').innerText = `${subtotal.toLocaleString('vi-VN')} ₫`;
+            document.getElementById('qr-amount').innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
             document.getElementById('qr-memo').innerText = memo;
 
             toggleCart();
             document.getElementById('qr-modal').classList.remove('hidden');
         }
-
         function closeQRModal() {
             document.getElementById('qr-modal').classList.add('hidden');
         }
-
         function confirmOrderPayment() {
             if (currentPendingOrder) {
-                currentPendingOrder.status = "Đã hoàn tất";
                 ordersHistory.unshift(currentPendingOrder);
                 currentPendingOrder = null;
             }
             cart = [];
             updateCartUI();
             closeQRModal();
-            showToast("Thanh toán thành công! Đơn hàng đã được ghi nhận.");
+            showToast("Đã ghi nhận đơn hàng. Cảm ơn quý khách!");
         }
-
         function copyToClipboard(text, label) {
             navigator.clipboard.writeText(text).then(() => {
-                showToast(`Đã sao chép ${label || ''}!`);
-            }).catch(() => {
-                showToast("Không thể sao chép!");
+                showToast(`Đã sao chép ${label}!`);
             });
         }
-
-        function toggleAIChat() {
-            const win = document.getElementById('ai-chat-window');
-            if (win) win.classList.toggle('hidden');
-        }
-
+        
+        // AI Chat Widget Logic
         function sendQuickPrompt(promptText) {
-            const input = document.getElementById('ai-chat-input');
-            if (input) {
-                input.value = promptText;
-                sendAIMessage();
-            }
+            document.getElementById('ai-chat-input').value = promptText;
+            sendAIMessage();
         }
-
         function sendAIMessage() {
             const input = document.getElementById('ai-chat-input');
-            const messages = document.getElementById('ai-chat-messages');
-            if (!input || !messages) return;
-
             const text = input.value.trim();
             if (!text) return;
 
+            const messages = document.getElementById('ai-chat-messages');
+            
+            // User message
             const userMsg = document.createElement('div');
             userMsg.className = 'flex justify-end';
-            userMsg.innerHTML = `
-                <div class="bg-ocopGreen text-white p-3 rounded-2xl max-w-[85%] text-xs shadow-sm">
-                    ${text}
-                </div>
-            `;
+            userMsg.innerHTML = `<div class="bg-ocopGreen text-white p-3 rounded-2xl max-w-[85%] shadow-xs leading-relaxed">${text}</div>`;
             messages.appendChild(userMsg);
+            
             input.value = '';
             messages.scrollTop = messages.scrollHeight;
 
+            // Simulated AI Response
             setTimeout(() => {
-                let reply = "Cảm ơn bạn đã quan tâm! Dòng sản phẩm OCOP chuẩn quốc gia của chúng tôi cam kết chính hãng 100%. Bạn có thể xem chi tiết trong danh mục sản phẩm.";
-                const lower = text.toLowerCase();
-                if (lower.includes('top 5 sao') || lower.includes('5 sao')) {
-                    reply = "Top sản phẩm OCOP 5 sao nổi bật: Yến Sào Khánh Hòa, Trà Hoa Vàng Tam Đảo, Sâm Ngọc Linh Quảng Nam, Cà Phê Arabica Cầu Đất, Nước Mắm Phú Quốc!";
-                } else if (lower.includes('quà biếu') || lower.includes('combo')) {
-                    reply = "Bộ quà biếu sức khỏe gợi ý: Yến Sào Khánh Hòa + Trà Hoa Vàng Tam Đảo + Tỏi Đen Lý Sơn. Rất sang trọng và giàu giá trị dinh dưỡng.";
-                } else if (lower.includes('dưới 200k') || lower.includes('200k')) {
-                    reply = "Các đặc sản giá dưới 200k: Hạt điều rang củi Bình Phước (195k), Bánh cốm Làng Vòng (90k), Nước mắm Phú Quốc (165k), Miến dong Phia Đén (110k).";
-                } else if (lower.includes('trà')) {
-                    reply = "Các loại trà OCOP thượng hạng: Trà Hoa Vàng Tam Đảo, Trà Đinh Tân Cương, Chè Shan Tuyết Suối Giàng, Trà Oolong Mộc Châu.";
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'flex items-start space-x-2 animate-fade-in';
+                
+                let reply = "Dạ, em hiểu rồi ạ! Em xin gợi ý cho anh/chị sản phẩm **Trà hoa vàng Tam Đảo** hoặc **Yến sào Khánh Hòa** - đều là các dòng OCOP 5 Sao thượng hạng rất được ưa chuộng ạ.";
+                if (text.toLowerCase().includes("200k")) {
+                    reply = "Dạ với ngân sách dưới 200k, anh/chị có thể tham khảo **Hạt điều rang củi Bình Phước (195.000₫)** hoặc **Nước mắm Phú Quốc truyền thống (165.000₫)** rất ngon và chuẩn vị ạ!";
+                } else if (text.toLowerCase().includes("combo") || text.toLowerCase().includes("quà")) {
+                    reply = "Dạ combo quà biếu sang trọng nhất bên em gồm **Yến Sào Khánh Hòa (2.450.000₫)** kết hợp **Trà Đinh Tân Cương (450.000₫)**. Rất thích hợp làm quà biếu đối tác & người thân ạ!";
                 }
 
-                const botMsg = document.createElement('div');
-                botMsg.className = 'flex items-start space-x-2';
-                botMsg.innerHTML = `
+                aiMsg.innerHTML = `
                     <img src="${AI_AVATAR_URL}" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
                         ${reply}
                     </div>
                 `;
-                messages.appendChild(botMsg);
+                messages.appendChild(aiMsg);
                 messages.scrollTop = messages.scrollHeight;
-            }, 500);
+            }, 600);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
             renderProductsList();
             updateWishlistUI();
             updateCartUI();
