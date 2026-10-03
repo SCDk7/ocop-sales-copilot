@@ -5,7 +5,9 @@ const ocopProducts = [
     { id: 1, name: "Mật ong rừng U Minh", price: 250000, stock: 15, unit: "chai" },
     { id: 2, name: "Trà sen Hồ Tây", price: 180000, stock: 30, unit: "hộp" },
     { id: 3, name: "Cà phê Robusta Đắk Lắk", price: 120000, stock: 50, unit: "gói" },
-    { id: 4, name: "Trà Hoa Vàng Tam Đảo", price: 450000, stock: 20, unit: "hộp" }
+    { id: 4, name: "Trà Hoa Vàng Tam Đảo", price: 450000, stock: 20, unit: "hộp" },
+    { id: 5, name: "Hạt điều rang củi Bình Phước", price: 180000, stock: 40, unit: "gói" },
+    { id: 6, name: "Đồ gốm mỹ nghệ Biên Hòa", price: 650000, stock: 10, unit: "sản phẩm" }
 ];
 
 let cart = [];
@@ -17,9 +19,38 @@ function updateCartUI() {
     if (cartCountEl) {
         cartCountEl.textContent = totalItems;
     }
+
+    // Hiển thị danh sách giỏ hàng trong modal/drawer nếu có
+    const cartItemsContainer = document.getElementById("cart-items");
+    const cartTotalEl = document.getElementById("cart-total");
+    if (cartItemsContainer && cartTotalEl) {
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p class="text-gray-500 text-center py-8">Giỏ hàng đang trống.</p>';
+            cartTotalEl.textContent = "0 ₫";
+            return;
+        }
+
+        let html = "";
+        let totalMoney = 0;
+        cart.forEach(item => {
+            let itemTotal = item.price * item.quantity;
+            totalMoney += itemTotal;
+            html += `
+                <div class="flex items-center justify-between border-b pb-3">
+                    <div>
+                        <h5 class="font-bold text-sm text-gray-800">${item.name}</h5>
+                        <p class="text-xs text-gray-500">${item.price.toLocaleString('vi-VN')}₫ x ${item.quantity}</p>
+                    </div>
+                    <span class="font-bold text-red-600 text-sm">${itemTotal.toLocaleString('vi-VN')}₫</span>
+                </div>
+            `;
+        });
+        cartItemsContainer.innerHTML = html;
+        cartTotalEl.textContent = totalMoney.toLocaleString('vi-VN') + " ₫";
+    }
 }
 
-// Thêm sản phẩm vào giỏ hàng qua chatbot
+// Thêm sản phẩm vào giỏ hàng
 function addProductToCart(productName) {
     let product = ocopProducts.find(p => p.name.toLowerCase().includes(productName.toLowerCase()) || productName.toLowerCase().includes(p.name.toLowerCase().split(" ")[0]));
     if (product) {
@@ -32,7 +63,19 @@ function addProductToCart(productName) {
         updateCartUI();
         return `Đã thêm thành công **${product.name}** (1 ${product.unit}) vào giỏ hàng của bạn!`;
     }
-    return null;
+    return "Không tìm thấy sản phẩm này trong hệ thống.";
+}
+
+// Chức năng thanh toán
+function checkout() {
+    if (cart.length === 0) {
+        alert("Giỏ hàng của bạn đang trống!");
+        return;
+    }
+    alert("Cảm ơn bạn đã đặt hàng! Đơn hàng của bạn đã được ghi nhận.");
+    cart = [];
+    updateCartUI();
+    document.getElementById("cart-drawer").classList.add("hidden");
 }
 
 // ==========================================
@@ -42,7 +85,6 @@ function handleUserMessage(userMessage) {
     const text = userMessage.toLowerCase();
     let botResponse = "";
 
-    // Xử lý ý định mua hàng / thêm vào giỏ
     if (text.includes("mua") || text.includes("thêm") || text.includes("lấy") || text.includes("chốt")) {
         let matchedProduct = ocopProducts.find(p => text.includes(p.name.toLowerCase()) || text.includes(p.name.split(" ")[0].toLowerCase()));
         if (matchedProduct) {
@@ -51,8 +93,7 @@ function handleUserMessage(userMessage) {
         }
     }
 
-    // Tra cứu thông tin / số lượng / giá
-    if (text.includes("tra cứu") || text.includes("số lượng") || text.includes("còn không") || text.includes("hàng") || text.includes("giá") || text.includes("mật ong") || text.includes("trà") || text.includes("cà phê")) {
+    if (text.includes("tra cứu") || text.includes("số lượng") || text.includes("còn không") || text.includes("hàng") || text.includes("giá") || text.includes("mật ong") || text.includes("trà") || text.includes("cà phê") || text.includes("hạt điều") || text.includes("gốm")) {
         let foundProduct = ocopProducts.find(p => text.includes(p.name.toLowerCase()) || text.includes(p.name.split(" ")[0].toLowerCase()));
         
         if (foundProduct) {
@@ -62,11 +103,9 @@ function handleUserMessage(userMessage) {
             botResponse = `Danh sách sản phẩm OCOP hiện có tại cửa hàng:\n${productListStr}\n\nBạn muốn mua hoặc tra cứu sản phẩm nào?`;
         }
     } 
-    // Hướng dẫn đặt hàng
     else if (text.includes("đặt hàng") || text.includes("thanh toán") || text.includes("giỏ hàng")) {
-        botResponse = `Để đặt hàng, bạn hãy:\n1. Kiểm tra biểu tượng **Giỏ hàng** ở góc trên bên phải màn hình.\n2. Điền thông tin giao hàng và xác nhận.\nHoặc bạn có thể chat trực tiếp với tôi: *"mua [tên sản phẩm]"* để tôi bỏ vào giỏ hàng giúp bạn nhé!`;
+        botResponse = `Để đặt hàng, bạn hãy:\n1. Kiểm tra biểu tượng **Giỏ hàng** ở góc trên bên phải màn hình.\n2. Điền thông tin giao hàng và xác nhận.\nHoặc gõ chat trực tiếp: *"mua [tên sản phẩm]"* để tôi bỏ vào giỏ hàng giúp bạn nhé!`;
     } 
-    // Mặc định
     else {
         botResponse = `Chào bạn! Tôi là Copilot AI. Bạn có thể hỏi tôi về **số lượng**, **giá sản phẩm** hoặc gõ lệnh như *"mua mật ong"* để tôi thêm vào giỏ hàng nhé!`;
     }
@@ -85,7 +124,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const sendBtn = document.getElementById("send-btn");
     const chatBox = document.getElementById("chat-messages");
 
-    // Xử lý bật/tắt khung chat khi bấm nút ở góc dưới màn hình
+    const cartBtn = document.getElementById("cart-btn");
+    const cartDrawer = document.getElementById("cart-drawer");
+    const closeCart = document.getElementById("close-cart");
+    const cartOverlay = document.getElementById("cart-overlay");
+
+    // Bật/tắt giỏ hàng
+    if (cartBtn && cartDrawer) {
+        cartBtn.addEventListener("click", () => cartDrawer.classList.remove("hidden"));
+    }
+    if (closeCart && cartDrawer) {
+        closeCart.addEventListener("click", () => cartDrawer.classList.add("hidden"));
+    }
+    if (cartOverlay && cartDrawer) {
+        cartOverlay.addEventListener("click", () => cartDrawer.classList.add("hidden"));
+    }
+
+    // Xử lý bật/tắt khung chat
     if (toggleBtn && chatWidget) {
         toggleBtn.addEventListener("click", () => {
             if (chatWidget.style.display === "none" || chatWidget.style.display === "") {
