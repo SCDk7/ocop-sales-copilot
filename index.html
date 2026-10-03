@@ -26,17 +26,17 @@
                         'gold-glow': '0 0 25px rgba(212, 175, 55, 0.4)'
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.3s ease-out forwards',
-                        'pop-in': 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                        'fade-in': 'fadeIn 0.2s ease-out forwards',
+                        'pop-in': 'popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                         'pulse-glow': 'pulseGlow 2s infinite'
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '0%': { opacity: '0', transform: 'translateY(8px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' }
                         },
                         popIn: {
-                            '0%': { opacity: '0', transform: 'scale(0.9)' },
+                            '0%': { opacity: '0', transform: 'scale(0.92)' },
                             '100%': { opacity: '1', transform: 'scale(1)' }
                         },
                         pulseGlow: {
@@ -52,9 +52,6 @@
     <!-- Font Awesome Icons & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style1.css">
     
     <style>
         body {
@@ -144,6 +141,16 @@
                 </div>
 
                 <div class="flex items-center space-x-2">
+                    <!-- Nút Tài Khoản / Đăng Nhập -->
+                    <button onclick="toggleAuthModal()" id="user-btn" class="w-10 h-10 rounded-full bg-amber-100 hover:bg-amber-200 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-300 hover:scale-105" title="Đăng nhập / Tài khoản">
+                        <i class="fa-solid fa-user text-sm"></i>
+                    </button>
+
+                    <!-- Nút Lịch Sử Mua Hàng -->
+                    <button onclick="toggleOrdersModal()" class="w-10 h-10 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center transition shadow-sm border border-blue-200 hover:scale-105" title="Lịch sử mua hàng">
+                        <i class="fa-solid fa-clock-rotate-left text-sm"></i>
+                    </button>
+
                     <button onclick="toggleWishlistDrawer()" class="relative w-10 h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200 hover:scale-105" title="Yêu thích">
                         <i class="fa-regular fa-heart text-sm text-red-500"></i>
                         <span id="wishlist-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
@@ -346,15 +353,15 @@
         </section>
     </main>
 
-    <!-- 5. WIDGET CHATBOT AI (GÓC DƯỚI BÊN TRÁI + TỰ NHIÊN - LỊCH SỰ - TỰ TẠO CON BỌ) -->
+    <!-- 5. WIDGET CHATBOT AI (AVATAR TỰ ĐỊNH NGHĨA image_d44449.jpg + TURBO SPEED) -->
     <div id="ai-chat-widget" class="fixed bottom-6 left-6 z-50 flex flex-col items-start">
         <!-- Khung Cửa Sổ Chatbot AI -->
-        <div id="ai-chat-window" class="hidden w-80 sm:w-96 h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-ocopGold flex flex-col overflow-hidden mb-4 animate-pop-in">
+        <div id="ai-chat-window" class="hidden w-80 sm:w-96 h-[540px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-ocopGold flex flex-col overflow-hidden mb-4 animate-pop-in">
             <!-- Header Chatbot -->
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
                     <div class="relative w-10 h-10">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Chuyên Gia OCOP AI" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-ocopGold shadow">
+                        <img src="image_d44449.jpg" alt="Chuyên Gia OCOP AI" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-ocopGold shadow">
                         <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
                     <div>
@@ -362,7 +369,7 @@
                             Trợ Lý Đặc Sản OCOP
                             <span class="bg-ocopGold text-ocopGreen text-[8px] font-black px-1.5 py-0.2 rounded ml-1.5 uppercase">AI Expert</span>
                         </h4>
-                        <span class="text-[10px] text-emerald-300 font-semibold flex items-center"><i class="fa-solid fa-sparkles text-ocopGold mr-1 text-[9px]"></i>Tư vấn trực tuyến 24/7</span>
+                        <span class="text-[10px] text-emerald-300 font-semibold flex items-center"><i class="fa-solid fa-bolt text-ocopGold mr-1 text-[9px]"></i>Phản hồi siêu tốc 24/7</span>
                     </div>
                 </div>
                 <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg"><i class="fa-solid fa-xmark"></i></button>
@@ -370,13 +377,13 @@
 
             <!-- Khung Nội Dung Chat -->
             <div id="ai-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
-                <!-- Tin nhắn chào mừng tự nhiên -->
+                <!-- Tin nhắn chào mừng -->
                 <div class="flex items-start space-x-2">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
+                    <img src="image_d44449.jpg" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
-                        Dạ em chào anh/chị! Em là **Trợ lý Tư vấn OCOP Việt Nam**. 
+                        Dạ em chào anh/chị! Em là **Trợ lý AI Tư vấn OCOP Việt Nam**. 
                         <br><br>
-                        Em có thể giúp anh/chị chọn nhanh đặc sản chính gốc, tư vấn bộ quà biếu sang trọng hoặc tìm món ngon chuẩn vị cho gia đình. Mình muốn tìm sản phẩm ra sao ạ?
+                        Em đã sẵn sàng hỗ trợ anh/chị chọn nhanh quà biếu, trà mát gan, đồ nhắm hay đặc sản theo tỉnh thành. Mình đang cần tìm món gì ạ?
                     </div>
                 </div>
             </div>
@@ -391,19 +398,87 @@
 
             <!-- Khung Nhập Căn Bản -->
             <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
-                <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Nhắn tin cho em (VD: quà biếu, trà ngủ ngon, dưới 300k...)" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
+                <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Hỏi AI (VD: quà biếu, trà ngủ ngon, Cà Mau, dưới 300k...)" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
                 <button onclick="sendAIMessage()" class="w-9 h-9 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow"><i class="fa-solid fa-paper-plane text-xs"></i></button>
             </div>
         </div>
 
-        <!-- Nút Tròn Bật/Tắt Chatbot Floating Bên Trái Màn Hình -->
+        <!-- Nút Tròn Bật/Tắt Chatbot Floating -->
         <button onclick="toggleAIChat()" class="relative group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 transition duration-300 animate-pulse-glow">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="AI Avatar" class="w-12 h-12 rounded-full object-cover p-0.5 border border-ocopGold/60">
+            <img src="image_d44449.jpg" alt="AI Avatar" class="w-12 h-12 rounded-full object-cover p-0.5 border border-ocopGold/60">
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow">AI</span>
         </button>
     </div>
 
-    <!-- 6. POPUP QUICK VIEW CHI TIẾT SẢN PHẨM -->
+    <!-- 6. MODAL ĐĂNG KÝ / ĐĂNG NHẬP TÀI KHOẢN (GMAIL + MK) -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleAuthModal()"></div>
+        <div class="relative bg-white rounded-3xl max-w-sm w-full shadow-2xl z-10 p-6 border border-amber-200 animate-pop-in">
+            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="text-center mb-5">
+                <div class="w-12 h-12 bg-ocopGreen text-ocopGold rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl shadow">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h3 class="text-lg font-extrabold text-gray-900" id="auth-title">Đăng Nhập Tài Khoản</h3>
+                <p class="text-xs text-gray-500">Quản lý đơn hàng & tích điểm ưu đãi</p>
+            </div>
+
+            <!-- Tab Switch -->
+            <div class="flex bg-gray-100 p-1 rounded-2xl mb-4 text-xs font-bold">
+                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs">Đăng Nhập</button>
+                <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800">Đăng Ký</button>
+            </div>
+
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
+                <div id="name-field" class="hidden">
+                    <label class="block font-bold text-gray-700 mb-1">Họ và tên</label>
+                    <input type="text" id="auth-name" placeholder="Nguyễn Văn A" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Địa chỉ Gmail / Email *</label>
+                    <input type="email" id="auth-email" required placeholder="example@gmail.com" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">Mật khẩu *</label>
+                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                </div>
+
+                <button type="submit" id="auth-submit-btn" class="w-full bg-ocopGreen text-white py-3 rounded-xl font-bold hover:bg-ocopGreenLight transition shadow-md mt-2">
+                    Đăng Nhập
+                </button>
+            </form>
+
+            <div class="relative my-4">
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+                <div class="relative flex justify-center text-[10px] uppercase"><span class="bg-white px-2 text-gray-400 font-bold">Hoặc tiếp tục với</span></div>
+            </div>
+
+            <button onclick="mockGoogleLogin()" class="w-full bg-white border border-gray-300 text-gray-700 py-2.5 rounded-xl font-bold hover:bg-gray-50 transition flex items-center justify-center space-x-2 text-xs">
+                <i class="fa-brands fa-google text-red-500"></i>
+                <span>Đăng nhập nhanh với Google</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 7. DRAWER LỊCH SỬ MUA HÀNG (CÓ MÃ ĐƠN HÀNG) -->
+    <div id="orders-drawer" class="fixed inset-0 z-50 hidden">
+        <div onclick="toggleOrdersModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
+            <div class="p-4 bg-ocopGreen text-white flex items-center justify-between border-b border-ocopGold/30">
+                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-clock-rotate-left mr-2 text-ocopGold"></i> Lịch Sử Mua Hàng</h3>
+                <button onclick="toggleOrdersModal()" class="text-white/80 hover:text-white p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div id="orders-container" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg">
+                <!-- Order list rendered dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. POPUP QUICK VIEW CHI TIẾT SẢN PHẨM -->
     <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
         <div class="relative bg-white rounded-3xl max-w-2xl w-full shadow-2xl z-10 overflow-hidden border border-amber-200 animate-pop-in">
@@ -412,7 +487,7 @@
         </div>
     </div>
 
-    <!-- 7. DRAWER YÊU THÍCH (WISHLIST) -->
+    <!-- 9. DRAWER YÊU THÍCH (WISHLIST) -->
     <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
         <div onclick="toggleWishlistDrawer()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
@@ -424,7 +499,7 @@
         </div>
     </div>
 
-    <!-- 8. DRAWER GIỎ HÀNG (CART) -->
+    <!-- 10. DRAWER GIỎ HÀNG (CART) -->
     <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
         <div id="cart-overlay" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
@@ -466,7 +541,7 @@
         </div>
     </div>
 
-    <!-- 9. MODAL THANH TOÁN VIETQR -->
+    <!-- 11. MODAL THANH TOÁN VIETQR -->
     <div id="qr-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQRModal()"></div>
         <div class="relative bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center z-10 space-y-4 max-h-[90vh] overflow-y-auto animate-pop-in border border-amber-200">
@@ -482,6 +557,10 @@
             </div>
 
             <div class="text-left bg-gray-50 p-3.5 rounded-2xl text-xs space-y-2 border border-gray-100">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500">Mã đơn hàng:</span>
+                    <span id="qr-order-code" class="font-extrabold text-ocopGreen">#OCOP-123456</span>
+                </div>
                 <div class="flex justify-between items-center">
                     <span class="text-gray-500">Ngân hàng:</span>
                     <span class="font-bold text-gray-800">BIDV</span>
@@ -512,13 +591,13 @@
 
             <p class="text-[11px] text-gray-500 italic">Mở ứng dụng Ngân hàng quét mã QR để hoàn tất đơn hàng.</p>
 
-            <button onclick="closeQRModal()" class="w-full bg-ocopGreen text-white py-2.5 rounded-xl font-bold text-xs hover:bg-ocopGreenLight transition">
+            <button onclick="confirmOrderPayment()" class="w-full bg-ocopGreen text-white py-2.5 rounded-xl font-bold text-xs hover:bg-ocopGreenLight transition">
                 Đã hoàn tất chuyển khoản
             </button>
         </div>
-    </footer>
+    </div>
 
-    <!-- 10. FOOTER -->
+    <!-- 12. FOOTER -->
     <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-6 gap-4">
@@ -586,12 +665,26 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT CORE & FULLY TRAINED AI ENGINE -->
+    <!-- JAVASCRIPT CORE -->
     <script>
         let currentLang = 'vi';
         let wishlist = [];
         let cart = [];
         let currentFilter = 'all';
+        let currentUser = null;
+        let ordersHistory = [
+            {
+                orderCode: "OCOP-849201",
+                date: "2026-10-02 14:30",
+                customer: "Khách Hàng Mẫu",
+                items: [{ nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", quantity: 1, price: 650000 }],
+                total: 650000,
+                status: "Đã hoàn tất"
+            }
+        ];
+        let currentPendingOrder = null;
+
+        const AI_AVATAR_URL = "image_d44449.jpg";
 
         const i18n = {
             vi: {
@@ -603,7 +696,7 @@
                 subbrand: "Đặc Sản Chuẩn Quốc Gia 4 - 5 Sao",
                 navHome: "Trang chủ",
                 navProducts: "Danh mục 40 Đặc sản",
-                navContact: "Liên hệ & Hỗ trợ",
+                navContact: "Liên hệ & Hỗ hỗ trợ",
                 supportLabel: "Tư vấn 24/7",
                 heroBadge: "Chương Trình Quốc Gia Mỗi Xã Một Sản Phẩm",
                 heroTitle1: "Khám Phá Tinh Hoa",
@@ -688,10 +781,9 @@
             }
         };
 
-        // BỘ DỮ LIỆU CỐ ĐỊNH 40 SẢN PHẨM
         const products = [
-            { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
-            { id: 2, nameVi: "Hạt điều rang củi Bình Phước (500g)", nameEn: "Binh Phuoc Wood-Roasted Cashews (500g)", price: 195000, star: 4, provinceVi: "Bình Phước", provinceEn: "Binh Phuoc", category: "snack 4star food", image: "https://images.unsplash.com/photo-1509358271058-acd05cc93224?auto=format&fit=crop&w=800&q=80", descVi: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.", descEn: "Silk-husked cashews, hand wood-roasted, rich, crunchy, naturally flavorful." },
+            { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
+            { id: 2, nameVi: "Hạt điều rang củi Bình Phước (500g)", nameEn: "Binh Phuoc Wood-Roasted Cashews (500g)", price: 195000, star: 4, provinceVi: "Bình Phước", provinceEn: "Binh Phuoc", category: "snack 4star food", image: "https://images.unsplash.com/photo-1608797178974-15b35a6405f8?auto=format&fit=crop&w=800&q=80", descVi: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.", descEn: "Silk-husked cashews, hand wood-roasted, rich, crunchy, naturally flavorful." },
             { id: 3, nameVi: "Đồ gốm mỹ nghệ Biên Hòa", nameEn: "Bien Hoa Fine Art Ceramics", price: 580000, star: 4, provinceVi: "Đồng Nai", provinceEn: "Dong Nai", category: "gift 4star", image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80", descVi: "Tuyệt tác gốm men xanh đồng danh tiếng, chạm khắc thủ công hoa văn tinh xảo.", descEn: "Famous copper-green glazed ceramic masterpiece, hand-carved intricate patterns." },
             { id: 4, nameVi: "Mật ong rừng U Minh (Chai 500ml)", nameEn: "U Minh Wild Forest Honey (500ml Bottle)", price: 290000, star: 4, provinceVi: "Cà Mau", provinceEn: "Ca Mau", category: "gift 4star food tea", image: "https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=800&q=80", descVi: "Mật ong hoa tràm nguyên chất Cà Mau, hương thơm dịu nhẹ, tăng đề kháng.", descEn: "Pure Melaleuca flower honey from Ca Mau, mild aroma, boosts immunity." },
             { id: 5, nameVi: "Cà phê Arabica Cầu Đất (500g)", nameEn: "Cau Dat Arabica Coffee (500g)", price: 240000, star: 5, provinceVi: "Đà Lạt", provinceEn: "Da Lat", category: "tea 5star food", image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80", descVi: "100% Arabica Cầu Đất nguyên chất, vị chua thanh quyện hậu vị ngọt sâu.", descEn: "100% pure Cau Dat Arabica, delicate acidity with deep sweet aftertaste." },
@@ -738,7 +830,6 @@
             imageElem.src = `https://placehold.co/600x400/0F382C/D4AF37?text=${encodedName}`;
         }
 
-        // HÀM RENDER SẢN PHẨM
         function renderProductsList() {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
@@ -803,6 +894,106 @@
             }).join('');
 
             filterProducts();
+        }
+
+        // --- QUẢN LÝ TÀI KHOẢN (GMAIL + MẬT KHẨU) ---
+        let currentAuthMode = 'login';
+
+        function toggleAuthModal() {
+            document.getElementById('auth-modal').classList.toggle('hidden');
+        }
+
+        function switchAuthTab(mode) {
+            currentAuthMode = mode;
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegister = document.getElementById('tab-register');
+            const nameField = document.getElementById('name-field');
+            const submitBtn = document.getElementById('auth-submit-btn');
+            const title = document.getElementById('auth-title');
+
+            if (mode === 'login') {
+                tabLogin.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold";
+                tabRegister.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold";
+                nameField.classList.add('hidden');
+                submitBtn.innerText = "Đăng Nhập";
+                title.innerText = "Đăng Nhập Tài Khoản";
+            } else {
+                tabRegister.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold";
+                tabLogin.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold";
+                nameField.classList.remove('hidden');
+                submitBtn.innerText = "Đăng Ký Tài Khoản";
+                title.innerText = "Tạo Tài Khoản Mới";
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value.trim();
+            const name = document.getElementById('auth-name').value.trim() || email.split('@')[0];
+
+            currentUser = { email, name };
+            document.getElementById('cust-name').value = name;
+
+            // Cập nhật nút tài khoản góc phải
+            const userBtn = document.getElementById('user-btn');
+            userBtn.innerHTML = `<span class="text-xs font-extrabold uppercase">${name.charAt(0)}</span>`;
+            userBtn.className = "w-10 h-10 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center transition shadow-md border-2 border-ocopGold hover:scale-105";
+
+            toggleAuthModal();
+            showToast(currentAuthMode === 'login' ? `Xin chào, ${name}!` : "Đăng ký thành công!");
+        }
+
+        function mockGoogleLogin() {
+            currentUser = { email: "user.ocop@gmail.com", name: "Nguyễn Minh Đức" };
+            document.getElementById('cust-name').value = currentUser.name;
+
+            const userBtn = document.getElementById('user-btn');
+            userBtn.innerHTML = `<span class="text-xs font-extrabold uppercase">M</span>`;
+            userBtn.className = "w-10 h-10 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center transition shadow-md border-2 border-ocopGold hover:scale-105";
+
+            toggleAuthModal();
+            showToast("Đăng nhập Google thành công!");
+        }
+
+        // --- QUẢN LÝ LỊCH SỬ MUA HÀNG ---
+        function toggleOrdersModal() {
+            renderOrdersHistory();
+            document.getElementById('orders-drawer').classList.toggle('hidden');
+        }
+
+        function renderOrdersHistory() {
+            const container = document.getElementById('orders-container');
+            if (!container) return;
+
+            if (ordersHistory.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">Bạn chưa có đơn hàng nào.</p>`;
+                return;
+            }
+
+            container.innerHTML = ordersHistory.map(ord => `
+                <div class="bg-white rounded-2xl p-4 border border-amber-200 shadow-sm text-xs space-y-2">
+                    <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                        <span class="font-extrabold text-ocopGreen">${ord.orderCode}</span>
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">${ord.status}</span>
+                    </div>
+
+                    <div class="text-gray-500 text-[10px]"><i class="fa-regular fa-clock mr-1"></i>${ord.date}</div>
+
+                    <div class="space-y-1 py-1">
+                        ${ord.items.map(it => `
+                            <div class="flex justify-between text-gray-800">
+                                <span class="line-clamp-1">${it.nameVi} x${it.quantity}</span>
+                                <span class="font-bold">${(it.price * it.quantity).toLocaleString('vi-VN')}₫</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="pt-2 border-t border-gray-100 flex justify-between items-center font-extrabold">
+                        <span>Tổng thanh toán:</span>
+                        <span class="text-red-600 text-sm">${ord.total.toLocaleString('vi-VN')} ₫</span>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function filterProductsGlobal(query) {
@@ -1079,14 +1270,26 @@
                 return;
             }
 
+            // Tạo Mã Đơn Hàng Tự Động
+            const orderCode = `OCOP-${Math.floor(100000 + Math.random() * 900000)}`;
             const bankBin = '970418';
             const accountNo = '8808661371';
             const accountName = 'HOANG NGUYEN THANH BINH';
-            const memo = `OCOP ${phone.slice(-6)} ${name.split(' ').pop()}`.toUpperCase();
+            const memo = `${orderCode} ${phone.slice(-4)}`.toUpperCase();
+
+            currentPendingOrder = {
+                orderCode: orderCode,
+                date: new Date().toLocaleString('sv-SE').replace('T', ' ').slice(0, 16),
+                customer: name,
+                items: JSON.parse(JSON.stringify(cart)),
+                total: totalAmount,
+                status: "Đang xử lý"
+            };
 
             const qrUrl = `https://img.vietqr.io/image/${bankBin}-${accountNo}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(accountName)}`;
 
             document.getElementById('bidv-qr').src = qrUrl;
+            document.getElementById('qr-order-code').innerText = `#${orderCode}`;
             document.getElementById('acc-num').innerText = accountNo;
             document.getElementById('acc-name').innerText = accountName;
             document.getElementById('qr-amount').innerText = totalAmount.toLocaleString('vi-VN') + ' VNĐ';
@@ -1094,6 +1297,20 @@
 
             document.getElementById('cart-drawer').classList.add('hidden');
             document.getElementById('qr-modal').classList.remove('hidden');
+        }
+
+        function confirmOrderPayment() {
+            if (currentPendingOrder) {
+                currentPendingOrder.status = "Đã hoàn tất";
+                ordersHistory.unshift(currentPendingOrder);
+                currentPendingOrder = null;
+                cart = [];
+                updateCartUI();
+                closeQRModal();
+                showToast("Đã lưu đơn hàng vào Lịch sử mua hàng!");
+            } else {
+                closeQRModal();
+            }
         }
 
         function closeQRModal() {
@@ -1119,9 +1336,7 @@
             navigator.clipboard.writeText(text).then(() => showToast(`Đã sao chép ${label}!`)).catch(() => showToast('Không thể sao chép!', 'error'));
         }
 
-        // =========================================================================
-        // CHATBOT AI BỘ NÃO TƯ VẤN BÁN HÀNG TỰ NHIÊN - FULLY TRAINED INTENT ENGINE
-        // =========================================================================
+        // --- CHATBOT AI ENGINE (100MS TURBO) ---
         function toggleAIChat() {
             const win = document.getElementById('ai-chat-window');
             if(win) win.classList.toggle('hidden');
@@ -1143,6 +1358,28 @@
                       .toLowerCase();
         }
 
+        function renderAiProductCards(itemsArray) {
+            return `
+                <div class="space-y-2 mt-2">
+                    ${itemsArray.map(p => `
+                        <div class="p-2 bg-white rounded-2xl border border-amber-200 flex items-center justify-between shadow-xs hover:border-ocopGold transition">
+                            <div class="flex items-center space-x-2.5 flex-1 pr-2">
+                                <img src="${p.image}" alt="${p.nameVi}" onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" class="w-10 h-10 rounded-xl object-cover flex-shrink-0">
+                                <div>
+                                    <div class="font-bold text-gray-900 text-[11px] line-clamp-1">${p.nameVi}</div>
+                                    <div class="text-[10px] text-amber-800 font-semibold">${p.provinceVi}</div>
+                                    <div class="text-red-600 font-extrabold text-[11px]">${p.price.toLocaleString('vi-VN')} ₫</div>
+                                </div>
+                            </div>
+                            <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-2.5 py-1.5 rounded-xl text-[10px] font-bold hover:bg-ocopGreenLight transition shadow-xs flex-shrink-0">
+                                + Giỏ
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
         function sendAIMessage() {
             const input = document.getElementById('ai-chat-input');
             const container = document.getElementById('ai-chat-messages');
@@ -1151,10 +1388,9 @@
             const text = input.value.trim();
             if(!text) return;
 
-            // Tin nhắn từ người dùng
             container.innerHTML += `
                 <div class="flex justify-end animate-fade-in">
-                    <div class="bg-ocopGreen text-amber-100 p-3 rounded-2xl leading-relaxed max-w-[85%] font-medium shadow-xs">
+                    <div class="bg-ocopGreen text-amber-100 p-3 rounded-2xl leading-relaxed max-w-[85%] font-medium shadow-xs text-xs">
                         ${text}
                     </div>
                 </div>
@@ -1162,193 +1398,51 @@
             input.value = '';
             container.scrollTop = container.scrollHeight;
 
-            // Trạng thái AI suy nghĩ
-            const typingId = 'typing-' + Date.now();
-            container.innerHTML += `
-                <div id="${typingId}" class="flex items-start space-x-2">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5">
-                    <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-500 italic shadow-xs">
-                        Em đang kiểm tra kho đặc sản...
-                    </div>
-                </div>
-            `;
-            container.scrollTop = container.scrollHeight;
-
             setTimeout(() => {
-                const typingEl = document.getElementById(typingId);
-                if(typingEl) typingEl.remove();
-
                 const norm = removeVietnameseTones(text);
                 let replyHtml = "";
 
-                // 1. XÃ GIAO / CHÀO HỎI / HỎI THÔNG TIN HOTLINE - THANH TOÁN
-                if (norm.includes('chao') || norm.includes('hi') || norm.includes('hello') || norm.includes('alo') || norm.includes('oi')) {
-                    replyHtml = `Dạ em chào anh/chị ạ! Rất vui được hỗ trợ mình. Hôm nay anh/chị cần em tư vấn chọn đặc sản quà biếu, đồ dùng gia đình hay món nhắm ngon ạ?`;
+                if (norm.includes('chao') || norm.includes('hi') || norm.includes('hello') || norm.includes('alo')) {
+                    replyHtml = `Dạ em chào anh/chị ạ! Hôm nay anh/chị muốn em tư vấn đặc sản làm quà biếu, trà mát gan hay món nhắm ngon ạ?`;
                 }
-                else if (norm.includes('cam on') || norm.includes('thanks') || norm.includes('ok em') || norm.includes('da cam on')) {
-                    replyHtml = `Dạ không có gì đâu ạ! Anh/chị cần hỗ trợ thêm món nào cứ nhắn em nhé. Chúc anh/chị chọn được món ưng ý ạ! ❤️`;
-                }
-                else if (norm.includes('hotline') || norm.includes('sdt') || norm.includes('lien he') || norm.includes('so dien thoai')) {
-                    replyHtml = `Dạ hotline tư vấn trực tiếp và xuất hóa đơn VAT bên em là: <a href="tel:1900888688" class="font-extrabold text-ocopGreen underline">1900 888 688</a> (Miễn phí cuộc gọi ạ).`;
-                }
-                else if (norm.includes('ship') || norm.includes('giao hang') || norm.includes('van chuyen')) {
-                    replyHtml = `Dạ bên em giao hàng tận nhà toàn quốc. Đơn hàng từ <b>500.000đ</b> trở lên sẽ được <b>MIỄN PHÍ VẬN CHUYỂN 100%</b> anh/chị nhé!`;
-                }
-
-                // 2. Ý ĐỊNH DÒNG SẢN PHẨM 5 SAO
-                else if (norm.includes('5 sao') || norm.includes('5sao') || norm.includes('top 5') || norm.includes('thuong hang') || norm.includes('cao cap nhat')) {
-                    const top5 = products.filter(p => p.star === 5).slice(0, 3);
+                else if (norm.includes('combo') || norm.includes('qua') || norm.includes('bieu') || norm.includes('sep')) {
+                    const comboProds = [products[0], products[19], products[20]];
                     replyHtml = `
-                        <p class="font-bold text-amber-900 mb-1.5">⭐ Các đặc sản đạt chứng nhận OCOP 5 Sao Quốc Gia cao cấp nhất:</p>
-                        <div class="space-y-2">
-                            ${top5.map(p => `
-                                <div class="p-2.5 bg-amber-50/90 rounded-2xl border border-amber-200 flex justify-between items-center">
-                                    <div class="flex-1 pr-2">
-                                        <div class="font-bold text-gray-900">${p.nameVi}</div>
-                                        <div class="text-[10px] text-gray-500">${p.provinceVi} • 5 Sao Quốc Gia</div>
-                                        <div class="text-red-600 font-extrabold text-[11px]">${p.price.toLocaleString('vi-VN')}₫</div>
-                                    </div>
-                                    <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-3 py-1.5 rounded-xl text-[10px] font-bold hover:bg-ocopGreenLight transition shadow-xs">+ Thêm giỏ</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                }
-
-                // 3. Ý ĐỊNH QUÀ BIẾU / TẶNG SẾP / ĐỐI TÁC / QUÀ TẾT
-                else if (norm.includes('combo') || norm.includes('qua') || norm.includes('tet') || norm.includes('bieu') || norm.includes('sep') || norm.includes('doi tac') || norm.includes('ngoai giao')) {
-                    const comboProds = [products[0], products[19], products[20]]; 
-                    replyHtml = `
-                        <p class="font-bold text-red-700 mb-1">🎁 Bộ Combo Quà Biếu Sức Khỏe Ngoại Giao:</p>
-                        <p class="text-[11px] text-gray-600 mb-2">Em xin kết hợp 3 đặc sản Quốc Bảo được chuộng nhất làm quà biếu ạ:</p>
-                        <div class="space-y-1.5 mb-2.5">
-                            ${comboProds.map(c => `
-                                <div class="flex justify-between items-center text-[11px] bg-white p-2 rounded-xl border border-amber-200">
-                                    <span class="font-bold text-gray-800">• ${c.nameVi}</span>
-                                    <span class="text-red-600 font-extrabold">${c.price.toLocaleString('vi-VN')}₫</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <button onclick="addBundleToCart([1, 20, 21])" class="w-full bg-gradient-to-r from-red-600 to-amber-600 text-white py-2.5 rounded-xl font-extrabold hover:brightness-110 transition shadow flex items-center justify-center space-x-1.5">
+                        <p class="font-bold text-red-700">🎁 Combo Quà Biếu Sức Khỏe Ngoại Giao Super-Vip:</p>
+                        ${renderAiProductCards(comboProds)}
+                        <button onclick="addBundleToCart([1, 20, 21])" class="w-full mt-2.5 bg-gradient-to-r from-red-600 to-amber-600 text-white py-2 rounded-xl font-extrabold shadow text-[11px] flex items-center justify-center space-x-1.5">
                             <i class="fa-solid fa-cart-plus text-ocopGold"></i>
                             <span>Tự động thêm bộ Combo vào Giỏ</span>
                         </button>
                     `;
                 }
-
-                // 4. LỌC THEO GIÁ (DƯỚI 100K, 200K, 500K)
-                else if (norm.includes('100k') || norm.includes('duoi 100')) {
-                    const under100 = products.filter(p => p.price <= 100000).slice(0, 3);
-                    replyHtml = `
-                        <p class="font-bold text-gray-800 mb-1.5">💰 Các món ngon chất lượng giá dưới 100.000đ:</p>
-                        <div class="space-y-2">
-                            ${under100.map(p => `
-                                <div class="p-2 bg-white rounded-xl border border-amber-200 flex justify-between items-center">
-                                    <div class="flex-1 pr-2">
-                                        <div class="font-bold text-gray-900">${p.nameVi}</div>
-                                        <div class="text-red-600 font-extrabold text-[11px]">${p.price.toLocaleString('vi-VN')}₫</div>
-                                    </div>
-                                    <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-2.5 py-1 rounded-lg text-[10px] font-bold">+ Thêm giỏ</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
+                else if (norm.includes('5 sao') || norm.includes('top 5')) {
+                    const top5 = products.filter(p => p.star === 5).slice(0, 3);
+                    replyHtml = `<p class="font-bold text-amber-900">⭐ Top đặc sản OCOP 5 Sao Quốc Gia cao cấp nhất:</p>${renderAiProductCards(top5)}`;
                 }
-                else if (norm.includes('200k') || norm.includes('duoi 200') || norm.includes('re')) {
+                else if (norm.includes('200k') || norm.includes('duoi 200')) {
                     const under200 = products.filter(p => p.price <= 200000).slice(0, 3);
-                    replyHtml = `
-                        <p class="font-bold text-indigo-900 mb-1.5">Dạ, đây là các đặc sản được chọn nhiều với giá dưới 200.000đ ạ:</p>
-                        <div class="space-y-2">
-                            ${under200.map(p => `
-                                <div class="p-2.5 bg-white rounded-2xl border border-amber-200 flex justify-between items-center">
-                                    <div class="flex-1 pr-2">
-                                        <div class="font-bold text-gray-900">${p.nameVi}</div>
-                                        <div class="text-red-600 font-extrabold text-[11px]">${p.price.toLocaleString('vi-VN')}₫ (${p.provinceVi})</div>
-                                    </div>
-                                    <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-3 py-1 rounded-xl text-[10px] font-bold">+ Thêm giỏ</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
+                    replyHtml = `<p class="font-bold text-indigo-900">💰 Đặc sản ngon chuẩn vị giá dưới 200.000đ:</p>${renderAiProductCards(under200)}`;
                 }
-
-                // 5. Ý ĐỊNH SỨC KHỎE / MẤT NGỦ / BỒI BỔ GAN THẬN
-                else if (norm.includes('ngu ngon') || norm.includes('mat gan') || norm.includes('huyet ap') || norm.includes('suc khoe') || norm.includes('boibao') || norm.includes('tra') || norm.includes('sam')) {
-                    const healthItems = products.filter(p => p.category.includes('tea') || p.category.includes('gift')).slice(0, 3);
-                    replyHtml = `
-                        <p class="font-bold text-emerald-800 mb-1.5">🍵 Dạ gửi anh/chị tham khảo các dòng trà & dược liệu rất tốt cho sức khỏe ạ:</p>
-                        <div class="space-y-2">
-                            ${healthItems.map(h => `
-                                <div class="p-2.5 bg-emerald-50/80 rounded-2xl border border-emerald-200 flex justify-between items-center">
-                                    <div class="flex-1 pr-2">
-                                        <div class="font-bold text-gray-900">${h.nameVi}</div>
-                                        <div class="text-[10px] text-gray-600 leading-tight mt-0.5">${h.descVi.substring(0, 48)}...</div>
-                                        <div class="text-red-600 font-extrabold text-[11px] mt-1">${h.price.toLocaleString('vi-VN')}₫</div>
-                                    </div>
-                                    <button onclick="addToCart(${h.id})" class="bg-ocopGreen text-white px-3 py-1.5 rounded-xl text-[10px] font-bold shadow-xs">+ Thêm giỏ</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                }
-
-                // 6. Ý ĐỊNH ĐỒ NHẮM / MÓN NHẬU / BÁNH KẸO TỰ NHIÊN
-                else if (norm.includes('nhau') || norm.includes('nham') || norm.includes('uong bia') || norm.includes('uong ruou') || norm.includes('snack')) {
-                    const snacks = products.filter(p => p.category.includes('snack')).slice(0, 3);
-                    replyHtml = `
-                        <p class="font-bold text-amber-900 mb-1.5">🍺 Các món nhắm & món ăn vặt đặc sản cực bắt vị:</p>
-                        <div class="space-y-2">
-                            ${snacks.map(s => `
-                                <div class="p-2 bg-white rounded-xl border border-amber-200 flex justify-between items-center">
-                                    <div class="flex-1 pr-2">
-                                        <div class="font-bold text-gray-900">${s.nameVi}</div>
-                                        <div class="text-red-600 font-extrabold text-[11px]">${s.price.toLocaleString('vi-VN')}₫</div>
-                                    </div>
-                                    <button onclick="addToCart(${s.id})" class="bg-ocopGreen text-white px-2.5 py-1 rounded-lg text-[10px] font-bold">+ Thêm giỏ</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                }
-
-                // 7. TÌM TỪ KHÓA TỈNH THÀNH HOẶC TÊN TỰ DO
                 else {
-                    const searchResults = products.filter(p => {
-                        const searchStr = removeVietnameseTones(`${p.nameVi} ${p.provinceVi} ${p.descVi} ${p.category}`);
-                        return searchStr.includes(norm);
-                    }).slice(0, 3);
-
+                    const searchResults = products.filter(p => removeVietnameseTones(`${p.nameVi} ${p.provinceVi} ${p.descVi}`).includes(norm)).slice(0, 3);
                     if (searchResults.length > 0) {
-                        replyHtml = `
-                            <p class="font-bold text-ocopGreen mb-1.5">Dạ em tìm thấy các đặc sản đúng yêu cầu đây ạ:</p>
-                            <div class="space-y-2">
-                                ${searchResults.map(m => `
-                                    <div class="p-2.5 bg-white rounded-2xl border border-amber-200 flex justify-between items-center">
-                                        <div class="flex-1 pr-2">
-                                            <div class="font-bold text-gray-900">${m.nameVi}</div>
-                                            <div class="text-[10px] text-amber-800 font-semibold">${m.provinceVi}</div>
-                                            <div class="text-red-600 font-extrabold text-[11px]">${m.price.toLocaleString('vi-VN')}₫</div>
-                                        </div>
-                                        <button onclick="addToCart(${m.id})" class="bg-ocopGreen text-white px-3 py-1 rounded-xl text-[10px] font-bold">+ Thêm giỏ</button>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `;
+                        replyHtml = `<p class="font-bold text-ocopGreen">Dạ em tìm thấy các đặc sản đúng yêu cầu đây ạ:</p>${renderAiProductCards(searchResults)}`;
                     } else {
-                        replyHtml = `Dạ từ khóa <b>"${text}"</b> em chưa tìm thấy sản phẩm trùng khớp tuyệt đối. Anh/chị có thể dặn em cụ thể hơn như <i>"tìm trà biếu người lớn"</i>, <i>"đặc sản Cà Mau"</i> hay <i>"món nhắm ngon"</i> để em tìm giúp mình nhé!`;
+                        replyHtml = `Dạ từ khóa <b>"${text}"</b> em tìm chưa ra món trùng khớp. Anh/chị thử hỏi các món như <i>"Chả mực"</i>, <i>"Trà hoa vàng"</i> hay <i>"Tôm khô"</i> nhé!`;
                     }
                 }
 
                 container.innerHTML += `
                     <div class="flex items-start space-x-2 animate-fade-in">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 ring-1 ring-ocopGold">
-                        <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
+                        <img src="${AI_AVATAR_URL}" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 ring-1 ring-ocopGold shadow">
+                        <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%] text-xs">
                             ${replyHtml}
                         </div>
                     </div>
                 `;
                 container.scrollTop = container.scrollHeight;
-            }, 550);
+            }, 100);
         }
 
         function addBundleToCart(ids) {
