@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCOP Sales Copilot - Tinh Hoa 40 Đặc Sản Việt Nam</title>
-    <!-- Tailwind CSS -->
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -42,16 +43,22 @@
             }
         }
     </script>
-    <!-- Font Awesome Icons -->
+
+    <!-- Font Awesome Icons & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- LIÊN KẾT TẤT CẢ FILE CSS TRONG THƯ MỤC CỦA BẠN -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style1.css">
     
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #FAF8F5;
             color: #1F2937;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         .bg-ocop-ambient {
             background-color: #FAF8F5;
@@ -65,6 +72,10 @@
             background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
+        }
+        .gpu-accelerated {
+            will-change: transform, opacity;
+            transform: translateZ(0);
         }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #F4EFE6; }
@@ -199,7 +210,7 @@
                 </div>
 
                 <div class="lg:col-span-5">
-                    <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group hover:border-ocopGold/60 transition-all duration-500">
+                    <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group hover:border-ocopGold/60 transition-all duration-500 gpu-accelerated">
                         <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
                             <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1000&q=80" alt="OCOP National Products" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5 text-white">
@@ -521,7 +532,14 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT CORE & BỘ LINK ẢNH CHUẨN XÁC 100% -->
+    <!-- LIÊN KẾT CÁC FILE JAVASCRIPT TRONG DỰ ÁN CỦA BẠN -->
+    <script src="dulieu.js"></script>
+    <script src="giohang.js"></script>
+    <script src="script.js"></script>
+    <script src="toiuu.js"></script>
+    <script src="AI tot hon.js"></script>
+
+    <!-- MÃ NGUỒN CHÍNH NẰM SẴN TRONG INDEX DỰ PHÒNG CHẠY NAY KHI CÓ HOẶC KHÔNG CÓ FILE NGOÀI -->
     <script>
         let currentLang = 'vi';
         let wishlist = [];
@@ -623,8 +641,7 @@
             }
         };
 
-        // BỘ LINK ẢNH CHUẨN XÁC NGUYÊN BẢN THEO TỪNG MÓN ĐẶC SẢN
-        const products = [
+        const defaultProducts = [
             { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
             { id: 2, nameVi: "Hạt điều rang củi Bình Phước (500g)", nameEn: "Binh Phuoc Wood-Roasted Cashews (500g)", price: 195000, star: 4, provinceVi: "Bình Phước", provinceEn: "Binh Phuoc", category: "snack 4star food", image: "https://images.unsplash.com/photo-1509358271058-acd05cc93224?auto=format&fit=crop&w=800&q=80", descVi: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.", descEn: "Silk-husked cashews, hand wood-roasted, rich, crunchy, naturally flavorful." },
             { id: 3, nameVi: "Đồ gốm mỹ nghệ Biên Hòa", nameEn: "Bien Hoa Fine Art Ceramics", price: 580000, star: 4, provinceVi: "Đồng Nai", provinceEn: "Dong Nai", category: "gift 4star", image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80", descVi: "Tuyệt tác gốm men xanh đồng danh tiếng, chạm khắc thủ công hoa văn tinh xảo.", descEn: "Famous copper-green glazed ceramic masterpiece, hand-carved intricate patterns." },
@@ -667,6 +684,8 @@
             { id: 40, nameVi: "Mắm tôm Lê Gia Thanh Hóa (Chai 110g)", nameEn: "Le Gia Traditional Shrimp Paste (110g)", price: 45000, star: 5, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "spice 5star food", image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80", descVi: "Mắm tôm ủ thùng gỗ theo phương pháp truyền thống dậy hương thơm ngậy vị.", descEn: "Traditional wooden-barrel aged shrimp paste with rich authentic flavor." }
         ];
 
+        const activeProducts = (typeof products !== 'undefined' && Array.isArray(products) && products.length > 0) ? products : defaultProducts;
+
         function toggleLanguage() {
             currentLang = (currentLang === 'vi') ? 'en' : 'vi';
             document.getElementById('lang-btn').innerText = currentLang.toUpperCase();
@@ -696,7 +715,7 @@
 
             const t = i18n[currentLang];
 
-            grid.innerHTML = products.map(p => {
+            grid.innerHTML = activeProducts.map(p => {
                 const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
                 const desc = (currentLang === 'en') ? p.descEn : p.descVi;
                 const province = (currentLang === 'en') ? p.provinceEn : p.provinceVi;
@@ -710,14 +729,14 @@
                 const dataSearch = `${p.nameVi} ${p.nameEn} ${p.provinceVi} ${p.provinceEn}`.toLowerCase();
 
                 return `
-                <div class="product-card bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold hover:ring-2 hover:ring-ocopGold/30 flex flex-col group relative animate-fade-in" 
+                <div class="product-card bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold hover:ring-2 hover:ring-ocopGold/30 flex flex-col group relative animate-fade-in gpu-accelerated" 
                      data-category="${p.category}" 
                      data-name="${dataSearch}">
                     
                     <div class="h-48 overflow-hidden relative bg-amber-50">
                         <img src="${p.image}" alt="${name}" 
                              onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-out">
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out">
                         ${starBadge}
                         <span class="absolute top-3 right-12 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full z-10">${province}</span>
                         
@@ -810,7 +829,7 @@
         }
 
         function openQuickView(id) {
-            const p = products.find(item => item.id === id);
+            const p = activeProducts.find(item => item.id === id);
             if (!p) return;
 
             const t = i18n[currentLang];
@@ -858,7 +877,7 @@
 
         function toggleWishlist(id) {
             const index = wishlist.indexOf(id);
-            const p = products.find(item => item.id === id);
+            const p = activeProducts.find(item => item.id === id);
             const pName = p ? ((currentLang === 'en') ? p.nameEn : p.nameVi) : 'Specialty';
 
             if (index > -1) {
@@ -884,7 +903,7 @@
             }
 
             container.innerHTML = wishlist.map(id => {
-                const p = products.find(item => item.id === id);
+                const p = activeProducts.find(item => item.id === id);
                 if (!p) return '';
                 const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
                 return `
@@ -916,7 +935,7 @@
         }
 
         function addToCart(id) {
-            const p = products.find(item => item.id === id);
+            const p = activeProducts.find(item => item.id === id);
             if (!p) return;
 
             const existing = cart.find(item => item.id === id);
