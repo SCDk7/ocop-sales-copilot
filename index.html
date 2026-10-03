@@ -22,7 +22,21 @@
                     boxShadow: {
                         'glass': '0 20px 40px rgba(15, 56, 44, 0.08)',
                         'floating': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.25)'
+                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.3)'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'pop-in': 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        popIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.92)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' }
+                        }
                     }
                 }
             }
@@ -42,13 +56,13 @@
         .bg-ocop-ambient {
             background-color: #FAF8F5;
             background-image: 
-                radial-gradient(at 10% 10%, rgba(212, 175, 55, 0.12) 0px, transparent 50%),
-                radial-gradient(at 90% 20%, rgba(22, 91, 70, 0.10) 0px, transparent 50%),
+                radial-gradient(at 10% 10%, rgba(212, 175, 55, 0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 20%, rgba(22, 91, 70, 0.12) 0px, transparent 50%),
                 radial-gradient(at 50% 80%, rgba(244, 239, 230, 0.8) 0px, transparent 50%);
             background-attachment: fixed;
         }
         .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
         }
@@ -69,7 +83,7 @@
             <span class="flex items-center"><i class="fa-solid fa-truck-fast text-ocopGold mr-1.5"></i> <span id="i18n-top-shipping">Miễn phí vận chuyển toàn quốc từ 500k</span></span>
         </div>
         <div class="mx-auto md:mx-0 flex items-center space-x-2">
-            <span class="bg-amber-500 text-ocopGreen text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider">HOTLINE</span>
+            <span class="bg-amber-500 text-ocopGreen text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider shadow-sm animate-pulse">HOTLINE</span>
             <span id="i18n-top-hotline">Tư vấn quà biếu & Xuất hóa đơn VAT:</span> <a href="tel:1900888688" class="font-extrabold text-white hover:text-ocopGold transition">1900 888 688</a>
         </div>
         <div class="hidden lg:flex items-center space-x-3 text-xs">
@@ -80,7 +94,7 @@
     </div>
 
     <!-- 2. HEADER -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-900/10 shadow-sm">
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-900/10 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
             <a href="#" class="flex items-center space-x-3 group flex-shrink-0">
                 <div class="w-11 h-11 bg-gradient-to-tr from-ocopGreen to-ocopGreenLight rounded-2xl flex items-center justify-center text-ocopGold text-xl shadow-md ring-2 ring-ocopGold/40 group-hover:scale-105 transition duration-300">
@@ -96,7 +110,7 @@
             <div class="hidden md:flex flex-1 max-w-md relative">
                 <input type="text" id="header-search-input" oninput="filterProductsGlobal(this.value)" 
                        placeholder="Tìm trà, sâm, yến sào, mắm, chả mực..." 
-                       class="w-full pl-10 pr-10 py-2.5 text-xs rounded-full border border-amber-900/15 focus:outline-none focus:border-ocopGreen bg-amber-50/40 shadow-inner">
+                       class="w-full pl-10 pr-10 py-2.5 text-xs rounded-full border border-amber-900/15 focus:outline-none focus:border-ocopGreen focus:ring-2 focus:ring-ocopGreen/20 bg-amber-50/40 shadow-inner transition">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
             </div>
             
@@ -120,17 +134,17 @@
                 </div>
 
                 <div class="flex items-center space-x-2">
-                    <button onclick="toggleWishlistDrawer()" class="relative w-10 h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200" title="Yêu thích">
+                    <button onclick="toggleWishlistDrawer()" class="relative w-10 h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200 hover:scale-105" title="Yêu thích">
                         <i class="fa-regular fa-heart text-sm text-red-500"></i>
                         <span id="wishlist-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
 
-                    <button onclick="toggleCart()" class="relative w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200" title="Giỏ hàng">
+                    <button onclick="toggleCart()" class="relative w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105" title="Giỏ hàng">
                         <i class="fa-solid fa-basket-shopping text-sm text-ocopGreen"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
 
-                    <button onclick="toggleLanguage()" id="lang-btn" class="w-10 h-10 rounded-full bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight font-extrabold text-xs flex items-center justify-center transition shadow-md border-2 border-ocopGold" title="Chuyển đổi Ngôn Ngữ / Switch Language">
+                    <button onclick="toggleLanguage()" id="lang-btn" class="w-10 h-10 rounded-full bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight font-extrabold text-xs flex items-center justify-center transition shadow-md border-2 border-ocopGold hover:scale-105" title="Chuyển đổi Ngôn Ngữ / Switch Language">
                         VI
                     </button>
                 </div>
@@ -173,9 +187,9 @@
                     </div>
 
                     <div class="flex flex-wrap items-center gap-4 pt-3">
-                        <a href="#products-section" class="bg-ocopGreen text-white font-bold px-7 py-3.5 rounded-2xl shadow-lg hover:bg-ocopGreenLight transition text-xs sm:text-sm flex items-center space-x-2 border border-ocopGold/40">
+                        <a href="#products-section" class="bg-ocopGreen text-white font-bold px-7 py-3.5 rounded-2xl shadow-lg hover:bg-ocopGreenLight hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-ocopGold/40 hover:-translate-y-0.5">
                             <span id="i18n-btn-explore">Xem 40 Đặc Sản OCOP</span>
-                            <i class="fa-solid fa-arrow-down text-ocopGold"></i>
+                            <i class="fa-solid fa-arrow-down text-ocopGold animate-bounce"></i>
                         </a>
                         <a href="#contact-footer" class="bg-white text-ocopGreen font-bold px-7 py-3.5 rounded-2xl border border-amber-300 hover:bg-amber-50 transition text-xs sm:text-sm shadow-sm flex items-center space-x-2">
                             <i class="fa-solid fa-phone text-amber-600"></i>
@@ -185,7 +199,7 @@
                 </div>
 
                 <div class="lg:col-span-5">
-                    <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group">
+                    <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group hover:border-ocopGold/60 transition-all duration-500">
                         <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
                             <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1000&q=80" alt="OCOP National Products" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5 text-white">
@@ -230,7 +244,7 @@
                         </div>
 
                         <div class="space-y-1.5 text-xs font-bold" id="sidebar-categories">
-                            <button onclick="setCategoryFilter('all', this)" class="cat-side-btn active w-full text-left px-3.5 py-2.5 rounded-2xl bg-ocopGreen text-white font-extrabold transition-all flex items-center justify-between shadow-md border-l-4 border-ocopGold">
+                            <button onclick="setCategoryFilter('all', this)" class="cat-side-btn active w-full text-left px-3.5 py-2.5 rounded-2xl bg-ocopGreen text-white font-extrabold transition-all duration-300 flex items-center justify-between shadow-md border-l-4 border-ocopGold">
                                 <span class="flex items-center space-x-2.5">
                                     <i class="fa-solid fa-wheat-awn text-ocopGold"></i>
                                     <span id="i18n-cat-all">Tất cả đặc sản</span>
@@ -238,7 +252,7 @@
                                 <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] font-extrabold">40</span>
                             </button>
 
-                            <button onclick="setCategoryFilter('tea', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100 hover:text-ocopGreen transition-all flex items-center justify-between border border-amber-100">
+                            <button onclick="setCategoryFilter('tea', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
                                 <span class="flex items-center space-x-2.5">
                                     <i class="fa-solid fa-mug-hot text-amber-600"></i>
                                     <span id="i18n-cat-tea">Trà & Dược Liệu</span>
@@ -246,7 +260,7 @@
                                 <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">10</span>
                             </button>
 
-                            <button onclick="setCategoryFilter('gift', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100 hover:text-ocopGreen transition-all flex items-center justify-between border border-amber-100">
+                            <button onclick="setCategoryFilter('gift', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
                                 <span class="flex items-center space-x-2.5">
                                     <i class="fa-solid fa-gift text-red-500"></i>
                                     <span id="i18n-cat-gift">Quà Biếu Sức Khỏe</span>
@@ -254,7 +268,7 @@
                                 <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">12</span>
                             </button>
 
-                            <button onclick="setCategoryFilter('food', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100 hover:text-ocopGreen transition-all flex items-center justify-between border border-amber-100">
+                            <button onclick="setCategoryFilter('food', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
                                 <span class="flex items-center space-x-2.5">
                                     <i class="fa-solid fa-bowl-rice text-emerald-600"></i>
                                     <span id="i18n-cat-food">Nông Sản & Ẩm Thực</span>
@@ -262,7 +276,7 @@
                                 <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">15</span>
                             </button>
 
-                            <button onclick="setCategoryFilter('snack', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100 hover:text-ocopGreen transition-all flex items-center justify-between border border-amber-100">
+                            <button onclick="setCategoryFilter('snack', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
                                 <span class="flex items-center space-x-2.5">
                                     <i class="fa-solid fa-cookie-bite text-amber-700"></i>
                                     <span id="i18n-cat-snack">Món Ngon & Đồ Nhắm</span>
@@ -270,7 +284,7 @@
                                 <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">10</span>
                             </button>
 
-                            <button onclick="setCategoryFilter('spice', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100 hover:text-ocopGreen transition-all flex items-center justify-between border border-amber-100">
+                            <button onclick="setCategoryFilter('spice', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
                                 <span class="flex items-center space-x-2.5">
                                     <i class="fa-solid fa-bottle-droplet text-indigo-600"></i>
                                     <span id="i18n-cat-spice">Gia Vị Truyền Thống</span>
@@ -279,7 +293,7 @@
                             </button>
 
                             <div class="pt-2 border-t border-amber-200 space-y-1.5">
-                                <button onclick="setCategoryFilter('5star', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100 hover:text-ocopGreen transition-all flex items-center justify-between border border-amber-100">
+                                <button onclick="setCategoryFilter('5star', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
                                     <span class="flex items-center space-x-2">
                                         <i class="fa-solid fa-star text-yellow-500"></i>
                                         <span id="i18n-cat-5star">Chứng nhận OCOP 5 Sao</span>
@@ -287,7 +301,7 @@
                                     <span class="bg-yellow-100 text-yellow-900 px-2 py-0.5 rounded-full text-[10px] font-extrabold">16</span>
                                 </button>
 
-                                <button onclick="setCategoryFilter('4star', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100 hover:text-ocopGreen transition-all flex items-center justify-between border border-amber-100">
+                                <button onclick="setCategoryFilter('4star', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
                                     <span class="flex items-center space-x-2">
                                         <i class="fa-solid fa-award text-emerald-600"></i>
                                         <span id="i18n-cat-4star">Chứng nhận OCOP 4 Sao</span>
@@ -300,7 +314,7 @@
                         <div class="pt-3 border-t border-amber-200">
                             <div class="relative">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-700/60 text-xs"></i>
-                                <input type="text" id="product-search" oninput="filterProducts()" placeholder="Tìm món ngon, đặc sản..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-amber-300 focus:outline-none focus:border-ocopGreen bg-amber-50/50">
+                                <input type="text" id="product-search" oninput="filterProducts()" placeholder="Tìm món ngon, đặc sản..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-amber-300 focus:outline-none focus:border-ocopGreen bg-amber-50/50 transition">
                             </div>
                         </div>
                     </div>
@@ -312,7 +326,7 @@
                         <!-- Render JS -->
                     </div>
 
-                    <div id="no-products-msg" style="display: none;" class="text-center py-16 bg-white/80 rounded-3xl border border-dashed border-gray-300 shadow-sm">
+                    <div id="no-products-msg" style="display: none;" class="text-center py-16 bg-white/80 rounded-3xl border border-dashed border-gray-300 shadow-sm animate-fade-in">
                         <i class="fa-solid fa-box-open text-4xl text-gray-400 mb-3 block"></i>
                         <p class="text-gray-600 font-bold text-base" id="i18n-no-prod">Không tìm thấy đặc sản phù hợp.</p>
                         <button onclick="resetFilters()" class="mt-3 text-xs bg-ocopGreen text-white font-bold px-4 py-2 rounded-xl hover:bg-ocopGreenLight transition" id="i18n-reset-btn">Xem toàn bộ 40 đặc sản</button>
@@ -323,10 +337,10 @@
     </main>
 
     <!-- 5. POPUP QUICK VIEW CHI TIẾT SẢN PHẨM -->
-    <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
-        <div class="relative bg-white rounded-3xl max-w-2xl w-full shadow-2xl z-10 overflow-hidden border border-amber-200">
-            <button onclick="closeQuickView()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-8 h-8 flex items-center justify-center text-sm z-20"><i class="fa-solid fa-xmark"></i></button>
+        <div class="relative bg-white rounded-3xl max-w-2xl w-full shadow-2xl z-10 overflow-hidden border border-amber-200 animate-pop-in">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-8 h-8 flex items-center justify-center text-sm z-20 transition"><i class="fa-solid fa-xmark"></i></button>
             <div class="grid grid-cols-1 md:grid-cols-2" id="quickview-content">
                 <!-- Render JS -->
             </div>
@@ -336,7 +350,7 @@
     <!-- 6. DRAWER YÊU THÍCH (WISHLIST) -->
     <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
         <div onclick="toggleWishlistDrawer()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col transition-transform duration-300">
             <div class="p-4 bg-ocopGreen text-white flex items-center justify-between border-b border-ocopGold/30">
                 <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-heart mr-2 text-red-500"></i> <span id="i18n-wishlist-title">Danh sách Yêu thích</span></h3>
                 <button onclick="toggleWishlistDrawer()" class="text-white/80 hover:text-white p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
@@ -390,7 +404,7 @@
     <!-- 8. MODAL THANH TOÁN VIETQR -->
     <div id="qr-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQRModal()"></div>
-        <div class="relative bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center z-10 space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="relative bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center z-10 space-y-4 max-h-[90vh] overflow-y-auto animate-pop-in border border-amber-200">
             <button onclick="closeQRModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
             
             <div class="inline-flex items-center space-x-2 text-[#0056a4] font-extrabold text-lg">
@@ -609,7 +623,7 @@
             }
         };
 
-        // DỮ LIỆU 40 ĐẶC SẢN VỚI TẬP LINK ẢNH CHUẨN ĐÚNG LOẠI SẢN PHẨM
+        // BỘ LINK ẢNH CHUẨN XÁC NGUYÊN BẢN THEO TỪNG MÓN ĐẶC SẢN
         const products = [
             { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
             { id: 2, nameVi: "Hạt điều rang củi Bình Phước (500g)", nameEn: "Binh Phuoc Wood-Roasted Cashews (500g)", price: 195000, star: 4, provinceVi: "Bình Phước", provinceEn: "Binh Phuoc", category: "snack 4star food", image: "https://images.unsplash.com/photo-1509358271058-acd05cc93224?auto=format&fit=crop&w=800&q=80", descVi: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.", descEn: "Silk-husked cashews, hand wood-roasted, rich, crunchy, naturally flavorful." },
@@ -670,9 +684,8 @@
             showToast(currentLang === 'en' ? "Language changed to English!" : "Đã chuyển sang Tiếng Việt!");
         }
 
-        // BỘ TỰ ĐỘNG XỬ LÝ KHI LỖI ẢNH (FALLBACK IMAGE)
         function handleImgError(imageElem, nameText) {
-            imageElem.onerror = null; // Tránh lặp vô tận
+            imageElem.onerror = null;
             const encodedName = encodeURIComponent(nameText);
             imageElem.src = `https://placehold.co/600x400/0F382C/D4AF37?text=${encodedName}`;
         }
@@ -691,20 +704,20 @@
                 const heartClass = isFavorited ? "fa-solid fa-heart text-red-500 scale-110" : "fa-regular fa-heart text-gray-400 hover:text-red-500";
 
                 const starBadge = (p.star === 5) ? 
-                    `<span class="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md z-10"><i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP ${p.star} ${currentLang === 'en' ? 'Star' : 'Sao'}</span>` :
+                    `<span class="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md z-10 animate-pulse"><i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP ${p.star} ${currentLang === 'en' ? 'Star' : 'Sao'}</span>` :
                     `<span class="absolute top-3 left-3 bg-emerald-800 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md z-10"><i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP ${p.star} ${currentLang === 'en' ? 'Star' : 'Sao'}</span>`;
 
                 const dataSearch = `${p.nameVi} ${p.nameEn} ${p.provinceVi} ${p.provinceEn}`.toLowerCase();
 
                 return `
-                <div class="product-card bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group relative" 
+                <div class="product-card bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold hover:ring-2 hover:ring-ocopGold/30 flex flex-col group relative animate-fade-in" 
                      data-category="${p.category}" 
                      data-name="${dataSearch}">
                     
                     <div class="h-48 overflow-hidden relative bg-amber-50">
                         <img src="${p.image}" alt="${name}" 
                              onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                             class="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-out">
                         ${starBadge}
                         <span class="absolute top-3 right-12 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full z-10">${province}</span>
                         
@@ -726,10 +739,10 @@
                             </div>
                             
                             <div class="grid grid-cols-2 gap-2">
-                                <button onclick="openQuickView(${p.id})" class="bg-amber-50 hover:bg-amber-100 text-ocopGreen py-2 rounded-xl text-xs font-bold transition text-center border border-amber-200">
+                                <button onclick="openQuickView(${p.id})" class="bg-amber-50 hover:bg-amber-100 text-ocopGreen py-2 rounded-xl text-xs font-bold transition text-center border border-amber-200 hover:shadow-xs">
                                     ${t.quickViewBtn}
                                 </button>
-                                <button onclick="addToCart(${p.id})" class="bg-ocopGreen hover:bg-ocopGreenLight text-white py-2 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1 shadow-sm">
+                                <button onclick="addToCart(${p.id})" class="bg-ocopGreen hover:bg-ocopGreenLight text-white py-2 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1 shadow-sm hover:shadow-md">
                                     <i class="fa-solid fa-cart-plus text-ocopGold"></i>
                                     <span>${t.addCartBtn}</span>
                                 </button>
@@ -811,7 +824,7 @@
                     <img src="${p.image}" alt="${name}" 
                          onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" 
                          class="w-full h-full object-cover">
-                    <span class="absolute top-3 left-3 bg-ocopGreen text-ocopGold text-[10px] font-extrabold px-3 py-1 rounded-full">
+                    <span class="absolute top-3 left-3 bg-ocopGreen text-ocopGold text-[10px] font-extrabold px-3 py-1 rounded-full shadow">
                         OCOP ${p.star} ${currentLang === 'en' ? 'Star' : 'Sao'}
                     </span>
                 </div>
@@ -875,7 +888,7 @@
                 if (!p) return '';
                 const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
                 return `
-                <div class="flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs">
+                <div class="flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs hover:border-ocopGold/50 transition">
                     <div class="flex items-center space-x-3 flex-1 pr-2">
                         <img src="${p.image}" alt="${name}" 
                              onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" 
@@ -953,7 +966,7 @@
                     const name = (currentLang === 'en') ? item.nameEn : item.nameVi;
 
                     const itemElement = document.createElement('div');
-                    itemElement.className = 'flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs';
+                    itemElement.className = 'flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs hover:border-ocopGold/50 transition';
                     itemElement.innerHTML = `
                         <div class="flex-1 pr-2">
                             <h5 class="font-bold text-gray-800">${name}</h5>
