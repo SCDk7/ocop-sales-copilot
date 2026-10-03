@@ -80,7 +80,6 @@
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
-
     <!-- 1. TOP ANNOUNCEMENT BAR -->
     <div class="bg-ocopGreen text-amber-100 text-[11px] font-semibold py-2 px-4 border-b border-ocopGold/30 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
         <div class="hidden md:flex items-center space-x-5 text-xs">
@@ -97,7 +96,6 @@
             <a href="#products-section" class="hover:text-ocopGold transition" id="i18n-top-specs">40 Đặc sản</a>
         </div>
     </div>
-
     <!-- 2. HEADER -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-900/10 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
@@ -122,7 +120,7 @@
             <nav class="hidden lg:flex items-center space-x-8 font-bold text-sm">
                 <a href="#" class="text-ocopGreen font-extrabold border-b-2 border-ocopGold pb-1 transition" id="i18n-nav-home">Trang chủ</a>
                 <a href="#products-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-products">Danh mục 40 Đặc sản</a>
-                <a href="#contact-footer" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-contact">Liên hệ & Hỗ trợ</a>
+                <a href="#contact-footer" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-contact">Liên hệ & Hỗ hỗ trợ</a>
             </nav>
             <!-- Quick Action Icons -->
             <div class="flex items-center space-x-3 sm:space-x-4">
@@ -157,7 +155,6 @@
             </div>
         </div>
     </header>
-
     <main class="flex-1">
         <!-- 3. HERO BANNER SECTION -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative">
@@ -227,7 +224,6 @@
                 </div>
             </div>
         </section>
-
         <!-- 4. SIDEBAR & DANH SÁCH SẢN PHẨM -->
         <section id="products-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="flex flex-col lg:flex-row gap-8">
@@ -323,8 +319,7 @@
             </div>
         </section>
     </main>
-
-    <!-- 5. WIDGET CHATBOT AI (AVATAR TỰ ĐỊNH NGHĨA 6f41063f-6f9c-4961-a5fa-21220ee840b1.png + TURBO SPEED) -->
+    <!-- 5. WIDGET CHATBOT AI -->
     <div id="ai-chat-widget" class="fixed bottom-6 left-6 z-50 flex flex-col items-start">
         <!-- Khung Cửa Sổ Chatbot AI -->
         <div id="ai-chat-window" class="hidden w-80 sm:w-96 h-[540px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-ocopGold flex flex-col overflow-hidden mb-4 animate-pop-in">
@@ -376,7 +371,6 @@
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow">AI</span>
         </button>
     </div>
-
     <!-- 6. MODAL ĐĂNG KÝ / ĐĂNG NHẬP TÀI KHOẢN -->
     <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleAuthModal()"></div>
@@ -420,7 +414,6 @@
             </button>
         </div>
     </div>
-
     <!-- 7. DRAWER LỊCH SỬ MUA HÀNG -->
     <div id="orders-drawer" class="fixed inset-0 z-50 hidden">
         <div onclick="toggleOrdersModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -432,7 +425,6 @@
             <div id="orders-container" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg"></div>
         </div>
     </div>
-
     <!-- 8. POPUP QUICK VIEW CHI TIẾT SẢN PHẨM -->
     <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
@@ -441,7 +433,6 @@
             <div class="grid grid-cols-1 md:grid-cols-2" id="quickview-content"></div>
         </div>
     </div>
-
     <!-- 9. DRAWER YÊU THÍCH (WISHLIST) -->
     <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
         <div onclick="toggleWishlistDrawer()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -453,7 +444,6 @@
             <div id="wishlist-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg"></div>
         </div>
     </div>
-
     <!-- 10. DRAWER GIỎ HÀNG (CART) -->
     <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
         <div id="cart-overlay" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -492,7 +482,6 @@
             </div>
         </div>
     </div>
-
     <!-- 11. MODAL THANH TOÁN VIETQR -->
     <div id="qr-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQRModal()"></div>
@@ -544,7 +533,6 @@
             </button>
         </div>
     </div>
-
     <!-- 12. FOOTER -->
     <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -608,7 +596,6 @@
             </div>
         </div>
     </footer>
-
     <!-- JAVASCRIPT CORE -->
     <script>
         let currentLang = 'vi';
@@ -628,7 +615,6 @@
         ];
         let currentPendingOrder = null;
         const AI_AVATAR_URL = "6f41063f-6f9c-4961-a5fa-21220ee840b1.png";
-
         const i18n = {
             vi: {
                 topGuarantee: "Cam kết 100% OCOP Chính Hãng",
@@ -723,7 +709,6 @@
                 ratingLabel: "Certification:"
             }
         };
-
         const products = [
             { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
             { id: 2, nameVi: "Hạt điều rang củi Bình Phước (500g)", nameEn: "Binh Phuoc Wood-Roasted Cashews (500g)", price: 195000, star: 4, provinceVi: "Bình Phước", provinceEn: "Binh Phuoc", category: "snack 4star food", image: "https://images.unsplash.com/photo-1608797178974-15b35a6405f8?auto=format&fit=crop&w=800&q=80", descVi: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.", descEn: "Silk-husked cashews, hand wood-roasted, rich, crunchy, naturally flavorful." },
@@ -844,6 +829,7 @@
         function toggleAuthModal() {
             document.getElementById('auth-modal').classList.toggle('hidden');
         }
+
         function switchAuthTab(mode) {
             currentAuthMode = mode;
             const tabLogin = document.getElementById('tab-login');
@@ -865,6 +851,7 @@
                 title.innerText = "Tạo Tài Khoản Mới";
             }
         }
+
         function handleAuthSubmit(e) {
             e.preventDefault();
             const email = document.getElementById('auth-email').value.trim();
@@ -877,6 +864,7 @@
             toggleAuthModal();
             showToast(currentAuthMode === 'login' ? `Xin chào, ${name}!` : "Đăng ký thành công!");
         }
+
         function mockGoogleLogin() {
             currentUser = { email: "user.ocop@gmail.com", name: "Nguyễn Minh Đức" };
             document.getElementById('cust-name').value = currentUser.name;
@@ -891,6 +879,7 @@
             renderOrdersHistory();
             document.getElementById('orders-drawer').classList.toggle('hidden');
         }
+
         function renderOrdersHistory() {
             const container = document.getElementById('orders-container');
             if (!container) return;
@@ -926,6 +915,7 @@
             if (queryInput) queryInput.value = query;
             filterProducts();
         }
+
         function setCategoryFilter(cat, btnElem) {
             currentFilter = cat;
             document.querySelectorAll('.cat-side-btn').forEach(b => {
@@ -938,6 +928,7 @@
             }
             filterProducts();
         }
+
         function filterProducts() {
             const queryInput = document.getElementById('product-search');
             const query = queryInput ? queryInput.value.toLowerCase().trim() : '';
@@ -960,11 +951,13 @@
                 noMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
             }
         }
+
         function resetFilters() {
             const queryInput = document.getElementById('product-search');
             if (queryInput) queryInput.value = '';
             setCategoryFilter('all');
         }
+
         function toggleLanguage() {
             currentLang = (currentLang === 'vi') ? 'en' : 'vi';
             document.getElementById('lang-btn').innerText = currentLang.toUpperCase();
@@ -1017,6 +1010,7 @@
             `;
             document.getElementById('quickview-modal').classList.remove('hidden');
         }
+
         function closeQuickView() {
             document.getElementById('quickview-modal').classList.add('hidden');
         }
@@ -1035,6 +1029,7 @@
             updateWishlistUI();
             renderProductsList();
         }
+
         function updateWishlistUI() {
             document.getElementById('wishlist-count').innerText = wishlist.length;
             const container = document.getElementById('wishlist-items');
@@ -1070,6 +1065,7 @@
                 `;
             }).join('');
         }
+
         function toggleWishlistDrawer() {
             document.getElementById('wishlist-drawer').classList.toggle('hidden');
         }
@@ -1087,6 +1083,7 @@
             const pName = (currentLang === 'en') ? p.nameEn : p.nameVi;
             showToast(`Đã thêm "${pName}" vào giỏ hàng!`);
         }
+
         function changeQuantity(index, delta) {
             if (cart[index]) {
                 cart[index].quantity += delta;
@@ -1094,12 +1091,14 @@
                 updateCartUI();
             }
         }
+
         function removeFromCart(index) {
             if (cart[index]) {
                 cart.splice(index, 1);
                 updateCartUI();
             }
         }
+
         function updateCartUI() {
             const cartCount = document.getElementById('cart-count');
             const cartItems = document.getElementById('cart-items');
@@ -1154,26 +1153,30 @@
             }
             const custName = document.getElementById('cust-name').value.trim() || "Khách Hàng";
             const custPhone = document.getElementById('cust-phone').value.trim();
-            
-            let subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const orderCode = "OCOP-" + Math.floor(100000 + Math.random() * 900000);
-            
+
             currentPendingOrder = {
-                orderCode,
+                orderCode: orderCode,
                 date: new Date().toLocaleString('vi-VN'),
                 customer: custName,
                 phone: custPhone,
                 items: [...cart],
                 total: subtotal,
-                status: "Chờ xác nhận"
+                status: "Đang xử lý"
             };
 
-            document.getElementById('qr-order-code').innerText = "#" + orderCode;
-            document.getElementById('qr-amount').innerText = subtotal.toLocaleString('vi-VN') + " ₫";
-            document.getElementById('qr-memo').innerText = "OCOP " + orderCode;
-            
-            const qrUrl = `https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=${subtotal}&addInfo=OCOP%20${orderCode}&accountName=HOANG%20NGUYEN%20THANH%20BINH`;
+            const bankId = "BIDV";
+            const accountNo = "8808661371";
+            const accountName = "HOANG NGUYEN THANH BINH";
+            const memo = orderCode;
+            const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${subtotal}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(accountName)}`;
+
             document.getElementById('bidv-qr').src = qrUrl;
+            document.getElementById('qr-order-code').innerText = `#${orderCode}`;
+            document.getElementById('qr-amount').innerText = `${subtotal.toLocaleString('vi-VN')} ₫`;
+            document.getElementById('qr-memo').innerText = memo;
 
             toggleCart();
             document.getElementById('qr-modal').classList.remove('hidden');
@@ -1187,80 +1190,84 @@
             if (currentPendingOrder) {
                 currentPendingOrder.status = "Đã hoàn tất";
                 ordersHistory.unshift(currentPendingOrder);
-                cart = [];
-                updateCartUI();
-                closeQRModal();
-                showToast("Thanh toán thành công! Đơn hàng đã được lưu.");
                 currentPendingOrder = null;
             }
+            cart = [];
+            updateCartUI();
+            closeQRModal();
+            showToast("Thanh toán thành công! Đơn hàng đã được ghi nhận.");
         }
 
         function copyToClipboard(text, label) {
             navigator.clipboard.writeText(text).then(() => {
-                showToast(`Đã sao chép ${label}!`);
+                showToast(`Đã sao chép ${label || ''}!`);
             }).catch(() => {
-                showToast(`Không thể sao chép!`);
+                showToast("Không thể sao chép!");
             });
         }
 
-        // --- AI CHATBOT LOGIC ---
         function toggleAIChat() {
-            document.getElementById('ai-chat-window').classList.toggle('hidden');
+            const win = document.getElementById('ai-chat-window');
+            if (win) win.classList.toggle('hidden');
         }
 
         function sendQuickPrompt(promptText) {
             const input = document.getElementById('ai-chat-input');
-            input.value = promptText;
-            sendAIMessage();
+            if (input) {
+                input.value = promptText;
+                sendAIMessage();
+            }
         }
 
         function sendAIMessage() {
             const input = document.getElementById('ai-chat-input');
-            const query = input.value.trim();
-            if (!query) return;
+            const messages = document.getElementById('ai-chat-messages');
+            if (!input || !messages) return;
 
-            const messagesContainer = document.getElementById('ai-chat-messages');
-            
-            const userMsgDiv = document.createElement('div');
-            userMsgDiv.className = 'flex items-start justify-end space-x-2';
-            userMsgDiv.innerHTML = `
-                <div class="bg-ocopGreen text-white p-3 rounded-2xl shadow-sm leading-relaxed max-w-[85%] font-medium">
-                    ${query}
+            const text = input.value.trim();
+            if (!text) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'flex justify-end';
+            userMsg.innerHTML = `
+                <div class="bg-ocopGreen text-white p-3 rounded-2xl max-w-[85%] text-xs shadow-sm">
+                    ${text}
                 </div>
             `;
-            messagesContainer.appendChild(userMsgDiv);
+            messages.appendChild(userMsg);
             input.value = '';
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            messages.scrollTop = messages.scrollHeight;
 
             setTimeout(() => {
-                let aiReply = "Dạ, em hiểu rồi ạ! Em xin phép gợi ý cho anh/chị các sản phẩm OCOP đạt chuẩn 4-5 sao phù hợp nhất nhé.";
-                const qLower = query.toLowerCase();
-
-                if (qLower.includes("top 5 sao") || qLower.includes("5 sao")) {
-                    aiReply = "Dạ các sản phẩm **OCOP 5 Sao** nổi bật nhất gồm có:<br>• **Trà hoa vàng Tam Đảo** (650k)<br>• **Yến sào Khánh Hòa** (2.450k)<br>• **Sâm Ngọc Linh Quảng Nam** (3.200k)<br>• **Trà Đinh Tân Cương** (450k).";
-                } else if (qLower.includes("quà biếu") || qLower.includes("combo")) {
-                    aiReply = "Dạ combo quà biếu sang trọng tinh tế anh/chị có thể tham khảo:<br>🎁 **Set Thượng Hạng**: Yến Sào Khánh Hòa + Trà Hoa Vàng Tam Đảo + Tỏi Đen Lý Sơn.<br>🎁 **Set Bình Dân**: Hạt Điều Bình Phước + Trà Oolong Mộc Châu + Hồng Treo Gió.";
-                } else if (qLower.includes("200k") || qLower.includes("dưới 200k")) {
-                    aiReply = "Dạ đặc sản dưới 200k cực kỳ ngon và chuẩn vị gồm:<br>• Hạt điều rang củi Bình Phước (195k)<br>• Gạo Tám Xoan Hải Hậu (185k)<br>• Nước mắm Phú Quốc 40°N (165k)<br>• Nho sấy dẻo Ninh Thuận (115k).";
-                } else if (qLower.includes("trà") || qLower.includes("sức khỏe")) {
-                    aiReply = "Dạ về dòng trà bổ sức khỏe, mát gan ngủ ngon em khuyên dùng:<br>🍵 **Trà hoa vàng Tam Đảo** (Hạ mỡ máu, ngủ sâu)<br>🍵 **Chè Shan Tuyết Cổ Thụ** (Thơm ngát, chống lão hóa)<br>🍵 **Cao Atiso Đà Lạt** (Mát gan, giải độc).";
+                let reply = "Cảm ơn bạn đã quan tâm! Dòng sản phẩm OCOP chuẩn quốc gia của chúng tôi cam kết chính hãng 100%. Bạn có thể xem chi tiết trong danh mục sản phẩm.";
+                const lower = text.toLowerCase();
+                if (lower.includes('top 5 sao') || lower.includes('5 sao')) {
+                    reply = "Top sản phẩm OCOP 5 sao nổi bật: Yến Sào Khánh Hòa, Trà Hoa Vàng Tam Đảo, Sâm Ngọc Linh Quảng Nam, Cà Phê Arabica Cầu Đất, Nước Mắm Phú Quốc!";
+                } else if (lower.includes('quà biếu') || lower.includes('combo')) {
+                    reply = "Bộ quà biếu sức khỏe gợi ý: Yến Sào Khánh Hòa + Trà Hoa Vàng Tam Đảo + Tỏi Đen Lý Sơn. Rất sang trọng và giàu giá trị dinh dưỡng.";
+                } else if (lower.includes('dưới 200k') || lower.includes('200k')) {
+                    reply = "Các đặc sản giá dưới 200k: Hạt điều rang củi Bình Phước (195k), Bánh cốm Làng Vòng (90k), Nước mắm Phú Quốc (165k), Miến dong Phia Đén (110k).";
+                } else if (lower.includes('trà')) {
+                    reply = "Các loại trà OCOP thượng hạng: Trà Hoa Vàng Tam Đảo, Trà Đinh Tân Cương, Chè Shan Tuyết Suối Giàng, Trà Oolong Mộc Châu.";
                 }
 
-                const aiMsgDiv = document.createElement('div');
-                aiMsgDiv.className = 'flex items-start space-x-2 animate-fade-in';
-                aiMsgDiv.innerHTML = `
+                const botMsg = document.createElement('div');
+                botMsg.className = 'flex items-start space-x-2';
+                botMsg.innerHTML = `
                     <img src="${AI_AVATAR_URL}" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
-                        ${aiReply}
+                        ${reply}
                     </div>
                 `;
-                messagesContainer.appendChild(aiMsgDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }, 400);
+                messages.appendChild(botMsg);
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             renderProductsList();
+            updateWishlistUI();
+            updateCartUI();
         });
     </script>
 </body>
