@@ -39,7 +39,6 @@
             background-color: #FAF8F5;
             color: #1F2937;
         }
-        /* Nền Ambient Gradient Cao Cấp */
         .bg-ocop-ambient {
             background-color: #FAF8F5;
             background-image: 
@@ -83,8 +82,6 @@
     <!-- 2. HEADER -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-900/10 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            
-            <!-- Logo -->
             <a href="#" class="flex items-center space-x-3 group flex-shrink-0">
                 <div class="w-11 h-11 bg-gradient-to-tr from-ocopGreen to-ocopGreenLight rounded-2xl flex items-center justify-center text-ocopGold text-xl shadow-md ring-2 ring-ocopGold/40 group-hover:scale-105 transition duration-300">
                     <i class="fa-solid fa-leaf"></i>
@@ -123,19 +120,16 @@
                 </div>
 
                 <div class="flex items-center space-x-2">
-                    <!-- Wishlist Btn -->
                     <button onclick="toggleWishlistDrawer()" class="relative w-10 h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200" title="Yêu thích">
                         <i class="fa-regular fa-heart text-sm text-red-500"></i>
                         <span id="wishlist-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
 
-                    <!-- Cart Btn -->
                     <button onclick="toggleCart()" class="relative w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200" title="Giỏ hàng">
                         <i class="fa-solid fa-basket-shopping text-sm text-ocopGreen"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
 
-                    <!-- Language Toggle Button -->
                     <button onclick="toggleLanguage()" id="lang-btn" class="w-10 h-10 rounded-full bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight font-extrabold text-xs flex items-center justify-center transition shadow-md border-2 border-ocopGold" title="Chuyển đổi Ngôn Ngữ / Switch Language">
                         VI
                     </button>
@@ -163,7 +157,6 @@
                         Hệ thống thương mại phân phối trực tiếp 40 sản phẩm OCOP đạt chuẩn 4 - 5 sao quốc gia. Đảm bảo nguồn gốc xuất xứ chính gốc, hương vị truyền thống & chất lượng thượng hạng.
                     </p>
 
-                    <!-- Thống kê nhanh -->
                     <div class="grid grid-cols-3 gap-4 max-w-lg pt-2 border-t border-amber-200/60">
                         <div>
                             <span class="block text-xl font-extrabold text-ocopGreen">40+</span>
@@ -191,7 +184,6 @@
                     </div>
                 </div>
 
-                <!-- Banner Ảnh bên phải -->
                 <div class="lg:col-span-5">
                     <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group">
                         <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
@@ -305,7 +297,6 @@
                             </div>
                         </div>
 
-                        <!-- Sidebar Search -->
                         <div class="pt-3 border-t border-amber-200">
                             <div class="relative">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-700/60 text-xs"></i>
@@ -516,14 +507,13 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT CORE & DỮ LIỆU 40 ĐẶC SẢN -->
+    <!-- JAVASCRIPT CORE & BỘ HÌNH ẢNH 40 ĐẶC SẢN CHUẨN XÁC -->
     <script>
         let currentLang = 'vi';
         let wishlist = [];
         let cart = [];
         let currentFilter = 'all';
 
-        // ĐỔI NGÔN NGỮ ĐỘNG (I18N DICTIONARY)
         const i18n = {
             vi: {
                 topGuarantee: "Cam kết 100% OCOP Chính Hãng",
@@ -619,9 +609,9 @@
             }
         };
 
-        // BỘ DỮ LIỆU ĐỦ 40 ĐẶC SẢN OCOP CHUẨN QUỐC GIA
+        // BỘ DỮ LIỆU 40 SẢN PHẨM VỚI ẢNH ĐƯỢC CẬP NHẬT CHUẨN LOẠI
         const products = [
-            { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
+            { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
             { id: 2, nameVi: "Hạt điều rang củi Bình Phước (500g)", nameEn: "Binh Phuoc Wood-Roasted Cashews (500g)", price: 195000, star: 4, provinceVi: "Bình Phước", provinceEn: "Binh Phuoc", category: "snack 4star food", image: "https://images.unsplash.com/photo-1509358271058-acd05cc93224?auto=format&fit=crop&w=800&q=80", descVi: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.", descEn: "Silk-husked cashews, hand wood-roasted, rich, crunchy, naturally flavorful." },
             { id: 3, nameVi: "Đồ gốm mỹ nghệ Biên Hòa", nameEn: "Bien Hoa Fine Art Ceramics", price: 580000, star: 4, provinceVi: "Đồng Nai", provinceEn: "Dong Nai", category: "gift 4star", image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80", descVi: "Tuyệt tác gốm men xanh đồng danh tiếng, chạm khắc thủ công hoa văn tinh xảo.", descEn: "Famous copper-green glazed ceramic masterpiece, hand-carved intricate patterns." },
             { id: 4, nameVi: "Mật ong rừng U Minh (Chai 500ml)", nameEn: "U Minh Wild Forest Honey (500ml Bottle)", price: 290000, star: 4, provinceVi: "Cà Mau", provinceEn: "Ca Mau", category: "gift 4star food tea", image: "https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=800&q=80", descVi: "Mật ong hoa tràm nguyên chất Cà Mau, hương thơm dịu nhẹ, tăng đề kháng.", descEn: "Pure Melaleuca flower honey from Ca Mau, mild aroma, boosts immunity." },
@@ -641,31 +631,28 @@
             { id: 18, nameVi: "Nấm Linh Chi đỏ Quảng Nam (Hộp 250g)", nameEn: "Quang Nam Red Lingzhi Mushroom (250g Box)", price: 720000, star: 5, provinceVi: "Quảng Nam", provinceEn: "Quang Nam", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1504672281656-e4981d704146?auto=format&fit=crop&w=800&q=80", descVi: "Nấm linh chi đỏ nguyên bào tử bồi bổ sức khỏe, giải độc gan & tăng đề kháng vượt trội.", descEn: "Spore-rich red reishi mushroom, boosts health, detoxifies liver & strengthens immunity." },
             { id: 19, nameVi: "Thịt trâu gác bếp Sơn La (500g)", nameEn: "Son La Smoke-Cured Buffalo Meat (500g)", price: 430000, star: 4, provinceVi: "Sơn La", provinceEn: "Son La", category: "snack gift 4star food", image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80", descVi: "Thịt trâu bắp tẩm hạt mắc khén gác bếp củi hun khói đặc sản Tây Bắc đậm đà.", descEn: "Traditional Northwest wood-smoked buffalo meat spiced with wild Mac Khen pepper." },
             { id: 20, nameVi: "Yến sào Khánh Hòa thượng hạng (Hộp 50g)", nameEn: "Khanh Hoa Premium Bird's Nest (50g Box)", price: 2450000, star: 5, provinceVi: "Khánh Hòa", provinceEn: "Khanh Hoa", category: "gift 5star", image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80", descVi: "Tổ yến đảo thiên nhiên Khánh Hòa tinh chế cao cấp, quà biếu sức khỏe ngoại giao thượng đỉnh.", descEn: "Supreme refined natural island bird's nest, ultimate diplomatic health gift." },
-            
-            // 20 SẢN PHẨM BỔ SUNG ĐỦ 40 ĐẶC SẢN
-            { id: 21, nameVi: "Sâm Ngọc Linh Quảng Nam (Hộp 100g)", nameEn: "Quang Nam Ngoc Linh Ginseng (100g)", price: 3200000, star: 5, provinceVi: "Quảng Nam", provinceEn: "Quang Nam", category: "gift tea 5star", image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80", descVi: "Quốc bảo sâm Việt Nam giàu hàm lượng saponin vượt trội bồi bổ cơ thể toàn diện.", descEn: "Vietnam's national treasure ginseng rich in saponins for ultimate health boost." },
+            { id: 21, nameVi: "Sâm Ngọc Linh Quảng Nam (Hộp 100g)", nameEn: "Quang Nam Ngoc Linh Ginseng (100g)", price: 3200000, star: 5, provinceVi: "Quảng Nam", provinceEn: "Quang Nam", category: "gift tea 5star", image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=800&q=80", descVi: "Quốc bảo sâm Việt Nam giàu hàm lượng saponin vượt trội bồi bổ cơ thể toàn diện.", descEn: "Vietnam's national treasure ginseng rich in saponins for ultimate health boost." },
             { id: 22, nameVi: "Trà Oolong Mộc Châu (Hộp 200g)", nameEn: "Moc Chau Oolong Tea (200g Box)", price: 320000, star: 5, provinceVi: "Sơn La", provinceEn: "Son La", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80", descVi: "Trà Oolong trồng trên cao nguyên Mộc Châu sương mù, hương thơm hoa tự nhiên dịu ngọt.", descEn: "Oolong tea grown on foggy Moc Chau plateau with natural floral sweet aroma." },
             { id: 23, nameVi: "Nước mắm Cát Hải Hải Phòng (Chai 500ml 45°N)", nameEn: "Cat Hai Traditional Fish Sauce (500ml 45°N)", price: 155000, star: 4, provinceVi: "Hải Phòng", provinceEn: "Hai Phong", category: "spice 4star food", image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80", descVi: "Đặc sản nước mắm đảo Cát Hải ủ chượp tự nhiên đậm đà thơm ngậy bữa cơm gia đình.", descEn: "Island fish sauce fermented naturally with rich taste for authentic meals." },
             { id: 24, nameVi: "Tiêu đen Chư Sê Gia Lai (Hũ 250g)", nameEn: "Chu Se Black Pepper Gia Lai (250g Jar)", price: 120000, star: 4, provinceVi: "Gia Lai", provinceEn: "Gia Lai", category: "spice 4star food", image: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=800&q=80", descVi: "Hạt tiêu đen chín cây Tây Nguyên hạt to tròn cay nồng đậm vị quyến rũ.", descEn: "Tree-ripened Central Highlands black pepper with strong spicy aroma." },
             { id: 25, nameVi: "Bưởi Phúc Trạch Hà Tĩnh (Quả 1.2kg)", nameEn: "Phuc Trach Pomelo Ha Tinh (1.2kg)", price: 85000, star: 5, provinceVi: "Hà Tĩnh", provinceEn: "Ha Tinh", category: "food 5star", image: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&w=800&q=80", descVi: "Đệ nhất bưởi miền Trung tép bưởi mọng nước ngọt thanh dịu nhẹ đậm đà.", descEn: "Top Central pomelo with juicy segments and mild sweet flavor." },
             { id: 26, nameVi: "Nho sấy dẻo Ninh Thuận (Túi 250g)", nameEn: "Ninh Thuan Soft-Dried Grapes (250g Bag)", price: 115000, star: 4, provinceVi: "Ninh Thuận", provinceEn: "Ninh Thuan", category: "snack 4star food", image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80", descVi: "Nho tươi nắng gió Phan Rang sấy dẻo tự nhiên dẻo ngọt chua nhẹ kích thích vị giác.", descEn: "Sun-ripened grapes soft dried naturally with delightful sweet-sour taste." },
             { id: 27, nameVi: "Chè Shan Tuyết Cổ Thụ Suối Giàng (Hộp 200g)", nameEn: "Suoi Giang Ancient Shan Tuyet Tea (200g)", price: 520000, star: 5, provinceVi: "Yên Bái", provinceEn: "Yen Bai", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1563822249510-0467fa1be38d?auto=format&fit=crop&w=800&q=80", descVi: "Búp trà tuyết hái từ cây chè cổ thụ trăm năm núi cao Suối Giàng hương tuyết thuần khiết.", descEn: "Snow tea buds picked from centuries-old trees on high mountain Suoi Giang." },
-            { id: 28, nameVi: "Bánh gai Tứ柱 Thanh Hóa (Hộp 5 chiếc)", nameEn: "Tu Tru Black Sticky Rice Cake (Box of 5)", price: 75000, star: 4, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "snack 4star food", image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80", descVi: "Vỏ lá gai đen dẻo thơm quyện nhân đậu xanh mỡ lợn mứt dừa truyền thống xứ Thanh.", descEn: "Traditional black leaf sticky cake stuffed with sweet mung bean and coconut." },
+            { id: 28, nameVi: "Bánh gai Tứ Trụ Thanh Hóa (Hộp 5 chiếc)", nameEn: "Tu Tru Black Sticky Rice Cake (Box of 5)", price: 75000, star: 4, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "snack 4star food", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80", descVi: "Vỏ lá gai đen dẻo thơm quyện nhân đậu xanh mỡ lợn mứt dừa truyền thống xứ Thanh.", descEn: "Traditional black leaf sticky cake stuffed with sweet mung bean and coconut." },
             { id: 29, nameVi: "Cam Vinh Nghệ An (Hộp 5kg)", nameEn: "Vinh Orange Nghe An (5kg Box)", price: 230000, star: 4, provinceVi: "Nghệ An", provinceEn: "Nghe An", category: "food 4star", image: "https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&w=800&q=80", descVi: "Cam xã Đoài Vinh quả vàng óng mọng nước vị ngọt thanh dịu mát đậm đà.", descEn: "Famous Vinh oranges, juicy with rich natural sweet flavor." },
-            { id: 30, nameVi: "Nhãn lồng Hưng Yên (Túi 1kg)", nameEn: "Hung Yen Longan (1kg Bag)", price: 110000, star: 5, provinceVi: "Hưng Yên", provinceEn: "Hung Yen", category: "food 5star", image: "https://images.unsplash.com/photo-1591073113125-e46713c829ed?auto=format&fit=crop&w=800&q=80", descVi: "Cùi nhãn dày mọng giòn ngọt lịm hương thơm quyến rũ vương thất tiến vua.", descEn: "Thick crispy flesh longans with intensely sweet royal flavor." },
+            { id: 30, nameVi: "Nhãn lồng Hưng Yên (Túi 1kg)", nameEn: "Hung Yen Longan (1kg Bag)", price: 110000, star: 5, provinceVi: "Hưng Yên", provinceEn: "Hung Yen", category: "food 5star", image: "https://images.unsplash.com/photo-1596368708380-1d227c4a0349?auto=format&fit=crop&w=800&q=80", descVi: "Cùi nhãn dày mọng giòn ngọt lịm hương thơm quyến rũ vương thất tiến vua.", descEn: "Thick crispy flesh longans with intensely sweet royal flavor." },
             { id: 31, nameVi: "Nước mắm Ba Làng Thanh Hóa (Chai 500ml)", nameEn: "Ba Lang Traditional Fish Sauce (500ml)", price: 135000, star: 4, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "spice 4star food", image: "https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=800&q=80", descVi: "Nước mắm cốt cá cơm ủ chượp nắng biển Ba Làng đậm đà hương vị truyền thống.", descEn: "Anchovy fish sauce aged naturally under seaside sun for rich taste." },
-            { id: 32, nameVi: "Bánh pía Sóc Trăng nhân sầu riêng (Hộp 4 chiếc)", nameEn: "Soc Trang Durian Pia Cake (Box of 4)", price: 125000, star: 4, provinceVi: "Sóc Trăng", provinceEn: "Soc Trang", category: "snack 4star food", image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80", descVi: "Vỏ bánh xếp lớp mềm dẻo nhân sầu riêng tươi quyện trứng muối béo ngậy miền Tây.", descEn: "Flaky layered pastry stuffed with fresh durian and rich salted egg yolk." },
+            { id: 32, nameVi: "Bánh pía Sóc Trăng nhân sầu riêng (Hộp 4 chiếc)", nameEn: "Soc Trang Durian Pia Cake (Box of 4)", price: 125000, star: 4, provinceVi: "Sóc Trăng", provinceEn: "Soc Trang", category: "snack 4star food", image: "https://images.unsplash.com/photo-1514517220017-8ce97a34a7b6?auto=format&fit=crop&w=800&q=80", descVi: "Vỏ bánh xếp lớp mềm dẻo nhân sầu riêng tươi quyện trứng muối béo ngậy miền Tây.", descEn: "Flaky layered pastry stuffed with fresh durian and rich salted egg yolk." },
             { id: 33, nameVi: "Nem chua Thanh Hóa đặc biệt (Hộp 20 chiếc)", nameEn: "Thanh Hoa Fermented Pork Roll (Box of 20)", price: 140000, star: 4, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "snack 4star food", image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80", descVi: "Nem chua nạc đùi heo tẩm ớt tỏi lá đinh lăng chua nhẹ giòn sần sật.", descEn: "Fermented lean pork seasoned with garlic, chili, crispy & savory." },
-            { id: 34, nameVi: "Mật táo đỏ Phan Rang (Chai 500ml)", nameEn: "Phan Rang Red Date Syrup (500ml)", price: 190000, star: 4, provinceVi: "Ninh Thuận", provinceEn: "Ninh Thuan", category: "gift 4star tea", image: "https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=800&q=80", descVi: "Chiết xuất táo đỏ Ninh Thuận bồi bổ khí huyết giải nhiệt đẹp da an thần.", descEn: "Red date extract beneficial for blood circulation and restful sleep." },
-            { id: 35, nameVi: "Rượu nếp cái hoa vàng Đông Anh (Chai 750ml)", nameEn: "Dong Anh Yellow Flower Sticky Rice Wine (750ml)", price: 180000, star: 4, provinceVi: "Hà Nội", provinceEn: "Ha Noi", category: "gift 4star", image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80", descVi: "Lên men gạo nếp cái hoa vàng hạ thổ men thuốc bắc thơm nồng êm dịu.", descEn: "Aged yellow flower sticky rice wine brewed with traditional herbs." },
-            { id: 36, nameVi: "Mủ trôm Tuy Phong Bình Thuận (Hộp 250g)", nameEn: "Tuy Phong Gum Karaya Binh Thuan (250g)", price: 110000, star: 4, provinceVi: "Bình Thuận", provinceEn: "Binh Thuan", category: "gift 4star food", image: "https://images.unsplash.com/photo-1509358271058-acd05cc93224?auto=format&fit=crop&w=800&q=80", descVi: "Mủ trôm nguyên chất giải nhiệt thanh lọc cơ thể dẻo thanh mát tự nhiên.", descEn: "100% natural Karaya gum for body cooling and detox." },
-            { id: 37, nameVi: "Cao atiso Đà Lạt cao cấp (Hộp 200g)", nameEn: "Da Lat Premium Artichoke Extract (200g)", price: 280000, star: 5, provinceVi: "Đà Lạt", provinceEn: "Da Lat", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1504672281656-e4981d704146?auto=format&fit=crop&w=800&q=80", descVi: "Cô đặc từ lá atiso tươi Đà Lạt mát gan mát máu hạ men gan hiệu quả.", descEn: "Concentrated fresh artichoke extract for liver detox and health boost." },
-            { id: 38, nameVi: "Bột sắn dây Kinh Môn Hải Dương (Túi 1kg)", nameEn: "Kinh Mon Kudzu Root Starch (1kg Bag)", price: 160000, star: 4, provinceVi: "Hải Dương", provinceEn: "Hai Duong", category: "food 4star", image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80", descVi: "Bột sắn dây ta ướp hoa Bưởi thanh nhiệt mát gan giải độc bia rượu.", descEn: "Pure kudzu root starch scented with pomelo flowers for cooling detox." },
-            { id: 39, nameVi: "Khô cá lóc Đồng Tháp (Túi 500g)", nameEn: "Dong Thap Dried Snakehead Fish (500g)", price: 175000, star: 4, provinceVi: "Đồng Tháp", provinceEn: "Dong Thap", category: "snack food 4star", image: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=800&q=80", descVi: "Khô cá lóc đồng tẩm ớt tỏi phơi nắng tự nhiên thịt ngọt dai cay thơm.", descEn: "Sun-dried snakehead fish seasoned with garlic and chili, chewy & flavorful." },
-            { id: 40, nameVi: "Mắm tôm Lê Gia Thanh Hóa (Chai 110g)", nameEn: "Le Gia Traditional Shrimp Paste (110g)", price: 45000, star: 5, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "spice 5star food", image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80", descVi: "Mắm tôm ủ thùng gỗ theo phương pháp truyền thống dậy hương thơm ngậy vị.", descEn: "Traditional wooden-barrel aged shrimp paste with rich authentic flavor." }
+            { id: 34, nameVi: "Mật táo đỏ Phan Rang (Chai 500ml)", nameEn: "Phan Rang Red Date Syrup (500ml)", price: 190000, star: 4, provinceVi: "Ninh Thuận", provinceEn: "Ninh Thuan", category: "gift 4star tea", image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80", descVi: "Chiết xuất táo đỏ Ninh Thuận bồi bổ khí huyết giải nhiệt đẹp da an thần.", descEn: "Red date extract beneficial for blood circulation and restful sleep." },
+            { id: 35, nameVi: "Rượu nếp cái hoa vàng Đông Anh (Chai 750ml)", nameEn: "Dong Anh Yellow Flower Sticky Rice Wine (750ml)", price: 180000, star: 4, provinceVi: "Hà Nội", provinceEn: "Ha Noi", category: "gift 4star", image: "https://images.unsplash.com/photo-1527281400683-1aae777175f8?auto=format&fit=crop&w=800&q=80", descVi: "Lên men gạo nếp cái hoa vàng hạ thổ men thuốc bắc thơm nồng êm dịu.", descEn: "Aged yellow flower sticky rice wine brewed with traditional herbs." },
+            { id: 36, nameVi: "Mủ trôm Tuy Phong Bình Thuận (Hộp 250g)", nameEn: "Tuy Phong Gum Karaya Binh Thuan (250g)", price: 110000, star: 4, provinceVi: "Bình Thuận", provinceEn: "Binh Thuan", category: "gift 4star food", image: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80", descVi: "Mủ trôm nguyên chất giải nhiệt thanh lọc cơ thể dẻo thanh mát tự nhiên.", descEn: "100% natural Karaya gum for body cooling and detox." },
+            { id: 37, nameVi: "Cao atiso Đà Lạt cao cấp (Hộp 200g)", nameEn: "Da Lat Premium Artichoke Extract (200g)", price: 280000, star: 5, provinceVi: "Đà Lạt", provinceEn: "Da Lat", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1515023115689-66961238892b?auto=format&fit=crop&w=800&q=80", descVi: "Cô đặc từ lá atiso tươi Đà Lạt mát gan mát máu hạ men gan hiệu quả.", descEn: "Concentrated fresh artichoke extract for liver detox and health boost." },
+            { id: 38, nameVi: "Bột sắn dây Kinh Môn Hải Dương (Túi 1kg)", nameEn: "Kinh Mon Kudzu Root Starch (1kg Bag)", price: 160000, star: 4, provinceVi: "Hải Dương", provinceEn: "Hai Duong", category: "food 4star", image: "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&q=80", descVi: "Bột sắn dây ta ướp hoa Bưởi thanh nhiệt mát gan giải độc bia rượu.", descEn: "Pure kudzu root starch scented with pomelo flowers for cooling detox." },
+            { id: 39, nameVi: "Khô cá lóc Đồng Tháp (Túi 500g)", nameEn: "Dong Thap Dried Snakehead Fish (500g)", price: 175000, star: 4, provinceVi: "Đồng Tháp", provinceEn: "Dong Thap", category: "snack food 4star", image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80", descVi: "Khô cá lóc đồng tẩm ớt tỏi phơi nắng tự nhiên thịt ngọt dai cay thơm.", descEn: "Sun-dried snakehead fish seasoned with garlic and chili, chewy & flavorful." },
+            { id: 40, nameVi: "Mắm tôm Lê Gia Thanh Hóa (Chai 110g)", nameEn: "Le Gia Traditional Shrimp Paste (110g)", price: 45000, star: 5, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "spice 5star food", image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=800&q=80", descVi: "Mắm tôm ủ thùng gỗ theo phương pháp truyền thống dậy hương thơm ngậy vị.", descEn: "Traditional wooden-barrel aged shrimp paste with rich authentic flavor." }
         ];
 
-        // ĐỔI NGÔN NGỮ ĐỘNG (LANGUAGE SWITCHER)
         function toggleLanguage() {
             currentLang = (currentLang === 'vi') ? 'en' : 'vi';
             document.getElementById('lang-btn').innerText = currentLang.toUpperCase();
@@ -683,7 +670,6 @@
             showToast(currentLang === 'en' ? "Language changed to English!" : "Đã chuyển sang Tiếng Việt!");
         }
 
-        // RENDER DANH SÁCH 40 ĐẶC SẢN
         function renderProductsList() {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
@@ -748,7 +734,6 @@
             filterProducts();
         }
 
-        // BỘ LỌC TÌM KIẾM
         function filterProductsGlobal(query) {
             const queryInput = document.getElementById('product-search');
             if (queryInput) queryInput.value = query;
@@ -802,7 +787,6 @@
             setCategoryFilter('all');
         }
 
-        // QUICK VIEW MODAL
         function openQuickView(id) {
             const p = products.find(item => item.id === id);
             if (!p) return;
@@ -848,7 +832,6 @@
             document.getElementById('quickview-modal').classList.add('hidden');
         }
 
-        // WISHLIST MANAGEMENT
         function toggleWishlist(id) {
             const index = wishlist.indexOf(id);
             const p = products.find(item => item.id === id);
@@ -906,7 +889,6 @@
             document.getElementById('wishlist-drawer').classList.toggle('hidden');
         }
 
-        // GIỎ HÀNG (CART)
         function addToCart(id) {
             const p = products.find(item => item.id === id);
             if (!p) return;
@@ -988,7 +970,6 @@
             document.getElementById('cart-drawer').classList.toggle('hidden');
         }
 
-        // THANH TOÁN VIETQR
         function checkout() {
             let totalAmount = 0;
             cart.forEach(item => { totalAmount += item.price * item.quantity; });
@@ -1027,7 +1008,6 @@
             document.getElementById('qr-modal').classList.add('hidden');
         }
 
-        // TOAST NOTIFICATIONS
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             if (!container) return;
@@ -1047,7 +1027,6 @@
             navigator.clipboard.writeText(text).then(() => showToast(`Đã sao chép ${label}!`)).catch(() => showToast('Không thể sao chép!', 'error'));
         }
 
-        // KHỞI CHẠY TRANG
         window.onload = function() {
             renderProductsList();
             updateWishlistUI();
