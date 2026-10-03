@@ -68,7 +68,7 @@
     </style>
 </head>
 <body class="text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
-    <!-- HỌA TIẾT NỀN MÂY NÚI & QUẦNG SÁNG ĐA SẮC SỐNG ĐỘNG -->
+    <!-- HỌA TIẾT NỀN NÚI RỪNG & QUẦNG SÁNG VÀNG KIM -->
     <div class="fixed inset-0 bg-pattern pointer-events-none -z-20"></div>
     <div class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-emerald-300/25 via-teal-200/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
     <div class="fixed top-1/3 right-0 w-[550px] h-[550px] bg-gradient-to-tl from-amber-300/30 via-yellow-200/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
@@ -76,7 +76,7 @@
     <!-- TOAST NOTIFICATION -->
     <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-    <!-- Header / Nav -->
+    <!-- Header / Nav (Theo Mẫu image_c70382.png) -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-900/10 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <a href="#" class="flex items-center space-x-3.5 group">
@@ -89,10 +89,11 @@
                 </div>
             </a>
             
-            <nav class="hidden md:flex items-center space-x-8 font-semibold text-sm">
-                <a href="#" class="text-ocopGreen font-bold border-b-2 border-ocopGold pb-1">Trang chủ</a>
-                <a href="#products-section" class="text-gray-600 hover:text-ocopGreen transition">Danh mục 20 Đặc sản</a>
-                <a href="#why-us-section" class="text-gray-600 hover:text-ocopGreen transition">Vì sao chọn OCOP</a>
+            <!-- MENU CHÍNH CHUẨN MẪU IMAGE_C70382.PNG -->
+            <nav class="hidden md:flex items-center space-x-10 font-bold text-sm">
+                <a href="#" class="text-ocopGreen font-extrabold border-b-2 border-ocopGold pb-1.5 transition">Trang chủ</a>
+                <a href="#products-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1.5 transition">Danh mục 20 Đặc sản</a>
+                <a href="#why-us-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1.5 transition">Vì sao chọn OCOP</a>
             </nav>
 
             <div class="flex items-center space-x-3">
@@ -211,7 +212,7 @@
                         <p class="text-[11px] text-gray-500">Sản phẩm có nguồn gốc xuất xứ rõ ràng từ các vùng miền.</p>
                     </div>
 
-                    <!-- DUPLICATE MARQUEE CARDS -->
+                    <!-- DUPLICATE CARDS -->
                     <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
                         <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 text-3xl mb-2.5 border border-amber-100">
                             <i class="fa-solid fa-utensils"></i>
@@ -259,7 +260,7 @@
         <section id="products-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="flex flex-col lg:flex-row gap-8">
                 
-                <!-- BÊN TRÁI: THANH DANH MỤC THIẾT KẾ ĐẲNG CẤP & SANG TRỌNG -->
+                <!-- BÊN TRÁI: THANH DANH MỤC THIẾT KẾ ĐẲNG CẤP -->
                 <aside class="w-full lg:w-72 flex-shrink-0">
                     <div class="bg-white/95 backdrop-blur rounded-3xl border border-amber-200/80 p-4 shadow-lg sticky top-24 space-y-3">
                         
@@ -272,7 +273,7 @@
                             <span class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow">OCOP</span>
                         </div>
 
-                        <!-- Danh sách các nút Phân loại có Icon & Badge đếm số lượng -->
+                        <!-- Các nút Phân loại -->
                         <div class="space-y-1.5 text-xs font-bold" id="sidebar-categories">
                             
                             <button onclick="setCategoryFilter('all', this)" class="cat-side-btn active w-full text-left px-3.5 py-2.5 rounded-2xl bg-ocopGreen text-white font-extrabold transition-all flex items-center justify-between shadow-md border-l-4 border-ocopGold">
@@ -343,7 +344,7 @@
 
                         </div>
 
-                        <!-- Ô Tìm Kiếm Nhanh Tích Hợp Tinh Tế -->
+                        <!-- Ô Tìm Kiếm Nhanh -->
                         <div class="pt-3 border-t border-amber-200/80">
                             <div class="relative">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-700/60 text-xs"></i>
@@ -354,7 +355,7 @@
                     </div>
                 </aside>
 
-                <!-- BÊN PHẢI: LƯỚI 20 SẢN PHẨM OCOP CHUẨN XÁC VỚI TÊN & ẢNH HD -->
+                <!-- BÊN PHẢI: LƯỚI 20 SẢN PHẨM OCOP CHUẨN XÁC TÊN & ẢNH HD -->
                 <div class="flex-1">
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                         <!-- Render qua JS -->
@@ -371,7 +372,7 @@
         </section>
     </main>
 
-    <!-- MODAL CHÀO MỪNG CHUYÊN NGHIỆP -->
+    <!-- MODAL CHÀO MỪNG -->
     <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
         <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border-2 border-ocopGold/50 relative text-center space-y-5">
             <button onclick="closeWelcomeModal()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-9 h-9 flex items-center justify-center text-base transition">
@@ -623,25 +624,114 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-gray-900 text-white py-12 mt-20 relative z-10 border-t border-amber-900/30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-            <div class="flex items-center justify-center space-x-2">
-                <i class="fa-solid fa-leaf text-ocopGold text-xl"></i>
-                <h4 class="text-xl font-extrabold text-ocopGold">OCOP Sales Copilot</h4>
+    <!-- FOOTER CAO CẤP THEO CHUẨN MẪU IMAGE_C706C1.PNG (ĐÃ BỎ TWITTER, INSTA...) -->
+    <footer class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            
+            <!-- THÔNG TIN PHÁP LÝ & BADGE ĐÃ THÔNG BÁO BỘ CÔNG THƯƠNG -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-6 gap-4">
+                <div class="space-y-1 max-w-3xl">
+                    <h5 class="font-bold text-gray-900 text-xs">Bản quyền của Hệ Thống OCOP Sales Copilot Việt Nam</h5>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">
+                        Giấy chứng nhận ĐKKD & Xúc tiến thương mại OCOP Quốc Gia số: 0312461711 do Sở KH&ĐT TP.HCM cấp lần đầu ngày 17/09/2013 (Đăng ký thay đổi lần 7 ngày 14/11/2025). <br>
+                        Trụ sở chính: 496 - 496A - 496B Nguyễn Thị Minh Khai, Phường 2, Quận 3, TP.HCM & Hệ thống Trung tâm OCOP Toàn Quốc.
+                    </p>
+                </div>
+                
+                <!-- BADGE BỘ CÔNG THƯƠNG CHUẨN MẪU -->
+                <div class="flex-shrink-0">
+                    <div class="border-2 border-[#0072bc] rounded-xl px-3.5 py-1.5 flex items-center space-x-2 bg-blue-50/50 shadow-sm">
+                        <i class="fa-solid fa-circle-check text-[#0072bc] text-xl"></i>
+                        <div>
+                            <span class="block text-[9px] font-bold text-[#0072bc] uppercase leading-none">ĐÃ THÔNG BÁO</span>
+                            <span class="block text-[11px] font-extrabold text-[#0072bc] uppercase leading-tight">BỘ CÔNG THƯƠNG</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="text-gray-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
-                Giải pháp trí tuệ nhân tạo thúc đẩy thương mại điện tử cho đặc sản OCOP Việt Nam. Trải nghiệm & mua sắm chuẩn Quốc Gia 4-5 sao.
-            </p>
-            <div class="pt-4 border-t border-gray-800 text-xs text-gray-500">
-                © 2026 OCOP Sales Copilot. Phát triển bởi <strong class="text-white font-bold">Bộ Tứ Siêu Đẳng</strong>.
+
+            <!-- 3 CỘT THÔNG TIN HỖ TRỢ CHÍNH -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-2">
+                
+                <!-- Cột 1: Thông tin liên hệ -->
+                <div class="md:col-span-4 space-y-3">
+                    <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">Thông tin liên hệ</h6>
+                    <ul class="space-y-2.5 text-gray-600">
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-location-dot text-amber-700 mt-0.5 text-sm"></i>
+                            <span>99 Hoàng Hoa Thám, Phường Gia Định (Q.Bình Thạnh cũ), TP.HCM</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fa-solid fa-phone text-amber-700 text-xs"></i>
+                            <span class="font-bold text-gray-800">Hotline: 1800 6930 (Tư vấn 24/7 Miễn phí)</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fa-solid fa-envelope text-amber-700 text-xs"></i>
+                            <span class="text-ocopGreen font-semibold">support@ocopsalescopilot.vn</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Cột 2: Hỗ trợ khách hàng -->
+                <div class="md:col-span-4 space-y-3">
+                    <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">HỖ TRỢ KHÁCH HÀNG</h6>
+                    <div class="grid grid-cols-2 gap-2 text-gray-600">
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-ocopGreen transition">Chính Sách Giao Hàng</a></li>
+                            <li><a href="#" class="hover:text-ocopGreen transition">Chính Sách Đổi Trả 100%</a></li>
+                        </ul>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-ocopGreen transition">Chính Sách Thành Viên</a></li>
+                            <li><a href="#" class="hover:text-ocopGreen transition">Hướng Dẫn Thanh Toán VietQR</a></li>
+                            <li><a href="#" class="hover:text-ocopGreen transition">Chính Sách Xuất Hóa Đơn</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Cột 3: Về OCOP Sales Copilot -->
+                <div class="md:col-span-4 space-y-3">
+                    <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">VỀ OCOP SALES COPILOT</h6>
+                    <div class="grid grid-cols-2 gap-2 text-gray-600">
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-ocopGreen transition">Hệ Thống Cửa Hàng OCOP</a></li>
+                            <li><a href="#" class="hover:text-ocopGreen transition">Giới Thiệu Dự Án AI</a></li>
+                        </ul>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-ocopGreen transition">Chính Sách Bảo Vệ Thông Tin</a></li>
+                            <li><a href="#" class="hover:text-ocopGreen transition">Giấy Chứng Nhận Vệ Sinh ATTP</a></li>
+                            <li><a href="#" class="hover:text-ocopGreen transition">Liên Hệ Hợp Tác Doanh Nghiệp</a></li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
+
+            <!-- DÒNG THEO DÕI CHÚNG TÔI (BỎ CÁC ICON TWITTER, INSTAGRAM, LINKEDIN...) -->
+            <div class="pt-6 border-t border-gray-100 space-y-2">
+                <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">THEO DÕI CHÚNG TÔI</h6>
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-600 font-medium text-[11px]">
+                    <a href="#" class="hover:text-ocopGreen transition">Website Siêu Thị OCOP Sales Copilot</a>
+                    <span>•</span>
+                    <a href="https://www.facebook.com/binh.hoang.882202" target="_blank" class="hover:text-ocopGreen transition">Cửa Hàng Facebook OCOP</a>
+                    <span>•</span>
+                    <a href="#" class="hover:text-ocopGreen transition">Zalo OCOP Sales Copilot OA</a>
+                    <span>•</span>
+                    <span>Liên Hệ Hợp Tác & Chào Hàng: <strong class="text-ocopGreen font-bold">merchandise@ocopsalescopilot.vn</strong></span>
+                </div>
+            </div>
+
+            <!-- COPYRIGHT DÒNG CUỐI -->
+            <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center text-[11px] text-gray-500 gap-2">
+                <p>Copyright © 2026 OCOP SALES COPILOT. All Rights Reserved.</p>
+                <p>Phát triển & vận hành bởi <strong class="text-ocopGreen font-bold">Bộ Tứ Siêu Đẳng</strong>.</p>
+            </div>
+
         </div>
     </footer>
 
     <!-- JAVASCRIPT & SMART AI ENGINE -->
     <script>
-        // 1. DỮ LIỆU 20 SẢN PHẨM VỚI LINK ẢNH CHUẨN XÁC 100% VỚI MÓN ĂN
+        // 1. DỮ LIỆU 20 SẢN PHẨM VỚI LINK ẢNH CHUẨN XÁC 100%
         const products = [
             {
                 id: 1,
@@ -871,7 +961,7 @@
 
         const GEMINI_API_KEY = "AQ.Ab8RN6KGOMtYHZsAnPuGcl-" + "WI2c34ghePhBgn4S5UlhPl8j5Yw";
 
-        // TỰ ĐỘNG XỬ LÝ NẾU ẢNH LỖI MẠNG $\rightarrow$ CHUYỂN SANG BADGE MINH HỌA GRAPHIC ĐẸP MẮT
+        // FALLBACK HÌNH ẢNH MINH HỌA NẾU LỖI MẠNG
         function handleImageError(imgElem, pName, pProvince, pStar, iconClass) {
             const parent = imgElem.parentElement;
             if (!parent) return;
@@ -890,7 +980,7 @@
             parent.appendChild(fallbackDiv);
         }
 
-        // RENDER DANH SÁCH 20 SẢN PHẨM
+        // RENDER SẢN PHẨM
         function renderProductsList() {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
@@ -931,7 +1021,7 @@
             }).join('');
         }
 
-        // BỘ LỌC DANH MỤC SIDEBAR CẢI TIẾN
+        // BỘ LỌC DANH MỤC SIDEBAR
         function setCategoryFilter(cat, btnElem) {
             currentFilter = cat;
             document.querySelectorAll('.cat-side-btn').forEach(b => {
@@ -1044,7 +1134,7 @@
                 .replace(/\n/g, '<br>');
         }
 
-        // BỘ NÃO TRỢ LÝ AI COPILOT
+        // AI ENGINE
         function getSmartLocalResponse(query) {
             const q = query.toLowerCase().trim();
 
@@ -1093,7 +1183,7 @@
 
             const chatMessages = document.getElementById('chat-messages');
 
-            // 1. User Msg
+            // User Msg
             const userMsg = document.createElement('div');
             userMsg.className = 'bg-ocopGreen text-white p-3 rounded-2xl shadow-sm max-w-[85%] ml-auto text-left text-xs font-medium';
             userMsg.innerText = query;
@@ -1103,7 +1193,7 @@
 
             chatHistory.push({ role: 'user', parts: [{ text: query }] });
 
-            // 2. Typing Indicator
+            // Typing Indicator
             const typingMsg = document.createElement('div');
             typingMsg.id = 'ai-typing';
             typingMsg.className = 'bg-white p-3.5 rounded-2xl shadow-sm border border-amber-100 max-w-[85%] text-xs text-gray-500 italic flex items-center space-x-2';
@@ -1161,7 +1251,7 @@ Thanh toán hỗ trợ VietQR BIDV tự động.
             }
         }
 
-        // GIỎ HÀNG LOGIC
+        // GIỎ HÀNG
         function addToCart(name, price) {
             const existingItem = cart.find(item => item.name === name);
             if (existingItem) {
