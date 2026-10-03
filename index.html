@@ -19,17 +19,12 @@
                     },
                     animation: {
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'floatBounce 3.5s ease-in-out infinite',
-                        'marquee': 'marquee 22s linear infinite'
+                        'float': 'floatBounce 3.5s ease-in-out infinite'
                     },
                     keyframes: {
                         floatBounce: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-8px)' }
-                        },
-                        marquee: {
-                            '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-50%)' }
                         }
                     }
                 }
@@ -52,9 +47,6 @@
             background-position: 0 0, 16px 16px;
             opacity: 0.12;
         }
-        .marquee-container:hover .animate-marquee {
-            animation-play-state: paused;
-        }
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -76,7 +68,7 @@
     <!-- TOAST NOTIFICATION -->
     <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-    <!-- HEADER TÍCH HỢP HOTLINE SUPPORT, CỤM ICON TRÒN & CHUYỂN NGÔN NGỮ (GIỐNG ÁNH image_c70ae2.png) -->
+    <!-- HEADER TÍCH HỢP HOTLINE SUPPORT, CỤM ICON TRÒN & CHUYỂN NGÔN NGỮ (VI/EN) -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-900/10 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
             
@@ -95,10 +87,10 @@
             <nav class="hidden lg:flex items-center space-x-8 font-bold text-sm">
                 <a href="#" class="text-ocopGreen font-extrabold border-b-2 border-ocopGold pb-1 transition" id="i18n-nav-home">Trang chủ</a>
                 <a href="#products-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-products">Danh mục 20 Đặc sản</a>
-                <a href="#why-us-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-why">Vì sao chọn OCOP</a>
+                <a href="#contact-footer" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-contact">Liên hệ & Hỗ trợ</a>
             </nav>
 
-            <!-- CỤM HOTLINE SUPPORT & NÚT TRÒN CHỨC NĂNG (THEO MẪU GIỐNG ÁNH image_c70ae2.png) -->
+            <!-- CỤM HOTLINE SUPPORT & NÚT TRÒN CHỨC NĂNG -->
             <div class="flex items-center space-x-4 sm:space-x-6">
                 
                 <!-- Khối Hotline Support (0971.280.030) -->
@@ -112,27 +104,23 @@
                     </div>
                 </div>
 
-                <!-- Cụm Các Icon Nút Tròn (Profile, Wishlist, Cart, Language VI/EN) -->
+                <!-- Cụm Icon Nút Tròn (Profile, Wishlist, Cart, Language VI/EN) -->
                 <div class="flex items-center space-x-2 sm:space-x-3">
                     
-                    <!-- Nút User Profile -->
                     <button class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm" title="Tài khoản">
                         <i class="fa-regular fa-user text-sm"></i>
                     </button>
 
-                    <!-- Nút Wishlist Thả Tim -->
                     <button onclick="showWishlistToast()" class="relative w-10 h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm" title="Sản phẩm yêu thích">
                         <i class="fa-regular fa-heart text-sm"></i>
                         <span id="wishlist-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
                     </button>
 
-                    <!-- Nút Giỏ Hàng Cart -->
                     <button onclick="toggleCart()" class="relative w-10 h-10 rounded-full bg-red-50 hover:bg-red-100 text-ocopGreen flex items-center justify-center transition shadow-sm" title="Giỏ hàng">
                         <i class="fa-solid fa-basket-shopping text-sm"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
                     </button>
 
-                    <!-- Nút Chuyển Đổi Ngôn Ngữ Tròn (VI / EN) -->
                     <button onclick="toggleLanguage()" id="lang-btn" class="w-10 h-10 rounded-full bg-[#f3e3ca] hover:bg-[#e2d1b8] text-ocopGreen font-extrabold text-xs flex items-center justify-center transition shadow-sm border border-amber-200" title="Chuyển đổi Ngôn Ngữ (VI/EN)">
                         VI
                     </button>
@@ -196,99 +184,6 @@
                             </div>
                             <span class="font-extrabold text-red-600 text-sm">2.450.000 ₫</span>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- BANNER CHUYỂN ĐỘNG LIÊN TỤC INFINITE SLIDER -->
-        <section id="why-us-section" class="py-8 bg-white/80 backdrop-blur border-y border-amber-200/60 my-4">
-            <div class="max-w-7xl mx-auto px-4 mb-5 text-center">
-                <span class="text-xs font-bold text-amber-800 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-200" id="i18n-why-tag">Cam Kết Chất Lượng</span>
-                <h3 class="text-2xl font-extrabold text-gray-900 mt-2" id="i18n-why-title">VÌ SAO THỰC KHÁCH CHỌN OCOP SALES COPILOT?</h3>
-            </div>
-
-            <div class="marquee-container overflow-hidden w-full relative">
-                <div class="animate-marquee flex space-x-6 w-[200%]">
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 text-3xl mb-2.5 border border-amber-100">
-                            <i class="fa-solid fa-utensils"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1" id="i18n-marquee1-t">Món ăn chuẩn vị & Đầy đặn</h4>
-                        <p class="text-[11px] text-gray-500" id="i18n-marquee1-d">Đặc sản chọn lọc 100% nguyên chất, giữ trọn hương vị truyền thống.</p>
-                    </div>
-
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-2.5 border border-emerald-100">
-                            <i class="fa-solid fa-box-open"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1" id="i18n-marquee2-t">Đóng gói sang trọng & Tiện lợi</h4>
-                        <p class="text-[11px] text-gray-500" id="i18n-marquee2-d">Bao bì hộp quà biếu lịch sự, thích hợp biếu Sếp & Người thân.</p>
-                    </div>
-
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 text-3xl mb-2.5 border border-blue-100">
-                            <i class="fa-solid fa-headset"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1" id="i18n-marquee3-t">Trợ lý AI chăm sóc tận tâm</h4>
-                        <p class="text-[11px] text-gray-500" id="i18n-marquee3-d">Tư vấn thông minh 24/7 theo ngân sách và nhu cầu sức khỏe.</p>
-                    </div>
-
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 text-3xl mb-2.5 border border-red-100">
-                            <i class="fa-solid fa-truck-fast"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1" id="i18n-marquee4-t">Giao hàng tận nơi toàn quốc</h4>
-                        <p class="text-[11px] text-gray-500" id="i18n-marquee4-d">Vận chuyển nhanh chóng, bảo quản món ăn luôn tươi ngon.</p>
-                    </div>
-
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-yellow-50 rounded-2xl flex items-center justify-center text-yellow-600 text-3xl mb-2.5 border border-yellow-100">
-                            <i class="fa-solid fa-certificate"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1" id="i18n-marquee5-t">Chứng nhận OCOP 4 - 5 Sao</h4>
-                        <p class="text-[11px] text-gray-500" id="i18n-marquee5-d">Sản phẩm có nguồn gốc xuất xứ rõ ràng từ các vùng miền.</p>
-                    </div>
-
-                    <!-- DUPLICATE CARDS -->
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600 text-3xl mb-2.5 border border-amber-100">
-                            <i class="fa-solid fa-utensils"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1">Món ăn chuẩn vị & Đầy đặn</h4>
-                        <p class="text-[11px] text-gray-500">Đặc sản chọn lọc 100% nguyên chất, giữ trọn hương vị truyền thống.</p>
-                    </div>
-
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 text-3xl mb-2.5 border border-emerald-100">
-                            <i class="fa-solid fa-box-open"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1">Đóng gói sang trọng & Tiện lợi</h4>
-                        <p class="text-[11px] text-gray-500">Bao bì hộp quà biếu lịch sự, thích hợp biếu Sếp & Người thân.</p>
-                    </div>
-
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 text-3xl mb-2.5 border border-blue-100">
-                            <i class="fa-solid fa-headset"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1">Trợ lý AI chăm sóc tận tâm</h4>
-                        <p class="text-[11px] text-gray-500">Tư vấn thông minh 24/7 theo ngân sách và nhu cầu sức khỏe.</p>
-                    </div>
-
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 text-3xl mb-2.5 border border-red-100">
-                            <i class="fa-solid fa-truck-fast"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1">Giao hàng tận nơi toàn quốc</h4>
-                        <p class="text-[11px] text-gray-500">Vận chuyển nhanh chóng, bảo quản món ăn luôn tươi ngon.</p>
-                    </div>
-
-                    <div class="bg-white border border-amber-200/80 p-4 rounded-2xl shadow-sm flex flex-col items-center text-center w-72 flex-shrink-0">
-                        <div class="w-16 h-16 bg-yellow-50 rounded-2xl flex items-center justify-center text-yellow-600 text-3xl mb-2.5 border border-yellow-100">
-                            <i class="fa-solid fa-certificate"></i>
-                        </div>
-                        <h4 class="font-bold text-xs text-gray-900 mb-1">Chứng nhận OCOP 4 - 5 Sao</h4>
-                        <p class="text-[11px] text-gray-500">Sản phẩm có nguồn gốc xuất xứ rõ ràng từ các vùng miền.</p>
                     </div>
                 </div>
             </div>
@@ -662,8 +557,8 @@
         </div>
     </div>
 
-    <!-- FOOTER CAO CẤP VỚI HOTLINE MỚI 0971280030 -->
-    <footer class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
+    <!-- FOOTER CAO CẤP VỚI EMAIL HỢP TÁC DOANH NGHIỆP MỚI -->
+    <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             
             <!-- THÔNG TIN PHÁP LÝ & BADGE ĐÃ THÔNG BÁO BỘ CÔNG THƯƠNG -->
@@ -676,7 +571,7 @@
                     </p>
                 </div>
                 
-                <!-- BADGE BỘ CÔNG THƯƠNG CHUẨN MẪU -->
+                <!-- BADGE BỘ CÔNG THƯƠNG -->
                 <div class="flex-shrink-0">
                     <div class="border-2 border-[#0072bc] rounded-xl px-3.5 py-1.5 flex items-center space-x-2 bg-blue-50/50 shadow-sm">
                         <i class="fa-solid fa-circle-check text-[#0072bc] text-xl"></i>
@@ -744,7 +639,7 @@
 
             </div>
 
-            <!-- DÒNG THEO DÕI CHÚNG TÔI -->
+            <!-- DÒNG THEO DÕI CHÚNG TÔI (EMAIL ĐÃ ĐỔI THÀNH hoptac@ocopsalescopilot.vn) -->
             <div class="pt-6 border-t border-gray-100 space-y-2">
                 <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">THEO DÕI CHÚNG TÔI</h6>
                 <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-600 font-medium text-[11px]">
@@ -754,7 +649,7 @@
                     <span>•</span>
                     <a href="#" class="hover:text-ocopGreen transition">Zalo OCOP Sales Copilot OA</a>
                     <span>•</span>
-                    <span>Liên Hệ Hợp Tác & Chào Hàng: <strong class="text-ocopGreen font-bold">merchandise@ocopsalescopilot.vn</strong></span>
+                    <span>Liên Hệ Hợp Tác & Chào Hàng: <strong class="text-ocopGreen font-bold">hoptac@ocopsalescopilot.vn</strong></span>
                 </div>
             </div>
 
@@ -772,7 +667,7 @@
         let currentLang = 'vi'; // 'vi' hoặc 'en'
         let wishlistCount = 0;
 
-        // DỊCH THUẬT TIẾNG VIỆT & TIẾNG ANH CHO 20 ĐẶC SẢN
+        // DỮ LIỆU 20 SẢN PHẨM HOÀN CHỈNH THÔNG TIN VI/EN
         const products = [
             {
                 id: 1,
@@ -829,6 +724,7 @@
             {
                 id: 5,
                 nameVi: "Cà phê Arabica Cầu Đất (500g)",
+                nameEn: "Cau Dat Arabica Coffee (500g)",
                 price: 240000,
                 star: 5,
                 province: "Đà Lạt",
@@ -1041,7 +937,7 @@
 
         const GEMINI_API_KEY = "AQ.Ab8RN6KGOMtYHZsAnPuGcl-" + "WI2c34ghePhBgn4S5UlhPl8j5Yw";
 
-        // TỰ ĐỘNG CHUYỂN NGÔN NGỮ (VI <-> EN)
+        // CHUYỂN NGÔN NGỮ SONG NGỮ VI / EN
         function toggleLanguage() {
             currentLang = (currentLang === 'vi') ? 'en' : 'vi';
             document.getElementById('lang-btn').innerText = currentLang.toUpperCase();
@@ -1050,7 +946,7 @@
                 document.getElementById('i18n-subbrand').innerText = "National 4-5 Star Specialties";
                 document.getElementById('i18n-nav-home').innerText = "Home";
                 document.getElementById('i18n-nav-products').innerText = "20 OCOP Specialties";
-                document.getElementById('i18n-nav-why').innerText = "Why Choose OCOP";
+                document.getElementById('i18n-nav-contact').innerText = "Contact & Support";
                 document.getElementById('i18n-hero-badge').innerText = "National One Commune One Product Program";
                 document.getElementById('i18n-hero-title1').innerText = "Discover The Essence Of";
                 document.getElementById('i18n-hero-title2').innerText = "20 Vietnamese Specialties";
@@ -1058,18 +954,6 @@
                 document.getElementById('i18n-btn-view20').innerText = "View 20 OCOP Specialties";
                 document.getElementById('i18n-btn-ai').innerText = "Consult with AI Now";
                 document.getElementById('i18n-hero-prodname').innerText = "Khanh Hoa Premium Bird's Nest";
-                document.getElementById('i18n-why-tag').innerText = "Quality Commitment";
-                document.getElementById('i18n-why-title').innerText = "WHY DO CUSTOMERS CHOOSE OCOP SALES COPILOT?";
-                document.getElementById('i18n-marquee1-t').innerText = "Authentic & Generous Dishes";
-                document.getElementById('i18n-marquee1-d').innerText = "100% pure selected specialties preserving traditional flavors.";
-                document.getElementById('i18n-marquee2-t').innerText = "Luxury & Convenient Packaging";
-                document.getElementById('i18n-marquee2-d').innerText = "Elegant gift boxes suitable for Bosses & Loved ones.";
-                document.getElementById('i18n-marquee3-t').innerText = "Dedicated AI Assistant Care";
-                document.getElementById('i18n-marquee3-d').innerText = "24/7 smart consultation based on budget and health needs.";
-                document.getElementById('i18n-marquee4-t').innerText = "Nationwide Delivery";
-                document.getElementById('i18n-marquee4-d').innerText = "Fast shipping preserving food freshness.";
-                document.getElementById('i18n-marquee5-t').innerText = "4 - 5 Star OCOP Certification";
-                document.getElementById('i18n-marquee5-d').innerText = "Clear regional origin for all items.";
 
                 document.getElementById('i18n-cat-header').innerText = "Product Categories";
                 document.getElementById('i18n-cat-all').innerText = "All Specialties";
@@ -1087,7 +971,7 @@
                 document.getElementById('i18n-subbrand').innerText = "Đặc Sản Chuẩn Quốc Gia 4 - 5 Sao";
                 document.getElementById('i18n-nav-home').innerText = "Trang chủ";
                 document.getElementById('i18n-nav-products').innerText = "Danh mục 20 Đặc sản";
-                document.getElementById('i18n-nav-why').innerText = "Vì sao chọn OCOP";
+                document.getElementById('i18n-nav-contact').innerText = "Liên hệ & Hỗ trợ";
                 document.getElementById('i18n-hero-badge').innerText = "Chương Trình Quốc Gia Mỗi Xã Một Sản Phẩm";
                 document.getElementById('i18n-hero-title1').innerText = "Khám Phá Tinh Hoa";
                 document.getElementById('i18n-hero-title2').innerText = "20 Đặc Sản Việt Nam";
@@ -1095,18 +979,6 @@
                 document.getElementById('i18n-btn-view20').innerText = "Xem 20 Đặc Sản OCOP";
                 document.getElementById('i18n-btn-ai').innerText = "Tư vấn cùng AI ngay";
                 document.getElementById('i18n-hero-prodname').innerText = "Yến Sào Khánh Hòa Thượng Hạng";
-                document.getElementById('i18n-why-tag').innerText = "Cam Kết Chất Lượng";
-                document.getElementById('i18n-why-title').innerText = "VÌ SAO THỰC KHÁCH CHỌN OCOP SALES COPILOT?";
-                document.getElementById('i18n-marquee1-t').innerText = "Món ăn chuẩn vị & Đầy đặn";
-                document.getElementById('i18n-marquee1-d').innerText = "Đặc sản chọn lọc 100% nguyên chất, giữ trọn hương vị truyền thống.";
-                document.getElementById('i18n-marquee2-t').innerText = "Đóng gói sang trọng & Tiện lợi";
-                document.getElementById('i18n-marquee2-d').innerText = "Bao bì hộp quà biếu lịch sự, thích hợp biếu Sếp & Người thân.";
-                document.getElementById('i18n-marquee3-t').innerText = "Trợ lý AI chăm sóc tận tâm";
-                document.getElementById('i18n-marquee3-d').innerText = "Tư vấn thông minh 24/7 theo ngân sách và nhu cầu sức khỏe.";
-                document.getElementById('i18n-marquee4-t').innerText = "Giao hàng tận nơi toàn quốc";
-                document.getElementById('i18n-marquee4-d').innerText = "Vận chuyển nhanh chóng, bảo quản món ăn luôn tươi ngon.";
-                document.getElementById('i18n-marquee5-t').innerText = "Chứng nhận OCOP 4 - 5 Sao";
-                document.getElementById('i18n-marquee5-d').innerText = "Sản phẩm có nguồn gốc xuất xứ rõ ràng từ các vùng miền.";
 
                 document.getElementById('i18n-cat-header').innerText = "Danh Mục Sản Phẩm";
                 document.getElementById('i18n-cat-all').innerText = "Tất cả đặc sản";
@@ -1132,7 +1004,7 @@
             showToast(currentLang === 'vi' ? "Đã thêm đặc sản vào mục yêu thích!" : "Added specialty to wishlist!");
         }
 
-        // FALLBACK HÌNH ẢNH
+        // FALLBACK HÌNH ẢNH MINH HỌA
         function handleImageError(imgElem, pName, pProvince, pStar, iconClass) {
             const parent = imgElem.parentElement;
             if (!parent) return;
@@ -1151,22 +1023,24 @@
             parent.appendChild(fallbackDiv);
         }
 
-        // RENDER SẢN PHẨM PHÙ HỢP NGÔN NGỮ
+        // RENDER DANH SÁCH SẢN PHẨM HOÀN CHỈNH
         function renderProductsList() {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
 
             grid.innerHTML = products.map(p => {
-                const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
-                const desc = (currentLang === 'en') ? p.descEn : p.descVi;
+                const name = (currentLang === 'en') ? (p.nameEn || p.nameVi) : p.nameVi;
+                const desc = (currentLang === 'en') ? (p.descEn || p.descVi) : p.descVi;
                 const btnText = (currentLang === 'en') ? "Add to Cart" : "Thêm giỏ";
                 const isStar5 = p.star === 5;
                 const starBadge = isStar5 ? 
                     `<span class="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30"><i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 ${currentLang==='en'?'Star':'Sao'}</span>` :
                     `<span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30"><i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 ${currentLang==='en'?'Star':'Sao'}</span>`;
 
+                const dataNameStr = `${(p.nameVi||'').toLowerCase()} ${(p.nameEn||'').toLowerCase()} ${(p.province||'').toLowerCase()}`;
+
                 return `
-                <div class="product-card bg-white/95 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="${p.category}" data-name="${p.nameVi.toLowerCase()} ${p.nameEn.toLowerCase()} ${p.province.toLowerCase()}">
+                <div class="product-card bg-white/95 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="${p.category}" data-name="${dataNameStr}">
                     <div class="h-48 overflow-hidden relative bg-amber-50">
                         <img src="${p.image}" alt="${name}" 
                              onerror="handleImageError(this, '${name}', '${p.province}', ${p.star}, '${p.icon}')" 
@@ -1193,9 +1067,11 @@
                 </div>
                 `;
             }).join('');
+
+            filterProducts();
         }
 
-        // BỘ LỌC DANH MỤC SIDEBAR
+        // BỘ LỌC DANH MỤC SIDEBAR & TÌM KIẾM
         function setCategoryFilter(cat, btnElem) {
             currentFilter = cat;
             document.querySelectorAll('.cat-side-btn').forEach(b => {
@@ -1211,7 +1087,8 @@
         }
 
         function filterProducts() {
-            const query = document.getElementById('product-search').value.toLowerCase().trim();
+            const queryInput = document.getElementById('product-search');
+            const query = queryInput ? queryInput.value.toLowerCase().trim() : '';
             const cards = document.querySelectorAll('.product-card');
             let visibleCount = 0;
 
@@ -1231,12 +1108,15 @@
             });
 
             const noMsg = document.getElementById('no-products-msg');
-            if (visibleCount === 0) noMsg.classList.remove('hidden');
-            else noMsg.classList.add('hidden');
+            if (noMsg) {
+                if (visibleCount === 0) noMsg.classList.remove('hidden');
+                else noMsg.classList.add('hidden');
+            }
         }
 
         function resetFilters() {
-            document.getElementById('product-search').value = '';
+            const queryInput = document.getElementById('product-search');
+            if (queryInput) queryInput.value = '';
             setCategoryFilter('all');
         }
 
