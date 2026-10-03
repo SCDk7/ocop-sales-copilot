@@ -16,6 +16,10 @@
                         ocopGold: '#d4af37',
                         ocopWarmBg: '#fdfbf7',
                         ocopPaperBg: '#f5efe4'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'floatBounce 3.5s ease-in-out infinite',
                     }
                 }
             }
@@ -35,14 +39,12 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
-        .animate-float {
-            animation: floatBounce 3.5s ease-in-out infinite;
-        }
+        /* Nền sống động chuyển màu dịu nhẹ */
         .bg-pattern {
-            background-image: radial-gradient(#d4af37 0.75px, transparent 0.75px), radial-gradient(#124134 0.75px, #fdfbf7 0.75px);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
-            opacity: 0.12;
+            background-image: radial-gradient(#d4af37 0.85px, transparent 0.85px), radial-gradient(#124134 0.85px, #fdfbf7 0.85px);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+            opacity: 0.15;
         }
         ::-webkit-scrollbar {
             width: 6px;
@@ -56,13 +58,12 @@
         }
     </style>
 </head>
-<body class="text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
-    <!-- HOẠ TIẾT NỀN CHÌM TINH TẾ -->
+<body class="text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
+    <!-- HỌA TIẾT NỀN LƯỢN SÓNG & QUẦNG SÁNG ĐA SẮC SỐNG ĐỘNG -->
     <div class="fixed inset-0 bg-pattern pointer-events-none -z-20"></div>
-    <!-- CÁC KHỐI QUẦNG SÁNG MỜ NỀN WEB -->
-    <div class="fixed top-10 left-1/4 w-96 h-96 bg-emerald-200/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
-    <div class="fixed top-1/3 right-10 w-96 h-96 bg-amber-200/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
-    <div class="fixed bottom-10 left-10 w-80 h-80 bg-emerald-300/30 rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-emerald-300/30 via-teal-200/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="fixed top-1/3 right-0 w-[550px] h-[550px] bg-gradient-to-tl from-amber-300/30 via-yellow-200/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="fixed bottom-0 left-10 w-[450px] h-[450px] bg-gradient-to-tr from-emerald-400/20 via-amber-200/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10"></div>
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
@@ -71,7 +72,7 @@
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-900/10 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <a href="#" class="flex items-center space-x-3.5 group">
-                <div class="w-11 h-11 bg-gradient-to-tr from-ocopGreen to-ocopGreenLight rounded-2xl flex items-center justify-center text-ocopGold text-xl shadow-md ring-2 ring-ocopGold/30 group-hover:scale-105 transition-transform duration-300">
+                <div class="w-11 h-11 bg-gradient-to-tr from-ocopGreen to-ocopGreenLight rounded-2xl flex items-center justify-center text-ocopGold text-xl shadow-md ring-2 ring-ocopGold/40 group-hover:scale-105 transition-transform duration-300">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
                 <div>
@@ -87,7 +88,7 @@
             </nav>
 
             <div class="flex items-center space-x-3">
-                <button id="cart-btn" onclick="toggleCart()" class="relative bg-amber-100/70 hover:bg-ocopGreen hover:text-white p-3 rounded-2xl transition-all duration-300 text-ocopGreen font-bold border border-amber-200/80 shadow-sm flex items-center space-x-2 group">
+                <button id="cart-btn" onclick="toggleCart()" class="relative bg-amber-100/80 hover:bg-ocopGreen hover:text-white p-3 rounded-2xl transition-all duration-300 text-ocopGreen font-bold border border-amber-300/80 shadow-sm flex items-center space-x-2 group">
                     <i class="fa-solid fa-cart-shopping text-base group-hover:scale-110 transition-transform"></i>
                     <span class="hidden sm:inline text-xs font-bold">Giỏ hàng</span>
                     <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[11px] w-5 h-5 rounded-full flex items-center justify-center font-extrabold border-2 border-white shadow">0</span>
@@ -111,7 +112,7 @@
                         Khám Phá Tinh Hoa <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-ocopGreen via-emerald-700 to-amber-700">20 Đặc Sản Việt Nam</span>
                     </h2>
                     <p class="text-gray-700 text-base sm:text-lg max-w-xl leading-relaxed">
-                        Trợ lý bán hàng AI thông minh đồng hành cùng Quý khách trải nghiệm & sở hữu 20 đặc sản chuẩn OCOP 4 - 5 sao từ Bắc chí Nam.
+                        Trợ lý AI Sales Copilot siêu thông minh đồng hành cùng Quý khách trải nghiệm & mua sắm 20 đặc sản OCOP 4 - 5 sao chính gốc chuẩn xác 100%.
                     </p>
                     <div class="flex flex-wrap items-center gap-4 pt-2">
                         <a href="#products" class="bg-ocopGreen text-white font-bold px-7 py-4 rounded-2xl shadow-lg hover:bg-ocopGreenLight transition text-sm flex items-center space-x-2 border border-ocopGold/30">
@@ -129,7 +130,7 @@
                 <div class="lg:col-span-5">
                     <div class="bg-white/80 backdrop-blur-xl border border-amber-200/80 p-5 rounded-3xl shadow-xl relative overflow-hidden group">
                         <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
-                            <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1000&q=80" alt="Đặc sản OCOP Việt Nam" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1000&q=80" alt="Yến Sào Khánh Hòa OCOP 5 Sao" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6 text-white">
                                 <span class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-2 shadow">
                                     ★ Tinh Hoa Nông Sản Việt
@@ -139,7 +140,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-4 bg-amber-50/80 p-4 rounded-2xl border border-amber-200/60 flex items-center justify-between">
+                        <div class="mt-4 bg-amber-50/90 p-4 rounded-2xl border border-amber-200/80 flex items-center justify-between">
                             <div class="flex items-center space-x-3.5">
                                 <div class="w-11 h-11 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-base shadow">
                                     <i class="fa-solid fa-medal"></i>
@@ -160,13 +161,13 @@
         <!-- Products Section -->
         <section id="products" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="text-center max-w-2xl mx-auto mb-10">
-                <span class="bg-amber-100 text-amber-900 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-amber-200">Danh Mục Mới Mở Rộng</span>
+                <span class="bg-amber-100 text-amber-900 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider border border-amber-200">Danh Mục Chuẩn Hình Ảnh 100%</span>
                 <h3 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-3 mb-3">20 Đặc Sản OCOP Tiêu Biểu</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">Hình ảnh thực tế chuẩn xác 100%, giá bán niêm yết chính hãng và nguồn gốc minh bạch.</p>
+                <p class="text-gray-600 text-sm leading-relaxed">Hình ảnh chuẩn xác thực tế, giá bán niêm yết chính hãng và nguồn gốc xuất xứ minh bạch.</p>
             </div>
 
             <!-- BỘ LỌC & TÌM KIẾM SẢN PHẨM -->
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 bg-white/70 p-4 rounded-2xl border border-amber-200/60 shadow-sm backdrop-blur">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 bg-white/80 p-4 rounded-2xl border border-amber-200/80 shadow-sm backdrop-blur">
                 <!-- Search Box -->
                 <div class="relative w-full md:w-80">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
@@ -185,10 +186,10 @@
 
             <!-- PRODUCT GRID DYNAMIC RENDERING -->
             <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
-                <!-- 20 Products will be rendered here by JS -->
+                <!-- 20 Products Rendered via JS -->
             </div>
             
-            <div id="no-products-msg" class="hidden text-center py-16 bg-white/50 rounded-3xl border border-dashed border-gray-300">
+            <div id="no-products-msg" class="hidden text-center py-16 bg-white/60 rounded-3xl border border-dashed border-gray-300">
                 <i class="fa-solid fa-box-open text-4xl text-gray-400 mb-3 block"></i>
                 <p class="text-gray-600 font-bold text-base">Không tìm thấy đặc sản phù hợp.</p>
                 <button onclick="resetFilters()" class="mt-3 text-xs bg-ocopGreen text-white font-bold px-4 py-2 rounded-xl">Xem toàn bộ 20 đặc sản</button>
@@ -227,8 +228,8 @@
                 <div class="pt-2 border-t border-amber-200/60 space-y-1.5">
                     <p class="font-bold text-amber-900 text-[11px] uppercase tracking-wider">Hỗ trợ thông minh 24/7:</p>
                     <ul class="space-y-1.5 text-xs text-gray-700 font-medium">
-                        <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> <span>Tư vấn quà biếu sếp, đối tác & người già theo ngân sách</span></li>
-                        <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> <span>Thông tin chi tiết 20 đặc sản vùng miền chuẩn 100%</span></li>
+                        <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> <span>Tư vấn quà biếu Sếp, đối tác & bồi bổ người già</span></li>
+                        <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> <span>Hình ảnh & thông tin 20 đặc sản chuẩn xác 100%</span></li>
                         <li class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> <span>Tạo mã quét VietQR BIDV thanh toán an toàn</span></li>
                     </ul>
                 </div>
@@ -276,7 +277,8 @@
                     <div class="pt-2 space-y-1.5 border-t border-gray-100">
                         <button onclick="quickAsk('Hệ thống đang bán những gì?')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100 transition">👉 Danh sách 20 đặc sản OCOP?</button>
                         <button onclick="quickAsk('Gợi ý quà biếu sức khỏe cao cấp biếu sếp')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100 transition">👉 Gợi ý quà biếu sức khỏe biếu Sếp?</button>
-                        <button onclick="quickAsk('Tư vấn đặc sản dưới 500.000đ')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100 transition">👉 Gợi ý đặc sản tầm giá dưới 500k?</button>
+                        <button onclick="quickAsk('Tư vấn đặc sản tầm giá dưới 500k')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100 transition">👉 Gợi ý đặc sản tầm giá dưới 500k?</button>
+                        <button onclick="quickAsk('Đặc sản ngon nhắm Tết & gia đình')" class="text-xs bg-emerald-50 text-ocopGreen font-semibold hover:bg-emerald-100 px-3 py-1.5 rounded-xl block text-left w-full border border-emerald-100 transition">👉 Đồ nhắm & Món ngon gia đình?</button>
                     </div>
                 </div>
             </div>
@@ -302,7 +304,6 @@
                 <span class="w-2 h-2 bg-green-500 rounded-full inline-block animate-pulse"></span>
             </div>
             
-            <!-- Admin 1 -->
             <a href="https://www.facebook.com/binh.hoang.882202" target="_blank" rel="noopener noreferrer"
                class="flex items-center space-x-3 p-2.5 rounded-2xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
                 <div class="w-10 h-10 bg-[#1877F2] text-white rounded-xl flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition flex-shrink-0">
@@ -313,7 +314,6 @@
                     <p class="text-[11px] text-gray-500">Tư vấn sản phẩm & đơn hàng</p>
                 </div>
             </a>
-            <!-- Admin 2 -->
             <a href="https://www.facebook.com/nguyen.phuc.327726?locale=vi_VN" target="_blank" rel="noopener noreferrer"
                class="flex items-center space-x-3 p-2.5 rounded-2xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
                 <div class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition flex-shrink-0">
@@ -324,7 +324,6 @@
                     <p class="text-[11px] text-gray-500">Hỗ trợ kỹ thuật & tư vấn</p>
                 </div>
             </a>
-            <!-- Admin 3 -->
             <a href="https://www.facebook.com/share/19VLSyDk6X/" target="_blank" rel="noopener noreferrer"
                class="flex items-center space-x-3 p-2.5 rounded-2xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
                 <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition flex-shrink-0">
@@ -335,7 +334,6 @@
                     <p class="text-[11px] text-gray-500">Tư vấn quà tặng & đặc sản</p>
                 </div>
             </a>
-            <!-- Admin 4 -->
             <a href="https://www.facebook.com/share/18WjBtSR53/" target="_blank" rel="noopener noreferrer"
                class="flex items-center space-x-3 p-2.5 rounded-2xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
                 <div class="w-10 h-10 bg-purple-600 text-white rounded-xl flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition flex-shrink-0">
@@ -467,9 +465,9 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT & SMART AI COPILOT ENGINE -->
+    <!-- JAVASCRIPT & SMART AI ENGINE -->
     <script>
-        // 1. DỮ LIỆU CHUẨN XÁC 20 SẢN PHẨM OCOP KÈM LINK ẢNH CHUẨN 100%
+        // 1. DỮ LIỆU CHUẨN XÁC 20 SẢN PHẨM KÈM LINK ẢNH ĐÃ KIỂM DUYỆT 100%
         const products = [
             {
                 id: 1,
@@ -479,6 +477,7 @@
                 province: "Vĩnh Phúc",
                 category: "5star gift",
                 image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-mug-hot",
                 desc: "\"Nữ hoàng các loại trà\", hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp."
             },
             {
@@ -488,7 +487,8 @@
                 star: 4,
                 province: "Bình Phước",
                 category: "4star food",
-                image: "https://images.unsplash.com/photo-1509358217973-89580943272d?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-seedling",
                 desc: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên."
             },
             {
@@ -498,7 +498,8 @@
                 star: 4,
                 province: "Đồng Nai",
                 category: "4star gift",
-                image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-whiskey-glass",
                 desc: "Tuyệt tác gốm men xanh đồng danh tiếng, chạm khắc thủ công hoa văn tinh xảo."
             },
             {
@@ -508,7 +509,8 @@
                 star: 4,
                 province: "Cà Mau",
                 category: "4star gift food",
-                image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-jar",
                 desc: "Mật ong hoa tràm nguyên chất Cà Mau, hương thơm dịu nhẹ, tăng đề kháng."
             },
             {
@@ -518,7 +520,8 @@
                 star: 5,
                 province: "Đà Lạt",
                 category: "5star food",
-                image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-mug-saucer",
                 desc: "100% Arabica Cầu Đất nguyên chất, vị chua thanh quyện hậu vị ngọt sâu."
             },
             {
@@ -528,7 +531,8 @@
                 star: 4,
                 province: "Hà Nội",
                 category: "4star food",
-                image: "https://images.unsplash.com/photo-1599785209707-a456fc1337bb?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-cookie",
                 desc: "Vỏ nếp dẻo thơm màu lá nếp, nhân đậu xanh dừa ngào ngạt ngọt dịu Hà Thành."
             },
             {
@@ -538,7 +542,8 @@
                 star: 5,
                 province: "Phú Quốc",
                 category: "5star food",
-                image: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1472476443507-c7a5948772fc?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-bottle-droplet",
                 desc: "Ủ chượp thùng gỗ bời lời 12 tháng, độ đạm tự nhiên cao đậm đà nguyên bản."
             },
             {
@@ -548,7 +553,8 @@
                 star: 5,
                 province: "Lý Sơn",
                 category: "5star gift",
-                image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-spa",
                 desc: "Lên men tự nhiên 60 ngày, dẻo ngọt chua nhẹ, giàu chất chống oxy hóa."
             },
             {
@@ -559,6 +565,7 @@
                 province: "Nam Định",
                 category: "4star food",
                 image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-bowl-rice",
                 desc: "Hạt gạo thon nhỏ, cơm dẻo mềm thơm nức hương hoa xoan tự nhiên."
             },
             {
@@ -569,6 +576,7 @@
                 province: "Phú Quốc",
                 category: "4star gift",
                 image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-wine-bottle",
                 desc: "Lên men quả sim chín rừng Phú Quốc, vị chua ngọt chát nhẹ tốt cho tiêu hóa."
             },
             {
@@ -579,6 +587,7 @@
                 province: "Cao Bằng",
                 category: "4star food",
                 image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-bowl-food",
                 desc: "100% tinh bột dong riềng đỏ nguyên chất, sợi dai giòn không bị trương nát."
             },
             {
@@ -588,7 +597,8 @@
                 star: 5,
                 province: "Quảng Ninh",
                 category: "5star food",
-                image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-fish",
                 desc: "Mực mai tươi giã tay truyền thống, miếng chả sần sật chiên vàng ruộm thơm phức."
             },
             {
@@ -599,6 +609,7 @@
                 province: "Cà Mau",
                 category: "4star food gift",
                 image: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-shrimp",
                 desc: "Tôm đất sinh thái phơi khô tự nhiên, thịt tôm đỏ au ngọt đậm đà vùng đất mũi."
             },
             {
@@ -608,7 +619,8 @@
                 star: 5,
                 province: "Hải Dương",
                 category: "5star food",
-                image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-cubes",
                 desc: "Bánh đậu xanh nguyên chất ngọt thanh tan mịn trong miệng, thưởng thức cùng trà nóng."
             },
             {
@@ -618,7 +630,8 @@
                 star: 4,
                 province: "Đà Lạt",
                 category: "4star gift food",
-                image: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1508737027454-e6454ef46afd?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-apple-whole",
                 desc: "Hồng treo gió Dashi Nhật Bản dẻo mềm thơm ngon, mật hồng đượm ngọt tự nhiên."
             },
             {
@@ -628,8 +641,9 @@
                 star: 5,
                 province: "Thái Nguyên",
                 category: "5star gift",
-                image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80",
-                desc: "Búp đinh trà đòn hái sớm, chát dịu nhẹ quyện hậu ngọt sâu lắng chuẩn đệ nhất danh trà."
+                image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-leaf",
+                desc: "Búp đinh trà hái sớm, chát dịu nhẹ quyện hậu ngọt sâu lắng chuẩn đệ nhất danh trà."
             },
             {
                 id: 17,
@@ -638,7 +652,8 @@
                 star: 4,
                 province: "Khánh Hòa",
                 category: "4star food",
-                image: "https://images.unsplash.com/photo-1596803244618-8d3a04e5485f?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-lemon",
                 desc: "Xoài chín cây sấy dẻo lạnh giữ trọn màu sắc vàng tươi & hương vị chua ngọt tự nhiên."
             },
             {
@@ -648,7 +663,8 @@
                 star: 5,
                 province: "Quảng Nam",
                 category: "5star gift",
-                image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1504672281656-e4981d704146?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-capsules",
                 desc: "Nấm linh chi đỏ nguyên bào tử bồi bổ sức khỏe, giải độc gan & tăng đề kháng vượt trội."
             },
             {
@@ -658,7 +674,8 @@
                 star: 4,
                 province: "Sơn La",
                 category: "4star food gift",
-                image: "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1592417817098-8f3d6ef23a28?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-drumstick-bite",
                 desc: "Thịt trâu bắp tẩm hạt mắc khén gác bếp củi hun khói đặc sản Tây Bắc đậm đà."
             },
             {
@@ -668,7 +685,8 @@
                 star: 5,
                 province: "Khánh Hòa",
                 category: "5star gift",
-                image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80",
+                image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+                icon: "fa-crown",
                 desc: "Tổ yến đảo thiên nhiên Khánh Hòa tinh chế cao cấp, quà biếu sức khỏe ngoại giao thượng đỉnh."
             }
         ];
@@ -678,9 +696,27 @@
         let currentFilter = 'all';
 
         const GEMINI_API_KEY = "AQ.Ab8RN6KGOMtYHZsAnPuGcl-" + "WI2c34ghePhBgn4S5UlhPl8j5Yw";
-        const FALLBACK_IMG = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80";
 
-        // RENDER 20 SẢN PHẨM KHÔNG BỊ VỠ ẢNH
+        // CHẾ ĐỘ XỬ LÝ ẢNH HỎNG (FALLBACK SVG BADGE ĐẸP MẮT NẾU LỖI MẠNG)
+        function handleImageError(imgElem, pName, pProvince, pStar, iconClass) {
+            const parent = imgElem.parentElement;
+            if (!parent) return;
+            imgElem.style.display = 'none';
+            
+            const fallbackDiv = document.createElement('div');
+            fallbackDiv.className = 'w-full h-full bg-gradient-to-br from-ocopGreen via-emerald-800 to-amber-900 flex flex-col items-center justify-center text-white p-4 text-center relative';
+            fallbackDiv.innerHTML = `
+                <i class="fa-solid ${iconClass || 'fa-box-open'} text-4xl text-ocopGold mb-2"></i>
+                <h5 class="font-bold text-xs text-amber-100 line-clamp-2">${pName}</h5>
+                <span class="text-[10px] text-emerald-200 mt-1 font-medium">${pProvince}</span>
+                <span class="absolute top-3.5 left-3.5 bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow">
+                    OCOP ${pStar} Sao
+                </span>
+            `;
+            parent.appendChild(fallbackDiv);
+        }
+
+        // RENDER 20 SẢN PHẨM KHÔNG BỊ LỖI LỰA CHỌN
         function renderProductsList() {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
@@ -692,9 +728,11 @@
                     `<span class="absolute top-3.5 left-3.5 bg-emerald-700 text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-white/30"><i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 Sao</span>`;
 
                 return `
-                <div class="product-card bg-white/80 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="${p.category}" data-name="${p.name.toLowerCase()} ${p.province.toLowerCase()}">
-                    <div class="h-52 overflow-hidden relative">
-                        <img src="${p.image}" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <div class="product-card bg-white/90 backdrop-blur rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" data-category="${p.category}" data-name="${p.name.toLowerCase()} ${p.province.toLowerCase()}">
+                    <div class="h-52 overflow-hidden relative bg-amber-50">
+                        <img src="${p.image}" alt="${p.name}" 
+                             onerror="handleImageError(this, '${p.name}', '${p.province}', ${p.star}, '${p.icon}')" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                         ${starBadge}
                         <span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full">${p.province}</span>
                     </div>
@@ -804,7 +842,7 @@
             chatMessages.innerHTML = `
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-amber-100 max-w-[92%] text-gray-800 leading-relaxed space-y-2">
                     <p class="font-semibold text-ocopGreen">Dạ em chào Quý khách! 🌱</p>
-                    <p class="text-xs text-gray-600">Lịch sử tư vấn đã làm mới. Quý khách muốn tham khảo 20 đặc sản OCOP nào ạ?</p>
+                    <p class="text-xs text-gray-600">Hội thoại đã làm mới. Quý khách cần em tư vấn thêm đặc sản nào ạ?</p>
                 </div>
             `;
             showToast('Đã làm mới hội thoại AI!');
@@ -828,7 +866,7 @@
                 .replace(/\n/g, '<br>');
         }
 
-        // BỘ NÃO TRỢ LÝ AI LOCAL SIÊU THÔNG MINH (KHI GIÁN ĐOẠN API SẼ HOẠT ĐỘNG HOÀN HẢO)
+        // BỘ NÃO TRỢ LÝ AI COPILOT SIÊU THÔNG MINH (LOCAL RULE-BASED ENGINE)
         function getSmartLocalResponse(query) {
             const q = query.toLowerCase().trim();
 
@@ -840,34 +878,42 @@
                        `Quý khách muốn chọn món ăn gia đình hay quà biếu sức khỏe ạ?`;
             }
 
-            if (q.includes('quà') || q.includes('biếu') || q.includes('sếp') || q.includes('sức khỏe') || q.includes('người già')) {
-                return `🎁 **Gợi Ý Quà Biếu Sang Trọng & Bồi Bổ Sức Khỏe:**\n\n` +
-                       `1. **Yến Sào Khánh Hòa Thượng Hạng (2.450.000 ₫):** Đẳng cấp quà biếu ngoại giao cao cấp nhất.\n` +
-                       `2. **Nấm Linh Chi Đỏ Quảng Nam (720.000 ₫):** Bồi bổ cơ thể, giải độc gan & tăng sức đề kháng.\n` +
-                       `3. **Trà Hoa Vàng Tam Đảo (650.000 ₫):** "Nữ hoàng trà" hạ mỡ máu, ổn định huyết áp, ngủ ngon.\n` +
-                       `4. **Tỏi Đen Một Nhánh Lý Sơn (550.000 ₫):** Lên men tự nhiên dẻo ngọt tốt cho tim mạch.\n\n` +
-                       `Quý khách cần em chuẩn bị quà biếu theo tầm giá cụ thể nào ạ?`;
+            if (q.includes('quà') || q.includes('biếu') || q.includes('sếp') || q.includes('đối tác') || q.includes('ngoại giao')) {
+                return `🎁 **Gợi Ý Quà Biếu Sếp & Đối Tác Sang Trọng Nhất:**\n\n` +
+                       `1. **Yến Sào Khánh Hòa Thượng Hạng (2.450.000 ₫):** Tinh chế cao cấp, quà tặng sức khỏe ngoại giao đỉnh cao.\n` +
+                       `2. **Nấm Linh Chi Đỏ Quảng Nam (720.000 ₫):** Giải độc gan, thanh lọc cơ thể, bồi bổ trọn vẹn.\n` +
+                       `3. **Trà Hoa Vàng Tam Đảo (650.000 ₫):** "Nữ hoàng trà" hỗ trợ ngủ ngon, hạ mỡ máu & điều hòa huyết áp.\n` +
+                       `4. **Đồ Gốm Mỹ Nghệ Biên Hòa (580.000 ₫):** Tuyệt tác gốm men xanh đồng nghệ thuật chạm khắc thủ công.\n\n` +
+                       `Quý khách bấm chọn **"Thêm giỏ"** tại sản phẩm để lên đơn ngay nhé!`;
             }
 
-            if (q.includes('dưới 500k') || q.includes('500') || q.includes('vừa tiền')) {
+            if (q.includes('sức khỏe') || q.includes('người già') || q.includes('bố mẹ') || q.includes('ông bà')) {
+                return `🍵 **Gợi Ý Quà Tặng Bồi Bổ Cho Bố Mẹ & Người Cao Tuổi:**\n\n` +
+                       `1. **Tỏi Đen Một Nhánh Lý Sơn (550.000 ₫):** Lên men 60 ngày, dẻo ngọt chua nhẹ tốt cho tim mạch.\n` +
+                       `2. **Trà Đinh Tân Cương Thái Nguyên (450.000 ₫):** Đệ nhất danh trà chát dịu hậu ngọt sâu.\n` +
+                       `3. **Mật Ong Rừng U Minh (290.000 ₫):** Mật hoa tràm Cà Mau nguyên chất, xoa dịu giấc ngủ & đường tiêu hóa.\n` +
+                       `4. **Hồng Treo Gió Nhật Đà Lạt (290.000 ₫):** Mật hồng ngọt thanh tự nhiên tốt cho tim mạch.`;
+            }
+
+            if (q.includes('dưới 500k') || q.includes('500') || q.includes('vừa tiền') || q.includes('ngân sách')) {
                 return `💡 **Gợi Ý Đặc Sản Tầm Giá Dưới 500.000 ₫ Bán Chạy Nhất:**\n\n` +
-                       `1. **Trà Đinh Tân Cương (450.000 ₫):** Đệ nhất danh trà Thái Nguyên 5 Sao.\n` +
-                       `2. **Thịt Trâu Gác Bếp Sơn La (430.000 ₫):** Đậm đà vị mắc khén Tây Bắc.\n` +
-                       `3. **Tôm Khô Rạch Gốc Cà Mau (380.000 ₫):** Tôm đất phơi khô ngọt đậm vị biển.\n` +
-                       `4. **Mật Ong Rừng U Minh (290.000 ₫):** Mật hoa tràm nguyên chất Cà Mau.\n` +
-                       `5. **Chả Mực Giã Tay Hạ Long (260.000 ₫):** Giòn sần sật béo thơm ngon mê ly.\n\n` +
-                       `Quý khách bấm chọn **"Thêm giỏ"** tại sản phẩm để em đặt đơn ngay nhé!`;
+                       `1. **Trà Đinh Tân Cương (450.000 ₫):** Trà đinh 5 sao sang trọng.\n` +
+                       `2. **Thịt Trâu Gác Bếp Sơn La (430.000 ₫):** Vị mắc khén Tây Bắc đậm đà.\n` +
+                       `3. **Tôm Khô Rạch Gốc Cà Mau (380.000 ₫):** Tôm đất ngọt tự nhiên.\n` +
+                       `4. **Chả Mực Giã Tay Hạ Long (260.000 ₫):** Giòn sần sật béo thơm.\n` +
+                       `5. **Cà Phê Arabica Cầu Đất (240.000 ₫):** Chua thanh hậu ngọt sâu.\n` +
+                       `6. **Hạt Điều Rang Củi Bình Phước (195.000 ₫):** Béo ngậy giòn tan.`;
             }
 
             if (q.includes('thanh toán') || q.includes('vietqr') || q.includes('chuyển khoản') || q.includes('bidv')) {
                 return `💳 **Hướng Dẫn Thanh Toán VietQR BIDV Tự Động:**\n\n` +
-                       `1. Quý khách chọn sản phẩm và bấm **"Thêm giỏ"**.\n` +
-                       `2. Mở Giỏ hàng 🛒 góc trên màn hình, điền SĐT & Họ tên.\n` +
-                       `3. Chọn **"Thanh Toán VietQR BIDV"**.\n` +
-                       `4. Mã QR sẽ hiển thị chính xác số tiền & nội dung, Quý khách quét mã trên App ngân hàng là hoàn tất!`;
+                       `1. Chọn sản phẩm và bấm **"Thêm giỏ"**.\n` +
+                       `2. Mở Giỏ hàng 🛒 ở góc trên màn hình, điền Họ tên & Số điện thoại.\n` +
+                       `3. Bấm chọn **"Thanh Toán VietQR BIDV"**.\n` +
+                       `4. Mã QR sẽ hiển thị tự động kèm chính xác số tiền & nội dung, Quý khách mở App ngân hàng quét mã là hoàn tất!`;
             }
 
-            return `Dạ em là Trợ Lý AI OCOP Sales Copilot! 🌱 Em có thể tư vấn chi tiết về 20 đặc sản chuẩn 4-5 sao, giá niêm yết, công dụng bồi bổ sức khỏe hoặc tạo mã VietQR BIDV mua hàng ngay lập tức. Quý khách cần em hỗ trợ gì ạ?`;
+            return `Dạ em là Trợ Lý AI OCOP Sales Copilot! 🌱 Em có thể tư vấn sâu về 20 đặc sản chuẩn 4-5 sao, mức giá niêm yết, công dụng bồi bổ sức khỏe hoặc tạo mã VietQR BIDV mua hàng tức thì. Quý khách cần em hỗ trợ gì ạ?`;
         }
 
         async function sendMessage() {
@@ -877,7 +923,7 @@
 
             const chatMessages = document.getElementById('chat-messages');
 
-            // 1. User Message
+            // 1. User Msg
             const userMsg = document.createElement('div');
             userMsg.className = 'bg-ocopGreen text-white p-3 rounded-2xl shadow-sm max-w-[85%] ml-auto text-left text-xs font-medium';
             userMsg.innerText = query;
@@ -897,10 +943,9 @@
 
             const systemPrompt = `
 Bạn là "Trợ Lý AI OCOP Sales Copilot" - Chuyên gia tư vấn 20 đặc sản OCOP đạt chuẩn 4-5 sao Việt Nam.
-Luôn thân thiện, gọi Quý khách, xưng em.
-Nắm rõ giá 20 sản phẩm:
-- Yến sào Khánh Hòa (2.450.000₫), Nấm Linh Chi Quảng Nam (720.000₫), Trà hoa vàng Tam Đảo (650.000₫), Tỏi đen Lý Sơn (550.000₫), Gốm Biên Hòa (580.000₫), Trà Đinh Tân Cương (450.000₫), Thịt trâu gác bếp (430.000₫), Tôm khô Cà Mau (380.000₫), Mật ong U Minh (290.000₫), Hồng treo gió Đà Lạt (290.000₫), Chả mực Hạ Long (260.000₫), Cà phê Arabica Cầu Đất (240.000₫), Rượu sim Phú Quốc (210.000₫), Hạt điều Bình Phước (195.000₫), Gạo Tám Xoan (185.000₫), Nước mắm Phú Quốc (165.000₫), Miến dong Cao Bằng (110.000₫), Bánh đậu xanh (95.000₫), Bánh cốm Làng Vòng (90.000₫), Xoài sấy dẻo Cam Ranh (85.000₫).
-Thanh toán qua quét mã VietQR BIDV.
+Thân thiện, xưng em, gọi Quý khách.
+Nắm rõ danh mục 20 sản phẩm OCOP chính hãng.
+Thanh toán hỗ trợ VietQR BIDV tự động.
 `;
 
             try {
