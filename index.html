@@ -23,7 +23,7 @@
                     boxShadow: {
                         'glass': '0 20px 40px rgba(15, 56, 44, 0.08)',
                         'floating': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.35)'
+                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.4)'
                     },
                     animation: {
                         'fade-in': 'fadeIn 0.3s ease-out forwards',
@@ -53,7 +53,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Liên kết các file CSS dự phòng nếu có -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style1.css">
     
@@ -164,7 +163,7 @@
     </header>
 
     <main class="flex-1">
-        <!-- 3. HERO BANNER SECTION -->
+        <!-- 3. HERO BANNER SECTION (ĐÃ XÓA NÚT "TRỢ LÝ AI DÙNG THỬ") -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div class="lg:col-span-7 space-y-6">
@@ -202,10 +201,10 @@
                             <span id="i18n-btn-explore">Xem 40 Đặc Sản OCOP</span>
                             <i class="fa-solid fa-arrow-down text-ocopGold animate-bounce"></i>
                         </a>
-                        <button onclick="toggleAIChat()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-ocopGreen font-extrabold px-7 py-3.5 rounded-2xl shadow-lg hover:brightness-110 transition text-xs sm:text-sm flex items-center space-x-2 border border-ocopGold">
-                            <i class="fa-solid fa-robot text-ocopGreen text-base"></i>
-                            <span>Trợ Lý AI Dùng Thử</span>
-                        </button>
+                        <a href="#contact-footer" class="bg-white text-ocopGreen font-bold px-7 py-3.5 rounded-2xl border border-amber-300 hover:bg-amber-50 transition text-xs sm:text-sm shadow-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-phone text-amber-600"></i>
+                            <span id="i18n-btn-support">Liên Hệ Tư Vấn Quà Biếu</span>
+                        </a>
                     </div>
                 </div>
 
@@ -331,7 +330,7 @@
                     </div>
                 </aside>
 
-                <!-- LƯỚI SẢN PHẨM (NƠI RENDER 40 ĐẶC SẢN) -->
+                <!-- LƯỚI SẢN PHẨM -->
                 <div class="flex-1">
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                         <!-- JS sẽ tự động bơm 40 card vào đây -->
@@ -347,19 +346,23 @@
         </section>
     </main>
 
-    <!-- 5. WIDGET CHATBOT AI TRỢ LÝ BÁN HÀNG OCOP (BONG BÓNG & KHUNG CHAT) -->
-    <div id="ai-chat-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <!-- 5. WIDGET CHATBOT AI (NẰM BÊN TRÁI MÀN HÌNH + AVATAR CAO CẤP MỚI) -->
+    <div id="ai-chat-widget" class="fixed bottom-6 left-6 z-50 flex flex-col items-start">
         <!-- Khung Cửa Sổ Chatbot AI -->
-        <div id="ai-chat-window" class="hidden w-80 sm:w-96 h-[500px] bg-white rounded-3xl shadow-2xl border-2 border-ocopGold flex flex-col overflow-hidden mb-4 animate-pop-in">
-            <!-- Header Chatbot -->
-            <div class="bg-gradient-to-r from-ocopGreen to-ocopGreenLight text-white p-4 flex items-center justify-between border-b border-ocopGold/40">
+        <div id="ai-chat-window" class="hidden w-80 sm:w-96 h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-ocopGold flex flex-col overflow-hidden mb-4 animate-pop-in">
+            <!-- Header Chatbot với Avatar Chuyên Gia AI -->
+            <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 rounded-2xl bg-ocopGold text-ocopGreen flex items-center justify-center font-bold shadow">
-                        <i class="fa-solid fa-brain text-lg"></i>
+                    <div class="relative w-10 h-10">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="OCOP AI Assistant Avatar" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-ocopGold shadow">
+                        <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
                     <div>
-                        <h4 class="font-bold text-xs tracking-wide">OCOP Sales Assistant (AI)</h4>
-                        <span class="flex items-center text-[10px] text-emerald-300 font-semibold"><span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>Online • Deep AI Active</span>
+                        <h4 class="font-extrabold text-xs tracking-wide text-amber-100 flex items-center">
+                            OCOP Smart Assistant
+                            <span class="bg-ocopGold text-ocopGreen text-[8px] font-black px-1.5 py-0.2 rounded ml-1.5 uppercase">AI 3.0</span>
+                        </h4>
+                        <span class="text-[10px] text-emerald-300 font-semibold flex items-center"><i class="fa-solid fa-sparkles text-ocopGold mr-1 text-[9px]"></i>Deep Learning Active</span>
                     </div>
                 </div>
                 <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg"><i class="fa-solid fa-xmark"></i></button>
@@ -369,11 +372,15 @@
             <div id="ai-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
                 <!-- Tin nhắn chào mừng -->
                 <div class="flex items-start space-x-2">
-                    <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
-                        <i class="fa-solid fa-robot"></i>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
-                        Xin chào! Tôi là **OCOP Sales Assistant AI**. Tôi có thể hỗ trợ bạn tìm chọn đặc sản chuẩn 4-5 sao, tư vấn quà biếu ngoại giao hoặc tự động tạo Combo Quà Tết. Bạn cần tìm món gì?
+                        Xin chào! Tôi là **OCOP Smart Assistant AI**. Tôi đã học toàn bộ dữ liệu 40 đặc sản quốc gia. Bạn có thể hỏi tôi bất kỳ điều gì như:
+                        <div class="mt-1.5 text-[11px] text-amber-900 font-semibold space-y-0.5">
+                            <div>• <i>"Gợi ý top đặc sản 5 sao"</i></div>
+                            <div>• <i>"Tìm quà biếu sếp dưới 500k"</i></div>
+                            <div>• <i>"Trà giúp ngủ ngon, bổ gan"</i></div>
+                            <div>• <i>"Đặc sản Cà Mau / Hà Nội"</i></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -381,20 +388,21 @@
             <!-- Nút Gợi Ý Nhanh -->
             <div class="p-2 bg-amber-50/80 border-t border-amber-200/60 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[10px] font-bold">
                 <button onclick="sendQuickPrompt('Gợi ý top đặc sản 5 sao')" class="px-2.5 py-1 rounded-full bg-white border border-amber-300 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs">⭐ Top 5 Sao</button>
-                <button onclick="sendQuickPrompt('Tạo Combo Quà Biếu Cao Cấp')" class="px-2.5 py-1 rounded-full bg-white border border-amber-300 text-red-600 hover:bg-red-600 hover:text-white transition whitespace-nowrap shadow-2xs">🎁 Tạo Combo Quà</button>
-                <button onclick="sendQuickPrompt('Trà & Dược liệu bồi bổ')" class="px-2.5 py-1 rounded-full bg-white border border-amber-300 text-emerald-700 hover:bg-emerald-700 hover:text-white transition whitespace-nowrap shadow-2xs">🍵 Trà Bồi Bổ</button>
+                <button onclick="sendQuickPrompt('Tạo Combo Quà Biếu')" class="px-2.5 py-1 rounded-full bg-white border border-amber-300 text-red-600 hover:bg-red-600 hover:text-white transition whitespace-nowrap shadow-2xs">🎁 Combo Quà</button>
+                <button onclick="sendQuickPrompt('Đặc sản dưới 200k')" class="px-2.5 py-1 rounded-full bg-white border border-amber-300 text-indigo-700 hover:bg-indigo-700 hover:text-white transition whitespace-nowrap shadow-2xs">💰 Dưới 200k</button>
+                <button onclick="sendQuickPrompt('Trà giúp ngủ ngon')" class="px-2.5 py-1 rounded-full bg-white border border-amber-300 text-emerald-700 hover:bg-emerald-700 hover:text-white transition whitespace-nowrap shadow-2xs">🍵 Trà Bổ Sức Khỏe</button>
             </div>
 
             <!-- Khung Nhập Căn Bản -->
             <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
-                <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Hỏi AI về sâm, trà, mắm, quà biếu..." class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
+                <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Hỏi AI về sâm, trà, mắm, giá rẻ, quà biếu..." class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
                 <button onclick="sendAIMessage()" class="w-9 h-9 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow"><i class="fa-solid fa-paper-plane text-xs"></i></button>
             </div>
         </div>
 
-        <!-- Nút Tròn Bật/Tắt Chatbot Floating -->
-        <button onclick="toggleAIChat()" class="relative group bg-gradient-to-tr from-ocopGreen to-ocopGreenLight text-ocopGold w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 transition duration-300 animate-pulse-glow">
-            <i class="fa-solid fa-robot text-2xl"></i>
+        <!-- Nút Tròn Bật/Tắt Chatbot Floating Bên Trái Màn Hình với Avatar Sang Trọng -->
+        <button onclick="toggleAIChat()" class="relative group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 transition duration-300 animate-pulse-glow">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="AI Avatar" class="w-12 h-12 rounded-full object-cover p-0.5 border border-ocopGold/60">
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow">AI</span>
         </button>
     </div>
@@ -512,7 +520,7 @@
                 Đã hoàn tất chuyển khoản
             </button>
         </div>
-    </footer>
+    </div>
 
     <!-- 10. FOOTER -->
     <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
@@ -582,7 +590,7 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT CORE & DỮ LIỆU ĐƯỢC NHÚNG TRỰC TIẾP CHUẨN XÁC 100% -->
+    <!-- JAVASCRIPT CORE & AI INTEL ENGINE -->
     <script>
         let currentLang = 'vi';
         let wishlist = [];
@@ -684,7 +692,7 @@
             }
         };
 
-        // BỘ DỮ LIỆU CỐ ĐỊNH 40 SẢN PHẨM KHÔNG BAO GIỜ BỊ MẤT
+        // BỘ DỮ LIỆU CỐ ĐỊNH 40 SẢN PHẨM
         const products = [
             { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
             { id: 2, nameVi: "Hạt điều rang củi Bình Phước (500g)", nameEn: "Binh Phuoc Wood-Roasted Cashews (500g)", price: 195000, star: 4, provinceVi: "Bình Phước", provinceEn: "Binh Phuoc", category: "snack 4star food", image: "https://images.unsplash.com/photo-1509358271058-acd05cc93224?auto=format&fit=crop&w=800&q=80", descVi: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.", descEn: "Silk-husked cashews, hand wood-roasted, rich, crunchy, naturally flavorful." },
@@ -734,7 +742,7 @@
             imageElem.src = `https://placehold.co/600x400/0F382C/D4AF37?text=${encodedName}`;
         }
 
-        // HÀM RENDER SẢN PHẨM TRỰC TIẾP LÊN GIAO DIỆN
+        // HÀM RENDER SẢN PHẨM
         function renderProductsList() {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
@@ -1115,9 +1123,9 @@
             navigator.clipboard.writeText(text).then(() => showToast(`Đã sao chép ${label}!`)).catch(() => showToast('Không thể sao chép!', 'error'));
         }
 
-        // ==========================================
-        // CÁC HÀM XỬ LÝ CHATBOT AI TRÍ TUỆ NHÂN TẠO
-        // ==========================================
+        // =======================================================
+        // CHATBOT AI TRAIN THÔNG MINH - DEEP INTENT RECOGNITION
+        // =======================================================
         function toggleAIChat() {
             const win = document.getElementById('ai-chat-window');
             if(win) win.classList.toggle('hidden');
@@ -1131,6 +1139,14 @@
             }
         }
 
+        // Bỏ dấu tiếng Việt để AI hiểu linh hoạt
+        function removeVietnameseTones(str) {
+            return str.normalize('NFD')
+                      .replace(/[\u0300-\u036f]/g, '')
+                      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                      .toLowerCase();
+        }
+
         function sendAIMessage() {
             const input = document.getElementById('ai-chat-input');
             const container = document.getElementById('ai-chat-messages');
@@ -1139,7 +1155,7 @@
             const text = input.value.trim();
             if(!text) return;
 
-            // Render tin nhắn của người dùng
+            // Render user message
             container.innerHTML += `
                 <div class="flex justify-end">
                     <div class="bg-ocopGreen text-amber-100 p-3 rounded-2xl leading-relaxed max-w-[85%] font-medium shadow-xs">
@@ -1150,15 +1166,13 @@
             input.value = '';
             container.scrollTop = container.scrollHeight;
 
-            // Giả lập trạng thái AI đang xử lý suy nghĩ
+            // Typing Indicator
             const typingId = 'typing-' + Date.now();
             container.innerHTML += `
                 <div id="${typingId}" class="flex items-start space-x-2">
-                    <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs flex-shrink-0">
-                        <i class="fa-solid fa-robot animate-spin"></i>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5">
                     <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-500 italic shadow-xs">
-                        AI đang truy xuất 40 đặc sản OCOP...
+                        AI đang phân tích ý định & tìm dữ liệu...
                     </div>
                 </div>
             `;
@@ -1168,79 +1182,129 @@
                 const typingEl = document.getElementById(typingId);
                 if(typingEl) typingEl.remove();
 
-                const lower = text.toLowerCase();
+                const norm = removeVietnameseTones(text);
                 let replyHtml = "";
 
-                if (lower.includes('combo') || lower.includes('quà') || lower.includes('tết') || lower.includes('biếu')) {
-                    const giftItems = products.filter(p => p.star === 5).slice(0, 3);
+                // 1. Ý định 5 SAO / TOP CAO CẤP
+                if (norm.includes('5 sao') || norm.includes('5sao') || norm.includes('top 5') || norm.includes('thuong hang') || norm.includes('danh gia cao')) {
+                    const top5 = products.filter(p => p.star === 5).slice(0, 3);
                     replyHtml = `
-                        <p class="font-bold text-amber-900 mb-1.5">🎁 Đề xuất Combo Quà Biếu Quốc Gia 5 Sao:</p>
-                        <p class="text-gray-600 mb-2">Tôi đã lựa chọn 3 món đặc sản 5 sao thượng hạng phù hợp nhất cho bạn:</p>
-                        <ul class="space-y-1 mb-3 font-semibold">
-                            ${giftItems.map(g => `<li class="flex justify-between items-center bg-amber-50 p-1.5 rounded-xl border border-amber-200"><span>• ${g.nameVi}</span><span class="text-red-600 font-extrabold">${g.price.toLocaleString('vi-VN')}₫</span></li>`).join('')}
-                        </ul>
-                        <button onclick="addBundleToCart([1, 20, 21])" class="w-full bg-gradient-to-r from-red-600 to-amber-600 text-white py-2 rounded-xl font-bold hover:brightness-110 transition shadow">
-                            <i class="fa-solid fa-cart-plus mr-1"></i> Tự động thêm Combo vào Giỏ
-                        </button>
-                    `;
-                } else if (lower.includes('trà') || lower.includes('dược liệu') || lower.includes('sâm')) {
-                    const teaItems = products.filter(p => p.category.includes('tea')).slice(0, 3);
-                    replyHtml = `
-                        <p class="font-bold text-ocopGreen mb-1.5">🍵 Các Danh Trà & Dược Liệu Nổi Tiếng:</p>
+                        <p class="font-bold text-amber-900 mb-1.5">⭐ Top 3 Đặc Sản OCOP 5 Sao Quốc Gia Nổi Bật:</p>
                         <div class="space-y-2">
-                            ${teaItems.map(t => `
-                                <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-amber-200">
+                            ${top5.map(p => `
+                                <div class="p-2 bg-amber-50 rounded-xl border border-amber-200 flex justify-between items-center">
                                     <div class="flex-1 pr-2">
-                                        <div class="font-bold text-gray-800">${t.nameVi}</div>
-                                        <div class="text-red-600 font-extrabold text-[11px]">${t.price.toLocaleString('vi-VN')}₫</div>
+                                        <div class="font-bold text-gray-900">${p.nameVi}</div>
+                                        <div class="text-[10px] text-gray-500">${p.provinceVi} • OCOP 5★</div>
+                                        <div class="text-red-600 font-extrabold text-[11px]">${p.price.toLocaleString('vi-VN')}₫</div>
                                     </div>
-                                    <button onclick="addToCart(${t.id})" class="bg-ocopGreen text-white px-2 py-1 rounded-lg font-bold text-[10px]">+ Thêm</button>
+                                    <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-2 py-1 rounded-lg text-[10px] font-bold hover:bg-ocopGreenLight">+ Giỏ</button>
                                 </div>
                             `).join('')}
                         </div>
                     `;
-                } else {
-                    // Lọc tìm sản phẩm theo từ khóa
-                    const matched = products.filter(p => p.nameVi.toLowerCase().includes(lower) || p.provinceVi.toLowerCase().includes(lower) || p.category.includes(lower)).slice(0, 2);
-                    
-                    if (matched.length > 0) {
+                }
+                // 2. Ý định TẠO COMBO QUÀ BIẾU
+                else if (norm.includes('combo') || norm.includes('qua') || norm.includes('tet') || norm.includes('bieu') || norm.includes('sep') || norm.includes('ngoai giao')) {
+                    const comboProds = [products[0], products[19], products[20]]; // Trà hoa vàng, Yến sào, Sâm Ngọc Linh
+                    replyHtml = `
+                        <p class="font-bold text-red-700 mb-1">🎁 Combo Quà Biếu Sức Khỏe Ngoại Giao:</p>
+                        <p class="text-[11px] text-gray-600 mb-2">Được phối ghép từ 3 quốc bảo nông sản hàng đầu:</p>
+                        <div class="space-y-1.5 mb-2.5">
+                            ${comboProds.map(c => `
+                                <div class="flex justify-between items-center text-[11px] bg-white p-1.5 rounded-lg border border-amber-200">
+                                    <span class="font-bold text-gray-800">• ${c.nameVi}</span>
+                                    <span class="text-red-600 font-extrabold">${c.price.toLocaleString('vi-VN')}₫</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button onclick="addBundleToCart([1, 20, 21])" class="w-full bg-gradient-to-r from-red-600 to-amber-600 text-white py-2 rounded-xl font-extrabold hover:brightness-110 transition shadow flex items-center justify-center space-x-1">
+                            <i class="fa-solid fa-cart-plus text-ocopGold"></i>
+                            <span>Tự động thêm bộ Combo vào Giỏ</span>
+                        </button>
+                    `;
+                }
+                // 3. Ý định LỌC GIÁ RẺ / DƯỚI 200K
+                else if (norm.includes('duoi 200k') || norm.includes('200k') || norm.includes('gia re') || norm.includes('binh dan') || norm.includes('re')) {
+                    const cheap = products.filter(p => p.price <= 200000).slice(0, 3);
+                    replyHtml = `
+                        <p class="font-bold text-indigo-900 mb-1.5">💰 Đặc Sản Ngon - Bổ - Rẻ (Dưới 200.000đ):</p>
+                        <div class="space-y-2">
+                            ${cheap.map(p => `
+                                <div class="p-2 bg-white rounded-xl border border-amber-200 flex justify-between items-center">
+                                    <div class="flex-1 pr-2">
+                                        <div class="font-bold text-gray-900">${p.nameVi}</div>
+                                        <div class="text-red-600 font-extrabold text-[11px]">${p.price.toLocaleString('vi-VN')}₫</div>
+                                    </div>
+                                    <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-2 py-1 rounded-lg text-[10px] font-bold">+ Giỏ</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                // 4. Ý định SỨC KHỎE / NGHỈ NGƠI / TRÀ SÂM
+                else if (norm.includes('suc khoe') || norm.includes('ngu ngon') || norm.includes('huyet ap') || norm.includes('gan') || norm.includes('boibao') || norm.includes('tra') || norm.includes('sam')) {
+                    const health = products.filter(p => p.category.includes('tea') || p.category.includes('gift')).slice(0, 3);
+                    replyHtml = `
+                        <p class="font-bold text-emerald-800 mb-1.5">🍵 Sản Phẩm Dược Liệu Bồi Bổ Sức Khỏe:</p>
+                        <div class="space-y-2">
+                            ${health.map(h => `
+                                <div class="p-2 bg-emerald-50 rounded-xl border border-emerald-200 flex justify-between items-center">
+                                    <div class="flex-1 pr-2">
+                                        <div class="font-bold text-gray-900">${h.nameVi}</div>
+                                        <div class="text-[10px] text-gray-600 leading-tight">${h.descVi.substring(0, 45)}...</div>
+                                        <div class="text-red-600 font-extrabold text-[11px] mt-0.5">${h.price.toLocaleString('vi-VN')}₫</div>
+                                    </div>
+                                    <button onclick="addToCart(${h.id})" class="bg-ocopGreen text-white px-2 py-1 rounded-lg text-[10px] font-bold">+ Giỏ</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                // 5. Ý định LỌC TÌM TÌNH THÀNH / VÙNG MIỀN / ĐẶC SẢN CHUNG
+                else {
+                    const searchResults = products.filter(p => {
+                        const searchStr = removeVietnameseTones(`${p.nameVi} ${p.provinceVi} ${p.descVi} ${p.category}`);
+                        return searchStr.includes(norm);
+                    }).slice(0, 3);
+
+                    if (searchResults.length > 0) {
                         replyHtml = `
-                            <p class="font-bold text-ocopGreen mb-1.5">🔍 Tìm thấy ${matched.length} đặc sản phù hợp:</p>
+                            <p class="font-bold text-ocopGreen mb-1.5">🔍 Đã tìm thấy ${searchResults.length} đặc sản khớp yêu cầu:</p>
                             <div class="space-y-2">
-                                ${matched.map(m => `
-                                    <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-amber-200">
+                                ${searchResults.map(m => `
+                                    <div class="p-2 bg-white rounded-xl border border-amber-200 flex justify-between items-center">
                                         <div class="flex-1 pr-2">
-                                            <div class="font-bold text-gray-800">${m.nameVi}</div>
-                                            <div class="text-red-600 font-extrabold text-[11px]">${m.price.toLocaleString('vi-VN')}₫ (${m.provinceVi})</div>
+                                            <div class="font-bold text-gray-900">${m.nameVi}</div>
+                                            <div class="text-[10px] text-amber-800 font-semibold">${m.provinceVi}</div>
+                                            <div class="text-red-600 font-extrabold text-[11px]">${m.price.toLocaleString('vi-VN')}₫</div>
                                         </div>
-                                        <button onclick="addToCart(${m.id})" class="bg-ocopGreen text-white px-2 py-1 rounded-lg font-bold text-[10px]">+ Thêm</button>
+                                        <button onclick="addToCart(${m.id})" class="bg-ocopGreen text-white px-2 py-1 rounded-lg text-[10px] font-bold">+ Giỏ</button>
                                     </div>
                                 `).join('')}
                             </div>
                         `;
                     } else {
-                        replyHtml = `Dạ, tôi chưa hiểu rõ yêu cầu. Bạn có thể nhấn chọn các câu hỏi gợi ý nhanh bên dưới hoặc gõ các từ khóa như **"Trà"**, **"Yến sào"**, **"Chả mực"**, **"Sâm"** để tôi tìm giúp nhé!`;
+                        replyHtml = `Tôi chưa tìm thấy đặc sản trùng khớp từ khóa <b>"${text}"</b>. Bạn có thể thử tìm theo tên tỉnh (*Cà Mau, Đà Lạt, Hà Nội...*) hoặc món như (*Yến sào, Nước mắm, Bánh cốm, Chả mực, Rượu sim...*) nhé!`;
                     }
                 }
 
                 container.innerHTML += `
                     <div class="flex items-start space-x-2 animate-fade-in">
-                        <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
-                            <i class="fa-solid fa-robot"></i>
-                        </div>
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 ring-1 ring-ocopGold">
                         <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
                             ${replyHtml}
                         </div>
                     </div>
                 `;
                 container.scrollTop = container.scrollHeight;
-            }, 700);
+            }, 600);
         }
 
         function addBundleToCart(ids) {
             ids.forEach(id => addToCart(id));
             toggleCart();
-            showToast("Đã tự động thêm trọn bộ Combo vào Giỏ hàng!");
+            showToast("Đã thêm toàn bộ Combo Quà Biếu vào Giỏ hàng!");
         }
 
         // TỰ ĐỘNG CHẠY KHI TRANG LÊN ĐẦY ĐỦ
