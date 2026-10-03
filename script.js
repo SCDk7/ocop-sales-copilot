@@ -1,130 +1,67 @@
-// Quản lý giỏ hàng
-let cart = [];
+// Dữ liệu sản phẩm mẫu của OCOP Sales Copilot (bạn có thể thay thế bằng dữ liệu thực tế)
+const ocopProducts = [
+    { id: 1, name: "Mật ong rừng U Minh", price: 250000, stock: 15, unit: chai },
+    { id: 2, name: "Trà sen Hồ Tây", price: 180000, stock: 30, unit: hộp },
+    { id: 3, name: "Cà phê Robusta Đắk Lắk", price: 120000, stock: 50, unit: gói }
+];
 
-function addToCart(name, price) {
-    const existingItem = cart.find(item => item.name === name);
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({ name, price, quantity: 1 });
-    }
-    updateCartUI();
-    alert(`Đã thêm "${name}" vào giỏ hàng!`);
-}
+// Hàm xử lý khi người dùng gửi tin nhắn cho Copilot AI
+function handleUserMessage(userMessage) {
+    const text = userMessage.toLowerCase();
+    let botResponse = "";
 
-function updateCartUI() {
-    const cartCount = document.getElementById('cart-count');
-    const cartItems = document.getElementById('cart-items');
-    const cartTotal = document.getElementById('cart-total');
-
-    let totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCount.textContent = totalQuantity;
-
-    if (cart.length === 0) {
-        cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Giỏ hàng đang trống.</p>';
-        cartTotal.textContent = '0 ₫';
-        return;
-    }
-
-    let html = '';
-    let totalPrice = 0;
-
-    cart.forEach((item, index) => {
-        totalPrice += item.price * item.quantity;
-        html += `
-            <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
-                <div>
-                    <h5 class="font-bold text-sm text-gray-800">${item.name}</h5>
-                    <p class="text-xs text-gray-500">${item.price.toLocaleString()} ₫ x ${item.quantity}</p>
-                </div>
-                <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 text-sm"><i class="fa-solid fa-trash"></i></button>
-            </div>
-        `;
-    });
-
-    cartItems.innerHTML = html;
-    cartTotal.textContent = totalPrice.toLocaleString() + ' ₫';
-}
-
-function removeFromCart(index) {
-    cart.splice(index, 1);
-    updateCartUI();
-}
-
-function checkout() {
-    if (cart.length === 0) {
-        alert("Giỏ hàng của bạn đang trống!");
-        return;
-    }
-    alert("Cảm ơn bạn đã đặt hàng! Đơn hàng của bạn đã được ghi nhận.");
-    cart = [];
-    updateCartUI();
-    document.getElementById('cart-drawer').classList.add('hidden');
-}
-
-// Bật/Tắt giỏ hàng
-const cartBtn = document.getElementById('cart-btn');
-const closeCartBtn = document.getElementById('close-cart');
-const cartOverlay = document.getElementById('cart-overlay');
-const cartDrawer = document.getElementById('cart-drawer');
-
-cartBtn.addEventListener('click', () => cartDrawer.classList.remove('hidden'));
-closeCartBtn.addEventListener('click', () => cartDrawer.classList.add('hidden'));
-cartOverlay.addEventListener('click', () => cartDrawer.classList.add('hidden'));
-
-// Bật/Tắt khung chat AI
-const toggleChat = document.getElementById('toggle-chat');
-const chatBox = document.getElementById('chat-box');
-const closeChat = document.getElementById('close-chat');
-const chatInput = document.getElementById('chat-input');
-const sendChat = document.getElementById('send-chat');
-const chatMessages = document.getElementById('chat-messages');
-
-toggleChat.addEventListener('click', () => {
-    chatBox.classList.toggle('hidden');
-});
-
-closeChat.addEventListener('click', () => {
-    chatBox.classList.add('hidden');
-});
-
-function handleSendMessage() {
-    const text = chatInput.value.trim();
-    if (!text) return;
-
-    // Tin nhắn người dùng
-    chatMessages.innerHTML += `
-        <div class="flex justify-end">
-            <div class="bg-ocopGreen text-white p-3 rounded-xl shadow-sm max-w-[85%]">
-                ${text}
-            </div>
-        </div>
-    `;
-    chatInput.value = '';
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-    // Phản hồi giả lập từ AI Copilot sau 0.6 giây
-    setTimeout(() => {
-        let reply = "Cảm ơn bạn đã quan tâm! Trợ lý OCOP ghi nhận yêu cầu và sẽ hỗ trợ bạn kết nối với nhà cung cấp sớm nhất.";
-        const lower = text.toLowerCase();
-        if (lower.includes('trà') || lower.includes('tam đảo')) {
-            reply = "Trà hoa vàng Tam Đảo hiện có giá 450.000 ₫ (Chuẩn OCOP 5 Sao), rất tốt cho sức khỏe và làm quà biếu.";
-        } else if (lower.includes('điều') || lower.includes('bình phước')) {
-            reply = "Hạt điều rang củi Bình Phước có giá 180.000 ₫ (Chuẩn OCOP 4 Sao), giòn béo tự nhiên.";
+    // 1. Xử lý tra cứu số lượng / sản phẩm
+    if (text.includes("tra cứu") || text.includes("số lượng") || text.includes("còn không") || text.includes("hàng")) {
+        let foundProduct = ocopProducts.find(p => text.includes(p.name.toLowerCase()));
+        
+        if (foundProduct) {
+            botResponse = `Sản phẩm **${foundProduct.name}** hiện có sẵn **${foundProduct.stock} ${foundProduct.unit}** trong kho. Giá bán: ${foundProduct.price.toLocaleString('vi-VN')}đ. Bạn có muốn đặt mua không?`;
+        } else {
+            let productListStr = ocopProducts.map(p => `- ${p.name} (Còn ${p.stock} ${p.unit})`).join('\n');
+            botResponse = `Dưới đây là danh sách sản phẩm OCOP hiện có tại cửa hàng:\n${productListStr}\n\nBạn muốn tra cứu chi tiết sản phẩm nào?`;
         }
+    } 
+    // 2. Xử lý thông tin đặt hàng
+    else if (text.includes("đặt hàng") || text.includes("mua") || text.includes("thanh toán")) {
+        botResponse = `Để đặt hàng, bạn vui lòng:\n1. Chọn sản phẩm bạn muốn mua và thêm vào **Giỏ hàng**.\n2. Nhấn vào biểu tượng giỏ hàng ở góc trên màn hình để điền thông tin giao hàng.\n3. Xác nhận đơn hàng để hoàn tất. Bạn cần tôi hỗ trợ thêm về sản phẩm nào không?`;
+    } 
+    // 3. Phản hồi mặc định
+    else {
+        botResponse = `Chào bạn! Tôi là Copilot AI hỗ trợ bán hàng OCOP. Bạn có thể hỏi tôi về **số lượng hàng hóa**, **thông tin sản phẩm** hoặc **cách thức đặt hàng** nhé!`;
+    }
 
-        chatMessages.innerHTML += `
-            <div class="flex justify-start">
-                <div class="bg-white text-gray-800 p-3 rounded-xl shadow-sm border border-gray-100 max-w-[85%]">
-                    ${reply}
-                </div>
-            </div>
-        `;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 600);
+    return botResponse;
 }
 
-sendChat.addEventListener('click', handleSendMessage);
-chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleSendMessage();
+// Ví dụ tích hợp sự kiện vào giao diện khung chat sẵn có của bạn
+document.addEventListener("DOMContentLoaded", () => {
+    const chatInput = document.getElementById("chat-input"); // Ô nhập tin nhắn của bạn
+    const sendBtn = document.getElementById("send-btn");     // Nút gửi
+    const chatBox = document.getElementById("chat-messages"); // Khu vực hiển thị tin nhắn
+
+    if (sendBtn && chatInput) {
+        sendBtn.addEventListener("click", () => {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Hiển thị tin nhắn người dùng
+            appendMessage("User", message);
+            chatInput.value = "";
+
+            // Bot phản hồi sau 0.5 giây
+            setTimeout(() => {
+                const reply = handleUserMessage(message);
+                appendMessage("Copilot AI", reply);
+            }, 500);
+        });
+    }
+
+    function appendMessage(sender, text) {
+        if (!chatBox) return;
+        const msgDiv = document.createElement("div");
+        msgDiv.className = sender === "User" ? "user-msg" : "bot-msg";
+        msgDiv.innerHTML = `<strong>${sender}:</strong> ${text.replace(/\n/g, '<br>')}`;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 });
