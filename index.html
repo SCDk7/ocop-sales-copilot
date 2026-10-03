@@ -141,12 +141,10 @@
                 </div>
 
                 <div class="flex items-center space-x-2">
-                    <!-- Nút Tài Khoản / Đăng Nhập -->
                     <button onclick="toggleAuthModal()" id="user-btn" class="w-10 h-10 rounded-full bg-amber-100 hover:bg-amber-200 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-300 hover:scale-105" title="Đăng nhập / Tài khoản">
                         <i class="fa-solid fa-user text-sm"></i>
                     </button>
 
-                    <!-- Nút Lịch Sử Mua Hàng -->
                     <button onclick="toggleOrdersModal()" class="w-10 h-10 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center transition shadow-sm border border-blue-200 hover:scale-105" title="Lịch sử mua hàng">
                         <i class="fa-solid fa-clock-rotate-left text-sm"></i>
                     </button>
@@ -282,7 +280,7 @@
                                     <i class="fa-solid fa-gift text-red-500"></i>
                                     <span id="i18n-cat-gift">Quà Biếu Sức Khỏe</span>
                                 </span>
-                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">12</span>
+                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">10</span>
                             </button>
 
                             <button onclick="setCategoryFilter('food', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
@@ -290,7 +288,7 @@
                                     <i class="fa-solid fa-bowl-rice text-emerald-600"></i>
                                     <span id="i18n-cat-food">Nông Sản & Ẩm Thực</span>
                                 </span>
-                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">15</span>
+                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">8</span>
                             </button>
 
                             <button onclick="setCategoryFilter('snack', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
@@ -298,7 +296,7 @@
                                     <i class="fa-solid fa-cookie-bite text-amber-700"></i>
                                     <span id="i18n-cat-snack">Món Ngon & Đồ Nhắm</span>
                                 </span>
-                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">10</span>
+                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">7</span>
                             </button>
 
                             <button onclick="setCategoryFilter('spice', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100">
@@ -340,7 +338,7 @@
                 <!-- LƯỚI SẢN PHẨM -->
                 <div class="flex-1">
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <!-- Render JS -->
+                        <!-- Render qua JavaScript -->
                     </div>
 
                     <div id="no-products-msg" style="display: none;" class="text-center py-16 bg-white/80 rounded-3xl border border-dashed border-gray-300 shadow-sm animate-fade-in">
@@ -353,7 +351,7 @@
         </section>
     </main>
 
-    <!-- 5. WIDGET CHATBOT AI (AVATAR TỰ ĐỊNH NGHĨA image_d44449.jpg + TURBO SPEED) -->
+    <!-- 5. WIDGET CHATBOT AI -->
     <div id="ai-chat-widget" class="fixed bottom-6 left-6 z-50 flex flex-col items-start">
         <!-- Khung Cửa Sổ Chatbot AI -->
         <div id="ai-chat-window" class="hidden w-80 sm:w-96 h-[540px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-ocopGold flex flex-col overflow-hidden mb-4 animate-pop-in">
@@ -361,7 +359,7 @@
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
                     <div class="relative w-10 h-10">
-                        <img src="image_d44449.jpg" alt="Chuyên Gia OCOP AI" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-ocopGold shadow">
+                        <img src="ai-avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80'" alt="Chuyên Gia OCOP AI" class="w-10 h-10 rounded-2xl object-cover ring-2 ring-ocopGold shadow">
                         <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
                     <div>
@@ -377,11 +375,10 @@
 
             <!-- Khung Nội Dung Chat -->
             <div id="ai-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
-                <!-- Tin nhắn chào mừng -->
                 <div class="flex items-start space-x-2">
-                    <img src="image_d44449.jpg" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
+                    <img src="ai-avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80'" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
-                        Dạ em chào anh/chị! Em là **Trợ lý AI Tư vấn OCOP Việt Nam**. 
+                        Dạ em chào anh/chị! Em là <b>Trợ lý AI Tư vấn OCOP Việt Nam</b>. 
                         <br><br>
                         Em đã sẵn sàng hỗ trợ anh/chị chọn nhanh quà biếu, trà mát gan, đồ nhắm hay đặc sản theo tỉnh thành. Mình đang cần tìm món gì ạ?
                     </div>
@@ -396,7 +393,7 @@
                 <button onclick="sendQuickPrompt('Trà bổ sức khỏe')" class="px-2.5 py-1 rounded-full bg-white border border-amber-300 text-emerald-700 hover:bg-emerald-700 hover:text-white transition whitespace-nowrap shadow-2xs">🍵 Trà Sức Khỏe</button>
             </div>
 
-            <!-- Khung Nhập Căn Bản -->
+            <!-- Khung Nhập Tin Nhắn -->
             <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
                 <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Hỏi AI (VD: quà biếu, trà ngủ ngon, Cà Mau, dưới 300k...)" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
                 <button onclick="sendAIMessage()" class="w-9 h-9 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow"><i class="fa-solid fa-paper-plane text-xs"></i></button>
@@ -405,12 +402,12 @@
 
         <!-- Nút Tròn Bật/Tắt Chatbot Floating -->
         <button onclick="toggleAIChat()" class="relative group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 transition duration-300 animate-pulse-glow">
-            <img src="image_d44449.jpg" alt="AI Avatar" class="w-12 h-12 rounded-full object-cover p-0.5 border border-ocopGold/60">
+            <img src="ai-avatar.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80'" alt="AI Avatar" class="w-12 h-12 rounded-full object-cover p-0.5 border border-ocopGold/60">
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow">AI</span>
         </button>
     </div>
 
-    <!-- 6. MODAL ĐĂNG KÝ / ĐĂNG NHẬP TÀI KHOẢN (GMAIL + MK) -->
+    <!-- 6. MODAL ĐĂNG KÝ / ĐĂNG NHẬP -->
     <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleAuthModal()"></div>
         <div class="relative bg-white rounded-3xl max-w-sm w-full shadow-2xl z-10 p-6 border border-amber-200 animate-pop-in">
@@ -421,1066 +418,114 @@
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
                 <h3 class="text-lg font-extrabold text-gray-900" id="auth-title">Đăng Nhập Tài Khoản</h3>
-                <p class="text-xs text-gray-500">Quản lý đơn hàng & tích điểm ưu đãi</p>
+                <p class="text-xs text-gray-500">Quản lý đơn hàng & nhận ưu đãi OCOP</p>
             </div>
 
-            <!-- Tab Switch -->
-            <div class="flex bg-gray-100 p-1 rounded-2xl mb-4 text-xs font-bold">
-                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs">Đăng Nhập</button>
-                <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800">Đăng Ký</button>
-            </div>
-
-            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
-                <div id="name-field" class="hidden">
-                    <label class="block font-bold text-gray-700 mb-1">Họ và tên</label>
-                    <input type="text" id="auth-name" placeholder="Nguyễn Văn A" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
-                </div>
-
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-3">
                 <div>
-                    <label class="block font-bold text-gray-700 mb-1">Địa chỉ Gmail / Email *</label>
-                    <input type="email" id="auth-email" required placeholder="example@gmail.com" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                    <label class="block text-[11px] font-bold text-gray-700 mb-1">Email / Số điện thoại</label>
+                    <input type="text" id="auth-email" required placeholder="nhapemail@gmail.com" class="w-full px-3.5 py-2 text-xs border border-gray-300 rounded-xl focus:outline-none focus:border-ocopGreen">
                 </div>
-
                 <div>
-                    <label class="block font-bold text-gray-700 mb-1">Mật khẩu *</label>
-                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                    <label class="block text-[11px] font-bold text-gray-700 mb-1">Mật khẩu</label>
+                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full px-3.5 py-2 text-xs border border-gray-300 rounded-xl focus:outline-none focus:border-ocopGreen">
                 </div>
-
-                <button type="submit" id="auth-submit-btn" class="w-full bg-ocopGreen text-white py-3 rounded-xl font-bold hover:bg-ocopGreenLight transition shadow-md mt-2">
-                    Đăng Nhập
-                </button>
+                <button type="submit" class="w-full bg-ocopGreen text-white font-bold py-2.5 rounded-xl text-xs hover:bg-ocopGreenLight transition shadow">Xác Nhận Đăng Nhập</button>
             </form>
-
-            <div class="relative my-4">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
-                <div class="relative flex justify-center text-[10px] uppercase"><span class="bg-white px-2 text-gray-400 font-bold">Hoặc tiếp tục với</span></div>
-            </div>
-
-            <button onclick="mockGoogleLogin()" class="w-full bg-white border border-gray-300 text-gray-700 py-2.5 rounded-xl font-bold hover:bg-gray-50 transition flex items-center justify-center space-x-2 text-xs">
-                <i class="fa-brands fa-google text-red-500"></i>
-                <span>Đăng nhập nhanh với Google</span>
-            </button>
         </div>
     </div>
 
-    <!-- 7. DRAWER LỊCH SỬ MUA HÀNG (CÓ MÃ ĐƠN HÀNG) -->
-    <div id="orders-drawer" class="fixed inset-0 z-50 hidden">
-        <div onclick="toggleOrdersModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
-            <div class="p-4 bg-ocopGreen text-white flex items-center justify-between border-b border-ocopGold/30">
-                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-clock-rotate-left mr-2 text-ocopGold"></i> Lịch Sử Mua Hàng</h3>
-                <button onclick="toggleOrdersModal()" class="text-white/80 hover:text-white p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-
-            <div id="orders-container" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg">
-                <!-- Order list rendered dynamically via JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- 8. POPUP QUICK VIEW CHI TIẾT SẢN PHẨM -->
-    <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
-        <div class="relative bg-white rounded-3xl max-w-2xl w-full shadow-2xl z-10 overflow-hidden border border-amber-200 animate-pop-in">
-            <button onclick="closeQuickView()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-8 h-8 flex items-center justify-center text-sm z-20 transition"><i class="fa-solid fa-xmark"></i></button>
-            <div class="grid grid-cols-1 md:grid-cols-2" id="quickview-content"></div>
-        </div>
-    </div>
-
-    <!-- 9. DRAWER YÊU THÍCH (WISHLIST) -->
-    <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
-        <div onclick="toggleWishlistDrawer()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
-            <div class="p-4 bg-ocopGreen text-white flex items-center justify-between border-b border-ocopGold/30">
-                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-heart mr-2 text-red-500"></i> <span id="i18n-wishlist-title">Danh sách Yêu thích</span></h3>
-                <button onclick="toggleWishlistDrawer()" class="text-white/80 hover:text-white p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <div id="wishlist-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg"></div>
-        </div>
-    </div>
-
-    <!-- 10. DRAWER GIỎ HÀNG (CART) -->
+    <!-- 7. DRAWER GIỎ HÀNG -->
     <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
-        <div id="cart-overlay" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
-            <div class="p-4 bg-ocopGreen text-white flex items-center justify-between border-b border-ocopGold/30">
-                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-cart-shopping mr-2 text-ocopGold"></i> <span id="i18n-cart-title">Giỏ hàng của bạn</span></h3>
-                <button onclick="toggleCart()" class="text-white/80 hover:text-white p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            
-            <div id="cart-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg">
-                <p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">Giỏ hàng của bạn đang trống.</p>
-            </div>
-
-            <div class="p-4 border-t border-gray-200 bg-white space-y-3 shadow-lg">
-                <div class="space-y-1 text-xs text-gray-600 bg-amber-50 p-3 rounded-2xl border border-amber-200">
-                    <div class="flex justify-between">
-                        <span id="i18n-cart-subtotal">Tạm tính:</span>
-                        <span id="cart-subtotal" class="font-bold text-gray-800">0 ₫</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span id="i18n-cart-shipping">Phí vận chuyển:</span>
-                        <span class="font-bold text-emerald-700" id="i18n-free-shipping">Miễn phí toàn quốc</span>
-                    </div>
-                    <div class="flex justify-between text-sm font-extrabold pt-1.5 border-t border-amber-200 text-gray-900">
-                        <span id="i18n-cart-total">Tổng cộng:</span>
-                        <span id="cart-total" class="text-red-600">0 ₫</span>
-                    </div>
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col justify-between p-6 z-10">
+            <div>
+                <div class="flex items-center justify-between border-b pb-4">
+                    <h3 class="text-base font-extrabold text-ocopGreen flex items-center">
+                        <i class="fa-solid fa-basket-shopping text-amber-600 mr-2"></i> Giỏ Hàng OCOP
+                    </h3>
+                    <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-
-                <div class="space-y-2 text-xs">
-                    <input id="cust-name" type="text" placeholder="Họ và tên người nhận *" class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-ocopGreen bg-gray-50">
-                    <input id="cust-phone" type="tel" placeholder="Số điện thoại liên hệ *" class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                <div id="cart-items" class="py-4 space-y-3 overflow-y-auto max-h-[60vh]">
+                    <!-- Render Giỏ hàng -->
                 </div>
+            </div>
 
-                <button onclick="checkout()" class="w-full bg-ocopGreen text-white py-3.5 rounded-2xl font-bold text-sm hover:bg-ocopGreenLight transition shadow-lg border border-ocopGold/30 flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-qrcode text-ocopGold text-base"></i>
-                    <span id="i18n-checkout-btn">Thanh Toán VietQR BIDV</span>
+            <div class="border-t pt-4 space-y-3">
+                <div class="flex justify-between font-extrabold text-sm">
+                    <span>Tổng tiền thanh toán:</span>
+                    <span id="cart-total-price" class="text-red-600 text-base">0 ₫</span>
+                </div>
+                <button onclick="checkoutCart()" class="w-full bg-ocopGreen text-ocopGold font-extrabold py-3 rounded-2xl text-xs hover:bg-ocopGreenLight transition shadow-lg uppercase tracking-wider">
+                    Thanh Toán Đơn Hàng
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 11. MODAL THANH TOÁN VIETQR -->
-    <div id="qr-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQRModal()"></div>
-        <div class="relative bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center z-10 space-y-4 max-h-[90vh] overflow-y-auto animate-pop-in border border-amber-200">
-            <button onclick="closeQRModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div class="inline-flex items-center space-x-2 text-[#0056a4] font-extrabold text-lg">
-                <i class="fa-solid fa-building-columns"></i>
-                <span>BIDV VietQR Payment</span>
-            </div>
-
-            <div class="flex justify-center relative">
-                <img id="bidv-qr" src="" alt="Mã VietQR BIDV" class="w-60 h-60 rounded-2xl border-2 border-amber-200 shadow-md p-1 bg-white">
-            </div>
-
-            <div class="text-left bg-gray-50 p-3.5 rounded-2xl text-xs space-y-2 border border-gray-100">
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500">Mã đơn hàng:</span>
-                    <span id="qr-order-code" class="font-extrabold text-ocopGreen">#OCOP-123456</span>
+    <!-- 8. DRAWER YÊU THÍCH -->
+    <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleWishlistDrawer()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col justify-between p-6 z-10">
+            <div>
+                <div class="flex items-center justify-between border-b pb-4">
+                    <h3 class="text-base font-extrabold text-red-600 flex items-center">
+                        <i class="fa-solid fa-heart mr-2"></i> Danh Sách Yêu Thích
+                    </h3>
+                    <button onclick="toggleWishlistDrawer()" class="text-gray-400 hover:text-gray-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500">Ngân hàng:</span>
-                    <span class="font-bold text-gray-800">BIDV</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500">Số tài khoản:</span>
-                    <div class="flex items-center space-x-1">
-                        <span id="acc-num" class="text-red-600 font-extrabold">8808661371</span>
-                        <button onclick="copyToClipboard('8808661371', 'Số tài khoản')" class="text-gray-400 hover:text-ocopGreen p-1"><i class="fa-regular fa-copy"></i></button>
-                    </div>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500">Chủ tài khoản:</span>
-                    <span id="acc-name" class="font-bold text-gray-800">HOANG NGUYEN THANH BINH</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500">Số tiền:</span>
-                    <span id="qr-amount" class="text-green-700 font-extrabold text-sm">0 đ</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-500">Nội dung CK:</span>
-                    <div class="flex items-center space-x-1">
-                        <span id="qr-memo" class="bg-amber-100 px-2 py-0.5 rounded font-bold text-amber-900 text-[11px]">THANH TOAN</span>
-                        <button onclick="copyToClipboard(document.getElementById('qr-memo').innerText, 'Nội dung chuyển khoản')" class="text-gray-400 hover:text-ocopGreen p-1"><i class="fa-regular fa-copy"></i></button>
-                    </div>
+                <div id="wishlist-items" class="py-4 space-y-3 overflow-y-auto max-h-[75vh]">
+                    <!-- Render Yêu thích -->
                 </div>
             </div>
-
-            <p class="text-[11px] text-gray-500 italic">Mở ứng dụng Ngân hàng quét mã QR để hoàn tất đơn hàng.</p>
-
-            <button onclick="confirmOrderPayment()" class="w-full bg-ocopGreen text-white py-2.5 rounded-xl font-bold text-xs hover:bg-ocopGreenLight transition">
-                Đã hoàn tất chuyển khoản
-            </button>
         </div>
     </div>
 
-    <!-- 12. FOOTER -->
-    <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-6 gap-4">
-                <div class="space-y-1 max-w-3xl">
-                    <h5 class="font-bold text-gray-900 text-xs">Bản quyền của Hệ Thống OCOP Sales Copilot Việt Nam</h5>
-                    <p class="text-[11px] text-gray-500 leading-relaxed">
-                        Giấy chứng nhận ĐKKD & Xúc tiến thương mại OCOP Quốc Gia số: 0312461711 do Sở KH&ĐT TP.HCM cấp. <br>
-                        Trụ sở chính: 496 - 496A - 496B Nguyễn Thị Minh Khai, Phường 2, Quận 3, TP.HCM & Hệ thống Trung tâm OCOP Toàn Quốc.
-                    </p>
-                </div>
-                
-                <div class="flex-shrink-0">
-                    <div class="border-2 border-[#0072bc] rounded-xl px-3.5 py-1.5 flex items-center space-x-2 bg-blue-50/50 shadow-sm">
-                        <i class="fa-solid fa-circle-check text-[#0072bc] text-xl"></i>
-                        <div>
-                            <span class="block text-[9px] font-bold text-[#0072bc] uppercase leading-none">ĐÃ THÔNG BÁO</span>
-                            <span class="block text-[11px] font-extrabold text-[#0072bc] uppercase leading-tight">BỘ CÔNG THƯƠNG</span>
-                        </div>
-                    </div>
-                </div>
+    <!-- 9. MODAL LỊCH SỬ ĐƠN HÀNG -->
+    <div id="orders-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleOrdersModal()"></div>
+        <div class="relative bg-white rounded-3xl max-w-lg w-full shadow-2xl z-10 p-6 border border-amber-200 animate-pop-in">
+            <button onclick="toggleOrdersModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            
+            <h3 class="text-base font-extrabold text-ocopGreen mb-4 flex items-center">
+                <i class="fa-solid fa-clock-rotate-left text-blue-600 mr-2"></i> Lịch Sử Đơn Hàng Đã Đặt
+            </h3>
+
+            <div id="orders-list" class="space-y-3 max-h-[60vh] overflow-y-auto">
+                <!-- Render Lịch sử đơn hàng -->
             </div>
+        </div>
+    </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-2">
-                <div class="md:col-span-4 space-y-3">
-                    <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">Thông tin liên hệ</h6>
-                    <ul class="space-y-2.5 text-gray-600">
-                        <li class="flex items-start space-x-2">
-                            <i class="fa-solid fa-location-dot text-amber-700 mt-0.5 text-sm"></i>
-                            <span>99 Hoàng Hoa Thám, Phường Gia Định, TP.HCM</span>
-                        </li>
-                        <li class="flex items-center space-x-2">
-                            <i class="fa-solid fa-phone text-amber-700 text-xs"></i>
-                            <span class="font-bold text-gray-800">Hotline: 1900 888 688 (Miễn phí)</span>
-                        </li>
-                        <li class="flex items-center space-x-2">
-                            <i class="fa-solid fa-envelope text-amber-700 text-xs"></i>
-                            <span class="text-ocopGreen font-semibold">support@ocopsalescopilot.vn</span>
-                        </li>
-                    </ul>
+    <!-- 10. FOOTER -->
+    <footer id="contact-footer" class="bg-ocopGreenDark text-amber-100/90 pt-12 pb-6 border-t border-ocopGold/30 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-xs leading-relaxed">
+            <div>
+                <div class="flex items-center space-x-2 text-ocopGold font-bold text-base mb-3">
+                    <i class="fa-solid fa-leaf"></i>
+                    <span>OCOP Sales Copilot</span>
                 </div>
-
-                <div class="md:col-span-4 space-y-3">
-                    <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">HỖ TRỢ KHÁCH HÀNG</h6>
-                    <ul class="space-y-2 text-gray-600">
-                        <li><a href="#" class="hover:text-ocopGreen transition">Chính Sách Giao Hàng Toàn Quốc</a></li>
-                        <li><a href="#" class="hover:text-ocopGreen transition">Chính Sách Đổi Trả 100%</a></li>
-                        <li><a href="#" class="hover:text-ocopGreen transition">Hướng Dẫn Thanh Toán VietQR</a></li>
-                    </ul>
-                </div>
-
-                <div class="md:col-span-4 space-y-3">
-                    <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">VỀ OCOP SALES COPILOT</h6>
-                    <ul class="space-y-2 text-gray-600">
-                        <li><a href="#" class="hover:text-ocopGreen transition">Hệ Thống Trung Tâm OCOP</a></li>
-                        <li><a href="#" class="hover:text-ocopGreen transition">Giấy Chứng Nhận Vệ Sinh ATTP</a></li>
-                        <li><a href="#" class="hover:text-ocopGreen transition">Liên Hệ Hợp Tác Doanh Nghiệp</a></li>
-                    </ul>
-                </div>
+                <p class="text-amber-100/70">Cổng thông tin & thương mại phân phối trực tiếp 40 sản phẩm đặc sản OCOP đạt chuẩn 4 - 5 sao quốc gia.</p>
             </div>
-
-            <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center text-[11px] text-gray-500 gap-2">
-                <p>Copyright © 2026 OCOP SALES COPILOT. All Rights Reserved.</p>
-                <p>Hệ thống cung cấp đặc sản OCOP Việt Nam chính gốc.</p>
+            <div>
+                <h4 class="font-extrabold text-white text-sm mb-3">Liên Hệ & Hotline</h4>
+                <p><i class="fa-solid fa-phone text-ocopGold mr-2"></i> 1900 888 688</p>
+                <p class="mt-1"><i class="fa-solid fa-envelope text-ocopGold mr-2"></i> hotro@ocopcopilot.vn</p>
+                <p class="mt-1"><i class="fa-solid fa-location-dot text-ocopGold mr-2"></i> Hà Nội - TP. Hồ Chí Minh - Cần Thơ</p>
             </div>
+            <div>
+                <h4 class="font-extrabold text-white text-sm mb-3">Cam Kết Chất Lượng</h4>
+                <p>✓ 100% Sản phẩm có chứng nhận OCOP quốc gia</p>
+                <p class="mt-1">✓ Đổi trả miễn phí trong 7 ngày nếu lỗi nhà sản xuất</p>
+                <p class="mt-1">✓ Giao hàng hỏa tốc bảo quản lạnh tiêu chuẩn</p>
+            </div>
+        </div>
+        <div class="border-t border-white/10 mt-8 pt-4 text-center text-[11px] text-amber-100/50">
+            © 2026 OCOP Sales Copilot. All Rights Reserved.
         </div>
     </footer>
 
-    <!-- JAVASCRIPT CORE -->
-    <script>
-        let currentLang = 'vi';
-        let wishlist = [];
-        let cart = [];
-        let currentFilter = 'all';
-        let currentUser = null;
-        let ordersHistory = [
-            {
-                orderCode: "OCOP-849201",
-                date: "2026-10-02 14:30",
-                customer: "Khách Hàng Mẫu",
-                items: [{ nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", quantity: 1, price: 650000 }],
-                total: 650000,
-                status: "Đã hoàn tất"
-            }
-        ];
-        let currentPendingOrder = null;
-
-        const AI_AVATAR_URL = "image_d44449.jpg";
-
-        const i18n = {
-            vi: {
-                topGuarantee: "Cam kết 100% OCOP Chính Hãng",
-                topShipping: "Miễn phí vận chuyển toàn quốc từ 500k",
-                topHotline: "Tư vấn quà biếu & Xuất hóa đơn VAT:",
-                topCenters: "Trung tâm OCOP",
-                topSpecs: "40 Đặc sản",
-                subbrand: "Đặc Sản Chuẩn Quốc Gia 4 - 5 Sao",
-                navHome: "Trang chủ",
-                navProducts: "Danh mục 40 Đặc sản",
-                navContact: "Liên hệ & Hỗ hỗ trợ",
-                supportLabel: "Tư vấn 24/7",
-                heroBadge: "Chương Trình Quốc Gia Mỗi Xã Một Sản Phẩm",
-                heroTitle1: "Khám Phá Tinh Hoa",
-                heroTitle2: "40 Đặc Sản Việt Nam",
-                heroDesc: "Hệ thống thương mại phân phối trực tiếp 40 sản phẩm OCOP đạt chuẩn 4 - 5 sao quốc gia. Đảm bảo nguồn gốc xuất xứ chính gốc, hương vị truyền thống & chất lượng thượng hạng.",
-                stat1: "Đặc Sản Chọn Lọc",
-                stat2: "Chính Gốc Xuất Xứ",
-                stat3: "Đạt Chuẩn Quốc Gia",
-                btnExplore: "Xem 40 Đặc Sản OCOP",
-                btnSupport: "Liên Hệ Tư Vấn Quà Biếu",
-                heroProdName: "Yến Sào Khánh Hòa Thượng Hạng",
-                catHeader: "Danh Mục Sản Phẩm",
-                catAll: "Tất cả đặc sản",
-                catTea: "Trà & Dược Liệu",
-                catGift: "Quà Biếu Sức Khỏe",
-                catFood: "Nông Sản & Ẩm Thực",
-                catSnack: "Món Ngon & Đồ Nhắm",
-                catSpice: "Gia Vị Truyền Thống",
-                cat5Star: "Chứng nhận OCOP 5 Sao",
-                cat4Star: "Chứng nhận OCOP 4 Sao",
-                noProd: "Không tìm thấy đặc sản phù hợp.",
-                resetBtn: "Xem toàn bộ 40 đặc sản",
-                wishlistTitle: "Danh sách Yêu thích",
-                cartTitle: "Giỏ hàng của bạn",
-                cartEmpty: "Giỏ hàng của bạn đang trống.",
-                cartSubtotal: "Tạm tính:",
-                cartShipping: "Phí vận chuyển:",
-                freeShipping: "Miễn phí toàn quốc",
-                cartTotal: "Tổng cộng:",
-                checkoutBtn: "Thanh Toán VietQR BIDV",
-                addCartBtn: "Thêm giỏ",
-                quickViewBtn: "Xem chi tiết",
-                listPrice: "Giá niêm yết:",
-                provinceLabel: "Xuất xứ:",
-                ratingLabel: "Chứng nhận:"
-            },
-            en: {
-                topGuarantee: "100% Genuine OCOP Certified",
-                topShipping: "Free Shipping Nationwide over 500k VND",
-                topHotline: "Gift Advice & VAT Invoice Support:",
-                topCenters: "OCOP Centers",
-                topSpecs: "40 Specialties",
-                subbrand: "National Standard 4 - 5 Star Specialties",
-                navHome: "Home",
-                navProducts: "40 Specialties",
-                navContact: "Contact & Support",
-                supportLabel: "Support 24/7",
-                heroBadge: "National One Commune One Product Program",
-                heroTitle1: "Discover The Essence Of",
-                heroTitle2: "40 Vietnamese Specialties",
-                heroDesc: "Direct distribution e-commerce platform for 40 national 4 - 5 star OCOP certified specialties. Guaranteed authentic origin, traditional flavors & supreme quality.",
-                stat1: "Curated Specialties",
-                stat2: "Authentic Origin",
-                stat3: "National Certified",
-                btnExplore: "Explore 40 Specialties",
-                btnSupport: "Contact For Gift Consultation",
-                heroProdName: "Supreme Khanh Hoa Bird's Nest",
-                catHeader: "Product Categories",
-                catAll: "All Specialties",
-                catTea: "Tea & Herbal Medicine",
-                catGift: "Health Gift Sets",
-                catFood: "Agriculture & Cuisine",
-                catSnack: "Delicacies & Snacks",
-                catSpice: "Traditional Spices",
-                cat5Star: "OCOP 5-Star Certified",
-                cat4Star: "OCOP 4-Star Certified",
-                noProd: "No matching specialties found.",
-                resetBtn: "View all 40 specialties",
-                wishlistTitle: "Favorite Items",
-                cartTitle: "Your Shopping Cart",
-                cartEmpty: "Your cart is currently empty.",
-                cartSubtotal: "Subtotal:",
-                cartShipping: "Shipping:",
-                freeShipping: "Free Nationwide",
-                cartTotal: "Total Amount:",
-                checkoutBtn: "Pay with VietQR BIDV",
-                addCartBtn: "Add to Cart",
-                quickViewBtn: "Quick View",
-                listPrice: "Official Price:",
-                provinceLabel: "Origin:",
-                ratingLabel: "Certification:"
-            }
-        };
-
-        const products = [
-            { id: 1, nameVi: "Trà hoa vàng Tam Đảo (Hộp 50g)", nameEn: "Tam Dao Golden Camellia Tea (50g Box)", price: 650000, star: 5, provinceVi: "Vĩnh Phúc", provinceEn: "Vinh Phuc", category: "tea 5star gift", image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80", descVi: "Nữ hoàng các loại trà, hạ mỡ máu, ngủ ngon, quà biếu sức khỏe ngoại giao cao cấp.", descEn: "Queen of teas, lowers blood lipid, promotes deep sleep, premium diplomacy health gift." },
-            { id: 2, nameVi: "Hạt điều rang củi Bình Phước (500g)", nameEn: "Binh Phuoc Wood-Roasted Cashews (500g)", price: 195000, star: 4, provinceVi: "Bình Phước", provinceEn: "Binh Phuoc", category: "snack 4star food", image: "https://images.unsplash.com/photo-1608797178974-15b35a6405f8?auto=format&fit=crop&w=800&q=80", descVi: "Hạt điều nguyên vỏ lụa, rang củi thủ công béo ngậy giòn tan đậm vị tự nhiên.", descEn: "Silk-husked cashews, hand wood-roasted, rich, crunchy, naturally flavorful." },
-            { id: 3, nameVi: "Đồ gốm mỹ nghệ Biên Hòa", nameEn: "Bien Hoa Fine Art Ceramics", price: 580000, star: 4, provinceVi: "Đồng Nai", provinceEn: "Dong Nai", category: "gift 4star", image: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80", descVi: "Tuyệt tác gốm men xanh đồng danh tiếng, chạm khắc thủ công hoa văn tinh xảo.", descEn: "Famous copper-green glazed ceramic masterpiece, hand-carved intricate patterns." },
-            { id: 4, nameVi: "Mật ong rừng U Minh (Chai 500ml)", nameEn: "U Minh Wild Forest Honey (500ml Bottle)", price: 290000, star: 4, provinceVi: "Cà Mau", provinceEn: "Ca Mau", category: "gift 4star food tea", image: "https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=800&q=80", descVi: "Mật ong hoa tràm nguyên chất Cà Mau, hương thơm dịu nhẹ, tăng đề kháng.", descEn: "Pure Melaleuca flower honey from Ca Mau, mild aroma, boosts immunity." },
-            { id: 5, nameVi: "Cà phê Arabica Cầu Đất (500g)", nameEn: "Cau Dat Arabica Coffee (500g)", price: 240000, star: 5, provinceVi: "Đà Lạt", provinceEn: "Da Lat", category: "tea 5star food", image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80", descVi: "100% Arabica Cầu Đất nguyên chất, vị chua thanh quyện hậu vị ngọt sâu.", descEn: "100% pure Cau Dat Arabica, delicate acidity with deep sweet aftertaste." },
-            { id: 6, nameVi: "Bánh cốm Làng Vòng (Hộp 10 chiếc)", nameEn: "Lang Vong Green Rice Cake (Box of 10)", price: 90000, star: 4, provinceVi: "Hà Nội", provinceEn: "Ha Noi", category: "snack 4star food", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80", descVi: "Vỏ nếp dẻo thơm màu lá nếp, nhân đậu xanh dừa ngào ngạt ngọt dịu Hà Thành.", descEn: "Chewy sticky rice dough with pandan aroma, coconut mung bean filling." },
-            { id: 7, nameVi: "Nước mắm Phú Quốc truyền thống (500ml 40°N)", nameEn: "Phu Quoc Traditional Fish Sauce (500ml 40°N)", price: 165000, star: 5, provinceVi: "Phú Quốc", provinceEn: "Phu Quoc", category: "spice 5star food", image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80", descVi: "Ủ chượp thùng gỗ bời lời 12 tháng, độ đạm tự nhiên cao đậm đà nguyên bản.", descEn: "Aged in wooden barrels for 12 months, high natural protein rich taste." },
-            { id: 8, nameVi: "Tỏi đen một nhánh Lý Sơn (Hộp 500g)", nameEn: "Ly Son Single-Clove Black Garlic (500g Box)", price: 550000, star: 5, provinceVi: "Lý Sơn", provinceEn: "Ly Son Island", category: "gift tea 5star", image: "https://images.unsplash.com/photo-1608686207856-001b95cf60ca?auto=format&fit=crop&w=800&q=80", descVi: "Lên men tự nhiên 60 ngày, dẻo ngọt chua nhẹ, giàu chất chống oxy hóa.", descEn: "Naturally fermented for 60 days, soft sweet, rich in antioxidants." },
-            { id: 9, nameVi: "Gạo Tám Xoan Hải Hậu (Túi 5kg)", nameEn: "Hai Hau Tam Xoan Rice (5kg Bag)", price: 185000, star: 4, provinceVi: "Nam Định", provinceEn: "Nam Dinh", category: "food 4star", image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80", descVi: "Hạt gạo thon nhỏ, cơm dẻo mềm thơm nức hương hoa xoan tự nhiên.", descEn: "Slender rice grains, soft cooked rice with natural flower aroma." },
-            { id: 10, nameVi: "Rượu sim rừng Phú Quốc (Chai 750ml)", nameEn: "Phu Quoc Wild Sim Wine (750ml Bottle)", price: 210000, star: 4, provinceVi: "Phú Quốc", provinceEn: "Phu Quoc", category: "gift snack 4star", image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80", descVi: "Lên men quả sim chín rừng Phú Quốc, vị chua ngọt chát nhẹ tốt cho tiêu hóa.", descEn: "Fermented from wild ripe sim berries, sweet-tart taste beneficial for health." },
-            { id: 11, nameVi: "Miến dong Phia Đén Cao Bằng (1kg)", nameEn: "Phia Den Canna Vermicelli Cao Bang (1kg)", price: 110000, star: 4, provinceVi: "Cao Bằng", provinceEn: "Cao Bang", category: "food 4star", image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=800&q=80", descVi: "100% tinh bột dong riềng đỏ nguyên chất, sợi dai giòn không bị trương nát.", descEn: "100% pure red Canna starch, chewy noodles that do not get soggy." },
-            { id: 12, nameVi: "Chả mực giã tay Hạ Long (500g)", nameEn: "Ha Long Hand-Pounded Squid Cake (500g)", price: 260000, star: 5, provinceVi: "Quảng Ninh", provinceEn: "Quang Ninh", category: "food snack 5star", image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80", descVi: "Mực mai tươi giã tay truyền thống, miếng chả sần sật chiên vàng ruộm thơm phức.", descEn: "Traditional hand-pounded fresh cuttlefish, golden crispy & aromatic." },
-            { id: 13, nameVi: "Tôm khô Rạch Gốc Cà Mau (250g)", nameEn: "Rach Goc Dried Shrimp Ca Mau (250g)", price: 380000, star: 4, provinceVi: "Cà Mau", provinceEn: "Ca Mau", category: "snack gift 4star food", image: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=800&q=80", descVi: "Tôm đất sinh thái phơi khô tự nhiên, thịt tôm đỏ au ngọt đậm đà vùng đất mũi.", descEn: "Naturally sun-dried wild shrimp, vivid red color with rich sweet taste." },
-            { id: 14, nameVi: "Bánh đậu xanh Rồng Vàng Hải Dương (350g)", nameEn: "Hai Duong Mung Bean Cake (350g)", price: 95000, star: 5, provinceVi: "Hải Dương", provinceEn: "Hai Duong", category: "snack 5star food", image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80", descVi: "Bánh đậu xanh nguyên chất ngọt thanh tan mịn trong miệng, thưởng thức cùng trà nóng.", descEn: "Pure mung bean cake, smooth melt-in-mouth sweetness, perfect with hot tea." },
-            { id: 15, nameVi: "Hồng treo gió công nghệ Nhật Đà Lạt (250g)", nameEn: "Da Lat Wind-Dried Persimmons (250g)", price: 290000, star: 4, provinceVi: "Đà Lạt", provinceEn: "Da Lat", category: "gift snack 4star food", image: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?auto=format&fit=crop&w=800&q=80", descVi: "Hồng treo gió Dashi Nhật Bản dẻo mềm thơm ngon, mật hồng đượm ngọt tự nhiên.", descEn: "Japanese technology air-dried persimmons, soft chewy with natural honey syrup." },
-            { id: 16, nameVi: "Trà Đinh Tân Cương Thái Nguyên (Hộp 200g)", nameEn: "Tan Cuong Premium Spire Tea (200g Box)", price: 450000, star: 5, provinceVi: "Thái Nguyên", provinceEn: "Thai Nguyen", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=800&q=80", descVi: "Búp đinh trà hái sớm, chát dịu nhẹ quyện hậu ngọt sâu lắng chuẩn đệ nhất danh trà.", descEn: "Early harvest tea spires, mild astringency with deep sweet aftertaste." },
-            { id: 17, nameVi: "Xoài sấy dẻo Cam Ranh (Túi 200g)", nameEn: "Cam Ranh Soft-Dried Mango (200g Bag)", price: 85000, star: 4, provinceVi: "Khánh Hòa", provinceEn: "Khanh Hoa", category: "snack 4star food", image: "https://images.unsplash.com/photo-1591073113125-e46713c829ed?auto=format&fit=crop&w=800&q=80", descVi: "Xoài chín cây sấy dẻo lạnh giữ trọn màu sắc vàng tươi & hương vị chua ngọt tự nhiên.", descEn: "Cold-dried tree-ripe mangoes, vibrant yellow color with natural sweet-tart taste." },
-            { id: 18, nameVi: "Nấm Linh Chi đỏ Quảng Nam (Hộp 250g)", nameEn: "Quang Nam Red Lingzhi Mushroom (250g Box)", price: 720000, star: 5, provinceVi: "Quảng Nam", provinceEn: "Quang Nam", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1504672281656-e4981d704146?auto=format&fit=crop&w=800&q=80", descVi: "Nấm linh chi đỏ nguyên bào tử bồi bổ sức khỏe, giải độc gan & tăng đề kháng vượt trội.", descEn: "Spore-rich red reishi mushroom, boosts health, detoxifies liver & strengthens immunity." },
-            { id: 19, nameVi: "Thịt trâu gác bếp Sơn La (500g)", nameEn: "Son La Smoke-Cured Buffalo Meat (500g)", price: 430000, star: 4, provinceVi: "Sơn La", provinceEn: "Son La", category: "snack gift 4star food", image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80", descVi: "Thịt trâu bắp tẩm hạt mắc khén gác bếp củi hun khói đặc sản Tây Bắc đậm đà.", descEn: "Traditional Northwest wood-smoked buffalo meat spiced with wild Mac Khen pepper." },
-            { id: 20, nameVi: "Yến sào Khánh Hòa thượng hạng (Hộp 50g)", nameEn: "Khanh Hoa Premium Bird's Nest (50g Box)", price: 2450000, star: 5, provinceVi: "Khánh Hòa", provinceEn: "Khanh Hoa", category: "gift 5star", image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80", descVi: "Tổ yến đảo thiên nhiên Khánh Hòa tinh chế cao cấp, quà biếu sức khỏe ngoại giao thượng đỉnh.", descEn: "Supreme refined natural island bird's nest, ultimate diplomatic health gift." },
-            { id: 21, nameVi: "Sâm Ngọc Linh Quảng Nam (Hộp 100g)", nameEn: "Quang Nam Ngoc Linh Ginseng (100g)", price: 3200000, star: 5, provinceVi: "Quảng Nam", provinceEn: "Quang Nam", category: "gift tea 5star", image: "https://images.unsplash.com/photo-1515023115689-66961238892b?auto=format&fit=crop&w=800&q=80", descVi: "Quốc bảo sâm Việt Nam giàu hàm lượng saponin vượt trội bồi bổ cơ thể toàn diện.", descEn: "Vietnam's national treasure ginseng rich in saponins for ultimate health boost." },
-            { id: 22, nameVi: "Trà Oolong Mộc Châu (Hộp 200g)", nameEn: "Moc Chau Oolong Tea (200g Box)", price: 320000, star: 5, provinceVi: "Sơn La", provinceEn: "Son La", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1563822249510-0467fa1be38d?auto=format&fit=crop&w=800&q=80", descVi: "Trà Oolong trồng trên cao nguyên Mộc Châu sương mù, hương thơm hoa tự nhiên dịu ngọt.", descEn: "Oolong tea grown on foggy Moc Chau plateau with natural floral sweet aroma." },
-            { id: 23, nameVi: "Nước mắm Cát Hải Hải Phòng (Chai 500ml 45°N)", nameEn: "Cat Hai Traditional Fish Sauce (500ml 45°N)", price: 155000, star: 4, provinceVi: "Hải Phòng", provinceEn: "Hai Phong", category: "spice 4star food", image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80", descVi: "Đặc sản nước mắm đảo Cát Hải ủ chượp tự nhiên đậm đà thơm ngậy bữa cơm gia đình.", descEn: "Island fish sauce fermented naturally with rich taste for authentic meals." },
-            { id: 24, nameVi: "Tiêu đen Chư Sê Gia Lai (Hũ 250g)", nameEn: "Chu Se Black Pepper Gia Lai (250g Jar)", price: 120000, star: 4, provinceVi: "Gia Lai", provinceEn: "Gia Lai", category: "spice 4star food", image: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=800&q=80", descVi: "Hạt tiêu đen chín cây Tây Nguyên hạt to tròn cay nồng đậm vị quyến rũ.", descEn: "Tree-ripened Central Highlands black pepper with strong spicy aroma." },
-            { id: 25, nameVi: "Bưởi Phúc Trạch Hà Tĩnh (Quả 1.2kg)", nameEn: "Phuc Trach Pomelo Ha Tinh (1.2kg)", price: 85000, star: 5, provinceVi: "Hà Tĩnh", provinceEn: "Ha Tinh", category: "food 5star", image: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&w=800&q=80", descVi: "Đệ nhất bưởi miền Trung tép bưởi mọng nước ngọt thanh dịu nhẹ đậm đà.", descEn: "Top Central pomelo with juicy segments and mild sweet flavor." },
-            { id: 26, nameVi: "Nho sấy dẻo Ninh Thuận (Túi 250g)", nameEn: "Ninh Thuan Soft-Dried Grapes (250g Bag)", price: 115000, star: 4, provinceVi: "Ninh Thuận", provinceEn: "Ninh Thuan", category: "snack 4star food", image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80", descVi: "Nho tươi nắng gió Phan Rang sấy dẻo tự nhiên dẻo ngọt chua nhẹ kích thích vị giác.", descEn: "Sun-ripened grapes soft dried naturally with delightful sweet-sour taste." },
-            { id: 27, nameVi: "Chè Shan Tuyết Cổ Thụ Suối Giàng (Hộp 200g)", nameEn: "Suoi Giang Ancient Shan Tuyet Tea (200g)", price: 520000, star: 5, provinceVi: "Yên Bái", provinceEn: "Yen Bai", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80", descVi: "Búp trà tuyết hái từ cây chè cổ thụ trăm năm núi cao Suối Giàng hương tuyết thuần khiết.", descEn: "Snow tea buds picked from centuries-old trees on high mountain Suoi Giang." },
-            { id: 28, nameVi: "Bánh gai Tứ Trụ Thanh Hóa (Hộp 5 chiếc)", nameEn: "Tu Tru Black Sticky Rice Cake (Box of 5)", price: 75000, star: 4, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "snack 4star food", image: "https://images.unsplash.com/photo-1514517220017-8ce97a34a7b6?auto=format&fit=crop&w=800&q=80", descVi: "Vỏ lá gai đen dẻo thơm quyện nhân đậu xanh mỡ lợn mứt dừa truyền thống xứ Thanh.", descEn: "Traditional black leaf sticky cake stuffed with sweet mung bean and coconut." },
-            { id: 29, nameVi: "Cam Vinh Nghệ An (Hộp 5kg)", nameEn: "Vinh Orange Nghe An (5kg Box)", price: 230000, star: 4, provinceVi: "Nghệ An", provinceEn: "Nghe An", category: "food 4star", image: "https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&w=800&q=80", descVi: "Cam xã Đoài Vinh quả vàng óng mọng nước vị ngọt thanh dịu mát đậm đà.", descEn: "Famous Vinh oranges, juicy with rich natural sweet flavor." },
-            { id: 30, nameVi: "Nhãn lồng Hưng Yên (Túi 1kg)", nameEn: "Hung Yen Longan (1kg Bag)", price: 110000, star: 5, provinceVi: "Hưng Yên", provinceEn: "Hung Yen", category: "food 5star", image: "https://images.unsplash.com/photo-1596368708380-1d227c4a0349?auto=format&fit=crop&w=800&q=80", descVi: "Cùi nhãn dày mọng giòn ngọt lịm hương thơm quyến rũ vương thất tiến vua.", descEn: "Thick crispy flesh longans with intensely sweet royal flavor." },
-            { id: 31, nameVi: "Nước mắm Ba Làng Thanh Hóa (Chai 500ml)", nameEn: "Ba Lang Traditional Fish Sauce (500ml)", price: 135000, star: 4, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "spice 4star food", image: "https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?auto=format&fit=crop&w=800&q=80", descVi: "Nước mắm cốt cá cơm ủ chượp nắng biển Ba Làng đậm đà hương vị truyền thống.", descEn: "Anchovy fish sauce aged naturally under seaside sun for rich taste." },
-            { id: 32, nameVi: "Bánh pía Sóc Trăng nhân sầu riêng (Hộp 4 chiếc)", nameEn: "Soc Trang Durian Pia Cake (Box of 4)", price: 125000, star: 4, provinceVi: "Sóc Trăng", provinceEn: "Soc Trang", category: "snack 4star food", image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80", descVi: "Vỏ bánh xếp lớp mềm dẻo nhân sầu riêng tươi quyện trứng muối béo ngậy miền Tây.", descEn: "Flaky layered pastry stuffed with fresh durian and rich salted egg yolk." },
-            { id: 33, nameVi: "Nem chua Thanh Hóa đặc biệt (Hộp 20 chiếc)", nameEn: "Thanh Hoa Fermented Pork Roll (Box of 20)", price: 140000, star: 4, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "snack 4star food", image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80", descVi: "Nem chua nạc đùi heo tẩm ớt tỏi lá đinh lăng chua nhẹ giòn sần sật.", descEn: "Fermented lean pork seasoned with garlic, chili, crispy & savory." },
-            { id: 34, nameVi: "Mật táo đỏ Phan Rang (Chai 500ml)", nameEn: "Phan Rang Red Date Syrup (500ml)", price: 190000, star: 4, provinceVi: "Ninh Thuận", provinceEn: "Ninh Thuan", category: "gift 4star tea", image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80", descVi: "Chiết xuất táo đỏ Ninh Thuận bồi bổ khí huyết giải nhiệt đẹp da an thần.", descEn: "Red date extract beneficial for blood circulation and restful sleep." },
-            { id: 35, nameVi: "Rượu nếp cái hoa vàng Đông Anh (Chai 750ml)", nameEn: "Dong Anh Yellow Flower Sticky Rice Wine (750ml)", price: 180000, star: 4, provinceVi: "Hà Nội", provinceEn: "Ha Noi", category: "gift 4star", image: "https://images.unsplash.com/photo-1527281400683-1aae777175f8?auto=format&fit=crop&w=800&q=80", descVi: "Lên men gạo nếp cái hoa vàng hạ thổ men thuốc bắc thơm nồng êm dịu.", descEn: "Aged yellow flower sticky rice wine brewed with traditional herbs." },
-            { id: 36, nameVi: "Mủ trôm Tuy Phong Bình Thuận (Hộp 250g)", nameEn: "Tuy Phong Gum Karaya Binh Thuan (250g)", price: 110000, star: 4, provinceVi: "Bình Thuận", provinceEn: "Binh Thuan", category: "gift 4star food", image: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80", descVi: "Mủ trôm nguyên chất giải nhiệt thanh lọc cơ thể dẻo thanh mát tự nhiên.", descEn: "100% natural Karaya gum for body cooling and detox." },
-            { id: 37, nameVi: "Cao atiso Đà Lạt cao cấp (Hộp 200g)", nameEn: "Da Lat Premium Artichoke Extract (200g)", price: 280000, star: 5, provinceVi: "Đà Lạt", provinceEn: "Da Lat", category: "tea gift 5star", image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80", descVi: "Cô đặc từ lá atiso tươi Đà Lạt mát gan mát máu hạ men gan hiệu quả.", descEn: "Concentrated fresh artichoke extract for liver detox and health boost." },
-            { id: 38, nameVi: "Bột sắn dây Kinh Môn Hải Dương (Túi 1kg)", nameEn: "Kinh Mon Kudzu Root Starch (1kg Bag)", price: 160000, star: 4, provinceVi: "Hải Dương", provinceEn: "Hai Duong", category: "food 4star", image: "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=800&q=80", descVi: "Bột sắn dây ta ướp hoa Bưởi thanh nhiệt mát gan giải độc bia rượu.", descEn: "Pure kudzu root starch scented with pomelo flowers for cooling detox." },
-            { id: 39, nameVi: "Khô cá lóc Đồng Tháp (Túi 500g)", nameEn: "Dong Thap Dried Snakehead Fish (500g)", price: 175000, star: 4, provinceVi: "Đồng Tháp", provinceEn: "Dong Thap", category: "snack food 4star", image: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=800&q=80", descVi: "Khô cá lóc đồng tẩm ớt tỏi phơi nắng tự nhiên thịt ngọt dai cay thơm.", descEn: "Sun-dried snakehead fish seasoned with garlic and chili, chewy & flavorful." },
-            { id: 40, nameVi: "Mắm tôm Lê Gia Thanh Hóa (Chai 110g)", nameEn: "Le Gia Traditional Shrimp Paste (110g)", price: 45000, star: 5, provinceVi: "Thanh Hóa", provinceEn: "Thanh Hoa", category: "spice 5star food", image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80", descVi: "Mắm tôm ủ thùng gỗ theo phương pháp truyền thống dậy hương thơm ngậy vị.", descEn: "Traditional wooden-barrel aged shrimp paste with rich authentic flavor." }
-        ];
-
-        function handleImgError(imageElem, nameText) {
-            imageElem.onerror = null;
-            const encodedName = encodeURIComponent(nameText);
-            imageElem.src = `https://placehold.co/600x400/0F382C/D4AF37?text=${encodedName}`;
-        }
-
-        function renderProductsList() {
-            const grid = document.getElementById('product-grid');
-            if (!grid) return;
-
-            const t = i18n[currentLang];
-
-            grid.innerHTML = products.map(p => {
-                const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
-                const desc = (currentLang === 'en') ? p.descEn : p.descVi;
-                const province = (currentLang === 'en') ? p.provinceEn : p.provinceVi;
-                const isFavorited = wishlist.includes(p.id);
-                const heartClass = isFavorited ? "fa-solid fa-heart text-red-500 scale-110" : "fa-regular fa-heart text-gray-400 hover:text-red-500";
-
-                const starBadge = (p.star === 5) ? 
-                    `<span class="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md z-10 animate-pulse"><i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP ${p.star} ${currentLang === 'en' ? 'Star' : 'Sao'}</span>` :
-                    `<span class="absolute top-3 left-3 bg-emerald-800 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md z-10"><i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP ${p.star} ${currentLang === 'en' ? 'Star' : 'Sao'}</span>`;
-
-                const dataSearch = `${p.nameVi} ${p.nameEn} ${p.provinceVi} ${p.provinceEn}`.toLowerCase();
-
-                return `
-                <div class="product-card bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold hover:ring-2 hover:ring-ocopGold/30 flex flex-col group relative animate-fade-in" 
-                     data-category="${p.category}" 
-                     data-name="${dataSearch}">
-                    
-                    <div class="h-48 overflow-hidden relative bg-amber-50">
-                        <img src="${p.image}" alt="${name}" 
-                             onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" 
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out">
-                        ${starBadge}
-                        <span class="absolute top-3 right-12 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full z-10">${province}</span>
-                        
-                        <button onclick="toggleWishlist(${p.id})" class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 backdrop-blur shadow-md flex items-center justify-center transition-transform hover:scale-110 z-20" title="Yêu thích">
-                            <i class="${heartClass} text-sm"></i>
-                        </button>
-                    </div>
-
-                    <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
-                        <div>
-                            <h4 class="text-sm font-bold text-gray-900 group-hover:text-ocopGreen transition line-clamp-2">${name}</h4>
-                            <p class="text-gray-600 text-xs leading-relaxed mt-1 line-clamp-2">${desc}</p>
-                        </div>
-                        
-                        <div class="pt-3 border-t border-amber-100 flex flex-col space-y-2">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] text-gray-400 font-medium">${t.listPrice}</span>
-                                <span class="text-sm font-extrabold text-red-600">${p.price.toLocaleString('vi-VN')} ₫</span>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-2">
-                                <button onclick="openQuickView(${p.id})" class="bg-amber-50 hover:bg-amber-100 text-ocopGreen py-2 rounded-xl text-xs font-bold transition text-center border border-amber-200 hover:shadow-xs">
-                                    ${t.quickViewBtn}
-                                </button>
-                                <button onclick="addToCart(${p.id})" class="bg-ocopGreen hover:bg-ocopGreenLight text-white py-2 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1 shadow-sm hover:shadow-md">
-                                    <i class="fa-solid fa-cart-plus text-ocopGold"></i>
-                                    <span>${t.addCartBtn}</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                `;
-            }).join('');
-
-            filterProducts();
-        }
-
-        // --- QUẢN LÝ TÀI KHOẢN (GMAIL + MẬT KHẨU) ---
-        let currentAuthMode = 'login';
-
-        function toggleAuthModal() {
-            document.getElementById('auth-modal').classList.toggle('hidden');
-        }
-
-        function switchAuthTab(mode) {
-            currentAuthMode = mode;
-            const tabLogin = document.getElementById('tab-login');
-            const tabRegister = document.getElementById('tab-register');
-            const nameField = document.getElementById('name-field');
-            const submitBtn = document.getElementById('auth-submit-btn');
-            const title = document.getElementById('auth-title');
-
-            if (mode === 'login') {
-                tabLogin.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold";
-                tabRegister.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold";
-                nameField.classList.add('hidden');
-                submitBtn.innerText = "Đăng Nhập";
-                title.innerText = "Đăng Nhập Tài Khoản";
-            } else {
-                tabRegister.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold";
-                tabLogin.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold";
-                nameField.classList.remove('hidden');
-                submitBtn.innerText = "Đăng Ký Tài Khoản";
-                title.innerText = "Tạo Tài Khoản Mới";
-            }
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value.trim();
-            const name = document.getElementById('auth-name').value.trim() || email.split('@')[0];
-
-            currentUser = { email, name };
-            document.getElementById('cust-name').value = name;
-
-            // Cập nhật nút tài khoản góc phải
-            const userBtn = document.getElementById('user-btn');
-            userBtn.innerHTML = `<span class="text-xs font-extrabold uppercase">${name.charAt(0)}</span>`;
-            userBtn.className = "w-10 h-10 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center transition shadow-md border-2 border-ocopGold hover:scale-105";
-
-            toggleAuthModal();
-            showToast(currentAuthMode === 'login' ? `Xin chào, ${name}!` : "Đăng ký thành công!");
-        }
-
-        function mockGoogleLogin() {
-            currentUser = { email: "user.ocop@gmail.com", name: "Nguyễn Minh Đức" };
-            document.getElementById('cust-name').value = currentUser.name;
-
-            const userBtn = document.getElementById('user-btn');
-            userBtn.innerHTML = `<span class="text-xs font-extrabold uppercase">M</span>`;
-            userBtn.className = "w-10 h-10 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center transition shadow-md border-2 border-ocopGold hover:scale-105";
-
-            toggleAuthModal();
-            showToast("Đăng nhập Google thành công!");
-        }
-
-        // --- QUẢN LÝ LỊCH SỬ MUA HÀNG ---
-        function toggleOrdersModal() {
-            renderOrdersHistory();
-            document.getElementById('orders-drawer').classList.toggle('hidden');
-        }
-
-        function renderOrdersHistory() {
-            const container = document.getElementById('orders-container');
-            if (!container) return;
-
-            if (ordersHistory.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">Bạn chưa có đơn hàng nào.</p>`;
-                return;
-            }
-
-            container.innerHTML = ordersHistory.map(ord => `
-                <div class="bg-white rounded-2xl p-4 border border-amber-200 shadow-sm text-xs space-y-2">
-                    <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                        <span class="font-extrabold text-ocopGreen">${ord.orderCode}</span>
-                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">${ord.status}</span>
-                    </div>
-
-                    <div class="text-gray-500 text-[10px]"><i class="fa-regular fa-clock mr-1"></i>${ord.date}</div>
-
-                    <div class="space-y-1 py-1">
-                        ${ord.items.map(it => `
-                            <div class="flex justify-between text-gray-800">
-                                <span class="line-clamp-1">${it.nameVi} x${it.quantity}</span>
-                                <span class="font-bold">${(it.price * it.quantity).toLocaleString('vi-VN')}₫</span>
-                            </div>
-                        `).join('')}
-                    </div>
-
-                    <div class="pt-2 border-t border-gray-100 flex justify-between items-center font-extrabold">
-                        <span>Tổng thanh toán:</span>
-                        <span class="text-red-600 text-sm">${ord.total.toLocaleString('vi-VN')} ₫</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function filterProductsGlobal(query) {
-            const queryInput = document.getElementById('product-search');
-            if (queryInput) queryInput.value = query;
-            filterProducts();
-        }
-
-        function setCategoryFilter(cat, btnElem) {
-            currentFilter = cat;
-            document.querySelectorAll('.cat-side-btn').forEach(b => {
-                b.classList.remove('active', 'bg-ocopGreen', 'text-white', 'font-extrabold', 'shadow-md', 'border-l-4', 'border-ocopGold');
-                b.classList.add('text-gray-700');
-            });
-
-            if (btnElem) {
-                btnElem.classList.remove('text-gray-700');
-                btnElem.classList.add('active', 'bg-ocopGreen', 'text-white', 'font-extrabold', 'shadow-md', 'border-l-4', 'border-ocopGold');
-            }
-            filterProducts();
-        }
-
-        function filterProducts() {
-            const queryInput = document.getElementById('product-search');
-            const query = queryInput ? queryInput.value.toLowerCase().trim() : '';
-            const cards = document.querySelectorAll('.product-card');
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                const category = card.getAttribute('data-category') || '';
-                const name = card.getAttribute('data-name') || '';
-
-                const matchesCategory = (currentFilter === 'all') || category.includes(currentFilter);
-                const matchesSearch = !query || name.includes(query);
-
-                if (matchesCategory && matchesSearch) {
-                    card.style.display = 'flex';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            const noMsg = document.getElementById('no-products-msg');
-            if (noMsg) {
-                noMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
-            }
-        }
-
-        function resetFilters() {
-            const queryInput = document.getElementById('product-search');
-            if (queryInput) queryInput.value = '';
-            setCategoryFilter('all');
-        }
-
-        function toggleLanguage() {
-            currentLang = (currentLang === 'vi') ? 'en' : 'vi';
-            document.getElementById('lang-btn').innerText = currentLang.toUpperCase();
-            
-            const dict = i18n[currentLang];
-            for (let key in dict) {
-                const el = document.getElementById(`i18n-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`);
-                if (el) el.innerText = dict[key];
-            }
-
-            renderProductsList();
-            updateWishlistUI();
-            updateCartUI();
-
-            showToast(currentLang === 'en' ? "Language changed to English!" : "Đã chuyển sang Tiếng Việt!");
-        }
-
-        function openQuickView(id) {
-            const p = products.find(item => item.id === id);
-            if (!p) return;
-
-            const t = i18n[currentLang];
-            const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
-            const desc = (currentLang === 'en') ? p.descEn : p.descVi;
-            const province = (currentLang === 'en') ? p.provinceEn : p.provinceVi;
-
-            const modalContent = document.getElementById('quickview-content');
-            modalContent.innerHTML = `
-                <div class="h-64 md:h-auto bg-amber-50 relative">
-                    <img src="${p.image}" alt="${name}" 
-                         onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" 
-                         class="w-full h-full object-cover">
-                    <span class="absolute top-3 left-3 bg-ocopGreen text-ocopGold text-[10px] font-extrabold px-3 py-1 rounded-full shadow">
-                        OCOP ${p.star} ${currentLang === 'en' ? 'Star' : 'Sao'}
-                    </span>
-                </div>
-                <div class="p-6 flex flex-col justify-between space-y-4">
-                    <div class="space-y-2">
-                        <span class="text-xs text-amber-800 font-extrabold bg-amber-100 px-2.5 py-0.5 rounded-full">${province}</span>
-                        <h3 class="text-lg font-bold text-gray-900">${name}</h3>
-                        <p class="text-xs text-gray-600 leading-relaxed">${desc}</p>
-                    </div>
-
-                    <div class="space-y-3 pt-3 border-t border-gray-100">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">${t.listPrice}</span>
-                            <span class="text-lg font-extrabold text-red-600">${p.price.toLocaleString('vi-VN')} ₫</span>
-                        </div>
-
-                        <button onclick="addToCart(${p.id}); closeQuickView();" class="w-full bg-ocopGreen hover:bg-ocopGreenLight text-white py-3 rounded-xl text-xs font-extrabold transition shadow-md flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-cart-plus text-ocopGold"></i>
-                            <span>${t.addCartBtn}</span>
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('quickview-modal').classList.remove('hidden');
-        }
-
-        function closeQuickView() {
-            document.getElementById('quickview-modal').classList.add('hidden');
-        }
-
-        function toggleWishlist(id) {
-            const index = wishlist.indexOf(id);
-            const p = products.find(item => item.id === id);
-            const pName = p ? ((currentLang === 'en') ? p.nameEn : p.nameVi) : 'Specialty';
-
-            if (index > -1) {
-                wishlist.splice(index, 1);
-                showToast(`Removed "${pName}" from favorites.`);
-            } else {
-                wishlist.push(id);
-                showToast(`Added "${pName}" to favorites!`);
-            }
-
-            updateWishlistUI();
-            renderProductsList();
-        }
-
-        function updateWishlistUI() {
-            document.getElementById('wishlist-count').innerText = wishlist.length;
-            const container = document.getElementById('wishlist-items');
-            if (!container) return;
-
-            if (wishlist.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">No favorite items yet.</p>`;
-                return;
-            }
-
-            container.innerHTML = wishlist.map(id => {
-                const p = products.find(item => item.id === id);
-                if (!p) return '';
-                const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
-                return `
-                <div class="flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs hover:border-ocopGold/50 transition">
-                    <div class="flex items-center space-x-3 flex-1 pr-2">
-                        <img src="${p.image}" alt="${name}" 
-                             onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" 
-                             class="w-12 h-12 rounded-xl object-cover flex-shrink-0">
-                        <div>
-                            <h5 class="font-bold text-gray-800 line-clamp-1">${name}</h5>
-                            <p class="text-red-600 font-extrabold mt-0.5">${p.price.toLocaleString('vi-VN')} ₫</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-2.5 py-1.5 rounded-lg text-[11px] font-bold hover:bg-ocopGreenLight transition">
-                            +
-                        </button>
-                        <button onclick="toggleWishlist(${p.id})" class="text-gray-400 hover:text-red-600 p-1">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                </div>
-                `;
-            }).join('');
-        }
-
-        function toggleWishlistDrawer() {
-            document.getElementById('wishlist-drawer').classList.toggle('hidden');
-        }
-
-        function addToCart(id) {
-            const p = products.find(item => item.id === id);
-            if (!p) return;
-
-            const existing = cart.find(item => item.id === id);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ id: p.id, nameVi: p.nameVi, nameEn: p.nameEn, price: p.price, quantity: 1 });
-            }
-            updateCartUI();
-            const pName = (currentLang === 'en') ? p.nameEn : p.nameVi;
-            showToast(`Đã thêm "${pName}" vào giỏ hàng!`);
-        }
-
-        function changeQuantity(index, delta) {
-            if (cart[index]) {
-                cart[index].quantity += delta;
-                if (cart[index].quantity <= 0) cart.splice(index, 1);
-                updateCartUI();
-            }
-        }
-
-        function removeFromCart(index) {
-            if (cart[index]) {
-                cart.splice(index, 1);
-                updateCartUI();
-            }
-        }
-
-        function updateCartUI() {
-            const cartCount = document.getElementById('cart-count');
-            const cartItems = document.getElementById('cart-items');
-            const cartSubtotal = document.getElementById('cart-subtotal');
-            const cartTotal = document.getElementById('cart-total');
-            const t = i18n[currentLang];
-            
-            let totalQuantity = 0;
-            let subtotal = 0;
-
-            if (cart.length === 0) {
-                cartItems.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${t.cartEmpty}</p>`;
-            } else {
-                cartItems.innerHTML = '';
-                cart.forEach((item, index) => {
-                    totalQuantity += item.quantity;
-                    subtotal += item.price * item.quantity;
-
-                    const name = (currentLang === 'en') ? item.nameEn : item.nameVi;
-
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs hover:border-ocopGold/50 transition';
-                    itemElement.innerHTML = `
-                        <div class="flex-1 pr-2">
-                            <h5 class="font-bold text-gray-800">${name}</h5>
-                            <p class="text-red-600 font-extrabold mt-0.5">${item.price.toLocaleString('vi-VN')} ₫</p>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
-                                <button onclick="changeQuantity(${index}, -1)" class="px-2 py-1 text-gray-600 font-bold">-</button>
-                                <span class="px-2 font-bold text-gray-800">${item.quantity}</span>
-                                <button onclick="changeQuantity(${index}, 1)" class="px-2 py-1 text-gray-600 font-bold">+</button>
-                            </div>
-                            <button onclick="removeFromCart(${index})" class="text-gray-400 hover:text-red-600 p-1">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </div>
-                    `;
-                    cartItems.appendChild(itemElement);
-                });
-            }
-
-            if(cartCount) cartCount.innerText = totalQuantity;
-            if(cartSubtotal) cartSubtotal.innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
-            if(cartTotal) cartTotal.innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
-        }
-
-        function toggleCart() {
-            document.getElementById('cart-drawer').classList.toggle('hidden');
-        }
-
-        function checkout() {
-            let totalAmount = 0;
-            cart.forEach(item => { totalAmount += item.price * item.quantity; });
-
-            if (totalAmount === 0) {
-                showToast("Giỏ hàng của bạn đang trống!", "error");
-                return;
-            }
-
-            const phone = document.getElementById('cust-phone').value.trim();
-            const name = document.getElementById('cust-name').value.trim();
-
-            if (!phone || !name) {
-                showToast("Vui lòng điền Họ tên và Số điện thoại!", "error");
-                return;
-            }
-
-            // Tạo Mã Đơn Hàng Tự Động
-            const orderCode = `OCOP-${Math.floor(100000 + Math.random() * 900000)}`;
-            const bankBin = '970418';
-            const accountNo = '8808661371';
-            const accountName = 'HOANG NGUYEN THANH BINH';
-            const memo = `${orderCode} ${phone.slice(-4)}`.toUpperCase();
-
-            currentPendingOrder = {
-                orderCode: orderCode,
-                date: new Date().toLocaleString('sv-SE').replace('T', ' ').slice(0, 16),
-                customer: name,
-                items: JSON.parse(JSON.stringify(cart)),
-                total: totalAmount,
-                status: "Đang xử lý"
-            };
-
-            const qrUrl = `https://img.vietqr.io/image/${bankBin}-${accountNo}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(accountName)}`;
-
-            document.getElementById('bidv-qr').src = qrUrl;
-            document.getElementById('qr-order-code').innerText = `#${orderCode}`;
-            document.getElementById('acc-num').innerText = accountNo;
-            document.getElementById('acc-name').innerText = accountName;
-            document.getElementById('qr-amount').innerText = totalAmount.toLocaleString('vi-VN') + ' VNĐ';
-            document.getElementById('qr-memo').innerText = memo;
-
-            document.getElementById('cart-drawer').classList.add('hidden');
-            document.getElementById('qr-modal').classList.remove('hidden');
-        }
-
-        function confirmOrderPayment() {
-            if (currentPendingOrder) {
-                currentPendingOrder.status = "Đã hoàn tất";
-                ordersHistory.unshift(currentPendingOrder);
-                currentPendingOrder = null;
-                cart = [];
-                updateCartUI();
-                closeQRModal();
-                showToast("Đã lưu đơn hàng vào Lịch sử mua hàng!");
-            } else {
-                closeQRModal();
-            }
-        }
-
-        function closeQRModal() {
-            document.getElementById('qr-modal').classList.add('hidden');
-        }
-
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            if (!container) return;
-            const toast = document.createElement('div');
-            toast.className = `pointer-events-auto bg-white border text-gray-800 px-4 py-3 rounded-2xl shadow-xl text-xs font-bold flex items-center space-x-2 transform translate-y-2 opacity-0 transition-all duration-300 ${type === 'error' ? 'border-red-400 text-red-600' : 'border-emerald-400 text-emerald-800'}`;
-            const icon = type === 'error' ? '<i class="fa-solid fa-circle-exclamation text-red-500 text-base"></i>' : '<i class="fa-solid fa-circle-check text-emerald-500 text-base"></i>';
-            toast.innerHTML = `${icon} <span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
-            setTimeout(() => {
-                toast.classList.add('opacity-0', '-translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        function copyToClipboard(text, label) {
-            navigator.clipboard.writeText(text).then(() => showToast(`Đã sao chép ${label}!`)).catch(() => showToast('Không thể sao chép!', 'error'));
-        }
-
-        // --- CHATBOT AI ENGINE (100MS TURBO) ---
-        function toggleAIChat() {
-            const win = document.getElementById('ai-chat-window');
-            if(win) win.classList.toggle('hidden');
-        }
-
-        function sendQuickPrompt(promptText) {
-            const input = document.getElementById('ai-chat-input');
-            if(input) {
-                input.value = promptText;
-                sendAIMessage();
-            }
-        }
-
-        function removeVietnameseTones(str) {
-            if(!str) return '';
-            return str.normalize('NFD')
-                      .replace(/[\u0300-\u036f]/g, '')
-                      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-                      .toLowerCase();
-        }
-
-        function renderAiProductCards(itemsArray) {
-            return `
-                <div class="space-y-2 mt-2">
-                    ${itemsArray.map(p => `
-                        <div class="p-2 bg-white rounded-2xl border border-amber-200 flex items-center justify-between shadow-xs hover:border-ocopGold transition">
-                            <div class="flex items-center space-x-2.5 flex-1 pr-2">
-                                <img src="${p.image}" alt="${p.nameVi}" onerror="handleImgError(this, '${p.nameVi.replace(/'/g, "\\'")}')" class="w-10 h-10 rounded-xl object-cover flex-shrink-0">
-                                <div>
-                                    <div class="font-bold text-gray-900 text-[11px] line-clamp-1">${p.nameVi}</div>
-                                    <div class="text-[10px] text-amber-800 font-semibold">${p.provinceVi}</div>
-                                    <div class="text-red-600 font-extrabold text-[11px]">${p.price.toLocaleString('vi-VN')} ₫</div>
-                                </div>
-                            </div>
-                            <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-2.5 py-1.5 rounded-xl text-[10px] font-bold hover:bg-ocopGreenLight transition shadow-xs flex-shrink-0">
-                                + Giỏ
-                            </button>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function sendAIMessage() {
-            const input = document.getElementById('ai-chat-input');
-            const container = document.getElementById('ai-chat-messages');
-            if(!input || !container) return;
-
-            const text = input.value.trim();
-            if(!text) return;
-
-            container.innerHTML += `
-                <div class="flex justify-end animate-fade-in">
-                    <div class="bg-ocopGreen text-amber-100 p-3 rounded-2xl leading-relaxed max-w-[85%] font-medium shadow-xs text-xs">
-                        ${text}
-                    </div>
-                </div>
-            `;
-            input.value = '';
-            container.scrollTop = container.scrollHeight;
-
-            setTimeout(() => {
-                const norm = removeVietnameseTones(text);
-                let replyHtml = "";
-
-                if (norm.includes('chao') || norm.includes('hi') || norm.includes('hello') || norm.includes('alo')) {
-                    replyHtml = `Dạ em chào anh/chị ạ! Hôm nay anh/chị muốn em tư vấn đặc sản làm quà biếu, trà mát gan hay món nhắm ngon ạ?`;
-                }
-                else if (norm.includes('combo') || norm.includes('qua') || norm.includes('bieu') || norm.includes('sep')) {
-                    const comboProds = [products[0], products[19], products[20]];
-                    replyHtml = `
-                        <p class="font-bold text-red-700">🎁 Combo Quà Biếu Sức Khỏe Ngoại Giao Super-Vip:</p>
-                        ${renderAiProductCards(comboProds)}
-                        <button onclick="addBundleToCart([1, 20, 21])" class="w-full mt-2.5 bg-gradient-to-r from-red-600 to-amber-600 text-white py-2 rounded-xl font-extrabold shadow text-[11px] flex items-center justify-center space-x-1.5">
-                            <i class="fa-solid fa-cart-plus text-ocopGold"></i>
-                            <span>Tự động thêm bộ Combo vào Giỏ</span>
-                        </button>
-                    `;
-                }
-                else if (norm.includes('5 sao') || norm.includes('top 5')) {
-                    const top5 = products.filter(p => p.star === 5).slice(0, 3);
-                    replyHtml = `<p class="font-bold text-amber-900">⭐ Top đặc sản OCOP 5 Sao Quốc Gia cao cấp nhất:</p>${renderAiProductCards(top5)}`;
-                }
-                else if (norm.includes('200k') || norm.includes('duoi 200')) {
-                    const under200 = products.filter(p => p.price <= 200000).slice(0, 3);
-                    replyHtml = `<p class="font-bold text-indigo-900">💰 Đặc sản ngon chuẩn vị giá dưới 200.000đ:</p>${renderAiProductCards(under200)}`;
-                }
-                else {
-                    const searchResults = products.filter(p => removeVietnameseTones(`${p.nameVi} ${p.provinceVi} ${p.descVi}`).includes(norm)).slice(0, 3);
-                    if (searchResults.length > 0) {
-                        replyHtml = `<p class="font-bold text-ocopGreen">Dạ em tìm thấy các đặc sản đúng yêu cầu đây ạ:</p>${renderAiProductCards(searchResults)}`;
-                    } else {
-                        replyHtml = `Dạ từ khóa <b>"${text}"</b> em tìm chưa ra món trùng khớp. Anh/chị thử hỏi các món như <i>"Chả mực"</i>, <i>"Trà hoa vàng"</i> hay <i>"Tôm khô"</i> nhé!`;
-                    }
-                }
-
-                container.innerHTML += `
-                    <div class="flex items-start space-x-2 animate-fade-in">
-                        <img src="${AI_AVATAR_URL}" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 ring-1 ring-ocopGold shadow">
-                        <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%] text-xs">
-                            ${replyHtml}
-                        </div>
-                    </div>
-                `;
-                container.scrollTop = container.scrollHeight;
-            }, 100);
-        }
-
-        function addBundleToCart(ids) {
-            ids.forEach(id => addToCart(id));
-            toggleCart();
-            showToast("Đã tự động thêm trọn bộ Combo vào Giỏ hàng!");
-        }
-
-        // KÍCH HOẠT KHI TẢI TRANG
-        document.addEventListener('DOMContentLoaded', function() {
-            renderProductsList();
-            updateWishlistUI();
-            updateCartUI();
-        });
-
-        window.onload = function() {
-            renderProductsList();
-        };
-        
-    </script>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OCOP Sales Copilot</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-  <!-- Widget Avatar AI -->
-  <div class="ai-avatar-widget" id="aiWidget">
-    <div class="ai-avatar-circle">
-      <img src="ai-avatar.jpg" alt="AI Avatar">
-    </div>
-    <span class="ai-badge">AI</span>
-  </div>
-
-  <script src="script.js"></script>
+    <!-- FILE LOGIC SCRIPT -->
+    <script src="script.js"></script>
 </body>
 </html>
