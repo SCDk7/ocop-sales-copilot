@@ -11,14 +11,14 @@
             theme: {
                 extend: {
                     colors: {
-                        ocopGreen: '#124134',
-                        ocopGreenLight: '#1b5e4b',
+                        ocopGreen: '#0f382c',
+                        ocopGreenLight: '#185241',
                         ocopGold: '#d4af37',
-                        ocopWarmBg: '#fdfbf7',
-                        ocopPaperBg: '#f5efe4'
+                        ocopGoldHover: '#b89528',
+                        ocopWarmBg: '#faf8f3'
                     },
                     animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'floatBounce 3.5s ease-in-out infinite'
                     },
                     keyframes: {
@@ -39,13 +39,16 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #fdfbf7;
+            background-color: #faf8f3;
         }
-        .bg-pattern {
-            background-image: radial-gradient(#d4af37 0.85px, transparent 0.85px), radial-gradient(#124134 0.85px, #fdfbf7 0.85px);
-            background-size: 32px 32px;
-            background-position: 0 0, 16px 16px;
-            opacity: 0.12;
+        /* NỀN LƯỚI NGỌC BÍCH & VÀNG KIM ĐẲNG CẤP */
+        .bg-mesh-pattern {
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+                radial-gradient(#d4af37 0.75px, transparent 0.75px), 
+                radial-gradient(#0f382c 0.75px, #faf8f3 0.75px);
+            background-size: 100% 100%, 28px 28px, 28px 28px;
+            background-position: 0 0, 0 0, 14px 14px;
         }
         ::-webkit-scrollbar {
             width: 6px;
@@ -54,22 +57,24 @@
             background: #f1f1f1;
         }
         ::-webkit-scrollbar-thumb {
-            background: #124134;
+            background: #0f382c;
             border-radius: 10px;
         }
     </style>
 </head>
 <body class="text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
-    <!-- HỌA TIẾT NỀN NÚI RỪNG & QUẦNG SÁNG VÀNG KIM -->
-    <div class="fixed inset-0 bg-pattern pointer-events-none -z-20"></div>
-    <div class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-emerald-300/25 via-teal-200/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
-    <div class="fixed top-1/3 right-0 w-[550px] h-[550px] bg-gradient-to-tl from-amber-300/30 via-yellow-200/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
+
+    <!-- HỌA TIẾT NỀN LƯỚI & QUẦNG SÁNG AMBIENT NHIỀU LỚP -->
+    <div class="fixed inset-0 bg-mesh-pattern pointer-events-none -z-20"></div>
+    <div class="fixed top-[-10%] left-[-5%] w-[600px] h-[600px] bg-gradient-to-br from-emerald-300/20 via-teal-200/15 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="fixed top-[30%] right-[-10%] w-[650px] h-[650px] bg-gradient-to-tl from-amber-300/25 via-yellow-200/15 to-transparent rounded-full blur-3xl pointer-events-none -z-10 animate-pulse-slow"></div>
+    <div class="fixed bottom-0 left-[20%] w-[500px] h-[500px] bg-gradient-to-tr from-emerald-200/15 via-amber-100/20 to-transparent rounded-full blur-3xl pointer-events-none -z-10"></div>
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-    <!-- HEADER TÍCH HỢP HOTLINE SUPPORT & CHUYỂN NGÔN NGỮ (VI/EN) -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-900/10 shadow-sm">
+    <!-- HEADER TÍCH HỢP HOTLINE VÀ CỤM ICON YÊU THÍCH SỬA LỖI -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-900/10 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
             
             <!-- Logo Brand -->
@@ -83,45 +88,48 @@
                 </div>
             </a>
             
-            <!-- Menu Điều Hướng Chính (Đã bỏ "Vì sao chọn OCOP") -->
+            <!-- Menu Điều Hướng Chính -->
             <nav class="hidden lg:flex items-center space-x-8 font-bold text-sm">
                 <a href="#" class="text-ocopGreen font-extrabold border-b-2 border-ocopGold pb-1 transition" id="i18n-nav-home">Trang chủ</a>
                 <a href="#products-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-products">Danh mục 20 Đặc sản</a>
                 <a href="#contact-footer" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-contact">Liên hệ & Hỗ trợ</a>
             </nav>
 
-            <!-- CỤM HOTLINE SUPPORT & NÚT TRÒN CHỨC NĂNG -->
+            <!-- CỤM HOTLINE SUPPORT & CỤM NÚT TRÒN CHỨC NĂNG -->
             <div class="flex items-center space-x-4 sm:space-x-6">
                 
-                <!-- Khối Hotline Support (0971.280.030) -->
-                <div class="hidden sm:flex items-center space-x-2.5">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-ocopGreen text-2xl">
+                <!-- Khối Hotline Support Đã Đổi Thành 1900 888 688 -->
+                <div class="hidden sm:flex items-center space-x-2.5 bg-emerald-50/60 border border-emerald-200/60 px-3.5 py-1.5 rounded-full shadow-sm">
+                    <div class="w-8 h-8 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-sm shadow-sm">
                         <i class="fa-solid fa-headset"></i>
                     </div>
                     <div class="text-left leading-tight">
-                        <span class="block text-[11px] text-gray-500 font-semibold">Hotline Support</span>
-                        <a href="tel:0971280030" class="text-ocopGreen font-extrabold text-sm hover:underline tracking-tight">0971.280.030</a>
+                        <span class="block text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Hotline Support</span>
+                        <a href="tel:1900888688" class="text-ocopGreen font-extrabold text-sm hover:underline tracking-tight">1900 888 688</a>
                     </div>
                 </div>
 
                 <!-- Cụm Icon Nút Tròn (Profile, Wishlist, Cart, Language VI/EN) -->
                 <div class="flex items-center space-x-2 sm:space-x-3">
                     
-                    <button class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm" title="Tài khoản">
+                    <button class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-100" title="Tài khoản cá nhân">
                         <i class="fa-regular fa-user text-sm"></i>
                     </button>
 
-                    <button onclick="showWishlistToast()" class="relative w-10 h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm" title="Sản phẩm yêu thích">
-                        <i class="fa-regular fa-heart text-sm"></i>
-                        <span id="wishlist-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                    <!-- Nút Mở Danh Sách Yêu Thích Wishlist (Sửa Lỗi Đếm) -->
+                    <button onclick="toggleWishlistDrawer()" class="relative w-10 h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200" title="Sản phẩm yêu thích">
+                        <i class="fa-regular fa-heart text-sm text-red-500"></i>
+                        <span id="wishlist-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
 
-                    <button onclick="toggleCart()" class="relative w-10 h-10 rounded-full bg-red-50 hover:bg-red-100 text-ocopGreen flex items-center justify-center transition shadow-sm" title="Giỏ hàng">
-                        <i class="fa-solid fa-basket-shopping text-sm"></i>
-                        <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                    <!-- Nút Mở Giỏ Hàng Cart -->
+                    <button onclick="toggleCart()" class="relative w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200" title="Giỏ hàng">
+                        <i class="fa-solid fa-basket-shopping text-sm text-ocopGreen"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
 
-                    <button onclick="toggleLanguage()" id="lang-btn" class="w-10 h-10 rounded-full bg-[#f3e3ca] hover:bg-[#e2d1b8] text-ocopGreen font-extrabold text-xs flex items-center justify-center transition shadow-sm border border-amber-200" title="Chuyển đổi Ngôn Ngữ (VI/EN)">
+                    <!-- Nút Chuyển Đổi Ngôn Ngữ (VI / EN) -->
+                    <button onclick="toggleLanguage()" id="lang-btn" class="w-10 h-10 rounded-full bg-[#f3e3ca] hover:bg-[#e2d1b8] text-ocopGreen font-extrabold text-xs flex items-center justify-center transition shadow-sm border border-amber-300" title="Chuyển đổi Ngôn Ngữ (VI/EN)">
                         VI
                     </button>
 
@@ -189,7 +197,7 @@
             </div>
         </section>
 
-        <!-- BỐ CỤC CHÍNH: SIDEBAR BÊN TRÁI + SẢN PHẨM BÊN PHẢI (SỬA LỖI HIỂN THỊ) -->
+        <!-- BỐ CỤC CHÍNH: SIDEBAR BÊN TRÁI + LƯỚI SẢN PHẨM BÊN PHẢI -->
         <section id="products-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="flex flex-col lg:flex-row gap-8">
                 
@@ -291,7 +299,7 @@
                 <!-- BÊN PHẢI: LƯỚI 20 SẢN PHẨM OCOP (TỰ ĐỘNG HIỂN THỊ TỨC THÌ) -->
                 <div class="flex-1">
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <!-- Render động qua JS -->
+                        <!-- Render qua JS -->
                     </div>
 
                     <div id="no-products-msg" style="display: none;" class="text-center py-16 bg-white/70 rounded-3xl border border-dashed border-gray-300">
@@ -304,6 +312,21 @@
             </div>
         </section>
     </main>
+
+    <!-- DRAWER QUẢN LÝ SẢN PHẨM YÊU THÍCH (WISHLIST) -->
+    <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
+        <div onclick="toggleWishlistDrawer()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
+            <div class="p-4 bg-ocopGreen text-white flex items-center justify-between border-b border-ocopGold/30">
+                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-heart mr-2 text-red-500"></i> Danh sách Yêu thích</h3>
+                <button onclick="toggleWishlistDrawer()" class="text-white/80 hover:text-white p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div id="wishlist-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg">
+                <!-- Render qua JS -->
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL CHÀO MỪNG -->
     <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
@@ -557,7 +580,7 @@
         </div>
     </div>
 
-    <!-- FOOTER CAO CẤP VỚI EMAIL HỢP TÁC DOANH NGHIỆP MỚI hoptac@ocopsalescopilot.vn -->
+    <!-- FOOTER CAO CẤP -->
     <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             
@@ -596,7 +619,7 @@
                         </li>
                         <li class="flex items-center space-x-2">
                             <i class="fa-solid fa-phone text-amber-700 text-xs"></i>
-                            <span class="font-bold text-gray-800">Hotline Support: 0971.280.030 (Miễn phí)</span>
+                            <span class="font-bold text-gray-800">Hotline Support: 1900 888 688 (Miễn phí)</span>
                         </li>
                         <li class="flex items-center space-x-2">
                             <i class="fa-solid fa-envelope text-amber-700 text-xs"></i>
@@ -639,7 +662,7 @@
 
             </div>
 
-            <!-- DÒNG THEO DÕI CHÚNG TÔI (EMAIL ĐÃ ĐỔI THÀNH hoptac@ocopsalescopilot.vn) -->
+            <!-- DÒNG THEO DÕI CHÚNG TÔI -->
             <div class="pt-6 border-t border-gray-100 space-y-2">
                 <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">THEO DÕI CHÚNG TÔI</h6>
                 <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-600 font-medium text-[11px]">
@@ -662,10 +685,15 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT & SMART AI ENGINE & MULTI-LANGUAGE VI/EN -->
+    <!-- JAVASCRIPT & SMART AI ENGINE -->
     <script>
-        let currentLang = 'vi'; // 'vi' hoặc 'en'
-        let wishlistCount = 0;
+        let currentLang = 'vi';
+        let wishlist = []; // Danh sách lưu ID sản phẩm đã yêu thích
+        let cart = [];
+        let chatHistory = [];
+        let currentFilter = 'all';
+
+        const GEMINI_API_KEY = "AQ.Ab8RN6KGOMtYHZsAnPuGcl-" + "WI2c34ghePhBgn4S5UlhPl8j5Yw";
 
         // DỮ LIỆU chuẩn 20 SẢN PHẨM OCOP SONG NGỮ
         const products = [
@@ -931,23 +959,20 @@
             }
         ];
 
-        let cart = [];
-        let chatHistory = [];
-        let currentFilter = 'all';
-
-        const GEMINI_API_KEY = "AQ.Ab8RN6KGOMtYHZsAnPuGcl-" + "WI2c34ghePhBgn4S5UlhPl8j5Yw";
-
-        // CƠ CHẾ RENDER SẢN PHẨM FAIL-SAFE TỰ ĐỘNG
+        // RENDER DANH SÁCH SẢN PHẨM & TÍCH HỢP NÚT YÊU THÍCH SỬA LỖI
         function renderProductsList() {
             const grid = document.getElementById('product-grid');
             if (!grid) return;
 
-            grid.innerHTML = products.map((p, index) => {
+            grid.innerHTML = products.map(p => {
                 const name = (currentLang === 'en') ? (p.nameEn || p.nameVi) : p.nameVi;
                 const desc = (currentLang === 'en') ? (p.descEn || p.descVi) : p.descVi;
                 const btnText = (currentLang === 'en') ? "Add to Cart" : "Thêm giỏ";
                 const starLabel = (currentLang === 'en') ? 'Star' : 'Sao';
                 
+                const isFavorited = wishlist.includes(p.id);
+                const heartClass = isFavorited ? "fa-solid fa-heart text-red-500 scale-110" : "fa-regular fa-heart text-gray-400 hover:text-red-500";
+
                 const starBadge = (p.star === 5) ? 
                     `<span class="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md z-10"><i class="fa-solid fa-star text-yellow-200 mr-1"></i>OCOP 5 ${starLabel}</span>` :
                     `<span class="absolute top-3 left-3 bg-emerald-700 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md z-10"><i class="fa-solid fa-award text-yellow-300 mr-1"></i>OCOP 4 ${starLabel}</span>`;
@@ -955,7 +980,7 @@
                 const dataSearch = `${p.nameVi} ${p.nameEn||''} ${p.province}`.toLowerCase();
 
                 return `
-                <div class="product-card bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group" 
+                <div class="product-card bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-amber-900/10 hover:border-ocopGold/60 flex flex-col group relative" 
                      data-category="${p.category}" 
                      data-name="${dataSearch}">
                     
@@ -967,7 +992,12 @@
                             <span class="font-bold text-xs text-amber-100 line-clamp-1">${name}</span>
                         </div>
                         ${starBadge}
-                        <span class="absolute top-3 right-3 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2 py-0.5 rounded-full z-10">${p.province}</span>
+                        <span class="absolute top-3 right-12 bg-black/60 backdrop-blur text-amber-200 text-[10px] font-bold px-2 py-0.5 rounded-full z-10">${p.province}</span>
+                        
+                        <!-- Nút Thả Tim Trực Tiếp Đã Sửa Lỗi -->
+                        <button onclick="toggleWishlist(${p.id})" class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 backdrop-blur shadow-md flex items-center justify-center transition-transform hover:scale-110 z-20" title="Thêm vào yêu thích">
+                            <i class="${heartClass} text-sm transition-colors"></i>
+                        </button>
                     </div>
 
                     <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
@@ -990,7 +1020,7 @@
                 `;
             }).join('');
 
-            // Bắt lỗi ảnh tải chậm/hỏng không gây vỡ giao diện
+            // Bắt lỗi ảnh tải chậm/hỏng
             document.querySelectorAll('.product-img').forEach(img => {
                 img.addEventListener('error', function() {
                     this.style.display = 'none';
@@ -1002,6 +1032,64 @@
             });
 
             filterProducts();
+        }
+
+        // HÀM BẬT/TẮT SẢN PHẨM YÊU THÍCH CHUẨN XÁC
+        function toggleWishlist(id) {
+            const index = wishlist.indexOf(id);
+            const p = products.find(item => item.id === id);
+            const pName = p ? (currentLang === 'en' ? (p.nameEn || p.nameVi) : p.nameVi) : 'sản phẩm';
+
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast(currentLang === 'vi' ? `Đã bỏ "${pName}" khỏi danh sách yêu thích!` : `Removed "${pName}" from wishlist!`);
+            } else {
+                wishlist.push(id);
+                showToast(currentLang === 'vi' ? `Đã thêm "${pName}" vào danh sách yêu thích!` : `Added "${pName}" to wishlist!`);
+            }
+
+            updateWishlistUI();
+            renderProductsList();
+        }
+
+        function updateWishlistUI() {
+            document.getElementById('wishlist-count').innerText = wishlist.length;
+            const container = document.getElementById('wishlist-items');
+            if (!container) return;
+
+            if (wishlist.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${currentLang==='en'?'No favorite items yet.':'Chưa có sản phẩm yêu thích nào.'}</p>`;
+                return;
+            }
+
+            container.innerHTML = wishlist.map(id => {
+                const p = products.find(item => item.id === id);
+                if (!p) return '';
+                const name = (currentLang === 'en') ? (p.nameEn || p.nameVi) : p.nameVi;
+                return `
+                <div class="flex items-center justify-between p-3 bg-white rounded-2xl border border-amber-100 shadow-sm text-xs">
+                    <div class="flex items-center space-x-3 flex-1 pr-2">
+                        <img src="${p.image}" alt="${name}" class="w-12 h-12 rounded-xl object-cover flex-shrink-0">
+                        <div>
+                            <h5 class="font-bold text-gray-800 line-clamp-1">${name}</h5>
+                            <p class="text-red-600 font-extrabold mt-0.5">${p.price.toLocaleString('vi-VN')} ₫</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="addToCart('${p.nameVi.replace(/'/g, "\\'")}', ${p.price})" class="bg-ocopGreen text-white px-2.5 py-1.5 rounded-lg text-[11px] font-bold hover:bg-ocopGreenLight transition">
+                            Thêm giỏ
+                        </button>
+                        <button onclick="toggleWishlist(${p.id})" class="text-gray-400 hover:text-red-600 p-1" title="Bỏ yêu thích">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function toggleWishlistDrawer() {
+            document.getElementById('wishlist-drawer').classList.toggle('hidden');
         }
 
         // BỘ LỌC DANH MỤC THÔNG MINH
@@ -1111,13 +1199,8 @@
             }
 
             renderProductsList();
+            updateWishlistUI();
             updateCartUI();
-        }
-
-        function showWishlistToast() {
-            wishlistCount += 1;
-            document.getElementById('wishlist-count').innerText = wishlistCount;
-            showToast(currentLang === 'vi' ? "Đã thêm đặc sản vào mục yêu thích!" : "Added specialty to wishlist!");
         }
 
         // TOAST NOTIFICATION
@@ -1420,13 +1503,15 @@ Thanh toán hỗ trợ VietQR BIDV tự động.
             document.getElementById('qr-modal').classList.add('hidden');
         }
 
-        // TẢI TRANG LÀ RENDER SẢN PHẨM NGAY LẬP TỨC
+        // KÍCH HOẠT HỆ THỐNG KHI KHỞI ĐỘNG TRANG
         document.addEventListener('DOMContentLoaded', function() {
             renderProductsList();
+            updateWishlistUI();
         });
 
         window.onload = function() {
             renderProductsList();
+            updateWishlistUI();
         };
     </script>
 </body>
