@@ -274,17 +274,50 @@
         </button>
     </div>
 
-    <!-- NÚT FLOATING FACEBOOK BÊN PHẢI -->
+    <!-- NÚT FLOATING LIÊN HỆ ĐA ADMIN (BÊN PHẢI) -->
     <div class="fixed bottom-6 right-6 z-40">
-        <a href="https://www.facebook.com/binh.hoang.882202" target="_blank" rel="noopener noreferrer" 
-           class="flex items-center bg-white rounded-full pl-5 pr-1 py-1 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-gray-100 group">
-            <span class="text-[#1877F2] font-bold text-sm mr-2.5">Chat Facebook</span>
+        <!-- Menu chọn Admin (Mặc định ẩn) -->
+        <div id="admin-menu" class="hidden bg-white rounded-2xl shadow-2xl border border-gray-100 p-3 mb-3 w-72 space-y-2 animate-bounce-short">
+            <div class="text-xs font-bold text-gray-500 uppercase tracking-wider px-2 py-1 border-b border-gray-100 flex items-center justify-between">
+                <span>Chọn Admin tư vấn</span>
+                <span class="w-2 h-2 bg-green-500 rounded-full inline-block animate-pulse"></span>
+            </div>
+            
+            <!-- Admin 1: Thanh Bình -->
+            <a href="https://www.facebook.com/binh.hoang.882202" target="_blank" rel="noopener noreferrer"
+               class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
+                <div class="w-10 h-10 bg-[#1877F2] text-white rounded-full flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </div>
+                <div>
+                    <h6 class="font-bold text-sm text-gray-800 group-hover:text-[#1877F2]">Admin Thanh Bình</h6>
+                    <p class="text-[11px] text-gray-500">Tư vấn sản phẩm & đơn hàng</p>
+                </div>
+            </a>
+
+            <!-- Admin 2: Vĩnh Phúc -->
+            <a href="https://www.facebook.com/nguyen.phuc.327726?locale=vi_VN" target="_blank" rel="noopener noreferrer"
+               class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-blue-50 transition border border-transparent hover:border-blue-100 group">
+                <div class="w-10 h-10 bg-emerald-600 text-white rounded-full flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </div>
+                <div>
+                    <h6 class="font-bold text-sm text-gray-800 group-hover:text-emerald-700">Admin Vĩnh Phúc</h6>
+                    <p class="text-[11px] text-gray-500">Hỗ trợ kỹ thuật & tư vấn</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Nút bấm chính toggle Menu -->
+        <button onclick="toggleAdminMenu()" 
+           class="flex items-center bg-white rounded-full pl-5 pr-1 py-1 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border border-gray-100">
+            <span class="text-[#1877F2] font-bold text-sm mr-2.5">Liên hệ để tư vấn</span>
             <div class="w-11 h-11 bg-[#1877F2] text-white rounded-full flex items-center justify-center text-xl shadow-md relative">
                 <i class="fa-brands fa-facebook-f"></i>
                 <!-- Chấm xanh Online -->
                 <span class="absolute top-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
             </div>
-        </a>
+        </button>
     </div>
 
     <!-- Cart Drawer -->
@@ -361,7 +394,15 @@
             }
         }
 
-        // 2. Quản lý Khung Chat & Gọi Gemini AI
+        // 2. Toggle Menu Chọn Admin
+        function toggleAdminMenu() {
+            const menu = document.getElementById('admin-menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        // 3. Quản lý Khung Chat & Gọi Gemini AI
         function toggleChatBox() {
             const chatBox = document.getElementById('chat-box');
             if (chatBox) {
@@ -421,7 +462,9 @@
                 3. Đồ gốm mỹ nghệ Biên Hòa: OCOP 4 Sao, 650.000 ₫. Thủ công tinh xảo, quà tặng tân gia.
 
                 Thanh toán: VietQR BIDV (STK: 8808661371 - HOANG NGUYEN THANH BINH).
-                Khách cũng có thể bấm "Chat Facebook" góc phải để gặp trực tiếp shop.
+                Khách hàng có thể bấm "Liên hệ để tư vấn" góc phải màn hình để chọn nhắn tin trực tiếp cho Admin qua Facebook:
+                - Admin Thanh Bình: Tư vấn Bán hàng & Đặt hàng
+                - Admin Vĩnh Phúc: Hỗ trợ Kỹ thuật & Tư vấn
             `;
 
             try {
@@ -464,7 +507,7 @@
             }
         }
 
-        // 3. Quản lý Giỏ hàng
+        // 4. Quản lý Giỏ hàng
         function addToCart(name, price) {
             const existingItem = cart.find(item => item.name === name);
             if (existingItem) {
@@ -520,7 +563,7 @@
             document.getElementById('cart-drawer').classList.toggle('hidden');
         }
 
-        // 4. Thanh toán VietQR BIDV
+        // 5. Thanh toán VietQR BIDV
         function checkout() {
             let totalAmount = 0;
             cart.forEach(item => { totalAmount += item.price * item.quantity; });
