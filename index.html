@@ -1223,7 +1223,7 @@
                     <i class="fa-solid fa-volume-xmark text-gray-400" id="intro-sound-icon"></i>
                     <span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">Nhạc: Tắt</span>
                 </button>
-                <button id="intro-language-btn" onclick="toggleLanguage()" class="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển ngôn ngữ">
+                <button type="button" id="intro-language-btn" onclick="toggleLanguage()" class="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển sang tiếng Anh" aria-label="Chuyển sang tiếng Anh" aria-pressed="false">
                     VI
                 </button>
                 <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="intro-mega-btn flex-shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-black transition flex items-center space-x-1.5 shadow-md cursor-pointer">
@@ -1486,7 +1486,7 @@
 
             <!-- Quick Action Icons -->
             <div class="flex items-center space-x-1 sm:space-x-4">
-                <button id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 text-ocopGreen text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-emerald-100 transition cursor-pointer" aria-label="Switch language">EN</button>
+                <button type="button" id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 text-ocopGreen text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-emerald-100 transition cursor-pointer" title="Chuyển sang tiếng Anh" aria-label="Chuyển sang tiếng Anh" aria-pressed="false">EN</button>
                 <div class="header-support-chip hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
                     <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs">
                         <i class="fa-solid fa-headset"></i>
@@ -2210,7 +2210,16 @@
         let cart = [];
         let wishlist = [];
         let currentCategory = 'all';
-        let currentLanguage = localStorage.getItem('ocop-language') === 'en' ? 'en' : 'vi';
+        function getSavedLanguage() {
+            try {
+                return localStorage.getItem('ocop-language') === 'en' ? 'en' : 'vi';
+            } catch (error) {
+                console.warn('Language preference could not be read from browser storage:', error);
+                return 'vi';
+            }
+        }
+
+        let currentLanguage = getSavedLanguage();
         let lastRenderedProducts = products;
         let isSoundOn = false;
         let activeRegion = 'north';
@@ -3773,7 +3782,6 @@
         function applyLanguage(language) {
             currentLanguage = language === 'en' ? 'en' : 'vi';
             document.documentElement.lang = currentLanguage;
-            localStorage.setItem('ocop-language', currentLanguage);
             document.title = currentLanguage === 'en'
                 ? 'OCOP Sales Copilot - 48 Vietnamese Regional Specialties'
                 : `OCOP Sales Copilot - ${products.length} Đặc Sản Việt Nam`;
@@ -3800,6 +3808,7 @@
                     button.textContent = targetLanguage;
                     button.title = currentLanguage === 'en' ? 'Switch to Vietnamese' : 'Chuyển sang tiếng Anh';
                     button.setAttribute('aria-label', currentLanguage === 'en' ? 'Switch language to Vietnamese' : 'Chuyển sang tiếng Anh');
+                    button.setAttribute('aria-pressed', String(currentLanguage === 'en'));
                 }
             });
             document.getElementById('header-search-input').placeholder = currentLanguage === 'en'
@@ -3851,6 +3860,11 @@
             renderProducts(lastRenderedProducts);
             renderCartItems();
             renderWishlistItems();
+            try {
+                localStorage.setItem('ocop-language', currentLanguage);
+            } catch (error) {
+                console.warn('Language preference could not be saved to browser storage:', error);
+            }
         }
 
         function toggleLanguage() {
