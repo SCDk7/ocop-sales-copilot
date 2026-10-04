@@ -205,6 +205,218 @@
             color: #fff;
             font-weight: 800;
         }
+        #ocop-intro-overlay {
+            color: #183653;
+            background:
+                radial-gradient(ellipse at 12% 8%, rgba(190, 224, 255, 0.72), transparent 36%),
+                radial-gradient(ellipse at 88% 88%, rgba(206, 232, 255, 0.82), transparent 38%),
+                linear-gradient(145deg, #f7fbff 0%, #eaf4ff 48%, #f5f9ff 100%);
+            padding: clamp(0.75rem, 2.5vw, 2rem);
+        }
+        #ocop-intro-overlay::before,
+        #ocop-intro-overlay::after {
+            content: "";
+            position: fixed;
+            z-index: 0;
+            width: min(42vw, 34rem);
+            aspect-ratio: 1;
+            border: 1px solid rgba(81, 148, 211, 0.12);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        #ocop-intro-overlay::before {
+            top: 16%;
+            left: -18rem;
+            box-shadow: 0 0 0 2.5rem rgba(81, 148, 211, 0.035), 0 0 0 5rem rgba(81, 148, 211, 0.025);
+        }
+        #ocop-intro-overlay::after {
+            right: -18rem;
+            bottom: 8%;
+            box-shadow: 0 0 0 2.5rem rgba(81, 148, 211, 0.035), 0 0 0 5rem rgba(81, 148, 211, 0.025);
+        }
+        #ocop-intro-overlay > .fixed {
+            opacity: 0.22;
+        }
+        #ocop-intro-overlay > .fixed > div:not(canvas) {
+            display: none;
+        }
+        #ocop-intro-overlay .bg-black\/50 {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(91, 151, 203, 0.2);
+        }
+        #ocop-intro-overlay .shadow-gold-glow {
+            box-shadow: 0 8px 24px rgba(64, 125, 178, 0.12);
+        }
+        #ocop-intro-overlay .bg-amber-500\/20,
+        #ocop-intro-overlay .bg-amber-500\/35,
+        #ocop-intro-overlay .bg-ocopGold\/35 {
+            background-color: rgba(98, 160, 211, 0.12);
+        }
+        #ocop-intro-overlay #intro-region-items .bg-amber-500\/20 {
+            background-color: rgba(75, 139, 190, 0.1);
+        }
+        #ocop-intro-overlay .glass-antigravity {
+            color: #234563;
+            background: rgba(255, 255, 255, 0.76);
+            border-color: rgba(102, 157, 205, 0.2);
+            box-shadow: 0 12px 32px rgba(62, 112, 158, 0.09);
+            backdrop-filter: blur(18px);
+        }
+        #ocop-intro-overlay .text-white {
+            color: #173752 !important;
+        }
+        #ocop-intro-overlay .text-amber-100,
+        #ocop-intro-overlay .text-amber-200,
+        #ocop-intro-overlay .text-amber-300,
+        #ocop-intro-overlay .text-amber-400,
+        #ocop-intro-overlay .text-ocopGold {
+            color: #3976ad !important;
+        }
+        #ocop-intro-overlay [class*="text-amber-"] {
+            color: #52718c !important;
+        }
+        #ocop-intro-overlay .border-amber-500\/20,
+        #ocop-intro-overlay .border-amber-500\/25,
+        #ocop-intro-overlay .border-amber-300\/40,
+        #ocop-intro-overlay .border-ocopGold\/40 {
+            border-color: rgba(91, 151, 203, 0.22) !important;
+        }
+        #ocop-intro-overlay .gold-card-glow {
+            box-shadow: 0 12px 30px rgba(64, 125, 178, 0.1);
+        }
+        #ocop-intro-overlay .gold-gradient-text {
+            background: linear-gradient(110deg, #25639a, #5394c9 52%, #3473aa);
+            background-size: 100% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: none;
+            -webkit-text-fill-color: transparent;
+        }
+        #ocop-intro-overlay .intro-mark {
+            color: #fff;
+            background: linear-gradient(145deg, #589bd0, #3477b1);
+            border-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 8px 22px rgba(55, 119, 174, 0.2);
+        }
+        #ocop-intro-overlay #intro-award-badge {
+            color: #35688f;
+            background: rgba(223, 240, 255, 0.82);
+            border-color: rgba(112, 166, 209, 0.4);
+        }
+        #ocop-intro-overlay #intro-award-badge i {
+            color: #4789bf !important;
+        }
+        #ocop-intro-overlay #intro-lucky-card {
+            background: linear-gradient(115deg, rgba(224, 241, 255, 0.96), rgba(245, 250, 255, 0.98));
+            border-color: #8dbce2;
+            box-shadow: 0 12px 28px rgba(59, 119, 173, 0.12);
+        }
+        #ocop-intro-overlay #intro-lucky-card .text-amber-300,
+        #ocop-intro-overlay #intro-lucky-card .text-amber-100\/90 {
+            color: #315d82 !important;
+        }
+        #ocop-intro-overlay #intro-gift-result {
+            background: rgba(255, 255, 255, 0.76);
+            border-color: #bfdaef;
+        }
+        #ocop-intro-overlay #intro-gift-result .text-white {
+            color: #24577f !important;
+        }
+        #ocop-intro-overlay #intro-gift-result .text-amber-200 {
+            color: #24577f !important;
+        }
+        #ocop-intro-overlay #intro-gift-result .text-emerald-300,
+        #ocop-intro-overlay #intro-gift-result .text-emerald-400 {
+            color: #16856b !important;
+        }
+        #ocop-intro-overlay #btn-draw-gift,
+        #ocop-intro-overlay #intro-enter-market,
+        #ocop-intro-overlay #intro-skip-button {
+            border-color: rgba(255, 255, 255, 0.85);
+            background: linear-gradient(110deg, #3c83bd, #5ba1d5);
+            color: #fff !important;
+            box-shadow: 0 8px 20px rgba(55, 119, 174, 0.2);
+        }
+        #ocop-intro-overlay #intro-enter-market {
+            background: linear-gradient(110deg, #3278b3, #5a9dd0);
+        }
+        #ocop-intro-overlay #intro-enter-market .text-ocopGreen {
+            color: #fff !important;
+        }
+        #ocop-intro-overlay #intro-sound-btn,
+        #ocop-intro-overlay #intro-language-btn {
+            color: #315d82;
+            background: rgba(255, 255, 255, 0.72);
+            border-color: rgba(91, 151, 203, 0.26);
+        }
+        #ocop-intro-overlay [id^="tab-region-"] {
+            color: #466782;
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(91, 151, 203, 0.2);
+        }
+        #ocop-intro-overlay [id^="tab-region-"][aria-pressed="true"] {
+            color: #fff;
+            background: linear-gradient(110deg, #4388bf, #70add8);
+            border-color: transparent;
+        }
+        #ocop-intro-overlay #region-progress-bar {
+            background: linear-gradient(90deg, #69a9d7, #387eb7);
+        }
+        #ocop-intro-overlay #intro-region-title {
+            color: #285c86;
+        }
+        #ocop-intro-overlay #intro-region-desc,
+        #ocop-intro-overlay #intro-region-items .text-amber-200\/70 {
+            color: #59758e;
+        }
+        #ocop-intro-overlay #intro-region-items > div {
+            background: rgba(255, 255, 255, 0.68);
+            border-color: rgba(91, 151, 203, 0.18);
+        }
+        #ocop-intro-overlay #intro-region-items .text-white {
+            color: #234563 !important;
+        }
+        #ocop-intro-overlay #intro-region-items .text-amber-300 {
+            color: #3976ad !important;
+        }
+        #ocop-intro-overlay button[onclick="enterOcopMarket('ai')"],
+        #ocop-intro-overlay button[onclick="enterOcopMarket('admin')"] {
+            color: #35688f;
+            background: rgba(227, 242, 255, 0.85);
+            border-color: rgba(112, 166, 209, 0.35);
+        }
+        #ocop-intro-overlay kbd {
+            color: #315d82;
+            background: #fff;
+            border-color: #c7dced;
+        }
+        @media (max-width: 640px) {
+            #ocop-intro-overlay > .relative.z-20.max-w-4xl {
+                padding-top: 1rem;
+                padding-bottom: 1.5rem;
+                gap: 1rem;
+            }
+            #ocop-intro-overlay h2 {
+                font-size: clamp(1.65rem, 8vw, 2.4rem);
+                line-height: 1.12;
+            }
+        }
+        .site-search-input {
+            color: #263b53;
+            caret-color: #347eb8;
+        }
+        .site-search-input::placeholder {
+            color: #8292a5;
+            opacity: 1;
+        }
+        .site-search-input:focus {
+            border-color: #75a9d2;
+            box-shadow: 0 0 0 3px rgba(80, 147, 202, 0.14);
+        }
+        .search-clear-button {
+            min-width: 2rem;
+            min-height: 2rem;
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
@@ -261,7 +473,7 @@
         <!-- Header Intro -->
         <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3 border-b border-amber-500/25">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-800 to-amber-500 border-2 border-ocopGold flex items-center justify-center text-ocopGold text-xl shadow-[0_0_20px_rgba(212,175,55,0.6)]">
+                <div class="intro-mark w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-800 to-amber-500 border-2 border-ocopGold flex items-center justify-center text-ocopGold text-xl shadow-[0_0_20px_rgba(212,175,55,0.6)]">
                     <i class="fa-solid fa-brain text-amber-300"></i>
                 </div>
                 <div>
@@ -274,10 +486,10 @@
                     <i class="fa-solid fa-volume-high text-ocopGold"></i>
                     <span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">Âm thanh: Bật</span>
                 </button>
-                <button onclick="toggleLanguage()" class="w-8 h-8 rounded-full bg-ocopGreen text-ocopGold hover:bg-emerald-800 font-black text-xs border border-ocopGold/60 shadow flex items-center justify-center transition hover:scale-105 cursor-pointer">
+                <button id="intro-language-btn" onclick="toggleLanguage()" class="w-8 h-8 rounded-full bg-ocopGreen text-ocopGold hover:bg-emerald-800 font-black text-xs border border-ocopGold/60 shadow flex items-center justify-center transition hover:scale-105 cursor-pointer">
                     VI
                 </button>
-                <button onclick="enterOcopMarket('all')" class="px-3.5 py-1.5 rounded-full bg-amber-500/20 hover:bg-amber-500/35 text-amber-200 border border-amber-400/50 text-xs font-extrabold transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="px-3.5 py-1.5 rounded-full bg-amber-500/20 hover:bg-amber-500/35 text-amber-200 border border-amber-400/50 text-xs font-extrabold transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
                     <span id="i18n-intro-skip">Vào Chợ (Esc)</span>
                     <i class="fa-solid fa-arrow-right text-[10px] text-ocopGold"></i>
                 </button>
@@ -286,7 +498,7 @@
 
         <!-- Main Content Intro -->
         <div class="relative z-20 pointer-events-auto max-w-4xl mx-auto w-full my-auto py-4 sm:py-6 flex flex-col items-center text-center space-y-5">
-            <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 via-ocopGold/35 to-amber-500/20 border border-ocopGold/70 px-4 py-1.5 rounded-full text-xs font-black text-amber-300 shadow-gold-glow animate-pulse">
+            <div id="intro-award-badge" class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 via-ocopGold/35 to-amber-500/20 border border-ocopGold/70 px-4 py-1.5 rounded-full text-xs font-black text-amber-300 shadow-gold-glow animate-pulse">
                 <i class="fa-solid fa-award text-ocopGold text-sm"></i>
                 <span>★ ★ ★ ★ ★ TINH HOA QUỐC GIA 4 - 5 SAO</span>
             </div>
@@ -368,15 +580,15 @@
                         <span id="i18n-intro-region-header">Hành trình 3 miền kết tinh ẩm thực Việt:</span>
                     </span>
                     <div class="flex items-center space-x-1.5 bg-black/50 p-1 rounded-2xl border border-white/10">
-                        <button id="tab-region-north" onclick="setIntroRegion('north', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer">
+                        <button id="tab-region-north" aria-pressed="true" onclick="setIntroRegion('north', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer">
                             <span>🏔️</span>
                             <span id="i18n-intro-tab-north">Miền Bắc</span>
                         </button>
-                        <button id="tab-region-central" onclick="setIntroRegion('central', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
+                        <button id="tab-region-central" aria-pressed="false" onclick="setIntroRegion('central', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
                             <span>🌊</span>
                             <span id="i18n-intro-tab-central">Miền Trung</span>
                         </button>
-                        <button id="tab-region-south" onclick="setIntroRegion('south', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
+                        <button id="tab-region-south" aria-pressed="false" onclick="setIntroRegion('south', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
                             <span>🌾</span>
                             <span id="i18n-intro-tab-south">Miền Nam</span>
                         </button>
@@ -396,7 +608,7 @@
 
             <!-- CTA Main Button -->
             <div class="w-full max-w-3xl space-y-4 pt-1">
-                <button onclick="enterOcopMarket('all')" class="btn-sweep group relative w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 sm:px-14 sm:py-4.5 rounded-2xl text-sm sm:text-base font-black text-[#071c15] bg-gradient-to-r from-amber-300 via-ocopGold to-yellow-400 hover:from-amber-200 hover:to-ocopGold shadow-[0_0_50px_rgba(212,175,55,0.8)] hover:shadow-[0_0_70px_rgba(212,175,55,1)] hover:scale-105 transition-all duration-300 border-2 border-white/80 cursor-pointer">
+                <button id="intro-enter-market" onclick="enterOcopMarket('all')" class="btn-sweep group relative w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 sm:px-14 sm:py-4.5 rounded-2xl text-sm sm:text-base font-black text-[#071c15] bg-gradient-to-r from-amber-300 via-ocopGold to-yellow-400 hover:from-amber-200 hover:to-ocopGold shadow-[0_0_50px_rgba(212,175,55,0.8)] hover:shadow-[0_0_70px_rgba(212,175,55,1)] hover:scale-105 transition-all duration-300 border-2 border-white/80 cursor-pointer">
                     <i class="fa-solid fa-wand-magic-sparkles text-ocopGreen mr-2.5 text-base group-hover:rotate-12 transition-transform"></i>
                     <span id="i18n-intro-btn-enter">✦ BƯỚC VÀO CHỢ TINH HOA OCOP (40 ĐẶC SẢN) ✦</span>
                     <i class="fa-solid fa-arrow-right ml-3 text-sm group-hover:translate-x-1.5 transition-transform"></i>
@@ -459,30 +671,32 @@
     
     <!-- 2. HEADER -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-900/10 shadow-sm transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
-            <a href="#" class="flex items-center space-x-2 sm:space-x-3 group flex-shrink-0">
-                <div class="w-9 h-9 sm:w-11 sm:h-11 bg-gradient-to-tr from-ocopGreen to-ocopGreenLight rounded-xl sm:rounded-2xl flex items-center justify-center text-ocopGold text-base sm:text-xl shadow-md ring-2 ring-ocopGold/40 group-hover:scale-105 transition duration-300">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-1 sm:gap-4">
+            <a href="#" class="flex items-center space-x-1.5 sm:space-x-3 group flex-shrink-0">
+                <div class="w-8 h-8 sm:w-11 sm:h-11 bg-gradient-to-tr from-ocopGreen to-ocopGreenLight rounded-xl sm:rounded-2xl flex items-center justify-center text-ocopGold text-base sm:text-xl shadow-md ring-2 ring-ocopGold/40 group-hover:scale-105 transition duration-300">
                     <i class="fa-solid fa-leaf"></i>
                 </div>
                 <div>
-                    <h1 class="text-base sm:text-xl font-extrabold text-ocopGreen tracking-tight leading-tight">OCOP Sales Copilot</h1>
-                    <p class="text-[8px] sm:text-[10px] text-amber-800 font-bold tracking-wide uppercase" id="i18n-subbrand">Đặc Sản Chuẩn Quốc Gia 4 - 5 Sao</p>
+                    <h1 class="text-sm sm:text-xl font-extrabold text-ocopGreen tracking-tight leading-tight">OCOP Sales Copilot</h1>
+                    <p class="text-[7px] sm:text-[10px] text-amber-800 font-bold tracking-wide uppercase" id="i18n-subbrand">Đặc Sản Chuẩn Quốc Gia 4 - 5 Sao</p>
                 </div>
             </a>
             
             <!-- Thanh Tìm Kiếm Header Desktop -->
-            <div class="hidden md:flex flex-1 max-w-md relative">
-                <input type="text" id="header-search-input" oninput="filterProductsGlobal(this.value)" 
-                       placeholder="Tìm trà, sâm, yến sào, mắm, chả mực..." 
-                       class="w-full pl-10 pr-10 py-2.5 text-xs rounded-full border border-amber-900/15 focus:outline-none focus:border-ocopGreen focus:ring-2 focus:ring-ocopGreen/20 bg-amber-50/40 shadow-inner transition">
+            <div class="hidden md:flex flex-1 min-w-[190px] xl:min-w-[240px] max-w-md relative">
+                <label for="header-search-input" class="sr-only">Tìm kiếm sản phẩm OCOP</label>
+                <input type="search" id="header-search-input" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)"
+                       placeholder="Tìm đặc sản, vùng miền..."
+                       autocomplete="off" aria-controls="product-grid"
+                       class="site-search-input w-full pl-10 pr-10 py-2.5 text-sm rounded-full border border-blue-200 focus:outline-none bg-blue-50/50 shadow-sm transition">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                <button id="header-search-clear" onclick="clearSearchInput()" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs">
+                <button id="header-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-700 text-xs rounded-full">
                     <i class="fa-solid fa-circle-xmark"></i>
                 </button>
             </div>
             
             <!-- Navigation Desktop -->
-            <nav class="hidden lg:flex items-center space-x-8 font-bold text-sm">
+            <nav class="hidden 2xl:flex items-center space-x-6 font-bold text-sm">
                 <a href="#" class="text-ocopGreen font-extrabold border-b-2 border-ocopGold pb-1 transition" id="i18n-nav-home">Trang chủ</a>
                 <a href="#products-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-products">Danh mục 40 Đặc sản</a>
                 <a href="#contact-footer" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-contact">Liên hệ & Hỗ trợ</a>
@@ -493,7 +707,7 @@
             </nav>
             
             <!-- Quick Action Icons -->
-            <div class="flex items-center space-x-2 sm:space-x-4">
+            <div class="flex items-center space-x-1 sm:space-x-4">
                 <div class="hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
                     <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs">
                         <i class="fa-solid fa-headset"></i>
@@ -503,22 +717,22 @@
                         <a href="tel:1900888688" class="text-ocopGreen font-extrabold text-xs">1900 888 688</a>
                     </div>
                 </div>
-                <div class="flex items-center space-x-1.5 sm:space-x-2">
-                    <button onclick="toggleAuthModal()" id="user-btn" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-amber-100 hover:bg-amber-200 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-300 hover:scale-105 cursor-pointer" title="Đăng nhập / Tài khoản">
+                <div class="flex items-center space-x-1 sm:space-x-2">
+                    <button onclick="toggleAuthModal()" id="user-btn" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-amber-100 hover:bg-amber-200 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-300 hover:scale-105 cursor-pointer" title="Đăng nhập / Tài khoản">
                         <i class="fa-solid fa-user text-xs sm:text-sm"></i>
                     </button>
-                    <button onclick="toggleOrdersModal()" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center transition shadow-sm border border-blue-200 hover:scale-105 cursor-pointer" title="Lịch sử mua hàng">
+                    <button onclick="toggleOrdersModal()" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center transition shadow-sm border border-blue-200 hover:scale-105 cursor-pointer" title="Lịch sử mua hàng">
                         <i class="fa-solid fa-clock-rotate-left text-xs sm:text-sm"></i>
                     </button>
-                    <button onclick="toggleWishlistDrawer()" class="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200 hover:scale-105 cursor-pointer" title="Yêu thích">
+                    <button onclick="toggleWishlistDrawer()" class="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200 hover:scale-105 cursor-pointer" title="Yêu thích">
                         <i class="fa-regular fa-heart text-xs sm:text-sm text-red-500"></i>
                         <span id="wishlist-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] sm:text-[10px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
-                    <button onclick="toggleCart()" class="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Giỏ hàng">
+                    <button onclick="toggleCart()" class="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Giỏ hàng">
                         <i class="fa-solid fa-basket-shopping text-xs sm:text-sm text-ocopGreen"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[9px] sm:text-[10px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
-                    <button onclick="toggleLanguage()" id="lang-btn" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight font-extrabold text-[11px] sm:text-xs flex items-center justify-center transition shadow-md border sm:border-2 border-ocopGold hover:scale-105 cursor-pointer" title="Chuyển đổi Ngôn Ngữ / Switch Language">
+                    <button onclick="toggleLanguage()" id="lang-btn" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight font-extrabold text-[11px] sm:text-xs flex items-center justify-center transition shadow-md border sm:border-2 border-ocopGold hover:scale-105 cursor-pointer" title="Chuyển đổi Ngôn Ngữ / Switch Language">
                         VI
                     </button>
                 </div>
@@ -528,11 +742,13 @@
         <!-- Thanh Tìm Kiếm Mobile Riêng Biệt -->
         <div class="block md:hidden px-3 pb-2.5 pt-0.5 border-t border-amber-900/5">
             <div class="relative w-full">
-                <input type="text" id="mobile-search-input" oninput="filterProductsGlobal(this.value)" 
-                       placeholder="Tìm 40 đặc sản (trà, sâm, yến, chả mực...)" 
-                       class="w-full pl-9 pr-8 py-2 text-xs rounded-full border border-amber-900/15 focus:outline-none focus:border-ocopGreen bg-amber-50/60 shadow-inner">
+                <label for="mobile-search-input" class="sr-only">Tìm kiếm sản phẩm OCOP</label>
+                <input type="search" id="mobile-search-input" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)"
+                       placeholder="Tìm đặc sản, tỉnh thành, trà, sâm..."
+                       autocomplete="off" aria-controls="product-grid"
+                       class="site-search-input w-full pl-9 pr-10 py-2.5 text-sm rounded-full border border-blue-200 focus:outline-none bg-blue-50/60 shadow-sm">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                <button id="mobile-search-clear" onclick="clearSearchInput()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+                <button id="mobile-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs rounded-full">
                     <i class="fa-solid fa-circle-xmark"></i>
                 </button>
             </div>
@@ -724,8 +940,9 @@
                         <div class="pt-3 border-t border-amber-200">
                             <div class="relative">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-700/60 text-xs"></i>
-                                <input type="text" id="product-search" oninput="filterProductsGlobal(this.value)" placeholder="Tìm món ngon, đặc sản..." class="w-full pl-9 pr-8 py-2 text-xs rounded-xl border border-amber-300 focus:outline-none focus:border-ocopGreen bg-amber-50/50 transition">
-                                <button id="sidebar-search-clear" onclick="clearSearchInput()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs cursor-pointer">
+                                <label for="product-search" class="sr-only">Tìm kiếm đặc sản theo tên hoặc vùng miền</label>
+                                <input type="search" id="product-search" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)" placeholder="Tên đặc sản hoặc tỉnh thành..." autocomplete="off" aria-controls="product-grid" class="site-search-input w-full pl-9 pr-10 py-2.5 text-sm rounded-xl border border-blue-200 focus:outline-none bg-blue-50/50 transition">
+                                <button id="sidebar-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs cursor-pointer rounded-full">
                                     <i class="fa-solid fa-circle-xmark"></i>
                                 </button>
                             </div>
@@ -1252,7 +1469,7 @@
                     x: Math.random() * width,
                     y: Math.random() * height,
                     radius: Math.random() * 2.5 + 1,
-                    color: Math.random() > 0.4 ? '#D4AF37' : (Math.random() > 0.5 ? '#10B981' : '#00F0FF'),
+                    color: Math.random() > 0.5 ? '#4C91C8' : '#8AC2E8',
                     vx: (Math.random() - 0.5) * 0.6,
                     vy: (Math.random() - 0.5) * 0.8 - 0.2, // Chống trọng lực nhẹ
                     alpha: Math.random() * 0.7 + 0.3
@@ -1280,7 +1497,7 @@
                             ctx.beginPath();
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.strokeStyle = `rgba(212, 175, 55, ${0.25 * (1 - dist / 110)})`;
+                            ctx.strokeStyle = `rgba(76, 145, 200, ${0.18 * (1 - dist / 110)})`;
                             ctx.lineWidth = 0.6;
                             ctx.stroke();
                         }
@@ -1294,7 +1511,7 @@
                     ctx.fillStyle = p.color;
                     ctx.globalAlpha = p.alpha;
                     ctx.shadowColor = p.color;
-                    ctx.shadowBlur = 8;
+                    ctx.shadowBlur = 5;
                     ctx.fill();
                     ctx.shadowBlur = 0;
 
@@ -1385,6 +1602,7 @@
             // Highlight tab
             ['north', 'central', 'south'].forEach(k => {
                 const tab = document.getElementById(`tab-region-${k}`);
+                tab.setAttribute('aria-pressed', String(k === regionKey));
                 if (k === regionKey) {
                     tab.className = "flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer";
                 } else {
@@ -1494,12 +1712,13 @@
         }
 
         function filterProductsGlobal(searchTerm) {
-            const term = searchTerm.toLowerCase().trim();
+            const query = String(searchTerm ?? '').trim();
+            const terms = normalizeSearchText(query).split(/\s+/).filter(Boolean);
             
             // Đồng bộ giá trị input ở cả 3 ô tìm kiếm
-            document.getElementById('header-search-input').value = searchTerm;
-            document.getElementById('mobile-search-input').value = searchTerm;
-            document.getElementById('product-search').value = searchTerm;
+            document.getElementById('header-search-input').value = query;
+            document.getElementById('mobile-search-input').value = query;
+            document.getElementById('product-search').value = query;
 
             const clearBtns = [
                 document.getElementById('header-search-clear'),
@@ -1508,7 +1727,7 @@
             ];
             clearBtns.forEach(btn => {
                 if (btn) {
-                    if (term.length > 0) btn.classList.remove('hidden');
+                    if (query.length > 0) btn.classList.remove('hidden');
                     else btn.classList.add('hidden');
                 }
             });
@@ -1521,16 +1740,34 @@
                 else filtered = filtered.filter(p => p.category === currentCategory);
             }
 
-            if (term !== '') {
-                filtered = filtered.filter(p => 
-                    p.name.toLowerCase().includes(term) || 
-                    p.region.toLowerCase().includes(term) ||
-                    p.desc.toLowerCase().includes(term) ||
-                    p.tag.toLowerCase().includes(term)
-                );
+            if (terms.length > 0) {
+                filtered = filtered.filter(product => {
+                    const searchableText = normalizeSearchText(
+                        `${product.name} ${product.region} ${product.desc} ${product.tag}`
+                    );
+                    return terms.every(term => searchableText.includes(term));
+                });
             }
 
             renderProducts(filtered);
+        }
+
+        function normalizeSearchText(value) {
+            return String(value)
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .toLowerCase();
+        }
+
+        function handleSearchKeydown(event) {
+            if (event.key === 'Escape') {
+                clearSearchInput();
+            } else if (event.key === 'Enter') {
+                event.preventDefault();
+                scrollToProducts();
+            }
         }
 
         function clearSearchInput() {
