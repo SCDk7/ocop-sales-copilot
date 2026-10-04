@@ -354,17 +354,121 @@
             border-color: rgba(255, 235, 120, 1);
             box-shadow: 0 0 50px rgba(212, 175, 55, 0.55), inset 0 0 35px rgba(212, 175, 55, 0.25);
         }
+        .intro-region-top {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .intro-region-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .intro-region-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 900;
+            color: #1d4d3d;
+        }
+        .intro-region-kicker i {
+            color: #d4af37;
+            font-size: 0.9rem;
+        }
+        .intro-region-caption {
+            display: block;
+            color: rgba(29, 77, 61, 0.7);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+        .intro-region-tabs {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.4rem;
+            border-radius: 1.25rem;
+            background: rgba(255, 255, 255, 0.58);
+            border: 1px solid rgba(21, 52, 43, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+        }
+        .intro-region-tab {
+            flex: 1 1 0;
+            min-height: 2.8rem;
+            border-radius: 0.9rem;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            font-size: 0.83rem;
+            font-weight: 800;
+            color: #45675d;
+            background: rgba(255, 255, 255, 0.46);
+            border-color: rgba(21, 52, 43, 0.06);
+            transition: all 0.2s ease;
+        }
+        .intro-region-tab[aria-pressed="true"] {
+            color: #fff;
+            background: linear-gradient(110deg, #165b46, #0f382c);
+            border-color: transparent;
+            box-shadow: 0 8px 16px rgba(15, 56, 44, 0.22);
+        }
+        .intro-region-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .intro-region-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .intro-region-copy h4 {
+            margin: 0;
+            font-size: clamp(1.05rem, 2vw, 1.4rem);
+            line-height: 1.35;
+            letter-spacing: -0.02em;
+            color: #23473b;
+        }
+        .intro-region-copy p {
+            margin: 0;
+            color: rgba(35, 71, 59, 0.8);
+            font-size: 0.78rem;
+            line-height: 1.6;
+        }
+        #intro-region-items {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.7rem;
+        }
         .region-item-card {
-            background: rgba(10, 36, 26, 0.75);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(251, 249, 244, 0.82);
+            border: 1px solid rgba(21, 52, 43, 0.12);
             backdrop-filter: blur(12px);
             transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         .region-item-card:hover {
-            background: rgba(16, 56, 42, 0.95);
-            border-color: rgba(255, 223, 0, 0.8);
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 25px rgba(212, 175, 55, 0.4);
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(212, 175, 55, 0.65);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 10px 25px rgba(15, 56, 44, 0.08), 0 0 14px rgba(212, 175, 55, 0.15);
+        }
+        @media (max-width: 640px) {
+            .intro-region-heading {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .intro-region-tabs {
+                width: 100%;
+            }
+            #intro-region-items {
+                grid-template-columns: 1fr;
+            }
         }
         @keyframes giftHeartbeat {
             0%, 100% { transform: scale(1) rotate(0deg); }
@@ -1104,7 +1208,11 @@
                     <i class="fa-solid fa-volume-xmark text-gray-400" id="intro-sound-icon"></i>
                     <span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">Nhạc: Tắt</span>
                 </button>
+<<<<<<< HEAD
                 <button id="intro-language-btn" onclick="toggleLanguage()" class="w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển ngôn ngữ">
+=======
+                <button type="button" id="intro-language-btn" onclick="toggleLanguage()" class="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển sang tiếng Anh" aria-label="Chuyển sang tiếng Anh" aria-pressed="false">
+>>>>>>> f9a8a97ecec70b634f57a41bb989ee51d5b384f4
                     VI
                 </button>
                 <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="intro-mega-btn px-4 py-1.5 rounded-full text-xs font-black transition flex items-center space-x-1.5 shadow-md cursor-pointer">
@@ -1228,39 +1336,38 @@
 
             <!-- THƯỚC PHIM 3 MIỀN XUYÊN VIỆT (Interactive Cinematic Showcase) -->
             <div class="intro-regions w-full max-w-3xl intro-card-glass rounded-3xl p-4 sm:p-5 border border-amber-400/40 shadow-2xl text-left space-y-3.5">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-400/20 pb-3">
-                    <span class="text-xs font-extrabold text-amber-200 uppercase tracking-wider flex items-center space-x-2">
-                        <i class="fa-solid fa-map-location-dot text-amber-400 text-sm"></i>
-                        <span id="i18n-intro-region-header">Hành trình 3 miền kết tinh ẩm thực Việt:</span>
-                    </span>
-                    <div class="flex items-center space-x-1.5 bg-black/60 p-1 rounded-2xl border border-white/10 backdrop-blur-md">
-                        <button id="tab-region-north" aria-pressed="true" onclick="setIntroRegion('north', true)" class="flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer">
+                <div class="intro-region-top">
+                    <div class="intro-region-heading">
+                        <span class="intro-region-kicker">
+                            <i class="fa-solid fa-compass"></i>
+                            <span id="i18n-intro-region-header">HÀNH TRÌNH 3 MIỀN KẾT TINH ẨM THỰC VIỆT</span>
+                        </span>
+                        <span class="intro-region-caption" id="i18n-intro-region-caption">Chọn một miền để xem hương vị tiêu biểu</span>
+                    </div>
+                    <div class="intro-region-tabs" role="group" aria-labelledby="i18n-intro-region-header">
+                        <button id="tab-region-north" aria-pressed="true" onclick="setIntroRegion('north', true)" class="intro-region-tab cursor-pointer">
                             <span>🏔️</span>
                             <span id="i18n-intro-tab-north">Miền Bắc</span>
                         </button>
-                        <button id="tab-region-central" aria-pressed="false" onclick="setIntroRegion('central', true)" class="flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
+                        <button id="tab-region-central" aria-pressed="false" onclick="setIntroRegion('central', true)" class="intro-region-tab cursor-pointer">
                             <span>🌊</span>
                             <span id="i18n-intro-tab-central">Miền Trung</span>
                         </button>
-                        <button id="tab-region-south" aria-pressed="false" onclick="setIntroRegion('south', true)" class="flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
+                        <button id="tab-region-south" aria-pressed="false" onclick="setIntroRegion('south', true)" class="intro-region-tab cursor-pointer">
                             <span>🌾</span>
                             <span id="i18n-intro-tab-south">Miền Nam</span>
                         </button>
                     </div>
                 </div>
 
-                <div>
-                    <h4 id="intro-region-title" class="text-sm sm:text-base font-black text-yellow-300 flex items-center space-x-2">
-                        <span>Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng</span>
-                    </h4>
-                    <p id="intro-region-desc" class="text-xs text-amber-100/80 leading-relaxed mt-1">
-                        Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.
-                    </p>
-                </div>
-
-                <!-- Lưới 4 Thẻ Đặc Sản 3 Miền Dynamic (Có ảnh thật & Giá Vàng) -->
-                <div id="intro-region-items" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                    <!-- Render dynamic từ JavaScript -->
+                <div class="intro-region-content">
+                    <div class="intro-region-copy">
+                        <h4 id="intro-region-title" class="text-sm sm:text-base font-black text-yellow-300"></h4>
+                        <p id="intro-region-desc" class="text-xs text-amber-100/80 leading-relaxed mt-1"></p>
+                    </div>
+                    <div id="intro-region-items" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <!-- Render dynamic từ JavaScript -->
+                    </div>
                 </div>
             </div>
 
@@ -1473,7 +1580,7 @@
 
             <!-- Quick Action Icons -->
             <div class="flex items-center space-x-1 sm:space-x-4">
-                <button id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 text-ocopGreen text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-emerald-100 transition cursor-pointer" aria-label="Switch language">EN</button>
+                <button type="button" id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 text-ocopGreen text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-emerald-100 transition cursor-pointer" title="Chuyển sang tiếng Anh" aria-label="Chuyển sang tiếng Anh" aria-pressed="false">EN</button>
                 <div class="header-support-chip hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
                     <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs">
                         <i class="fa-solid fa-headset"></i>
@@ -2266,7 +2373,16 @@ function resetMapSelection() {
         let cart = [];
         let wishlist = [];
         let currentCategory = 'all';
-        let currentLanguage = localStorage.getItem('ocop-language') === 'en' ? 'en' : 'vi';
+        function getSavedLanguage() {
+            try {
+                return localStorage.getItem('ocop-language') === 'en' ? 'en' : 'vi';
+            } catch (error) {
+                console.warn('Language preference could not be read from browser storage:', error);
+                return 'vi';
+            }
+        }
+
+        let currentLanguage = getSavedLanguage();
         let lastRenderedProducts = products;
         let isSoundOn = false;
         let activeRegion = 'north';
@@ -2591,11 +2707,7 @@ function resetMapSelection() {
                 const tab = document.getElementById(`tab-region-${k}`);
                 if (!tab) return;
                 tab.setAttribute('aria-pressed', String(k === regionKey));
-                if (k === regionKey) {
-                    tab.className = "flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer";
-                } else {
-                    tab.className = "flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer";
-                }
+                tab.className = `intro-region-tab cursor-pointer ${k === regionKey ? 'shadow-md' : 'hover:bg-white/80'}`;
             });
 
             // Render 4 thẻ sản phẩm của miền (Kèm ảnh thumbnail, huy hiệu & tag)
@@ -2608,11 +2720,11 @@ function resetMapSelection() {
                     <div class="flex items-center space-x-2.5 min-w-0">
                         <img src="${item.img}" alt="${itemName}" class="w-12 h-12 rounded-xl object-cover border border-amber-300/40 group-hover:scale-105 transition flex-shrink-0 shadow-md">
                         <div class="truncate">
-                            <span class="block text-xs font-black text-amber-100 group-hover:text-yellow-300 transition truncate">${itemName}</span>
-                            <span class="text-[10px] text-amber-300/80 font-medium">${item.origin} • ${itemTag}</span>
+                            <span class="block text-xs font-black text-[#23473b] group-hover:text-[#0f382c] transition truncate">${itemName}</span>
+                            <span class="text-[10px] text-[#6f7e75] font-medium">${item.origin} • ${itemTag}</span>
                         </div>
                     </div>
-                    <span class="bg-gradient-to-r from-amber-400 to-yellow-400 text-ocopGreen font-black text-[10px] px-2.5 py-1 rounded-lg shadow flex-shrink-0">${item.badge}</span>
+                    <span class="bg-gradient-to-r from-amber-400 to-yellow-400 text-[#143f31] font-black text-[10px] px-2.5 py-1 rounded-lg shadow flex-shrink-0">${item.badge}</span>
                 </div>
             `;
             }).join('');
@@ -3833,7 +3945,6 @@ function resetMapSelection() {
         function applyLanguage(language) {
             currentLanguage = language === 'en' ? 'en' : 'vi';
             document.documentElement.lang = currentLanguage;
-            localStorage.setItem('ocop-language', currentLanguage);
             document.title = currentLanguage === 'en'
                 ? 'OCOP Sales Copilot - 48 Vietnamese Regional Specialties'
                 : `OCOP Sales Copilot - ${products.length} Đặc Sản Việt Nam`;
@@ -3860,6 +3971,7 @@ function resetMapSelection() {
                     button.textContent = targetLanguage;
                     button.title = currentLanguage === 'en' ? 'Switch to Vietnamese' : 'Chuyển sang tiếng Anh';
                     button.setAttribute('aria-label', currentLanguage === 'en' ? 'Switch language to Vietnamese' : 'Chuyển sang tiếng Anh');
+                    button.setAttribute('aria-pressed', String(currentLanguage === 'en'));
                 }
             });
             document.getElementById('header-search-input').placeholder = currentLanguage === 'en'
@@ -3911,6 +4023,11 @@ function resetMapSelection() {
             renderProducts(lastRenderedProducts);
             renderCartItems();
             renderWishlistItems();
+            try {
+                localStorage.setItem('ocop-language', currentLanguage);
+            } catch (error) {
+                console.warn('Language preference could not be saved to browser storage:', error);
+            }
         }
 
         function toggleLanguage() {

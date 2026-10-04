@@ -3,6 +3,31 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 
+function loadEnvironmentFile() {
+  const environmentFile = path.join(__dirname, '.env');
+  if (!fs.existsSync(environmentFile)) return;
+
+  const lines = fs.readFileSync(environmentFile, 'utf8').split(/\r?\n/);
+  for (const line of lines) {
+    const entry = line.trim();
+    if (!entry || entry.startsWith('#')) continue;
+
+    const separator = entry.indexOf('=');
+    if (separator < 1) continue;
+
+    const key = entry.slice(0, separator).trim();
+    let value = entry.slice(separator + 1).trim();
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    if (!Object.prototype.hasOwnProperty.call(process.env, key)) {
+      process.env[key] = value;
+    }
+  }
+}
+
+loadEnvironmentFile();
+
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const DATA_DIR = path.join(__dirname, '.private-data');
