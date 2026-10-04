@@ -225,6 +225,55 @@
             flex-shrink: 0;
             white-space: nowrap;
         }
+        @media (max-width: 640px) {
+            .hero-section {
+                box-sizing: border-box;
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 1.5rem 1rem !important;
+            }
+            .hero-container {
+                width: 100%;
+                gap: 1.25rem !important;
+            }
+            .hero-content,
+            .hero-map-box {
+                box-sizing: border-box;
+                flex: 1 1 100% !important;
+                width: 100%;
+                min-width: 0 !important;
+            }
+            .hero-content h1 {
+                font-size: clamp(1.75rem, 8vw, 2.5rem) !important;
+                overflow-wrap: anywhere;
+            }
+            .hero-content > div[style*="border-top"] {
+                gap: 0.75rem !important;
+                justify-content: space-between;
+            }
+            .hero-map-box > div:first-child {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .hero-map-box h3 {
+                font-size: clamp(0.8rem, 4vw, 1rem) !important;
+                overflow-wrap: anywhere;
+            }
+            .region-item-card {
+                box-sizing: border-box;
+                width: 100%;
+                min-width: 0;
+                gap: 0.5rem !important;
+            }
+            .region-item-card > div:first-child {
+                flex: 1 1 0%;
+                min-width: 0;
+            }
+            .top-hotline-number {
+                white-space: nowrap;
+            }
+        }
         @media (min-width: 1720px) {
             .header-primary-nav {
                 display: flex;
@@ -248,6 +297,22 @@
             }
         }
         @media (max-width: 359px) {
+            .top-announcement-bar {
+                justify-content: center;
+                padding: 0.4rem 0.5rem;
+            }
+            .top-hotline {
+                flex-direction: column;
+                gap: 0.125rem;
+                line-height: 1.2;
+                text-align: center;
+            }
+            .top-hotline-badge {
+                display: none;
+            }
+            .top-hotline-number {
+                white-space: nowrap;
+            }
             header > .max-w-7xl {
                 gap: 0.25rem;
                 padding-inline: 0.5rem;
@@ -1550,14 +1615,15 @@
 </script>
 
     <!-- 1. TOP ANNOUNCEMENT BAR -->
-    <div class="bg-ocopGreen text-amber-100 text-[11px] font-semibold py-2 px-4 border-b border-ocopGold/30 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
+    <div class="top-announcement-bar bg-ocopGreen text-amber-100 text-[11px] font-semibold py-2 px-4 border-b border-ocopGold/30 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
         <div class="hidden md:flex items-center space-x-5 text-xs">
             <span class="flex items-center"><i class="fa-solid fa-shield-halved text-ocopGold mr-1.5"></i> <span id="i18n-top-guarantee">Cam kết 100% OCOP Chính Hãng</span></span>
             <span class="flex items-center"><i class="fa-solid fa-truck-fast text-ocopGold mr-1.5"></i> <span id="i18n-top-shipping">Miễn phí vận chuyển toàn quốc từ 500k</span></span>
         </div>
-        <div class="mx-auto md:mx-0 flex items-center space-x-2">
-            <span class="bg-amber-500 text-ocopGreen text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider shadow-sm animate-pulse">HOTLINE</span>
-            <span id="i18n-top-hotline">Tư vấn quà biếu & Xuất hóa đơn VAT:</span> <a href="tel:1900888688" class="font-extrabold text-white hover:text-ocopGold transition">1900 888 688</a>
+        <div class="top-hotline mx-auto md:mx-0 flex items-center space-x-2">
+            <span class="top-hotline-badge bg-amber-500 text-ocopGreen text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider shadow-sm animate-pulse">HOTLINE</span>
+            <span id="i18n-top-hotline">Tư vấn quà biếu & Xuất hóa đơn VAT:</span>
+            <a href="tel:1900888688" class="top-hotline-number font-extrabold text-white hover:text-ocopGold transition">1900 888 688</a>
         </div>
         <div class="hidden lg:flex items-center space-x-3 text-xs">
             <button onclick="openIntroModal()" class="hover:text-ocopGold text-amber-300 font-bold transition flex items-center space-x-1 cursor-pointer" title="Xem lại màn giới thiệu">
