@@ -82,17 +82,24 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #FAF8F5;
+            background-color: #F7F5EF;
             color: #1F2937;
             -webkit-font-smoothing: antialiased;
         }
         .bg-ocop-ambient {
-            background-color: #FAF8F5;
-            background-image: 
-                radial-gradient(ellipse at 8% 4%, rgba(212, 175, 55, 0.12), transparent 36rem),
-                radial-gradient(ellipse at 96% 28%, rgba(22, 91, 70, 0.09), transparent 42rem),
-                linear-gradient(180deg, #fbfaf7 0%, #f5f7f3 48%, #fbfaf7 100%);
-            background-attachment: scroll;
+            background-color: #F7F5EF;
+            background-image:
+                radial-gradient(ellipse at 8% 4%, rgba(212, 175, 55, 0.14), transparent 34rem),
+                radial-gradient(ellipse at 94% 24%, rgba(22, 91, 70, 0.1), transparent 40rem),
+                repeating-radial-gradient(ellipse at 92% 108%, transparent 0 54px, rgba(15, 56, 44, 0.025) 56px 57px, transparent 60px 92px),
+                linear-gradient(145deg, #fbfaf6 0%, #f1f4ee 48%, #faf7ef 100%);
+            background-size: 150% 150%;
+            background-attachment: fixed;
+            animation: ocopBackgroundDrift 34s ease-in-out infinite alternate;
+        }
+        @keyframes ocopBackgroundDrift {
+            0% { background-position: 0% 0%, 100% 0%, 100% 100%, 0% 50%; }
+            100% { background-position: 12% 8%, 88% 12%, 86% 90%, 100% 50%; }
         }
         .glass-panel {
             background: rgba(255, 255, 255, 0.92);
@@ -157,6 +164,7 @@
         .gold-gradient-text {
             background: linear-gradient(135deg, #FFF9D2 0%, #D4AF37 35%, #FFF0B3 60%, #B89528 85%, #FFEAA7 100%);
             background-size: 200% auto;
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: goldShine 6s linear infinite;
@@ -238,15 +246,20 @@
                 border-radius: 1.35rem;
             }
             #ai-chat-widget {
-                right: 0.75rem;
-                left: auto;
-            }
-            #admin-support-widget {
                 right: auto;
                 left: 0.75rem;
+                align-items: flex-start;
+            }
+            #admin-support-widget {
+                right: 0.75rem;
+                left: auto;
+                align-items: flex-end;
             }
         }
         @media (prefers-reduced-motion: reduce) {
+            .bg-ocop-ambient {
+                animation: none;
+            }
             #ai-chat-widget *,
             #admin-support-widget * {
                 animation-duration: 0.01ms !important;
@@ -273,6 +286,7 @@
         .intro-gold-gradient {
             background: linear-gradient(135deg, #FFF9D2 0%, #FFE57F 20%, #D4AF37 45%, #FFFFFF 60%, #B89528 80%, #FFF3B0 100%);
             background-size: 250% auto;
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: goldLiquidShimmer 5s linear infinite;
@@ -375,12 +389,12 @@
             animation: giftHeartbeat 3.2s ease-in-out infinite;
         }
         #ocop-intro-overlay {
-            color: #183653;
+            color: #183b30;
             background:
-                radial-gradient(ellipse at 15% 10%, rgba(186, 224, 255, 0.9), transparent 39%),
-                radial-gradient(ellipse at 88% 82%, rgba(185, 224, 255, 0.86), transparent 42%),
-                radial-gradient(ellipse at 50% 48%, rgba(255, 255, 255, 0.92), transparent 56%),
-                linear-gradient(135deg, #e8f5ff 0%, #f8fcff 46%, #eaf4ff 100%);
+                radial-gradient(ellipse at 12% 8%, rgba(212, 175, 55, 0.2), transparent 40%),
+                radial-gradient(ellipse at 88% 82%, rgba(22, 91, 70, 0.16), transparent 42%),
+                radial-gradient(ellipse at 50% 46%, rgba(255, 255, 255, 0.78), transparent 58%),
+                linear-gradient(135deg, #f5f1e6 0%, #fbfaf6 48%, #edf2e9 100%);
             background-size: 150% 150%;
             animation: introBackdropFlow 24s ease-in-out infinite alternate;
             padding: clamp(0.75rem, 2.5vw, 2rem);
@@ -396,23 +410,23 @@
             z-index: 0;
             width: min(54vw, 42rem);
             aspect-ratio: 1;
-            border: 1px solid rgba(81, 148, 211, 0.16);
+            border: 1px solid rgba(15, 56, 44, 0.1);
             border-radius: 50%;
             pointer-events: none;
-            background: radial-gradient(circle, rgba(116, 190, 243, 0.26), rgba(164, 215, 250, 0.11) 38%, transparent 70%);
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.18), rgba(22, 91, 70, 0.08) 38%, transparent 70%);
             filter: blur(2px);
             animation: introAuroraFloat 18s ease-in-out infinite alternate;
         }
         #ocop-intro-overlay::before {
             top: -28%;
             left: -20%;
-            box-shadow: 0 0 0 2.5rem rgba(81, 148, 211, 0.045), 0 0 0 5rem rgba(81, 148, 211, 0.03), 0 0 100px rgba(93, 173, 232, 0.18);
+            box-shadow: 0 0 0 2.5rem rgba(15, 56, 44, 0.035), 0 0 0 5rem rgba(15, 56, 44, 0.02), 0 0 100px rgba(212, 175, 55, 0.16);
         }
         #ocop-intro-overlay::after {
             right: -20%;
             bottom: -34%;
             animation-delay: -8s;
-            box-shadow: 0 0 0 2.5rem rgba(81, 148, 211, 0.045), 0 0 0 5rem rgba(81, 148, 211, 0.03), 0 0 100px rgba(93, 173, 232, 0.18);
+            box-shadow: 0 0 0 2.5rem rgba(15, 56, 44, 0.035), 0 0 0 5rem rgba(15, 56, 44, 0.02), 0 0 100px rgba(212, 175, 55, 0.16);
         }
         @keyframes introAuroraFloat {
             0% { transform: translate3d(-2%, 1%, 0) scale(0.96); }
@@ -431,10 +445,10 @@
             animation: introOrbFloat 16s ease-in-out infinite alternate;
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb--blue {
-            background-color: rgba(56, 149, 219, 0.3);
+            background-color: rgba(22, 91, 70, 0.18);
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb--cyan {
-            background-color: rgba(61, 196, 218, 0.22);
+            background-color: rgba(212, 175, 55, 0.14);
             animation-delay: -6s;
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb--gold {
@@ -452,9 +466,9 @@
             opacity: 0.58;
             background-image:
                 radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.62), transparent 57%),
-                repeating-radial-gradient(ellipse at 18% 118%, transparent 0 34px, rgba(68, 145, 199, 0.13) 36px 37px, transparent 40px 66px),
-                repeating-radial-gradient(ellipse at 86% 122%, transparent 0 46px, rgba(111, 181, 222, 0.13) 48px 49px, transparent 52px 82px),
-                linear-gradient(165deg, transparent 36%, rgba(255, 255, 255, 0.34) 52%, transparent 68%);
+                repeating-radial-gradient(ellipse at 18% 118%, transparent 0 34px, rgba(22, 91, 70, 0.1) 36px 37px, transparent 40px 66px),
+                repeating-radial-gradient(ellipse at 86% 122%, transparent 0 46px, rgba(212, 175, 55, 0.11) 48px 49px, transparent 52px 82px),
+                linear-gradient(165deg, transparent 36%, rgba(255, 255, 255, 0.42) 52%, transparent 68%);
             background-size: 100% 100%, 125% 115%, 130% 120%, 190% 100%;
             background-position: center, 0% 100%, 100% 100%, 0% 50%;
             animation: introWaterShimmer 18s ease-in-out infinite alternate;
@@ -471,62 +485,62 @@
             }
         }
         #ocop-intro-overlay .bg-black\/50 {
-            background: rgba(255, 255, 255, 0.7);
-            border-color: rgba(91, 151, 203, 0.2);
+            background: rgba(255, 255, 255, 0.76);
+            border-color: rgba(15, 56, 44, 0.12);
         }
         #ocop-intro-overlay .shadow-gold-glow {
-            box-shadow: 0 8px 24px rgba(64, 125, 178, 0.12);
+            box-shadow: 0 8px 24px rgba(15, 56, 44, 0.1);
         }
         #ocop-intro-overlay .bg-amber-500\/20,
         #ocop-intro-overlay .bg-amber-500\/35,
         #ocop-intro-overlay .bg-ocopGold\/35 {
-            background-color: rgba(98, 160, 211, 0.12);
+            background-color: rgba(212, 175, 55, 0.14);
         }
         #ocop-intro-overlay #intro-region-items .bg-amber-500\/20 {
-            background-color: rgba(75, 139, 190, 0.1);
+            background-color: rgba(22, 91, 70, 0.08);
         }
         #ocop-intro-overlay .glass-antigravity {
-            color: #234563;
+            color: #23473b;
             background: rgba(255, 255, 255, 0.76);
-            border-color: rgba(102, 157, 205, 0.2);
-            box-shadow: 0 12px 32px rgba(62, 112, 158, 0.09);
+            border-color: rgba(15, 56, 44, 0.14);
+            box-shadow: 0 12px 32px rgba(15, 56, 44, 0.08);
             backdrop-filter: blur(18px);
         }
         #ocop-intro-overlay .intro-card-glass,
         #ocop-intro-overlay .lucky-golden-box {
-            color: #234563;
+            color: #23473b;
             background: rgba(255, 255, 255, 0.78);
-            border-color: rgba(102, 157, 205, 0.3);
-            box-shadow: 0 12px 32px rgba(62, 112, 158, 0.1);
+            border-color: rgba(15, 56, 44, 0.18);
+            box-shadow: 0 12px 32px rgba(15, 56, 44, 0.09);
             backdrop-filter: blur(18px);
         }
         #ocop-intro-overlay .intro-card-glass:hover,
         #ocop-intro-overlay .lucky-golden-box:hover {
-            border-color: rgba(81, 148, 211, 0.6);
-            box-shadow: 0 16px 36px rgba(62, 112, 158, 0.16);
+            border-color: rgba(212, 175, 55, 0.7);
+            box-shadow: 0 16px 36px rgba(15, 56, 44, 0.14);
         }
         #ocop-intro-overlay .intro-pill-btn {
-            color: #315d82;
-            background: rgba(255, 255, 255, 0.72);
-            border-color: rgba(91, 151, 203, 0.26);
+            color: #315c4b;
+            background: rgba(255, 255, 255, 0.78);
+            border-color: rgba(15, 56, 44, 0.18);
         }
         #ocop-intro-overlay .intro-pill-btn:hover {
-            background: rgba(223, 240, 255, 0.9);
-            border-color: rgba(91, 151, 203, 0.45);
+            background: rgba(239, 244, 234, 0.96);
+            border-color: rgba(212, 175, 55, 0.56);
         }
         #ocop-intro-overlay .intro-brand-mark {
             color: #fff;
-            background: linear-gradient(145deg, #579dd2, #3178b5);
+            background: linear-gradient(145deg, #165b46, #0f382c);
             border-color: rgba(255, 255, 255, 0.92);
-            box-shadow: 0 8px 24px rgba(55, 119, 174, 0.26);
+            box-shadow: 0 8px 24px rgba(15, 56, 44, 0.22);
         }
         #ocop-intro-overlay .intro-hero-title,
         #ocop-intro-overlay .intro-hero-title span {
-            text-shadow: 0 2px 18px rgba(41, 91, 132, 0.12);
+            text-shadow: 0 2px 18px rgba(15, 56, 44, 0.1);
             filter: none;
         }
         #ocop-intro-overlay .intro-gold-gradient {
-            background: linear-gradient(110deg, #25639a, #69b5e4 42%, #3473aa 74%, #25639a);
+            background: linear-gradient(110deg, #0f382c, #b89528 42%, #165b46 74%, #0f382c);
             background-size: 250% auto;
             background-clip: text;
             -webkit-background-clip: text;
@@ -534,56 +548,56 @@
             animation: goldShine 8s linear infinite;
         }
         #ocop-intro-overlay .intro-live-ticker {
-            color: #315d82;
-            background: rgba(255, 255, 255, 0.72);
-            border-color: rgba(91, 151, 203, 0.28);
-            box-shadow: 0 8px 24px rgba(64, 125, 178, 0.1);
+            color: #315c4b;
+            background: rgba(255, 255, 255, 0.78);
+            border-color: rgba(15, 56, 44, 0.16);
+            box-shadow: 0 8px 24px rgba(15, 56, 44, 0.08);
         }
         #ocop-intro-overlay .intro-live-ticker .ticker-content {
-            color: #456983;
+            color: #52685b;
         }
         #ocop-intro-overlay .intro-live-ticker .intro-live-label {
             color: #16856b;
         }
         #ocop-intro-overlay .intro-ai-consult-btn {
-            color: #315d82 !important;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(224, 241, 255, 0.92));
-            border-color: rgba(91, 151, 203, 0.34);
-            box-shadow: 0 6px 18px rgba(64, 125, 178, 0.1);
+            color: #315c4b !important;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(241, 244, 234, 0.96));
+            border-color: rgba(15, 56, 44, 0.18);
+            box-shadow: 0 6px 18px rgba(15, 56, 44, 0.08);
         }
         #ocop-intro-overlay .intro-ai-consult-btn:hover {
-            color: #214d73 !important;
-            background: linear-gradient(135deg, #fff, #dcefff);
-            border-color: rgba(91, 151, 203, 0.58);
-            box-shadow: 0 8px 22px rgba(64, 125, 178, 0.16);
+            color: #173c30 !important;
+            background: linear-gradient(135deg, #fff, #f1f4ea);
+            border-color: rgba(212, 175, 55, 0.62);
+            box-shadow: 0 8px 22px rgba(15, 56, 44, 0.12);
         }
         #ocop-intro-overlay #i18n-intro-desc {
-            color: #526f88 !important;
+            color: #52685b !important;
         }
         #ocop-intro-overlay .text-white {
-            color: #173752 !important;
+            color: #173c30 !important;
         }
         #ocop-intro-overlay .text-amber-100,
         #ocop-intro-overlay .text-amber-200,
         #ocop-intro-overlay .text-amber-300,
         #ocop-intro-overlay .text-amber-400,
         #ocop-intro-overlay .text-ocopGold {
-            color: #3976ad !important;
+            color: #8c6b16 !important;
         }
         #ocop-intro-overlay [class*="text-amber-"] {
-            color: #52718c !important;
+            color: #607166 !important;
         }
         #ocop-intro-overlay .border-amber-500\/20,
         #ocop-intro-overlay .border-amber-500\/25,
         #ocop-intro-overlay .border-amber-300\/40,
         #ocop-intro-overlay .border-ocopGold\/40 {
-            border-color: rgba(91, 151, 203, 0.22) !important;
+            border-color: rgba(15, 56, 44, 0.16) !important;
         }
         #ocop-intro-overlay .gold-card-glow {
-            box-shadow: 0 12px 30px rgba(64, 125, 178, 0.1);
+            box-shadow: 0 12px 30px rgba(15, 56, 44, 0.08);
         }
         #ocop-intro-overlay .gold-gradient-text {
-            background: linear-gradient(110deg, #25639a, #5394c9 52%, #3473aa);
+            background: linear-gradient(110deg, #0f382c, #b89528 52%, #165b46);
             background-size: 100% auto;
             background-clip: text;
             -webkit-background-clip: text;
@@ -592,36 +606,36 @@
         }
         #ocop-intro-overlay .intro-mark {
             color: #fff;
-            background: linear-gradient(145deg, #589bd0, #3477b1);
+            background: linear-gradient(145deg, #165b46, #0a261e);
             border-color: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 8px 22px rgba(55, 119, 174, 0.2);
+            box-shadow: 0 8px 22px rgba(15, 56, 44, 0.18);
         }
         #ocop-intro-overlay #intro-award-badge {
-            color: #35688f;
-            background: rgba(223, 240, 255, 0.82);
-            border-color: rgba(112, 166, 209, 0.4);
+            color: #775b12;
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.38);
         }
         #ocop-intro-overlay #intro-award-badge i {
-            color: #4789bf !important;
+            color: #9b771e !important;
         }
         #ocop-intro-overlay #intro-lucky-card {
-            background: linear-gradient(115deg, rgba(224, 241, 255, 0.96), rgba(245, 250, 255, 0.98));
-            border-color: #8dbce2;
-            box-shadow: 0 12px 28px rgba(59, 119, 173, 0.12);
+            background: linear-gradient(115deg, rgba(250, 246, 230, 0.96), rgba(243, 247, 239, 0.98));
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 12px 28px rgba(15, 56, 44, 0.1);
         }
         #ocop-intro-overlay #intro-lucky-card .text-amber-300,
         #ocop-intro-overlay #intro-lucky-card .text-amber-100\/90 {
-            color: #315d82 !important;
+            color: #725816 !important;
         }
         #ocop-intro-overlay #intro-gift-result {
             background: rgba(255, 255, 255, 0.76);
-            border-color: #bfdaef;
+            border-color: rgba(15, 56, 44, 0.15);
         }
         #ocop-intro-overlay #intro-gift-result .text-white {
-            color: #24577f !important;
+            color: #23473b !important;
         }
         #ocop-intro-overlay #intro-gift-result .text-amber-200 {
-            color: #24577f !important;
+            color: #725816 !important;
         }
         #ocop-intro-overlay #intro-gift-result .text-emerald-300,
         #ocop-intro-overlay #intro-gift-result .text-emerald-400 {
@@ -631,62 +645,62 @@
         #ocop-intro-overlay #intro-enter-market,
         #ocop-intro-overlay #intro-skip-button {
             border-color: rgba(255, 255, 255, 0.85);
-            background: linear-gradient(110deg, #3c83bd, #5ba1d5);
+            background: linear-gradient(110deg, #0f382c, #165b46);
             color: #fff !important;
-            box-shadow: 0 8px 20px rgba(55, 119, 174, 0.2);
+            box-shadow: 0 8px 20px rgba(15, 56, 44, 0.2);
         }
         #ocop-intro-overlay #intro-enter-market {
-            background: linear-gradient(110deg, #3278b3, #5a9dd0);
+            background: linear-gradient(110deg, #165b46, #0a261e);
         }
         #ocop-intro-overlay #intro-enter-market .text-ocopGreen {
             color: #fff !important;
         }
         #ocop-intro-overlay #intro-sound-btn,
         #ocop-intro-overlay #intro-language-btn {
-            color: #315d82;
+            color: #315c4b;
             background: rgba(255, 255, 255, 0.72);
-            border-color: rgba(91, 151, 203, 0.26);
+            border-color: rgba(15, 56, 44, 0.16);
         }
         #ocop-intro-overlay [id^="tab-region-"] {
-            color: #466782;
+            color: #466454;
             background: rgba(255, 255, 255, 0.7);
-            border-color: rgba(91, 151, 203, 0.2);
+            border-color: rgba(15, 56, 44, 0.12);
         }
         #ocop-intro-overlay [id^="tab-region-"][aria-pressed="true"] {
             color: #fff;
-            background: linear-gradient(110deg, #4388bf, #70add8);
+            background: linear-gradient(110deg, #165b46, #0f382c);
             border-color: transparent;
         }
         #ocop-intro-overlay #region-progress-bar {
-            background: linear-gradient(90deg, #69a9d7, #387eb7);
+            background: linear-gradient(90deg, #d4af37, #165b46);
         }
         #ocop-intro-overlay #intro-region-title {
-            color: #285c86;
+            color: #23473b;
         }
         #ocop-intro-overlay #intro-region-desc,
         #ocop-intro-overlay #intro-region-items .text-amber-200\/70 {
-            color: #59758e;
+            color: #607166;
         }
         #ocop-intro-overlay #intro-region-items > div {
             background: rgba(255, 255, 255, 0.68);
-            border-color: rgba(91, 151, 203, 0.18);
+            border-color: rgba(15, 56, 44, 0.12);
         }
         #ocop-intro-overlay #intro-region-items .text-white {
-            color: #234563 !important;
+            color: #23473b !important;
         }
         #ocop-intro-overlay #intro-region-items .text-amber-300 {
-            color: #3976ad !important;
+            color: #8c6b16 !important;
         }
         #ocop-intro-overlay button[onclick="enterOcopMarket('ai')"],
         #ocop-intro-overlay button[onclick="enterOcopMarket('admin')"] {
-            color: #35688f;
-            background: rgba(227, 242, 255, 0.85);
-            border-color: rgba(112, 166, 209, 0.35);
+            color: #315c4b;
+            background: rgba(239, 244, 234, 0.88);
+            border-color: rgba(15, 56, 44, 0.16);
         }
         #ocop-intro-overlay kbd {
-            color: #315d82;
+            color: #315c4b;
             background: #fff;
-            border-color: #c7dced;
+            border-color: rgba(15, 56, 44, 0.2);
         }
         @media (prefers-reduced-motion: reduce) {
             #ocop-intro-overlay,
@@ -1001,7 +1015,7 @@
                             <span>✨</span>
                             <span id="i18n-intro-quick-ai">AI Tư Vấn</span>
                         </button>
-                        <button onclick="enterOcopMarket('admin')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-blue-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer bg-blue-950/50 border-blue-400/50">
+                        <button onclick="enterOcopMarket('admin')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
                             <span>💬</span>
                             <span id="i18n-intro-quick-admin">Chat Với 4 Admin FB</span>
                         </button>
@@ -1061,9 +1075,9 @@
                 <input type="search" id="header-search-input" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)"
                        placeholder="Tìm đặc sản, vùng miền..."
                        autocomplete="off" aria-controls="product-grid"
-                       class="site-search-input w-full pl-10 pr-10 py-2.5 text-sm rounded-full border border-blue-200 focus:outline-none bg-blue-50/50 shadow-sm transition">
+                       class="site-search-input w-full pl-10 pr-10 py-2.5 text-sm rounded-full border border-emerald-200 focus:outline-none bg-emerald-50/60 shadow-sm transition">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                <button id="header-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-700 text-xs rounded-full">
+                <button id="header-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-ocopGreen text-xs rounded-full">
                     <i class="fa-solid fa-circle-xmark"></i>
                 </button>
             </div>
@@ -1081,7 +1095,7 @@
 
             <!-- Quick Action Icons -->
             <div class="flex items-center space-x-1 sm:space-x-4">
-                <button id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-blue-200 bg-blue-50 text-blue-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-blue-100 transition cursor-pointer" aria-label="Switch language">EN</button>
+                <button id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 text-ocopGreen text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-emerald-100 transition cursor-pointer" aria-label="Switch language">EN</button>
                 <div class="header-support-chip hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
                     <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs">
                         <i class="fa-solid fa-headset"></i>
@@ -1095,7 +1109,7 @@
                     <button onclick="toggleAuthModal()" id="user-btn" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-amber-100 hover:bg-amber-200 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-300 hover:scale-105 cursor-pointer" title="Đăng nhập / Tài khoản">
                         <i class="fa-solid fa-user text-xs sm:text-sm"></i>
                     </button>
-                    <button onclick="toggleOrdersModal()" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center transition shadow-sm border border-blue-200 hover:scale-105 cursor-pointer" title="Lịch sử mua hàng">
+                    <button onclick="toggleOrdersModal()" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Lịch sử mua hàng">
                         <i class="fa-solid fa-clock-rotate-left text-xs sm:text-sm"></i>
                     </button>
                     <button onclick="toggleWishlistDrawer()" class="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200 hover:scale-105 cursor-pointer" title="Yêu thích">
@@ -1117,7 +1131,7 @@
                 <input type="search" id="mobile-search-input" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)"
                        placeholder="Tìm đặc sản, tỉnh thành, trà, sâm..."
                        autocomplete="off" aria-controls="product-grid"
-                       class="site-search-input w-full pl-9 pr-10 py-2.5 text-sm rounded-full border border-blue-200 focus:outline-none bg-blue-50/60 shadow-sm">
+                       class="site-search-input w-full pl-9 pr-10 py-2.5 text-sm rounded-full border border-emerald-200 focus:outline-none bg-emerald-50/60 shadow-sm">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                 <button id="mobile-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs rounded-full">
                     <i class="fa-solid fa-circle-xmark"></i>
@@ -1312,7 +1326,7 @@
                             <div class="relative">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-700/60 text-xs"></i>
                                 <label for="product-search" class="sr-only">Tìm kiếm đặc sản theo tên hoặc vùng miền</label>
-                                <input type="search" id="product-search" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)" placeholder="Tên đặc sản hoặc tỉnh thành..." autocomplete="off" aria-controls="product-grid" class="site-search-input w-full pl-9 pr-10 py-2.5 text-sm rounded-xl border border-blue-200 focus:outline-none bg-blue-50/50 transition">
+                                <input type="search" id="product-search" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)" placeholder="Tên đặc sản hoặc tỉnh thành..." autocomplete="off" aria-controls="product-grid" class="site-search-input w-full pl-9 pr-10 py-2.5 text-sm rounded-xl border border-emerald-200 focus:outline-none bg-emerald-50/50 transition">
                                 <button id="sidebar-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs cursor-pointer rounded-full">
                                     <i class="fa-solid fa-circle-xmark"></i>
                                 </button>
@@ -1347,7 +1361,7 @@
     </main>
     
     <!-- 5. WIDGET CHATBOT AI ANTIGRAVITY (BÊN TRÁI) -->
-    <div id="ai-chat-widget" class="fixed bottom-20 sm:bottom-6 right-3 sm:right-6 z-40 flex flex-col items-end">
+    <div id="ai-chat-widget" class="fixed bottom-20 sm:bottom-6 left-3 sm:left-6 right-auto z-40 flex flex-col items-start">
         <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-96 max-h-[min(72vh,38rem)] h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-emerald-100 flex flex-col overflow-hidden mb-3 animate-pop-in">
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
@@ -1368,7 +1382,7 @@
             <div id="ai-chat-messages" class="flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
                 <div class="flex items-start space-x-2">
                     <img src="ai-avatar.jpg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
-                    <div class="bg-white p-3.5 rounded-2xl border border-blue-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
+                    <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
                         <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.</p>
                         <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Gợi ý dựa trên danh mục và giá đang hiển thị trên website.</p>
@@ -1376,11 +1390,11 @@
                 </div>
             </div>
             
-            <div class="p-2 bg-blue-50/80 border-t border-blue-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[10px] font-bold">
-                <button onclick="sendQuickPrompt('Gợi ý đặc sản OCOP 5 sao')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-blue-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">⭐ 5 sao</button>
-                <button onclick="sendQuickPrompt('Tư vấn quà biếu')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-blue-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">🎁 Quà biếu</button>
-                <button onclick="sendQuickPrompt('Gợi ý đặc sản dưới 200k')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-blue-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">💰 Dưới 200k</button>
-                <button onclick="sendQuickPrompt('Gợi ý trà')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-blue-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">🍵 Trà</button>
+            <div class="p-2 bg-amber-50/80 border-t border-amber-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[10px] font-bold">
+                <button onclick="sendQuickPrompt('Gợi ý đặc sản OCOP 5 sao')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">⭐ 5 sao</button>
+                <button onclick="sendQuickPrompt('Tư vấn quà biếu')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">🎁 Quà biếu</button>
+                <button onclick="sendQuickPrompt('Gợi ý đặc sản dưới 200k')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">💰 Dưới 200k</button>
+                <button onclick="sendQuickPrompt('Gợi ý trà')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">🍵 Trà</button>
             </div>
             
             <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
@@ -1396,7 +1410,7 @@
     </div>
 
     <!-- 5.2. WIDGET 4 ADMIN FACEBOOK (BÊN PHẢI) -->
-    <div id="admin-support-widget" class="fixed bottom-20 sm:bottom-6 left-3 sm:left-6 z-40 flex flex-col items-start">
+    <div id="admin-support-widget" class="fixed bottom-20 sm:bottom-6 right-3 sm:right-6 left-auto z-40 flex flex-col items-end">
         <div id="admin-support-menu" class="hidden w-[calc(100vw-1.5rem)] sm:w-80 max-h-[min(72vh,38rem)] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-blue-200 overflow-hidden mb-3 animate-pop-in overflow-y-auto">
             <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-3.5 flex items-center justify-between border-b border-blue-400">
                 <div class="flex items-center space-x-2">
@@ -2477,7 +2491,7 @@
                 <div class="flex items-start justify-end space-x-2">
                     <div class="bg-ocopGreen text-white p-3 rounded-2xl text-xs max-w-[85%] shadow-sm leading-relaxed break-words">
                     </div>
-                    <div class="w-7 h-7 rounded-full bg-blue-100 text-ocopGreen font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
+                    <div class="w-7 h-7 rounded-full bg-emerald-100 text-ocopGreen font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
                 </div>
             `);
             messagesEl.lastElementChild.firstElementChild.textContent = text;
@@ -2507,7 +2521,7 @@
                 messagesEl.insertAdjacentHTML('beforeend', `
                     <div class="flex items-start space-x-2">
                         <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
-                        <div class="bg-white p-3.5 rounded-2xl border border-blue-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                        <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
                             ${aiReply}
                         </div>
                     </div>
@@ -2855,7 +2869,7 @@
 
         function renderAIProductRecommendations(recommendations, title, note) {
             const cards = recommendations.map(product => `
-                <article class="rounded-xl border border-blue-100 bg-blue-50/50 p-2.5">
+                <article class="rounded-xl border border-emerald-100 bg-emerald-50/50 p-2.5">
                     <div class="flex items-start justify-between gap-2">
                         <div class="min-w-0">
                             <p class="font-bold text-gray-800">${escapeAIHtml(getProductName(product))}</p>
@@ -2865,7 +2879,7 @@
                     </div>
                     <p class="mt-1.5 text-[10px] text-gray-600">${escapeAIHtml(getProductDescription(product))}</p>
                     <div class="mt-2 flex gap-2">
-                        <button onclick="openQuickView(${product.id})" class="rounded-lg border border-blue-200 bg-white px-2.5 py-1 text-[10px] font-bold text-ocopGreen hover:bg-blue-50">${currentLanguage === 'en' ? 'View details' : 'Xem chi tiết'}</button>
+                        <button onclick="openQuickView(${product.id})" class="rounded-lg border border-emerald-200 bg-white px-2.5 py-1 text-[10px] font-bold text-ocopGreen hover:bg-emerald-50">${currentLanguage === 'en' ? 'View details' : 'Xem chi tiết'}</button>
                         <button onclick="addToCart(${product.id})" class="rounded-lg bg-ocopGreen px-2.5 py-1 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${currentLanguage === 'en' ? 'Add to cart' : 'Thêm vào giỏ'}</button>
                     </div>
                 </article>
