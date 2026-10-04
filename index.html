@@ -1749,6 +1749,50 @@
             { id: 'OCOP-77120', date: '25/09/2026', total: 2450000, status: 'Đang vận chuyển', items: ['Yến Sào Khánh Hòa Thượng Hạng'] }
         ];
 
+        function buildFallbackImage(label, bg = '#0F382C', accent = '#D4AF37') {
+            const safeLabel = String(label || 'OCOP').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const svg = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+                    <defs>
+                        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+                            <stop offset="0%" stop-color="${bg}"/>
+                            <stop offset="100%" stop-color="#0A261E"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="800" height="800" fill="url(#bg)"/>
+                    <circle cx="400" cy="250" r="150" fill="${accent}" fill-opacity="0.18"/>
+                    <circle cx="400" cy="250" r="86" fill="${accent}" fill-opacity="0.28"/>
+                    <path d="M220 570C290 500 355 470 400 470C445 470 510 500 580 570V620H220V570Z" fill="${accent}" fill-opacity="0.22"/>
+                    <text x="50%" y="68%" text-anchor="middle" font-size="52" font-family="Arial, sans-serif" font-weight="700" fill="#f8f5ee" letter-spacing="1">${safeLabel}</text>
+                </svg>
+            `;
+            return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+        }
+
+        function getSafeImageUrl(src, label, fallback = null) {
+            if (typeof src === 'string' && src.trim() !== '') return src;
+            return fallback || buildFallbackImage(label || 'OCOP');
+        }
+
+        function refreshOCOPCatalog() {
+            const query = (document.getElementById('product-search')?.value || '').trim();
+            const searchValue = query;
+            document.querySelectorAll('.cat-side-btn, .mob-cat-btn').forEach(button => {
+                const active = button.getAttribute('onclick') === `setCategoryFilter('${currentCategory}', this)` ||
+                    button.classList.contains('active');
+                button.classList.toggle('active', active);
+            });
+            filterProductsGlobal(searchValue);
+        }
+
+        let catalogRefreshTimer = null;
+        function startCatalogAutoRefresh() {
+            if (catalogRefreshTimer) clearInterval(catalogRefreshTimer);
+            catalogRefreshTimer = setInterval(() => {
+                refreshOCOPCatalog();
+            }, 60000);
+        }
+
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
             initIntroParticles();
@@ -2111,10 +2155,12 @@
 
             // Render 4 thẻ sản phẩm của miền (Kèm ảnh thumbnail, huy hiệu & tag)
             const container = document.getElementById('intro-region-items');
-            container.innerHTML = r.items.map(item => `
+            container.innerHTML = r.items.map(item => {
+                const fallbackImg = buildFallbackImage(item.name || item.origin || 'OCOP');
+                return `
                 <div class="region-item-card p-2.5 rounded-2xl flex items-center justify-between gap-2.5 cursor-pointer group shadow-sm" onclick="enterOcopMarket('all')">
                     <div class="flex items-center space-x-2.5 min-w-0">
-                        <img src="${item.img}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover border border-amber-300/40 group-hover:scale-105 transition flex-shrink-0 shadow-md">
+                        <img src="${item.img || fallbackImg}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover border border-amber-300/40 group-hover:scale-105 transition flex-shrink-0 shadow-md" onerror="this.onerror=null;this.src='${fallbackImg}'">
                         <div class="truncate">
                             <span class="block text-xs font-black text-amber-100 group-hover:text-yellow-300 transition truncate">${item.name}</span>
                             <span class="text-[10px] text-amber-300/80 font-medium">${item.origin} • ${item.tag}</span>
@@ -2122,7 +2168,8 @@
                     </div>
                     <span class="bg-gradient-to-r from-amber-400 to-yellow-400 text-ocopGreen font-black text-[10px] px-2.5 py-1 rounded-lg shadow flex-shrink-0">${item.badge}</span>
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             // Progress bar reset animation
             const pBar = document.getElementById('region-progress-bar');
@@ -2167,11 +2214,12 @@
             noMsg.style.display = 'none';
             grid.innerHTML = items.map(p => {
                 const isFav = wishlist.includes(p.id);
+                const fallbackImg = buildFallbackImage(p.name || 'OCOP');
                 return `
                 <div class="glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group relative">
                     <div>
                         <div class="relative h-48 sm:h-52 overflow-hidden bg-amber-100/50">
-                            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-108 transition duration-700">
+                            <img src="${p.img || fallbackImg}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-108 transition duration-700" onerror="this.onerror=null;this.src='${fallbackImg}'">
                             <div class="absolute top-3 left-3 flex flex-col space-y-1">
                                 <span class="bg-ocopGreen text-ocopGold text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md border border-ocopGold/30">
                                     ${p.region}
@@ -2275,14 +2323,18 @@
             filterProductsGlobal('');
         }
 
-        function setCategoryFilter(cat) {
+        function setCategoryFilter(cat, triggerButton = null) {
             currentCategory = cat;
+            const activeSearch = document.getElementById('product-search')?.value || '';
             document.querySelectorAll('.cat-side-btn, .mob-cat-btn').forEach(button => {
-                button.classList.toggle('active', button.getAttribute('onclick') === `setCategoryFilter('${cat}', this)`);
+                const isActive = button === triggerButton ||
+                    button.dataset.category === cat ||
+                    button.getAttribute('onclick') === `setCategoryFilter('${cat}', this)` ||
+                    button.getAttribute('onclick') === `setCategoryFilter('${cat}')`;
+                button.classList.toggle('active', isActive);
             });
 
-            const currentSearch = document.getElementById('product-search').value;
-            filterProductsGlobal(currentSearch);
+            filterProductsGlobal(activeSearch);
         }
 
         function resetFilters() {
@@ -2820,9 +2872,10 @@
             if (!p) return;
 
             const container = document.getElementById('quickview-content');
+            const fallbackImg = buildFallbackImage(p.name || 'OCOP');
             container.innerHTML = `
                 <div class="h-64 md:h-full bg-amber-100 relative">
-                    <img src="${p.img}" class="w-full h-full object-cover">
+                    <img src="${p.img || fallbackImg}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='${fallbackImg}'">
                     <span class="absolute top-3 left-3 bg-ocopGreen text-ocopGold font-black text-xs px-3 py-1 rounded-full uppercase shadow">
                         OCOP ${p.stars} SAO
                     </span>
