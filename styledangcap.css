@@ -9,9 +9,9 @@
     --ag-ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     --ag-ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
     
-    /* Dynamic Levitation Shadows */
+    /* Dynamic Levitation Shadows (Bóng đổ nâng 3D quang học) */
     --ag-shadow-rest: 0 10px 25px -5px rgba(15, 56, 44, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-    --ag-shadow-lift: 0 24px 48px -12px rgba(15, 56, 44, 0.18), 0 12px 24px -8px rgba(212, 175, 55, 0.25);
+    --ag-shadow-lift: 0 24px 48px -12px rgba(15, 56, 44, 0.2), 0 12px 28px -6px rgba(212, 175, 55, 0.3);
     --ag-shadow-hero: 0 20px 40px -10px rgba(0, 0, 0, 0.45), 0 0 25px rgba(212, 175, 55, 0.3);
     --ag-shadow-hero-hover: 0 32px 64px -12px rgba(0, 0, 0, 0.6), 0 0 45px rgba(212, 175, 55, 0.55), inset 0 0 15px rgba(255, 255, 255, 0.3);
 }
@@ -20,7 +20,7 @@
    1. KEYFRAMES: MULTI-AXIS ZERO-GRAVITY OSCILLATIONS
    -------------------------------------------------------------------------- */
 
-/* Natural Organic Floating (Translates Y + subtle micro rotation tilt) */
+/* Dao động không trọng lực tự nhiên (Dịch chuyển Y + Trôi vi mô X + Góc nghiêng Z) */
 @keyframes agFloatGentle {
     0% {
         transform: translate3d(0, 0px, 0) rotate(0deg);
@@ -36,7 +36,7 @@
     }
 }
 
-/* Secondary Floating Cycle (Opposite phase & slight expansion scale) */
+/* Chu kỳ dao động thứ cấp lệch pha (Kèm độ co giãn thể tích thở) */
 @keyframes agFloatOrbital {
     0% {
         transform: translate3d(0, 0px, 0) scale(1) rotate(0deg);
@@ -53,7 +53,7 @@
    2. HERO & INTRO FLOATING CLASSES
    -------------------------------------------------------------------------- */
 
-/* Core Class for Hero Floating Elements */
+/* Class chủ đạo cho các icon/phần tử lơ lửng màn Hero & Intro */
 .ag-hero-float {
     display: inline-block;
     animation: agFloatGentle 6.5s var(--ag-ease-float) infinite;
@@ -63,37 +63,37 @@
     transition: transform 0.45s var(--ag-ease-fluid), box-shadow 0.45s var(--ag-ease-fluid), filter 0.45s ease;
 }
 
-/* Alternating Float Patterns */
+/* Biến thể dao động quỹ đạo */
 .ag-hero-float-alt {
     animation-name: agFloatOrbital;
     animation-duration: 7.8s;
 }
 
-/* Automated Asynchronous Delay System (No synchronous floating) */
+/* Hệ thống tự động lệch pha thời gian (Staggered Delays) */
 .ag-delay-1 { animation-delay: -1.35s !important; }
 .ag-delay-2 { animation-delay: -3.15s !important; }
 .ag-delay-3 { animation-delay: -4.85s !important; }
 .ag-delay-4 { animation-delay: -2.10s !important; }
 .ag-delay-5 { animation-delay: -5.60s !important; }
 
-/* Speed Modifiers */
+/* Tốc độ tùy biến */
 .ag-speed-fast   { animation-duration: 4.2s !important; }
 .ag-speed-medium { animation-duration: 6.2s !important; }
 .ag-speed-slow   { animation-duration: 8.5s !important; }
 
-/* Interactive Hover Lift on Hero Floating Items */
+/* Phản ứng khi di chuột (Hover Lift & Volumetric Glow) */
 .ag-hero-float:hover {
     animation-play-state: paused;
-    transform: translate3d(0, -9px, 0) scale(1.06) rotate(0deg) !important;
+    transform: translate3d(0, -9px, 0) scale(1.08) rotate(0deg) !important;
     box-shadow: var(--ag-shadow-hero-hover);
     z-index: 10;
 }
 
 /* --------------------------------------------------------------------------
-   3. PRODUCT GRID ANTIGRAVITY HOVER & SCROLL REVEAL
+   3. PRODUCT GRID: ANTIGRAVITY LIFT & HOVER DYNAMICS
    -------------------------------------------------------------------------- */
 
-/* Enhanced Product Card Base */
+/* Thẻ sản phẩm với phản lực không trọng lực */
 .ag-product-card {
     position: relative;
     will-change: transform, box-shadow, border-color;
@@ -106,7 +106,7 @@
         background-color 0.3s ease;
 }
 
-/* Antigravity Lift Interaction on Hover */
+/* Lực nâng nhấc bổng khi hover */
 .ag-product-card:hover {
     transform: translate3d(0, -9px, 0) scale(1.018);
     box-shadow: var(--ag-shadow-lift);
@@ -114,7 +114,7 @@
     z-index: 5;
 }
 
-/* Product Image Float Zoom on Hover */
+/* Ảnh sản phẩm lướt zoom nổi 3D */
 .ag-product-card .product-card-image {
     transition: transform 0.65s var(--ag-ease-fluid), filter 0.65s ease;
     will-change: transform;
@@ -124,7 +124,7 @@
     transform: scale(1.06) translate3d(0, -2px, 0);
 }
 
-/* Floating Badges inside Product Card */
+/* Huy hiệu và nút tim lơ lửng vi mô bên trong thẻ */
 .ag-product-card .absolute.top-3.left-3,
 .ag-product-card .absolute.top-3.right-3 {
     transition: transform 0.35s var(--ag-ease-spring);
@@ -140,7 +140,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. SCROLL-DRIVEN REVEAL SYSTEM
+   4. SCROLL-DRIVEN REVEAL SYSTEM (HIỆU ỨNG THÁC NƯỚC KHI CUỘN)
    -------------------------------------------------------------------------- */
 .ag-reveal-item {
     opacity: 0;
@@ -157,8 +157,9 @@
 }
 
 /* --------------------------------------------------------------------------
-   5. SPECIALIZED HERO GLASS & CARD LEVITATION
+   5. CÁC THÀNH PHẦN HERO & INTRO ĐẶC TRƯNG
    -------------------------------------------------------------------------- */
+/* 4 Trụ cột Hologram Cards */
 .intro-pillars > div {
     will-change: transform, box-shadow;
     transition: transform 0.4s var(--ag-ease-spring), box-shadow 0.4s var(--ag-ease-fluid), border-color 0.3s ease;
@@ -170,6 +171,7 @@
     border-color: rgba(212, 175, 55, 0.8) !important;
 }
 
+/* Thẻ đặc sản 3 miền (Region Showcase) */
 .region-item-card {
     will-change: transform, box-shadow;
     transition: transform 0.35s var(--ag-ease-spring), box-shadow 0.35s var(--ag-ease-fluid), background-color 0.25s ease;
@@ -180,6 +182,18 @@
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35), 0 0 22px rgba(212, 175, 55, 0.3) !important;
 }
 
+/* Hòm Lộc Vàng */
+#intro-lucky-card {
+    will-change: transform, box-shadow;
+    transition: transform 0.4s var(--ag-ease-spring), box-shadow 0.4s var(--ag-ease-fluid);
+}
+
+#intro-lucky-card:hover {
+    transform: translate3d(0, -4px, 0) scale(1.015);
+    box-shadow: 0 18px 36px rgba(15, 56, 44, 0.18), 0 0 30px rgba(212, 175, 55, 0.35);
+}
+
+/* Banner Showcase Shop Hero */
 #shop-hero .glass-panel {
     will-change: transform, box-shadow;
     transition: transform 0.55s var(--ag-ease-fluid), box-shadow 0.55s var(--ag-ease-fluid), border-color 0.4s ease;
