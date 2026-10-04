@@ -80,6 +80,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        html {
+            overflow-x: clip;
+        }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #f6f5ef;
@@ -226,40 +229,6 @@
             white-space: nowrap;
         }
         @media (max-width: 640px) {
-            .hero-section {
-                box-sizing: border-box;
-                width: 100%;
-                max-width: 100%;
-                margin: 0;
-                padding: 1.5rem 1rem !important;
-            }
-            .hero-container {
-                width: 100%;
-                gap: 1.25rem !important;
-            }
-            .hero-content,
-            .hero-map-box {
-                box-sizing: border-box;
-                flex: 1 1 100% !important;
-                width: 100%;
-                min-width: 0 !important;
-            }
-            .hero-content h1 {
-                font-size: clamp(1.75rem, 8vw, 2.5rem) !important;
-                overflow-wrap: anywhere;
-            }
-            .hero-content > div[style*="border-top"] {
-                gap: 0.75rem !important;
-                justify-content: space-between;
-            }
-            .hero-map-box > div:first-child {
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            .hero-map-box h3 {
-                font-size: clamp(0.8rem, 4vw, 1rem) !important;
-                overflow-wrap: anywhere;
-            }
             .region-item-card {
                 box-sizing: border-box;
                 width: 100%;
@@ -1194,6 +1163,22 @@
             }
         }
         @media (max-width: 640px) {
+            #ocop-intro-overlay .intro-header {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            #ocop-intro-overlay .intro-header > div:first-child {
+                width: 100%;
+                min-width: 0;
+            }
+            #ocop-intro-overlay .intro-header > div:first-child > div:last-child {
+                min-width: 0;
+            }
+            #ocop-intro-overlay .intro-header-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
             #ocop-intro-overlay .intro-stage {
                 gap: 0.85rem;
                 padding-block: 1rem;
@@ -1285,7 +1270,7 @@
         </div>
 
         <!-- HEADER ĐẢO NỔI GLASSMORPHISM -->
-        <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-amber-400/30">
+        <div class="intro-header relative z-20 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-amber-400/30">
             <div class="flex items-center space-x-3">
                 <div class="intro-brand-mark relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-700 to-amber-500 border-2 border-ocopGold flex items-center justify-center text-white text-xl shadow-[0_0_25px_rgba(212,175,55,0.7)] group">
                     <i class="fa-solid fa-leaf text-amber-300"></i>
