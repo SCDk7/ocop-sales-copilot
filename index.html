@@ -1128,7 +1128,7 @@
         .product-card:hover .product-card-image { transform: scale(1.035); }
         @media (min-width: 1024px) {
             #ocop-intro-overlay .intro-stage {
-                grid-template-columns: minmax(0, 1.12fr) minmax(25rem, 0.88fr);
+                grid-template-columns: minmax(0, 1.08fr) minmax(25rem, 0.92fr);
                 grid-template-areas:
                     "ticker ticker"
                     "award regions"
@@ -1136,6 +1136,36 @@
                     "pillars regions"
                     "lucky lucky"
                     "actions actions";
+            }
+            #ocop-intro-overlay .intro-pillars {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.55rem;
+                padding-top: 0;
+            }
+            #ocop-intro-overlay .intro-pillars > div {
+                display: grid;
+                grid-template-columns: 2rem minmax(0, 1fr);
+                grid-template-rows: max-content max-content;
+                align-content: center;
+                align-items: center;
+                column-gap: 0.65rem;
+                row-gap: 0.05rem;
+                height: 4.5rem;
+                min-height: 4.5rem;
+                padding: 0.45rem 0.65rem;
+                text-align: left;
+            }
+            #ocop-intro-overlay .intro-pillars > div > div {
+                grid-column: 1;
+                grid-row: 1 / span 2;
+                margin: 0;
+            }
+            #ocop-intro-overlay .intro-pillars > div > span {
+                min-width: 0;
+            }
+            #ocop-intro-overlay .province-map {
+                height: min(58vh, 480px);
+                min-height: 320px;
             }
         }
         @media (max-width: 640px) {
