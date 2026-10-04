@@ -551,6 +551,18 @@
             border-radius: 0.9rem;
             background: rgba(255, 255, 255, 0.78);
             box-shadow: 0 3px 10px rgba(15, 56, 44, 0.05);
+            cursor: pointer;
+            transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+        }
+        .province-product-card:active {
+            border-color: rgba(212, 175, 55, 0.7);
+            background: #fffdf7;
+        }
+        .province-product-card .province-product-link,
+        .province-product-card > button {
+            min-height: 2.75rem;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         .province-product-card .province-product-link {
             display: flex;
@@ -576,6 +588,9 @@
             outline-offset: 3px;
             border-radius: 0.5rem;
         }
+        .province-product-card .province-product-link:active {
+            opacity: 0.72;
+        }
         .province-product-card img {
             width: 3.25rem;
             height: 3.25rem;
@@ -592,6 +607,14 @@
             flex: 0 0 auto;
         }
         @media (max-width: 640px) {
+            .province-product-card {
+                gap: 0.55rem;
+                padding: 0.55rem;
+            }
+            .province-product-card > button {
+                min-width: 3.5rem;
+                min-height: 2.75rem;
+            }
             .intro-region-heading {
                 flex-direction: column;
                 align-items: flex-start;
@@ -1168,6 +1191,13 @@
             transform: translateY(-4px);
             border-color: rgba(212, 175, 55, 0.88);
             box-shadow: 0 16px 32px rgba(15, 56, 44, 0.13), 0 3px 8px rgba(212, 175, 55, 0.1);
+        }
+        @keyframes productCardTargeted {
+            0%, 100% { box-shadow: 0 6px 18px rgba(15, 56, 44, 0.07), 0 1px 2px rgba(15, 56, 44, 0.04); }
+            35%, 70% { border-color: #d4af37; box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.24), 0 16px 32px rgba(15, 56, 44, 0.14); }
+        }
+        #products-section .product-card.product-card-targeted {
+            animation: productCardTargeted 1.8s ease-out;
         }
         #products-section .product-card:focus-within {
             border-color: rgba(212, 175, 55, 0.88);
@@ -2337,8 +2367,14 @@
             { id: 'OCOP-77120', date: '25/09/2026', total: 2450000, status: 'Đang vận chuyển', items: ['Yến Sào Khánh Hòa Thượng Hạng'] }
         ];
 
+        function restorePageScrollState() {
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        }
+
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
+            restorePageScrollState();
             updateCatalogCounts();
             applyLanguage(currentLanguage);
             renderProducts(products);
@@ -2587,12 +2623,18 @@
         function openIntroModal() {
             const overlay = document.getElementById('ocop-intro-overlay');
             overlay.classList.remove('hidden', 'curtain-closing');
+            restorePageScrollState();
             playChimeSound();
         }
 
-        function enterOcopMarket(mode) {
+        function enterOcopMarket(mode, onEntered = null) {
             const overlay = document.getElementById('ocop-intro-overlay');
-            if (overlay.classList.contains('hidden') || overlay.classList.contains('curtain-closing')) return;
+            if (overlay.classList.contains('hidden')) {
+                restorePageScrollState();
+                if (typeof onEntered === 'function') onEntered();
+                return;
+            }
+            if (overlay.classList.contains('curtain-closing')) return;
             playWhooshSound();
             stopIntroMusic();
             overlay.classList.add('curtain-closing');
@@ -2600,6 +2642,7 @@
             setTimeout(() => {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('curtain-closing');
+                restorePageScrollState();
 
                 if (mode === 'gift') {
                     setCategoryFilter('gift', document.querySelectorAll('.cat-side-btn')[2]);
@@ -2612,7 +2655,8 @@
                 } else if (mode === 'admin') {
                     toggleAdminSupport();
                 } else {
-                    scrollToProducts();
+                    if (typeof onEntered === 'function') onEntered();
+                    else scrollToProducts();
                 }
             }, 460);
         }
@@ -2635,6 +2679,14 @@
         function scrollToProducts() {
             const sec = document.getElementById('products-section');
             if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openProvinceProductDetails(productId) {
+            if (!products.some(product => product.id === productId)) return;
+
+            setCategoryFilter('all');
+            filterProductsGlobal('');
+            enterOcopMarket('all', () => openQuickView(productId));
         }
 
         // -------------------------------------------------------------
@@ -2660,7 +2712,7 @@
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
                 return `
-                <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md flex flex-col justify-between group relative">
+                <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md flex flex-col justify-between group relative" data-product-id="${p.id}">
                     <div>
                         <div class="relative h-48 sm:h-52 overflow-hidden bg-amber-100/50">
                             <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full object-cover">
@@ -2843,6 +2895,10 @@
             const cards = provinceProducts.map(product => {
                 const card = document.createElement('article');
                 card.className = 'province-product-card';
+                card.addEventListener('click', event => {
+                    if (event.target instanceof Element && event.target.closest('.province-product-card > button')) return;
+                    openProvinceProductDetails(product.id);
+                });
 
                 const detailsButton = document.createElement('button');
                 detailsButton.type = 'button';
@@ -2850,7 +2906,6 @@
                 detailsButton.setAttribute('aria-label', currentLanguage === 'en'
                     ? `View details for ${getProductName(product)}`
                     : `Xem chi tiết ${getProductName(product)}`);
-                detailsButton.addEventListener('click', () => openQuickView(product.id));
 
                 const image = document.createElement('img');
                 image.src = product.img;
