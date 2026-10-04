@@ -2731,7 +2731,14 @@
 
             setCategoryFilter('all');
             filterProductsGlobal('');
-            enterOcopMarket('all', () => openQuickView(productId));
+            playWhooshSound();
+            stopIntroMusic();
+
+            const overlay = document.getElementById('ocop-intro-overlay');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('curtain-closing');
+            restorePageScrollState();
+            openQuickView(productId);
         }
 
         // -------------------------------------------------------------
@@ -2951,6 +2958,10 @@
                 detailsButton.setAttribute('aria-label', currentLanguage === 'en'
                     ? `View details for ${getProductName(product)}`
                     : `Xem chi tiết ${getProductName(product)}`);
+                detailsButton.addEventListener('click', event => {
+                    event.stopPropagation();
+                    openProvinceProductDetails(product.id);
+                });
 
                 const image = document.createElement('img');
                 image.src = product.img;
@@ -4054,6 +4065,8 @@
             updateWishlistBadge();
             const currentSearch = document.getElementById('product-search').value;
             filterProductsGlobal(currentSearch);
+            renderWishlistItems();
+            updateQuickViewWishlistButton(productId);
         }
 
         function updateWishlistBadge() {
@@ -4076,9 +4089,14 @@
                         <span class="text-[10px] text-amber-800">${p.region} • ${p.stars}★</span>
                         <div class="text-red-600 font-extrabold text-xs mt-0.5">${p.price.toLocaleString('vi-VN')} ₫</div>
                     </div>
-                    <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white p-2 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition cursor-pointer">
-                        <i class="fa-solid fa-cart-plus"></i>
-                    </button>
+                    <div class="flex shrink-0 items-center gap-2">
+                        <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${currentLanguage === 'en' ? `Remove ${getProductName(p)} from favorites` : `Bỏ ${getProductName(p)} khỏi yêu thích`}" title="${currentLanguage === 'en' ? 'Remove from favorites' : 'Bỏ yêu thích'}" class="flex h-10 w-10 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100 cursor-pointer">
+                            <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" onclick="addToCart(${p.id})" aria-label="${currentLanguage === 'en' ? `Add ${getProductName(p)} to cart` : `Thêm ${getProductName(p)} vào giỏ hàng`}" title="${currentLanguage === 'en' ? 'Add to cart' : 'Thêm vào giỏ'}" class="bg-ocopGreen text-white p-2 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition cursor-pointer">
+                            <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
@@ -4113,15 +4131,40 @@
                             <span class="text-2xl font-black text-red-600">${p.price.toLocaleString('vi-VN')} ₫</span>
                             <span class="text-xs text-gray-400 line-through">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
                         </div>
-                        <button onclick="addToCart(${p.id}); closeQuickView();" class="w-full bg-ocopGreen text-white py-3 rounded-2xl font-bold text-xs hover:bg-ocopGreenLight transition flex items-center justify-center space-x-2 shadow-lg cursor-pointer">
-                            <i class="fa-solid fa-cart-plus text-ocopGold"></i>
-                            <span>${currentLanguage === 'en' ? 'Add to cart' : 'Thêm Vào Giỏ Hàng Mua Ngay'}</span>
-                        </button>
+                        <div class="flex items-stretch gap-2">
+                            <button id="quickview-wishlist-toggle" type="button" onclick="toggleWishlist(${p.id})" class="flex min-h-12 w-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200 bg-white text-gray-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 cursor-pointer" aria-label="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}" aria-pressed="false" title="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}">
+                                <i class="fa-regular fa-heart text-lg" aria-hidden="true"></i>
+                            </button>
+                            <button onclick="addToCart(${p.id}); closeQuickView();" class="min-h-12 flex-1 rounded-2xl bg-ocopGreen py-3 text-xs font-bold text-white shadow-lg transition hover:bg-ocopGreenLight flex items-center justify-center space-x-2 cursor-pointer">
+                                <i class="fa-solid fa-cart-plus text-ocopGold"></i>
+                                <span>${currentLanguage === 'en' ? 'Add to cart' : 'Thêm Vào Giỏ Hàng Mua Ngay'}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
 
+            updateQuickViewWishlistButton(productId);
             document.getElementById('quickview-modal').classList.remove('hidden');
+        }
+
+        function updateQuickViewWishlistButton(productId) {
+            const button = document.getElementById('quickview-wishlist-toggle');
+            if (!button) return;
+
+            const isFavorite = wishlist.includes(productId);
+            const label = currentLanguage === 'en'
+                ? (isFavorite ? 'Remove from favorites' : 'Add to favorites')
+                : (isFavorite ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích');
+            button.setAttribute('aria-label', label);
+            button.setAttribute('title', label);
+            button.setAttribute('aria-pressed', String(isFavorite));
+            button.className = `flex min-h-12 w-14 shrink-0 items-center justify-center rounded-2xl border transition cursor-pointer ${
+                isFavorite
+                    ? 'border-red-200 bg-red-50 text-red-600'
+                    : 'border-amber-200 bg-white text-gray-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600'
+            }`;
+            button.querySelector('i').className = `${isFavorite ? 'fa-solid' : 'fa-regular'} fa-heart text-lg`;
         }
 
         function closeQuickView() {
