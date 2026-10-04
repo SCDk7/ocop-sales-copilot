@@ -1,56 +1,211 @@
-/* Subtle, low-motion accents for the OCOP storefront. */
-@keyframes antigravity-space {
-  0% {
-    transform: translateY(0) rotate(0);
-  }
-  50% {
-    transform: translateY(-3px) rotate(0.8deg);
-  }
-  100% {
-    transform: translateY(0) rotate(0);
-  }
+/* ==========================================================================
+   ANTIGRAVITY & FLOATING FX - ULTRA PREMIUM MICRO-INTERACTIONS
+   Designed for OCOP Sales Copilot | 120Hz Smoothness & Hardware Acceleration
+   ========================================================================== */
+
+:root {
+    /* Premium Physics-based Cubic Bezier Curves */
+    --ag-ease-float: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    --ag-ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ag-ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Dynamic Levitation Shadows */
+    --ag-shadow-rest: 0 10px 25px -5px rgba(15, 56, 44, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    --ag-shadow-lift: 0 24px 48px -12px rgba(15, 56, 44, 0.18), 0 12px 24px -8px rgba(212, 175, 55, 0.25);
+    --ag-shadow-hero: 0 20px 40px -10px rgba(0, 0, 0, 0.45), 0 0 25px rgba(212, 175, 55, 0.3);
+    --ag-shadow-hero-hover: 0 32px 64px -12px rgba(0, 0, 0, 0.6), 0 0 45px rgba(212, 175, 55, 0.55), inset 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
+/* --------------------------------------------------------------------------
+   1. KEYFRAMES: MULTI-AXIS ZERO-GRAVITY OSCILLATIONS
+   -------------------------------------------------------------------------- */
+
+/* Natural Organic Floating (Translates Y + subtle micro rotation tilt) */
+@keyframes agFloatGentle {
+    0% {
+        transform: translate3d(0, 0px, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate3d(1.5px, -11px, 0) rotate(1.2deg);
+    }
+    66% {
+        transform: translate3d(-1.5px, -6px, 0) rotate(-1deg);
+    }
+    100% {
+        transform: translate3d(0, 0px, 0) rotate(0deg);
+    }
+}
+
+/* Secondary Floating Cycle (Opposite phase & slight expansion scale) */
+@keyframes agFloatOrbital {
+    0% {
+        transform: translate3d(0, 0px, 0) scale(1) rotate(0deg);
+    }
+    50% {
+        transform: translate3d(-2px, -15px, 0) scale(1.025) rotate(-1.5deg);
+    }
+    100% {
+        transform: translate3d(0, 0px, 0) scale(1) rotate(0deg);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2. HERO & INTRO FLOATING CLASSES
+   -------------------------------------------------------------------------- */
+
+/* Core Class for Hero Floating Elements */
 .ag-hero-float {
-  animation: antigravity-space 7s ease-in-out infinite;
-  transition: transform 0.25s ease, filter 0.25s ease;
+    display: inline-block;
+    animation: agFloatGentle 6.5s var(--ag-ease-float) infinite;
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.45s var(--ag-ease-fluid), box-shadow 0.45s var(--ag-ease-fluid), filter 0.45s ease;
 }
 
-.ag-delay-1 { animation-delay: -1.1s; }
-.ag-delay-2 { animation-delay: -2.3s; }
-.ag-delay-3 { animation-delay: -3.5s; }
+/* Alternating Float Patterns */
+.ag-hero-float-alt {
+    animation-name: agFloatOrbital;
+    animation-duration: 7.8s;
+}
 
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .ag-hero-float:hover {
+/* Automated Asynchronous Delay System (No synchronous floating) */
+.ag-delay-1 { animation-delay: -1.35s !important; }
+.ag-delay-2 { animation-delay: -3.15s !important; }
+.ag-delay-3 { animation-delay: -4.85s !important; }
+.ag-delay-4 { animation-delay: -2.10s !important; }
+.ag-delay-5 { animation-delay: -5.60s !important; }
+
+/* Speed Modifiers */
+.ag-speed-fast   { animation-duration: 4.2s !important; }
+.ag-speed-medium { animation-duration: 6.2s !important; }
+.ag-speed-slow   { animation-duration: 8.5s !important; }
+
+/* Interactive Hover Lift on Hero Floating Items */
+.ag-hero-float:hover {
     animation-play-state: paused;
-    transform: translateY(-2px);
-  }
+    transform: translate3d(0, -9px, 0) scale(1.06) rotate(0deg) !important;
+    box-shadow: var(--ag-shadow-hero-hover);
+    z-index: 10;
 }
 
+/* --------------------------------------------------------------------------
+   3. PRODUCT GRID ANTIGRAVITY HOVER & SCROLL REVEAL
+   -------------------------------------------------------------------------- */
+
+/* Enhanced Product Card Base */
 .ag-product-card {
-  transition: transform 0.24s ease, box-shadow 0.24s ease;
+    position: relative;
+    will-change: transform, box-shadow, border-color;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    transition: 
+        transform 0.4s var(--ag-ease-spring),
+        box-shadow 0.4s var(--ag-ease-fluid),
+        border-color 0.3s ease,
+        background-color 0.3s ease;
 }
 
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  #product-grid .ag-product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 16px 30px rgba(15, 56, 44, 0.14), 0 4px 10px rgba(15, 56, 44, 0.06);
-  }
-
-  #product-grid .ag-product-card:hover img {
-    transform: scale(1.045);
-  }
+/* Antigravity Lift Interaction on Hover */
+.ag-product-card:hover {
+    transform: translate3d(0, -9px, 0) scale(1.018);
+    box-shadow: var(--ag-shadow-lift);
+    border-color: rgba(212, 175, 55, 0.78) !important;
+    z-index: 5;
 }
 
-#product-grid .ag-product-card img {
-  transition: transform 0.4s ease;
+/* Product Image Float Zoom on Hover */
+.ag-product-card .product-card-image {
+    transition: transform 0.65s var(--ag-ease-fluid), filter 0.65s ease;
+    will-change: transform;
 }
 
+.ag-product-card:hover .product-card-image {
+    transform: scale(1.06) translate3d(0, -2px, 0);
+}
+
+/* Floating Badges inside Product Card */
+.ag-product-card .absolute.top-3.left-3,
+.ag-product-card .absolute.top-3.right-3 {
+    transition: transform 0.35s var(--ag-ease-spring);
+    will-change: transform;
+}
+
+.ag-product-card:hover .absolute.top-3.left-3 {
+    transform: translate3d(0, -2px, 0) scale(1.04);
+}
+
+.ag-product-card:hover .absolute.top-3.right-3 {
+    transform: translate3d(0, -2px, 0) scale(1.08);
+}
+
+/* --------------------------------------------------------------------------
+   4. SCROLL-DRIVEN REVEAL SYSTEM
+   -------------------------------------------------------------------------- */
+.ag-reveal-item {
+    opacity: 0;
+    transform: translate3d(0, 36px, 0) scale(0.97);
+    transition: 
+        opacity 0.65s var(--ag-ease-fluid),
+        transform 0.65s var(--ag-ease-fluid);
+    will-change: opacity, transform;
+}
+
+.ag-reveal-item.ag-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* --------------------------------------------------------------------------
+   5. SPECIALIZED HERO GLASS & CARD LEVITATION
+   -------------------------------------------------------------------------- */
+.intro-pillars > div {
+    will-change: transform, box-shadow;
+    transition: transform 0.4s var(--ag-ease-spring), box-shadow 0.4s var(--ag-ease-fluid), border-color 0.3s ease;
+}
+
+.intro-pillars > div:hover {
+    transform: translate3d(0, -6px, 0) scale(1.03) !important;
+    box-shadow: 0 16px 32px rgba(2, 20, 14, 0.22), 0 0 20px rgba(212, 175, 55, 0.3) !important;
+    border-color: rgba(212, 175, 55, 0.8) !important;
+}
+
+.region-item-card {
+    will-change: transform, box-shadow;
+    transition: transform 0.35s var(--ag-ease-spring), box-shadow 0.35s var(--ag-ease-fluid), background-color 0.25s ease;
+}
+
+.region-item-card:hover {
+    transform: translate3d(0, -5px, 0) scale(1.02) !important;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35), 0 0 22px rgba(212, 175, 55, 0.3) !important;
+}
+
+#shop-hero .glass-panel {
+    will-change: transform, box-shadow;
+    transition: transform 0.55s var(--ag-ease-fluid), box-shadow 0.55s var(--ag-ease-fluid), border-color 0.4s ease;
+}
+
+#shop-hero .glass-panel:hover {
+    transform: translate3d(0, -8px, 0) scale(1.012);
+    box-shadow: 0 26px 52px -12px rgba(15, 56, 44, 0.2), 0 0 35px rgba(212, 175, 55, 0.25);
+    border-color: rgba(212, 175, 55, 0.7) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. 120HZ HARDWARE ACCELERATION & ACCESSIBILITY
+   -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .ag-hero-float,
-  .ag-product-card,
-  #product-grid .ag-product-card img {
-    animation: none !important;
-    transition: none !important;
-  }
+    .ag-hero-float,
+    .ag-hero-float-alt,
+    .ag-product-card,
+    .ag-reveal-item,
+    .intro-pillars > div,
+    .region-item-card,
+    #shop-hero .glass-panel {
+        animation: none !important;
+        transform: none !important;
+        transition: none !important;
+        will-change: auto !important;
+    }
+    .ag-reveal-item { opacity: 1 !important; }
 }

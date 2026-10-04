@@ -198,3 +198,102 @@ function showSingleToast(message) {
     }, 2500);
 }
 
+/* ==========================================================================
+   ANTIGRAVITY ENGINE: 3D MOUSE PARALLAX & SCROLL-DRIVEN REVEAL
+   ========================================================================== */
+(function initAntigravityEngine() {
+    // 1. TỰ ĐỘNG PHÂN BỐ DELAY LƠ LỬNG CHO CÁC PHẦN TỬ KHÔNG BAO GIỜ TRÔI TRÙNG NHAU
+    const floatingElements = document.querySelectorAll('.ag-hero-float');
+    floatingElements.forEach((el, index) => {
+        if (!el.classList.contains('ag-delay-1') && 
+            !el.classList.contains('ag-delay-2') && 
+            !el.classList.contains('ag-delay-3')) {
+            const dynamicOffset = -((index * 1.618) % 6.0).toFixed(2);
+            el.style.animationDelay = `${dynamicOffset}s`;
+        }
+    });
+
+    // 2. HIỆU ỨNG PARALLAX 3D TƯƠNG TÁC THEO CON TRỎ CHUỘT (HERO & INTRO)
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (!isTouchDevice) {
+        const heroSection = document.getElementById('shop-hero') || document.querySelector('.intro-stage');
+        let mouseX = 0, mouseY = 0;
+        let currentX = 0, currentY = 0;
+        let isMoving = false;
+
+        window.addEventListener('mousemove', (e) => {
+            const { innerWidth, innerHeight } = window;
+            // Tọa độ chuẩn hóa từ -1.0 đến +1.0
+            mouseX = (e.clientX / innerWidth - 0.5) * 2;
+            mouseY = (e.clientY / innerHeight - 0.5) * 2;
+            if (!isMoving) {
+                isMoving = true;
+                requestAnimationFrame(updateParallax);
+            }
+        }, { passive: true });
+
+        function updateParallax() {
+            // Thuật toán nội suy tuyến tính (Linear Interpolation - Lerp) tạo quán tính trôi êm ái
+            currentX += (mouseX - currentX) * 0.065;
+            currentY += (mouseY - currentY) * 0.065;
+
+            floatingElements.forEach((el, idx) => {
+                const depth = 6 + (idx % 4) * 4; // Chiều sâu vi sai
+                const tiltX = (currentY * depth * -0.5).toFixed(2);
+                const tiltY = (currentX * depth).toFixed(2);
+                el.style.setProperty('--ag-mouse-tx', `${tiltY}px`);
+                el.style.setProperty('--ag-mouse-ty', `${tiltX}px`);
+            });
+
+            if (Math.abs(mouseX - currentX) > 0.001 || Math.abs(mouseY - currentY) > 0.001) {
+                requestAnimationFrame(updateParallax);
+            } else {
+                isMoving = false;
+            }
+        }
+    }
+
+    // 3. SCROLL-DRIVEN REVEAL CHO PRODUCT GRID
+    window.initAntigravityReveals = function() {
+        const cards = document.querySelectorAll('.ag-product-card');
+        if (!('IntersectionObserver' in window)) {
+            cards.forEach(c => c.classList.add('ag-revealed'));
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('ag-revealed');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.08,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        cards.forEach((card, i) => {
+            card.classList.add('ag-reveal-item');
+            card.style.transitionDelay = `${(i % 3) * 0.08}s`;
+            observer.observe(card);
+        });
+    };
+
+    // Khởi chạy Scroll Reveal ngay khi DOM sẵn sàng
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initAntigravityReveals);
+    } else {
+        window.initAntigravityReveals();
+    }
+
+    // Tự động re-hook Scroll Reveal khi hàm renderProducts() gốc chạy
+    const originalRenderProducts = window.renderProducts;
+    if (typeof originalRenderProducts === 'function') {
+        window.renderProducts = function(...args) {
+            originalRenderProducts.apply(this, args);
+            setTimeout(window.initAntigravityReveals, 30);
+        };
+    }
+})();
