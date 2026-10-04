@@ -2385,10 +2385,13 @@
             filterProductsGlobal('');
         }
 
-        function setCategoryFilter(cat) {
+        function setCategoryFilter(cat, button = null) {
             currentCategory = cat;
-            document.querySelectorAll('.cat-side-btn, .mob-cat-btn').forEach(button => {
-                button.classList.toggle('active', button.getAttribute('onclick') === `setCategoryFilter('${cat}', this)`);
+            const buttons = document.querySelectorAll('.cat-side-btn, .mob-cat-btn');
+
+            buttons.forEach(candidate => {
+                const isActive = button ? candidate === button : candidate.getAttribute('onclick')?.includes(`setCategoryFilter('${cat}'`);
+                candidate.classList.toggle('active', Boolean(isActive));
             });
 
             const currentSearch = document.getElementById('product-search').value;
