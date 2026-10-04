@@ -1930,6 +1930,8 @@
                 <button onclick="sendQuickPrompt('Tư vấn quà biếu')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">🎁 Quà biếu</button>
                 <button onclick="sendQuickPrompt('Gợi ý đặc sản dưới 200k')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">💰 Dưới 200k</button>
                 <button onclick="sendQuickPrompt('Gợi ý trà')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">🍵 Trà</button>
+                <button onclick="sendQuickPrompt('Tôi nhận hàng bị lỗi')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">📦 Hàng lỗi</button>
+                <button onclick="sendQuickPrompt('Tôi muốn đổi trả hàng')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">↩️ Đổi trả</button>
             </div>
             
             <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
@@ -3166,6 +3168,9 @@
             const isAlternativeFollowUp = /\b(con|khac|them|lua chon khac|another|alternative|other option)\b/.test(q);
             const aiRelevanceScores = new Map();
 
+            const serviceGuidance = getAIServiceGuidance(q, english);
+            if (serviceGuidance) return serviceGuidance;
+
             if ((isCheaperFollowUp || isAlternativeFollowUp) && !lastAIRecommendedProductIds.length) {
                 return english
                     ? 'Which product category would you like another option for? Share a product name or budget and I will look it up.'
@@ -3351,6 +3356,67 @@
             return english
                 ? 'Search by product, province, category, OCOP star rating, or budget. For example: “gift under 500k”, “5-star tea”, or “Ca Mau specialty”.'
                 : 'Mình có thể giúp tìm theo tên sản phẩm, tỉnh thành, nhóm hàng, hạng sao hoặc ngân sách. Ví dụ: “quà biếu dưới 500k”, “trà 5 sao” hoặc “đặc sản Cà Mau”.';
+        }
+
+        function getAIServiceGuidance(query, english) {
+            const patterns = [
+                {
+                    type: 'defect',
+                    keywords: /\b(hang loi|san pham loi|loi san pham|bi loi|hong|hu hong|bi vo|vo|be|mop|dap|chay|het han|qua han|moc|hu|doi mau|khong dung chat luong|defect\w*|damag\w*|broken|faulty|expired|mold|spoiled|quality issue)\b/
+                },
+                {
+                    type: 'wrongOrMissing',
+                    keywords: /\b(thieu hang|thieu san pham|giao nham|sai hang|nham hang|khong du hang|missing item|wrong item|wrong product|incorrect item)\b/
+                },
+                {
+                    type: 'return',
+                    keywords: /\b(doi tra|tra hang|doi hang|hoan tien|refund|return|exchange|want to send back)\b/
+                },
+                {
+                    type: 'payment',
+                    keywords: /\b(thanh toan loi|loi thanh toan|chuyen khoan loi|da thanh toan|bi tru tien|khong thanh toan duoc|payment failed|charged twice|charged but|payment issue|transfer problem)\b/
+                },
+                {
+                    type: 'delivery',
+                    keywords: /\b(chua nhan|cham giao|giao cham|don chua toi|that lac|mat hang|van chuyen loi|shipper|late delivery|delivery late|delivery is late|not received|lost package|delivery issue)\b/
+                },
+                {
+                    type: 'order',
+                    keywords: /\b(kiem tra don|don hang o dau|huy don|sua don|doi dia chi|trang thai don|order status|where is my order|where is the order|cancel order|change order|edit order|track order)\b/
+                },
+                {
+                    type: 'purchase',
+                    keywords: /\b(khong dat duoc|khong dat hang duoc|khong the dat hang|khong mua duoc|khong mua hang duoc|loi gio hang|loi dat hang|khong them vao gio|khong them san pham vao gio|khong them duoc vao gio|checkout error|cannot order|cant order|can t order|cannot place order|cannot place an order|cant place order|can t place order|can t place an order|cannot add to cart|can t add to cart|cart issue|checkout issue)\b/
+                }
+            ];
+            const issue = patterns.find(pattern => pattern.keywords.test(query));
+            if (!issue) return null;
+
+            const guidance = {
+                defect: english
+                    ? 'I’m sorry the item arrived in this condition. Please stop using or consuming it, keep the item and packaging, and take clear photos or an unboxing video showing the issue, parcel label, and expiry/batch details. Our team must review the order and confirm the available remedy; I can’t promise an exchange or refund before that review.'
+                    : 'Mình rất tiếc vì sản phẩm gặp tình trạng này. Anh/chị vui lòng tạm ngừng sử dụng/tiêu thụ sản phẩm, giữ lại sản phẩm và bao bì, chụp ảnh hoặc video rõ tình trạng lỗi, nhãn kiện hàng và hạn sử dụng/số lô. Nhân viên cần kiểm tra đơn và xác nhận phương án xử lý; chatbot chưa thể cam kết đổi hàng hay hoàn tiền trước khi kiểm tra.',
+                wrongOrMissing: english
+                    ? 'Please compare the parcel with your order, keep the outer packaging and shipping label, and photograph the items received. Our team needs the order details and photos to verify a missing or incorrect item and advise the next step.'
+                    : 'Anh/chị vui lòng đối chiếu kiện hàng với đơn đặt, giữ lại bao bì và nhãn vận chuyển, đồng thời chụp ảnh các sản phẩm đã nhận. Nhân viên cần mã đơn và hình ảnh để xác minh hàng thiếu/giao nhầm và hướng dẫn bước tiếp theo.',
+                return: english
+                    ? 'Return or exchange eligibility, deadlines, and shipping arrangements depend on the order and product condition. Please keep the item, seal, and packaging, and contact our team with your order number and reason before sending anything back. They will confirm the applicable policy; I can’t promise eligibility or a refund here.'
+                    : 'Điều kiện, thời hạn đổi trả và cách gửi hàng phụ thuộc vào đơn hàng và tình trạng sản phẩm. Anh/chị vui lòng giữ sản phẩm, tem niêm phong và bao bì; liên hệ nhân viên với mã đơn cùng lý do trước khi gửi trả. Nhân viên sẽ xác nhận chính sách áp dụng; chatbot chưa thể xác nhận đủ điều kiện hoặc hứa hoàn tiền.',
+                payment: english
+                    ? 'Please don’t make another payment yet. Check your bank/payment app for the transaction status and keep the receipt or transaction reference. Our team can verify whether the order was paid; never share your password, PIN, or one-time verification code.'
+                    : 'Anh/chị vui lòng chưa thanh toán lại ngay. Hãy kiểm tra trạng thái giao dịch trong ứng dụng ngân hàng/ví và lưu biên lai hoặc mã giao dịch để nhân viên đối soát đơn. Không chia sẻ mật khẩu, mã PIN hay mã OTP.',
+                delivery: english
+                    ? 'Please check the order confirmation and tracking details, if available. Keep the order number and contact our team to verify the delivery status and next steps. Delivery timing can vary, so I can’t confirm an arrival date without checking the shipment.'
+                    : 'Anh/chị vui lòng kiểm tra xác nhận đơn và thông tin theo dõi vận chuyển (nếu có). Chuẩn bị mã đơn rồi liên hệ nhân viên để kiểm tra tình trạng giao và hướng xử lý. Thời gian giao có thể thay đổi nên chatbot chưa thể xác nhận ngày nhận khi chưa kiểm tra vận đơn.',
+                order: english
+                    ? 'I can’t access live order records from this chat. Please contact our team with your order number and the change or status you need; they can check whether the order can still be updated or cancelled.'
+                    : 'Chatbot hiện không truy cập được dữ liệu đơn hàng trực tiếp. Anh/chị vui lòng liên hệ nhân viên, cung cấp mã đơn và yêu cầu cần kiểm tra; nhân viên sẽ xác nhận đơn còn có thể chỉnh sửa hoặc hủy hay không.',
+                purchase: english
+                    ? 'Please check that required fields are complete, refresh the page, and try adding the item to your cart once. If you already submitted payment, don’t pay again until it is verified. Contact our team if the issue continues.'
+                    : 'Anh/chị vui lòng kiểm tra các trường bắt buộc, tải lại trang và thử thêm sản phẩm vào giỏ một lần. Nếu đã gửi thanh toán, đừng thanh toán lại trước khi được đối soát. Nếu lỗi vẫn tiếp diễn, hãy liên hệ nhân viên để được hỗ trợ.'
+            }[issue.type];
+            const contactLabel = english ? 'Contact customer support' : 'Liên hệ nhân viên hỗ trợ';
+            return `<p>${escapeAIHtml(guidance)}</p><button onclick="toggleAdminSupport()" class="rounded-lg bg-ocopGreen px-3 py-2 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${contactLabel}</button>`;
         }
 
         function parseAIBudget(query) {
@@ -4243,13 +4309,17 @@
                     ['⭐ 5 stars', 'Recommend 5-star OCOP products'],
                     ['🎁 Gifts', 'Gift ideas'],
                     ['💰 Under 200k', 'Specialties under 200k'],
-                    ['🍵 Tea', 'Recommend tea']
+                    ['🍵 Tea', 'Recommend tea'],
+                    ['📦 Damaged', 'My order arrived damaged'],
+                    ['↩️ Returns', 'I want to return or exchange an item']
                 ]
                 : [
                     ['⭐ 5 sao', 'Gợi ý đặc sản OCOP 5 sao'],
                     ['🎁 Quà biếu', 'Tư vấn quà biếu'],
                     ['💰 Dưới 200k', 'Gợi ý đặc sản dưới 200k'],
-                    ['🍵 Trà', 'Gợi ý trà']
+                    ['🍵 Trà', 'Gợi ý trà'],
+                    ['📦 Hàng lỗi', 'Tôi nhận hàng bị lỗi'],
+                    ['↩️ Đổi trả', 'Tôi muốn đổi trả hàng']
                 ];
             promptButtons.forEach((button, index) => {
                 if (!prompts[index]) return;
