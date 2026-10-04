@@ -247,6 +247,36 @@
                 align-items: flex-end;
             }
         }
+        @media (max-width: 359px) {
+            header > .max-w-7xl {
+                gap: 0.25rem;
+                padding-inline: 0.5rem;
+            }
+            header > .max-w-7xl > a {
+                min-width: 0;
+                flex-shrink: 1;
+                column-gap: 0.375rem;
+            }
+            header > .max-w-7xl > a > div:last-child {
+                min-width: 0;
+            }
+            header > .max-w-7xl h1 {
+                font-size: 0.75rem;
+                white-space: nowrap;
+            }
+            #i18n-subbrand {
+                display: none;
+            }
+            #site-language-btn {
+                padding-inline: 0.375rem;
+            }
+            #user-btn,
+            header button[onclick="toggleWishlistDrawer()"],
+            header button[onclick="toggleCart()"] {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
         @media (prefers-reduced-motion: reduce) {
             .bg-ocop-ambient {
                 animation: none;
