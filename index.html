@@ -492,6 +492,17 @@
             color: #0f5b43;
             font-weight: 700;
         }
+        .province-map .province-island-label {
+            padding: 0.25rem 0.45rem;
+            border: 1px solid rgba(212, 175, 55, 0.8);
+            border-radius: 0.45rem;
+            color: #fffdf7;
+            background: rgba(15, 56, 44, 0.92);
+            font-size: 0.68rem;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(15, 56, 44, 0.25);
+            cursor: pointer;
+        }
         .province-map-status {
             color: #45675d;
             font-size: 0.75rem;
@@ -1366,7 +1377,10 @@
                     </div>
                     <p class="mt-1.5 mb-0 text-[10px] leading-relaxed text-[#718075]">
                         Ranh giới 63 tỉnh/thành lịch sử (năm 2008), gộp Côn Đảo vào Bà Rịa–Vũng Tàu.
-                        Dữ liệu: <a href="https://www.geoboundaries.org/" target="_blank" rel="noopener noreferrer" class="font-bold text-[#165b46] underline">geoBoundaries</a> · CC BY 4.0.
+                        Hoàng Sa và Trường Sa có đường viền địa hình đảo, không phải ranh giới yêu sách hay biển.
+                        Nhấn nhãn quần đảo để phóng to đường viền.
+                        Dữ liệu: <a href="https://www.geoboundaries.org/" target="_blank" rel="noopener noreferrer" class="font-bold text-[#165b46] underline">geoBoundaries</a> · CC BY 4.0;
+                        <a href="https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-land/" target="_blank" rel="noopener noreferrer" class="font-bold text-[#165b46] underline">Natural Earth</a> · Public domain.
                     </p>
                 </div>
             </div>
@@ -2670,6 +2684,30 @@
                 if (provinceData.features.some(feature => !feature.properties?.id || !feature.properties?.name)) {
                     throw new Error('Province GeoJSON contains a feature without an ID or name.');
                 }
+                const islandsResponse = await fetch('./data/vietnam-islands.geojson');
+                if (!islandsResponse.ok) throw new Error(`Island GeoJSON request failed with HTTP ${islandsResponse.status}.`);
+                const islandsData = await islandsResponse.json();
+                const islandOutlines = islandsData.features?.filter(feature => feature.properties?.kind === 'outline') ?? [];
+                const islandReferences = islandsData.features?.filter(feature => feature.properties?.kind === 'reference') ?? [];
+                if (islandOutlines.length !== 2 || islandReferences.length !== 2
+                    || islandOutlines.some(feature =>
+                        feature.geometry?.type !== 'MultiPolygon'
+                        || !feature.properties?.id
+                        || !feature.properties?.name
+                        || feature.geometry.coordinates?.length === 0
+                    )
+                    || islandReferences.some(feature =>
+                        feature.geometry?.type !== 'Point'
+                        || !feature.properties?.id
+                        || !feature.properties?.name
+                        || feature.geometry.coordinates?.length !== 2
+                    )) {
+                    throw new Error('Island GeoJSON must contain two named MultiPolygon outlines and two reference points.');
+                }
+                const islandBoundsById = new Map(islandOutlines.map(feature => [
+                    feature.properties.id.replace(/-outline$/, ''),
+                    L.geoJSON(feature).getBounds()
+                ]));
 
                 const satelliteLayer = L.tileLayer(
                     'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -2717,7 +2755,53 @@
                     }
                 }).addTo(provinceMap);
 
-                provinceMap.fitBounds(provinceBoundaryLayer.getBounds(), { padding: [16, 16], maxZoom: 7 });
+                const islandReferenceLayer = L.geoJSON(islandsData, {
+                    attribution: '<a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener noreferrer">Natural Earth</a> · Public domain',
+                    style: feature => feature.properties.kind === 'outline'
+                        ? {
+                            color: '#fff4c2',
+                            weight: 2.2,
+                            opacity: 1,
+                            fillColor: '#d4af37',
+                            fillOpacity: 0.76
+                        }
+                        : {},
+                    pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
+                        radius: 7,
+                        color: '#fffdf7',
+                        weight: 2,
+                        fillColor: '#d4af37',
+                        fillOpacity: 1
+                    }),
+                    onEachFeature: (feature, layer) => {
+                        const name = currentLanguage === 'en'
+                            ? feature.properties.nameEn
+                            : feature.properties.name;
+                        if (feature.properties.kind === 'outline') {
+                            layer.bindPopup(
+                                `<strong>${name}</strong><br><span>${currentLanguage === 'en' ? 'Physical island outlines · Natural Earth' : 'Đường viền địa hình đảo · Natural Earth'}</span>`
+                            );
+                            layer.on('click', () => provinceMap.fitBounds(layer.getBounds(), { padding: [32, 32], maxZoom: 10 }));
+                            return;
+                        }
+                        layer.bindTooltip(name, {
+                            permanent: true,
+                            direction: 'right',
+                            className: 'province-island-label',
+                            offset: [8, 0]
+                        });
+                        layer.bindPopup(`<strong>${name}</strong><br><span>${currentLanguage === 'en' ? 'Geographic label reference point' : 'Điểm tham chiếu đặt nhãn địa lý'}</span>`);
+                        const islandBounds = islandBoundsById.get(feature.properties.id);
+                        if (islandBounds) {
+                            layer.on('click', () => provinceMap.fitBounds(islandBounds, { padding: [32, 32], maxZoom: 10 }));
+                        }
+                    }
+                }).addTo(provinceMap);
+
+                provinceMap.fitBounds(
+                    L.featureGroup([provinceBoundaryLayer, islandReferenceLayer]).getBounds(),
+                    { padding: [24, 24], maxZoom: 7 }
+                );
                 window.setTimeout(() => provinceMap.invalidateSize(), 250);
                 updateProvinceSelectionStatus();
             } catch (error) {
