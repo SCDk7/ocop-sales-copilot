@@ -247,6 +247,36 @@
                 align-items: flex-end;
             }
         }
+        @media (max-width: 359px) {
+            header > .max-w-7xl {
+                gap: 0.25rem;
+                padding-inline: 0.5rem;
+            }
+            header > .max-w-7xl > a {
+                min-width: 0;
+                flex-shrink: 1;
+                column-gap: 0.375rem;
+            }
+            header > .max-w-7xl > a > div:last-child {
+                min-width: 0;
+            }
+            header > .max-w-7xl h1 {
+                font-size: 0.75rem;
+                white-space: nowrap;
+            }
+            #i18n-subbrand {
+                display: none;
+            }
+            #site-language-btn {
+                padding-inline: 0.375rem;
+            }
+            #user-btn,
+            header button[onclick="toggleWishlistDrawer()"],
+            header button[onclick="toggleCart()"] {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
         @media (prefers-reduced-motion: reduce) {
             .bg-ocop-ambient {
                 animation: none;
@@ -910,7 +940,6 @@
         }
         #ocop-intro-overlay .intro-card-glass:hover,
         #ocop-intro-overlay .intro-pillars > div:hover {
-            transform: none;
             border-color: rgba(212, 175, 55, 0.68);
             box-shadow: 0 13px 26px rgba(2, 20, 14, 0.2);
         }
@@ -1100,13 +1129,6 @@
             }
         }
         @media (max-width: 640px) {
-            #ocop-intro-overlay > .relative.z-20.max-w-5xl {
-                gap: 0.4rem;
-                padding-bottom: 0.65rem;
-            }
-            #ocop-intro-overlay .intro-header-actions { gap: 0.35rem; }
-            #ocop-intro-overlay #intro-sound-btn { padding: 0.35rem 0.5rem; }
-            #ocop-intro-overlay #intro-skip-button { padding: 0.4rem 0.55rem; font-size: 10px; }
             #ocop-intro-overlay .intro-stage {
                 gap: 0.85rem;
                 padding-block: 1rem;
@@ -1118,12 +1140,6 @@
             #ocop-intro-overlay #intro-region-items { grid-template-columns: 1fr; }
             #ocop-intro-overlay .intro-actions #intro-enter-market { width: 100%; }
             #shop-hero > div { border-radius: 1.5rem; }
-        }
-        @media (max-width: 400px) {
-            #ocop-intro-overlay #i18n-intro-badge { display: none; }
-            #ocop-intro-overlay .intro-brand-mark { width: 2.5rem; height: 2.5rem; }
-            #ocop-intro-overlay .intro-brand-mark + div > div > span:first-child { font-size: 0.65rem; }
-            #ocop-intro-overlay #intro-skip-button { font-size: 9px; }
         }
         @media (min-width: 1024px) and (max-height: 850px) {
             #ocop-intro-overlay .intro-stage { padding-block: 0.5rem; gap: 0.7rem; }
@@ -1143,7 +1159,6 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="styledangcap.css">
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     <!-- TOAST NOTIFICATION CONTAINER -->
@@ -1207,7 +1222,7 @@
         <!-- HEADER ĐẢO NỔI GLASSMORPHISM -->
         <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-amber-400/30">
             <div class="flex items-center space-x-3">
-                <div class="intro-brand-mark ag-hero-float relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-700 to-amber-500 border-2 border-ocopGold flex flex-shrink-0 items-center justify-center text-white text-xl shadow-[0_0_25px_rgba(212,175,55,0.7)] group">
+                <div class="intro-brand-mark relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-700 to-amber-500 border-2 border-ocopGold flex items-center justify-center text-white text-xl shadow-[0_0_25px_rgba(212,175,55,0.7)] group">
                     <i class="fa-solid fa-leaf text-amber-300"></i>
                 </div>
                 <div>
@@ -1218,15 +1233,19 @@
                 </div>
             </div>
 
-            <div class="intro-header-actions flex flex-shrink-0 items-center space-x-2 sm:space-x-3">
-                <button id="intro-sound-btn" onclick="toggleIntroSound()" class="intro-pill-btn flex-shrink-0 px-3 py-1.5 rounded-full text-amber-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer shadow-sm">
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <button id="intro-sound-btn" onclick="toggleIntroSound()" class="intro-pill-btn px-3 py-1.5 rounded-full text-amber-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer shadow-sm">
                     <i class="fa-solid fa-volume-xmark text-gray-400" id="intro-sound-icon"></i>
                     <span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">Nhạc: Tắt</span>
                 </button>
-                <button id="intro-language-btn" onclick="toggleLanguage()" class="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển ngôn ngữ">
+<<<<<<< HEAD
+                <button id="intro-language-btn" onclick="toggleLanguage()" class="w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển ngôn ngữ">
+=======
+                <button type="button" id="intro-language-btn" onclick="toggleLanguage()" class="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển sang tiếng Anh" aria-label="Chuyển sang tiếng Anh" aria-pressed="false">
+>>>>>>> f9a8a97ecec70b634f57a41bb989ee51d5b384f4
                     VI
                 </button>
-                <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="intro-mega-btn flex-shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-black transition flex items-center space-x-1.5 shadow-md cursor-pointer">
+                <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="intro-mega-btn px-4 py-1.5 rounded-full text-xs font-black transition flex items-center space-x-1.5 shadow-md cursor-pointer">
                     <span id="i18n-intro-skip">Vào Chợ (Esc)</span>
                     <i class="fa-solid fa-arrow-right-long text-[11px]"></i>
                 </button>
@@ -1276,7 +1295,7 @@
             <!-- 4 Trụ Cột Hologram Cards (Hiệu ứng 3D Floating) -->
             <div class="intro-pillars grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 w-full max-w-3xl pt-1">
                 <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
-                    <div class="ag-hero-float ag-delay-1 w-9 h-9 mx-auto rounded-xl bg-amber-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-amber-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
                         <i class="fa-solid fa-medal"></i>
                     </div>
                     <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar1">48 Đặc Sản Tuyển Chọn</span>
@@ -1284,7 +1303,7 @@
                 </div>
 
                 <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
-                    <div class="ag-hero-float ag-delay-2 w-9 h-9 mx-auto rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
                         <i class="fa-solid fa-earth-asia"></i>
                     </div>
                     <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar2">Đặc Sản Ba Miền</span>
@@ -1292,7 +1311,7 @@
                 </div>
 
                 <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
-                    <div class="ag-hero-float ag-delay-3 w-9 h-9 mx-auto rounded-xl bg-cyan-400/20 text-cyan-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-cyan-400/20 text-cyan-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(0,240,255,0.3)]">
                         <i class="fa-solid fa-robot"></i>
                     </div>
                     <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar3">AI tư vấn</span>
@@ -1300,7 +1319,7 @@
                 </div>
 
                 <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
-                    <div class="ag-hero-float ag-delay-1 w-9 h-9 mx-auto rounded-xl bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(255,223,0,0.3)]">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(255,223,0,0.3)]">
                         <i class="fa-solid fa-qrcode"></i>
                     </div>
                     <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar4">Thanh toán VietQR</span>
@@ -1424,6 +1443,111 @@
             <span>Ấn phím <kbd class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-[10px]">Esc</kbd> hoặc nút Bỏ qua để vào thẳng chợ</span>
         </div>
     </div>
+<!-- HERO SECTION TÍCH HỢP BẢN ĐỒ VIỆT NAM -->
+<section class="hero-section" style="background: #fbf9f4; padding: 50px 20px; border-radius: 16px; margin: 20px auto; max-width: 1200px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+    <div class="hero-container" style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: space-between;">
+        
+        <!-- CỘT TRÁI: Nội dung giới thiệu (Giống phần chữ trong ảnh của bạn) -->
+        <div class="hero-content" style="flex: 1; min-width: 320px;">
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: #fef3c7; color: #92400e; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+                <span>📍</span> Chương Trình Quốc Gia Mỗi Xã Một Sản Phẩm
+            </div>
+            
+            <h1 style="font-size: 2.5rem; color: #111827; font-family: 'Playfair Display', serif; line-height: 1.2; margin-bottom: 20px;">
+                Khám Phá Tinh Hoa <br><span style="color: #b45309;">48 Đặc Sản Việt Nam</span>
+            </h1>
+            
+            <p style="color: #4b5563; font-size: 1rem; line-height: 1.6; margin-bottom: 30px;">
+                Khám phá 48 đặc sản Việt Nam theo vùng miền trên bản đồ tương tác, cùng mô tả sản phẩm, giá niêm yết và đánh giá khách hàng.
+            </p>
+            
+            <!-- Thống kê -->
+            <div style="display: flex; gap: 30px; margin-bottom: 30px; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; padding: 15px 0;">
+                <div>
+                    <div style="font-size: 1.25rem; font-weight: bold; color: #111; font-family: sans-serif;">48+</div>
+                    <div style="font-size: 0.85rem; color: #6b7280;">Đặc Sản Chọn Lọc</div>
+                </div>
+                <div>
+                    <div style="font-size: 1.25rem; font-weight: bold; color: #111; font-family: sans-serif;">100%</div>
+                    <div style="font-size: 0.85rem; color: #6b7280;">Chính Gốc Xuất Sứ</div>
+                </div>
+                <div>
+                    <div style="font-size: 1.25rem; font-weight: bold; color: #111; font-family: sans-serif;">4 - 5 ⭐</div>
+                    <div style="font-size: 0.85rem; color: #6b7280;">Đạt Chuẩn Quốc Gia</div>
+                </div>
+            </div>
+            
+            <!-- Nút bấm tương tác -->
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="#products-list" style="background: #111827; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px;">
+                    Xem 48 Đặc Sản OCOP ↓
+                </a>
+                <a href="#contact" style="background: #fff; color: #111827; border: 1px solid #d1d5db; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px;">
+                    📞 Liên Hệ Tư Vấn Quà Biếu
+                </a>
+            </div>
+        </div>
+
+        <!-- CỘT PHẢI: BẢN ĐỒ TỈNH THÀNH VIỆT NAM (Thay thế khung ảnh cũ) -->
+        <div class="hero-map-box" style="flex: 1; min-width: 320px; background: #ffffff; padding: 20px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.06); border: 1px solid #f3f4f6;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="font-size: 1rem; color: #1f2937; margin: 0; font-weight: 600;">🗺️ Bản Đồ 63 Tỉnh Thành & Đảo Quê Hương</h3>
+                <span style="font-size: 11px; background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-weight: 500;">Tương Tác Trực Tiếp</span>
+            </div>
+
+            <!-- Khung SVG Bản đồ -->
+            <div style="background: #fdfbf7; border-radius: 10px; padding: 10px; text-align: center; border: 1px dashed #d4af37; position: relative;">
+                <svg viewBox="0 0 500 750" style="width: 100%; height: auto; max-height: 380px;">
+                    <style>
+                        .map-prov { fill: #e2e8f0; stroke: #ffffff; stroke-width: 0.8; transition: 0.2s; cursor: pointer; }
+                        .map-prov:hover { fill: #d4af37; stroke: #991b1b; stroke-width: 1.5; }
+                        .island-tag { font-size: 9px; font-weight: bold; fill: #991b1b; font-family: sans-serif; }
+                    </style>
+
+                    <!-- Mô phỏng các vùng bản đồ Việt Nam -->
+                    <g id="vietnam-map">
+                        <!-- Miền Bắc -->
+                        <path class="map-prov" d="M180,60 L230,50 L270,80 L240,110 L190,90 Z" onclick="filterMap('Miền Bắc')" data-tooltip="Miền Bắc"/>
+                        <!-- Miền Trung -->
+                        <path class="map-prov" d="M240,120 L280,140 L260,250 L220,220 Z" onclick="filterMap('Miền Trung')" data-tooltip="Miền Trung"/>
+                        <!-- Miền Nam -->
+                        <path class="map-prov" d="M200,320 L270,330 L250,440 L180,400 Z" onclick="filterMap('Miền Nam')" data-tooltip="Miền Nam"/>
+                    </g>
+
+                    <!-- KHU VỰC HOÀNG SA & TRƯỜNG SA (Chủ quyền Việt Nam) -->
+                    <!-- Hoàng Sa -->
+                    <g transform="translate(320, 180)">
+                        <rect x="0" y="0" width="140" height="45" fill="#fff" stroke="#d4af37" rx="4"/>
+                        <text x="8" y="18" class="island-tag">🇻🇳 QUẦN ĐẢO HOÀNG SA</text>
+                        <text x="8" y="33" style="font-size: 8px; fill: #4b5563;">Đà Nẵng quản lý</text>
+                    </g>
+
+                    <!-- Trường Sa -->
+                    <g transform="translate(300, 370)">
+                        <rect x="0" y="0" width="150" height="55" fill="#fff" stroke="#d4af37" rx="4"/>
+                        <text x="8" y="18" class="island-tag">🇻🇳 QUẦN ĐẢO TRƯỜNG SA</text>
+                        <text x="8" y="33" style="font-size: 8px; fill: #4b5563;">Khánh Hòa quản lý</text>
+                        <text x="8" y="46" style="font-size: 7.5px; fill: #991b1b; font-weight: bold;">Chủ quyền thiêng liêng</text>
+                    </g>
+                </svg>
+
+                <!-- Dòng trạng thái khi chọn tỉnh trên bản đồ -->
+                <div id="map-status" style="margin-top: 8px; font-size: 12px; color: #b45309; font-weight: 500;">
+                    👆 Bấm chọn vùng/tỉnh trên bản đồ để tra cứu nhanh
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    function filterMap(region) {
+        const statusEl = document.getElementById('map-status');
+        statusEl.innerHTML = `✅ Đã lọc sản phẩm OCOP khu vực: <b>${region}</b>`;
+        // Thêm code tùy chỉnh lọc sản phẩm của bạn tại đây
+    }
+</script>
 
     <!-- 1. TOP ANNOUNCEMENT BAR -->
     <div class="bg-ocopGreen text-amber-100 text-[11px] font-semibold py-2 px-4 border-b border-ocopGold/30 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
@@ -1486,7 +1610,7 @@
 
             <!-- Quick Action Icons -->
             <div class="flex items-center space-x-1 sm:space-x-4">
-                <button id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 text-ocopGreen text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-emerald-100 transition cursor-pointer" aria-label="Switch language">EN</button>
+                <button type="button" id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 text-ocopGreen text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-emerald-100 transition cursor-pointer" title="Chuyển sang tiếng Anh" aria-label="Chuyển sang tiếng Anh" aria-pressed="false">EN</button>
                 <div class="header-support-chip hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
                     <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs">
                         <i class="fa-solid fa-headset"></i>
@@ -1600,6 +1724,75 @@
                 </div>
             </div>
         </section>
+<<<<<<< HEAD
+<!-- Script xử lý sự kiện tương tác an toàn, không xung đột code cũ -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const mapObject = document.getElementById('vn-map-object');
+    const loadingStatus = document.getElementById('map-loading-status');
+    
+    if (mapObject) {
+        mapObject.addEventListener('load', function() {
+            try {
+                if (loadingStatus) loadingStatus.style.display = 'none';
+                
+                // Lắng nghe sự kiện click trên các tỉnh thành của SVG
+                const svgDoc = mapObject.contentDocument;
+                if (svgDoc) {
+                    const paths = svgDoc.querySelectorAll('path, g');
+                    paths.forEach(path => {
+                        path.style.cursor = 'pointer';
+                        path.addEventListener('click', function(e) {
+                            const provinceId = this.getAttribute('id') || this.getAttribute('name') || 'Khu vực';
+                            updateProvinceInfo(provinceId);
+                        });
+                    });
+                }
+            } catch (err) {
+                // Xử lý an toàn nếu trình duyệt chặn truy cập DOM nội bộ của đối tượng SVG ngoại vi
+                if (loadingStatus) loadingStatus.style.display = 'none';
+            }
+        });
+    }
+});
+
+function updateProvinceInfo(provinceName) {
+    const nameEl = document.getElementById('selected-province-name');
+    const contentEl = document.getElementById('province-detail-content');
+    
+    if (nameEl) nameEl.innerText = "Tỉnh/Thành: " + provinceName.toUpperCase();
+    if (contentEl) {
+        contentEl.innerHTML = `
+            <div class="p-3 bg-white rounded-lg border border-emerald-100 shadow-sm">
+                <p class="font-medium text-emerald-800 mb-1">🌿 Đặc sản OCOP tại ${provinceName}</p>
+                <p class="text-xs text-slate-500 mb-3">Sản phẩm đạt chuẩn chứng nhận OCOP địa phương.</p>
+                <button onclick="alert('Đang lọc sản phẩm khu vực: ${provinceName}')" class="w-full py-1.5 bg-emerald-600 text-white rounded text-xs font-medium hover:bg-emerald-700 transition">
+                    Xem danh sách sản phẩm
+                </button>
+            </div>
+        `;
+    }
+}
+
+function resetMapSelection() {
+    const nameEl = document.getElementById('selected-province-name');
+    const contentEl = document.getElementById('province-detail-content');
+    
+    if (nameEl) nameEl.innerText = "Toàn quốc (63 Tỉnh thành)";
+    if (contentEl) {
+        contentEl.innerHTML = `
+            <p>Nhấp vào bất kỳ tỉnh thành nào trên bản đồ để tra cứu danh sách đặc sản OCOP tiêu chuẩn quốc gia tương ứng.</p>
+            <div class="p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                <div class="text-xs text-slate-400 uppercase font-semibold">Thống kê dữ liệu</div>
+                <div class="text-2xl font-bold text-slate-800 mt-1">63 / 63</div>
+                <div class="text-xs text-slate-500">Tỉnh thành đã tích hợp hệ thống</div>
+            </div>
+        `;
+    }
+}
+</script>
+=======
+>>>>>>> fc40e200c05e9e3fd4510732b77a748beb701a1b
         
         <!-- 4. SIDEBAR & DANH SÁCH SẢN PHẨM -->
         <section id="products-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -2202,7 +2395,16 @@
         let cart = [];
         let wishlist = [];
         let currentCategory = 'all';
-        let currentLanguage = localStorage.getItem('ocop-language') === 'en' ? 'en' : 'vi';
+        function getSavedLanguage() {
+            try {
+                return localStorage.getItem('ocop-language') === 'en' ? 'en' : 'vi';
+            } catch (error) {
+                console.warn('Language preference could not be read from browser storage:', error);
+                return 'vi';
+            }
+        }
+
+        let currentLanguage = getSavedLanguage();
         let lastRenderedProducts = products;
         let isSoundOn = false;
         let activeRegion = 'north';
@@ -2574,15 +2776,15 @@
             }
 
             noMsg.style.display = 'none';
-            grid.innerHTML = items.map((p, index) => {
+            grid.innerHTML = items.map(p => {
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
                 return `
-                <div class="product-card ag-product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md flex flex-col justify-between group relative">
+                <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md flex flex-col justify-between group relative">
                     <div>
                         <div class="relative h-48 sm:h-52 overflow-hidden bg-amber-100/50">
-                            <img src="${p.img}" alt="${productName}" loading="${index < 6 ? 'eager' : 'lazy'}" fetchpriority="${index === 0 ? 'high' : 'auto'}" decoding="async" class="product-card-image w-full h-full object-cover">
+                            <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full object-cover">
                             <div class="absolute top-3 left-3 flex flex-col space-y-1">
                                 <span class="bg-ocopGreen text-ocopGold text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md border border-ocopGold/30">
                                     ${p.region}
@@ -3765,7 +3967,6 @@
         function applyLanguage(language) {
             currentLanguage = language === 'en' ? 'en' : 'vi';
             document.documentElement.lang = currentLanguage;
-            localStorage.setItem('ocop-language', currentLanguage);
             document.title = currentLanguage === 'en'
                 ? 'OCOP Sales Copilot - 48 Vietnamese Regional Specialties'
                 : `OCOP Sales Copilot - ${products.length} Đặc Sản Việt Nam`;
@@ -3792,6 +3993,7 @@
                     button.textContent = targetLanguage;
                     button.title = currentLanguage === 'en' ? 'Switch to Vietnamese' : 'Chuyển sang tiếng Anh';
                     button.setAttribute('aria-label', currentLanguage === 'en' ? 'Switch language to Vietnamese' : 'Chuyển sang tiếng Anh');
+                    button.setAttribute('aria-pressed', String(currentLanguage === 'en'));
                 }
             });
             document.getElementById('header-search-input').placeholder = currentLanguage === 'en'
@@ -3843,6 +4045,11 @@
             renderProducts(lastRenderedProducts);
             renderCartItems();
             renderWishlistItems();
+            try {
+                localStorage.setItem('ocop-language', currentLanguage);
+            } catch (error) {
+                console.warn('Language preference could not be saved to browser storage:', error);
+            }
         }
 
         function toggleLanguage() {
