@@ -78,6 +78,7 @@
     <!-- Font Awesome Icons & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     
     <style>
         html {
@@ -450,88 +451,77 @@
             font-weight: 700;
             letter-spacing: 0.01em;
         }
-        .intro-region-tabs {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.4rem;
-            border-radius: 1.25rem;
-            background: rgba(255, 255, 255, 0.58);
-            border: 1px solid rgba(21, 52, 43, 0.12);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+        .province-map {
+            height: min(54vh, 440px);
+            min-height: 300px;
+            overflow: hidden;
+            isolation: isolate;
+            border: 1px solid rgba(15, 56, 44, 0.16);
+            border-radius: 1rem;
+            background: #e8eee5;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), 0 8px 20px rgba(15,56,44,0.08);
         }
-        .intro-region-tab {
-            flex: 1 1 0;
-            min-height: 2.8rem;
-            border-radius: 0.9rem;
-            border: 1px solid transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.45rem;
-            font-size: 0.83rem;
-            font-weight: 800;
+        .province-map .leaflet-container {
+            width: 100%;
+            height: 100%;
+            background: #e8eee5;
+            font: 500 0.75rem 'Plus Jakarta Sans', sans-serif;
+        }
+        .province-map .leaflet-control-layers,
+        .province-map .leaflet-bar {
+            overflow: hidden;
+            border: 1px solid rgba(15, 56, 44, 0.2);
+            border-radius: 0.65rem;
+            box-shadow: 0 3px 12px rgba(15, 56, 44, 0.16);
+        }
+        .province-map .leaflet-bar a,
+        .province-map .leaflet-control-layers {
+            color: #0f382c;
+            background: #fffdf7;
+        }
+        .province-map .leaflet-bar a:hover,
+        .province-map .leaflet-control-layers-toggle:hover {
+            color: #0f382c;
+            background: #f5e7ae;
+        }
+        .province-map .leaflet-control-attribution {
+            color: #23473b;
+            background: rgba(255, 253, 247, 0.88);
+        }
+        .province-map .leaflet-control-attribution a {
+            color: #0f5b43;
+            font-weight: 700;
+        }
+        .province-map-status {
             color: #45675d;
-            background: rgba(255, 255, 255, 0.46);
-            border-color: rgba(21, 52, 43, 0.06);
+            font-size: 0.75rem;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+        .province-map-clear {
+            flex-shrink: 0;
+            border: 1px solid rgba(15, 56, 44, 0.16);
+            color: #315c4b;
+            background: rgba(255, 255, 255, 0.72);
             transition: all 0.2s ease;
         }
-        .intro-region-tab[aria-pressed="true"] {
-            color: #fff;
-            background: linear-gradient(110deg, #165b46, #0f382c);
-            border-color: transparent;
-            box-shadow: 0 8px 16px rgba(15, 56, 44, 0.22);
+        .province-map-clear:hover:not(:disabled) {
+            border-color: rgba(212, 175, 55, 0.75);
+            color: #0f382c;
+            background: #f8edc4;
         }
-        .intro-region-content {
-            display: flex;
-            flex-direction: column;
-            gap: 0.9rem;
-        }
-        .intro-region-copy {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-        .intro-region-copy h4 {
-            margin: 0;
-            font-size: clamp(1.05rem, 2vw, 1.4rem);
-            line-height: 1.35;
-            letter-spacing: -0.02em;
-            color: #23473b;
-        }
-        .intro-region-copy p {
-            margin: 0;
-            color: rgba(35, 71, 59, 0.8);
-            font-size: 0.78rem;
-            line-height: 1.6;
-        }
-        #intro-region-items {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.7rem;
-        }
-        .region-item-card {
-            background: rgba(251, 249, 244, 0.82);
-            border: 1px solid rgba(21, 52, 43, 0.12);
-            backdrop-filter: blur(12px);
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .region-item-card:hover {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: rgba(212, 175, 55, 0.65);
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 10px 25px rgba(15, 56, 44, 0.08), 0 0 14px rgba(212, 175, 55, 0.15);
+        .province-map-clear:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
         }
         @media (max-width: 640px) {
             .intro-region-heading {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .intro-region-tabs {
-                width: 100%;
-            }
-            #intro-region-items {
-                grid-template-columns: 1fr;
+            .province-map {
+                height: min(52vh, 380px);
+                min-height: 280px;
             }
         }
         @keyframes giftHeartbeat {
@@ -651,9 +641,6 @@
         #ocop-intro-overlay .bg-amber-500\/35,
         #ocop-intro-overlay .bg-ocopGold\/35 {
             background-color: rgba(212, 175, 55, 0.14);
-        }
-        #ocop-intro-overlay #intro-region-items .bg-amber-500\/20 {
-            background-color: rgba(22, 91, 70, 0.08);
         }
         #ocop-intro-overlay .glass-antigravity {
             color: #23473b;
@@ -816,33 +803,6 @@
             background: rgba(255, 255, 255, 0.72);
             border-color: rgba(15, 56, 44, 0.16);
         }
-        #ocop-intro-overlay [id^="tab-region-"] {
-            color: #466454;
-            background: rgba(255, 255, 255, 0.7);
-            border-color: rgba(15, 56, 44, 0.12);
-        }
-        #ocop-intro-overlay [id^="tab-region-"][aria-pressed="true"] {
-            color: #fff;
-            background: linear-gradient(110deg, #165b46, #0f382c);
-            border-color: transparent;
-        }
-        #ocop-intro-overlay #intro-region-title {
-            color: #23473b;
-        }
-        #ocop-intro-overlay #intro-region-desc,
-        #ocop-intro-overlay #intro-region-items .text-amber-200\/70 {
-            color: #607166;
-        }
-        #ocop-intro-overlay #intro-region-items > div {
-            background: rgba(255, 255, 255, 0.68);
-            border-color: rgba(15, 56, 44, 0.12);
-        }
-        #ocop-intro-overlay #intro-region-items .text-white {
-            color: #23473b !important;
-        }
-        #ocop-intro-overlay #intro-region-items .text-amber-300 {
-            color: #8c6b16 !important;
-        }
         #ocop-intro-overlay button[onclick="enterOcopMarket('ai')"],
         #ocop-intro-overlay button[onclick="enterOcopMarket('admin')"] {
             color: #315c4b;
@@ -978,8 +938,7 @@
             box-shadow: 0 13px 26px rgba(2, 20, 14, 0.2);
         }
         #ocop-intro-overlay .intro-regions:hover,
-        #ocop-intro-overlay .intro-pillars > div:hover,
-        #ocop-intro-overlay #intro-region-items > div:hover {
+        #ocop-intro-overlay .intro-pillars > div:hover {
             transform: none;
         }
         #ocop-intro-overlay .intro-pillars > div { padding: 0.7rem; }
@@ -1015,31 +974,6 @@
             background: #edf0e8;
             border-color: rgba(15, 56, 44, 0.1);
         }
-        #ocop-intro-overlay .intro-regions [id^="tab-region-"] {
-            color: #405a43;
-            background: transparent;
-            border-color: transparent;
-            box-shadow: none;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-        #ocop-intro-overlay .intro-regions [id^="tab-region-"][aria-pressed="true"] {
-            color: #fffdf7;
-            background: #14523d;
-            border-color: #14523d;
-        }
-        #ocop-intro-overlay #intro-region-title { color: #173a2d; }
-        #ocop-intro-overlay #intro-region-desc { color: #637166; }
-        #ocop-intro-overlay #intro-region-items > div {
-            color: #23473b;
-            background: #fffdf7;
-            border-color: rgba(15, 56, 44, 0.11);
-            box-shadow: 0 3px 10px rgba(15, 56, 44, 0.06);
-        }
-        #ocop-intro-overlay #intro-region-items > div:hover { transform: none; }
-        #ocop-intro-overlay #intro-region-items .text-amber-100,
-        #ocop-intro-overlay #intro-region-items .text-white { color: #23473b !important; }
-        #ocop-intro-overlay #intro-region-items .text-amber-300\/80 { color: #718075 !important; }
-        #ocop-intro-overlay #intro-region-items img { box-shadow: none; }
         #ocop-intro-overlay .intro-actions { padding-top: 0; text-align: left; }
         #ocop-intro-overlay #intro-gift-result {
             color: #23473b;
@@ -1187,7 +1121,6 @@
             #ocop-intro-overlay .intro-pillars { gap: 0.5rem; }
             #ocop-intro-overlay .intro-pillars > div { padding: 0.65rem 0.5rem; }
             #ocop-intro-overlay .intro-regions { padding: 0.9rem; }
-            #ocop-intro-overlay #intro-region-items { grid-template-columns: 1fr; }
             #ocop-intro-overlay .intro-actions #intro-enter-market { width: 100%; }
             #shop-hero > div { border-radius: 1.5rem; }
         }
@@ -1410,40 +1343,31 @@
                 </div>
             </div>
 
-            <!-- THƯỚC PHIM 3 MIỀN XUYÊN VIỆT (Interactive Cinematic Showcase) -->
+            <!-- BẢN ĐỒ TƯƠNG TÁC TỈNH THÀNH VIỆT NAM -->
             <div class="intro-regions w-full max-w-3xl intro-card-glass rounded-3xl p-4 sm:p-5 border border-amber-400/40 shadow-2xl text-left space-y-3.5">
                 <div class="intro-region-top">
                     <div class="intro-region-heading">
                         <span class="intro-region-kicker">
                             <i class="fa-solid fa-compass"></i>
-                            <span id="i18n-intro-region-header">HÀNH TRÌNH 3 MIỀN KẾT TINH ẨM THỰC VIỆT</span>
+                            <span id="i18n-intro-region-header">KHÁM PHÁ ĐẶC SẢN TRÊN BẢN ĐỒ VIỆT NAM</span>
                         </span>
-                        <span class="intro-region-caption" id="i18n-intro-region-caption">Chọn một miền để xem hương vị tiêu biểu</span>
-                    </div>
-                    <div class="intro-region-tabs" role="group" aria-labelledby="i18n-intro-region-header">
-                        <button id="tab-region-north" aria-pressed="true" onclick="setIntroRegion('north', true)" class="intro-region-tab cursor-pointer">
-                            <span>🏔️</span>
-                            <span id="i18n-intro-tab-north">Miền Bắc</span>
-                        </button>
-                        <button id="tab-region-central" aria-pressed="false" onclick="setIntroRegion('central', true)" class="intro-region-tab cursor-pointer">
-                            <span>🌊</span>
-                            <span id="i18n-intro-tab-central">Miền Trung</span>
-                        </button>
-                        <button id="tab-region-south" aria-pressed="false" onclick="setIntroRegion('south', true)" class="intro-region-tab cursor-pointer">
-                            <span>🌾</span>
-                            <span id="i18n-intro-tab-south">Miền Nam</span>
-                        </button>
+                        <span class="intro-region-caption" id="i18n-intro-region-caption">Chọn tỉnh/thành để lọc đặc sản OCOP tương ứng</span>
                     </div>
                 </div>
-
-                <div class="intro-region-content">
-                    <div class="intro-region-copy">
-                        <h4 id="intro-region-title" class="text-sm sm:text-base font-black text-yellow-300"></h4>
-                        <p id="intro-region-desc" class="text-xs text-amber-100/80 leading-relaxed mt-1"></p>
+                <div>
+                    <div id="province-map" class="province-map" role="region" aria-label="Bản đồ tương tác 63 tỉnh thành Việt Nam"></div>
+                    <div class="mt-2.5 flex flex-wrap items-center justify-between gap-2">
+                        <p id="province-selection-status" class="province-map-status m-0" role="status" aria-live="polite">
+                            Đang tải bản đồ tỉnh/thành...
+                        </p>
+                        <button id="province-map-clear" class="province-map-clear rounded-lg px-3 py-1.5 text-xs font-extrabold" type="button" onclick="clearSelectedProvince()" disabled>
+                            Xóa lựa chọn
+                        </button>
                     </div>
-                    <div id="intro-region-items" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <!-- Render dynamic từ JavaScript -->
-                    </div>
+                    <p class="mt-1.5 mb-0 text-[10px] leading-relaxed text-[#718075]">
+                        Ranh giới 63 tỉnh/thành lịch sử (năm 2008), gộp Côn Đảo vào Bà Rịa–Vũng Tàu.
+                        Dữ liệu: <a href="https://www.geoboundaries.org/" target="_blank" rel="noopener noreferrer" class="font-bold text-[#165b46] underline">geoBoundaries</a> · CC BY 4.0.
+                    </p>
                 </div>
             </div>
 
@@ -2167,6 +2091,7 @@
     <!-- ============================================================== -->
     <!-- JAVASCRIPT XỬ LÝ HOÀN CHỈNH TOÀN BỘ CHỨC NĂNG WEBSITE -->
     <!-- ============================================================== -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // -------------------------------------------------------------
         // DỮ LIỆU DANH SÁCH ĐẶC SẢN OCOP CHUẨN 4 - 5 SAO
@@ -2222,47 +2147,6 @@
             { id: 48, name: "Quế Ống Trà Bồng Quảng Ngãi Thơm Ấm", nameEn: "Tra Bong Cinnamon Sticks", region: "Quảng Ngãi", category: "spice", stars: 4, price: 145000, origPrice: 175000, rating: 4.8, reviews: 104, tag: "Hương Quế Miền Trung", tagEn: "Central Vietnam Cinnamon", img: "https://images.pexels.com/photos/10487740/pexels-photo-10487740.jpeg?auto=compress&cs=tinysrgb&w=600", desc: "Quế Trà Bồng thơm ấm, có thể dùng pha trà, nấu ăn hoặc làm quà tặng đặc sản.", descEn: "Fragrant Tra Bong cinnamon for tea, cooking, or a thoughtful regional gift." }
         ];
 
-        // Dữ liệu thước phim 3 Miền
-        // Dữ liệu thước phim 3 Miền (Kèm ảnh thật, tag và giá vàng chuẩn OCOP)
-        const regionData = {
-            north: {
-                title: "Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng",
-                titleEn: "Northern Vietnam - Highland Tea & Mountain Specialties",
-                desc: "Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.",
-                descEn: "Discover Tan Cuong and Tam Dao teas, Northwest smoked buffalo, and the celebrated hand-pounded squid cake of Ha Long.",
-                items: [
-                    { name: "Trà Đinh Nõn Tân Cương 5★", nameEn: "Tan Cuong Premium Bud Tea 5★", origin: "Thái Nguyên", badge: "850.000 ₫", tag: "Đệ Nhất Danh Trà", tagEn: "Premier Vietnamese Tea", img: products[2].img },
-                    { name: "Chả Mực Giã Tay Hạ Long 5★", nameEn: "Hand-pounded Ha Long Squid Cake 5★", origin: "Quảng Ninh", badge: "490.000 ₫", tag: "Ẩm Thực Biển", tagEn: "Coastal Specialty", img: products[5].img },
-                    { name: "Thịt Trâu Gác Bếp Tây Bắc 5★", nameEn: "Northwest Smoked Buffalo 5★", origin: "Lào Cai", badge: "790.000 ₫", tag: "Hương Núi Rừng", tagEn: "Mountain Flavors", img: products[14].img },
-                    { name: "Trà Hoa Vàng Tam Đảo 5★", nameEn: "Tam Dao Golden Flower Tea 5★", origin: "Vĩnh Phúc", badge: "1.150.000 ₫", tag: "Quốc Bảo Trà", tagEn: "Golden Flower Tea", img: products[11].img }
-                ]
-            },
-            central: {
-                title: "Miền Trung & Tây Nguyên - Quốc Bảo Dược Liệu & Mật Ong Rừng",
-                titleEn: "Central Highlands - Herbal Treasures & Forest Honey",
-                desc: "Đất nắng gió ôm trọn Sâm Ngọc Linh Quảng Nam ngâm mật ong, Tỏi đen Lý Sơn, Đông trùng Đà Lạt và Hạt điều Bình Phước thượng hạng.",
-                descEn: "Explore Ngoc Linh ginseng, Ly Son black garlic, Da Lat cordyceps, and premium Binh Phuoc cashews.",
-                items: [
-                    { name: "Sâm Ngọc Linh Mật Ong Rừng 5★", nameEn: "Ngoc Linh Ginseng with Forest Honey 5★", origin: "Quảng Nam", badge: "3.200.000 ₫", tag: "Quốc Bảo Việt Nam", tagEn: "Vietnamese Treasure", img: products[3].img },
-                    { name: "Tỏi Đen Lý Sơn Nhiều Củ 5★", nameEn: "Ly Son Black Garlic 5★", origin: "Quảng Ngãi", badge: "550.000 ₫", tag: "Bổ Dưỡng Đảo Xanh", tagEn: "Ly Son Island Specialty", img: products[6].img },
-                    { name: "Đông Trùng Hạ Thảo Đà Lạt 5★", nameEn: "Da Lat Cordyceps 5★", origin: "Lâm Đồng", badge: "1.850.000 ₫", tag: "Sấy Thăng Hoa", tagEn: "Freeze-Dried", img: products[15].img },
-                    { name: "Hạt Điều Rang Muối Vỏ Lụa 5★", nameEn: "Binh Phuoc Skin-on Roasted Cashews 5★", origin: "Bình Phước", badge: "280.000 ₫", tag: "Nông Sản Xuất Khẩu", tagEn: "Regional Harvest", img: products[13].img }
-                ]
-            },
-            south: {
-                title: "Miền Nam & Biển Đảo - Tinh Hoa Yến Sào & Mắm Cá Đậm Đà",
-                titleEn: "Southern Vietnam & Islands - Bird's Nest & Traditional Fish Sauce",
-                desc: "Vùng đất trù phú miền Tây và Biển đảo với Yến Sào Khánh Hòa, Cua Cà Mau hấp muối, Nước mắm cá cơm Phú Quốc và Cá Thát Lát rút xương.",
-                descEn: "Explore the Mekong Delta and coastal islands through Khanh Hoa bird's nest, Ca Mau crab, Phu Quoc fish sauce, and featherback fish cake.",
-                items: [
-                    { name: "Yến Sào Khánh Hòa Thượng Hạng 5★", nameEn: "Premium Khanh Hoa Bird's Nest 5★", origin: "Khánh Hòa", badge: "2.450.000 ₫", tag: "Tổ Yến Đảo Tự Nhiên", tagEn: "Island Bird's Nest", img: products[0].img },
-                    { name: "Cua Cà Mau Hấp Muối Hột 5★", nameEn: "Ca Mau Salt-Steamed Crab 5★", origin: "Cà Mau", badge: "580.000 ₫", tag: "Đất Mũi Cực Nam", tagEn: "Southernmost Vietnam", img: products[10].img },
-                    { name: "Nước Mắm Phú Quốc 43° Đạm 5★", nameEn: "Phu Quoc Fish Sauce 43°N 5★", origin: "Kiên Giang", badge: "220.000 ₫", tag: "Cá Cơm Than Tươi", tagEn: "Anchovy Fermentation", img: products[4].img },
-                    { name: "Hạt Mắc Ca Đắk Nông Nứt Vỏ 5★", nameEn: "Dak Nong Macadamia Nuts 5★", origin: "Đắk Nông", badge: "310.000 ₫", tag: "Béo Bùi Tự Nhiên", tagEn: "Naturally Rich & Buttery", img: products[38].img }
-                ]
-            }
-        };
-
         // Biến trạng thái toàn cục
         let cart = [];
         let wishlist = [];
@@ -2279,7 +2163,9 @@
         let currentLanguage = getSavedLanguage();
         let lastRenderedProducts = products;
         let isSoundOn = false;
-        let activeRegion = 'north';
+        let selectedProvince = null;
+        let provinceMap = null;
+        let provinceBoundaryLayer = null;
         let currentUser = null;
         let authTab = 'login';
         let authStep = 'form';
@@ -2298,7 +2184,7 @@
             updateCatalogCounts();
             applyLanguage(currentLanguage);
             renderProducts(products);
-            setIntroRegion('north', false);
+            initializeProvinceMap();
             updateIntroMusicButton();
             updateCartBadge();
             updateWishlistBadge();
@@ -2588,43 +2474,6 @@
             showToast("Chúc mừng! Bạn nhận được Voucher Lộc Vàng giảm 50.000đ!", "success");
         }
 
-        function setIntroRegion(regionKey, stopAuto = false) {
-            activeRegion = regionKey;
-            if (stopAuto) playWhooshSound();
-
-            const r = regionData[regionKey];
-            document.getElementById('intro-region-title').textContent = currentLanguage === 'en' ? r.titleEn : r.title;
-            document.getElementById('intro-region-desc').textContent = currentLanguage === 'en' ? r.descEn : r.desc;
-
-            // Highlight tab
-            ['north', 'central', 'south'].forEach(k => {
-                const tab = document.getElementById(`tab-region-${k}`);
-                if (!tab) return;
-                tab.setAttribute('aria-pressed', String(k === regionKey));
-                tab.className = `intro-region-tab cursor-pointer ${k === regionKey ? 'shadow-md' : 'hover:bg-white/80'}`;
-            });
-
-            // Render 4 thẻ sản phẩm của miền (Kèm ảnh thumbnail, huy hiệu & tag)
-            const container = document.getElementById('intro-region-items');
-            container.innerHTML = r.items.map(item => {
-                const itemName = currentLanguage === 'en' ? item.nameEn : item.name;
-                const itemTag = currentLanguage === 'en' ? item.tagEn : item.tag;
-                return `
-                <div class="region-item-card p-2.5 rounded-2xl flex items-center justify-between gap-2.5 cursor-pointer group shadow-sm" onclick="enterOcopMarket('all')">
-                    <div class="flex items-center space-x-2.5 min-w-0">
-                        <img src="${item.img}" alt="${itemName}" class="w-12 h-12 rounded-xl object-cover border border-amber-300/40 group-hover:scale-105 transition flex-shrink-0 shadow-md">
-                        <div class="truncate">
-                            <span class="block text-xs font-black text-[#23473b] group-hover:text-[#0f382c] transition truncate">${itemName}</span>
-                            <span class="text-[10px] text-[#6f7e75] font-medium">${item.origin} • ${itemTag}</span>
-                        </div>
-                    </div>
-                    <span class="bg-gradient-to-r from-amber-400 to-yellow-400 text-[#143f31] font-black text-[10px] px-2.5 py-1 rounded-lg shadow flex-shrink-0">${item.badge}</span>
-                </div>
-            `;
-            }).join('');
-
-        }
-
         function scrollToProducts() {
             const sec = document.getElementById('products-section');
             if (sec) sec.scrollIntoView({ behavior: 'smooth' });
@@ -2726,6 +2575,11 @@
                 else filtered = filtered.filter(p => p.category === currentCategory);
             }
 
+            if (selectedProvince) {
+                const selectedProvinceName = normalizeProvinceName(selectedProvince.name);
+                filtered = filtered.filter(product => normalizeProvinceName(product.region) === selectedProvinceName);
+            }
+
             if (terms.length > 0) {
                 filtered = filtered.filter(product => {
                     const searchableText = normalizeSearchText(
@@ -2736,6 +2590,7 @@
             }
 
             renderProducts(filtered);
+            updateProvinceSelectionStatus(filtered.length);
         }
 
         function normalizeSearchText(value) {
@@ -2745,6 +2600,132 @@
                 .replace(/đ/g, 'd')
                 .replace(/Đ/g, 'D')
                 .toLowerCase();
+        }
+
+        function normalizeProvinceName(value) {
+            return normalizeSearchText(value)
+                .replace(/^(tp|thanhpho)/, '')
+                .replace(/[^a-z0-9]/g, '');
+        }
+
+        function getProvinceStyle(feature) {
+            const isSelected = selectedProvince?.id === feature.properties.id;
+            return {
+                color: isSelected ? '#8c6b16' : '#fffdf7',
+                weight: isSelected ? 3 : 1.1,
+                opacity: 1,
+                fillColor: isSelected ? '#d4af37' : '#165b46',
+                fillOpacity: isSelected ? 0.82 : 0.58
+            };
+        }
+
+        function updateProvinceSelectionStatus(productCount = lastRenderedProducts.length) {
+            const status = document.getElementById('province-selection-status');
+            const clearButton = document.getElementById('province-map-clear');
+            if (!status || !clearButton) return;
+
+            clearButton.disabled = !selectedProvince;
+            if (!selectedProvince) {
+                status.textContent = currentLanguage === 'en'
+                    ? 'Select a province to filter matching OCOP specialties.'
+                    : 'Chọn tỉnh/thành để lọc đặc sản OCOP tương ứng.';
+                return;
+            }
+
+            status.textContent = currentLanguage === 'en'
+                ? `${selectedProvince.name} (${selectedProvince.id}) · ${productCount} matching products`
+                : `${selectedProvince.name} (${selectedProvince.id}) · ${productCount} sản phẩm phù hợp`;
+        }
+
+        function publishProvinceSelection() {
+            const selection = selectedProvince ? { ...selectedProvince } : null;
+            window.selectedOcopProvince = selection;
+            window.dispatchEvent(new CustomEvent('ocop:province-selected', { detail: selection }));
+        }
+
+        function clearSelectedProvince() {
+            selectedProvince = null;
+            provinceBoundaryLayer?.setStyle(getProvinceStyle);
+            publishProvinceSelection();
+            filterProductsGlobal(document.getElementById('product-search').value);
+        }
+
+        async function initializeProvinceMap() {
+            const status = document.getElementById('province-selection-status');
+            if (!window.L) {
+                status.textContent = currentLanguage === 'en'
+                    ? 'The map library could not be loaded. Refresh the page to try again.'
+                    : 'Không tải được thư viện bản đồ. Vui lòng tải lại trang.';
+                console.error('Leaflet is unavailable; the province map could not be initialized.');
+                return;
+            }
+
+            try {
+                const response = await fetch('./data/vietnam-provinces.geojson');
+                if (!response.ok) throw new Error(`Province GeoJSON request failed with HTTP ${response.status}.`);
+                const provinceData = await response.json();
+                if (!Array.isArray(provinceData.features) || provinceData.features.length !== 63) {
+                    throw new Error(`Expected 63 province features; received ${provinceData.features?.length ?? 0}.`);
+                }
+                if (provinceData.features.some(feature => !feature.properties?.id || !feature.properties?.name)) {
+                    throw new Error('Province GeoJSON contains a feature without an ID or name.');
+                }
+
+                const satelliteLayer = L.tileLayer(
+                    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                    {
+                        maxZoom: 19,
+                        attribution: 'Tiles &copy; Esri, Maxar, Earthstar Geographics, and the GIS User Community'
+                    }
+                );
+                const geographicLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                });
+
+                provinceMap = L.map('province-map', {
+                    layers: [satelliteLayer],
+                    scrollWheelZoom: false,
+                    zoomControl: true
+                });
+                L.control.layers(
+                    currentLanguage === 'en'
+                        ? { Satellite: satelliteLayer, Geographic: geographicLayer }
+                        : { 'Vệ tinh': satelliteLayer, 'Địa lý': geographicLayer },
+                    null,
+                    { collapsed: true }
+                ).addTo(provinceMap);
+
+                provinceBoundaryLayer = L.geoJSON(provinceData, {
+                    style: getProvinceStyle,
+                    attribution: '<a href="https://www.geoboundaries.org/" target="_blank" rel="noopener noreferrer">geoBoundaries</a> · CC BY 4.0',
+                    onEachFeature: (feature, layer) => {
+                        layer.bindTooltip(feature.properties.name, { sticky: true });
+                        layer.on({
+                            mouseover: event => event.target.setStyle({ weight: 2.5, fillOpacity: 0.88 }),
+                            mouseout: event => provinceBoundaryLayer.resetStyle(event.target),
+                            click: () => {
+                                selectedProvince = {
+                                    id: feature.properties.id,
+                                    name: feature.properties.name
+                                };
+                                provinceBoundaryLayer.setStyle(getProvinceStyle);
+                                publishProvinceSelection();
+                                filterProductsGlobal(document.getElementById('product-search').value);
+                            }
+                        });
+                    }
+                }).addTo(provinceMap);
+
+                provinceMap.fitBounds(provinceBoundaryLayer.getBounds(), { padding: [16, 16], maxZoom: 7 });
+                window.setTimeout(() => provinceMap.invalidateSize(), 250);
+                updateProvinceSelectionStatus();
+            } catch (error) {
+                console.error('Unable to initialize the Vietnam province map:', error);
+                status.textContent = currentLanguage === 'en'
+                    ? 'The province map could not be loaded. Check your connection and refresh the page.'
+                    : 'Không thể tải bản đồ tỉnh/thành. Vui lòng kiểm tra kết nối và tải lại trang.';
+            }
         }
 
         function handleSearchKeydown(event) {
@@ -2774,6 +2755,7 @@
         }
 
         function resetFilters() {
+            if (selectedProvince) clearSelectedProvince();
             setCategoryFilter('all');
             clearSearchInput();
             showToast("Đã làm mới danh mục đặc sản!", "info");
@@ -3722,10 +3704,9 @@
             'i18n-ticker2-copy': '🎁 Gift ideas tailored to the occasion and budget',
             'i18n-ticker3-copy': '🍵 Tea, produce, snacks, and regional seasonings',
             'i18n-ticker4-copy': '🚚 Shipping offers depend on order conditions',
-            'i18n-intro-region-header': 'Explore by region',
-            'i18n-intro-tab-north': 'Northern Vietnam',
-            'i18n-intro-tab-central': 'Central Vietnam',
-            'i18n-intro-tab-south': 'Southern Vietnam',
+            'i18n-intro-region-header': 'Explore Vietnam specialties on the map',
+            'i18n-intro-region-caption': 'Select a province to filter matching OCOP specialties',
+            'province-map-clear': 'Clear selection',
             'i18n-intro-btn-enter': 'Explore 48 OCOP specialties',
             'i18n-intro-quick-header': 'What are you looking for?',
             'i18n-intro-quick-gift': 'Gift suggestions',
@@ -3913,7 +3894,7 @@
             });
             updateCatalogCounts();
             updateIntroMusicButton();
-            setIntroRegion(activeRegion, false);
+            updateProvinceSelectionStatus();
             renderProducts(lastRenderedProducts);
             renderCartItems();
             renderWishlistItems();
