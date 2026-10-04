@@ -26,6 +26,19 @@ startup; values already set in the environment take precedence. Without all
 three Twilio values, the site still runs, but registration returns a clear SMS
 configuration error.
 
+## Gemini AI shopping assistant
+
+The chatbot uses Gemini through the Express server. Copy `.env.example` to
+`.env`, set `GEMINI_API_KEY` to a key from Google AI Studio, and restart the
+server. `GEMINI_MODEL` is optional and defaults to `gemini-2.5-flash`. The key
+stays on the server and must never be added to browser code. Without a key, the
+chatbot reports that the AI is not configured and offers the existing admin
+contacts. Customer messages and the product catalogue are sent to Google
+Gemini to generate replies; customers are warned not to share passwords, OTPs,
+or payment details. For order-specific or complaint cases, the assistant opens
+the existing admin contact choices; it does not establish a live in-site chat
+or automatically notify a human.
+
 Verified customer records are stored in `.private-data/customers.json`, outside
 the static website directory and excluded from Git. Passwords are stored as
 salted scrypt hashes; pending OTPs expire after five minutes and have a limited

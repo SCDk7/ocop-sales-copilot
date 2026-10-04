@@ -1920,7 +1920,7 @@
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
                         <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.</p>
-                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Gợi ý dựa trên danh mục và giá đang hiển thị trên website.</p>
+                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn và danh mục được gửi tới Google Gemini để tạo phản hồi; không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
                     </div>
                 </div>
             </div>
@@ -2330,6 +2330,7 @@
         let pendingRegistration = null;
         let currentOrderCode = null;
         let aiMessageSequence = 0;
+        let aiConversationHistory = [];
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
         let ordersHistory = [
@@ -3102,11 +3103,10 @@
             sendAIMessage();
         }
 
-        function sendAIMessage() {
+        async function sendAIMessage() {
             const inputEl = document.getElementById('ai-chat-input');
             const messagesEl = document.getElementById('ai-chat-messages');
             const text = inputEl.value.trim();
-            const shouldHandoffToAdmin = isAIAdminContactRequest(text);
 
             if (!text) return;
 
@@ -3135,28 +3135,104 @@
             `);
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
-            // Xử lý câu trả lời dựa trên dữ liệu sản phẩm OCOP
-            setTimeout(() => {
+            try {
+                const response = await fetch('/api/ai/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        language: currentLanguage,
+                        messages: [...aiConversationHistory.slice(-14), { role: 'user', text }],
+                        products: products.map(product => ({
+                            id: product.id,
+                            name: product.name,
+                            nameEn: product.nameEn || productNamesEn[product.id - 1] || '',
+                            region: product.region,
+                            category: product.category,
+                            stars: product.stars,
+                            price: product.price,
+                            rating: product.rating,
+                            tag: product.tag,
+                            description: product.desc
+                        }))
+                    })
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(result.error || (currentLanguage === 'en'
+                        ? 'The AI assistant is temporarily unavailable.'
+                        : 'Trợ lý AI hiện chưa thể trả lời.'));
+                }
+
                 const loadingNode = document.getElementById(loadingId);
                 if (loadingNode) loadingNode.remove();
 
-                const aiReply = generateAIResponse(text);
-                messagesEl.insertAdjacentHTML('beforeend', `
-                    <div class="flex items-start space-x-2">
-                        <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
-                        <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
-                            ${aiReply}
-                        </div>
+                const reply = document.createElement('div');
+                reply.className = 'flex items-start space-x-2';
+                reply.innerHTML = `
+                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                        <p class="whitespace-pre-wrap"></p>
+                        <div class="ai-product-recommendations"></div>
                     </div>
-                `);
+                `;
+                reply.querySelector('p').textContent = result.message;
+                const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
+                    .map(id => products.find(product => product.id === id))
+                    .filter(Boolean);
+                if (recommendedProducts.length) {
+                    reply.querySelector('.ai-product-recommendations').innerHTML = renderAIProductRecommendations(
+                        recommendedProducts,
+                        currentLanguage === 'en' ? 'Recommended products' : 'Sản phẩm gợi ý',
+                        currentLanguage === 'en'
+                            ? 'Prices and product information are from the current catalogue.'
+                            : 'Giá và thông tin được lấy từ danh mục hiện tại.'
+                    );
+                }
+                if (result.handoffAdmin) {
+                    const handoffButton = document.createElement('button');
+                    handoffButton.type = 'button';
+                    handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
+                    handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
+                    handoffButton.addEventListener('click', toggleAdminSupport);
+                    reply.querySelector('div.bg-white').append(handoffButton);
+                }
+                messagesEl.append(reply);
+                aiConversationHistory = [
+                    ...aiConversationHistory,
+                    { role: 'user', text },
+                    { role: 'assistant', text: result.message }
+                ].slice(-16);
                 messagesEl.scrollTop = messagesEl.scrollHeight;
-                if (shouldHandoffToAdmin) {
+
+                if (result.handoffAdmin) {
                     window.setTimeout(() => {
                         const adminMenu = document.getElementById('admin-support-menu');
                         if (adminMenu.classList.contains('hidden')) toggleAdminSupport();
                     }, 1200);
                 }
-            }, 800);
+            } catch (error) {
+                const loadingNode = document.getElementById(loadingId);
+                if (loadingNode) loadingNode.remove();
+
+                const failure = document.createElement('div');
+                failure.className = 'flex items-start space-x-2';
+                failure.innerHTML = `
+                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                        <p class="ai-error-message"></p>
+                    </div>
+                `;
+                failure.querySelector('.ai-error-message').textContent = error.message ||
+                    (currentLanguage === 'en' ? 'The AI assistant could not connect.' : 'Không thể kết nối trợ lý AI.');
+                const contactButton = document.createElement('button');
+                contactButton.type = 'button';
+                contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
+                contactButton.textContent = currentLanguage === 'en' ? 'Contact admin' : 'Liên hệ admin';
+                contactButton.addEventListener('click', connectCustomerToAdmin);
+                failure.querySelector('div.bg-white').append(contactButton);
+                messagesEl.append(failure);
+                messagesEl.scrollTop = messagesEl.scrollHeight;
+            }
         }
 
         function generateAIResponse(query) {
@@ -4384,8 +4460,8 @@
                     ? 'Tell me the occasion, region, product type, or your budget.'
                     : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
                 document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
-                    ? 'Suggestions are based on products and prices currently listed on this site.'
-                    : 'Gợi ý dựa trên danh mục và giá đang hiển thị trên website.';
+                    ? 'Messages and the product catalogue are sent to Google Gemini to generate replies; do not share passwords, OTPs, or payment details.'
+                    : 'Tin nhắn và danh mục được gửi tới Google Gemini để tạo phản hồi; không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
             }
             const promptButtons = document.querySelectorAll('.chat-prompt');
             const prompts = currentLanguage === 'en'
