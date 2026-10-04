@@ -394,6 +394,7 @@
             color: #fff;
             font-weight: 800;
         }
+<<<<<<< HEAD
         #ocop-intro-overlay {
             color: #183653;
             background:
@@ -589,6 +590,126 @@
                 font-size: clamp(1.65rem, 8vw, 2.4rem);
                 line-height: 1.12;
             }
+=======
+        /* ============================================================== */
+        /* SIÊU PHẨM MÀN INTRO: VŨ TRỤ HOÀNG KIM NÔNG SẢN VIỆT - AI ANTIGRAVITY */
+        /* ============================================================== */
+        #ocop-intro-overlay {
+            background: 
+                radial-gradient(ellipse at 50% 0%, rgba(16, 185, 129, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 15% 45%, rgba(212, 175, 55, 0.2) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 75%, rgba(6, 78, 59, 0.4) 0%, transparent 60%),
+                linear-gradient(175deg, #020c08 0%, #051a13 38%, #03120c 70%, #010704 100%);
+            color: #ffffff;
+            padding: clamp(0.75rem, 2.5vw, 2rem);
+        }
+        .intro-hero-title {
+            text-shadow: 0 4px 25px rgba(0, 0, 0, 0.8), 0 0 40px rgba(16, 185, 129, 0.25);
+        }
+        .intro-gold-gradient {
+            background: linear-gradient(135deg, #FFF9D2 0%, #FFE57F 20%, #D4AF37 45%, #FFFFFF 60%, #B89528 80%, #FFF3B0 100%);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldLiquidShimmer 5s linear infinite;
+        }
+        @keyframes goldLiquidShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .intro-card-glass {
+            background: rgba(8, 30, 22, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.08);
+            transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .intro-card-glass:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: rgba(255, 223, 0, 0.85);
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.4), inset 0 0 25px rgba(212, 175, 55, 0.2);
+        }
+        .intro-seal-badge {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(16, 185, 129, 0.2) 50%, rgba(212, 175, 55, 0.3) 100%);
+            border: 1.5px solid rgba(255, 223, 0, 0.65);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.35), inset 0 0 15px rgba(212, 175, 55, 0.15);
+            animation: sealPulse 3s ease-in-out infinite;
+        }
+        @keyframes sealPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 0 35px rgba(212, 175, 55, 0.7); }
+        }
+        .intro-mega-btn {
+            background: linear-gradient(110deg, #F5D061 0%, #FFDF00 25%, #E6B800 50%, #FFEA79 75%, #D4AF37 100%);
+            background-size: 200% auto;
+            color: #041810 !important;
+            box-shadow: 0 0 45px rgba(255, 223, 0, 0.65), 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .intro-mega-btn:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 0 65px rgba(255, 223, 0, 0.95), 0 15px 40px rgba(0, 0, 0, 0.6);
+            background-position: right center;
+        }
+        .intro-pill-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            backdrop-filter: blur(12px);
+            transition: all 0.25s ease;
+        }
+        .intro-pill-btn:hover {
+            background: rgba(212, 175, 55, 0.22);
+            border-color: rgba(255, 223, 0, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        .ticker-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-content {
+            display: inline-flex;
+            animation: tickerMove 28s linear infinite;
+        }
+        .ticker-content:hover {
+            animation-play-state: paused;
+        }
+        @keyframes tickerMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .lucky-golden-box {
+            background: linear-gradient(135deg, rgba(30, 20, 5, 0.9) 0%, rgba(45, 32, 10, 0.95) 50%, rgba(20, 15, 5, 0.9) 100%);
+            border: 2px dashed rgba(255, 215, 0, 0.7);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.3), inset 0 0 25px rgba(212, 175, 55, 0.15);
+        }
+        .lucky-golden-box:hover {
+            border-color: rgba(255, 235, 120, 1);
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.55), inset 0 0 35px rgba(212, 175, 55, 0.25);
+        }
+        .region-item-card {
+            background: rgba(10, 36, 26, 0.75);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .region-item-card:hover {
+            background: rgba(16, 56, 42, 0.95);
+            border-color: rgba(255, 223, 0, 0.8);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 25px rgba(212, 175, 55, 0.4);
+        }
+        @keyframes giftHeartbeat {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            15% { transform: scale(1.12) rotate(-5deg); }
+            30% { transform: scale(1.12) rotate(5deg); }
+            45% { transform: scale(1.05) rotate(-3deg); }
+            60% { transform: scale(1) rotate(0deg); }
+        }
+        .gift-wobble-anim {
+            animation: giftHeartbeat 3.2s ease-in-out infinite;
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
         }
         .site-search-input {
             color: #263b53;
@@ -615,6 +736,7 @@
     <!-- ============================================================== -->
     <!-- MÀN CHÀO ĐÓN TINH HOA OCOP - AI ANTIGRAVITY EDITION -->
     <!-- ============================================================== -->
+<<<<<<< HEAD
     <div id="ocop-intro-overlay" class="fixed inset-0 z-[100] flex flex-col justify-between overflow-y-auto overflow-x-hidden bg-[#030d0a] text-white p-3 sm:p-6 transition-all duration-700 select-none">
         <div class="fixed inset-0 pointer-events-none overflow-hidden">
             <!-- Canvas nano particles & laser mesh AI Antigravity -->
@@ -655,10 +777,62 @@
                 <svg viewBox="0 0 400 400" fill="none" stroke="#D4AF37" class="w-full h-full">
                     <circle cx="200" cy="200" r="45" fill="#D4AF37" fill-opacity="0.4" stroke-width="3"/>
                     <polygon points="200,60 216,150 285,105 236,170 318,174 242,207 304,264 229,238 251,316 200,252 149,316 171,238 96,264 158,207 82,174 164,170 115,105 184,150" fill="#D4AF37" fill-opacity="0.45" stroke-width="2.5"/>
+=======
+    <div id="ocop-intro-overlay" class="fixed inset-0 z-[100] flex flex-col justify-between overflow-y-auto overflow-x-hidden text-white p-3 sm:p-6 transition-all duration-700 select-none">
+        <!-- BACKGROUND DYNAMIC LAYERS -->
+        <div class="fixed inset-0 pointer-events-none overflow-hidden">
+            <!-- Canvas nano particles & laser mesh AI Antigravity -->
+            <canvas id="intro-particles-canvas" class="absolute inset-0 w-full h-full opacity-90 pointer-events-none"></canvas>
+            <!-- Canvas confetti pháo hoa vàng kim khi bốc quà -->
+            <canvas id="intro-confetti-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-30"></canvas>
+            
+            <!-- Vùng sáng Aurora sinh động -->
+            <div class="absolute -top-32 -left-32 w-[42rem] h-[42rem] bg-emerald-500/25 rounded-full blur-[130px] pointer-events-none animate-pulse"></div>
+            <div class="absolute -bottom-32 -right-32 w-[42rem] h-[42rem] bg-amber-500/25 rounded-full blur-[130px] pointer-events-none animate-pulse"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55rem] h-[55rem] bg-[#0d4a37]/35 rounded-full blur-[140px] pointer-events-none"></div>
+            
+            <!-- Trống đồng Đông Sơn AI Hologram 3D (Vòng ngoài Vàng Hoàng Gia) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[820px] h-[820px] sm:w-[1100px] sm:h-[1100px] opacity-25 pointer-events-none drum-rotate-reverse">
+                <svg viewBox="0 0 800 800" fill="none" stroke="#F5D061" class="w-full h-full drop-shadow-[0_0_25px_rgba(212,175,55,0.9)]">
+                    <circle cx="400" cy="400" r="392" stroke-width="2.5" stroke-dasharray="14 10"/>
+                    <circle cx="400" cy="400" r="372" stroke-width="1.8"/>
+                    <circle cx="400" cy="400" r="348" stroke-width="3" stroke-dasharray="24 14"/>
+                    <circle cx="400" cy="400" r="318" stroke-width="2"/>
+                    <!-- Đàn chim Lạc thiêng liêng bay lượn ngàn năm -->
+                    <g transform="rotate(0 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(45 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(90 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(135 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(180 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(225 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(270 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(315 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                </svg>
+            </div>
+            
+            <!-- Vòng Trong Cyber Laser Cyan -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] sm:w-[780px] sm:h-[780px] opacity-30 pointer-events-none drum-rotate">
+                <svg viewBox="0 0 600 600" fill="none" stroke="#00F0FF" class="w-full h-full drop-shadow-[0_0_20px_rgba(0,240,255,0.7)]">
+                    <circle cx="300" cy="300" r="285" stroke-width="2.5" stroke-dasharray="10 8"/>
+                    <circle cx="300" cy="300" r="255" stroke-width="1.8"/>
+                    <circle cx="300" cy="300" r="225" stroke-width="2.5" stroke-dasharray="14 10"/>
+                    <circle cx="300" cy="300" r="185" stroke-width="2"/>
+                    <circle cx="300" cy="300" r="145" stroke-width="2.2" stroke-dasharray="8 6"/>
+                    <circle cx="300" cy="300" r="105" stroke-width="1.5"/>
+                </svg>
+            </div>
+            
+            <!-- Mặt Trời Đông Sơn 14 Tia Phát Sáng Hoàng Kim -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] opacity-60 pointer-events-none sun-pulse">
+                <svg viewBox="0 0 400 400" fill="none" stroke="#FFDF00" class="w-full h-full drop-shadow-[0_0_35px_rgba(255,223,0,0.85)]">
+                    <circle cx="200" cy="200" r="48" fill="#FFDF00" fill-opacity="0.5" stroke-width="3"/>
+                    <polygon points="200,55 218,145 288,100 238,168 322,172 245,206 308,266 232,240 254,320 200,255 146,320 168,240 92,266 155,206 78,172 162,168 112,100 182,145" fill="#FFDF00" fill-opacity="0.55" stroke-width="2.5"/>
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                 </svg>
             </div>
         </div>
 
+<<<<<<< HEAD
         <!-- Header Intro -->
         <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3 border-b border-amber-500/25">
             <div class="flex items-center space-x-3">
@@ -679,12 +853,41 @@
                     VI
                 </button>
                 <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="px-3.5 py-1.5 rounded-full bg-amber-500/20 hover:bg-amber-500/35 text-amber-200 border border-amber-400/50 text-xs font-extrabold transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+=======
+        <!-- HEADER ĐẢO NỔI GLASSMORPHISM -->
+        <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-amber-400/30">
+            <div class="flex items-center space-x-3">
+                <div class="relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-700 to-amber-500 border-2 border-ocopGold flex items-center justify-center text-white text-xl shadow-[0_0_25px_rgba(212,175,55,0.7)] group">
+                    <i class="fa-solid fa-brain text-amber-300 animate-pulse"></i>
+                    <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-[#020c08] shadow-sm animate-ping"></span>
+                    <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-[#020c08] shadow-sm"></span>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="block text-xs sm:text-sm font-black text-amber-200 tracking-wider leading-none">OCOP SALES COPILOT AI</span>
+                        <span class="bg-gradient-to-r from-amber-400 to-yellow-300 text-ocopGreen font-black text-[9px] px-2 py-0.2 rounded-full uppercase shadow">2026 Pro</span>
+                    </div>
+                    <span class="text-[9px] sm:text-[10px] text-amber-300 uppercase font-bold tracking-widest" id="i18n-intro-badge">Antigravity Intelligence • 40 Tinh Hoa Quốc Bảo</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <button id="intro-sound-btn" onclick="toggleIntroSound()" class="intro-pill-btn px-3 py-1.5 rounded-full text-amber-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer shadow-sm">
+                    <i class="fa-solid fa-volume-high text-amber-300" id="intro-sound-icon"></i>
+                    <span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">Âm thanh: Bật</span>
+                </button>
+                <button id="intro-language-btn" onclick="toggleLanguage()" class="w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển ngôn ngữ">
+                    VI
+                </button>
+                <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="intro-mega-btn px-4 py-1.5 rounded-full text-xs font-black transition flex items-center space-x-1.5 shadow-md cursor-pointer">
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                     <span id="i18n-intro-skip">Vào Chợ (Esc)</span>
-                    <i class="fa-solid fa-arrow-right text-[10px] text-ocopGold"></i>
+                    <i class="fa-solid fa-arrow-right-long text-[11px]"></i>
                 </button>
             </div>
         </div>
 
+<<<<<<< HEAD
         <!-- Main Content Intro -->
         <div class="relative z-20 pointer-events-auto max-w-4xl mx-auto w-full my-auto py-4 sm:py-6 flex flex-col items-center text-center space-y-5">
             <div id="intro-award-badge" class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 via-ocopGold/35 to-amber-500/20 border border-ocopGold/70 px-4 py-1.5 rounded-full text-xs font-black text-amber-300 shadow-gold-glow animate-pulse">
@@ -728,19 +931,102 @@
 
             <!-- Interactive Voucher Lucky Draw -->
             <div id="intro-lucky-card" class="w-full max-w-2xl bg-gradient-to-r from-amber-950/90 via-yellow-950/60 to-amber-950/90 border-2 border-dashed border-amber-400/80 hover:border-amber-300 rounded-3xl p-3 sm:p-4 text-center relative overflow-hidden shadow-[0_0_40px_rgba(212,175,55,0.35)] transition-all duration-300">
+=======
+        <!-- MAIN HERO CONTENT STAGE -->
+        <div class="relative z-20 pointer-events-auto max-w-4xl mx-auto w-full my-auto py-3 sm:py-5 flex flex-col items-center text-center space-y-4 sm:space-y-5">
+            
+            <!-- Live Ticker Bar Sôi Động -->
+            <div class="w-full max-w-2xl bg-black/40 border border-amber-400/30 rounded-full px-4 py-1.5 flex items-center space-x-2 text-[11px] backdrop-blur-md shadow-inner">
+                <span class="flex-shrink-0 flex items-center text-emerald-400 font-extrabold text-[10px] uppercase">
+                    <span class="w-2 h-2 bg-red-500 rounded-full animate-ping mr-1.5"></span>
+                    LIVE TICKER
+                </span>
+                <div class="ticker-wrapper flex-1 overflow-hidden">
+                    <div class="ticker-content text-amber-200/90 font-medium space-x-6 text-[11px]">
+                        <span>🔥 <b>1,840+</b> lượt khách hàng đang trải nghiệm trực tuyến</span>
+                        <span>🎁 Chị Hoàng Mai (Hà Nội) vừa đặt Combo Trà Đinh Tân Cương 5★</span>
+                        <span>⚡ Anh Tuấn (TP.HCM) vừa bốc được Lộc Vàng 50K</span>
+                        <span>🚚 Miễn phí vận chuyển toàn quốc cho đơn từ 500k</span>
+                        <span>🌿 100% Đặc sản chuẩn kiểm định OCOP Quốc Gia</span>
+                        <span>🔥 <b>1,840+</b> lượt khách hàng đang trải nghiệm trực tuyến</span>
+                        <span>🎁 Chị Hoàng Mai (Hà Nội) vừa đặt Combo Trà Đinh Tân Cương 5★</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- National Seal Badge -->
+            <div id="intro-award-badge" class="intro-seal-badge inline-flex items-center space-x-2 px-5 py-2 rounded-full text-xs font-black text-amber-200">
+                <i class="fa-solid fa-award text-yellow-300 text-base animate-bounce"></i>
+                <span class="tracking-wide">✦ BẢO VẬT NÔNG SẢN QUỐC GIA • ĐẠT CHUẨN OCOP 4 - 5 SAO ✦</span>
+            </div>
+            
+            <!-- Hero Typography -->
+            <div class="space-y-2">
+                <h2 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight intro-hero-title">
+                    <span class="text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]" id="i18n-intro-title1">Khơi Nguồn Tinh Hoa Nông Sản Việt</span><br>
+                    <span class="intro-gold-gradient drop-shadow-[0_4px_35px_rgba(212,175,55,0.85)]" id="i18n-intro-title2">40 ĐẶC SẢN CHUẨN 4 - 5 SAO</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-amber-100/90 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc">
+                    Nền tảng trí tuệ nhân tạo thế hệ mới AI Antigravity kết nối trực tiếp các nghệ nhân & hợp tác xã từ 63 tỉnh thành. 100% nguyên bản xuất xứ, kiểm định khắt khe, xuất hóa đơn VAT doanh nghiệp.
+                </p>
+            </div>
+
+            <!-- 4 Trụ Cột Hologram Cards (Hiệu ứng 3D Floating) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 w-full max-w-3xl pt-1">
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-amber-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                        <i class="fa-solid fa-medal"></i>
+                    </div>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar1">40 Đặc Sản 4 - 5★</span>
+                    <span class="block text-[10px] text-amber-300/80 font-medium" id="i18n-intro-pillar1-sub">Kiểm định nghiêm ngặt</span>
+                </div>
+                
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        <i class="fa-solid fa-earth-asia"></i>
+                    </div>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar2">63 Tỉnh Thành</span>
+                    <span class="block text-[10px] text-emerald-300/80 font-medium" id="i18n-intro-pillar2-sub">100% Chính gốc xuất xứ</span>
+                </div>
+                
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-cyan-400/20 text-cyan-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar3">AI Antigravity Copilot</span>
+                    <span class="block text-[10px] text-cyan-300/80 font-medium" id="i18n-intro-pillar3-sub">Tư vấn thông minh 24/7</span>
+                </div>
+                
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(255,223,0,0.3)]">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar4">VietQR BIDV</span>
+                    <span class="block text-[10px] text-yellow-300/80 font-medium" id="i18n-intro-pillar4-sub">Miễn ship từ 500k</span>
+                </div>
+            </div>
+
+            <!-- HÒM LỘC VÀNG AI - INTERACTIVE LUCKY CAPSULE DRAW -->
+            <div id="intro-lucky-card" class="lucky-golden-box w-full max-w-2xl rounded-3xl p-3.5 sm:p-4 text-center relative overflow-hidden transition-all duration-300">
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                     <div class="flex items-center space-x-3 text-left">
-                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-600 text-ocopGreen flex items-center justify-center text-xl shadow-lg lucky-card-pulse flex-shrink-0">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-600 text-ocopGreen flex items-center justify-center text-2xl shadow-xl gift-wobble-anim flex-shrink-0">
                             🎁
                         </div>
                         <div>
                             <div class="flex items-center space-x-2">
                                 <span class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">Lộc Vàng AI • Bốc Thẻ May Mắn</span>
+<<<<<<< HEAD
                                 <span class="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full animate-pulse uppercase">Lì Xì OCOP</span>
+=======
+                                <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse uppercase shadow">Lì Xì OCOP</span>
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                             </div>
-                            <p class="text-[11px] text-amber-100/90 font-medium mt-0.5">Bốc thẻ may mắn nhận ngay voucher 50.000đ hoặc Miễn phí giao hàng</p>
+                            <p class="text-[11px] text-amber-100/90 font-medium mt-0.5">Bốc thẻ may mắn nhận ngay voucher 50.000đ hoặc Miễn phí giao hàng toàn quốc</p>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <button id="btn-draw-gift" onclick="openLuckyGift()" class="w-full sm:w-auto flex-shrink-0 px-4 py-2 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-ocopGold text-ocopGreen font-black text-xs shadow-md hover:scale-105 transition flex items-center justify-center space-x-1.5 cursor-pointer">
                         <i class="fa-solid fa-wand-magic-sparkles text-ocopGreen"></i>
                         <span>Bốc Thẻ Quà Ngay</span>
@@ -751,17 +1037,37 @@
                         <span class="text-xs text-amber-300 font-extrabold uppercase">Mã Quà:</span>
                         <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-white bg-amber-500/20 px-3 py-1 rounded-lg border border-amber-400/80 font-mono tracking-widest text-amber-200">OCOP-TINHOA50</span>
                         <button onclick="copyToClipboard(document.getElementById('lucky-gift-code').innerText, 'Mã voucher OCOP');" class="text-xs bg-amber-400 hover:bg-amber-300 text-ocopGreen font-bold px-2.5 py-1 rounded transition flex items-center space-x-1 cursor-pointer">
+=======
+                    <button id="btn-draw-gift" onclick="openLuckyGift()" class="intro-mega-btn w-full sm:w-auto flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition flex items-center justify-center space-x-2 cursor-pointer">
+                        <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+                        <span>Bốc Thẻ Lộc Vàng</span>
+                    </button>
+                </div>
+                
+                <!-- Kết quả thẻ bài Lộc Vàng VIP -->
+                <div id="intro-gift-result" class="hidden mt-3 pt-3 border-t border-amber-400/40 animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-black/60 p-3 rounded-2xl backdrop-blur-md">
+                    <div class="flex items-center space-x-2.5 text-left">
+                        <span class="text-xs text-amber-300 font-black uppercase flex items-center"><i class="fa-solid fa-gift mr-1 text-ocopGold"></i> MÃ LỘC:</span>
+                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner">OCOP-TINHOA50</span>
+                        <button onclick="copyToClipboard(document.getElementById('lucky-gift-code').innerText, 'Mã voucher OCOP');" class="text-xs bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-ocopGreen font-black px-3 py-1 rounded-lg transition flex items-center space-x-1 cursor-pointer shadow">
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                             <i class="fa-regular fa-copy"></i>
-                            <span>Copy</span>
+                            <span>Sao chép</span>
                         </button>
                     </div>
+<<<<<<< HEAD
                     <span class="text-[11px] sm:text-xs text-emerald-300 font-bold flex items-center">
                         <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400"></i> Đã kích hoạt giảm 50.000đ cho đơn hàng!
 >>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
+=======
+                    <span class="text-[11px] sm:text-xs text-emerald-300 font-extrabold flex items-center">
+                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400 text-sm"></i> Đã tự động kích hoạt giảm 50.000đ vào đơn hàng!
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                     </span>
                 </div>
             </div>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
             <div class="space-y-1">
                 <span class="bg-emerald-50 text-ocopGreen font-bold px-3.5 py-1 rounded-full text-xs uppercase tracking-wider inline-flex items-center">
@@ -960,46 +1266,94 @@
                             <span id="i18n-intro-tab-central">Miền Trung</span>
                         </button>
                         <button id="tab-region-south" aria-pressed="false" onclick="setIntroRegion('south', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
+=======
+            <!-- THƯỚC PHIM 3 MIỀN XUYÊN VIỆT (Interactive Cinematic Showcase) -->
+            <div class="w-full max-w-3xl intro-card-glass rounded-3xl p-4 sm:p-5 border border-amber-400/40 shadow-2xl text-left space-y-3.5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-400/20 pb-3">
+                    <span class="text-xs font-extrabold text-amber-200 uppercase tracking-wider flex items-center space-x-2">
+                        <i class="fa-solid fa-map-location-dot text-amber-400 text-sm"></i>
+                        <span id="i18n-intro-region-header">Hành trình 3 miền kết tinh ẩm thực Việt:</span>
+                    </span>
+                    <div class="flex items-center space-x-1.5 bg-black/60 p-1 rounded-2xl border border-white/10 backdrop-blur-md">
+                        <button id="tab-region-north" aria-pressed="true" onclick="setIntroRegion('north', true)" class="flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer">
+                            <span>🏔️</span>
+                            <span id="i18n-intro-tab-north">Miền Bắc</span>
+                        </button>
+                        <button id="tab-region-central" aria-pressed="false" onclick="setIntroRegion('central', true)" class="flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
+                            <span>🌊</span>
+                            <span id="i18n-intro-tab-central">Miền Trung</span>
+                        </button>
+                        <button id="tab-region-south" aria-pressed="false" onclick="setIntroRegion('south', true)" class="flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                             <span>🌾</span>
                             <span id="i18n-intro-tab-south">Miền Nam</span>
                         </button>
                     </div>
                 </div>
+<<<<<<< HEAD
                 <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
                     <div id="region-progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-ocopGold w-0 transition-all duration-100 ease-linear"></div>
                 </div>
-                <div>
-                    <h4 id="intro-region-title" class="text-sm sm:text-base font-extrabold text-amber-300">Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng</h4>
-                    <p id="intro-region-desc" class="text-xs text-gray-300 leading-relaxed mt-1">Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.</p>
+=======
+                
+                <!-- Thanh tiến trình Neon chuyển miền tự động -->
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <div id="region-progress-bar" class="h-full bg-gradient-to-r from-amber-400 via-yellow-300 to-emerald-400 w-0 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(255,223,0,0.8)]"></div>
                 </div>
+                
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
+                <div>
+                    <h4 id="intro-region-title" class="text-sm sm:text-base font-black text-yellow-300 flex items-center space-x-2">
+                        <span>Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng</span>
+                    </h4>
+                    <p id="intro-region-desc" class="text-xs text-amber-100/80 leading-relaxed mt-1">
+                        Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.
+                    </p>
+                </div>
+<<<<<<< HEAD
+=======
+                
+                <!-- Lưới 4 Thẻ Đặc Sản 3 Miền Dynamic (Có ảnh thật & Giá Vàng) -->
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                 <div id="intro-region-items" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                     <!-- Render dynamic từ JavaScript -->
                 </div>
             </div>
 
+<<<<<<< HEAD
             <!-- CTA Main Button -->
             <div class="w-full max-w-3xl space-y-4 pt-1">
                 <button id="intro-enter-market" onclick="enterOcopMarket('all')" class="btn-sweep group relative w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 sm:px-14 sm:py-4.5 rounded-2xl text-sm sm:text-base font-black text-[#071c15] bg-gradient-to-r from-amber-300 via-ocopGold to-yellow-400 hover:from-amber-200 hover:to-ocopGold shadow-[0_0_50px_rgba(212,175,55,0.8)] hover:shadow-[0_0_70px_rgba(212,175,55,1)] hover:scale-105 transition-all duration-300 border-2 border-white/80 cursor-pointer">
+=======
+            <!-- MEGA CALL-TO-ACTION (CTA) BƯỚC VÀO CHỢ TINH HOA -->
+            <div class="w-full max-w-3xl space-y-3.5 pt-1">
+                <button id="intro-enter-market" onclick="enterOcopMarket('all')" class="intro-mega-btn btn-sweep group relative w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 sm:px-14 sm:py-4.5 rounded-2xl text-sm sm:text-base font-black border-2 border-white/80 cursor-pointer">
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                     <i class="fa-solid fa-wand-magic-sparkles text-ocopGreen mr-2.5 text-base group-hover:rotate-12 transition-transform"></i>
                     <span id="i18n-intro-btn-enter">✦ BƯỚC VÀO CHỢ TINH HOA OCOP (40 ĐẶC SẢN) ✦</span>
-                    <i class="fa-solid fa-arrow-right ml-3 text-sm group-hover:translate-x-1.5 transition-transform"></i>
+                    <i class="fa-solid fa-arrow-right-long ml-3 text-sm group-hover:translate-x-2 transition-transform"></i>
                 </button>
+<<<<<<< HEAD
+=======
+                
+                <!-- Quick Navigation Pills -->
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                 <div class="space-y-2">
                     <span class="block text-[11px] text-amber-200/70 font-semibold uppercase tracking-wider" id="i18n-intro-quick-header">Hoặc chọn nhanh theo nhu cầu của bạn:</span>
                     <div class="flex flex-wrap items-center justify-center gap-2 text-xs font-bold">
-                        <button onclick="enterOcopMarket('gift')" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-amber-300/40 text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('gift')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
                             <span>🎁</span>
                             <span id="i18n-intro-quick-gift">Quà Biếu Sức Khỏe</span>
                         </button>
-                        <button onclick="enterOcopMarket('tea')" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-amber-300/40 text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('tea')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
                             <span>🍵</span>
                             <span id="i18n-intro-quick-tea">Trà & Dược Liệu 5★</span>
                         </button>
-                        <button onclick="enterOcopMarket('ai')" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-400/50 text-emerald-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('ai')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-emerald-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer bg-emerald-950/50 border-emerald-400/50">
                             <span>🤖</span>
                             <span id="i18n-intro-quick-ai">Nhờ AI Antigravity Tư Vấn</span>
                         </button>
-                        <button onclick="enterOcopMarket('admin')" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-blue-950/60 hover:bg-blue-900/80 border border-blue-400/50 text-blue-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('admin')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-blue-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer bg-blue-950/50 border-blue-400/50">
                             <span>💬</span>
                             <span id="i18n-intro-quick-admin">Chat Với 4 Admin FB</span>
                         </button>
@@ -1008,13 +1362,18 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         <!-- Footer Intro -->
         <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full pt-3 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-200/60 gap-2">
+=======
+        <!-- FOOTER INTRO BẢO CHỨNG QUỐC GIA -->
+        <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full pt-3 border-t border-amber-400/25 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-200/70 gap-2">
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
             <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-shield-halved text-ocopGold"></i>
-                <span>Chứng nhận OCOP Quốc Gia số 0312461711 • Cam kết 100% chính hãng</span>
+                <i class="fa-solid fa-shield-halved text-yellow-400 text-sm"></i>
+                <span>Chứng nhận Xúc tiến Thương mại OCOP Quốc Gia số 0312461711 • Cam kết 100% chính hãng</span>
             </div>
-            <span>Ấn phím <kbd class="bg-white/10 px-1.5 py-0.5 rounded border border-white/20 text-white font-mono text-[10px]">Esc</kbd> hoặc nút Bỏ qua để vào thẳng trang chủ</span>
+            <span>Ấn phím <kbd class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-[10px]">Esc</kbd> hoặc nút Bỏ qua để vào thẳng chợ</span>
         </div>
     </div>
 
@@ -1976,19 +2335,31 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
         ];
 
         // Dữ liệu thước phim 3 Miền
+<<<<<<< HEAD
+=======
+        // Dữ liệu thước phim 3 Miền (Kèm ảnh thật, tag và giá vàng chuẩn OCOP)
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
         const regionData = {
             north: {
                 title: "Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng",
                 desc: "Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.",
                 items: [
+<<<<<<< HEAD
                     { name: "Trà Đinh Thái Nguyên 5★", origin: "Thái Nguyên", badge: "850.000đ" },
                     { name: "Chả Mực Giã Tay 5★", origin: "Quảng Ninh", badge: "490.000đ" },
                     { name: "Trâu Gác Bếp Tây Bắc 5★", origin: "Lào Cai", badge: "790.000đ" },
                     { name: "Trà Shan Tuyết Suối Giàng 5★", origin: "Yên Bái", badge: "920.000đ" }
+=======
+                    { name: "Trà Đinh Nõn Tân Cương 5★", origin: "Thái Nguyên", badge: "850.000 ₫", tag: "Đệ Nhất Danh Trà", img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Chả Mực Giã Tay Hạ Long 5★", origin: "Quảng Ninh", badge: "490.000 ₫", tag: "Ẩm Thực Biển", img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Thịt Trâu Gác Bếp Tây Bắc 5★", origin: "Lào Cai", badge: "790.000 ₫", tag: "Hương Núi Rừng", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Trà Hoa Vàng Tam Đảo 5★", origin: "Vĩnh Phúc", badge: "1.150.000 ₫", tag: "Quốc Bảo Trà", img: "https://images.unsplash.com/photo-1563822249548-9a72b6353cd1?auto=format&fit=crop&w=300&q=80" }
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                 ]
             },
             central: {
                 title: "Miền Trung & Tây Nguyên - Quốc Bảo Dược Liệu & Mật Ong Rừng",
+<<<<<<< HEAD
                 desc: "Đất nắng gió ôm trọn Sâm Ngọc Linh Quảng Nam ngâm mật ong, Tỏi đen Lý Sơn, Tiêu Chư Sê và Mật ong hoa cà phê Tây Nguyên đượm đà.",
                 items: [
                     { name: "Sâm Ngọc Linh Mật Ong 5★", origin: "Quảng Nam", badge: "3.200.000đ" },
@@ -2005,6 +2376,24 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
                     { name: "Cua Cà Mau Hấp Muối 5★", origin: "Cà Mau", badge: "580.000đ" },
                     { name: "Nước Mắm Phú Quốc 43° 5★", origin: "Kiên Giang", badge: "220.000đ" },
                     { name: "Cá Thát Lát Rút Xương 5★", origin: "Hậu Giang", badge: "310.000đ" }
+=======
+                desc: "Đất nắng gió ôm trọn Sâm Ngọc Linh Quảng Nam ngâm mật ong, Tỏi đen Lý Sơn, Đông trùng Đà Lạt và Hạt điều Bình Phước thượng hạng.",
+                items: [
+                    { name: "Sâm Ngọc Linh Mật Ong Rừng 5★", origin: "Quảng Nam", badge: "3.200.000 ₫", tag: "Quốc Bảo Việt Nam", img: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Tỏi Đen Lý Sơn Nhiều Củ 5★", origin: "Quảng Ngãi", badge: "550.000 ₫", tag: "Bổ Dưỡng Đảo Xanh", img: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Đông Trùng Hạ Thảo Đà Lạt 5★", origin: "Lâm Đồng", badge: "1.850.000 ₫", tag: "Sấy Thăng Hoa", img: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Hạt Điều Rang Muối Vỏ Lụa 5★", origin: "Bình Phước", badge: "280.000 ₫", tag: "Nông Sản Xuất Khẩu", img: "https://images.unsplash.com/photo-1509358217951-6ef2e75e11f1?auto=format&fit=crop&w=300&q=80" }
+                ]
+            },
+            south: {
+                title: "Miền Nam & Biển Đảo - Tinh Hoa Yến Sào & Mắm Cá Đậm Đà",
+                desc: "Vùng đất trù phú miền Tây và Biển đảo với Yến Sào Khánh Hòa, Cua Cà Mau hấp muối, Nước mắm cá cơm Phú Quốc và Cá Thát Lát rút xương.",
+                items: [
+                    { name: "Yến Sào Khánh Hòa Thượng Hạng 5★", origin: "Khánh Hòa", badge: "2.450.000 ₫", tag: "Tổ Yến Đảo Tự Nhiên", img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Cua Cà Mau Hấp Muối Hột 5★", origin: "Cà Mau", badge: "580.000 ₫", tag: "Đất Mũi Cực Nam", img: "https://images.unsplash.com/photo-1559742811-822863c46f43?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Nước Mắm Phú Quốc 43° Đạm 5★", origin: "Kiên Giang", badge: "220.000 ₫", tag: "Cá Cơm Than Tươi", img: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Hạt Mắc Ca Đắk Nông Nứt Vỏ 5★", origin: "Đắk Nông", badge: "310.000 ₫", tag: "Béo Bùi Tự Nhiên", img: "https://images.unsplash.com/photo-1509358217951-6ef2e75e11f1?auto=format&fit=crop&w=300&q=80" }
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                 ]
             }
         };
@@ -2022,6 +2411,10 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
         let aiMessageSequence = 0;
         let introParticlesFrame = null;
         let introParticlesResizeHandler = null;
+<<<<<<< HEAD
+=======
+        let mouseX = -9999, mouseY = -9999;
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
         let ordersHistory = [
             { id: 'OCOP-98231', date: '02/10/2026', total: 1530000, status: 'Đã giao hàng', items: ['Trà Đinh Nõn Tân Cương', 'Thịt Trâu Gác Bếp'] },
             { id: 'OCOP-77120', date: '25/09/2026', total: 2450000, status: 'Đang vận chuyển', items: ['Yến Sào Khánh Hòa Thượng Hạng'] }
@@ -2030,12 +2423,25 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
             initIntroParticles();
+<<<<<<< HEAD
+=======
+            initIntroTilt();
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
             renderProducts(products);
             setIntroRegion('north', false);
             startRegionAutoSlide();
             updateCartBadge();
             updateWishlistBadge();
 
+<<<<<<< HEAD
+=======
+            // Lắng nghe chuột để tạo hiệu ứng tương tác hạt & laser
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
             // Lắng nghe phím Esc để thoát intro nhanh
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && !document.getElementById('ocop-intro-overlay').classList.contains('hidden')) {
@@ -2045,6 +2451,7 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
         });
 
         // -------------------------------------------------------------
+<<<<<<< HEAD
         // HIỆU ỨNG NANO PARTICLES & LASER MESH AI ANTIGRAVITY (CANVAS)
         // -------------------------------------------------------------
         function initIntroParticles() {
@@ -2149,16 +2556,289 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
             }
         }
 
+=======
+        // BỘ TẠO ÂM THANH ĐIỆN TỬ WEB AUDIO API (TỰ ĐỘNG, KHÔNG CẦN FILE)
+        // -------------------------------------------------------------
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playChimeSound() {
+            if (!isSoundOn) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const freqs = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6 chuông vàng ngũ cung
+                freqs.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.08);
+
+                    gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + idx * 0.08 + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.08 + 1.2);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start(ctx.currentTime + idx * 0.08);
+                    osc.stop(ctx.currentTime + idx * 0.08 + 1.3);
+                });
+            } catch (err) {}
+        }
+
+        function playWhooshSound() {
+            if (!isSoundOn) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(320, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(140, ctx.currentTime + 0.25);
+
+                gain.gain.setValueAtTime(0.06, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.26);
+            } catch (err) {}
+        }
+
+        // -------------------------------------------------------------
+        // HIỆU ỨNG PHÁO HOA CONFETTI VÀNG KIM KHI BỐC QUÀ
+        // -------------------------------------------------------------
+        function triggerGoldConfetti() {
+            const canvas = document.getElementById('intro-confetti-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const confetti = [];
+            const colors = ['#FFDF00', '#F5D061', '#10B981', '#FFFFFF', '#FFA500', '#00F0FF'];
+            const count = 90;
+
+            for (let i = 0; i < count; i++) {
+                confetti.push({
+                    x: canvas.width / 2 + (Math.random() - 0.5) * 260,
+                    y: canvas.height * 0.52 + (Math.random() - 0.5) * 60,
+                    w: Math.random() * 8 + 5,
+                    h: Math.random() * 9 + 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 16,
+                    vy: -Math.random() * 14 - 5,
+                    rotation: Math.random() * 360,
+                    vr: (Math.random() - 0.5) * 12,
+                    gravity: 0.38,
+                    alpha: 1
+                });
+            }
+
+            function renderConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+
+                confetti.forEach(c => {
+                    c.x += c.vx;
+                    c.y += c.vy;
+                    c.vy += c.gravity;
+                    c.rotation += c.vr;
+                    c.alpha -= 0.012;
+
+                    if (c.alpha > 0) {
+                        alive = true;
+                        ctx.save();
+                        ctx.translate(c.x, c.y);
+                        ctx.rotate((c.rotation * Math.PI) / 180);
+                        ctx.fillStyle = c.color;
+                        ctx.globalAlpha = Math.max(0, c.alpha);
+                        ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
+                        ctx.restore();
+                    }
+                });
+
+                if (alive) {
+                    requestAnimationFrame(renderConfetti);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            renderConfetti();
+        }
+
+        // -------------------------------------------------------------
+        // HIỆU ỨNG NANO PARTICLES & LASER MESH AI ANTIGRAVITY (CANVAS)
+        // -------------------------------------------------------------
+        function initIntroParticles() {
+            const canvas = document.getElementById('intro-particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            if (!introParticlesResizeHandler) {
+                introParticlesResizeHandler = () => {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                };
+                window.addEventListener('resize', introParticlesResizeHandler);
+            }
+
+            const particles = [];
+            const particleCount = Math.min(Math.floor(width / 14), 85);
+            const particleColors = ['#FFDF00', '#F5D061', '#10B981', '#00F0FF', '#FFF6D6'];
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 2.8 + 1,
+                    color: particleColors[Math.floor(Math.random() * particleColors.length)],
+                    vx: (Math.random() - 0.5) * 0.7,
+                    vy: (Math.random() - 0.5) * 0.9 - 0.35, // Antigravity: bay lơ lửng lên
+                    alpha: Math.random() * 0.7 + 0.3
+                });
+            }
+
+            function animate() {
+                if (document.getElementById('ocop-intro-overlay').classList.contains('hidden')) {
+                    introParticlesFrame = null;
+                    return;
+                }
+
+                width = canvas.width;
+                height = canvas.height;
+                ctx.clearRect(0, 0, width, height);
+
+                // Laser Mesh giữa các hạt gần nhau
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 115) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(212, 175, 55, ${0.2 * (1 - dist / 115)})`;
+                            ctx.lineWidth = 0.65;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                // Tương tác chuột với hạt
+                particles.forEach(p => {
+                    const dmx = p.x - mouseX;
+                    const dmy = p.y - mouseY;
+                    const distMouse = Math.sqrt(dmx * dmx + dmy * dmy);
+                    if (distMouse < 90 && distMouse > 0) {
+                        p.x += (dmx / distMouse) * 2;
+                        p.y += (dmy / distMouse) * 2;
+                    }
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.alpha;
+                    ctx.shadowColor = p.color;
+                    ctx.shadowBlur = 6;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0) p.x = width;
+                    if (p.x > width) p.x = 0;
+                    if (p.y < 0) p.y = height;
+                    if (p.y > height) p.y = 0;
+                });
+
+                introParticlesFrame = requestAnimationFrame(animate);
+            }
+            if (introParticlesFrame) cancelAnimationFrame(introParticlesFrame);
+            animate();
+        }
+
+        // -------------------------------------------------------------
+        // HIỆU ỨNG 3D TILT TƯƠNG TÁC CHO CÁC CARD TRỤ CỘT & HỘP QUÀ
+        // -------------------------------------------------------------
+        function initIntroTilt() {
+            const cards = document.querySelectorAll('.intro-card-glass, .lucky-golden-box');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rotateX = -(y / rect.height) * 12;
+                    const rotateY = (x / rect.width) * 12;
+                    card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)';
+                });
+            });
+        }
+
+        // -------------------------------------------------------------
+        // XỬ LÝ MÀN INTRO CHÀO ĐÓN
+        // -------------------------------------------------------------
+        function toggleIntroSound() {
+            isSoundOn = !isSoundOn;
+            const statusEl = document.getElementById('i18n-intro-sound-status');
+            const iconEl = document.getElementById('intro-sound-icon');
+            const btnEl = document.getElementById('intro-sound-btn');
+            if (isSoundOn) {
+                statusEl.innerText = "Âm thanh: Bật";
+                if (iconEl) iconEl.className = "fa-solid fa-volume-high text-amber-300";
+                btnEl.classList.remove('opacity-50');
+                playChimeSound();
+                showToast("Đã bật âm thanh Tinh Hoa OCOP", "success");
+            } else {
+                statusEl.innerText = "Âm thanh: Tắt";
+                if (iconEl) iconEl.className = "fa-solid fa-volume-xmark text-gray-400";
+                btnEl.classList.add('opacity-50');
+                showToast("Đã tắt âm thanh", "info");
+            }
+        }
+
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
         function openIntroModal() {
             const overlay = document.getElementById('ocop-intro-overlay');
             overlay.classList.remove('hidden', 'curtain-closing');
             initIntroParticles();
+<<<<<<< HEAD
             startRegionAutoSlide();
+=======
+            initIntroTilt();
+            startRegionAutoSlide();
+            playChimeSound();
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
         }
 
         function enterOcopMarket(mode) {
             const overlay = document.getElementById('ocop-intro-overlay');
             if (overlay.classList.contains('hidden') || overlay.classList.contains('curtain-closing')) return;
+<<<<<<< HEAD
+=======
+            playWhooshSound();
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
             overlay.classList.add('curtain-closing');
             if (regionInterval) clearInterval(regionInterval);
 
@@ -2189,20 +2869,37 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
             btnEl.innerHTML = `<i class="fa-solid fa-check-double text-ocopGreen"></i><span>Đã Nhận Lộc Vàng</span>`;
             btnEl.disabled = true;
             btnEl.classList.add('opacity-80', 'cursor-not-allowed');
+<<<<<<< HEAD
             showToast("Chúc mừng! Bạn nhận được Voucher giảm 50.000đ!", "success");
+=======
+
+            // Bắn pháo hoa vàng kim & phát âm thanh chuông may mắn!
+            triggerGoldConfetti();
+            playChimeSound();
+
+            showToast("Chúc mừng! Bạn nhận được Voucher Lộc Vàng giảm 50.000đ!", "success");
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
         }
 
         function setIntroRegion(regionKey, stopAuto = false) {
             if (stopAuto && regionInterval) clearInterval(regionInterval);
             activeRegion = regionKey;
+<<<<<<< HEAD
 
             const r = regionData[regionKey];
             document.getElementById('intro-region-title').innerText = r.title;
+=======
+            if (stopAuto) playWhooshSound();
+
+            const r = regionData[regionKey];
+            document.getElementById('intro-region-title').innerHTML = `<span>${r.title}</span>`;
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
             document.getElementById('intro-region-desc').innerText = r.desc;
 
             // Highlight tab
             ['north', 'central', 'south'].forEach(k => {
                 const tab = document.getElementById(`tab-region-${k}`);
+<<<<<<< HEAD
                 tab.setAttribute('aria-pressed', String(k === regionKey));
                 if (k === regionKey) {
                     tab.className = "flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer";
@@ -2302,6 +2999,110 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
                             <span class="block text-xs text-gray-400 line-through">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
                             <span class="font-black text-red-600 text-base sm:text-lg">${p.price.toLocaleString('vi-VN')} ₫</span>
                         </div>
+=======
+                if (!tab) return;
+                tab.setAttribute('aria-pressed', String(k === regionKey));
+                if (k === regionKey) {
+                    tab.className = "flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer";
+                } else {
+                    tab.className = "flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer";
+                }
+            });
+
+            // Render 4 thẻ sản phẩm của miền (Kèm ảnh thumbnail, huy hiệu & tag)
+            const container = document.getElementById('intro-region-items');
+            container.innerHTML = r.items.map(item => `
+                <div class="region-item-card p-2.5 rounded-2xl flex items-center justify-between gap-2.5 cursor-pointer group shadow-sm" onclick="enterOcopMarket('all')">
+                    <div class="flex items-center space-x-2.5 min-w-0">
+                        <img src="${item.img}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover border border-amber-300/40 group-hover:scale-105 transition flex-shrink-0 shadow-md">
+                        <div class="truncate">
+                            <span class="block text-xs font-black text-amber-100 group-hover:text-yellow-300 transition truncate">${item.name}</span>
+                            <span class="text-[10px] text-amber-300/80 font-medium">${item.origin} • ${item.tag}</span>
+                        </div>
+                    </div>
+                    <span class="bg-gradient-to-r from-amber-400 to-yellow-400 text-ocopGreen font-black text-[10px] px-2.5 py-1 rounded-lg shadow flex-shrink-0">${item.badge}</span>
+                </div>
+            `).join('');
+
+            // Progress bar reset animation
+            const pBar = document.getElementById('region-progress-bar');
+            if (pBar) {
+                pBar.style.width = '0%';
+                setTimeout(() => { pBar.style.width = '100%'; }, 50);
+            }
+        }
+
+        function startRegionAutoSlide() {
+            if (regionInterval) clearInterval(regionInterval);
+            const regions = ['north', 'central', 'south'];
+            let idx = regions.indexOf(activeRegion);
+
+            regionInterval = setInterval(() => {
+                idx = (idx + 1) % regions.length;
+                setIntroRegion(regions[idx], false);
+            }, 6000);
+        }
+
+        function scrollToProducts() {
+            const sec = document.getElementById('products-section');
+            if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // -------------------------------------------------------------
+        // RENDER VÀ LỌC LƯỚI SẢN PHẨM
+        // -------------------------------------------------------------
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            const noMsg = document.getElementById('no-products-msg');
+            const countBadge = document.getElementById('product-count-badge');
+
+            countBadge.innerText = items.length;
+
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                noMsg.style.display = 'block';
+                return;
+            }
+
+            noMsg.style.display = 'none';
+            grid.innerHTML = items.map(p => {
+                const isFav = wishlist.includes(p.id);
+                return `
+                <div class="glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group relative">
+                    <div>
+                        <div class="relative h-48 sm:h-52 overflow-hidden bg-amber-100/50">
+                            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-108 transition duration-700">
+                            <div class="absolute top-3 left-3 flex flex-col space-y-1">
+                                <span class="bg-ocopGreen text-ocopGold text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md border border-ocopGold/30">
+                                    ${p.region}
+                                </span>
+                                <span class="bg-amber-500 text-ocopGreen font-black text-[9px] px-2 py-0.5 rounded-full uppercase shadow">
+                                    ${p.stars} SAO QUỐC GIA
+                                </span>
+                            </div>
+                            <button onclick="toggleWishlist(${p.id})" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md text-red-500 flex items-center justify-center hover:scale-110 transition shadow cursor-pointer">
+                                <i class="${isFav ? 'fa-solid text-red-600' : 'fa-regular'} fa-heart"></i>
+                            </button>
+                            <button onclick="openQuickView(${p.id})" class="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-xl backdrop-blur-md transition flex items-center space-x-1 cursor-pointer">
+                                <i class="fa-solid fa-eye text-ocopGold"></i>
+                                <span>Xem nhanh</span>
+                            </button>
+                        </div>
+                        <div class="p-4 space-y-2">
+                            <div class="flex items-center justify-between text-[11px] text-amber-800 font-bold">
+                                <span><i class="fa-solid fa-star text-yellow-500 mr-1"></i>${p.rating} (${p.reviews} đánh giá)</span>
+                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md text-[10px]">${p.tag}</span>
+                            </div>
+                            <h3 class="font-extrabold text-sm text-gray-900 group-hover:text-ocopGreen transition line-clamp-2 leading-snug">${p.name}</h3>
+                            <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${p.desc}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0 border-t border-amber-100/60 mt-2 flex items-center justify-between">
+                        <div>
+                            <span class="block text-xs text-gray-400 line-through">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
+                            <span class="font-black text-red-600 text-base sm:text-lg">${p.price.toLocaleString('vi-VN')} ₫</span>
+                        </div>
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
                         <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white hover:bg-ocopGreenLight p-2.5 rounded-xl font-bold transition flex items-center space-x-1.5 shadow hover:scale-105 active:scale-95 cursor-pointer">
                             <i class="fa-solid fa-cart-plus text-ocopGold text-xs"></i>
                             <span class="text-xs">Thêm giỏ</span>
@@ -2623,7 +3424,10 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
             document.getElementById('bidv-qr').src = qrUrl;
 
             toggleCart();
+<<<<<<< HEAD
 >>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
+=======
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
             document.getElementById('qr-modal').classList.remove('hidden');
         }
 
@@ -2878,7 +3682,10 @@ DANH SÁCH SẢN PHẨM & DỊCH VỤ:
             showToast("Đã chuyển đổi sang phiên bản Tiếng Việt chuẩn OCOP Quốc Gia!", "info");
         }
         
+<<<<<<< HEAD
 >>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
+=======
+>>>>>>> bc233fbbef0dfa8f460a15fe5f681d8f260f91e4
     </script>
 </body>
 </html>
