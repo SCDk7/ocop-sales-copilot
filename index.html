@@ -538,6 +538,9 @@
             grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
             gap: 0.6rem;
         }
+        .province-products-grid.is-hidden {
+            display: none;
+        }
         .province-product-card {
             display: flex;
             min-width: 0;
@@ -1466,7 +1469,12 @@
                     <section id="province-products-panel" class="hidden mt-4 border-t border-emerald-900/10 pt-3" aria-live="polite">
                         <div class="mb-2 flex items-center justify-between gap-2">
                             <h3 id="province-products-title" class="m-0 text-sm font-black text-[#23473b]"></h3>
-                            <span id="province-products-count" class="shrink-0 rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-black text-amber-900"></span>
+                            <div class="flex shrink-0 items-center gap-1.5">
+                                <span id="province-products-count" class="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-black text-amber-900"></span>
+                                <button id="province-products-toggle" class="rounded-lg border border-emerald-900/15 bg-white/80 px-2.5 py-1 text-[10px] font-extrabold text-[#315c4b] transition hover:bg-emerald-50" type="button" onclick="toggleProvinceProducts()" aria-controls="province-products-grid" aria-expanded="true">
+                                    <i class="fa-solid fa-eye-slash mr-1" aria-hidden="true"></i><span id="province-products-toggle-label">Ẩn</span>
+                                </button>
+                            </div>
                         </div>
                         <div id="province-products-grid" class="province-products-grid"></div>
                     </section>
@@ -2268,6 +2276,7 @@
         let lastRenderedProducts = products;
         let isSoundOn = false;
         let selectedProvince = null;
+        let provinceProductsHidden = false;
         let provinceMap = null;
         let provinceBoundaryLayer = null;
         let currentUser = null;
@@ -2747,7 +2756,9 @@
             const title = document.getElementById('province-products-title');
             const count = document.getElementById('province-products-count');
             const grid = document.getElementById('province-products-grid');
-            if (!panel || !title || !count || !grid) return;
+            const toggle = document.getElementById('province-products-toggle');
+            const toggleLabel = document.getElementById('province-products-toggle-label');
+            if (!panel || !title || !count || !grid || !toggle || !toggleLabel) return;
 
             if (!selectedProvince) {
                 panel.classList.add('hidden');
@@ -2765,6 +2776,14 @@
             count.textContent = currentLanguage === 'en'
                 ? `${provinceProducts.length} products`
                 : `${provinceProducts.length} sản phẩm`;
+            grid.classList.toggle('is-hidden', provinceProductsHidden);
+            toggle.setAttribute('aria-expanded', String(!provinceProductsHidden));
+            toggleLabel.textContent = provinceProductsHidden
+                ? (currentLanguage === 'en' ? 'Show' : 'Hiện')
+                : (currentLanguage === 'en' ? 'Hide' : 'Ẩn');
+            toggle.querySelector('i').className = provinceProductsHidden
+                ? 'fa-solid fa-eye mr-1'
+                : 'fa-solid fa-eye-slash mr-1';
 
             if (provinceProducts.length === 0) {
                 const emptyMessage = document.createElement('p');
@@ -2811,6 +2830,11 @@
             grid.replaceChildren(...cards);
         }
 
+        function toggleProvinceProducts() {
+            provinceProductsHidden = !provinceProductsHidden;
+            renderProvinceProducts();
+        }
+
         function publishProvinceSelection() {
             const selection = selectedProvince ? { ...selectedProvince } : null;
             window.selectedOcopProvince = selection;
@@ -2819,6 +2843,7 @@
 
         function clearSelectedProvince() {
             selectedProvince = null;
+            provinceProductsHidden = false;
             provinceBoundaryLayer?.setStyle(getProvinceStyle);
             publishProvinceSelection();
             filterProductsGlobal(document.getElementById('product-search').value);
@@ -2907,6 +2932,7 @@
                                     id: feature.properties.id,
                                     name: feature.properties.name
                                 };
+                                provinceProductsHidden = false;
                                 provinceBoundaryLayer.setStyle(getProvinceStyle);
                                 publishProvinceSelection();
                                 filterProductsGlobal(document.getElementById('product-search').value);
