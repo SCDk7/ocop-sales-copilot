@@ -4624,13 +4624,16 @@
                     : 'Chọn tỉnh/thành trên bản đồ');
             }
 
-            const targetLanguage = currentLanguage === 'en' ? 'VI' : 'EN';
+            const activeLanguage = currentLanguage === 'en' ? 'EN' : 'VI';
+            const languageButtonLabel = currentLanguage === 'en'
+                ? 'Current language: English. Switch to Vietnamese.'
+                : 'Ngôn ngữ hiện tại: Tiếng Việt. Chuyển sang tiếng Anh.';
             ['intro-language-btn', 'site-language-btn'].forEach(id => {
                 const button = document.getElementById(id);
                 if (button) {
-                    button.textContent = targetLanguage;
-                    button.title = currentLanguage === 'en' ? 'Switch to Vietnamese' : 'Chuyển sang tiếng Anh';
-                    button.setAttribute('aria-label', currentLanguage === 'en' ? 'Switch language to Vietnamese' : 'Chuyển sang tiếng Anh');
+                    button.textContent = activeLanguage;
+                    button.title = languageButtonLabel;
+                    button.setAttribute('aria-label', languageButtonLabel);
                     button.setAttribute('aria-pressed', String(currentLanguage === 'en'));
                 }
             });
