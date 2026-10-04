@@ -1,5 +1,13 @@
 // ==========================================
+<<<<<<< HEAD
 // 1. DỮ LIỆU SẢN PHẨM VÀ GIỎ HÀNG
+=======
+<<<<<<< HEAD
+// 1. DỮ LIỆU SẢN PHẨM VÀ GIỎ HÀNG
+=======
+// DỮ LIỆU 40 ĐẶC SẢN OCOP VIỆT NAM
+>>>>>>> b2951a01631d44adf9a9346762f7aa1475134f6f
+>>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
 // ==========================================
 const ocopProducts = [
     { id: 1, name: "Mật ong rừng U Minh", price: 250000, stock: 15, unit: "chai" },
@@ -8,6 +16,15 @@ const ocopProducts = [
     { id: 4, name: "Trà Hoa Vàng Tam Đảo", price: 450000, stock: 20, unit: "hộp" }
 ];
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+// ==========================================
+// TRẠNG THÁI ỨNG DỤNG (STATE)
+// ==========================================
+>>>>>>> b2951a01631d44adf9a9346762f7aa1475134f6f
+>>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
 let cart = [];
 
 // Cập nhật số lượng trên giao diện giỏ hàng
@@ -36,7 +53,15 @@ function addProductToCart(productName) {
 }
 
 // ==========================================
+<<<<<<< HEAD
 // 2. XỬ LÝ TRÍ TUỆ CHATBOT (COPILOT AI)
+=======
+<<<<<<< HEAD
+// 2. XỬ LÝ TRÍ TUỆ CHATBOT (COPILOT AI)
+=======
+// GIỎ HÀNG & YÊU THÍCH
+>>>>>>> b2951a01631d44adf9a9346762f7aa1475134f6f
+>>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
 // ==========================================
 function handleUserMessage(userMessage) {
     const text = userMessage.toLowerCase();
@@ -75,7 +100,15 @@ function handleUserMessage(userMessage) {
 }
 
 // ==========================================
+<<<<<<< HEAD
 // 3. GẮN SỰ KIỆN GIAO DIỆN & KHUNG CHAT
+=======
+<<<<<<< HEAD
+// 3. GẮN SỰ KIỆN GIAO DIỆN & KHUNG CHAT
+=======
+// ĐĂNG NHẬP / LỊCH SỬ ĐƠN HÀNG
+>>>>>>> b2951a01631d44adf9a9346762f7aa1475134f6f
+>>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const chatWidget = document.getElementById("chat-widget");
@@ -133,4 +166,96 @@ document.addEventListener("DOMContentLoaded", () => {
         chatBox.appendChild(msgDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
+<<<<<<< HEAD
 });
+=======
+})
+document.addEventListener('DOMContentLoaded', function () {
+  // 1. GÁN ẢNH AI AVATAR CÓ SẴN VÀO CÁC VỊ TRÍ CON AI
+  const aiAvatars = document.querySelectorAll('.ai-avatar, .copilot-avatar, img[alt*="AI"]');
+  aiAvatars.forEach(img => {
+    img.src = 'ai-avatar.jpg';
+  });
+
+  // 2. XỬ LÝ TÌM KIẾM TRÊN HEADER
+  const searchInput = document.getElementById('headerSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', function () {
+      const keyword = this.value.toLowerCase().trim();
+      filterProducts(keyword);
+    });
+  }
+
+  // 3. SỬA LỖI ĐỔI NGÔN NGỮ & XÓA THÔNG BÁO TRÙNG LẶP (TOAST)
+  let currentLang = localStorage.getItem('app_lang') || 'VI';
+  const langBtn = document.querySelector('.lang-switcher') || document.querySelector('button:has(i), .lang-btn');
+
+  if (langBtn) {
+    langBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      
+      // Chuyển đổi trạng thái
+      currentLang = currentLang === 'VI' ? 'EN' : 'VI';
+      localStorage.setItem('app_lang', currentLang);
+
+      // Gọi hàm đổi ngôn ngữ giao diện (nếu có)
+      if (typeof translatePage === 'function') {
+        translatePage(currentLang);
+      }
+
+      // Thông báo chỉ hiển thị 1 lần duy nhất
+      showSingleToast(
+        currentLang === 'VI'
+          ? 'Đã chuyển đổi sang phiên bản Tiếng Việt chuẩn OCOP Quốc Gia!'
+          : 'Switched to English version successfully!'
+      );
+    });
+  }
+});
+
+// Hàm lọc sản phẩm real-time
+function filterProducts(keyword) {
+  const productCards = document.querySelectorAll('.product-card, [class*="card"], .item-san-pham');
+  productCards.forEach(card => {
+    const textContent = card.textContent.toLowerCase();
+    if (textContent.includes(keyword)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+// Hàm hiển thị thông báo duy nhất (không lặp lại)
+function showSingleToast(message) {
+  // Xóa toàn bộ thông báo cũ đang tồn tại trên màn hình
+  const oldToasts = document.querySelectorAll('.toast-notification, .custom-toast');
+  oldToasts.forEach(t => t.remove());
+
+  // Tạo thông báo mới
+  const toast = document.createElement('div');
+  toast.className = 'custom-toast';
+  toast.innerText = message;
+
+  Object.assign(toast.style, {
+    position: 'fixed',
+    top: '20px',
+    right: '20px',
+    backgroundColor: '#0b2720',
+    color: '#ffffff',
+    padding: '12px 20px',
+    borderRadius: '8px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+    zIndex: '99999',
+    fontSize: '14px',
+    transition: 'opacity 0.3s ease'
+  });
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 2500);
+}
+>>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
