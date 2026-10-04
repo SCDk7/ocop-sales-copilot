@@ -8,18 +8,23 @@ and the following Twilio credentials:
 - `TWILIO_AUTH_TOKEN`
 - `TWILIO_FROM_NUMBER` (a Twilio phone number enabled for SMS)
 
-In PowerShell, set the values in the same terminal used to start the server:
+For automated setup on Windows, run this from PowerShell in the project folder:
 
 ```powershell
-$env:TWILIO_ACCOUNT_SID = "your-account-sid"
-$env:TWILIO_AUTH_TOKEN = "your-auth-token"
-$env:TWILIO_FROM_NUMBER = "+15005550006"
-npm start
+.\setup-twilio.ps1
 ```
 
-Replace the example sender number with a Twilio number from your account. Keep
-the auth token private and do not commit it. Without all three variables, the
-site still runs, but registration returns a clear SMS configuration error.
+The script securely prompts for your Account SID, Auth Token (input is hidden),
+and SMS-capable Twilio sender number, saves them to `.env`, installs project
+dependencies if needed, and starts the app. You must have Node.js 18 or newer
+and a Twilio account with an SMS-enabled number. Twilio trial accounts may only
+send messages to verified recipient numbers.
+
+You can also copy `.env.example` to `.env` and edit it manually. Keep `.env` and
+the auth token private; `.env` is excluded from Git. The server reads `.env` at
+startup; values already set in the environment take precedence. Without all
+three Twilio values, the site still runs, but registration returns a clear SMS
+configuration error.
 
 Verified customer records are stored in `.private-data/customers.json`, outside
 the static website directory and excluded from Git. Passwords are stored as
