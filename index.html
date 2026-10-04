@@ -2776,9 +2776,6 @@
                                     ${p.stars} ${currentLanguage === 'en' ? 'STAR' : 'SAO QUỐC GIA'}
                                 </span>
                             </div>
-                            <button onclick="toggleWishlist(${p.id})" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md text-red-500 flex items-center justify-center hover:scale-110 transition shadow cursor-pointer">
-                                <i class="${isFav ? 'fa-solid text-red-600' : 'fa-regular'} fa-heart"></i>
-                            </button>
                             <button onclick="openQuickView(${p.id})" class="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-xl backdrop-blur-md transition flex items-center space-x-1 cursor-pointer">
                                 <i class="fa-solid fa-eye text-ocopGold"></i>
                                 <span>${currentLanguage === 'en' ? 'Quick view' : 'Xem nhanh'}</span>
@@ -2793,15 +2790,24 @@
                             <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${productDescription}</p>
                         </div>
                     </div>
-                    <div class="p-4 pt-0 border-t border-amber-100/60 mt-2 flex items-center justify-between">
+                    <div class="p-4 pt-0 border-t border-amber-100/60 mt-2 flex items-center justify-between gap-2">
                         <div>
                             <span class="block text-xs text-gray-400 line-through">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
                             <span class="font-black text-red-600 text-base sm:text-lg">${p.price.toLocaleString('vi-VN')} ₫</span>
                         </div>
-                        <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white hover:bg-ocopGreenLight p-2.5 rounded-xl font-bold transition flex items-center space-x-1.5 shadow hover:scale-105 active:scale-95 cursor-pointer">
-                            <i class="fa-solid fa-cart-plus text-ocopGold text-xs"></i>
-                            <span class="text-xs">${currentLanguage === 'en' ? 'Add to cart' : 'Thêm giỏ'}</span>
-                        </button>
+                        <div class="flex shrink-0 items-center gap-1.5">
+                            <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${isFav
+                                ? (currentLanguage === 'en' ? `Remove ${productName} from favorites` : `Bỏ ${productName} khỏi yêu thích`)
+                                : (currentLanguage === 'en' ? `Add ${productName} to favorites` : `Thêm ${productName} vào yêu thích`)}" title="${isFav
+                                ? (currentLanguage === 'en' ? 'Remove from favorites' : 'Bỏ yêu thích')
+                                : (currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích')}" aria-pressed="${isFav}" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${isFav ? 'border-red-200 bg-red-50 text-red-600' : 'border-amber-200 bg-white text-gray-500 hover:border-red-200 hover:bg-red-50 hover:text-red-600'} transition cursor-pointer">
+                                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" onclick="addToCart(${p.id})" class="bg-ocopGreen text-white hover:bg-ocopGreenLight min-h-10 px-2.5 rounded-xl font-bold transition flex items-center justify-center gap-1.5 shadow hover:scale-105 active:scale-95 cursor-pointer">
+                                <i class="fa-solid fa-cart-plus text-ocopGold text-xs" aria-hidden="true"></i>
+                                <span class="text-xs">${currentLanguage === 'en' ? 'Add to cart' : 'Thêm giỏ'}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 `;
