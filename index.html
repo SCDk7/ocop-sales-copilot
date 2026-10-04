@@ -552,6 +552,30 @@
             background: rgba(255, 255, 255, 0.78);
             box-shadow: 0 3px 10px rgba(15, 56, 44, 0.05);
         }
+        .province-product-card .province-product-link {
+            display: flex;
+            min-width: 0;
+            flex: 1 1 auto;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0;
+            border: 0;
+            color: inherit;
+            background: transparent;
+            text-align: left;
+            cursor: pointer;
+        }
+        .province-product-card .province-product-link:hover .province-product-name,
+        .province-product-card .province-product-link:focus-visible .province-product-name {
+            color: #0f5b43;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .province-product-card .province-product-link:focus-visible {
+            outline: 2px solid #d4af37;
+            outline-offset: 3px;
+            border-radius: 0.5rem;
+        }
         .province-product-card img {
             width: 3.25rem;
             height: 3.25rem;
@@ -1121,22 +1145,43 @@
             background-color: #f4f1e4;
             border-color: rgba(212, 175, 55, 0.5);
         }
+        #products-section .cat-side-btn.active,
+        #products-section .mob-cat-btn.active {
+            box-shadow: inset 0 0 0 1px rgba(255, 223, 0, 0.24), 0 5px 14px rgba(15, 56, 44, 0.12);
+        }
+        #products-section .site-search-input:focus {
+            border-color: rgba(212, 175, 55, 0.85);
+            background-color: #fffefa;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18), 0 5px 16px rgba(15, 56, 44, 0.08);
+        }
         #contact-footer {
             background: #fbfaf6;
             border-color: rgba(22, 91, 70, 0.14);
         }
-        .product-card {
+        #products-section .product-card {
             border-color: rgba(212, 175, 55, 0.42);
-            box-shadow: 0 5px 16px rgba(15, 56, 44, 0.07);
-            transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+            background: linear-gradient(180deg, #fff 0%, #fffefa 100%);
+            box-shadow: 0 6px 18px rgba(15, 56, 44, 0.07), 0 1px 2px rgba(15, 56, 44, 0.04);
+            transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease, background-color 0.24s ease;
         }
-        .product-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(212, 175, 55, 0.78);
-            box-shadow: 0 12px 26px rgba(15, 56, 44, 0.12);
+        #products-section .product-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212, 175, 55, 0.88);
+            box-shadow: 0 16px 32px rgba(15, 56, 44, 0.13), 0 3px 8px rgba(212, 175, 55, 0.1);
         }
-        .product-card-image { transition: transform 0.45s ease; }
-        .product-card:hover .product-card-image { transform: scale(1.035); }
+        #products-section .product-card:focus-within {
+            border-color: rgba(212, 175, 55, 0.88);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16), 0 12px 28px rgba(15, 56, 44, 0.1);
+        }
+        #products-section .product-card button:focus-visible,
+        #products-section .cat-side-btn:focus-visible,
+        #products-section .mob-cat-btn:focus-visible,
+        #products-section .site-search-input:focus-visible {
+            outline: 2px solid #d4af37;
+            outline-offset: 3px;
+        }
+        #products-section .product-card-image { transition: transform 0.45s ease; }
+        #products-section .product-card:hover .product-card-image { transform: scale(1.035); }
         @media (min-width: 1024px) {
             #ocop-intro-overlay .intro-stage {
                 grid-template-columns: minmax(0, 1.08fr) minmax(25rem, 0.92fr);
@@ -2797,6 +2842,14 @@
                 const card = document.createElement('article');
                 card.className = 'province-product-card';
 
+                const detailsButton = document.createElement('button');
+                detailsButton.type = 'button';
+                detailsButton.className = 'province-product-link';
+                detailsButton.setAttribute('aria-label', currentLanguage === 'en'
+                    ? `View details for ${getProductName(product)}`
+                    : `Xem chi tiết ${getProductName(product)}`);
+                detailsButton.addEventListener('click', () => openQuickView(product.id));
+
                 const image = document.createElement('img');
                 image.src = product.img;
                 image.alt = getProductName(product);
@@ -2806,12 +2859,13 @@
                 const info = document.createElement('div');
                 info.className = 'province-product-info';
                 const name = document.createElement('p');
-                name.className = 'm-0 truncate text-xs font-extrabold text-[#23473b]';
+                name.className = 'province-product-name m-0 truncate text-xs font-extrabold text-[#23473b]';
                 name.textContent = getProductName(product);
                 const details = document.createElement('p');
                 details.className = 'm-0 mt-1 text-[10px] font-semibold text-[#718075]';
                 details.textContent = `OCOP ${product.stars}★ · ${product.price.toLocaleString('vi-VN')} ₫`;
                 info.append(name, details);
+                detailsButton.append(image, info);
 
                 const addButton = document.createElement('button');
                 addButton.type = 'button';
@@ -2822,7 +2876,7 @@
                 addButton.textContent = currentLanguage === 'en' ? 'Add' : 'Thêm';
                 addButton.addEventListener('click', () => addToCart(product.id));
 
-                card.append(image, info, addButton);
+                card.append(detailsButton, addButton);
                 return card;
             });
             grid.replaceChildren(...cards);
