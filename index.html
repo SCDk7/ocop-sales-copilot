@@ -356,7 +356,7 @@
             </div>
         </section>
     </main>
-
+    
     <!-- 5. WIDGET CHATBOT AI (BÊN TRÁI) -->
     <div id="ai-chat-widget" class="fixed bottom-6 left-6 z-50 flex flex-col items-start animate-float-slow">
         <!-- Khung Cửa Sổ Chatbot AI -->
@@ -380,7 +380,6 @@
             </div>
             <!-- Khung Nội Dung Chat -->
             <div id="ai-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
-                <!-- Tin nhắn chào mừng -->
                 <div class="flex items-start space-x-2">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
@@ -426,7 +425,6 @@
             </div>
             
             <div class="p-3 space-y-2 text-xs">
-                <!-- Admin Link 1 -->
                 <a href="https://web.facebook.com/binh.hoang.882202" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs hover:translate-x-1">
                     <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-110 transition shadow">
                         <i class="fa-brands fa-facebook-f"></i>
@@ -437,7 +435,6 @@
                     </div>
                     <i class="fa-solid fa-paper-plane text-blue-500 group-hover:translate-x-1 transition text-xs"></i>
                 </a>
-                <!-- Admin Link 2 -->
                 <a href="https://web.facebook.com/thao.nguyen.261107" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs hover:translate-x-1">
                     <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-110 transition shadow">
                         <i class="fa-brands fa-facebook-f"></i>
@@ -448,7 +445,6 @@
                     </div>
                     <i class="fa-solid fa-paper-plane text-blue-500 group-hover:translate-x-1 transition text-xs"></i>
                 </a>
-                <!-- Admin Link 3 -->
                 <a href="https://web.facebook.com/nguyen.phuc.327726" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs hover:translate-x-1">
                     <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-110 transition shadow">
                         <i class="fa-brands fa-facebook-f"></i>
@@ -459,7 +455,6 @@
                     </div>
                     <i class="fa-solid fa-paper-plane text-blue-500 group-hover:translate-x-1 transition text-xs"></i>
                 </a>
-                <!-- Admin Link 4 -->
                 <a href="https://web.facebook.com/huynh.tran.thien.bao.842171" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-2xl bg-blue-50/80 hover:bg-blue-100 border border-blue-200 text-blue-900 transition font-bold group shadow-xs hover:translate-x-1">
                     <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm group-hover:scale-110 transition shadow">
                         <i class="fa-brands fa-facebook-f"></i>
@@ -472,9 +467,8 @@
                 </a>
             </div>
         </div>
-        <!-- Nút Tròn Mở Liên Hệ Admin Có Vòng Sóng Tỏa & Hiệu Ứng Rung Lắc -->
+        <!-- Nút Tròn Mở Liên Hệ Admin -->
         <button onclick="toggleAdminSupport()" class="relative group bg-gradient-to-tr from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-white transition duration-300">
-            <!-- Các vòng sóng lan tỏa (Pulse Rings) -->
             <span class="ring-wave ring-wave-1"></span>
             <span class="ring-wave ring-wave-2"></span>
             <i class="fa-brands fa-facebook-messenger text-2xl animate-wiggle"></i>
@@ -495,8 +489,8 @@
                 <p class="text-xs text-gray-500">Quản lý đơn hàng & tích điểm ưu đãi</p>
             </div>
             <div class="flex bg-gray-100 p-1 rounded-2xl mb-4 text-xs font-bold">
-                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs">Đăng Nhập</button>
-                <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800">Đăng Ký</button>
+                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold">Đăng Nhập</button>
+                <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold">Đăng Ký</button>
             </div>
             <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
                 <div id="name-field" class="hidden">
@@ -586,7 +580,6 @@
                         <span id="cart-total" class="text-red-600">0 ₫</span>
                     </div>
                 </div>
-                <!-- Đã xóa họ tên & SĐT theo yêu cầu -->
                 <button onclick="checkout()" class="w-full bg-ocopGreen text-white py-3.5 rounded-2xl font-bold text-sm hover:bg-ocopGreenLight transition shadow-lg border border-ocopGold/30 flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-qrcode text-ocopGold text-base"></i>
                     <span id="i18n-checkout-btn">Thanh Toán VietQR BIDV</span>
@@ -711,7 +704,7 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC TRỌN BỘ - ĐÃ ĐƯỢC HOÀN THIỆN ĐẦY ĐỦ -->
+    <!-- JAVASCRIPT LOGIC TRỌN BỘ - ĐÃ SỬA VÀ HOÀN THIỆN -->
     <script>
         let currentLang = 'vi';
         let wishlist = [];
@@ -949,7 +942,7 @@
             filterProducts();
         }
 
-        /* --- CÁC HÀM XỬ LÝ LỌC SẢN PHẨM --- */
+        /* --- XỬ LÝ LỌC SẢN PHẨM --- */
         function setCategoryFilter(cat, btn) {
             currentFilter = cat;
             document.querySelectorAll('.cat-side-btn').forEach(b => {
@@ -967,14 +960,11 @@
             const searchVal = (document.getElementById('product-search')?.value || '').toLowerCase().trim();
             const cards = document.querySelectorAll('.product-card');
             let visibleCount = 0;
-
             cards.forEach(card => {
                 const catData = card.getAttribute('data-category') || '';
                 const nameData = card.getAttribute('data-name') || '';
-
                 const matchesCat = (currentFilter === 'all') || catData.includes(currentFilter);
                 const matchesSearch = !searchVal || nameData.includes(searchVal);
-
                 if (matchesCat && matchesSearch) {
                     card.style.display = 'flex';
                     visibleCount++;
@@ -982,7 +972,6 @@
                     card.style.display = 'none';
                 }
             });
-
             const noMsg = document.getElementById('no-products-msg');
             if (noMsg) {
                 noMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
@@ -1017,14 +1006,12 @@
         function addToCart(productId) {
             const prod = products.find(p => p.id === productId);
             if (!prod) return;
-
             const existing = cart.find(item => item.product.id === productId);
             if (existing) {
                 existing.quantity += 1;
             } else {
                 cart.push({ product: prod, quantity: 1 });
             }
-
             updateCartUI();
             showToast(`Đã thêm "${prod.nameVi}" vào giỏ hàng!`);
         }
@@ -1034,10 +1021,9 @@
             const cartItemsElem = document.getElementById('cart-items');
             const cartSubtotalElem = document.getElementById('cart-subtotal');
             const cartTotalElem = document.getElementById('cart-total');
-
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             if (cartCountElem) cartCountElem.innerText = totalItems;
-
+            
             if (cart.length === 0) {
                 if (cartItemsElem) {
                     cartItemsElem.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">${i18n[currentLang].cartEmpty}</p>`;
@@ -1053,7 +1039,6 @@
                     const itemTotal = item.product.price * item.quantity;
                     subtotal += itemTotal;
                     const name = (currentLang === 'en') ? item.product.nameEn : item.product.nameVi;
-
                     return `
                     <div class="bg-white p-3 rounded-2xl border border-amber-200 flex items-center space-x-3 shadow-xs">
                         <img src="${item.product.image}" class="w-14 h-14 rounded-xl object-cover border border-amber-100 flex-shrink-0">
@@ -1066,62 +1051,59 @@
                                 <button onclick="changeQuantity(${item.product.id}, 1)" class="w-5 h-5 rounded-md bg-gray-100 text-gray-600 flex items-center justify-center font-bold text-xs hover:bg-gray-200">+</button>
                             </div>
                         </div>
-                        <button onclick="removeFromCart(${item.product.id})" class="text-gray-400 hover:text-red-500 p-1 text-sm"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="removeFromCart(${item.product.id})" class="text-red-500 hover:text-red-700 p-1 text-xs" title="Xóa"><i class="fa-solid fa-trash"></i></button>
                     </div>
                     `;
                 }).join('');
             }
 
-            if (cartSubtotalElem) cartSubtotalElem.innerText = `${subtotal.toLocaleString('vi-VN')} ₫`;
-            if (cartTotalElem) cartTotalElem.innerText = `${subtotal.toLocaleString('vi-VN')} ₫`;
+            if (cartSubtotalElem) cartSubtotalElem.innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
+            if (cartTotalElem) cartTotalElem.innerText = subtotal.toLocaleString('vi-VN') + ' ₫';
         }
 
-        function changeQuantity(id, delta) {
-            const item = cart.find(i => i.product.id === id);
+        function changeQuantity(productId, delta) {
+            const item = cart.find(i => i.product.id === productId);
             if (!item) return;
-
             item.quantity += delta;
             if (item.quantity <= 0) {
-                removeFromCart(id);
+                removeFromCart(productId);
             } else {
                 updateCartUI();
             }
         }
 
-        function removeFromCart(id) {
-            cart = cart.filter(i => i.product.id !== id);
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.product.id !== productId);
             updateCartUI();
+            showToast('Đã xóa sản phẩm khỏi giỏ hàng.');
         }
 
-        /* --- XỬ LÝ THANH TOÁN VIETQR BIDV --- */
+        /* --- THANH TOÁN VIETQR --- */
         function checkout() {
             if (cart.length === 0) {
-                showToast("Giỏ hàng của bạn đang trống!");
+                showToast('Giỏ hàng đang trống!');
                 return;
             }
-
-            const total = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+            const total = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
             const orderCode = 'OCOP-' + Math.floor(100000 + Math.random() * 900000);
+            const memo = `THANH TOAN ${orderCode}`;
+            
+            const qrUrl = `https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=${total}&addInfo=${encodeURIComponent(memo)}&accountName=HOANG%20NGUYEN%20THANH%20BINH`;
+            
+            document.getElementById('bidv-qr').src = qrUrl;
+            document.getElementById('qr-order-code').innerText = `#${orderCode}`;
+            document.getElementById('qr-amount').innerText = total.toLocaleString('vi-VN') + ' ₫';
+            document.getElementById('qr-memo').innerText = memo;
 
             currentPendingOrder = {
                 orderCode: orderCode,
-                date: new Date().toLocaleString('vi-VN'),
-                items: [...cart],
+                date: new Date().toISOString().replace('T', ' ').substring(0, 16),
+                customer: currentUser ? currentUser.name : "Khách Hàng",
+                items: cart.map(i => ({ nameVi: i.product.nameVi, quantity: i.quantity, price: i.product.price })),
                 total: total,
-                status: "Đã thanh toán VietQR"
+                status: "Đã hoàn tất"
             };
 
-            document.getElementById('qr-order-code').innerText = '#' + orderCode;
-            document.getElementById('qr-amount').innerText = total.toLocaleString('vi-VN') + ' ₫';
-            document.getElementById('qr-memo').innerText = orderCode;
-
-            // Link QR động VietQR BIDV
-            const bankId = 'BIDV';
-            const accountNo = '8808661371';
-            const accountName = 'HOANG NGUYEN THANH BINH';
-            const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${total}&addInfo=${orderCode}&accountName=${encodeURIComponent(accountName)}`;
-            
-            document.getElementById('bidv-qr').src = qrUrl;
             document.getElementById('qr-modal').classList.remove('hidden');
         }
 
@@ -1138,84 +1120,133 @@
             updateCartUI();
             closeQRModal();
             toggleCart();
-            showToast("Thanh toán thành công! Đơn hàng của bạn đã được ghi nhận.");
+            showToast('Đã xác nhận thanh toán thành công! Cảm ơn bạn.');
+            renderOrders();
         }
 
-        /* --- XỬ LÝ YÊU THÍCH (WISHLIST) --- */
+        function copyToClipboard(text, label) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`Đã sao chép ${label}!`);
+            }).catch(() => {
+                showToast(`Sao chép thất bại.`);
+            });
+        }
+
+        /* --- QUẢN LÝ TÀI KHOẢN --- */
+        function toggleAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function switchAuthTab(tab) {
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegister = document.getElementById('tab-register');
+            const nameField = document.getElementById('name-field');
+            const authTitle = document.getElementById('auth-title');
+            const submitBtn = document.getElementById('auth-submit-btn');
+
+            if (tab === 'register') {
+                tabRegister.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold";
+                tabLogin.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold";
+                nameField.classList.remove('hidden');
+                authTitle.innerText = "Đăng Ký Tài Khoản";
+                submitBtn.innerText = "Đăng Ký";
+            } else {
+                tabLogin.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold";
+                tabRegister.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold";
+                nameField.classList.add('hidden');
+                authTitle.innerText = "Đăng Nhập Tài Khoản";
+                submitBtn.innerText = "Đăng Nhập";
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const name = document.getElementById('auth-name').value || email.split('@')[0];
+            currentUser = { name: name, email: email };
+            showToast(`Xin chào, ${currentUser.name}!`);
+            toggleAuthModal();
+        }
+
+        function mockGoogleLogin() {
+            currentUser = { name: "Google User", email: "user@gmail.com" };
+            showToast("Đăng nhập bằng Google thành công!");
+            toggleAuthModal();
+        }
+
+        /* --- DANH SÁCH YÊU THÍCH (WISHLIST) --- */
         function toggleWishlist(id) {
             const index = wishlist.indexOf(id);
             if (index > -1) {
                 wishlist.splice(index, 1);
-                showToast("Đã xóa khỏi danh sách yêu thích");
+                showToast('Đã xóa khỏi danh sách yêu thích.');
             } else {
                 wishlist.push(id);
-                showToast("Đã thêm vào danh sách yêu thích");
+                showToast('Đã thêm vào danh sách yêu thích!');
             }
-            document.getElementById('wishlist-count').innerText = wishlist.length;
+            updateWishlistUI();
             renderProductsList();
-            renderWishlistUI();
         }
 
         function toggleWishlistDrawer() {
-            const drawer = document.getElementById('wishlist-drawer');
-            if (drawer) drawer.classList.toggle('hidden');
+            document.getElementById('wishlist-drawer').classList.toggle('hidden');
         }
 
-        function renderWishlistUI() {
+        function updateWishlistUI() {
+            document.getElementById('wishlist-count').innerText = wishlist.length;
             const container = document.getElementById('wishlist-items');
-            if (!container) return;
-
             if (wishlist.length === 0) {
                 container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">Chưa có sản phẩm yêu thích.</p>`;
                 return;
             }
-
-            const favProducts = products.filter(p => wishlist.includes(p.id));
-            container.innerHTML = favProducts.map(p => {
+            const items = products.filter(p => wishlist.includes(p.id));
+            container.innerHTML = items.map(p => {
                 const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
                 return `
                 <div class="bg-white p-3 rounded-2xl border border-amber-200 flex items-center justify-between shadow-xs">
                     <div class="flex items-center space-x-3">
-                        <img src="${p.image}" class="w-12 h-12 rounded-xl object-cover">
+                        <img src="${p.image}" class="w-12 h-12 rounded-xl object-cover border border-amber-100">
                         <div>
                             <h5 class="font-bold text-xs text-gray-900">${name}</h5>
-                            <span class="text-xs font-extrabold text-red-600">${p.price.toLocaleString('vi-VN')} ₫</span>
+                            <span class="text-xs font-extrabold text-red-600 block">${p.price.toLocaleString('vi-VN')} ₫</span>
                         </div>
                     </div>
-                    <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-ocopGreenLight">Thêm giỏ</button>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white text-xs px-2.5 py-1.5 rounded-xl font-bold hover:bg-ocopGreenLight">Thêm giỏ</button>
+                        <button onclick="toggleWishlist(${p.id})" class="text-red-500 hover:text-red-700 p-1"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
                 </div>
                 `;
             }).join('');
         }
 
-        /* --- XỬ LÝ QUICK VIEW --- */
+        /* --- POPUP XEM NHANH (QUICKVIEW) --- */
         function openQuickView(id) {
             const p = products.find(item => item.id === id);
             if (!p) return;
-            const content = document.getElementById('quickview-content');
             const name = (currentLang === 'en') ? p.nameEn : p.nameVi;
             const desc = (currentLang === 'en') ? p.descEn : p.descVi;
             const province = (currentLang === 'en') ? p.provinceEn : p.provinceVi;
-
+            const content = document.getElementById('quickview-content');
             content.innerHTML = `
-                <div class="h-64 md:h-full relative bg-amber-50">
+                <div class="h-64 md:h-full bg-amber-50 relative">
                     <img src="${p.image}" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-ocopGreen text-ocopGold text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow">OCOP ${p.star} Sao</span>
                 </div>
-                <div class="p-6 space-y-4 flex flex-col justify-between">
-                    <div>
-                        <span class="bg-amber-100 text-amber-900 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">OCOP ${p.star} Sao - ${province}</span>
-                        <h3 class="text-lg font-extrabold text-gray-900 mt-2">${name}</h3>
-                        <p class="text-xs text-gray-600 leading-relaxed mt-2">${desc}</p>
-                    </div>
-                    <div class="space-y-3 pt-4 border-t border-amber-100">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-400">Giá đặc sản:</span>
-                            <span class="text-lg font-black text-red-600">${p.price.toLocaleString('vi-VN')} ₫</span>
+                <div class="p-6 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <span class="text-xs text-amber-800 font-bold uppercase tracking-wider">${province}</span>
+                        <h3 class="text-lg font-extrabold text-gray-900">${name}</h3>
+                        <p class="text-xs text-gray-600 leading-relaxed">${desc}</p>
+                        <div class="pt-2">
+                            <span class="text-xs text-gray-400">Giá niêm yết:</span>
+                            <div class="text-xl font-black text-red-600">${p.price.toLocaleString('vi-VN')} ₫</div>
                         </div>
-                        <button onclick="addToCart(${p.id}); closeQuickView();" class="w-full bg-ocopGreen text-white py-3 rounded-2xl font-bold text-xs hover:bg-ocopGreenLight shadow-md">
-                            Thêm Vào Giỏ Hàng
-                        </button>
                     </div>
+                    <button onclick="addToCart(${p.id}); closeQuickView();" class="w-full bg-ocopGreen text-white py-3 rounded-2xl font-bold text-xs hover:bg-ocopGreenLight transition shadow-md">
+                        <i class="fa-solid fa-cart-plus mr-1"></i> Thêm Vào Giỏ Hàng
+                    </button>
                 </div>
             `;
             document.getElementById('quickview-modal').classList.remove('hidden');
@@ -1225,145 +1256,103 @@
             document.getElementById('quickview-modal').classList.add('hidden');
         }
 
-        /* --- XỬ LÝ CHUYỂN ĐỔI NGÔN NGỮ --- */
-        function toggleLanguage() {
-            currentLang = (currentLang === 'vi') ? 'en' : 'vi';
-            document.getElementById('lang-btn').innerText = currentLang.toUpperCase();
-            
-            // Cập nhật các văn bản tĩnh
-            const t = i18n[currentLang];
-            for (let key in t) {
-                const elem = document.getElementById('i18n-' + key.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`));
-                if (elem) elem.innerText = t[key];
-            }
-            renderProductsList();
-            updateCartUI();
-        }
-
-        /* --- XỬ LÝ AUTH & ĐƠN HÀNG --- */
-        function toggleAuthModal() {
-            document.getElementById('auth-modal').classList.toggle('hidden');
-        }
-
-        function switchAuthTab(tab) {
-            const isLogin = tab === 'login';
-            document.getElementById('name-field').classList.toggle('hidden', isLogin);
-            document.getElementById('auth-title').innerText = isLogin ? 'Đăng Nhập Tài Khoản' : 'Đăng Ký Tài Khoản';
-            document.getElementById('auth-submit-btn').innerText = isLogin ? 'Đăng Nhập' : 'Tạo Tài Khoản';
-            document.getElementById('tab-login').className = isLogin ? 'flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs' : 'flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800';
-            document.getElementById('tab-register').className = !isLogin ? 'flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs' : 'flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800';
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            currentUser = { email: email };
-            toggleAuthModal();
-            showToast(`Xin chào ${email}! Bạn đã đăng nhập thành công.`);
-        }
-
-        function mockGoogleLogin() {
-            currentUser = { email: 'user.google@gmail.com' };
-            toggleAuthModal();
-            showToast('Đăng nhập thành công với Google!');
-        }
-
+        /* --- LỊCH SỬ ĐƠN HÀNG --- */
         function toggleOrdersModal() {
-            const drawer = document.getElementById('orders-drawer');
-            if (drawer) {
-                drawer.classList.toggle('hidden');
-                renderOrdersUI();
-            }
+            const modal = document.getElementById('orders-drawer');
+            modal.classList.toggle('hidden');
+            renderOrders();
         }
 
-        function renderOrdersUI() {
+        function renderOrders() {
             const container = document.getElementById('orders-container');
-            if (!container) return;
-
             if (ordersHistory.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">Bạn chưa có đơn hàng nào.</p>`;
+                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">Chưa có lịch sử đơn hàng nào.</p>`;
                 return;
             }
-
-            container.innerHTML = ordersHistory.map(ord => `
-                <div class="bg-white p-4 rounded-2xl border border-amber-200 space-y-2 text-xs shadow-xs">
-                    <div class="flex justify-between font-bold border-b border-gray-100 pb-2">
-                        <span class="text-ocopGreen">#${ord.orderCode}</span>
-                        <span class="text-emerald-600">${ord.status}</span>
+            container.innerHTML = ordersHistory.map(o => `
+                <div class="bg-white p-4 rounded-2xl border border-amber-200 shadow-xs space-y-2 text-xs">
+                    <div class="flex justify-between items-center font-bold border-b border-gray-100 pb-2">
+                        <span class="text-ocopGreen">${o.orderCode}</span>
+                        <span class="text-emerald-600 text-[10px] bg-emerald-50 px-2 py-0.5 rounded-full">${o.status}</span>
                     </div>
-                    <div class="text-gray-500 text-[11px]">${ord.date}</div>
-                    <div class="space-y-1 py-1">
-                        ${ord.items.map(i => `<div class="flex justify-between"><span>${i.product ? i.product.nameVi : i.nameVi} x${i.quantity}</span><span class="font-bold">${((i.product ? i.product.price : i.price) * i.quantity).toLocaleString('vi-VN')} ₫</span></div>`).join('')}
+                    <div class="text-[11px] text-gray-500">${o.date}</div>
+                    <div class="space-y-1">
+                        ${o.items.map(i => `<div class="flex justify-between"><span>${i.nameVi} x${i.quantity}</span><span class="font-bold">${(i.price * i.quantity).toLocaleString('vi-VN')} ₫</span></div>`).join('')}
                     </div>
-                    <div class="flex justify-between font-extrabold text-sm border-t border-gray-100 pt-2 text-red-600">
-                        <span>Tổng tiền:</span>
-                        <span>${ord.total.toLocaleString('vi-VN')} ₫</span>
+                    <div class="flex justify-between font-extrabold text-sm pt-2 border-t border-gray-100 text-red-600">
+                        <span>Tổng cộng:</span>
+                        <span>${o.total.toLocaleString('vi-VN')} ₫</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        /* --- CHATBOT AI MÔ PHỎNG --- */
-        function sendAIMessage() {
-            const input = document.getElementById('ai-chat-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            appendChatMessage('user', text);
-            input.value = '';
-
-            setTimeout(() => {
-                let reply = `Dạ, về yêu cầu "${text}", hệ thống OCOP xin gợi ý bạn xem qua các sản phẩm đặc sản đạt chuẩn 4-5 sao quốc gia trong danh mục nhé!`;
-                if (text.toLowerCase().includes('trà')) {
-                    reply = 'Dạ các loại trà ngon nhất gồm: Trà hoa vàng Tam Đảo (5★), Trà Đinh Tân Cương (5★) và Chè Shan Tuyết Suối Giàng cổ thụ ạ!';
-                } else if (text.toLowerCase().includes('quà')) {
-                    reply = 'Dạ quà biếu sang trọng nhất là Yến Sào Khánh Hòa Thượng Hạng hoặc Sâm Ngọc Linh Quảng Nam đạt chuẩn OCOP 5 Sao Quốc Gia ạ!';
-                }
-                appendChatMessage('ai', reply);
-            }, 600);
-        }
-
+        /* --- AI CHATBOT LOGIC --- */
         function sendQuickPrompt(promptText) {
             document.getElementById('ai-chat-input').value = promptText;
             sendAIMessage();
         }
 
-        function appendChatMessage(sender, message) {
-            const box = document.getElementById('ai-chat-messages');
-            if (!box) return;
+        function sendAIMessage() {
+            const input = document.getElementById('ai-chat-input');
+            const msg = input.value.trim();
+            if (!msg) return;
 
-            const isUser = sender === 'user';
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `flex items-start space-x-2 ${isUser ? 'justify-end' : ''}`;
+            const chatMsgs = document.getElementById('ai-chat-messages');
+            
+            chatMsgs.innerHTML += `
+                <div class="flex items-start space-x-2 justify-end">
+                    <div class="bg-ocopGreen text-white p-3 rounded-2xl text-xs max-w-[85%] shadow-sm">${msg}</div>
+                </div>
+            `;
+            input.value = '';
+            chatMsgs.scrollTop = chatMsgs.scrollHeight;
 
-            if (isUser) {
-                msgDiv.innerHTML = `
-                    <div class="bg-ocopGreen text-white p-3 rounded-2xl text-xs max-w-[85%] shadow-sm">
-                        ${message}
+            setTimeout(() => {
+                let reply = "Dạ, em đã ghi nhận yêu cầu của anh/chị. Anh/chị có thể tham khảo các đặc sản OCOP 5 sao tiêu biểu như Yến sào Khánh Hòa, Trà hoa vàng Tam Đảo hoặc Cà phê Arabica Cầu Đất ạ!";
+                const lowerMsg = msg.toLowerCase();
+                if (lowerMsg.includes('5 sao') || lowerMsg.includes('top')) {
+                    reply = "Dạ các sản phẩm OCOP 5 Sao nổi bật nhất gồm: Yến Sào Khánh Hòa (2.450.000đ), Trà hoa vàng Tam Đảo (650.000đ), Sâm Ngọc Linh (3.200.000đ) và Cà phê Arabica Cầu Đất (240.000đ) ạ.";
+                } else if (lowerMsg.includes('quà') || lowerMsg.includes('combo')) {
+                    reply = "Dạ đối với Quà biếu sức khỏe, anh/chị nên tham khảo Combo Trà hoa vàng Tam Đảo + Yến sào Khánh Hòa hoặc Tỏi đen Lý Sơn rất sang trọng và ý nghĩa ạ!";
+                } else if (lowerMsg.includes('dưới 200k') || lowerMsg.includes('rẻ')) {
+                    reply = "Dạ các đặc sản chất lượng dưới 200k gồm: Hạt điều rang củi Bình Phước (195.000đ), Bánh cốm Làng Vòng (90.000đ), Nước mắm Phú Quốc (165.000đ) và Gạo Tám Xoan (185.000đ) ạ.";
+                } else if (lowerMsg.includes('trà')) {
+                    reply = "Dạ bên em có Trà hoa vàng Tam Đảo, Trà Đinh Tân Cương, Trà Shan Tuyết Cổ Thụ Suối Giàng và Trà Oolong Mộc Châu đều đạt chuẩn 5 sao ạ.";
+                }
+
+                chatMsgs.innerHTML += `
+                    <div class="flex items-start space-x-2">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
+                        <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">${reply}</div>
                     </div>
                 `;
-            } else {
-                msgDiv.innerHTML = `
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" class="w-7 h-7 rounded-full object-cover ring-1 ring-ocopGold flex-shrink-0 mt-0.5 shadow">
-                    <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
-                        ${message}
-                    </div>
-                `;
+                chatMsgs.scrollTop = chatMsgs.scrollHeight;
+            }, 600);
+        }
+
+        /* --- CHUYỂN ĐỔI NGÔN NGỮ --- */
+        function toggleLanguage() {
+            currentLang = (currentLang === 'vi') ? 'en' : 'vi';
+            document.getElementById('lang-btn').innerText = currentLang.toUpperCase();
+            updateLanguageUI();
+            renderProductsList();
+        }
+
+        function updateLanguageUI() {
+            const t = i18n[currentLang];
+            for (const key in t) {
+                const elem = document.getElementById('i18n-' + key.replace(/([A-Z])/g, "-$1").toLowerCase());
+                if (elem) {
+                    elem.innerText = t[key];
+                }
             }
-            box.appendChild(msgDiv);
-            box.scrollTop = box.scrollHeight;
         }
 
-        /* --- TIỆN ÍCH COPY --- */
-        function copyToClipboard(text, label) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(`Đã sao chép ${label}!`);
-            });
-        }
-
-        // KHỞI TẠO TRANG SỰ KIỆN BAN ĐẦU
+        /* --- KHỞI TẠO ỨNG DỤNG --- */
         window.addEventListener('DOMContentLoaded', () => {
             renderProductsList();
+            updateWishlistUI();
             updateCartUI();
         });
     </script>
