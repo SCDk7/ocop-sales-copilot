@@ -467,6 +467,29 @@
             background: #e8eee5;
             font: 500 0.75rem 'Plus Jakarta Sans', sans-serif;
         }
+        .province-map .province-name-tooltip {
+            padding: 0;
+            border: 0;
+            color: #fffdf7;
+            background: transparent;
+            box-shadow: none;
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-shadow: 0 1px 3px #0f382c, 0 0 6px #0f382c;
+            pointer-events: none;
+        }
+        .province-map .province-name-tooltip::before {
+            display: none;
+        }
+        .province-map .leaflet-interactive:focus {
+            outline: none;
+        }
+        .province-map .leaflet-interactive:focus-visible {
+            stroke: #fff0a6 !important;
+            stroke-width: 3px !important;
+            stroke-linejoin: round;
+            vector-effect: non-scaling-stroke;
+        }
         .province-map .leaflet-control-layers,
         .province-map .leaflet-bar {
             overflow: hidden;
@@ -516,6 +539,23 @@
             font-size: 0.75rem;
             font-weight: 700;
             line-height: 1.5;
+        }
+        .province-map-select {
+            width: min(100%, 22rem);
+            min-height: 2.75rem;
+            padding: 0.55rem 0.75rem;
+            border: 1px solid rgba(15, 56, 44, 0.18);
+            border-radius: 0.75rem;
+            color: #23473b;
+            background: rgba(255, 255, 255, 0.9);
+            font: inherit;
+            font-size: 0.75rem;
+            font-weight: 700;
+            touch-action: manipulation;
+        }
+        .province-map-select:focus-visible {
+            outline: 2px solid #d4af37;
+            outline-offset: 2px;
         }
         .province-map-clear {
             flex-shrink: 0;
@@ -1530,6 +1570,10 @@
                         </span>
                         <span class="intro-region-caption" id="i18n-intro-region-caption">Chọn tỉnh/thành để lọc đặc sản OCOP tương ứng</span>
                     </div>
+                    <label class="sr-only" for="province-map-select" id="province-map-select-label">Chọn nhanh tỉnh/thành</label>
+                    <select id="province-map-select" class="province-map-select" aria-label="Chọn tỉnh/thành trên bản đồ" onchange="selectProvinceById(this.value)" disabled>
+                        <option id="province-map-select-placeholder" value="">Chọn nhanh tỉnh/thành...</option>
+                    </select>
                 </div>
                 <div>
                     <div id="province-map" class="province-map" role="region" aria-label="Bản đồ tương tác 63 tỉnh thành Việt Nam"></div>
@@ -2897,7 +2941,7 @@
                 const card = document.createElement('article');
                 card.className = 'province-product-card';
                 card.addEventListener('click', event => {
-                    if (event.target instanceof Element && event.target.closest('.province-product-card > button')) return;
+                    if (event.target instanceof Element && event.target.closest('.province-product-add-button')) return;
                     openProvinceProductDetails(product.id);
                 });
 
@@ -2927,7 +2971,7 @@
 
                 const addButton = document.createElement('button');
                 addButton.type = 'button';
-                addButton.className = 'rounded-lg bg-[#0f382c] px-2.5 py-2 text-[10px] font-extrabold text-white transition hover:bg-[#165b46]';
+                addButton.className = 'province-product-add-button rounded-lg bg-[#0f382c] px-2.5 py-2 text-[10px] font-extrabold text-white transition hover:bg-[#165b46]';
                 addButton.setAttribute('aria-label', currentLanguage === 'en'
                     ? `Add ${getProductName(product)} to cart`
                     : `Thêm ${getProductName(product)} vào giỏ hàng`);
@@ -2954,9 +2998,48 @@
         function clearSelectedProvince() {
             selectedProvince = null;
             provinceProductsHidden = false;
+            const provinceSelect = document.getElementById('province-map-select');
+            if (provinceSelect) provinceSelect.value = '';
             provinceBoundaryLayer?.setStyle(getProvinceStyle);
             publishProvinceSelection();
             filterProductsGlobal(document.getElementById('product-search').value);
+        }
+
+        function selectProvinceById(provinceId) {
+            if (!provinceId || !provinceBoundaryLayer) return;
+            let selectedFeature = null;
+            provinceBoundaryLayer.eachLayer(layer => {
+                if (layer.feature.properties.id === provinceId) selectedFeature = layer.feature;
+            });
+            if (selectedFeature) selectProvince(selectedFeature.properties);
+        }
+
+        function selectProvince(province) {
+            selectedProvince = { id: province.id, name: province.name };
+            provinceProductsHidden = false;
+            provinceBoundaryLayer?.setStyle(getProvinceStyle);
+
+            const provinceSelect = document.getElementById('province-map-select');
+            if (provinceSelect) provinceSelect.value = province.id;
+
+            publishProvinceSelection();
+            filterProductsGlobal(document.getElementById('product-search').value);
+            revealProvinceProductsOnMobile();
+        }
+
+        function revealProvinceProductsOnMobile() {
+            if (!window.matchMedia('(max-width: 1023px)').matches) return;
+            const panel = document.getElementById('province-products-panel');
+            const overlay = document.getElementById('ocop-intro-overlay');
+            if (!panel || panel.classList.contains('hidden')) return;
+            if (!overlay || overlay.classList.contains('hidden')) return;
+
+            window.requestAnimationFrame(() => {
+                const panelTop = panel.getBoundingClientRect().top;
+                const overlayTop = overlay.getBoundingClientRect().top;
+                const targetScrollTop = overlay.scrollTop + panelTop - overlayTop - 12;
+                overlay.scrollTop = Math.min(targetScrollTop, overlay.scrollHeight - overlay.clientHeight);
+            });
         }
 
         async function initializeProvinceMap() {
@@ -2979,6 +3062,14 @@
                 if (provinceData.features.some(feature => !feature.properties?.id || !feature.properties?.name)) {
                     throw new Error('Province GeoJSON contains a feature without an ID or name.');
                 }
+                const provinceSelect = document.getElementById('province-map-select');
+                provinceData.features.forEach(feature => {
+                    const option = document.createElement('option');
+                    option.value = feature.properties.id;
+                    option.textContent = feature.properties.name;
+                    provinceSelect.append(option);
+                });
+                provinceSelect.disabled = false;
                 const islandsResponse = await fetch('./data/vietnam-islands.geojson');
                 if (!islandsResponse.ok) throw new Error(`Island GeoJSON request failed with HTTP ${islandsResponse.status}.`);
                 const islandsData = await islandsResponse.json();
@@ -3033,20 +3124,18 @@
                     style: getProvinceStyle,
                     attribution: '<a href="https://www.geoboundaries.org/" target="_blank" rel="noopener noreferrer">geoBoundaries</a> · CC BY 4.0',
                     onEachFeature: (feature, layer) => {
-                        layer.bindTooltip(feature.properties.name, { sticky: true });
+                        layer.bindTooltip(feature.properties.name, {
+                            sticky: true,
+                            className: 'province-name-tooltip'
+                        });
                         layer.on({
-                            mouseover: event => event.target.setStyle({ weight: 2.5, fillOpacity: 0.88 }),
+                            mouseover: event => event.target.setStyle(
+                                selectedProvince?.id === feature.properties.id
+                                    ? getProvinceStyle(feature)
+                                    : { weight: 2.5, fillOpacity: 0.88 }
+                            ),
                             mouseout: event => provinceBoundaryLayer.resetStyle(event.target),
-                            click: () => {
-                                selectedProvince = {
-                                    id: feature.properties.id,
-                                    name: feature.properties.name
-                                };
-                                provinceProductsHidden = false;
-                                provinceBoundaryLayer.setStyle(getProvinceStyle);
-                                publishProvinceSelection();
-                                filterProductsGlobal(document.getElementById('product-search').value);
-                            }
+                            click: () => selectProvince(feature.properties)
                         });
                     }
                 }).addTo(provinceMap);
@@ -4351,6 +4440,8 @@
             'i18n-ticker4-copy': '🚚 Shipping offers depend on order conditions',
             'i18n-intro-region-header': 'Explore Vietnam specialties on the map',
             'i18n-intro-region-caption': 'Select a province to filter matching OCOP specialties',
+            'province-map-select-label': 'Quickly select a province or city',
+            'province-map-select-placeholder': 'Select a province or city...',
             'province-map-clear': 'Clear selection',
             'i18n-intro-btn-enter': 'Explore 48 OCOP specialties',
             'i18n-intro-quick-header': 'What are you looking for?',
@@ -4483,6 +4574,12 @@
                 const defaultText = originalUiText.get(id);
                 element.textContent = currentLanguage === 'en' ? englishUiText[id] : defaultText;
             });
+            const provinceSelect = document.getElementById('province-map-select');
+            if (provinceSelect) {
+                provinceSelect.setAttribute('aria-label', currentLanguage === 'en'
+                    ? 'Quickly select a province or city'
+                    : 'Chọn tỉnh/thành trên bản đồ');
+            }
 
             const targetLanguage = currentLanguage === 'en' ? 'VI' : 'EN';
             ['intro-language-btn', 'site-language-btn'].forEach(id => {
