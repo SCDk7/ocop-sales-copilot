@@ -1156,7 +1156,7 @@
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     <!-- TOAST NOTIFICATION CONTAINER -->
-    <div id="toast-container" class="fixed top-24 right-5 z-[110] flex flex-col space-y-2 pointer-events-none"></div>
+    <div id="toast-container" class="fixed top-24 inset-x-3 z-[110] flex flex-col items-end gap-2 pointer-events-none sm:left-auto sm:right-5" aria-live="polite" aria-atomic="false"></div>
 
     <!-- ============================================================== -->
     <!-- MÀN CHÀO ĐÓN TINH HOA OCOP - AI ANTIGRAVITY EDITION -->
@@ -3704,7 +3704,36 @@
 
         function showToast(msg, type = 'info') {
             const container = document.getElementById('toast-container');
+            const message = String(msg);
+            const existingToast = Array.from(container.children).find(toast =>
+                toast.dataset.toastType === type && toast.dataset.toastMessage === message
+            );
+
+            if (existingToast) {
+                const count = Number(existingToast.dataset.toastCount || 1) + 1;
+                existingToast.dataset.toastCount = String(count);
+                let countBadge = existingToast.querySelector('.toast-repeat-count');
+                if (!countBadge) {
+                    countBadge = document.createElement('span');
+                    countBadge.className = 'toast-repeat-count ml-auto rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-black';
+                    existingToast.appendChild(countBadge);
+                }
+                countBadge.textContent = `×${count}`;
+                existingToast._dismissTimer = resetToastTimer(existingToast);
+                return;
+            }
+
+            while (container.children.length >= 3) {
+                const oldestToast = container.firstElementChild;
+                clearTimeout(oldestToast._dismissTimer);
+                clearTimeout(oldestToast._removeTimer);
+                oldestToast.remove();
+            }
+
             const toast = document.createElement('div');
+            toast.dataset.toastType = type;
+            toast.dataset.toastMessage = message;
+            toast.dataset.toastCount = '1';
 
             let bg = 'bg-gray-900 text-white';
             let icon = 'fa-info-circle text-blue-400';
@@ -3720,18 +3749,31 @@
                 icon = 'fa-circle-exclamation text-red-200';
             }
 
-            toast.className = `${bg} px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2.5 text-xs font-bold animate-pop-in pointer-events-auto max-w-sm`;
+            toast.className = `${bg} w-full sm:w-auto max-w-sm px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-bold animate-pop-in pointer-events-auto cursor-pointer`;
+            toast.setAttribute('role', type === 'error' || type === 'warning' ? 'alert' : 'status');
+            toast.setAttribute('aria-live', type === 'error' || type === 'warning' ? 'assertive' : 'polite');
             const iconElement = document.createElement('i');
             iconElement.className = `fa-solid ${icon} text-base`;
             const messageElement = document.createElement('span');
-            messageElement.textContent = msg;
+            messageElement.className = 'min-w-0 flex-1';
+            messageElement.textContent = message;
             toast.append(iconElement, messageElement);
-
             container.appendChild(toast);
+            toast.addEventListener('click', () => {
+                clearTimeout(toast._dismissTimer);
+                clearTimeout(toast._removeTimer);
+                toast.remove();
+            }, { once: true });
+            toast._dismissTimer = resetToastTimer(toast);
+        }
 
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'transition-all', 'duration-300');
-                setTimeout(() => toast.remove(), 300);
+        function resetToastTimer(toast) {
+            clearTimeout(toast._dismissTimer);
+            clearTimeout(toast._removeTimer);
+            toast.classList.remove('opacity-0', 'transition-opacity', 'duration-300');
+            return setTimeout(() => {
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                toast._removeTimer = setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
