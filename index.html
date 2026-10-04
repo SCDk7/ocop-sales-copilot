@@ -1950,7 +1950,7 @@
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
                         <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.</p>
-                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Gợi ý dựa trên danh mục và giá đang hiển thị trên website.</p>
+                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn và danh mục được gửi tới Google Gemini để tạo phản hồi; không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
                     </div>
                 </div>
             </div>
@@ -2026,7 +2026,7 @@
             </div>
         </div>
         
-        <button onclick="toggleAdminSupport()" class="relative group bg-gradient-to-tr from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-white transition duration-300 cursor-pointer">
+        <button onclick="toggleAdminSupport()" aria-label="Mở liên hệ admin" aria-hidden="true" tabindex="-1" class="hidden relative group bg-gradient-to-tr from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-white transition duration-300 cursor-pointer">
             <span class="ring-wave ring-wave-1"></span>
             <span class="ring-wave ring-wave-2"></span>
             <img src="admin1.jpg" alt="Admin OCOP" class="w-10 h-10 rounded-full object-cover border border-white/60 shadow-inner animate-wiggle">
@@ -2360,6 +2360,7 @@
         let pendingRegistration = null;
         let currentOrderCode = null;
         let aiMessageSequence = 0;
+        let aiConversationHistory = [];
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
         let ordersHistory = [
@@ -3157,7 +3158,7 @@
             sendAIMessage();
         }
 
-        function sendAIMessage() {
+        async function sendAIMessage() {
             const inputEl = document.getElementById('ai-chat-input');
             const messagesEl = document.getElementById('ai-chat-messages');
             const text = inputEl.value.trim();
@@ -3189,22 +3190,104 @@
             `);
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
-            // Xử lý câu trả lời dựa trên dữ liệu sản phẩm OCOP
-            setTimeout(() => {
+            try {
+                const response = await fetch('/api/ai/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        language: currentLanguage,
+                        messages: [...aiConversationHistory.slice(-14), { role: 'user', text }],
+                        products: products.map(product => ({
+                            id: product.id,
+                            name: product.name,
+                            nameEn: product.nameEn || productNamesEn[product.id - 1] || '',
+                            region: product.region,
+                            category: product.category,
+                            stars: product.stars,
+                            price: product.price,
+                            rating: product.rating,
+                            tag: product.tag,
+                            description: product.desc
+                        }))
+                    })
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(result.error || (currentLanguage === 'en'
+                        ? 'The AI assistant is temporarily unavailable.'
+                        : 'Trợ lý AI hiện chưa thể trả lời.'));
+                }
+
                 const loadingNode = document.getElementById(loadingId);
                 if (loadingNode) loadingNode.remove();
 
-                const aiReply = generateAIResponse(text);
-                messagesEl.insertAdjacentHTML('beforeend', `
-                    <div class="flex items-start space-x-2">
-                        <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
-                        <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
-                            ${aiReply}
-                        </div>
+                const reply = document.createElement('div');
+                reply.className = 'flex items-start space-x-2';
+                reply.innerHTML = `
+                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                        <p class="whitespace-pre-wrap"></p>
+                        <div class="ai-product-recommendations"></div>
                     </div>
-                `);
+                `;
+                reply.querySelector('p').textContent = result.message;
+                const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
+                    .map(id => products.find(product => product.id === id))
+                    .filter(Boolean);
+                if (recommendedProducts.length) {
+                    reply.querySelector('.ai-product-recommendations').innerHTML = renderAIProductRecommendations(
+                        recommendedProducts,
+                        currentLanguage === 'en' ? 'Recommended products' : 'Sản phẩm gợi ý',
+                        currentLanguage === 'en'
+                            ? 'Prices and product information are from the current catalogue.'
+                            : 'Giá và thông tin được lấy từ danh mục hiện tại.'
+                    );
+                }
+                if (result.handoffAdmin) {
+                    const handoffButton = document.createElement('button');
+                    handoffButton.type = 'button';
+                    handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
+                    handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
+                    handoffButton.addEventListener('click', toggleAdminSupport);
+                    reply.querySelector('div.bg-white').append(handoffButton);
+                }
+                messagesEl.append(reply);
+                aiConversationHistory = [
+                    ...aiConversationHistory,
+                    { role: 'user', text },
+                    { role: 'assistant', text: result.message }
+                ].slice(-16);
                 messagesEl.scrollTop = messagesEl.scrollHeight;
-            }, 800);
+
+                if (result.handoffAdmin) {
+                    window.setTimeout(() => {
+                        const adminMenu = document.getElementById('admin-support-menu');
+                        if (adminMenu.classList.contains('hidden')) toggleAdminSupport();
+                    }, 1200);
+                }
+            } catch (error) {
+                const loadingNode = document.getElementById(loadingId);
+                if (loadingNode) loadingNode.remove();
+
+                const failure = document.createElement('div');
+                failure.className = 'flex items-start space-x-2';
+                failure.innerHTML = `
+                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                        <p class="ai-error-message"></p>
+                    </div>
+                `;
+                failure.querySelector('.ai-error-message').textContent = error.message ||
+                    (currentLanguage === 'en' ? 'The AI assistant could not connect.' : 'Không thể kết nối trợ lý AI.');
+                const contactButton = document.createElement('button');
+                contactButton.type = 'button';
+                contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
+                contactButton.textContent = currentLanguage === 'en' ? 'Contact admin' : 'Liên hệ admin';
+                contactButton.addEventListener('click', connectCustomerToAdmin);
+                failure.querySelector('div.bg-white').append(contactButton);
+                messagesEl.append(failure);
+                messagesEl.scrollTop = messagesEl.scrollHeight;
+            }
         }
 
         function generateAIResponse(query) {
@@ -3222,6 +3305,12 @@
             const isCheaperFollowUp = /\b(re hon|gia thap hon|binh dan hon|mem hon|re hon|cheaper|lower priced|less expensive)\b/.test(q);
             const isAlternativeFollowUp = /\b(con|khac|them|lua chon khac|another|alternative|other option)\b/.test(q);
             const aiRelevanceScores = new Map();
+
+            if (isAIAdminContactRequest(q)) {
+                return english
+                    ? 'Please wait a moment while I open the available direct admin contacts. Choose an admin to message them on Facebook.'
+                    : 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
+            }
 
             const serviceGuidance = getAIServiceGuidance(q, english);
             if (serviceGuidance) return serviceGuidance;
@@ -3417,34 +3506,58 @@
             const patterns = [
                 {
                     type: 'defect',
-                    keywords: /\b(hang loi|san pham loi|loi san pham|bi loi|hong|hu hong|bi vo|vo|be|mop|dap|chay|het han|qua han|moc|hu|doi mau|khong dung chat luong|defect\w*|damag\w*|broken|faulty|expired|mold|spoiled|quality issue)\b/
+                    concepts: [
+                        ['hang loi', 'san pham loi', 'loi san pham', 'bi loi', 'hong', 'hu hong', 'bi vo', 'vo', 'be', 'mop', 'dap', 'chay', 'het han', 'qua han', 'moc', 'doi mau', 'khong dung chat luong', 'kem chat luong', 'khong an duoc', 'defect', 'damaged', 'broken', 'faulty', 'expired', 'mold', 'spoiled', 'quality issue', 'arrived damaged', 'arrived broken', 'not fresh', 'bad condition']
+                    ]
                 },
                 {
                     type: 'wrongOrMissing',
-                    keywords: /\b(thieu hang|thieu san pham|giao nham|sai hang|nham hang|khong du hang|missing item|wrong item|wrong product|incorrect item)\b/
+                    anyConcepts: [
+                        [['thieu', 'thieu hang', 'thieu san pham', 'khong du', 'missing', 'not included', 'left out']],
+                        [['giao nham', 'gui nham', 'nham hang', 'nham', 'sai hang', 'sai', 'wrong', 'incorrect', 'sent the wrong']]
+                    ]
                 },
                 {
                     type: 'return',
-                    keywords: /\b(doi tra|tra hang|doi hang|hoan tien|refund|return|exchange|want to send back)\b/
+                    concepts: [
+                        ['doi tra', 'tra hang', 'tra lai', 'gui tra', 'doi hang', 'khong vua y', 'khong muon giu', 'hoan tien', 'refund', 'return', 'exchange', 'send back', 'send it back', 'give it back']
+                    ]
                 },
                 {
                     type: 'payment',
-                    keywords: /\b(thanh toan loi|loi thanh toan|chuyen khoan loi|da thanh toan|bi tru tien|khong thanh toan duoc|payment failed|charged twice|charged but|payment issue|transfer problem)\b/
+                    concepts: [
+                        ['thanh toan', 'chuyen khoan', 'bi tru tien', 'tru tien', 'mat tien', 'payment', 'paid', 'charged', 'charge', 'bank transfer'],
+                        ['loi', 'that bai', 'khong thanh cong', 'chua cap nhat', 'chua xac nhan', 'tru hai lan', 'hai lan', 'khong vao', 'failed', 'not updated', 'not confirmed', 'twice', 'problem', 'issue', 'missing']
+                    ]
                 },
                 {
                     type: 'delivery',
-                    keywords: /\b(chua nhan|cham giao|giao cham|don chua toi|that lac|mat hang|van chuyen loi|shipper|late delivery|delivery late|delivery is late|not received|lost package|delivery issue)\b/
+                    concepts: [
+                        ['giao', 'don hang', 'goi hang', 'van chuyen', 'shipper', 'delivery', 'package', 'parcel', 'order'],
+                        ['cham', 'tre', 'chua nhan', 'chua toi', 'that lac', 'mat hang', 'khong thay', 'late', 'delayed', 'not received', 'has not arrived', 'lost', 'missing', 'where is']
+                    ]
                 },
                 {
                     type: 'order',
-                    keywords: /\b(kiem tra don|don hang o dau|huy don|sua don|doi dia chi|trang thai don|order status|where is my order|where is the order|cancel order|change order|edit order|track order)\b/
+                    concepts: [
+                        ['don', 'don hang', 'order', 'purchase'],
+                        ['kiem tra', 'o dau', 'where', 'tell me about', 'tinh trang', 'trang thai', 'huy', 'sua', 'doi dia chi', 'theo doi', 'check', 'status', 'cancel', 'change', 'edit', 'track', 'update']
+                    ]
                 },
                 {
                     type: 'purchase',
-                    keywords: /\b(khong dat duoc|khong dat hang duoc|khong the dat hang|khong mua duoc|khong mua hang duoc|loi gio hang|loi dat hang|khong them vao gio|khong them san pham vao gio|khong them duoc vao gio|checkout error|cannot order|cant order|can t order|cannot place order|cannot place an order|cant place order|can t place order|can t place an order|cannot add to cart|can t add to cart|cart issue|checkout issue)\b/
+                    concepts: [
+                        ['dat hang', 'mua hang', 'them vao gio', 'gio hang', 'checkout', 'place an order', 'place order', 'add to cart', 'buy'],
+                        ['khong', 'loi', 'that bai', 'cannot', 'can t', 'cant', 'unable', 'failed', 'issue', 'problem', 'error']
+                    ]
                 }
             ];
-            const issue = patterns.find(pattern => pattern.keywords.test(query));
+            const issue = patterns.find(pattern => {
+                const alternatives = pattern.anyConcepts || [pattern.concepts];
+                return alternatives.some(concepts =>
+                    concepts.every(aliases => matchesAIConcept(query, aliases))
+                );
+            });
             if (!issue) return null;
 
             const guidance = {
@@ -3470,8 +3583,55 @@
                     ? 'Please check that required fields are complete, refresh the page, and try adding the item to your cart once. If you already submitted payment, don’t pay again until it is verified. Contact our team if the issue continues.'
                     : 'Anh/chị vui lòng kiểm tra các trường bắt buộc, tải lại trang và thử thêm sản phẩm vào giỏ một lần. Nếu đã gửi thanh toán, đừng thanh toán lại trước khi được đối soát. Nếu lỗi vẫn tiếp diễn, hãy liên hệ nhân viên để được hỗ trợ.'
             }[issue.type];
-            const contactLabel = english ? 'Contact customer support' : 'Liên hệ nhân viên hỗ trợ';
-            return `<p>${escapeAIHtml(guidance)}</p><button onclick="toggleAdminSupport()" class="rounded-lg bg-ocopGreen px-3 py-2 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${contactLabel}</button>`;
+            const contactLabel = english ? 'Contact an admin' : 'Liên hệ admin trực tiếp';
+            return `<p>${escapeAIHtml(guidance)}</p><button onclick="connectCustomerToAdmin()" class="rounded-lg bg-ocopGreen px-3 py-2 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${contactLabel}</button>`;
+        }
+
+        function isAIAdminContactRequest(query) {
+            const normalizedQuery = normalizeSearchText(query);
+            const asksForPerson = matchesAIConcept(normalizedQuery, [
+                'admin', 'nhan vien', 'tu van vien', 'nguoi that', 'nguoi ho tro', 'nguoi tu van',
+                'human', 'agent', 'staff', 'representative', 'real person', 'customer service', 'support team',
+                'someone', 'somebody', 'a person', 'support'
+            ]);
+            const asksForContact = matchesAIConcept(normalizedQuery, [
+                'lien he', 'lien lac', 'noi chuyen', 'trao doi', 'gap', 'goi', 'xin', 'ket noi', 'chuyen toi',
+                'cho gap', 'cho noi chuyen', 'muon hoi', 'can hoi', 'nho tu van', 'tu van', 'ho tro',
+                'need', 'want', 'would like', 'need help from', 'get me help', 'help me', 'help me with',
+                'help with', 'assist me', 'call me', 'phone me', 'ho tro truc tiep',
+                'talk to', 'talk with', 'speak to', 'speak with', 'contact', 'connect me', 'connect with',
+                'transfer me', 'let me talk', 'let me speak', 'get me'
+            ]);
+            return asksForPerson && asksForContact;
+        }
+
+        function matchesAIConcept(query, aliases) {
+            const normalizedQuery = ` ${normalizeSearchText(query).replace(/[^\p{L}\p{N}]+/gu, ' ').replace(/\s+/g, ' ').trim()} `;
+            return aliases.some(alias => {
+                const normalizedAlias = normalizeSearchText(alias).replace(/[^\p{L}\p{N}]+/gu, ' ').replace(/\s+/g, ' ').trim();
+                return normalizedAlias && normalizedQuery.includes(` ${normalizedAlias} `);
+            });
+        }
+
+        function connectCustomerToAdmin() {
+            const messagesEl = document.getElementById('ai-chat-messages');
+            const message = currentLanguage === 'en'
+                ? 'Please wait a moment while I open the available direct admin contacts. Choose an admin to message them on Facebook.'
+                : 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex items-start space-x-2';
+            wrapper.innerHTML = `
+                <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] break-words"></div>
+            `;
+            wrapper.lastElementChild.textContent = message;
+            messagesEl.append(wrapper);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+
+            window.setTimeout(() => {
+                const adminMenu = document.getElementById('admin-support-menu');
+                if (adminMenu.classList.contains('hidden')) toggleAdminSupport();
+            }, 1200);
         }
 
         function parseAIBudget(query) {
@@ -3507,11 +3667,11 @@
 
         function getAIProductCategory(query) {
             const categoryKeywords = {
-                gift: ['qua', 'bieu', 'tang', 'sep', 'tet', 'qua tang', 'gift', 'present'],
-                tea: ['tra', 'che', 'thuc uong', 'ngu ngon', 'tea'],
-                snack: ['banh', 'keo', 'mut', 'an vat', 'do nham', 'mon ngon', 'snack', 'cake', 'candy', 'confectionery'],
-                spice: ['gia vi', 'nuoc mam', 'mam', 'tieu', 'dau me', 'seasoning', 'spice', 'pepper', 'fish sauce'],
-                food: ['nong san', 'gao', 'mat ong', 'bo', 'cua', 'ca', 'thuc pham', 'food', 'produce', 'honey', 'rice', 'coffee', 'cafe', 'avocado', 'cashew', 'mushroom', 'fruit']
+                gift: ['qua', 'bieu', 'tang', 'sep', 'tet', 'qua tang', 'qua mung', 'qua suc khoe', 'qua cho', 'gift', 'present'],
+                tea: ['tra', 'che', 'thuc uong', 'do uong', 'ngu ngon', 'thao moc', 'herbal drink', 'tea'],
+                snack: ['banh', 'keo', 'mut', 'an vat', 'an nhe', 'an choi', 'nham nhi', 'do nham', 'mon ngon', 'snack', 'light bite', 'something to munch', 'cake', 'candy', 'confectionery'],
+                spice: ['gia vi', 'nuoc mam', 'mam', 'tieu', 'dau me', 'do cham', 'nuoc cham', 'seasoning', 'spice', 'pepper', 'fish sauce', 'dipping sauce'],
+                food: ['nong san', 'gao', 'mat ong', 'bo', 'cua', 'ca', 'tom', 'thuc pham', 'mon an', 'do an', 'food', 'produce', 'honey', 'rice', 'coffee', 'cafe', 'avocado', 'cashew', 'mushroom', 'fruit']
             };
             for (const [category, keywords] of Object.entries(categoryKeywords)) {
                 if (keywords.some(keyword => ` ${query} `.includes(` ${keyword} `))) return category;
@@ -4355,8 +4515,8 @@
                     ? 'Tell me the occasion, region, product type, or your budget.'
                     : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
                 document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
-                    ? 'Suggestions are based on products and prices currently listed on this site.'
-                    : 'Gợi ý dựa trên danh mục và giá đang hiển thị trên website.';
+                    ? 'Messages and the product catalogue are sent to Google Gemini to generate replies; do not share passwords, OTPs, or payment details.'
+                    : 'Tin nhắn và danh mục được gửi tới Google Gemini để tạo phản hồi; không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
             }
             const promptButtons = document.querySelectorAll('.chat-prompt');
             const prompts = currentLanguage === 'en'
