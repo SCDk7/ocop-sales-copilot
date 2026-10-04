@@ -1,13 +1,7 @@
 // ==========================================
-<<<<<<< HEAD
 // 1. DỮ LIỆU SẢN PHẨM VÀ GIỎ HÀNG
-=======
-<<<<<<< HEAD
 // 1. DỮ LIỆU SẢN PHẨM VÀ GIỎ HÀNG
-=======
 // DỮ LIỆU 40 ĐẶC SẢN OCOP VIỆT NAM
->>>>>>> b2951a01631d44adf9a9346762f7aa1475134f6f
->>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
 // ==========================================
 const ocopProducts = [
     { id: 1, name: "Mật ong rừng U Minh", price: 250000, stock: 15, unit: "chai" },
@@ -16,15 +10,9 @@ const ocopProducts = [
     { id: 4, name: "Trà Hoa Vàng Tam Đảo", price: 450000, stock: 20, unit: "hộp" }
 ];
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
 // ==========================================
 // TRẠNG THÁI ỨNG DỤNG (STATE)
 // ==========================================
->>>>>>> b2951a01631d44adf9a9346762f7aa1475134f6f
->>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
 let cart = [];
 
 // Cập nhật số lượng trên giao diện giỏ hàng
@@ -53,15 +41,9 @@ function addProductToCart(productName) {
 }
 
 // ==========================================
-<<<<<<< HEAD
 // 2. XỬ LÝ TRÍ TUỆ CHATBOT (COPILOT AI)
-=======
-<<<<<<< HEAD
 // 2. XỬ LÝ TRÍ TUỆ CHATBOT (COPILOT AI)
-=======
 // GIỎ HÀNG & YÊU THÍCH
->>>>>>> b2951a01631d44adf9a9346762f7aa1475134f6f
->>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
 // ==========================================
 function handleUserMessage(userMessage) {
     const text = userMessage.toLowerCase();
@@ -100,15 +82,9 @@ function handleUserMessage(userMessage) {
 }
 
 // ==========================================
-<<<<<<< HEAD
 // 3. GẮN SỰ KIỆN GIAO DIỆN & KHUNG CHAT
-=======
-<<<<<<< HEAD
 // 3. GẮN SỰ KIỆN GIAO DIỆN & KHUNG CHAT
-=======
 // ĐĂNG NHẬP / LỊCH SỬ ĐƠN HÀNG
->>>>>>> b2951a01631d44adf9a9346762f7aa1475134f6f
->>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const chatWidget = document.getElementById("chat-widget");
@@ -166,9 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chatBox.appendChild(msgDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
-<<<<<<< HEAD
 });
-=======
 })
 document.addEventListener('DOMContentLoaded', function () {
   // 1. GÁN ẢNH AI AVATAR CÓ SẴN VÀO CÁC VỊ TRÍ CON AI
@@ -258,4 +232,3 @@ function showSingleToast(message) {
     setTimeout(() => toast.remove(), 300);
   }, 2500);
 }
->>>>>>> c85e1534de6f64a1215a3d9c4a6543c152d2d7e1
