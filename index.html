@@ -106,13 +106,221 @@
             0% { width: 100%; height: 100%; opacity: 0.8; }
             100% { width: 210%; height: 210%; opacity: 0; }
         }
+
+        /* HIỆU ỨNG MÀN CHÀO ĐÓN TINH HOA OCOP (INTRO EXPERIENCE) */
+        @keyframes drumRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .drum-rotate {
+            animation: drumRotate 110s linear infinite;
+        }
+        @keyframes curtainExit {
+            0% { opacity: 1; transform: scale(1); filter: blur(0px); }
+            100% { opacity: 0; transform: scale(1.04); filter: blur(10px); pointer-events: none; }
+        }
+        .curtain-closing {
+            animation: curtainExit 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF0B3 0%, #D4AF37 50%, #FFEAA7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-card-glow {
+            box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.25), inset 0 0 15px rgba(212, 175, 55, 0.1);
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between overflow-x-hidden">
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
-    
-    <!-- 1. TOP ANNOUNCEMENT BAR -->
+
+    <!-- ============================================================== -->
+    <!-- MÀN CHÀO ĐÓN TINH HOA OCOP (VIVID & INTERACTIVE INTRO EXPERIENCE) -->
+    <!-- ============================================================== -->
+    <div id="ocop-intro-overlay" class="fixed inset-0 z-[100] flex flex-col justify-between overflow-y-auto overflow-x-hidden bg-[#071c15] text-white p-4 sm:p-6 transition-all duration-700 select-none">
+        <!-- 1. Background Layers: Golden Particle Canvas, Rotating Bronze Drum, Ambient Glows -->
+        <div class="fixed inset-0 pointer-events-none overflow-hidden">
+            <!-- Canvas cho bụi vàng phát sáng lấp lánh (Golden Stardust) -->
+            <canvas id="intro-particles-canvas" class="absolute inset-0 w-full h-full opacity-65"></canvas>
+            
+            <!-- Ánh sáng hào quang góc & trung tâm -->
+            <div class="absolute -top-32 -left-32 w-96 h-96 bg-emerald-600/20 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-32 -right-32 w-[28rem] h-[28rem] bg-amber-500/15 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[38rem] h-[38rem] bg-[#165B46]/25 rounded-full blur-3xl"></div>
+
+            <!-- Họa tiết Trống đồng Đông Sơn quay chậm huyền ảo (Mặt trời 14 tia & Vòng tròn chim Lạc) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px] sm:w-[900px] sm:h-[900px] opacity-10 pointer-events-none drum-rotate">
+                <svg viewBox="0 0 800 800" fill="none" stroke="#D4AF37" class="w-full h-full">
+                    <circle cx="400" cy="400" r="390" stroke-width="2.5" stroke-dasharray="10 8"/>
+                    <circle cx="400" cy="400" r="365" stroke-width="2"/>
+                    <circle cx="400" cy="400" r="335" stroke-width="3" stroke-dasharray="16 10"/>
+                    <circle cx="400" cy="400" r="290" stroke-width="1.8"/>
+                    <circle cx="400" cy="400" r="250" stroke-width="2" stroke-dasharray="10 6"/>
+                    <circle cx="400" cy="400" r="200" stroke-width="2"/>
+                    <circle cx="400" cy="400" r="150" stroke-width="2" stroke-dasharray="8 6"/>
+                    <circle cx="400" cy="400" r="100" stroke-width="1.5"/>
+                    <circle cx="400" cy="400" r="45" stroke-width="2"/>
+                    <polygon points="400,260 418,350 495,295 440,368 535,372 446,408 518,472 432,442 458,530 400,458 342,530 368,442 282,472 354,408 265,372 360,368 305,295 382,350" fill="#D4AF37" fill-opacity="0.16" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 2. Intro Top Bar: Thương hiệu, Nút âm thanh, Đổi ngôn ngữ & Bỏ qua -->
+        <div class="relative z-10 max-w-5xl mx-auto w-full flex items-center justify-between pb-3 border-b border-amber-500/20">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-ocopGreen via-emerald-800 to-amber-600 border border-ocopGold flex items-center justify-center text-ocopGold text-base shadow-md">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <div>
+                    <span class="block text-xs sm:text-sm font-extrabold text-amber-200 tracking-tight leading-none">OCOP SALES COPILOT</span>
+                    <span class="text-[9px] sm:text-[10px] text-amber-400/90 uppercase font-bold tracking-widest" id="i18n-intro-badge">Chương Trình Quốc Gia • 40 Đặc Sản</span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <!-- Nút bật tắt âm thanh chào đón -->
+                <button id="intro-sound-btn" onclick="toggleIntroSound()" class="px-2.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-amber-300/30 text-amber-200 text-xs font-bold transition flex items-center space-x-1.5 shadow-sm" title="Bật/Tắt âm thanh hiệu ứng">
+                    <i class="fa-solid fa-volume-high text-ocopGold"></i>
+                    <span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">Âm thanh: Bật</span>
+                </button>
+                
+                <!-- Nút chuyển ngôn ngữ trong intro -->
+                <button onclick="toggleLanguage()" class="w-8 h-8 rounded-full bg-ocopGreen text-ocopGold hover:bg-emerald-800 font-black text-xs border border-ocopGold/60 shadow flex items-center justify-center transition hover:scale-105" title="Switch Language">
+                    VI
+                </button>
+
+                <!-- Nút bỏ qua -->
+                <button onclick="enterOcopMarket('all')" class="px-3.5 py-1.5 rounded-full bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/40 text-xs font-extrabold transition flex items-center space-x-1.5 shadow-sm hover:scale-105 active:scale-95">
+                    <span id="i18n-intro-skip">Bỏ qua (Esc)</span>
+                    <i class="fa-solid fa-arrow-right text-[10px] text-ocopGold"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. Main Centerpiece Container -->
+        <div class="relative z-10 max-w-4xl mx-auto w-full my-auto py-6 sm:py-8 flex flex-col items-center text-center space-y-6">
+            <!-- Huy hiệu 5 sao quốc gia hào quang -->
+            <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 via-ocopGold/30 to-amber-500/20 border border-ocopGold/60 px-4 py-1.5 rounded-full text-xs font-black text-amber-300 shadow-gold-glow animate-pulse">
+                <i class="fa-solid fa-award text-ocopGold text-sm"></i>
+                <span>★ ★ ★ ★ ★ CHUẨN QUỐC GIA 4 - 5 SAO</span>
+            </div>
+
+            <!-- Tiêu đề lớn tỏa sáng -->
+            <div class="space-y-2">
+                <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                    <span class="text-white drop-shadow-md" id="i18n-intro-title1">Khơi Nguồn Tinh Hoa Nông Sản Việt</span><br>
+                    <span class="gold-gradient-text drop-shadow-[0_4px_25px_rgba(212,175,55,0.45)]" id="i18n-intro-title2">40 ĐẶC SẢN CHUẨN 4 - 5 SAO</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-amber-100/85 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc">
+                    Hành trình kết tinh 40 sản phẩm đạt chuẩn OCOP quốc gia từ 63 tỉnh thành. 100% nguyên bản, chính gốc xuất xứ, bồi bổ sức khỏe và nâng tầm quà biếu ngoại giao.
+                </p>
+            </div>
+
+            <!-- 4 Trụ Cột Giá Trị Nổi Bật -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 w-full max-w-3xl pt-1">
+                <div class="bg-white/5 backdrop-blur-md border border-ocopGold/20 hover:border-ocopGold/60 rounded-2xl p-3 text-center transition hover:-translate-y-1 gold-card-glow">
+                    <i class="fa-solid fa-medal text-ocopGold text-lg mb-1 block"></i>
+                    <span class="block text-xs font-black text-white" id="i18n-intro-pillar1">40 Đặc Sản 4 - 5★</span>
+                    <span class="block text-[10px] text-amber-200/80 font-medium" id="i18n-intro-pillar1-sub">Kiểm định nghiêm ngặt</span>
+                </div>
+                <div class="bg-white/5 backdrop-blur-md border border-ocopGold/20 hover:border-ocopGold/60 rounded-2xl p-3 text-center transition hover:-translate-y-1 gold-card-glow">
+                    <i class="fa-solid fa-robot text-emerald-400 text-lg mb-1 block"></i>
+                    <span class="block text-xs font-black text-white" id="i18n-intro-pillar2">Trợ Lý AI 24/7</span>
+                    <span class="block text-[10px] text-amber-200/80 font-medium" id="i18n-intro-pillar2-sub">Tư vấn quà biếu & trà</span>
+                </div>
+                <div class="bg-white/5 backdrop-blur-md border border-ocopGold/20 hover:border-ocopGold/60 rounded-2xl p-3 text-center transition hover:-translate-y-1 gold-card-glow">
+                    <i class="fa-brands fa-facebook-messenger text-blue-400 text-lg mb-1 block"></i>
+                    <span class="block text-xs font-black text-white" id="i18n-intro-pillar3">4 Admin Trực Tuyến</span>
+                    <span class="block text-[10px] text-amber-200/80 font-medium" id="i18n-intro-pillar3-sub">Hỗ trợ đơn hàng ngay</span>
+                </div>
+                <div class="bg-white/5 backdrop-blur-md border border-ocopGold/20 hover:border-ocopGold/60 rounded-2xl p-3 text-center transition hover:-translate-y-1 gold-card-glow">
+                    <i class="fa-solid fa-qrcode text-yellow-300 text-lg mb-1 block"></i>
+                    <span class="block text-xs font-black text-white" id="i18n-intro-pillar4">VietQR BIDV</span>
+                    <span class="block text-[10px] text-amber-200/80 font-medium" id="i18n-intro-pillar4-sub">Miễn ship từ 500k</span>
+                </div>
+            </div>
+
+            <!-- Thước Phim Tinh Hoa 3 Miền (Interactive 3-Region Journey) -->
+            <div class="w-full max-w-3xl bg-black/40 backdrop-blur-lg rounded-3xl p-4 sm:p-5 border border-ocopGold/30 shadow-2xl text-left space-y-3.5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-500/20 pb-3">
+                    <span class="text-xs font-bold text-amber-200 uppercase tracking-wider flex items-center space-x-2">
+                        <i class="fa-solid fa-map-location-dot text-ocopGold"></i>
+                        <span id="i18n-intro-region-header">Hành trình 3 miền kết tinh ẩm thực Việt:</span>
+                    </span>
+                    <!-- 3 Tabs Vùng Miền -->
+                    <div class="flex items-center space-x-1.5 bg-black/50 p-1 rounded-2xl border border-white/10">
+                        <button id="tab-region-north" onclick="setIntroRegion('north', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1">
+                            <span>🏔️</span>
+                            <span id="i18n-intro-tab-north">Miền Bắc</span>
+                        </button>
+                        <button id="tab-region-central" onclick="setIntroRegion('central', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10">
+                            <span>🌊</span>
+                            <span id="i18n-intro-tab-central">Miền Trung</span>
+                        </button>
+                        <button id="tab-region-south" onclick="setIntroRegion('south', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10">
+                            <span>🌾</span>
+                            <span id="i18n-intro-tab-south">Miền Nam</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thông Tin & Mô Tả Vùng Miền -->
+                <div>
+                    <h4 id="intro-region-title" class="text-sm sm:text-base font-extrabold text-amber-300">Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng</h4>
+                    <p id="intro-region-desc" class="text-xs text-gray-300 leading-relaxed mt-1">Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.</p>
+                </div>
+
+                <!-- 4 Thẻ Đại Diện Sản Phẩm Của Vùng -->
+                <div id="intro-region-items" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                    <!-- Render linh động bằng JavaScript -->
+                </div>
+            </div>
+
+            <!-- Nút Hành Động Lớn (CTA Chính & Lối Tắt Nhanh) -->
+            <div class="w-full max-w-3xl space-y-4 pt-2">
+                <!-- Nút Vàng Khổng Lồ Vào Trang -->
+                <button onclick="enterOcopMarket('all')" class="group relative w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 sm:px-14 sm:py-4.5 rounded-2xl text-sm sm:text-base font-black text-[#071c15] bg-gradient-to-r from-amber-300 via-ocopGold to-yellow-400 hover:from-amber-200 hover:to-ocopGold shadow-[0_0_35px_rgba(212,175,55,0.6)] hover:shadow-[0_0_55px_rgba(212,175,55,0.9)] hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-white/70">
+                    <i class="fa-solid fa-wand-magic-sparkles text-ocopGreen mr-2.5 text-base group-hover:rotate-12 transition-transform"></i>
+                    <span id="i18n-intro-btn-enter">BƯỚC VÀO CHỢ TINH HOA (40 ĐẶC SẢN)</span>
+                    <i class="fa-solid fa-arrow-right ml-3 text-sm group-hover:translate-x-1.5 transition-transform"></i>
+                </button>
+
+                <!-- Lựa chọn lối tắt theo nhu cầu -->
+                <div class="space-y-2">
+                    <span class="block text-[11px] text-amber-200/70 font-semibold uppercase tracking-wider" id="i18n-intro-quick-header">Hoặc chọn nhanh theo nhu cầu của bạn:</span>
+                    <div class="flex flex-wrap items-center justify-center gap-2 text-xs font-bold">
+                        <button onclick="enterOcopMarket('gift')" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-amber-300/40 text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105">
+                            <span>🎁</span>
+                            <span id="i18n-intro-quick-gift">Quà Biếu Sức Khỏe</span>
+                        </button>
+                        <button onclick="enterOcopMarket('tea')" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-amber-300/40 text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105">
+                            <span>🍵</span>
+                            <span id="i18n-intro-quick-tea">Trà & Dược Liệu 5★</span>
+                        </button>
+                        <button onclick="enterOcopMarket('ai')" class="px-3.5 py-2 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-400/50 text-emerald-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105">
+                            <span>🤖</span>
+                            <span id="i18n-intro-quick-ai">Nhờ AI Tư Vấn Quà</span>
+                        </button>
+                        <button onclick="enterOcopMarket('admin')" class="px-3.5 py-2 rounded-xl bg-blue-950/60 hover:bg-blue-900/80 border border-blue-400/50 text-blue-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105">
+                            <span>💬</span>
+                            <span id="i18n-intro-quick-admin">Chat Với 4 Admin FB</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Intro Bottom Note -->
+        <div class="relative z-10 max-w-5xl mx-auto w-full pt-3 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-200/60 gap-2">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-shield-halved text-ocopGold"></i>
+                <span>Chứng nhận OCOP Quốc Gia số 0312461711 • Cam kết 100% chính hãng</span>
+            </div>
+            <span>Ấn phím <kbd class="bg-white/10 px-1.5 py-0.5 rounded border border-white/20 text-white font-mono text-[10px]">Esc</kbd> hoặc nút Bỏ qua để vào thẳng trang chủ</span>
+        </div>
+    </div>
     <div class="bg-ocopGreen text-amber-100 text-[11px] font-semibold py-2 px-4 border-b border-ocopGold/30 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
         <div class="hidden md:flex items-center space-x-5 text-xs">
             <span class="flex items-center"><i class="fa-solid fa-shield-halved text-ocopGold mr-1.5"></i> <span id="i18n-top-guarantee">Cam kết 100% OCOP Chính Hãng</span></span>
@@ -123,6 +331,11 @@
             <span id="i18n-top-hotline">Tư vấn quà biếu & Xuất hóa đơn VAT:</span> <a href="tel:1900888688" class="font-extrabold text-white hover:text-ocopGold transition">1900 888 688</a>
         </div>
         <div class="hidden lg:flex items-center space-x-3 text-xs">
+            <button onclick="openIntroModal()" class="hover:text-ocopGold text-amber-300 font-bold transition flex items-center space-x-1 cursor-pointer" title="Xem lại màn giới thiệu">
+                <i class="fa-solid fa-wand-magic-sparkles text-ocopGold text-[10px] animate-pulse"></i>
+                <span id="i18n-top-intro">Khám Phá Tinh Hoa</span>
+            </button>
+            <span>|</span>
             <a href="#contact-footer" class="hover:text-ocopGold transition" id="i18n-top-centers">Trung tâm OCOP</a>
             <span>|</span>
             <a href="#products-section" class="hover:text-ocopGold transition" id="i18n-top-specs">40 Đặc sản</a>
@@ -154,6 +367,10 @@
                 <a href="#" class="text-ocopGreen font-extrabold border-b-2 border-ocopGold pb-1 transition" id="i18n-nav-home">Trang chủ</a>
                 <a href="#products-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-products">Danh mục 40 Đặc sản</a>
                 <a href="#contact-footer" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-contact">Liên hệ & Hỗ hỗ trợ</a>
+                <button onclick="openIntroModal()" class="text-amber-700 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition flex items-center space-x-1.5 cursor-pointer" id="i18n-nav-intro">
+                    <i class="fa-solid fa-sparkles text-ocopGold text-xs"></i>
+                    <span id="i18n-nav-intro-text">Tinh hoa OCOP</span>
+                </button>
             </nav>
             
             <!-- Quick Action Icons -->
@@ -778,7 +995,33 @@
                 quickViewBtn: "Xem chi tiết",
                 listPrice: "Giá niêm yết:",
                 provinceLabel: "Xuất xứ:",
-                ratingLabel: "Chứng nhận:"
+                ratingLabel: "Chứng nhận:",
+                introBadge: "Chương Trình Quốc Gia • 40 Đặc Sản",
+                introTitle1: "Khơi Nguồn Tinh Hoa Nông Sản Việt",
+                introTitle2: "40 ĐẶC SẢN CHUẨN 4 - 5 SAO",
+                introDesc: "Hành trình kết tinh 40 sản phẩm đạt chuẩn OCOP quốc gia từ 63 tỉnh thành. 100% nguyên bản, chính gốc xuất xứ, bồi bổ sức khỏe và nâng tầm quà biếu ngoại giao.",
+                introBtnEnter: "BƯỚC VÀO CHỢ TINH HOA (40 ĐẶC SẢN)",
+                introPillar1: "40 Đặc Sản 4 - 5★",
+                introPillar1Sub: "Kiểm định nghiêm ngặt",
+                introPillar2: "Trợ Lý AI 24/7",
+                introPillar2Sub: "Tư vấn quà biếu & trà",
+                introPillar3: "4 Admin Trực Tuyến",
+                introPillar3Sub: "Hỗ trợ đơn hàng ngay",
+                introPillar4: "VietQR BIDV",
+                introPillar4Sub: "Miễn ship từ 500k",
+                introRegionHeader: "Hành trình 3 miền kết tinh ẩm thực Việt:",
+                introTabNorth: "Miền Bắc",
+                introTabCentral: "Miền Trung",
+                introTabSouth: "Miền Nam",
+                introQuickHeader: "Hoặc chọn nhanh theo nhu cầu của bạn:",
+                introQuickGift: "Quà Biếu Sức Khỏe",
+                introQuickTea: "Trà & Dược Liệu 5★",
+                introQuickAi: "Nhờ AI Tư Vấn Quà",
+                introQuickAdmin: "Chat Với 4 Admin FB",
+                introSkip: "Bỏ qua (Esc)",
+                introSoundStatus: "Âm thanh: Bật",
+                topIntro: "Khám Phá Tinh Hoa",
+                navIntroText: "Tinh hoa OCOP"
             },
             en: {
                 topGuarantee: "100% Genuine OCOP Certified",
@@ -824,7 +1067,33 @@
                 quickViewBtn: "Quick View",
                 listPrice: "Official Price:",
                 provinceLabel: "Origin:",
-                ratingLabel: "Certification:"
+                ratingLabel: "Certification:",
+                introBadge: "National Program • 40 Specialties",
+                introTitle1: "Unveiling Vietnamese National Treasures",
+                introTitle2: "40 NATIONAL 4 - 5 STAR SPECIALTIES",
+                introDesc: "A curated journey of 40 certified national 4 - 5 star OCOP specialties from 63 provinces. 100% authentic, pure origin, health-boosting and premium diplomatic gifts.",
+                introBtnEnter: "ENTER OCOP MARKETPLACE (40 SPECIALTIES)",
+                introPillar1: "40 Certified 4 - 5★ Items",
+                introPillar1Sub: "Strictly verified origin",
+                introPillar2: "24/7 AI Copilot",
+                introPillar2Sub: "Gift & herbal advice",
+                introPillar3: "4 Online Admins",
+                introPillar3Sub: "Instant Facebook chat",
+                introPillar4: "VietQR BIDV",
+                introPillar4Sub: "Free shipping > 500k",
+                introRegionHeader: "A journey through 3 regions of Vietnamese culinary heritage:",
+                introTabNorth: "Northern Region",
+                introTabCentral: "Central Region",
+                introTabSouth: "Southern Region",
+                introQuickHeader: "Or start with your preferred choice:",
+                introQuickGift: "Health Gift Sets",
+                introQuickTea: "5-Star Tea & Herbs",
+                introQuickAi: "Ask AI Assistant",
+                introQuickAdmin: "Chat With 4 Admins",
+                introSkip: "Skip (Esc)",
+                introSoundStatus: "Sound: On",
+                topIntro: "Explore Essence",
+                navIntroText: "OCOP Essence"
             }
         };
 
@@ -1347,13 +1616,303 @@
                     elem.innerText = t[key];
                 }
             }
+            if (typeof setIntroRegion === 'function') {
+                setIntroRegion(currentRegion, false);
+            }
         }
+
+        /* --- LOGIC MÀN CHÀO ĐÓN TINH HOA OCOP (VIVID INTRO EXPERIENCE) --- */
+        let soundEnabled = true;
+        let audioCtx = null;
+        let particleAnimationId = null;
+        let particles = [];
+        let currentRegion = 'north';
+        let regionInterval = null;
+
+        const regionData = {
+            north: {
+                titleVi: "Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng",
+                titleEn: "Northern Region - Mountain Teas & High Altitude Treasures",
+                descVi: "Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.",
+                descEn: "Home of premier Tan Cuong teas, Tam Dao golden camellia, savory smoked mountain buffalo, and famous Ha Long hand-pounded squid cakes.",
+                items: [
+                    { nameVi: "Trà hoa vàng Tam Đảo", nameEn: "Tam Dao Golden Camellia", star: 5, prov: "Vĩnh Phúc", img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=400&q=80" },
+                    { nameVi: "Trà Đinh Tân Cương", nameEn: "Tan Cuong Spire Tea", star: 5, prov: "Thái Nguyên", img: "https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&w=400&q=80" },
+                    { nameVi: "Chả mực Hạ Long", nameEn: "Ha Long Squid Cake", star: 5, prov: "Quảng Ninh", img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=400&q=80" },
+                    { nameVi: "Thịt trâu gác bếp", nameEn: "Smoked Buffalo Meat", star: 4, prov: "Sơn La", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" }
+                ]
+            },
+            central: {
+                titleVi: "Miền Trung - Quốc Bảo Đất Trời & Đặc Sản Biển Đảo",
+                titleEn: "Central Region - National Treasures & Island Delicacies",
+                descVi: "Vùng đất nắng gió kết tinh dược liệu quý như Quốc bảo Sâm Ngọc Linh, Yến sào Khánh Hòa thượng hạng, Tỏi đen Lý Sơn và Cà phê Arabica Cầu Đất nức tiếng.",
+                descEn: "Sun-drenched lands cultivating supreme treasures: Ngoc Linh Ginseng, Khanh Hoa Bird's Nest, Ly Son Black Garlic, and Cau Dat Arabica Coffee.",
+                items: [
+                    { nameVi: "Sâm Ngọc Linh", nameEn: "Ngoc Linh Ginseng", star: 5, prov: "Quảng Nam", img: "https://images.unsplash.com/photo-1515023115689-66961238892b?auto=format&fit=crop&w=400&q=80" },
+                    { nameVi: "Yến sào Khánh Hòa", nameEn: "Khanh Hoa Bird's Nest", star: 5, prov: "Khánh Hòa", img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=400&q=80" },
+                    { nameVi: "Tỏi đen một nhánh Lý Sơn", nameEn: "Ly Son Black Garlic", star: 5, prov: "Lý Sơn", img: "https://images.unsplash.com/photo-1608686207856-001b95cf60ca?auto=format&fit=crop&w=400&q=80" },
+                    { nameVi: "Cà phê Arabica Cầu Đất", nameEn: "Cau Dat Arabica Coffee", star: 5, prov: "Đà Lạt", img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=400&q=80" }
+                ]
+            },
+            south: {
+                titleVi: "Miền Nam - Hương Vị Trù Phú & Đậm Đà Sông Nước",
+                titleEn: "Southern Region - Rich River Delta & Coastal Treasures",
+                descVi: "Vùng đất phù sa trù phú ban tặng Mật ong rừng tràm U Minh, Nước mắm cá cơm Phú Quốc ủ chượp truyền thống, Hạt điều Bình Phước và Tôm khô Rạch Gốc đỏ au.",
+                descEn: "Lush fertile plains offering U Minh wild forest honey, Phu Quoc aged fish sauce, Binh Phuoc wood-roasted cashews, and Rach Goc dried shrimp.",
+                items: [
+                    { nameVi: "Nước mắm Phú Quốc", nameEn: "Phu Quoc Fish Sauce", star: 5, prov: "Phú Quốc", img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=400&q=80" },
+                    { nameVi: "Hạt điều rang củi", nameEn: "Roasted Cashews", star: 4, prov: "Bình Phước", img: "https://images.unsplash.com/photo-1608797178974-15b35a6405f8?auto=format&fit=crop&w=400&q=80" },
+                    { nameVi: "Mật ong rừng U Minh", nameEn: "U Minh Forest Honey", star: 4, prov: "Cà Mau", img: "https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=400&q=80" },
+                    { nameVi: "Tôm khô Rạch Gốc", nameEn: "Rach Goc Dried Shrimp", star: 4, prov: "Cà Mau", img: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=400&q=80" }
+                ]
+            }
+        };
+
+        function setIntroRegion(region, manual = false) {
+            currentRegion = region;
+            const data = regionData[region];
+            if (!data) return;
+
+            ['north', 'central', 'south'].forEach(r => {
+                const btn = document.getElementById(`tab-region-${r}`);
+                if (btn) {
+                    if (r === region) {
+                        btn.className = "flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1";
+                    } else {
+                        btn.className = "flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10";
+                    }
+                }
+            });
+
+            const titleElem = document.getElementById('intro-region-title');
+            const descElem = document.getElementById('intro-region-desc');
+            const itemsElem = document.getElementById('intro-region-items');
+
+            if (titleElem) titleElem.innerText = (currentLang === 'en' ? data.titleEn : data.titleVi);
+            if (descElem) descElem.innerText = (currentLang === 'en' ? data.descEn : data.descVi);
+            
+            if (itemsElem) {
+                itemsElem.innerHTML = data.items.map(it => {
+                    const itemName = (currentLang === 'en' ? it.nameEn : it.nameVi);
+                    return `
+                    <div class="bg-black/50 hover:bg-black/70 p-2.5 rounded-2xl border border-ocopGold/30 flex items-center space-x-3 transition-all duration-300 hover:scale-[1.02] group">
+                        <img src="${it.img}" alt="${itemName}" onerror="handleImgError(this, '${it.nameVi.replace(/'/g, "\\'")}')" class="w-12 h-12 rounded-xl object-cover ring-1 ring-ocopGold/50 flex-shrink-0 group-hover:scale-105 transition">
+                        <div class="min-w-0 flex-1">
+                            <span class="block text-xs font-bold text-amber-100 truncate">${itemName}</span>
+                            <div class="flex items-center space-x-2 text-[10px] mt-0.5">
+                                <span class="text-amber-300 font-semibold">${it.prov}</span>
+                                <span class="bg-ocopGold/20 text-amber-200 px-1.5 py-0.5 rounded font-extrabold text-[9px] flex items-center">
+                                    <i class="fa-solid fa-star text-ocopGold text-[8px] mr-1"></i>${it.star}★
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            }
+
+            if (manual) {
+                playWelcomeChime();
+                clearInterval(regionInterval);
+                regionInterval = setInterval(autoCycleRegion, 5000);
+            }
+        }
+
+        function autoCycleRegion() {
+            const list = ['north', 'central', 'south'];
+            let nextIdx = (list.indexOf(currentRegion) + 1) % list.length;
+            setIntroRegion(list[nextIdx], false);
+        }
+
+        /* --- ÂM THANH CHÀO ĐÓN (PENTATONIC CHIME BẰNG WEB AUDIO API) --- */
+        function playWelcomeChime() {
+            if (!soundEnabled) return;
+            try {
+                const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtxClass) return;
+                if (!audioCtx) audioCtx = new AudioCtxClass();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const now = audioCtx.currentTime;
+                // Chuỗi hợp âm Ngũ cung ấm áp: E4, G#4, B4, E5, F#5
+                const freqs = [329.63, 415.30, 493.88, 659.25, 739.99];
+                freqs.forEach((f, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(f, now + idx * 0.07);
+                    
+                    gain.gain.setValueAtTime(0.0001, now + idx * 0.07);
+                    gain.gain.exponentialRampToValueAtTime(0.08, now + idx * 0.07 + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.07 + 1.2);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    
+                    osc.start(now + idx * 0.07);
+                    osc.stop(now + idx * 0.07 + 1.25);
+                });
+            } catch (e) {
+                console.warn('Audio note:', e);
+            }
+        }
+
+        function toggleIntroSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('intro-sound-btn');
+            if (btn) {
+                const t = i18n[currentLang];
+                btn.innerHTML = soundEnabled 
+                    ? `<i class="fa-solid fa-volume-high text-ocopGold"></i><span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">${t.introSoundStatus || 'Âm thanh: Bật'}</span>` 
+                    : `<i class="fa-solid fa-volume-xmark text-gray-400"></i><span class="text-[10px] hidden sm:inline text-gray-400" id="i18n-intro-sound-status">${t.introSoundOff || 'Âm thanh: Tắt'}</span>`;
+            }
+            if (soundEnabled) playWelcomeChime();
+        }
+
+        /* --- HIỆU ỨNG BỤI VÀNG LƠ LỬNG (CANVAS PARTICLES) --- */
+        function initIntroParticles() {
+            const canvas = document.getElementById('intro-particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            particles = [];
+            const count = Math.min(45, Math.floor(window.innerWidth / 28));
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2.2 + 0.8,
+                    speedY: Math.random() * 0.5 + 0.2,
+                    speedX: (Math.random() - 0.5) * 0.35,
+                    alpha: Math.random() * 0.7 + 0.3,
+                    alphaSpeed: (Math.random() * 0.015 + 0.005) * (Math.random() > 0.5 ? 1 : -1)
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let p of particles) {
+                    p.y -= p.speedY;
+                    p.x += p.speedX;
+                    p.alpha += p.alphaSpeed;
+                    if (p.alpha <= 0.1 || p.alpha >= 0.9) p.alphaSpeed = -p.alphaSpeed;
+                    if (p.y < -10) {
+                        p.y = canvas.height + 10;
+                        p.x = Math.random() * canvas.width;
+                    }
+                    if (p.x < -10) p.x = canvas.width + 10;
+                    if (p.x > canvas.width + 10) p.x = -10;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(212, 175, 55, ${p.alpha})`;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = '#D4AF37';
+                    ctx.fill();
+                }
+                particleAnimationId = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function startIntroParticles() {
+            if (!particleAnimationId) {
+                initIntroParticles();
+            }
+        }
+
+        function stopIntroParticles() {
+            if (particleAnimationId) {
+                cancelAnimationFrame(particleAnimationId);
+                particleAnimationId = null;
+            }
+        }
+
+        /* --- ĐIỀU HƯỚNG VÀO TRANG TỪ INTRO --- */
+        function enterOcopMarket(type) {
+            playWelcomeChime();
+            const overlay = document.getElementById('ocop-intro-overlay');
+            if (overlay) {
+                overlay.classList.add('curtain-closing');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('curtain-closing');
+                    stopIntroParticles();
+                    clearInterval(regionInterval);
+                    document.body.classList.remove('overflow-hidden');
+                    
+                    if (type === 'gift') {
+                        const giftBtn = document.querySelectorAll('.cat-side-btn')[2];
+                        setCategoryFilter('gift', giftBtn);
+                        scrollToProducts();
+                        showToast(currentLang === 'en' ? 'Filtered by Health Gift Sets' : 'Đã chọn danh mục Quà Biếu Sức Khỏe!');
+                    } else if (type === 'tea') {
+                        const teaBtn = document.querySelectorAll('.cat-side-btn')[1];
+                        setCategoryFilter('tea', teaBtn);
+                        scrollToProducts();
+                        showToast(currentLang === 'en' ? 'Filtered by Tea & Herbal Medicine' : 'Đã chọn danh mục Trà & Dược Liệu 5 Sao!');
+                    } else if (type === 'ai') {
+                        toggleAIChat();
+                        showToast(currentLang === 'en' ? 'AI Specialty Assistant is ready to help!' : 'Trợ lý AI OCOP đã sẵn sàng tư vấn cho bạn!');
+                    } else if (type === 'admin') {
+                        toggleAdminSupport();
+                        showToast(currentLang === 'en' ? 'Select an Admin to chat on Facebook!' : 'Chọn Admin để nhận tư vấn trực tiếp Facebook!');
+                    } else if (type === 'all') {
+                        scrollToProducts();
+                    }
+                }, 520);
+            }
+        }
+
+        function openIntroModal() {
+            const overlay = document.getElementById('ocop-intro-overlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                startIntroParticles();
+                setIntroRegion(currentRegion, false);
+                clearInterval(regionInterval);
+                regionInterval = setInterval(autoCycleRegion, 5000);
+                playWelcomeChime();
+            }
+        }
+
+        function scrollToProducts() {
+            const sec = document.getElementById('products-section');
+            if (sec) {
+                sec.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        /* Lắng nghe phím Esc để đóng nhanh Intro */
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const overlay = document.getElementById('ocop-intro-overlay');
+                if (overlay && !overlay.classList.contains('hidden')) {
+                    enterOcopMarket('all');
+                }
+            }
+        });
 
         /* --- KHỞI TẠO ỨNG DỤNG --- */
         window.addEventListener('DOMContentLoaded', () => {
             renderProductsList();
             updateWishlistUI();
             updateCartUI();
+
+            // Khởi tạo màn chào đón
+            document.body.classList.add('overflow-hidden');
+            startIntroParticles();
+            setIntroRegion('north', false);
+            regionInterval = setInterval(autoCycleRegion, 5000);
         });
     </script>
 </body>
