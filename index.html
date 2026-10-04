@@ -205,40 +205,195 @@
             color: #fff;
             font-weight: 800;
         }
+        /* ============================================================== */
+        /* SIÊU PHẨM MÀN INTRO: VŨ TRỤ HOÀNG KIM NÔNG SẢN VIỆT - AI ANTIGRAVITY */
+        /* ============================================================== */
+        #ocop-intro-overlay {
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(16, 185, 129, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 15% 45%, rgba(212, 175, 55, 0.2) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 75%, rgba(6, 78, 59, 0.4) 0%, transparent 60%),
+                linear-gradient(175deg, #020c08 0%, #051a13 38%, #03120c 70%, #010704 100%);
+            color: #ffffff;
+            padding: clamp(0.75rem, 2.5vw, 2rem);
+        }
+        .intro-hero-title {
+            text-shadow: 0 4px 25px rgba(0, 0, 0, 0.8), 0 0 40px rgba(16, 185, 129, 0.25);
+        }
+        .intro-gold-gradient {
+            background: linear-gradient(135deg, #FFF9D2 0%, #FFE57F 20%, #D4AF37 45%, #FFFFFF 60%, #B89528 80%, #FFF3B0 100%);
+            background-size: 250% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldLiquidShimmer 5s linear infinite;
+        }
+        @keyframes goldLiquidShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .intro-card-glass {
+            background: rgba(8, 30, 22, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.08);
+            transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .intro-card-glass:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: rgba(255, 223, 0, 0.85);
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.4), inset 0 0 25px rgba(212, 175, 55, 0.2);
+        }
+        .intro-seal-badge {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(16, 185, 129, 0.2) 50%, rgba(212, 175, 55, 0.3) 100%);
+            border: 1.5px solid rgba(255, 223, 0, 0.65);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.35), inset 0 0 15px rgba(212, 175, 55, 0.15);
+            animation: sealPulse 3s ease-in-out infinite;
+        }
+        @keyframes sealPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 0 35px rgba(212, 175, 55, 0.7); }
+        }
+        .intro-mega-btn {
+            background: linear-gradient(110deg, #F5D061 0%, #FFDF00 25%, #E6B800 50%, #FFEA79 75%, #D4AF37 100%);
+            background-size: 200% auto;
+            color: #041810 !important;
+            box-shadow: 0 0 45px rgba(255, 223, 0, 0.65), 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .intro-mega-btn:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 0 65px rgba(255, 223, 0, 0.95), 0 15px 40px rgba(0, 0, 0, 0.6);
+            background-position: right center;
+        }
+        .intro-pill-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            backdrop-filter: blur(12px);
+            transition: all 0.25s ease;
+        }
+        .intro-pill-btn:hover {
+            background: rgba(212, 175, 55, 0.22);
+            border-color: rgba(255, 223, 0, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        .ticker-wrapper {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-content {
+            display: inline-flex;
+            animation: tickerMove 28s linear infinite;
+        }
+        .ticker-content:hover {
+            animation-play-state: paused;
+        }
+        @keyframes tickerMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .lucky-golden-box {
+            background: linear-gradient(135deg, rgba(30, 20, 5, 0.9) 0%, rgba(45, 32, 10, 0.95) 50%, rgba(20, 15, 5, 0.9) 100%);
+            border: 2px dashed rgba(255, 215, 0, 0.7);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.3), inset 0 0 25px rgba(212, 175, 55, 0.15);
+        }
+        .lucky-golden-box:hover {
+            border-color: rgba(255, 235, 120, 1);
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.55), inset 0 0 35px rgba(212, 175, 55, 0.25);
+        }
+        .region-item-card {
+            background: rgba(10, 36, 26, 0.75);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .region-item-card:hover {
+            background: rgba(16, 56, 42, 0.95);
+            border-color: rgba(255, 223, 0, 0.8);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 25px rgba(212, 175, 55, 0.4);
+        }
+        @keyframes giftHeartbeat {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            15% { transform: scale(1.12) rotate(-5deg); }
+            30% { transform: scale(1.12) rotate(5deg); }
+            45% { transform: scale(1.05) rotate(-3deg); }
+            60% { transform: scale(1) rotate(0deg); }
+        }
+        .gift-wobble-anim {
+            animation: giftHeartbeat 3.2s ease-in-out infinite;
+        }
         #ocop-intro-overlay {
             color: #183653;
             background:
-                radial-gradient(ellipse at 12% 8%, rgba(190, 224, 255, 0.72), transparent 36%),
-                radial-gradient(ellipse at 88% 88%, rgba(206, 232, 255, 0.82), transparent 38%),
-                linear-gradient(145deg, #f7fbff 0%, #eaf4ff 48%, #f5f9ff 100%);
+                radial-gradient(ellipse at 15% 10%, rgba(186, 224, 255, 0.9), transparent 39%),
+                radial-gradient(ellipse at 88% 82%, rgba(185, 224, 255, 0.86), transparent 42%),
+                radial-gradient(ellipse at 50% 48%, rgba(255, 255, 255, 0.92), transparent 56%),
+                linear-gradient(135deg, #e8f5ff 0%, #f8fcff 46%, #eaf4ff 100%);
+            background-size: 150% 150%;
+            animation: introBackdropFlow 24s ease-in-out infinite alternate;
             padding: clamp(0.75rem, 2.5vw, 2rem);
+        }
+        @keyframes introBackdropFlow {
+            0% { background-position: 0% 20%; }
+            100% { background-position: 100% 80%; }
         }
         #ocop-intro-overlay::before,
         #ocop-intro-overlay::after {
             content: "";
             position: fixed;
             z-index: 0;
-            width: min(42vw, 34rem);
+            width: min(54vw, 42rem);
             aspect-ratio: 1;
-            border: 1px solid rgba(81, 148, 211, 0.12);
+            border: 1px solid rgba(81, 148, 211, 0.16);
             border-radius: 50%;
             pointer-events: none;
+            background: radial-gradient(circle, rgba(116, 190, 243, 0.26), rgba(164, 215, 250, 0.11) 38%, transparent 70%);
+            filter: blur(2px);
+            animation: introAuroraFloat 18s ease-in-out infinite alternate;
         }
         #ocop-intro-overlay::before {
-            top: 16%;
-            left: -18rem;
-            box-shadow: 0 0 0 2.5rem rgba(81, 148, 211, 0.035), 0 0 0 5rem rgba(81, 148, 211, 0.025);
+            top: -28%;
+            left: -20%;
+            box-shadow: 0 0 0 2.5rem rgba(81, 148, 211, 0.045), 0 0 0 5rem rgba(81, 148, 211, 0.03), 0 0 100px rgba(93, 173, 232, 0.18);
         }
         #ocop-intro-overlay::after {
-            right: -18rem;
-            bottom: 8%;
-            box-shadow: 0 0 0 2.5rem rgba(81, 148, 211, 0.035), 0 0 0 5rem rgba(81, 148, 211, 0.025);
+            right: -20%;
+            bottom: -34%;
+            animation-delay: -8s;
+            box-shadow: 0 0 0 2.5rem rgba(81, 148, 211, 0.045), 0 0 0 5rem rgba(81, 148, 211, 0.03), 0 0 100px rgba(93, 173, 232, 0.18);
+        }
+        @keyframes introAuroraFloat {
+            0% { transform: translate3d(-2%, 1%, 0) scale(0.96); }
+            100% { transform: translate3d(4%, -3%, 0) scale(1.08); }
         }
         #ocop-intro-overlay > .fixed {
-            opacity: 0.22;
+            opacity: 0.62;
         }
-        #ocop-intro-overlay > .fixed > div:not(canvas) {
+        #ocop-intro-overlay > .fixed > div:not(canvas):not(.intro-ambient-orb) {
             display: none;
+        }
+        #ocop-intro-overlay > .fixed > .intro-ambient-orb {
+            display: block;
+            opacity: 0.7;
+            filter: blur(90px);
+            animation: introOrbFloat 16s ease-in-out infinite alternate;
+        }
+        #ocop-intro-overlay > .fixed > .intro-ambient-orb--blue {
+            background-color: rgba(56, 149, 219, 0.3);
+        }
+        #ocop-intro-overlay > .fixed > .intro-ambient-orb--cyan {
+            background-color: rgba(61, 196, 218, 0.22);
+            animation-delay: -6s;
+        }
+        #ocop-intro-overlay > .fixed > .intro-ambient-orb--gold {
+            background-color: rgba(232, 190, 91, 0.2);
+            animation-delay: -11s;
+        }
+        @keyframes introOrbFloat {
+            0% { transform: translate3d(-2%, 0, 0) scale(0.94); }
+            100% { transform: translate3d(3%, -4%, 0) scale(1.06); }
         }
         #ocop-intro-overlay .bg-black\/50 {
             background: rgba(255, 255, 255, 0.7);
@@ -261,6 +416,62 @@
             border-color: rgba(102, 157, 205, 0.2);
             box-shadow: 0 12px 32px rgba(62, 112, 158, 0.09);
             backdrop-filter: blur(18px);
+        }
+        #ocop-intro-overlay .intro-card-glass,
+        #ocop-intro-overlay .lucky-golden-box {
+            color: #234563;
+            background: rgba(255, 255, 255, 0.78);
+            border-color: rgba(102, 157, 205, 0.3);
+            box-shadow: 0 12px 32px rgba(62, 112, 158, 0.1);
+            backdrop-filter: blur(18px);
+        }
+        #ocop-intro-overlay .intro-card-glass:hover,
+        #ocop-intro-overlay .lucky-golden-box:hover {
+            border-color: rgba(81, 148, 211, 0.6);
+            box-shadow: 0 16px 36px rgba(62, 112, 158, 0.16);
+        }
+        #ocop-intro-overlay .intro-pill-btn {
+            color: #315d82;
+            background: rgba(255, 255, 255, 0.72);
+            border-color: rgba(91, 151, 203, 0.26);
+        }
+        #ocop-intro-overlay .intro-pill-btn:hover {
+            background: rgba(223, 240, 255, 0.9);
+            border-color: rgba(91, 151, 203, 0.45);
+        }
+        #ocop-intro-overlay .intro-brand-mark {
+            color: #fff;
+            background: linear-gradient(145deg, #579dd2, #3178b5);
+            border-color: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 8px 24px rgba(55, 119, 174, 0.26);
+        }
+        #ocop-intro-overlay .intro-hero-title,
+        #ocop-intro-overlay .intro-hero-title span {
+            text-shadow: 0 2px 18px rgba(41, 91, 132, 0.12);
+            filter: none;
+        }
+        #ocop-intro-overlay .intro-gold-gradient {
+            background: linear-gradient(110deg, #25639a, #69b5e4 42%, #3473aa 74%, #25639a);
+            background-size: 250% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldShine 8s linear infinite;
+        }
+        #ocop-intro-overlay .intro-live-ticker {
+            color: #315d82;
+            background: rgba(255, 255, 255, 0.72);
+            border-color: rgba(91, 151, 203, 0.28);
+            box-shadow: 0 8px 24px rgba(64, 125, 178, 0.1);
+        }
+        #ocop-intro-overlay .intro-live-ticker .ticker-content {
+            color: #456983;
+        }
+        #ocop-intro-overlay .intro-live-ticker .intro-live-label {
+            color: #16856b;
+        }
+        #ocop-intro-overlay #i18n-intro-desc {
+            color: #526f88 !important;
         }
         #ocop-intro-overlay .text-white {
             color: #173752 !important;
@@ -390,6 +601,18 @@
             background: #fff;
             border-color: #c7dced;
         }
+        @media (prefers-reduced-motion: reduce) {
+            #ocop-intro-overlay,
+            #ocop-intro-overlay::before,
+            #ocop-intro-overlay::after,
+            #ocop-intro-overlay *,
+            #ocop-intro-overlay *::before,
+            #ocop-intro-overlay *::after {
+                animation: none !important;
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
+        }
         @media (max-width: 640px) {
             #ocop-intro-overlay > .relative.z-20.max-w-4xl {
                 padding-top: 1rem;
@@ -426,209 +649,270 @@
     <!-- ============================================================== -->
     <!-- MÀN CHÀO ĐÓN TINH HOA OCOP - AI ANTIGRAVITY EDITION -->
     <!-- ============================================================== -->
-    <div id="ocop-intro-overlay" class="fixed inset-0 z-[100] flex flex-col justify-between overflow-y-auto overflow-x-hidden bg-[#030d0a] text-white p-3 sm:p-6 transition-all duration-700 select-none">
+    <div id="ocop-intro-overlay" class="fixed inset-0 z-[100] flex flex-col justify-between overflow-y-auto overflow-x-hidden text-white p-3 sm:p-6 transition-all duration-700 select-none">
+        <!-- BACKGROUND DYNAMIC LAYERS -->
         <div class="fixed inset-0 pointer-events-none overflow-hidden">
             <!-- Canvas nano particles & laser mesh AI Antigravity -->
-            <canvas id="intro-particles-canvas" class="absolute inset-0 w-full h-full opacity-80 pointer-events-none"></canvas>
-            
-            <div class="absolute -top-36 -left-36 w-[36rem] h-[36rem] bg-emerald-500/20 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
-            <div class="absolute -bottom-36 -right-36 w-[36rem] h-[36rem] bg-amber-500/25 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50rem] h-[50rem] bg-[#165B46]/30 rounded-full blur-[120px] pointer-events-none"></div>
-            
-            <!-- Trống đồng AI Hologram Ma Trận -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[780px] h-[780px] sm:w-[1020px] sm:h-[1020px] opacity-20 pointer-events-none drum-rotate-reverse">
-                <svg viewBox="0 0 800 800" fill="none" stroke="#D4AF37" class="w-full h-full drop-shadow-[0_0_20px_rgba(212,175,55,0.8)]">
-                    <circle cx="400" cy="400" r="390" stroke-width="2.5" stroke-dasharray="14 10"/>
-                    <circle cx="400" cy="400" r="370" stroke-width="1.5"/>
-                    <circle cx="400" cy="400" r="345" stroke-width="3" stroke-dasharray="24 14"/>
-                    <circle cx="400" cy="400" r="315" stroke-width="2"/>
-                    <g transform="rotate(0 400 400)"><path d="M400,45 Q440,55 460,75 Q430,70 410,85 Z" fill="#D4AF37" fill-opacity="0.4"/></g>
-                    <g transform="rotate(45 400 400)"><path d="M400,45 Q440,55 460,75 Q430,70 410,85 Z" fill="#D4AF37" fill-opacity="0.4"/></g>
-                    <g transform="rotate(90 400 400)"><path d="M400,45 Q440,55 460,75 Q430,70 410,85 Z" fill="#D4AF37" fill-opacity="0.4"/></g>
-                    <g transform="rotate(135 400 400)"><path d="M400,45 Q440,55 460,75 Q430,70 410,85 Z" fill="#D4AF37" fill-opacity="0.4"/></g>
-                    <g transform="rotate(180 400 400)"><path d="M400,45 Q440,55 460,75 Q430,70 410,85 Z" fill="#D4AF37" fill-opacity="0.4"/></g>
-                    <g transform="rotate(225 400 400)"><path d="M400,45 Q440,55 460,75 Q430,70 410,85 Z" fill="#D4AF37" fill-opacity="0.4"/></g>
-                    <g transform="rotate(270 400 400)"><path d="M400,45 Q440,55 460,75 Q430,70 410,85 Z" fill="#D4AF37" fill-opacity="0.4"/></g>
-                    <g transform="rotate(315 400 400)"><path d="M400,45 Q440,55 460,75 Q430,70 410,85 Z" fill="#D4AF37" fill-opacity="0.4"/></g>
+            <canvas id="intro-particles-canvas" class="absolute inset-0 w-full h-full opacity-90 pointer-events-none"></canvas>
+            <!-- Canvas confetti pháo hoa vàng kim khi bốc quà -->
+            <canvas id="intro-confetti-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-30"></canvas>
+
+            <!-- Vùng sáng Aurora sinh động -->
+            <div class="intro-ambient-orb intro-ambient-orb--blue absolute -top-32 -left-32 w-[42rem] h-[42rem] rounded-full pointer-events-none"></div>
+            <div class="intro-ambient-orb intro-ambient-orb--gold absolute -bottom-32 -right-32 w-[42rem] h-[42rem] rounded-full pointer-events-none"></div>
+            <div class="intro-ambient-orb intro-ambient-orb--cyan absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55rem] h-[55rem] rounded-full pointer-events-none"></div>
+
+            <!-- Trống đồng Đông Sơn AI Hologram 3D (Vòng ngoài Vàng Hoàng Gia) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[820px] h-[820px] sm:w-[1100px] sm:h-[1100px] opacity-25 pointer-events-none drum-rotate-reverse">
+                <svg viewBox="0 0 800 800" fill="none" stroke="#F5D061" class="w-full h-full drop-shadow-[0_0_25px_rgba(212,175,55,0.9)]">
+                    <circle cx="400" cy="400" r="392" stroke-width="2.5" stroke-dasharray="14 10"/>
+                    <circle cx="400" cy="400" r="372" stroke-width="1.8"/>
+                    <circle cx="400" cy="400" r="348" stroke-width="3" stroke-dasharray="24 14"/>
+                    <circle cx="400" cy="400" r="318" stroke-width="2"/>
+                    <!-- Đàn chim Lạc thiêng liêng bay lượn ngàn năm -->
+                    <g transform="rotate(0 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(45 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(90 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(135 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(180 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(225 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(270 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(315 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
                 </svg>
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] sm:w-[740px] sm:h-[740px] opacity-25 pointer-events-none drum-rotate">
-                <svg viewBox="0 0 600 600" fill="none" stroke="#00F0FF" class="w-full h-full drop-shadow-[0_0_15px_rgba(0,240,255,0.6)]">
-                    <circle cx="300" cy="300" r="280" stroke-width="2.5" stroke-dasharray="8 6"/>
-                    <circle cx="300" cy="300" r="250" stroke-width="1.5"/>
-                    <circle cx="300" cy="300" r="220" stroke-width="2.5" stroke-dasharray="12 8"/>
-                    <circle cx="300" cy="300" r="180" stroke-width="1.8"/>
-                    <circle cx="300" cy="300" r="140" stroke-width="2" stroke-dasharray="6 4"/>
-                    <circle cx="300" cy="300" r="100" stroke-width="1.5"/>
+
+            <!-- Vòng Trong Cyber Laser Cyan -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] sm:w-[780px] sm:h-[780px] opacity-30 pointer-events-none drum-rotate">
+                <svg viewBox="0 0 600 600" fill="none" stroke="#00F0FF" class="w-full h-full drop-shadow-[0_0_20px_rgba(0,240,255,0.7)]">
+                    <circle cx="300" cy="300" r="285" stroke-width="2.5" stroke-dasharray="10 8"/>
+                    <circle cx="300" cy="300" r="255" stroke-width="1.8"/>
+                    <circle cx="300" cy="300" r="225" stroke-width="2.5" stroke-dasharray="14 10"/>
+                    <circle cx="300" cy="300" r="185" stroke-width="2"/>
+                    <circle cx="300" cy="300" r="145" stroke-width="2.2" stroke-dasharray="8 6"/>
+                    <circle cx="300" cy="300" r="105" stroke-width="1.5"/>
                 </svg>
             </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] opacity-45 pointer-events-none sun-pulse">
-                <svg viewBox="0 0 400 400" fill="none" stroke="#D4AF37" class="w-full h-full">
-                    <circle cx="200" cy="200" r="45" fill="#D4AF37" fill-opacity="0.4" stroke-width="3"/>
-                    <polygon points="200,60 216,150 285,105 236,170 318,174 242,207 304,264 229,238 251,316 200,252 149,316 171,238 96,264 158,207 82,174 164,170 115,105 184,150" fill="#D4AF37" fill-opacity="0.45" stroke-width="2.5"/>
+
+            <!-- Mặt Trời Đông Sơn 14 Tia Phát Sáng Hoàng Kim -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] opacity-60 pointer-events-none sun-pulse">
+                <svg viewBox="0 0 400 400" fill="none" stroke="#FFDF00" class="w-full h-full drop-shadow-[0_0_35px_rgba(255,223,0,0.85)]">
+                    <circle cx="200" cy="200" r="48" fill="#FFDF00" fill-opacity="0.5" stroke-width="3"/>
+                    <polygon points="200,55 218,145 288,100 238,168 322,172 245,206 308,266 232,240 254,320 200,255 146,320 168,240 92,266 155,206 78,172 162,168 112,100 182,145" fill="#FFDF00" fill-opacity="0.55" stroke-width="2.5"/>
                 </svg>
             </div>
         </div>
 
-        <!-- Header Intro -->
-        <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3 border-b border-amber-500/25">
+        <!-- HEADER ĐẢO NỔI GLASSMORPHISM -->
+        <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-amber-400/30">
             <div class="flex items-center space-x-3">
-                <div class="intro-mark w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-800 to-amber-500 border-2 border-ocopGold flex items-center justify-center text-ocopGold text-xl shadow-[0_0_20px_rgba(212,175,55,0.6)]">
-                    <i class="fa-solid fa-brain text-amber-300"></i>
+                <div class="intro-brand-mark relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-700 to-amber-500 border-2 border-ocopGold flex items-center justify-center text-white text-xl shadow-[0_0_25px_rgba(212,175,55,0.7)] group">
+                    <i class="fa-solid fa-brain text-amber-300 animate-pulse"></i>
+                    <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-[#020c08] shadow-sm animate-ping"></span>
+                    <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-[#020c08] shadow-sm"></span>
                 </div>
                 <div>
-                    <span class="block text-xs sm:text-sm font-black text-amber-200 tracking-wider leading-none">OCOP SALES COPILOT AI</span>
-                    <span class="text-[9px] sm:text-[10px] text-amber-400 uppercase font-bold tracking-widest" id="i18n-intro-badge">Antigravity Intelligence • 40 Đặc Sản Việt Nam</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="block text-xs sm:text-sm font-black text-amber-200 tracking-wider leading-none">OCOP SALES COPILOT AI</span>
+                        <span class="bg-gradient-to-r from-amber-400 to-yellow-300 text-ocopGreen font-black text-[9px] px-2 py-0.2 rounded-full uppercase shadow">2026 Pro</span>
+                    </div>
+                    <span class="text-[9px] sm:text-[10px] text-amber-300 uppercase font-bold tracking-widest" id="i18n-intro-badge">Antigravity Intelligence • 40 Tinh Hoa Quốc Bảo</span>
                 </div>
             </div>
+
             <div class="flex items-center space-x-2 sm:space-x-3">
-                <button id="intro-sound-btn" onclick="toggleIntroSound()" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-amber-300/40 text-amber-200 text-xs font-bold transition flex items-center space-x-1.5 shadow-sm cursor-pointer">
-                    <i class="fa-solid fa-volume-high text-ocopGold"></i>
+                <button id="intro-sound-btn" onclick="toggleIntroSound()" class="intro-pill-btn px-3 py-1.5 rounded-full text-amber-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer shadow-sm">
+                    <i class="fa-solid fa-volume-high text-amber-300" id="intro-sound-icon"></i>
                     <span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">Âm thanh: Bật</span>
                 </button>
-                <button id="intro-language-btn" onclick="toggleLanguage()" class="w-8 h-8 rounded-full bg-ocopGreen text-ocopGold hover:bg-emerald-800 font-black text-xs border border-ocopGold/60 shadow flex items-center justify-center transition hover:scale-105 cursor-pointer">
+                <button id="intro-language-btn" onclick="toggleLanguage()" class="w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển ngôn ngữ">
                     VI
                 </button>
-                <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="px-3.5 py-1.5 rounded-full bg-amber-500/20 hover:bg-amber-500/35 text-amber-200 border border-amber-400/50 text-xs font-extrabold transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="intro-mega-btn px-4 py-1.5 rounded-full text-xs font-black transition flex items-center space-x-1.5 shadow-md cursor-pointer">
                     <span id="i18n-intro-skip">Vào Chợ (Esc)</span>
-                    <i class="fa-solid fa-arrow-right text-[10px] text-ocopGold"></i>
+                    <i class="fa-solid fa-arrow-right-long text-[11px]"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Main Content Intro -->
-        <div class="relative z-20 pointer-events-auto max-w-4xl mx-auto w-full my-auto py-4 sm:py-6 flex flex-col items-center text-center space-y-5">
-            <div id="intro-award-badge" class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 via-ocopGold/35 to-amber-500/20 border border-ocopGold/70 px-4 py-1.5 rounded-full text-xs font-black text-amber-300 shadow-gold-glow animate-pulse">
-                <i class="fa-solid fa-award text-ocopGold text-sm"></i>
-                <span>★ ★ ★ ★ ★ TINH HOA QUỐC GIA 4 - 5 SAO</span>
+        <!-- MAIN HERO CONTENT STAGE -->
+        <div class="relative z-20 pointer-events-auto max-w-4xl mx-auto w-full my-auto py-3 sm:py-5 flex flex-col items-center text-center space-y-4 sm:space-y-5">
+
+            <!-- Live Ticker Bar Sôi Động -->
+            <div class="intro-live-ticker w-full max-w-2xl bg-black/40 border border-amber-400/30 rounded-full px-4 py-1.5 flex items-center space-x-2 text-[11px] backdrop-blur-md shadow-inner">
+                <span class="intro-live-label flex-shrink-0 flex items-center text-emerald-400 font-extrabold text-[10px] uppercase">
+                    <span class="w-2 h-2 bg-red-500 rounded-full animate-ping mr-1.5"></span>
+                    LIVE TICKER
+                </span>
+                <div class="ticker-wrapper flex-1 overflow-hidden">
+                    <div class="ticker-content text-amber-200/90 font-medium space-x-6 text-[11px]">
+                        <span>🔥 <b>1,840+</b> lượt khách hàng đang trải nghiệm trực tuyến</span>
+                        <span>🎁 Chị Hoàng Mai (Hà Nội) vừa đặt Combo Trà Đinh Tân Cương 5★</span>
+                        <span>⚡ Anh Tuấn (TP.HCM) vừa bốc được Lộc Vàng 50K</span>
+                        <span>🚚 Miễn phí vận chuyển toàn quốc cho đơn từ 500k</span>
+                        <span>🌿 100% Đặc sản chuẩn kiểm định OCOP Quốc Gia</span>
+                        <span>🔥 <b>1,840+</b> lượt khách hàng đang trải nghiệm trực tuyến</span>
+                        <span>🎁 Chị Hoàng Mai (Hà Nội) vừa đặt Combo Trà Đinh Tân Cương 5★</span>
+                    </div>
+                </div>
             </div>
-            
+
+            <!-- National Seal Badge -->
+            <div id="intro-award-badge" class="intro-seal-badge inline-flex items-center space-x-2 px-5 py-2 rounded-full text-xs font-black text-amber-200">
+                <i class="fa-solid fa-award text-yellow-300 text-base animate-bounce"></i>
+                <span class="tracking-wide">✦ BẢO VẬT NÔNG SẢN QUỐC GIA • ĐẠT CHUẨN OCOP 4 - 5 SAO ✦</span>
+            </div>
+
+            <!-- Hero Typography -->
             <div class="space-y-2">
-                <h2 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
-                    <span class="text-white drop-shadow-md" id="i18n-intro-title1">Khơi Nguồn Tinh Hoa Nông Sản Việt</span><br>
-                    <span class="gold-gradient-text drop-shadow-[0_4px_30px_rgba(212,175,55,0.7)]" id="i18n-intro-title2">40 ĐẶC SẢN CHUẨN 4 - 5 SAO</span>
+                <h2 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight intro-hero-title">
+                    <span class="text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]" id="i18n-intro-title1">Khơi Nguồn Tinh Hoa Nông Sản Việt</span><br>
+                    <span class="intro-gold-gradient drop-shadow-[0_4px_35px_rgba(212,175,55,0.85)]" id="i18n-intro-title2">40 ĐẶC SẢN CHUẨN 4 - 5 SAO</span>
                 </h2>
                 <p class="text-xs sm:text-sm text-amber-100/90 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc">
-                    Nền tảng trí tuệ nhân tạo thế hệ mới định hình trải nghiệm khám phá 40 nông sản tinh hoa OCOP quốc gia. 100% nguyên bản xuất xứ, kết nối trực tiếp nhà sản xuất.
+                    Nền tảng trí tuệ nhân tạo thế hệ mới AI Antigravity kết nối trực tiếp các nghệ nhân & hợp tác xã từ 63 tỉnh thành. 100% nguyên bản xuất xứ, kiểm định khắt khe, xuất hóa đơn VAT doanh nghiệp.
                 </p>
             </div>
 
-            <!-- 4 Trụ cột -->
+            <!-- 4 Trụ Cột Hologram Cards (Hiệu ứng 3D Floating) -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 w-full max-w-3xl pt-1">
-                <div class="glass-antigravity rounded-2xl p-3 text-center transition hover:-translate-y-1 gold-card-glow">
-                    <i class="fa-solid fa-medal text-ocopGold text-xl mb-1 block"></i>
-                    <span class="block text-xs font-black text-white" id="i18n-intro-pillar1">40 Đặc Sản 4 - 5★</span>
-                    <span class="block text-[10px] text-amber-200/80 font-medium" id="i18n-intro-pillar1-sub">Kiểm định nghiêm ngặt</span>
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-amber-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                        <i class="fa-solid fa-medal"></i>
+                    </div>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar1">40 Đặc Sản 4 - 5★</span>
+                    <span class="block text-[10px] text-amber-300/80 font-medium" id="i18n-intro-pillar1-sub">Kiểm định nghiêm ngặt</span>
                 </div>
-                <div class="glass-antigravity rounded-2xl p-3 text-center transition hover:-translate-y-1 gold-card-glow">
-                    <i class="fa-solid fa-earth-asia text-emerald-400 text-xl mb-1 block"></i>
-                    <span class="block text-xs font-black text-white" id="i18n-intro-pillar2">63 Tỉnh Thành</span>
-                    <span class="block text-[10px] text-amber-200/80 font-medium" id="i18n-intro-pillar2-sub">100% Chính gốc xuất xứ</span>
+
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                        <i class="fa-solid fa-earth-asia"></i>
+                    </div>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar2">63 Tỉnh Thành</span>
+                    <span class="block text-[10px] text-emerald-300/80 font-medium" id="i18n-intro-pillar2-sub">100% Chính gốc xuất xứ</span>
                 </div>
-                <div class="glass-antigravity rounded-2xl p-3 text-center transition hover:-translate-y-1 gold-card-glow">
-                    <i class="fa-solid fa-robot text-cyan-400 text-xl mb-1 block"></i>
-                    <span class="block text-xs font-black text-white" id="i18n-intro-pillar3">AI Antigravity Copilot</span>
-                    <span class="block text-[10px] text-amber-200/80 font-medium" id="i18n-intro-pillar3-sub">Tư vấn thông minh 24/7</span>
+
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-cyan-400/20 text-cyan-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar3">AI Antigravity Copilot</span>
+                    <span class="block text-[10px] text-cyan-300/80 font-medium" id="i18n-intro-pillar3-sub">Tư vấn thông minh 24/7</span>
                 </div>
-                <div class="glass-antigravity rounded-2xl p-3 text-center transition hover:-translate-y-1 gold-card-glow">
-                    <i class="fa-solid fa-qrcode text-yellow-300 text-xl mb-1 block"></i>
-                    <span class="block text-xs font-black text-white" id="i18n-intro-pillar4">VietQR BIDV</span>
-                    <span class="block text-[10px] text-amber-200/80 font-medium" id="i18n-intro-pillar4-sub">Miễn ship từ 500k</span>
+
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(255,223,0,0.3)]">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar4">VietQR BIDV</span>
+                    <span class="block text-[10px] text-yellow-300/80 font-medium" id="i18n-intro-pillar4-sub">Miễn ship từ 500k</span>
                 </div>
             </div>
 
-            <!-- Interactive Voucher Lucky Draw -->
-            <div id="intro-lucky-card" class="w-full max-w-2xl bg-gradient-to-r from-amber-950/90 via-yellow-950/60 to-amber-950/90 border-2 border-dashed border-amber-400/80 hover:border-amber-300 rounded-3xl p-3 sm:p-4 text-center relative overflow-hidden shadow-[0_0_40px_rgba(212,175,55,0.35)] transition-all duration-300">
+            <!-- HÒM LỘC VÀNG AI - INTERACTIVE LUCKY CAPSULE DRAW -->
+            <div id="intro-lucky-card" class="lucky-golden-box w-full max-w-2xl rounded-3xl p-3.5 sm:p-4 text-center relative overflow-hidden transition-all duration-300">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                     <div class="flex items-center space-x-3 text-left">
-                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-600 text-ocopGreen flex items-center justify-center text-xl shadow-lg lucky-card-pulse flex-shrink-0">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-600 text-ocopGreen flex items-center justify-center text-2xl shadow-xl gift-wobble-anim flex-shrink-0">
                             🎁
                         </div>
                         <div>
                             <div class="flex items-center space-x-2">
                                 <span class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">Lộc Vàng AI • Bốc Thẻ May Mắn</span>
-                                <span class="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full animate-pulse uppercase">Lì Xì OCOP</span>
+                                <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse uppercase shadow">Lì Xì OCOP</span>
                             </div>
-                            <p class="text-[11px] text-amber-100/90 font-medium mt-0.5">Bốc thẻ may mắn nhận ngay voucher 50.000đ hoặc Miễn phí giao hàng</p>
+                            <p class="text-[11px] text-amber-100/90 font-medium mt-0.5">Bốc thẻ may mắn nhận ngay voucher 50.000đ hoặc Miễn phí giao hàng toàn quốc</p>
                         </div>
                     </div>
-                    <button id="btn-draw-gift" onclick="openLuckyGift()" class="w-full sm:w-auto flex-shrink-0 px-4 py-2 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-ocopGold text-ocopGreen font-black text-xs shadow-md hover:scale-105 transition flex items-center justify-center space-x-1.5 cursor-pointer">
-                        <i class="fa-solid fa-wand-magic-sparkles text-ocopGreen"></i>
-                        <span>Bốc Thẻ Quà Ngay</span>
+                    <button id="btn-draw-gift" onclick="openLuckyGift()" class="intro-mega-btn w-full sm:w-auto flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition flex items-center justify-center space-x-2 cursor-pointer">
+                        <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+                        <span>Bốc Thẻ Lộc Vàng</span>
                     </button>
                 </div>
-                <div id="intro-gift-result" class="hidden mt-3 pt-3 border-t border-amber-400/40 animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-black/50 p-2.5 rounded-2xl">
-                    <div class="flex items-center space-x-2 text-left">
-                        <span class="text-xs text-amber-300 font-extrabold uppercase">Mã Quà:</span>
-                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-white bg-amber-500/20 px-3 py-1 rounded-lg border border-amber-400/80 font-mono tracking-widest text-amber-200">OCOP-TINHOA50</span>
-                        <button onclick="copyToClipboard(document.getElementById('lucky-gift-code').innerText, 'Mã voucher OCOP');" class="text-xs bg-amber-400 hover:bg-amber-300 text-ocopGreen font-bold px-2.5 py-1 rounded transition flex items-center space-x-1 cursor-pointer">
+
+                <!-- Kết quả thẻ bài Lộc Vàng VIP -->
+                <div id="intro-gift-result" class="hidden mt-3 pt-3 border-t border-amber-400/40 animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-black/60 p-3 rounded-2xl backdrop-blur-md">
+                    <div class="flex items-center space-x-2.5 text-left">
+                        <span class="text-xs text-amber-300 font-black uppercase flex items-center"><i class="fa-solid fa-gift mr-1 text-ocopGold"></i> MÃ LỘC:</span>
+                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner">OCOP-TINHOA50</span>
+                        <button onclick="copyToClipboard(document.getElementById('lucky-gift-code').innerText, 'Mã voucher OCOP');" class="text-xs bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-ocopGreen font-black px-3 py-1 rounded-lg transition flex items-center space-x-1 cursor-pointer shadow">
                             <i class="fa-regular fa-copy"></i>
-                            <span>Copy</span>
+                            <span>Sao chép</span>
                         </button>
                     </div>
-                    <span class="text-[11px] sm:text-xs text-emerald-300 font-bold flex items-center">
-                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400"></i> Đã kích hoạt giảm 50.000đ cho đơn hàng!
+                    <span class="text-[11px] sm:text-xs text-emerald-300 font-extrabold flex items-center">
+                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400 text-sm"></i> Đã tự động kích hoạt giảm 50.000đ vào đơn hàng!
                     </span>
                 </div>
             </div>
 
-            <!-- Thước phim 3 Miền -->
-            <div class="w-full max-w-3xl glass-antigravity rounded-3xl p-3.5 sm:p-5 border border-ocopGold/40 shadow-2xl text-left space-y-3">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-500/20 pb-3">
-                    <span class="text-xs font-bold text-amber-200 uppercase tracking-wider flex items-center space-x-2">
-                        <i class="fa-solid fa-map-location-dot text-ocopGold"></i>
+            <!-- THƯỚC PHIM 3 MIỀN XUYÊN VIỆT (Interactive Cinematic Showcase) -->
+            <div class="w-full max-w-3xl intro-card-glass rounded-3xl p-4 sm:p-5 border border-amber-400/40 shadow-2xl text-left space-y-3.5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-400/20 pb-3">
+                    <span class="text-xs font-extrabold text-amber-200 uppercase tracking-wider flex items-center space-x-2">
+                        <i class="fa-solid fa-map-location-dot text-amber-400 text-sm"></i>
                         <span id="i18n-intro-region-header">Hành trình 3 miền kết tinh ẩm thực Việt:</span>
                     </span>
-                    <div class="flex items-center space-x-1.5 bg-black/50 p-1 rounded-2xl border border-white/10">
-                        <button id="tab-region-north" aria-pressed="true" onclick="setIntroRegion('north', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer">
+                    <div class="flex items-center space-x-1.5 bg-black/60 p-1 rounded-2xl border border-white/10 backdrop-blur-md">
+                        <button id="tab-region-north" aria-pressed="true" onclick="setIntroRegion('north', true)" class="flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer">
                             <span>🏔️</span>
                             <span id="i18n-intro-tab-north">Miền Bắc</span>
                         </button>
-                        <button id="tab-region-central" aria-pressed="false" onclick="setIntroRegion('central', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
+                        <button id="tab-region-central" aria-pressed="false" onclick="setIntroRegion('central', true)" class="flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
                             <span>🌊</span>
                             <span id="i18n-intro-tab-central">Miền Trung</span>
                         </button>
-                        <button id="tab-region-south" aria-pressed="false" onclick="setIntroRegion('south', true)" class="flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
+                        <button id="tab-region-south" aria-pressed="false" onclick="setIntroRegion('south', true)" class="flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer">
                             <span>🌾</span>
                             <span id="i18n-intro-tab-south">Miền Nam</span>
                         </button>
                     </div>
                 </div>
-                <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-                    <div id="region-progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-ocopGold w-0 transition-all duration-100 ease-linear"></div>
+
+                <!-- Thanh tiến trình Neon chuyển miền tự động -->
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <div id="region-progress-bar" class="h-full bg-gradient-to-r from-amber-400 via-yellow-300 to-emerald-400 w-0 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(255,223,0,0.8)]"></div>
                 </div>
+
                 <div>
-                    <h4 id="intro-region-title" class="text-sm sm:text-base font-extrabold text-amber-300">Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng</h4>
-                    <p id="intro-region-desc" class="text-xs text-gray-300 leading-relaxed mt-1">Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.</p>
+                    <h4 id="intro-region-title" class="text-sm sm:text-base font-black text-yellow-300 flex items-center space-x-2">
+                        <span>Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng</span>
+                    </h4>
+                    <p id="intro-region-desc" class="text-xs text-amber-100/80 leading-relaxed mt-1">
+                        Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.
+                    </p>
                 </div>
+
+                <!-- Lưới 4 Thẻ Đặc Sản 3 Miền Dynamic (Có ảnh thật & Giá Vàng) -->
                 <div id="intro-region-items" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                     <!-- Render dynamic từ JavaScript -->
                 </div>
             </div>
 
-            <!-- CTA Main Button -->
-            <div class="w-full max-w-3xl space-y-4 pt-1">
-                <button id="intro-enter-market" onclick="enterOcopMarket('all')" class="btn-sweep group relative w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 sm:px-14 sm:py-4.5 rounded-2xl text-sm sm:text-base font-black text-[#071c15] bg-gradient-to-r from-amber-300 via-ocopGold to-yellow-400 hover:from-amber-200 hover:to-ocopGold shadow-[0_0_50px_rgba(212,175,55,0.8)] hover:shadow-[0_0_70px_rgba(212,175,55,1)] hover:scale-105 transition-all duration-300 border-2 border-white/80 cursor-pointer">
+            <!-- MEGA CALL-TO-ACTION (CTA) BƯỚC VÀO CHỢ TINH HOA -->
+            <div class="w-full max-w-3xl space-y-3.5 pt-1">
+                <button id="intro-enter-market" onclick="enterOcopMarket('all')" class="intro-mega-btn btn-sweep group relative w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 sm:px-14 sm:py-4.5 rounded-2xl text-sm sm:text-base font-black border-2 border-white/80 cursor-pointer">
                     <i class="fa-solid fa-wand-magic-sparkles text-ocopGreen mr-2.5 text-base group-hover:rotate-12 transition-transform"></i>
                     <span id="i18n-intro-btn-enter">✦ BƯỚC VÀO CHỢ TINH HOA OCOP (40 ĐẶC SẢN) ✦</span>
-                    <i class="fa-solid fa-arrow-right ml-3 text-sm group-hover:translate-x-1.5 transition-transform"></i>
+                    <i class="fa-solid fa-arrow-right-long ml-3 text-sm group-hover:translate-x-2 transition-transform"></i>
                 </button>
+
+                <!-- Quick Navigation Pills -->
                 <div class="space-y-2">
                     <span class="block text-[11px] text-amber-200/70 font-semibold uppercase tracking-wider" id="i18n-intro-quick-header">Hoặc chọn nhanh theo nhu cầu của bạn:</span>
                     <div class="flex flex-wrap items-center justify-center gap-2 text-xs font-bold">
-                        <button onclick="enterOcopMarket('gift')" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-amber-300/40 text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('gift')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
                             <span>🎁</span>
                             <span id="i18n-intro-quick-gift">Quà Biếu Sức Khỏe</span>
                         </button>
-                        <button onclick="enterOcopMarket('tea')" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-amber-300/40 text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('tea')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
                             <span>🍵</span>
                             <span id="i18n-intro-quick-tea">Trà & Dược Liệu 5★</span>
                         </button>
-                        <button onclick="enterOcopMarket('ai')" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-400/50 text-emerald-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('ai')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-emerald-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer bg-emerald-950/50 border-emerald-400/50">
                             <span>🤖</span>
                             <span id="i18n-intro-quick-ai">Nhờ AI Antigravity Tư Vấn</span>
                         </button>
-                        <button onclick="enterOcopMarket('admin')" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-blue-950/60 hover:bg-blue-900/80 border border-blue-400/50 text-blue-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('admin')" class="intro-pill-btn px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-blue-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer bg-blue-950/50 border-blue-400/50">
                             <span>💬</span>
                             <span id="i18n-intro-quick-admin">Chat Với 4 Admin FB</span>
                         </button>
@@ -637,13 +921,13 @@
             </div>
         </div>
 
-        <!-- Footer Intro -->
-        <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full pt-3 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-200/60 gap-2">
+        <!-- FOOTER INTRO BẢO CHỨNG QUỐC GIA -->
+        <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full pt-3 border-t border-amber-400/25 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-200/70 gap-2">
             <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-shield-halved text-ocopGold"></i>
-                <span>Chứng nhận OCOP Quốc Gia số 0312461711 • Cam kết 100% chính hãng</span>
+                <i class="fa-solid fa-shield-halved text-yellow-400 text-sm"></i>
+                <span>Chứng nhận Xúc tiến Thương mại OCOP Quốc Gia số 0312461711 • Cam kết 100% chính hãng</span>
             </div>
-            <span>Ấn phím <kbd class="bg-white/10 px-1.5 py-0.5 rounded border border-white/20 text-white font-mono text-[10px]">Esc</kbd> hoặc nút Bỏ qua để vào thẳng trang chủ</span>
+            <span>Ấn phím <kbd class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-[10px]">Esc</kbd> hoặc nút Bỏ qua để vào thẳng chợ</span>
         </div>
     </div>
 
@@ -668,7 +952,7 @@
             <a href="#products-section" class="hover:text-ocopGold transition" id="i18n-top-specs">40 Đặc sản</a>
         </div>
     </div>
-    
+
     <!-- 2. HEADER -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-900/10 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-1 sm:gap-4">
@@ -681,7 +965,7 @@
                     <p class="text-[7px] sm:text-[10px] text-amber-800 font-bold tracking-wide uppercase" id="i18n-subbrand">Đặc Sản Chuẩn Quốc Gia 4 - 5 Sao</p>
                 </div>
             </a>
-            
+
             <!-- Thanh Tìm Kiếm Header Desktop -->
             <div class="hidden md:flex flex-1 min-w-[190px] xl:min-w-[240px] max-w-md relative">
                 <label for="header-search-input" class="sr-only">Tìm kiếm sản phẩm OCOP</label>
@@ -694,7 +978,7 @@
                     <i class="fa-solid fa-circle-xmark"></i>
                 </button>
             </div>
-            
+
             <!-- Navigation Desktop -->
             <nav class="hidden 2xl:flex items-center space-x-6 font-bold text-sm">
                 <a href="#" class="text-ocopGreen font-extrabold border-b-2 border-ocopGold pb-1 transition" id="i18n-nav-home">Trang chủ</a>
@@ -705,7 +989,7 @@
                     <span id="i18n-nav-intro-text">Tinh hoa OCOP</span>
                 </button>
             </nav>
-            
+
             <!-- Quick Action Icons -->
             <div class="flex items-center space-x-1 sm:space-x-4">
                 <div class="hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
@@ -738,7 +1022,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Thanh Tìm Kiếm Mobile Riêng Biệt -->
         <div class="block md:hidden px-3 pb-2.5 pt-0.5 border-t border-amber-900/5">
             <div class="relative w-full">
@@ -754,7 +1038,7 @@
             </div>
         </div>
     </header>
-    
+
     <main class="flex-1">
         <!-- 3. HERO BANNER SECTION -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative">
@@ -980,10 +1264,8 @@
         <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-96 max-h-[75vh] h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-ocopGold flex flex-col overflow-hidden mb-3 animate-pop-in">
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
-                    <div class="relative w-9 h-9 sm:w-10 sm:h-10">
-                        <div class="w-full h-full rounded-2xl bg-amber-400 text-ocopGreen flex items-center justify-center font-black text-xl ring-2 ring-ocopGold shadow">
-                            🤖
-                        </div>
+                    <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
+                        <img src="ai-avatar.jpg" alt="Trợ lý AI OCOP" class="w-full h-full rounded-2xl object-cover ring-2 ring-ocopGold shadow">
                         <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
                     <div>
@@ -999,7 +1281,7 @@
             
             <div id="ai-chat-messages" class="flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
                 <div class="flex items-start space-x-2">
-                    <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs flex-shrink-0 mt-0.5 shadow">🤖</div>
+                    <img src="ai-avatar.jpg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%]">
                         Dạ em chào anh/chị! Em là **Trợ Lý AI OCOP Antigravity**. 
                         <br><br>
@@ -1022,7 +1304,7 @@
         </div>
         
         <button onclick="toggleAIChat()" class="relative group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 transition duration-300 cursor-pointer">
-            <span class="text-2xl">🤖</span>
+            <img src="ai-avatar.jpg" alt="Mở trò chuyện với trợ lý AI OCOP" class="w-full h-full rounded-full object-cover p-0.5">
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow">AI</span>
         </button>
     </div>
@@ -1375,35 +1657,36 @@
         ];
 
         // Dữ liệu thước phim 3 Miền
+        // Dữ liệu thước phim 3 Miền (Kèm ảnh thật, tag và giá vàng chuẩn OCOP)
         const regionData = {
             north: {
                 title: "Miền Bắc - Đỉnh Cao Trà Sương & Đặc Sản Núi Rừng",
                 desc: "Nơi hội tụ đệ nhất danh trà Tân Cương, Trà hoa vàng Tam Đảo bồi bổ cơ thể cùng đặc sản trâu gác bếp đậm vị Tây Bắc và chả mực Hạ Long lừng danh.",
                 items: [
-                    { name: "Trà Đinh Thái Nguyên 5★", origin: "Thái Nguyên", badge: "850.000đ" },
-                    { name: "Chả Mực Giã Tay 5★", origin: "Quảng Ninh", badge: "490.000đ" },
-                    { name: "Trâu Gác Bếp Tây Bắc 5★", origin: "Lào Cai", badge: "790.000đ" },
-                    { name: "Trà Shan Tuyết Suối Giàng 5★", origin: "Yên Bái", badge: "920.000đ" }
+                    { name: "Trà Đinh Nõn Tân Cương 5★", origin: "Thái Nguyên", badge: "850.000 ₫", tag: "Đệ Nhất Danh Trà", img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Chả Mực Giã Tay Hạ Long 5★", origin: "Quảng Ninh", badge: "490.000 ₫", tag: "Ẩm Thực Biển", img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Thịt Trâu Gác Bếp Tây Bắc 5★", origin: "Lào Cai", badge: "790.000 ₫", tag: "Hương Núi Rừng", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Trà Hoa Vàng Tam Đảo 5★", origin: "Vĩnh Phúc", badge: "1.150.000 ₫", tag: "Quốc Bảo Trà", img: "https://images.unsplash.com/photo-1563822249548-9a72b6353cd1?auto=format&fit=crop&w=300&q=80" }
                 ]
             },
             central: {
                 title: "Miền Trung & Tây Nguyên - Quốc Bảo Dược Liệu & Mật Ong Rừng",
-                desc: "Đất nắng gió ôm trọn Sâm Ngọc Linh Quảng Nam ngâm mật ong, Tỏi đen Lý Sơn, Tiêu Chư Sê và Mật ong hoa cà phê Tây Nguyên đượm đà.",
+                desc: "Đất nắng gió ôm trọn Sâm Ngọc Linh Quảng Nam ngâm mật ong, Tỏi đen Lý Sơn, Đông trùng Đà Lạt và Hạt điều Bình Phước thượng hạng.",
                 items: [
-                    { name: "Sâm Ngọc Linh Mật Ong 5★", origin: "Quảng Nam", badge: "3.200.000đ" },
-                    { name: "Tỏi Đen Lý Sơn Nhiều Củ 5★", origin: "Quảng Ngãi", badge: "550.000đ" },
-                    { name: "Đông Trùng Đà Lạt 5★", origin: "Lâm Đồng", badge: "1.850.000đ" },
-                    { name: "Hạt Điều Rang Muối 5★", origin: "Bình Phước", badge: "280.000đ" }
+                    { name: "Sâm Ngọc Linh Mật Ong Rừng 5★", origin: "Quảng Nam", badge: "3.200.000 ₫", tag: "Quốc Bảo Việt Nam", img: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Tỏi Đen Lý Sơn Nhiều Củ 5★", origin: "Quảng Ngãi", badge: "550.000 ₫", tag: "Bổ Dưỡng Đảo Xanh", img: "https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Đông Trùng Hạ Thảo Đà Lạt 5★", origin: "Lâm Đồng", badge: "1.850.000 ₫", tag: "Sấy Thăng Hoa", img: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Hạt Điều Rang Muối Vỏ Lụa 5★", origin: "Bình Phước", badge: "280.000 ₫", tag: "Nông Sản Xuất Khẩu", img: "https://images.unsplash.com/photo-1509358217951-6ef2e75e11f1?auto=format&fit=crop&w=300&q=80" }
                 ]
             },
             south: {
-                title: "Miền Nam & Đảo Ngọc - Tinh Hoa Yến Sào & Mắm Cá Đậm Đà",
-                desc: "Vùng đất trù phú miền Tây và Biển đảo với Yến Sào Khánh Hòa, Cua Cà Mau hấp muối, Nước mắm cá cơm Phú Quốc và Kẹo Dừa Bến Tre dẻo thơm.",
+                title: "Miền Nam & Biển Đảo - Tinh Hoa Yến Sào & Mắm Cá Đậm Đà",
+                desc: "Vùng đất trù phú miền Tây và Biển đảo với Yến Sào Khánh Hòa, Cua Cà Mau hấp muối, Nước mắm cá cơm Phú Quốc và Cá Thát Lát rút xương.",
                 items: [
-                    { name: "Yến Sào Khánh Hòa 5★", origin: "Khánh Hòa", badge: "2.450.000đ" },
-                    { name: "Cua Cà Mau Hấp Muối 5★", origin: "Cà Mau", badge: "580.000đ" },
-                    { name: "Nước Mắm Phú Quốc 43° 5★", origin: "Kiên Giang", badge: "220.000đ" },
-                    { name: "Cá Thát Lát Rút Xương 5★", origin: "Hậu Giang", badge: "310.000đ" }
+                    { name: "Yến Sào Khánh Hòa Thượng Hạng 5★", origin: "Khánh Hòa", badge: "2.450.000 ₫", tag: "Tổ Yến Đảo Tự Nhiên", img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Cua Cà Mau Hấp Muối Hột 5★", origin: "Cà Mau", badge: "580.000 ₫", tag: "Đất Mũi Cực Nam", img: "https://images.unsplash.com/photo-1559742811-822863c46f43?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Nước Mắm Phú Quốc 43° Đạm 5★", origin: "Kiên Giang", badge: "220.000 ₫", tag: "Cá Cơm Than Tươi", img: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Hạt Mắc Ca Đắk Nông Nứt Vỏ 5★", origin: "Đắk Nông", badge: "310.000 ₫", tag: "Béo Bùi Tự Nhiên", img: "https://images.unsplash.com/photo-1509358217951-6ef2e75e11f1?auto=format&fit=crop&w=300&q=80" }
                 ]
             }
         };
@@ -1421,6 +1704,7 @@
         let aiMessageSequence = 0;
         let introParticlesFrame = null;
         let introParticlesResizeHandler = null;
+        let mouseX = -9999, mouseY = -9999;
         let ordersHistory = [
             { id: 'OCOP-98231', date: '02/10/2026', total: 1530000, status: 'Đã giao hàng', items: ['Trà Đinh Nõn Tân Cương', 'Thịt Trâu Gác Bếp'] },
             { id: 'OCOP-77120', date: '25/09/2026', total: 2450000, status: 'Đang vận chuyển', items: ['Yến Sào Khánh Hòa Thượng Hạng'] }
@@ -1429,11 +1713,18 @@
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
             initIntroParticles();
+            initIntroTilt();
             renderProducts(products);
             setIntroRegion('north', false);
             startRegionAutoSlide();
             updateCartBadge();
             updateWishlistBadge();
+
+            // Lắng nghe chuột để tạo hiệu ứng tương tác hạt & laser
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
 
             // Lắng nghe phím Esc để thoát intro nhanh
             window.addEventListener('keydown', (e) => {
@@ -1444,14 +1735,140 @@
         });
 
         // -------------------------------------------------------------
+        // BỘ TẠO ÂM THANH ĐIỆN TỬ WEB AUDIO API (TỰ ĐỘNG, KHÔNG CẦN FILE)
+        // -------------------------------------------------------------
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playChimeSound() {
+            if (!isSoundOn) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const freqs = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6 chuông vàng ngũ cung
+                freqs.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.08);
+
+                    gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + idx * 0.08 + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.08 + 1.2);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start(ctx.currentTime + idx * 0.08);
+                    osc.stop(ctx.currentTime + idx * 0.08 + 1.3);
+                });
+            } catch (err) {}
+        }
+
+        function playWhooshSound() {
+            if (!isSoundOn) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(320, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(140, ctx.currentTime + 0.25);
+
+                gain.gain.setValueAtTime(0.06, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.26);
+            } catch (err) {}
+        }
+
+        // -------------------------------------------------------------
+        // HIỆU ỨNG PHÁO HOA CONFETTI VÀNG KIM KHI BỐC QUÀ
+        // -------------------------------------------------------------
+        function triggerGoldConfetti() {
+            const canvas = document.getElementById('intro-confetti-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const confetti = [];
+            const colors = ['#FFDF00', '#F5D061', '#10B981', '#FFFFFF', '#FFA500', '#00F0FF'];
+            const count = 90;
+
+            for (let i = 0; i < count; i++) {
+                confetti.push({
+                    x: canvas.width / 2 + (Math.random() - 0.5) * 260,
+                    y: canvas.height * 0.52 + (Math.random() - 0.5) * 60,
+                    w: Math.random() * 8 + 5,
+                    h: Math.random() * 9 + 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 16,
+                    vy: -Math.random() * 14 - 5,
+                    rotation: Math.random() * 360,
+                    vr: (Math.random() - 0.5) * 12,
+                    gravity: 0.38,
+                    alpha: 1
+                });
+            }
+
+            function renderConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+
+                confetti.forEach(c => {
+                    c.x += c.vx;
+                    c.y += c.vy;
+                    c.vy += c.gravity;
+                    c.rotation += c.vr;
+                    c.alpha -= 0.012;
+
+                    if (c.alpha > 0) {
+                        alive = true;
+                        ctx.save();
+                        ctx.translate(c.x, c.y);
+                        ctx.rotate((c.rotation * Math.PI) / 180);
+                        ctx.fillStyle = c.color;
+                        ctx.globalAlpha = Math.max(0, c.alpha);
+                        ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
+                        ctx.restore();
+                    }
+                });
+
+                if (alive) {
+                    requestAnimationFrame(renderConfetti);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            renderConfetti();
+        }
+
+        // -------------------------------------------------------------
         // HIỆU ỨNG NANO PARTICLES & LASER MESH AI ANTIGRAVITY (CANVAS)
         // -------------------------------------------------------------
         function initIntroParticles() {
             const canvas = document.getElementById('intro-particles-canvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
+            if (!ctx) return;
             let width = canvas.width = window.innerWidth;
             let height = canvas.height = window.innerHeight;
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             if (!introParticlesResizeHandler) {
                 introParticlesResizeHandler = () => {
@@ -1462,17 +1879,18 @@
             }
 
             const particles = [];
-            const particleCount = Math.min(Math.floor(width / 15), 80);
+            const particleCount = Math.min(Math.floor(width / 18), 64);
+            const particleColors = ['#4C91C8', '#78BCEB', '#9BDCF0', '#D8B75B', '#FFFFFF'];
 
             for (let i = 0; i < particleCount; i++) {
                 particles.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
-                    radius: Math.random() * 2.5 + 1,
-                    color: Math.random() > 0.5 ? '#4C91C8' : '#8AC2E8',
-                    vx: (Math.random() - 0.5) * 0.6,
-                    vy: (Math.random() - 0.5) * 0.8 - 0.2, // Chống trọng lực nhẹ
-                    alpha: Math.random() * 0.7 + 0.3
+                    radius: Math.random() * 1.8 + 0.8,
+                    color: particleColors[Math.floor(Math.random() * particleColors.length)],
+                    vx: (Math.random() - 0.5) * 0.45,
+                    vy: (Math.random() - 0.5) * 0.6 - 0.18,
+                    alpha: Math.random() * 0.35 + 0.25
                 });
             }
 
@@ -1486,32 +1904,40 @@
                 height = canvas.height;
                 ctx.clearRect(0, 0, width, height);
 
-                // Vẽ các đường nối Laser Mesh giữa các hạt gần nhau
+                // Laser Mesh giữa các hạt gần nhau
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i + 1; j < particles.length; j++) {
                         const dx = particles[i].x - particles[j].x;
                         const dy = particles[i].y - particles[j].y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
 
-                        if (dist < 110) {
+                        if (dist < 115) {
                             ctx.beginPath();
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.strokeStyle = `rgba(76, 145, 200, ${0.18 * (1 - dist / 110)})`;
-                            ctx.lineWidth = 0.6;
+                            ctx.strokeStyle = `rgba(70, 145, 200, ${0.2 * (1 - dist / 115)})`;
+                            ctx.lineWidth = 0.7;
                             ctx.stroke();
                         }
                     }
                 }
 
-                // Vẽ & cập nhật vị trí từng hạt
+                // Tương tác chuột với hạt
                 particles.forEach(p => {
+                    const dmx = p.x - mouseX;
+                    const dmy = p.y - mouseY;
+                    const distMouse = Math.sqrt(dmx * dmx + dmy * dmy);
+                    if (distMouse < 90 && distMouse > 0) {
+                        p.x += (dmx / distMouse) * 2;
+                        p.y += (dmy / distMouse) * 2;
+                    }
+
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                     ctx.fillStyle = p.color;
                     ctx.globalAlpha = p.alpha;
                     ctx.shadowColor = p.color;
-                    ctx.shadowBlur = 5;
+                    ctx.shadowBlur = 4;
                     ctx.fill();
                     ctx.shadowBlur = 0;
 
@@ -1524,10 +1950,30 @@
                     if (p.y > height) p.y = 0;
                 });
 
-                introParticlesFrame = requestAnimationFrame(animate);
+                if (!reducedMotion) introParticlesFrame = requestAnimationFrame(animate);
             }
             if (introParticlesFrame) cancelAnimationFrame(introParticlesFrame);
             animate();
+        }
+
+        // -------------------------------------------------------------
+        // HIỆU ỨNG 3D TILT TƯƠNG TÁC CHO CÁC CARD TRỤ CỘT & HỘP QUÀ
+        // -------------------------------------------------------------
+        function initIntroTilt() {
+            const cards = document.querySelectorAll('.intro-card-glass, .lucky-golden-box');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rotateX = -(y / rect.height) * 12;
+                    const rotateY = (x / rect.width) * 12;
+                    card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)';
+                });
+            });
         }
 
         // -------------------------------------------------------------
@@ -1536,15 +1982,19 @@
         function toggleIntroSound() {
             isSoundOn = !isSoundOn;
             const statusEl = document.getElementById('i18n-intro-sound-status');
+            const iconEl = document.getElementById('intro-sound-icon');
             const btnEl = document.getElementById('intro-sound-btn');
             if (isSoundOn) {
                 statusEl.innerText = "Âm thanh: Bật";
+                if (iconEl) iconEl.className = "fa-solid fa-volume-high text-amber-300";
                 btnEl.classList.remove('opacity-50');
-                showToast("Đã bật âm thanh nền Tinh Hoa OCOP", "success");
+                playChimeSound();
+                showToast("Đã bật âm thanh Tinh Hoa OCOP", "success");
             } else {
                 statusEl.innerText = "Âm thanh: Tắt";
+                if (iconEl) iconEl.className = "fa-solid fa-volume-xmark text-gray-400";
                 btnEl.classList.add('opacity-50');
-                showToast("Đã tắt âm thanh nền", "info");
+                showToast("Đã tắt âm thanh", "info");
             }
         }
 
@@ -1552,12 +2002,15 @@
             const overlay = document.getElementById('ocop-intro-overlay');
             overlay.classList.remove('hidden', 'curtain-closing');
             initIntroParticles();
+            initIntroTilt();
             startRegionAutoSlide();
+            playChimeSound();
         }
 
         function enterOcopMarket(mode) {
             const overlay = document.getElementById('ocop-intro-overlay');
             if (overlay.classList.contains('hidden') || overlay.classList.contains('curtain-closing')) return;
+            playWhooshSound();
             overlay.classList.add('curtain-closing');
             if (regionInterval) clearInterval(regionInterval);
 
@@ -1588,47 +2041,56 @@
             btnEl.innerHTML = `<i class="fa-solid fa-check-double text-ocopGreen"></i><span>Đã Nhận Lộc Vàng</span>`;
             btnEl.disabled = true;
             btnEl.classList.add('opacity-80', 'cursor-not-allowed');
-            showToast("Chúc mừng! Bạn nhận được Voucher giảm 50.000đ!", "success");
+
+            // Bắn pháo hoa vàng kim & phát âm thanh chuông may mắn!
+            triggerGoldConfetti();
+            playChimeSound();
+
+            showToast("Chúc mừng! Bạn nhận được Voucher Lộc Vàng giảm 50.000đ!", "success");
         }
 
         function setIntroRegion(regionKey, stopAuto = false) {
             if (stopAuto && regionInterval) clearInterval(regionInterval);
             activeRegion = regionKey;
+            if (stopAuto) playWhooshSound();
 
             const r = regionData[regionKey];
-            document.getElementById('intro-region-title').innerText = r.title;
+            document.getElementById('intro-region-title').innerHTML = `<span>${r.title}</span>`;
             document.getElementById('intro-region-desc').innerText = r.desc;
 
             // Highlight tab
             ['north', 'central', 'south'].forEach(k => {
                 const tab = document.getElementById(`tab-region-${k}`);
+                if (!tab) return;
                 tab.setAttribute('aria-pressed', String(k === regionKey));
                 if (k === regionKey) {
-                    tab.className = "flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-gradient-to-r from-ocopGold via-amber-400 to-yellow-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer";
+                    tab.className = "flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-ocopGreen font-black text-xs transition shadow flex items-center justify-center space-x-1 cursor-pointer";
                 } else {
-                    tab.className = "flex-1 sm:flex-none py-1.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer";
+                    tab.className = "flex-1 sm:flex-none py-1.5 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-amber-100 font-bold text-xs transition flex items-center justify-center space-x-1 border border-white/10 cursor-pointer";
                 }
             });
 
-            // Render items
+            // Render 4 thẻ sản phẩm của miền (Kèm ảnh thumbnail, huy hiệu & tag)
             const container = document.getElementById('intro-region-items');
             container.innerHTML = r.items.map(item => `
-                <div class="bg-white/10 hover:bg-white/20 p-2.5 rounded-2xl border border-amber-300/30 flex items-center justify-between transition cursor-pointer" onclick="enterOcopMarket('all')">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-amber-400 font-bold text-xs">✦</span>
-                        <div>
-                            <span class="block text-xs font-bold text-white">${item.name}</span>
-                            <span class="text-[10px] text-amber-200/70">${item.origin}</span>
+                <div class="region-item-card p-2.5 rounded-2xl flex items-center justify-between gap-2.5 cursor-pointer group shadow-sm" onclick="enterOcopMarket('all')">
+                    <div class="flex items-center space-x-2.5 min-w-0">
+                        <img src="${item.img}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover border border-amber-300/40 group-hover:scale-105 transition flex-shrink-0 shadow-md">
+                        <div class="truncate">
+                            <span class="block text-xs font-black text-amber-100 group-hover:text-yellow-300 transition truncate">${item.name}</span>
+                            <span class="text-[10px] text-amber-300/80 font-medium">${item.origin} • ${item.tag}</span>
                         </div>
                     </div>
-                    <span class="bg-amber-500/20 text-amber-300 border border-amber-400/50 text-[10px] font-black px-2 py-0.5 rounded-lg">${item.badge}</span>
+                    <span class="bg-gradient-to-r from-amber-400 to-yellow-400 text-ocopGreen font-black text-[10px] px-2.5 py-1 rounded-lg shadow flex-shrink-0">${item.badge}</span>
                 </div>
             `).join('');
 
             // Progress bar reset animation
             const pBar = document.getElementById('region-progress-bar');
-            pBar.style.width = '0%';
-            setTimeout(() => { pBar.style.width = '100%'; }, 50);
+            if (pBar) {
+                pBar.style.width = '0%';
+                setTimeout(() => { pBar.style.width = '100%'; }, 50);
+            }
         }
 
         function startRegionAutoSlide() {
