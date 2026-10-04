@@ -89,10 +89,10 @@
         .bg-ocop-ambient {
             background-color: #FAF8F5;
             background-image: 
-                radial-gradient(at 10% 10%, rgba(212, 175, 55, 0.18) 0px, transparent 50%),
-                radial-gradient(at 90% 20%, rgba(22, 91, 70, 0.15) 0px, transparent 50%),
-                radial-gradient(at 50% 80%, rgba(244, 239, 230, 0.85) 0px, transparent 50%);
-            background-attachment: fixed;
+                radial-gradient(ellipse at 8% 4%, rgba(212, 175, 55, 0.12), transparent 36rem),
+                radial-gradient(ellipse at 96% 28%, rgba(22, 91, 70, 0.09), transparent 42rem),
+                linear-gradient(180deg, #fbfaf7 0%, #f5f7f3 48%, #fbfaf7 100%);
+            background-attachment: scroll;
         }
         .glass-panel {
             background: rgba(255, 255, 255, 0.92);
@@ -204,6 +204,56 @@
             border-color: #D4AF37;
             color: #fff;
             font-weight: 800;
+        }
+        #ai-chat-widget,
+        #admin-support-widget {
+            animation: none;
+        }
+        #ai-chat-window,
+        #admin-support-menu {
+            width: min(24rem, calc(100vw - 1.5rem));
+            max-height: min(72vh, 38rem);
+            box-shadow: 0 24px 64px rgba(15, 56, 44, 0.22), 0 4px 14px rgba(15, 56, 44, 0.08);
+        }
+        #ai-chat-messages {
+            overscroll-behavior: contain;
+            scrollbar-color: #9bbab0 transparent;
+        }
+        .header-primary-nav {
+            display: none;
+        }
+        .header-support-chip {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        @media (min-width: 1720px) {
+            .header-primary-nav {
+                display: flex;
+            }
+        }
+        @media (max-width: 640px) {
+            #ai-chat-window,
+            #admin-support-menu {
+                max-height: min(70dvh, 34rem);
+                border-radius: 1.35rem;
+            }
+            #ai-chat-widget {
+                right: 0.75rem;
+                left: auto;
+            }
+            #admin-support-widget {
+                right: auto;
+                left: 0.75rem;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #ai-chat-widget *,
+            #admin-support-widget * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
         }
         /* ============================================================== */
         /* SIÊU PHẨM MÀN INTRO: VŨ TRỤ HOÀNG KIM NÔNG SẢN VIỆT - AI ANTIGRAVITY */
@@ -783,13 +833,14 @@
                 </span>
                 <div class="ticker-wrapper flex-1 overflow-hidden">
                     <div class="ticker-content text-amber-200/90 font-medium space-x-6 text-[11px]">
-                        <span>🔥 <b>1,840+</b> lượt khách hàng đang trải nghiệm trực tuyến</span>
-                        <span>🎁 Chị Hoàng Mai (Hà Nội) vừa đặt Combo Trà Đinh Tân Cương 5★</span>
-                        <span>⚡ Anh Tuấn (TP.HCM) vừa bốc được Lộc Vàng 50K</span>
-                        <span>🚚 Miễn phí vận chuyển toàn quốc cho đơn từ 500k</span>
-                        <span>🌿 100% Đặc sản chuẩn kiểm định OCOP Quốc Gia</span>
-                        <span>🔥 <b>1,840+</b> lượt khách hàng đang trải nghiệm trực tuyến</span>
-                        <span>🎁 Chị Hoàng Mai (Hà Nội) vừa đặt Combo Trà Đinh Tân Cương 5★</span>
+                        <span id="i18n-ticker1">🌾 Khám phá đặc sản từ các vùng miền Việt Nam</span>
+                        <span id="i18n-ticker2">🎁 Gợi ý quà tặng theo dịp và ngân sách</span>
+                        <span id="i18n-ticker3">🍵 Trà, nông sản, món ngon và gia vị địa phương</span>
+                        <span id="i18n-ticker4">🚚 Miễn phí vận chuyển theo điều kiện đơn hàng</span>
+                        <span id="i18n-ticker1-copy" aria-hidden="true">🌾 Khám phá đặc sản từ các vùng miền Việt Nam</span>
+                        <span id="i18n-ticker2-copy" aria-hidden="true">🎁 Gợi ý quà tặng theo dịp và ngân sách</span>
+                        <span id="i18n-ticker3-copy" aria-hidden="true">🍵 Trà, nông sản, món ngon và gia vị địa phương</span>
+                        <span id="i18n-ticker4-copy" aria-hidden="true">🚚 Miễn phí vận chuyển theo điều kiện đơn hàng</span>
                     </div>
                 </div>
             </div>
@@ -797,7 +848,7 @@
             <!-- National Seal Badge -->
             <div id="intro-award-badge" class="intro-seal-badge inline-flex items-center space-x-2 px-5 py-2 rounded-full text-xs font-black text-amber-200">
                 <i class="fa-solid fa-award text-yellow-300 text-base animate-bounce"></i>
-                <span class="tracking-wide">✦ BẢO VẬT NÔNG SẢN QUỐC GIA • ĐẠT CHUẨN OCOP 4 - 5 SAO ✦</span>
+                <span class="tracking-wide" id="i18n-intro-award">✦ ĐẶC SẢN VIỆT NAM • TUYỂN CHỌN THEO DANH MỤC OCOP ✦</span>
             </div>
 
             <!-- Hero Typography -->
@@ -807,7 +858,7 @@
                     <span class="intro-gold-gradient drop-shadow-[0_4px_35px_rgba(212,175,55,0.85)]" id="i18n-intro-title2">40 ĐẶC SẢN CHUẨN 4 - 5 SAO</span>
                 </h2>
                 <p class="text-xs sm:text-sm text-amber-100/90 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc">
-                    Nền tảng trí tuệ nhân tạo thế hệ mới AI Antigravity kết nối trực tiếp các nghệ nhân & hợp tác xã từ 63 tỉnh thành. 100% nguyên bản xuất xứ, kiểm định khắt khe, xuất hóa đơn VAT doanh nghiệp.
+                    Khám phá đặc sản Việt Nam theo vùng miền, xem mô tả, giá và đánh giá ngay tại một nơi. Trợ lý mua sắm giúp lọc gợi ý theo nhu cầu và ngân sách.
                 </p>
             </div>
 
@@ -818,31 +869,31 @@
                         <i class="fa-solid fa-medal"></i>
                     </div>
                     <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar1">48 Đặc Sản Tuyển Chọn</span>
-                    <span class="block text-[10px] text-amber-300/80 font-medium" id="i18n-intro-pillar1-sub">Kiểm định nghiêm ngặt</span>
+                    <span class="block text-[10px] text-amber-300/80 font-medium" id="i18n-intro-pillar1-sub">Thông tin sản phẩm rõ ràng</span>
                 </div>
 
                 <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
                     <div class="w-9 h-9 mx-auto rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
                         <i class="fa-solid fa-earth-asia"></i>
                     </div>
-                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar2">63 Tỉnh Thành</span>
-                    <span class="block text-[10px] text-emerald-300/80 font-medium" id="i18n-intro-pillar2-sub">100% Chính gốc xuất xứ</span>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar2">Đặc Sản Ba Miền</span>
+                    <span class="block text-[10px] text-emerald-300/80 font-medium" id="i18n-intro-pillar2-sub">Hương vị bản địa Việt Nam</span>
                 </div>
 
                 <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
                     <div class="w-9 h-9 mx-auto rounded-xl bg-cyan-400/20 text-cyan-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(0,240,255,0.3)]">
                         <i class="fa-solid fa-robot"></i>
                     </div>
-                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar3">AI Antigravity Copilot</span>
-                    <span class="block text-[10px] text-cyan-300/80 font-medium" id="i18n-intro-pillar3-sub">Tư vấn thông minh 24/7</span>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar3">AI tư vấn</span>
+                    <span class="block text-[10px] text-cyan-300/80 font-medium" id="i18n-intro-pillar3-sub">Gợi ý theo danh mục sản phẩm</span>
                 </div>
 
                 <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
                     <div class="w-9 h-9 mx-auto rounded-xl bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(255,223,0,0.3)]">
                         <i class="fa-solid fa-qrcode"></i>
                     </div>
-                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar4">VietQR BIDV</span>
-                    <span class="block text-[10px] text-yellow-300/80 font-medium" id="i18n-intro-pillar4-sub">Miễn ship từ 500k</span>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar4">Thanh toán VietQR</span>
+                    <span class="block text-[10px] text-yellow-300/80 font-medium" id="i18n-intro-pillar4-sub">Kiểm tra đơn hàng trước khi thanh toán</span>
                 </div>
             </div>
 
@@ -1018,7 +1069,7 @@
             </div>
 
             <!-- Navigation Desktop -->
-            <nav class="hidden 2xl:flex items-center space-x-6 font-bold text-sm">
+            <nav class="header-primary-nav items-center space-x-6 font-bold text-sm">
                 <a href="#" class="text-ocopGreen font-extrabold border-b-2 border-ocopGold pb-1 transition" id="i18n-nav-home">Trang chủ</a>
                 <a href="#products-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-products">Danh mục 48 Đặc sản</a>
                 <a href="#contact-footer" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-contact">Liên hệ & Hỗ trợ</a>
@@ -1031,7 +1082,7 @@
             <!-- Quick Action Icons -->
             <div class="flex items-center space-x-1 sm:space-x-4">
                 <button id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-blue-200 bg-blue-50 text-blue-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-blue-100 transition cursor-pointer" aria-label="Switch language">EN</button>
-                <div class="hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
+                <div class="header-support-chip hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
                     <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs">
                         <i class="fa-solid fa-headset"></i>
                     </div>
@@ -1054,9 +1105,6 @@
                     <button onclick="toggleCart()" class="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Giỏ hàng">
                         <i class="fa-solid fa-basket-shopping text-xs sm:text-sm text-ocopGreen"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[9px] sm:text-[10px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
-                    </button>
-                    <button onclick="toggleLanguage()" id="lang-btn" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight font-extrabold text-[11px] sm:text-xs flex items-center justify-center transition shadow-md border sm:border-2 border-ocopGold hover:scale-105 cursor-pointer" title="Chuyển đổi Ngôn Ngữ / Switch Language">
-                        VI
                     </button>
                 </div>
             </div>
@@ -1299,8 +1347,8 @@
     </main>
     
     <!-- 5. WIDGET CHATBOT AI ANTIGRAVITY (BÊN TRÁI) -->
-    <div id="ai-chat-widget" class="fixed bottom-20 sm:bottom-6 left-3 sm:left-6 z-40 flex flex-col items-start animate-float-slow">
-        <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-96 max-h-[75vh] h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-ocopGold flex flex-col overflow-hidden mb-3 animate-pop-in">
+    <div id="ai-chat-widget" class="fixed bottom-20 sm:bottom-6 right-3 sm:right-6 z-40 flex flex-col items-end">
+        <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-96 max-h-[min(72vh,38rem)] h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-emerald-100 flex flex-col overflow-hidden mb-3 animate-pop-in">
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
                     <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
@@ -1348,8 +1396,8 @@
     </div>
 
     <!-- 5.2. WIDGET 4 ADMIN FACEBOOK (BÊN PHẢI) -->
-    <div id="admin-support-widget" class="fixed bottom-20 sm:bottom-6 right-3 sm:right-6 z-40 flex flex-col items-end animate-float-slow">
-        <div id="admin-support-menu" class="hidden w-[calc(100vw-1.5rem)] sm:w-80 max-h-[75vh] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-blue-500 overflow-hidden mb-3 animate-pop-in overflow-y-auto">
+    <div id="admin-support-widget" class="fixed bottom-20 sm:bottom-6 left-3 sm:left-6 z-40 flex flex-col items-start">
+        <div id="admin-support-menu" class="hidden w-[calc(100vw-1.5rem)] sm:w-80 max-h-[min(72vh,38rem)] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-blue-200 overflow-hidden mb-3 animate-pop-in overflow-y-auto">
             <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-3.5 flex items-center justify-between border-b border-blue-400">
                 <div class="flex items-center space-x-2">
                     <i class="fa-brands fa-facebook-messenger text-2xl text-blue-200 animate-bounce"></i>
@@ -1668,7 +1716,7 @@
             { id: 14, name: "Hạt Điều Rang Muối Bình Phước Vỏ Lụa", region: "Bình Phước", category: "snack", stars: 5, price: 280000, origPrice: 320000, rating: 4.9, reviews: 340, tag: "Nông Sản Xuất Khẩu", img: "https://images.pexels.com/photos/18876240/pexels-photo-18876240.jpeg?auto=compress&cs=tinysrgb&w=600", desc: "Hạt điều mẩy tròn rang củi nguyên vỏ lụa, giòn rụm béo bùi vị đậm đà." },
             { id: 15, name: "Thịt Trâu Gác Bếp Tây Bắc Chuẩn Vị", region: "Lào Cai", category: "snack", stars: 5, price: 790000, origPrice: 890000, rating: 5.0, reviews: 270, tag: "Món Ngon Núi Rừng", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80", desc: "Thịt bắp trâu tươi ướp mắc khén hạt dổi, tẩm khói củi bắp giòn thơm dai xé sợi." },
             { id: 16, name: "Đông Trùng Hạ Thảo Đà Lạt Sấy Thăng Hoa", region: "Lâm Đồng", category: "gift", stars: 5, price: 1850000, origPrice: 2100000, rating: 4.9, reviews: 82, tag: "Dược Liệu Cao Cấp", img: "https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=600&q=80", desc: "Công nghệ sấy thăng hoa nuôi trồng sinh học Đà Lạt, hàm lượng Cordycepin cực cao." },
-            { id: 17, name: "Bơ Sáp Đắk Lắk Dẻo Quánh", region: "Đắk Lắk", category: "food", stars: 4, price: 120000, origPrice: 150000, rating: 4.7, reviews: 90, tag: "Trái Cây Tây Nguyên", img: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?auto=format&fit=crop&w=600&q=80", desc: "Bơ sáp chín dẻo quánh, vỏ mỏng ruột vàng ươm ngậy béo tự nhiên." },
+            { id: 17, name: "Bơ Sáp Đắk Lắk Dẻo Quánh", region: "Đắk Lắk", category: "food", stars: 4, price: 120000, origPrice: 150000, rating: 4.7, reviews: 90, tag: "Trái Cây Tây Nguyên", img: "https://images.pexels.com/photos/27462724/pexels-photo-27462724.jpeg?auto=compress&cs=tinysrgb&w=600", desc: "Bơ sáp chín dẻo quánh, vỏ mỏng ruột vàng ươm ngậy béo tự nhiên." },
             { id: 18, name: "Mắm Lăng An Giang Đậm Vị Miền Tây", region: "An Giang", category: "spice", stars: 4, price: 140000, origPrice: 170000, rating: 4.8, reviews: 130, tag: "Đặc Sản Miền Tây", img: "https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?auto=format&fit=crop&w=600&q=80", desc: "Con mắm cá lăng ủ thính gạo thơm phức, chưng thịt hột vịt ngon nhức nhối." },
             { id: 19, name: "Lạp Xưởng Tôm Cần Đước Long An", region: "Long An", category: "snack", stars: 4, price: 210000, origPrice: 250000, rating: 4.8, reviews: 205, tag: "Truyền Thống Nam Bộ", img: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=600&q=80", desc: "Lạp xưởng tươi từ tôm đất ngọt lịm kết hợp rượu mai quế lộ thơm đậm đà." },
             { id: 20, name: "Vải Thiều Sấy Khô Lục Ngạn", region: "Bắc Giang", category: "snack", stars: 4, price: 130000, origPrice: 160000, rating: 4.9, reviews: 175, tag: "Nông Sản Bắc Giang", img: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=600&q=80", desc: "Vải thiều sấy nguyên quả cùi dầy ngọt sắc, mùi thơm đặc trưng mùa vải." },
@@ -1692,7 +1740,7 @@
             { id: 38, name: "Rượu Sim Phú Quốc Rừng Rậm Rượu Vang", region: "Kiên Giang", category: "gift", stars: 4, price: 290000, origPrice: 340000, rating: 4.8, reviews: 110, tag: "Đảo Ngọc Phú Quốc", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80", desc: "Lên men từ quả sim rừng chín mọng, vị ngọt chát hài hòa trợ tiêu hóa rất tốt." },
             { id: 39, name: "Hạt Mắc Ca Đắk Nông Nứt Vỏ Béo Bùi", region: "Đắk Nông", category: "snack", stars: 5, price: 310000, origPrice: 360000, rating: 5.0, reviews: 290, tag: "Nữ Hoàng Hạt Khô", img: "https://images.pexels.com/photos/33793908/pexels-photo-33793908.jpeg?auto=compress&cs=tinysrgb&w=600", desc: "Hạt mắc ca nứt vỏ tự nhiên, nhân trắng ngần béo ngậy giàu chất dinh dưỡng tốt cho não." },
             { id: 40, name: "Nước Cốt Dừa Ép Lạnh Bến Tre Tinh Túy", region: "Bến Tre", category: "food", stars: 4, price: 105000, origPrice: 130000, rating: 4.9, reviews: 350, tag: "Xứ Dừa Tinh Hoa", img: "https://images.unsplash.com/photo-1582293041079-7814c2f12063?auto=format&fit=crop&w=600&q=80", desc: "Ép lạnh công nghệ cao giữ trọn độ béo ngậy thanh tự nhiên cho món chè và món kho." },
-            { id: 41, name: "Cà Phê Arabica Cầu Đất Rang Mộc", nameEn: "Cau Dat Arabica Coffee", region: "Lâm Đồng", category: "tea", stars: 4, price: 185000, origPrice: 220000, rating: 4.9, reviews: 178, tag: "Hương Vị Cao Nguyên", tagEn: "Highland Roast", img: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=600&q=80", desc: "Hạt Arabica tuyển chọn từ vùng Cầu Đất, rang mộc để giữ hương thơm dịu và vị chua thanh.", descEn: "Selected Arabica beans from Cau Dat, lightly roasted for a fragrant aroma and bright finish." },
+            { id: 41, name: "Cà Phê Arabica Cầu Đất Rang Mộc", nameEn: "Cau Dat Arabica Coffee", region: "Lâm Đồng", category: "food", stars: 4, price: 185000, origPrice: 220000, rating: 4.9, reviews: 178, tag: "Hương Vị Cao Nguyên", tagEn: "Highland Roast", img: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=600&q=80", desc: "Hạt Arabica tuyển chọn từ vùng Cầu Đất, rang mộc để giữ hương thơm dịu và vị chua thanh.", descEn: "Selected Arabica beans from Cau Dat, lightly roasted for a fragrant aroma and bright finish." },
             { id: 42, name: "Chanh Dây Đà Lạt Ruột Vàng", nameEn: "Dalat Yellow Passion Fruit", region: "Lâm Đồng", category: "food", stars: 4, price: 120000, origPrice: 145000, rating: 4.8, reviews: 156, tag: "Đặc Sản Đà Lạt", tagEn: "Dalat Specialty", img: "https://images.unsplash.com/photo-1604495772376-9657f0035eb5?auto=format&fit=crop&w=600&q=80", desc: "Chanh dây chín mọng có phần ruột vàng thơm, vị chua ngọt tự nhiên, thích hợp pha nước giải khát.", descEn: "Ripe yellow passion fruit with fragrant pulp and a naturally sweet-tart flavor, perfect for refreshing drinks." },
             { id: 43, name: "Tôm Khô Đất Mũi Cà Mau Loại Đặc Biệt", nameEn: "Premium Ca Mau Dried Shrimp", region: "Cà Mau", category: "food", stars: 4, price: 390000, origPrice: 450000, rating: 4.9, reviews: 112, tag: "Đặc Sản Đất Mũi", tagEn: "Cape Ca Mau Specialty", img: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80", desc: "Tôm đất chọn lọc, làm sạch và phơi khô theo cách truyền thống; tiện dùng nấu canh, kho quẹt.", descEn: "Carefully selected local shrimp, traditionally dried and ready for soups, braises, and dipping sauces." },
             { id: 44, name: "Muối Tôm Tây Ninh Hạt To Đậm Đà", nameEn: "Tay Ninh Chili Salt", region: "Tây Ninh", category: "spice", stars: 4, price: 58000, origPrice: 70000, rating: 4.8, reviews: 205, tag: "Gia Vị Tây Ninh", tagEn: "Tay Ninh Seasoning", img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80", desc: "Muối rang cùng tôm và ớt theo công thức địa phương, dùng chấm trái cây hoặc nêm món ăn.", descEn: "A local blend of salt, shrimp, and chili for dipping fresh fruit or seasoning everyday dishes." },
@@ -2411,6 +2459,7 @@
             const win = document.getElementById('ai-chat-window');
             win.classList.toggle('hidden');
             if (!win.classList.contains('hidden')) {
+                document.getElementById('admin-support-menu').classList.add('hidden');
                 document.getElementById('ai-chat-input').focus();
             }
         }
@@ -2446,7 +2495,7 @@
                     <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-500 text-xs shadow-sm flex items-center space-x-1.5">
                         <i class="fa-solid fa-spinner fa-spin text-ocopGreen"></i>
-                        <span>Đang tìm lựa chọn phù hợp...</span>
+                        <span>${currentLanguage === 'en' ? 'Finding suitable options...' : 'Đang tìm lựa chọn phù hợp...'}</span>
                     </div>
                 </div>
             `);
@@ -2471,13 +2520,17 @@
         }
 
         function generateAIResponse(query) {
-            const q = normalizeSearchText(query).replace(/[^\p{L}\p{N}\s.,]/gu, ' ').replace(/\s+/g, ' ').trim();
+            const q = normalizeSearchText(query).replace(/[^\p{L}\p{N}\s.,-]/gu, ' ').replace(/\s+/g, ' ').trim();
             const english = currentLanguage === 'en';
             const budget = parseAIBudget(q);
+            const budgetFloor = parseAIBudgetFloor(q);
             const category = getAIProductCategory(q);
             const matchingRegions = getAIRegionProducts(q);
             let relevantTerms = [];
-            const isFiveStar = /\b(5 sao|5 star|nam sao|top|cao cap|ban chay|danh gia cao)\b/.test(q);
+            const requestedStars = /\b(5 sao|5 star|nam sao|top|cao cap|ban chay|danh gia cao)\b/.test(q)
+                ? 5
+                : /\b(4 sao|4 star|bon sao)\b/.test(q) ? 4 : null;
+            const isFiveStar = requestedStars === 5;
             const isCheaperFollowUp = /\b(re hon|gia thap hon|binh dan hon|mem hon|re hon|cheaper|lower priced|less expensive)\b/.test(q);
             const isAlternativeFollowUp = /\b(con|khac|them|lua chon khac|another|alternative|other option)\b/.test(q);
             const aiRelevanceScores = new Map();
@@ -2499,8 +2552,8 @@
             }
             if (/\b(giao hang|phi ship|van chuyen|freeship|mien phi ship|shipping|delivery)\b/.test(q)) {
                 return english
-                    ? 'The website offers nationwide free shipping on orders from 500,000 VND. Please confirm the final delivery cost and timing when placing your order.'
-                    : 'Theo thông tin trên website, đơn hàng từ 500.000 ₫ được miễn phí vận chuyển toàn quốc. Phí và thời gian giao cụ thể có thể được xác nhận khi đặt hàng.';
+                    ? 'The site currently lists nationwide shipping as free. Please confirm coverage, availability, and delivery timing when placing your order.'
+                    : 'Website hiện hiển thị miễn phí vận chuyển toàn quốc. Anh/chị vui lòng xác nhận phạm vi áp dụng và thời gian giao khi đặt hàng.';
             }
             if (/\b(vat|hoa don|xuat hoa don)\b/.test(q)) {
                 return english
@@ -2522,9 +2575,10 @@
                 lastAIRecommendedProductIds = [exactProduct.id];
                 lastAIRecommendationCriteria = {
                     category: exactProduct.category,
-                    terms: getAIQueryTerms(q),
+                    terms: [],
                     stars: null,
                     maxPrice: null,
+                    minPrice: null,
                     regionIds: null
                 };
                 return renderAIProductRecommendations(
@@ -2536,8 +2590,9 @@
 
             let candidates = products.filter(product => {
                 if (category && product.category !== category) return false;
-                if (isFiveStar && product.stars !== 5) return false;
+                if (requestedStars && product.stars !== requestedStars) return false;
                 if (budget && product.price > budget) return false;
+                if (budgetFloor && product.price < budgetFloor) return false;
                 if (matchingRegions && !matchingRegions.includes(product)) return false;
                 return true;
             });
@@ -2556,7 +2611,7 @@
                     !lastAIRecommendedProductIds.includes(product.id) &&
                     matchesAIRecommendationCriteria(product, lastAIRecommendationCriteria)
                 );
-            } else if (category || (!isFiveStar && !budget && !matchingRegions)) {
+            } else if (!isCheaperFollowUp && !isAlternativeFollowUp) {
                 const terms = getAIQueryTerms(q);
                 relevantTerms = terms;
                 const scored = products.map(product => {
@@ -2566,11 +2621,12 @@
                     const productName = normalizeSearchText(product.name).replace(/[^\p{L}\p{N}]/gu, ' ').split(/\s+/);
                     const matchingTerms = terms.filter(term => searchable.includes(term));
                     const score = matchingTerms.reduce((total, term) => total + (productName.includes(term) ? 3 : 1), 0);
-                    return { product, score, matchesAllTerms: matchingTerms.length === terms.length };
-                }).filter(result => candidates.includes(result.product) && result.score > 0 && result.matchesAllTerms).sort((a, b) => b.score - a.score);
+                    return { product, score, matchingTerms };
+                }).filter(result => candidates.includes(result.product) && result.score > 0).sort((a, b) => b.score - a.score);
                 if (scored.length) {
                     scored.forEach(result => aiRelevanceScores.set(result.product.id, result.score));
                     candidates = scored.slice(0, 5).map(result => result.product);
+                    relevantTerms = terms.filter(term => scored.slice(0, 3).every(result => result.matchingTerms.includes(term)));
                 }
             }
 
@@ -2589,8 +2645,9 @@
                     lastAIRecommendationCriteria = {
                         category,
                         terms: relevantTerms,
-                        stars: isFiveStar ? 5 : null,
+                        stars: requestedStars,
                         maxPrice: budget,
+                        minPrice: budgetFloor,
                         regionIds: matchingRegions ? matchingRegions.map(product => product.id) : null
                     };
                 }
@@ -2600,12 +2657,16 @@
                         ? 'Options at lower prices'
                         : isAlternativeFollowUp
                             ? 'More options to consider'
+                            : budgetFloor && budget && category
+                                ? `${getAIProductCategoryLabel(category)} between ${budgetFloor.toLocaleString('en-US')} and ${budget.toLocaleString('en-US')} VND`
                             : budget && category
                                 ? `${getAIProductCategoryLabel(category)} under ${budget.toLocaleString('en-US')} VND`
                                 : category
                                     ? 'Suggestions based on your needs'
-                                    : isFiveStar
-                                        ? 'OCOP 5-star products'
+                                    : requestedStars
+                                        ? `OCOP ${requestedStars}-star products`
+                                        : budgetFloor && budget
+                                            ? `Products between ${budgetFloor.toLocaleString('en-US')} and ${budget.toLocaleString('en-US')} VND`
                                         : budget
                                             ? `Products under ${budget.toLocaleString('en-US')} VND`
                                             : 'Products matching your search')
@@ -2613,12 +2674,16 @@
                     ? 'Một số lựa chọn có giá thấp hơn'
                     : isAlternativeFollowUp
                         ? 'Một vài lựa chọn khác'
+                        : budgetFloor && budget && category
+                            ? `${getAIProductCategoryLabel(category)} trong khoảng ${budgetFloor.toLocaleString('vi-VN')}–${budget.toLocaleString('vi-VN')} ₫`
                         : budget && category
                             ? `${getAIProductCategoryLabel(category)} trong mức ${budget.toLocaleString('vi-VN')} ₫`
                         : category
                             ? 'Gợi ý theo nhu cầu của anh/chị'
-                            : isFiveStar
-                                ? 'Một số sản phẩm OCOP 5 sao'
+                            : requestedStars
+                                ? `Một số sản phẩm OCOP ${requestedStars} sao`
+                                : budgetFloor && budget
+                                    ? `Sản phẩm trong khoảng ${budgetFloor.toLocaleString('vi-VN')}–${budget.toLocaleString('vi-VN')} ₫`
                                 : budget
                                     ? `Sản phẩm trong mức ${budget.toLocaleString('vi-VN')} ₫`
                                     : 'Sản phẩm phù hợp với từ khóa anh/chị tìm';
@@ -2632,10 +2697,10 @@
                 return renderAIProductRecommendations(recommendations, title, note);
             }
 
-            if (budget) {
+            if (budget || budgetFloor) {
                 return english
-                    ? `I could not find a match under ${budget.toLocaleString('en-US')} VND${category ? ' in this category' : ''}. Would you like to adjust your budget or try another category?`
-                    : `Mình chưa thấy sản phẩm phù hợp trong mức ${budget.toLocaleString('vi-VN')} ₫${category ? ' ở nhóm này' : ''}. Anh/chị muốn tăng ngân sách hoặc thử nhóm đặc sản khác không?`;
+                    ? `I could not find a match${budgetFloor && budget ? ` between ${budgetFloor.toLocaleString('en-US')} and ${budget.toLocaleString('en-US')} VND` : budget ? ` under ${budget.toLocaleString('en-US')} VND` : ` from ${budgetFloor.toLocaleString('en-US')} VND`}${category ? ' in this category' : ''}. Would you like to adjust your budget or try another category?`
+                    : `Mình chưa thấy sản phẩm phù hợp${budgetFloor && budget ? ` trong khoảng ${budgetFloor.toLocaleString('vi-VN')}–${budget.toLocaleString('vi-VN')} ₫` : budget ? ` dưới ${budget.toLocaleString('vi-VN')} ₫` : ` từ ${budgetFloor.toLocaleString('vi-VN')} ₫`}${category ? ' ở nhóm này' : ''}. Anh/chị muốn điều chỉnh ngân sách hoặc thử nhóm đặc sản khác không?`;
             }
             if (isCheaperFollowUp) {
                 return english
@@ -2658,25 +2723,43 @@
         }
 
         function parseAIBudget(query) {
+            const range = getAIBudgetRange(query);
+            if (range) return range.max;
+
             const match = query.match(/(?:duoi|toi da|ngan sach|tam gia|khoang|budget|under|below|up to|max)?\s*(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)\b/);
             if (!match) {
                 const groupedPrice = query.match(/(?:duoi|toi da|ngan sach|tam gia|under|below|up to|max)?\s*(\d{1,3}(?:[.,]\d{3})+|\d{6,})\s*(?:d|dong|vnd|vnd)?(?:\b|$)/);
                 return groupedPrice ? Number(groupedPrice[1].replace(/[.,]/g, '')) : null;
             }
 
-            const value = Number(match[1].replace(',', '.'));
-            const unit = match[2];
+            return parseAIBudgetAmount(match[1], match[2]);
+        }
+
+        function parseAIBudgetFloor(query) {
+            return getAIBudgetRange(query)?.min ?? null;
+        }
+
+        function getAIBudgetRange(query) {
+            const range = query.match(/(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)?\s*(?:-|den|to|and)\s*(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)?\b/);
+            if (!range || (!range[2] && !range[4])) return null;
+            const sharedUnit = range[2] || range[4];
+            const first = parseAIBudgetAmount(range[1], sharedUnit);
+            const second = parseAIBudgetAmount(range[3], range[4] || sharedUnit);
+            return { min: Math.min(first, second), max: Math.max(first, second) };
+        }
+
+        function parseAIBudgetAmount(value, unit) {
             const multiplier = ['trieu', 'tr', 'm'].includes(unit) ? 1000000 : 1000;
-            return Math.round(value * multiplier);
+            return Math.round(Number(value.replace(',', '.')) * multiplier);
         }
 
         function getAIProductCategory(query) {
             const categoryKeywords = {
                 gift: ['qua', 'bieu', 'tang', 'sep', 'tet', 'qua tang', 'gift', 'present'],
                 tea: ['tra', 'che', 'thuc uong', 'ngu ngon', 'tea'],
-                snack: ['banh', 'keo', 'mut', 'an vat', 'do nham', 'mon ngon', 'snack', 'cake', 'candy'],
-                spice: ['gia vi', 'nuoc mam', 'mam', 'tieu', 'dau me', 'seasoning', 'spice', 'pepper'],
-                food: ['nong san', 'gao', 'mat ong', 'bo', 'cua', 'ca', 'thuc pham', 'food', 'produce', 'honey', 'rice']
+                snack: ['banh', 'keo', 'mut', 'an vat', 'do nham', 'mon ngon', 'snack', 'cake', 'candy', 'confectionery'],
+                spice: ['gia vi', 'nuoc mam', 'mam', 'tieu', 'dau me', 'seasoning', 'spice', 'pepper', 'fish sauce'],
+                food: ['nong san', 'gao', 'mat ong', 'bo', 'cua', 'ca', 'thuc pham', 'food', 'produce', 'honey', 'rice', 'coffee', 'cafe', 'avocado', 'cashew', 'mushroom', 'fruit']
             };
             for (const [category, keywords] of Object.entries(categoryKeywords)) {
                 if (keywords.some(keyword => ` ${query} `.includes(` ${keyword} `))) return category;
@@ -2708,6 +2791,7 @@
             if (criteria.category && product.category !== criteria.category) return false;
             if (criteria.stars && product.stars !== criteria.stars) return false;
             if (criteria.maxPrice && product.price > criteria.maxPrice) return false;
+            if (criteria.minPrice && product.price < criteria.minPrice) return false;
             if (criteria.regionIds && !criteria.regionIds.includes(product.id)) return false;
             if (criteria.terms.length) {
                 const searchable = normalizeSearchText(`${product.name} ${product.region} ${product.tag} ${product.desc}`)
@@ -2727,7 +2811,16 @@
                 'qua', 'bieu', 'tang', 'sep', 'tet', 'tra', 'che', 'banh', 'keo', 'mut', 'an', 'vat',
                 'do', 'nham', 'mon', 'ngon', 'gia', 'vi', 'truyen', 'thong', 'nong', 'thuc', 'pham'
             ]);
-            ['under', 'below', 'budget', 'gift', 'gifts', 'present', 'tea', 'snack', 'snacks', 'food', 'produce', 'spice', 'spices', 'seasoning', 'seasonings', 'star', 'stars', 'another', 'alternative', 'option', 'options', 'please', 'find', 'show', 'recommend'].forEach(word => ignoredWords.add(word));
+            [
+                'under', 'below', 'budget', 'gift', 'gifts', 'present', 'tea', 'snack', 'snacks', 'food',
+                'produce', 'spice', 'spices', 'seasoning', 'seasonings', 'star', 'stars', 'another',
+                'alternative', 'option', 'options', 'please', 'find', 'show', 'recommend', 'suggest',
+                'for', 'with', 'from', 'the', 'and', 'my', 'mom', 'mother', 'mum', 'dad', 'father',
+                'boss', 'wife', 'husband', 'friend', 'friends', 'birthday', 'occasion', 'someone',
+                'to', 'me', 'best', 'good', 'nice', 'cheap', 'cheaper', 'price', 'priced', 'lower',
+                'ngon', 'ngon nhat', 'me', 'ba', 'bo', 'sep', 'ban', 'nguoi', 'than', 'sinh', 'nhat',
+                'mua', 'lam', 'qua', 'tang', 'bieu', 'hop', 'phu', 'hop', 're', 'tot'
+            ].forEach(word => ignoredWords.add(word));
             return cleanedQuery.split(/\s+/).filter(term => term.length > 1 && !ignoredWords.has(term));
         }
 
@@ -2747,7 +2840,16 @@
                 'mien tay': ['kien giang', 'ben tre', 'ca mau', 'an giang', 'long an', 'soc trang', 'hau giang', 'can tho', 'dong thap', 'bac lieu', 'tra vinh', 'vinh long'],
                 'mien nam': ['kien giang', 'ben tre', 'ca mau', 'an giang', 'long an', 'soc trang', 'hau giang', 'dong nai', 'binh duong', 'binh phuoc', 'tay ninh', 'ba ria', 'ho chi minh']
             };
-            const matchedGroup = Object.keys(regionGroups).find(region => query.includes(region));
+            const regionAliases = {
+                'mien bac': ['mien bac', 'northern vietnam', 'north vietnam', 'north'],
+                'mien trung': ['mien trung', 'central vietnam', 'central vietnamese'],
+                'tay nguyen': ['tay nguyen', 'central highlands', 'highlands'],
+                'mien tay': ['mien tay', 'mekong delta', 'western vietnam', 'southwest vietnam'],
+                'mien nam': ['mien nam', 'southern vietnam', 'south vietnam']
+            };
+            const matchedGroup = Object.keys(regionAliases).find(region =>
+                regionAliases[region].some(alias => query.includes(alias))
+            );
             if (!matchedGroup) return null;
             return products.filter(product =>
                 regionGroups[matchedGroup].some(region => normalizeSearchText(product.region).includes(region))
@@ -2790,6 +2892,9 @@
         function toggleAdminSupport() {
             const menu = document.getElementById('admin-support-menu');
             menu.classList.toggle('hidden');
+            if (!menu.classList.contains('hidden')) {
+                document.getElementById('ai-chat-window').classList.add('hidden');
+            }
         }
 
         // -------------------------------------------------------------
@@ -3173,17 +3278,26 @@
         const englishUiText = {
             'i18n-intro-badge': 'OCOP Shopping Assistant • 48 Curated Vietnamese Specialties',
             'i18n-intro-skip': 'Enter the shop (Esc)',
-            'i18n-intro-title1': 'Discover the Best of Vietnamese Agriculture',
+            'i18n-intro-title1': 'Discover Vietnamese Regional Specialties',
             'i18n-intro-title2': '48 CURATED OCOP SPECIALTIES',
-            'i18n-intro-desc': 'Discover regional specialties from Vietnamese producers, with product origins and details presented for a more confident shopping experience.',
+            'i18n-intro-desc': 'Browse Vietnamese specialties by region, with product details, listed prices, and customer ratings in one place. The shopping assistant helps filter ideas by category and budget.',
+            'i18n-intro-award': '✦ VIETNAMESE REGIONAL SPECIALTIES • SELECTED FROM THE OCOP CATALOG ✦',
             'i18n-intro-pillar1': '48 Curated Specialties',
-            'i18n-intro-pillar1-sub': 'Thoughtfully selected',
-            'i18n-intro-pillar2': 'Vietnamese Regions',
-            'i18n-intro-pillar2-sub': 'Regional products',
-            'i18n-intro-pillar3': 'Shopping advice',
-            'i18n-intro-pillar3-sub': 'Suggestions for your needs',
-            'i18n-intro-pillar4': 'Secure checkout',
-            'i18n-intro-pillar4-sub': 'Free shipping from 500,000 VND',
+            'i18n-intro-pillar1-sub': 'Clear product information',
+            'i18n-intro-pillar2': 'Specialties from Vietnam',
+            'i18n-intro-pillar2-sub': 'Regional flavors and traditions',
+            'i18n-intro-pillar3': 'AI shopping advice',
+            'i18n-intro-pillar3-sub': 'Suggestions from the product catalog',
+            'i18n-intro-pillar4': 'VietQR checkout',
+            'i18n-intro-pillar4-sub': 'Review your order before payment',
+            'i18n-ticker1': '🌾 Explore specialties from across Vietnam',
+            'i18n-ticker2': '🎁 Gift ideas tailored to the occasion and budget',
+            'i18n-ticker3': '🍵 Tea, produce, snacks, and regional seasonings',
+            'i18n-ticker4': '🚚 Shipping offers depend on order conditions',
+            'i18n-ticker1-copy': '🌾 Explore specialties from across Vietnam',
+            'i18n-ticker2-copy': '🎁 Gift ideas tailored to the occasion and budget',
+            'i18n-ticker3-copy': '🍵 Tea, produce, snacks, and regional seasonings',
+            'i18n-ticker4-copy': '🚚 Shipping offers depend on order conditions',
             'i18n-intro-region-header': 'Explore by region',
             'i18n-intro-tab-north': 'Northern Vietnam',
             'i18n-intro-tab-central': 'Central Vietnam',
@@ -3194,9 +3308,9 @@
             'i18n-intro-quick-tea': 'Tea collection',
             'i18n-intro-quick-ai': 'AI shopping advice',
             'i18n-intro-quick-admin': 'Customer support',
-            'i18n-top-guarantee': 'Authentic OCOP product commitment',
-            'i18n-top-shipping': 'Nationwide free shipping from 500,000 VND',
-            'i18n-top-hotline': 'Gift advice & VAT invoices:',
+            'i18n-top-guarantee': 'Browse Vietnam’s OCOP specialties',
+            'i18n-top-shipping': 'Shipping offers depend on order conditions',
+            'i18n-top-hotline': 'Product advice & support:',
             'i18n-top-intro': 'Explore our specialties',
             'i18n-top-centers': 'OCOP support',
             'i18n-top-specs': '48 specialties',
@@ -3206,10 +3320,10 @@
             'i18n-nav-contact': 'Contact & support',
             'i18n-nav-intro-text': 'Explore OCOP',
             'i18n-support-label': 'Shopping advice',
-            'i18n-hero-badge': 'Vietnam’s One Commune One Product Program',
+            'i18n-hero-badge': 'Explore Vietnam’s OCOP specialty catalog',
             'i18n-hero-title1': 'Discover the Best of',
             'i18n-hero-title2': 'Vietnamese Specialties',
-            'i18n-hero-desc': 'Explore 48 selected products from across Vietnam. Browse regional flavors, product details, and customer ratings in one place.',
+            'i18n-hero-desc': 'Explore 48 Vietnamese specialties by region, with product descriptions, listed prices, and customer ratings in one place.',
             'i18n-stat1': 'Selected specialties',
             'i18n-stat2': 'Regional products',
             'i18n-stat3': 'OCOP star ratings',
@@ -3289,8 +3403,8 @@
             document.getElementById('i18n-hero-title2').textContent = currentLanguage === 'en'
                 ? 'Vietnamese Specialties' : `${products.length} Đặc Sản Việt Nam`;
             document.getElementById('i18n-hero-desc').textContent = currentLanguage === 'en'
-                ? `Explore ${products.length} selected products from across Vietnam. Browse regional flavors, product details, and customer ratings in one place.`
-                : `Khám phá ${products.length} sản phẩm OCOP tuyển chọn từ khắp Việt Nam, với thông tin vùng miền, mô tả và đánh giá khách hàng.`;
+                ? `Explore ${products.length} Vietnamese specialties by region, with product descriptions, listed prices, and customer ratings in one place.`
+                : `Khám phá ${products.length} đặc sản Việt Nam theo vùng miền, cùng mô tả sản phẩm, giá niêm yết và đánh giá khách hàng.`;
             document.getElementById('i18n-btn-explore').textContent = currentLanguage === 'en'
                 ? `Shop ${products.length} OCOP specialties` : `Xem ${products.length} Đặc Sản OCOP`;
             document.getElementById('i18n-reset-btn').textContent = currentLanguage === 'en'
@@ -3336,7 +3450,7 @@
                 ? 'Search OCOP products...' : 'Tìm sản phẩm OCOP...';
             document.getElementById('product-search').placeholder = currentLanguage === 'en'
                 ? 'Search by product or region...' : 'Tìm theo tên đặc sản hoặc vùng miền...';
-            document.getElementById('chat-title').textContent = currentLanguage === 'en' ? 'OCOP shopping advice' : 'AI tư vấn đặc sản';
+            document.getElementById('chat-title').textContent = currentLanguage === 'en' ? 'AI shopping advice' : 'AI tư vấn';
             document.getElementById('chat-subtitle').textContent = currentLanguage === 'en'
                 ? 'Suggestions tailored to your needs and budget' : 'Gợi ý theo nhu cầu và ngân sách';
             document.getElementById('ai-chat-input').placeholder = currentLanguage === 'en'
