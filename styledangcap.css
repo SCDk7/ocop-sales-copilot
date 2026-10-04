@@ -223,3 +223,86 @@
     }
     .ag-reveal-item { opacity: 1 !important; }
 }
+/* ==========================================================================
+   ANTIGRAVITY & FLOATING FX - ULTRA PREMIUM MICRO-INTERACTIONS
+   Designed for OCOP Sales Copilot | 90Hz/120Hz Smoothness & GPU Accelerated
+   ========================================================================== */
+
+:root {
+    --ag-ease-float: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    --ag-ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ag-ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+    
+    --ag-shadow-lift: 0 24px 48px -12px rgba(15, 56, 44, 0.22), 0 12px 24px -8px rgba(212, 175, 55, 0.35);
+    --ag-shadow-hero-hover: 0 32px 64px -12px rgba(0, 0, 0, 0.6), 0 0 45px rgba(212, 175, 55, 0.55);
+}
+
+/* 1. Đa trục dao động lơ lửng */
+@keyframes agFloatGentle {
+    0% { transform: translate3d(0, 0px, 0) rotate(0deg); }
+    33% { transform: translate3d(2px, -12px, 0) rotate(1.2deg); }
+    66% { transform: translate3d(-2px, -6px, 0) rotate(-1deg); }
+    100% { transform: translate3d(0, 0px, 0) rotate(0deg); }
+}
+
+.ag-hero-float {
+    display: inline-block;
+    animation: agFloatGentle 6.5s var(--ag-ease-float) infinite;
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.45s var(--ag-ease-fluid), box-shadow 0.45s var(--ag-ease-fluid);
+}
+
+.ag-hero-float:hover {
+    animation-play-state: paused;
+    transform: translate3d(0, -10px, 0) scale(1.05) rotate(0deg) !important;
+    box-shadow: var(--ag-shadow-hero-hover) !important;
+    z-index: 20;
+}
+
+/* 2. Thẻ sản phẩm nhấc bổng Antigravity */
+.ag-product-card,
+.product-card,
+#product-grid > div {
+    position: relative;
+    will-change: transform, box-shadow, border-color;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.4s var(--ag-ease-spring), box-shadow 0.4s var(--ag-ease-fluid), border-color 0.3s ease;
+}
+
+.ag-product-card:hover,
+.product-card:hover,
+#product-grid > div:hover {
+    transform: translate3d(0, -10px, 0) scale(1.02) !important;
+    box-shadow: var(--ag-shadow-lift) !important;
+    border-color: rgba(212, 175, 55, 0.8) !important;
+    z-index: 10;
+}
+
+.ag-product-card img,
+.product-card img,
+#product-grid > div img {
+    transition: transform 0.65s var(--ag-ease-fluid);
+    will-change: transform;
+}
+
+.ag-product-card:hover img,
+.product-card:hover img,
+#product-grid > div:hover img {
+    transform: scale(1.08) translate3d(0, -3px, 0);
+}
+
+/* 3. Hiệu ứng cuộn Reveal */
+.ag-reveal-item {
+    opacity: 0;
+    transform: translate3d(0, 36px, 0) scale(0.97);
+    transition: opacity 0.65s var(--ag-ease-fluid), transform 0.65s var(--ag-ease-fluid);
+    will-change: opacity, transform;
+}
+
+.ag-reveal-item.ag-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}

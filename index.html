@@ -4042,5 +4042,93 @@
     }
 })();
 </script>
+<script id="antigravity-engine-script">
+(function initAntigravityEngine() {
+    'use strict';
+
+    // 1. Phân bổ lệch pha tự động
+    function applyStaggerDelays() {
+        const floatElements = document.querySelectorAll('.ag-hero-float, .ag-hero-float-alt, [data-ag-float]');
+        const delayPresets = ['0s', '-1.35s', '-2.8s', '-4.2s', '-1.9s', '-5.4s'];
+        floatElements.forEach((el, index) => {
+            if (!el.style.animationDelay) el.style.animationDelay = delayPresets[index % delayPresets.length];
+        });
+    }
+
+    // 2. 3D Mouse Parallax
+    function initHero3DParallax() {
+        const heroWrapper = document.querySelector('section.relative') || document.querySelector('main > section');
+        const targetCards = document.querySelectorAll('.glass-panel, [data-ag-parallax], section.relative .lg\\:col-span-5 > div');
+        if (!heroWrapper || targetCards.length === 0) return;
+
+        let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0, isHovering = false, rafId = null;
+
+        function onMouseMove(e) {
+            const rect = heroWrapper.getBoundingClientRect();
+            mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            mouseY = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+        }
+
+        function updateParallaxFrame() {
+            const lerpFactor = 0.085;
+            currentX += ((isHovering ? mouseX : 0) - currentX) * lerpFactor;
+            currentY += ((isHovering ? mouseY : 0) - currentY) * lerpFactor;
+
+            targetCards.forEach(card => {
+                const depth = parseFloat(card.dataset.agDepth || 14);
+                const tiltX = -(currentY * depth * 0.55).toFixed(2);
+                const tiltY = (currentX * depth * 0.55).toFixed(2);
+                const transX = (currentX * depth).toFixed(2);
+                const transY = (currentY * depth).toFixed(2);
+                card.style.transform = `perspective(1000px) translate3d(${transX}px, ${transY}px, 0) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+            });
+
+            if (isHovering || Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01) {
+                rafId = requestAnimationFrame(updateParallaxFrame);
+            } else {
+                targetCards.forEach(c => c.style.transform = '');
+                rafId = null;
+            }
+        }
+
+        heroWrapper.addEventListener('mouseenter', () => { isHovering = true; if (!rafId) rafId = requestAnimationFrame(updateParallaxFrame); });
+        heroWrapper.addEventListener('mousemove', (e) => { onMouseMove(e); if (!rafId) rafId = requestAnimationFrame(updateParallaxFrame); });
+        heroWrapper.addEventListener('mouseleave', () => { isHovering = false; });
+    }
+
+    // 3. Scroll-Driven Reveal cho Lưới Sản Phẩm
+    function initScrollDrivenReveal() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const idx = parseInt(entry.target.dataset.agIndex || 0, 10);
+                    setTimeout(() => entry.target.classList.add('ag-revealed'), (idx % 6) * 65);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        function scanAndObserve() {
+            document.querySelectorAll('#product-grid > div, .product-card').forEach((card, index) => {
+                if (!card.classList.contains('ag-reveal-item')) {
+                    card.classList.add('ag-reveal-item');
+                    card.dataset.agIndex = index;
+                    observer.observe(card);
+                }
+            });
+        }
+        scanAndObserve();
+
+        const grid = document.getElementById('product-grid');
+        if (grid) new MutationObserver(scanAndObserve).observe(grid, { childList: true });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => { applyStaggerDelays(); initHero3DParallax(); initScrollDrivenReveal(); });
+    } else {
+        applyStaggerDelays(); initHero3DParallax(); initScrollDrivenReveal();
+    }
+})();
+</script>
 </body>
 </html>
