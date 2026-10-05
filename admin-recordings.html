@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý ghi âm khách hàng - OCOP</title>
+    <style>
+        :root { color-scheme: light; font-family: system-ui, sans-serif; color: #19382c; background: #f5f6f1; }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 2rem 1rem; }
+        main { width: min(100%, 760px); margin: 0 auto; }
+        header, .panel, .recording { background: white; border: 1px solid #dce6dc; border-radius: 1rem; box-shadow: 0 8px 28px #18392a0d; }
+        header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; }
+        h1 { margin: 0; font-size: 1.15rem; }
+        h2 { margin: 0 0 .75rem; font-size: 1rem; }
+        p { line-height: 1.55; overflow-wrap: anywhere; }
+        button, input { font: inherit; }
+        button { min-height: 2.5rem; padding: .55rem .9rem; border: 0; border-radius: .7rem; color: white; background: #0f5740; font-weight: 700; cursor: pointer; }
+        button:hover { background: #0b4130; }
+        button.danger { color: #9d2020; background: #fff1f0; border: 1px solid #f2c8c5; }
+        button.danger:hover { background: #ffe4e1; }
+        input { width: 100%; min-height: 2.75rem; margin: .4rem 0 .75rem; padding: .7rem .8rem; border: 1px solid #bdcfc1; border-radius: .7rem; }
+        .panel { margin-top: 1rem; padding: 1.25rem; }
+        .hint, .meta { color: #586c5f; font-size: .85rem; }
+        .error { color: #a12424; }
+        .recording { margin-top: .85rem; padding: 1rem; }
+        .recording-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; align-items: center; }
+        .recording-head strong { font-size: .9rem; }
+        audio { display: block; width: 100%; margin: .75rem 0; }
+        .transcript { white-space: pre-wrap; }
+        .response { padding: .75rem; border-radius: .7rem; background: #eff5ef; white-space: pre-wrap; }
+        [hidden] { display: none !important; }
+        @media (max-width: 480px) {
+            body { padding: 1rem .65rem; }
+            header { align-items: flex-start; flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Ghi âm hỗ trợ khách hàng</h1>
+            <button id="logout-button" type="button" hidden>Đăng xuất</button>
+        </header>
+        <section id="login-panel" class="panel">
+            <h2>Đăng nhập nhân viên</h2>
+            <p class="hint">Các bản ghi được lưu trên máy chủ cho đến khi nhân viên xóa. Chỉ người được cấp mật khẩu quản trị mới có thể nghe hoặc xóa.</p>
+            <form id="login-form">
+                <label for="admin-password">Mật khẩu quản trị</label>
+                <input id="admin-password" type="password" autocomplete="current-password" required>
+                <button type="submit">Đăng nhập</button>
+            </form>
+            <p id="login-error" class="error" role="alert" hidden></p>
+        </section>
+        <section id="recordings-panel" class="panel" hidden>
+            <div class="recording-head">
+                <h2>Danh sách bản ghi</h2>
+                <button id="refresh-button" type="button">Tải lại</button>
+            </div>
+            <p id="recordings-status" class="hint" role="status"></p>
+            <div id="recordings-list"></div>
+        </section>
+    </main>
+    <script>
+        const loginPanel = document.getElementById('login-panel');
+        const recordingsPanel = document.getElementById('recordings-panel');
+        const loginError = document.getElementById('login-error');
+        const recordingsStatus = document.getElementById('recordings-status');
+        const recordingsList = document.getElementById('recordings-list');
+        const logoutButton = document.getElementById('logout-button');
+
+        function showLogin(message = '') {
+            loginPanel.hidden = false;
+            recordingsPanel.hidden = true;
+            logoutButton.hidden = true;
+            loginError.textContent = message;
+            loginError.hidden = !message;
+        }
+
+        async function loadRecordings() {
+            recordingsStatus.textContent = 'Đang tải bản ghi...';
+            try {
+                const response = await fetch('/api/admin/audio', { cache: 'no-store' });
+                const result = await response.json().catch(() => ({}));
+                if (response.status === 401) return showLogin(result.error || 'Vui lòng đăng nhập lại.');
+                if (!response.ok) throw new Error(result.error || 'Không thể tải danh sách bản ghi.');
+
+                loginPanel.hidden = true;
+                recordingsPanel.hidden = false;
+                logoutButton.hidden = false;
+                recordingsList.replaceChildren();
+                recordingsStatus.textContent = result.length
+                    ? `${result.length} bản ghi âm`
+                    : 'Chưa có bản ghi âm nào.';
+
+                result.forEach(recording => {
+                    const card = document.createElement('article');
+                    card.className = 'recording';
+                    const head = document.createElement('div');
+                    head.className = 'recording-head';
+                    const date = document.createElement('strong');
+                    date.textContent = new Date(recording.createdAt).toLocaleString('vi-VN');
+                    const details = document.createElement('span');
+                    details.className = 'meta';
+                    details.textContent = `${recording.language.toUpperCase()} · ${(recording.bytes / 1024 / 1024).toFixed(2)} MB`;
+                    head.append(date, details);
+
+                    const player = document.createElement('audio');
+                    player.controls = true;
+                    player.preload = 'none';
+                    player.src = `/api/admin/audio/${encodeURIComponent(recording.id)}`;
+
+                    const transcriptTitle = document.createElement('strong');
+                    transcriptTitle.textContent = 'Nội dung nhận diện';
+                    const transcript = document.createElement('p');
+                    transcript.className = 'transcript';
+                    transcript.textContent = recording.transcript || 'Chưa có nội dung nhận diện.';
+
+                    const responseTitle = document.createElement('strong');
+                    responseTitle.textContent = 'Phản hồi của trợ lý';
+                    const assistantResponse = document.createElement('p');
+                    assistantResponse.className = 'response';
+                    assistantResponse.textContent = recording.response || 'Trợ lý chưa tạo được phản hồi.';
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.type = 'button';
+                    deleteButton.className = 'danger';
+                    deleteButton.textContent = 'Xóa bản ghi';
+                    deleteButton.addEventListener('click', () => deleteRecording(recording.id));
+                    card.append(head, player, transcriptTitle, transcript, responseTitle, assistantResponse, deleteButton);
+                    recordingsList.append(card);
+                });
+            } catch (error) {
+                recordingsStatus.textContent = error.message;
+                recordingsStatus.className = 'hint error';
+            }
+        }
+
+        async function deleteRecording(id) {
+            if (!window.confirm('Xóa vĩnh viễn bản ghi âm này?')) return;
+            try {
+                const response = await fetch(`/api/admin/audio/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                const result = await response.json().catch(() => ({}));
+                if (response.status === 401) return showLogin(result.error || 'Vui lòng đăng nhập lại.');
+                if (!response.ok) throw new Error(result.error || 'Không thể xóa bản ghi.');
+                await loadRecordings();
+            } catch (error) {
+                recordingsStatus.textContent = error.message;
+                recordingsStatus.className = 'hint error';
+            }
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async event => {
+            event.preventDefault();
+            loginError.hidden = true;
+            const passwordInput = document.getElementById('admin-password');
+            try {
+                const response = await fetch('/api/admin/audio/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: passwordInput.value })
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(result.error || 'Không thể đăng nhập.');
+                passwordInput.value = '';
+                await loadRecordings();
+            } catch (error) {
+                loginError.textContent = error.message;
+                loginError.hidden = false;
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            await fetch('/api/admin/audio/logout', { method: 'POST' });
+            showLogin();
+        });
+        document.getElementById('refresh-button').addEventListener('click', loadRecordings);
+        loadRecordings();
+    </script>
+</body>
+</html>

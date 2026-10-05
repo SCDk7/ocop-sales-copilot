@@ -39,6 +39,25 @@ or payment details. For order-specific or complaint cases, the assistant opens
 the existing admin contact choices; it does not establish a live in-site chat
 or automatically notify a human.
 
+For local use, run `npm start` to start the API. You can open the site from the
+server at `http://localhost:3000`, or keep `index.html` open directly as a file;
+the chatbot will send text and voice messages to the local API at that address.
+The local server must remain running, but the site does not need to be published
+on the internet.
+
+## Customer voice recordings
+
+Customers start recording immediately by pressing the microphone button, then
+press the chat send button to send the recording. The browser may still ask for
+microphone permission. The audio is sent to Gemini for
+transcription and a reply, then stored under `.private-data/audio-recordings`
+until staff deletes it. The protected staff page is `/admin/recordings`; set
+`AUDIO_ADMIN_PASSWORD` in `.env` to a unique random value of at least 24
+characters. Staff sessions expire after eight hours. Audio storage is limited
+to 1 GB; staff must delete recordings to free space. Keep `.private-data` on a
+persistent, access-controlled disk, use HTTPS in production, and include that
+directory in encrypted backups only if your retention policy permits it.
+
 Verified customer records are stored in `.private-data/customers.json`, outside
 the static website directory and excluded from Git. Passwords are stored as
 salted scrypt hashes; pending OTPs expire after five minutes and have a limited

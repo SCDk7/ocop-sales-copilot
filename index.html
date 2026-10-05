@@ -255,10 +255,27 @@
                 max-height: min(70dvh, 34rem);
                 border-radius: 1.35rem;
             }
+            #ai-chat-window {
+                height: min(70vh, 34rem);
+                height: min(70dvh, 34rem);
+            }
             #ai-chat-widget {
-                right: 0.75rem;
+                right: calc(0.75rem + env(safe-area-inset-right, 0px));
+                bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
                 left: auto;
                 align-items: flex-end;
+            }
+            #chat-voice-record,
+            #chat-send-button {
+                min-width: 44px;
+                min-height: 44px;
+                touch-action: manipulation;
+            }
+            #ai-chat-input {
+                min-width: 0;
+                font-size: 16px !important;
+                -webkit-text-size-adjust: 100%;
+                touch-action: manipulation;
             }
             #admin-support-widget {
                 right: 0.75rem;
@@ -896,9 +913,20 @@
             color: #775b12;
             background: rgba(212, 175, 55, 0.15);
             border-color: rgba(212, 175, 55, 0.38);
+            box-sizing: border-box;
+            width: fit-content;
+            max-width: 100%;
+            gap: 0.4rem;
+            padding: 0.45rem 0.75rem;
+            font-size: 0.7rem;
+            line-height: 1.35;
+            flex-wrap: wrap;
         }
         #ocop-intro-overlay #intro-award-badge i {
             color: #9b771e !important;
+        }
+        #ocop-intro-overlay #lucky-gift-code {
+            color: #111827 !important;
         }
         #ocop-intro-overlay #intro-lucky-card {
             background: linear-gradient(115deg, rgba(250, 246, 230, 0.96), rgba(243, 247, 239, 0.98));
@@ -1532,30 +1560,29 @@
                         </div>
                         <div>
                             <div class="flex items-center space-x-2">
-                                <span class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">Lộc Vàng AI • Bốc Thẻ May Mắn</span>
+                                <span id="i18n-lucky-title" class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">Lộc Vàng AI • Bốc Thẻ May Mắn</span>
                                 <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse uppercase shadow">Lì Xì OCOP</span>
                             </div>
-                            <p class="text-[11px] text-amber-100/90 font-medium mt-0.5">Bốc thẻ may mắn nhận ngay voucher 50.000đ hoặc Miễn phí giao hàng toàn quốc</p>
                         </div>
                     </div>
                     <button id="btn-draw-gift" onclick="openLuckyGift()" class="intro-mega-btn w-full sm:w-auto flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition flex items-center justify-center space-x-2 cursor-pointer">
                         <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
-                        <span>Bốc Thẻ Lộc Vàng</span>
+                        <span id="i18n-lucky-button">Bốc Thẻ Lộc Vàng</span>
                     </button>
                 </div>
 
                 <!-- Kết quả thẻ bài Lộc Vàng VIP -->
                 <div id="intro-gift-result" class="hidden mt-3 pt-3 border-t border-amber-400/40 animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-black/60 p-3 rounded-2xl backdrop-blur-md">
                     <div class="flex items-center space-x-2.5 text-left">
-                        <span class="text-xs text-amber-300 font-black uppercase flex items-center"><i class="fa-solid fa-gift mr-1 text-ocopGold"></i> MÃ LỘC:</span>
-                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner">OCOP-TINHOA50</span>
+                        <span class="text-xs text-amber-300 font-black uppercase flex items-center"><i class="fa-solid fa-gift mr-1 text-ocopGold"></i> <span id="i18n-lucky-code-label">MÃ LỘC:</span></span>
+                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner"></span>
                         <button onclick="copyToClipboard(document.getElementById('lucky-gift-code').innerText, 'Mã voucher OCOP');" class="text-xs bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-ocopGreen font-black px-3 py-1 rounded-lg transition flex items-center space-x-1 cursor-pointer shadow">
                             <i class="fa-regular fa-copy"></i>
-                            <span>Sao chép</span>
+                            <span id="i18n-lucky-copy">Sao chép</span>
                         </button>
                     </div>
-                    <span class="text-[11px] sm:text-xs text-emerald-300 font-extrabold flex items-center">
-                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400 text-sm"></i> Đã tự động kích hoạt giảm 50.000đ vào đơn hàng!
+                    <span id="lucky-gift-message" class="text-[11px] sm:text-xs text-emerald-300 font-extrabold flex items-center">
+                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400 text-sm"></i>
                     </span>
                 </div>
             </div>
@@ -1985,7 +2012,10 @@
                         <span class="text-[10px] text-emerald-200 font-semibold" id="chat-subtitle">Gợi ý theo nhu cầu và ngân sách</span>
                     </div>
                 </div>
-                <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+                <div class="flex items-center gap-2">
+                    <button id="chat-language-btn" type="button" onclick="toggleLanguage()" class="rounded-lg border border-amber-200/40 px-2 py-1 text-[10px] font-black text-amber-100 hover:bg-white/10" aria-label="Chuyển ngôn ngữ" title="Chuyển ngôn ngữ">VI</button>
+                    <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer" aria-label="Đóng chatbot"><i class="fa-solid fa-xmark"></i></button>
+                </div>
             </div>
             
             <div id="ai-chat-messages" class="flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
@@ -2008,7 +2038,13 @@
                 <button onclick="sendQuickPrompt('Tôi muốn đổi trả hàng')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">↩️ Đổi trả</button>
             </div>
             
-            <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
+            <div class="border-t border-emerald-100 bg-white px-3 pt-2.5">
+                <p id="chat-voice-status" class="hidden mt-1.5 text-[10px] font-semibold text-gray-500" role="status" aria-live="polite"></p>
+            </div>
+            <div class="p-3 bg-white flex items-center gap-2">
+                <button id="chat-voice-record" type="button" onclick="toggleVoiceRecording()" aria-label="Bắt đầu ghi âm" title="Bắt đầu ghi âm" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-emerald-200 bg-emerald-50 text-ocopGreen hover:bg-emerald-100 transition flex items-center justify-center font-bold shadow cursor-pointer">
+                    <i class="fa-solid fa-microphone text-xs"></i>
+                </button>
                 <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
                 <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer"><i class="fa-solid fa-paper-plane text-xs"></i></button>
             </div>
@@ -2182,6 +2218,10 @@
                     <div class="flex justify-between">
                         <span id="i18n-cart-subtotal">Tạm tính:</span>
                         <span id="cart-subtotal" class="font-bold text-gray-800">0 ₫</span>
+                    </div>
+                    <div id="cart-discount-row" class="hidden flex justify-between text-emerald-700">
+                        <span id="i18n-cart-discount">Lộc Vàng:</span>
+                        <span id="cart-discount" class="font-bold">0 ₫</span>
                     </div>
                     <div class="flex justify-between">
                         <span id="i18n-cart-shipping">Phí vận chuyển:</span>
@@ -2381,6 +2421,13 @@
         // Biến trạng thái toàn cục
         let cart = [];
         let wishlist = [];
+        const luckyVoucherOffers = [
+            { type: 'fixed', amount: 50000, minimum: 0, chance: 70 },
+            { type: 'percent', rate: 0.1, minimum: 1500000, chance: 20 },
+            { type: 'percent', rate: 0.15, minimum: 2000000, chance: 10 }
+        ];
+        let activeLuckyVoucher = null;
+        let luckyVoucherRedeemed = false;
         let currentCategory = 'all';
         function getSavedLanguage() {
             try {
@@ -2405,8 +2452,25 @@
         let currentOrderCode = null;
         let aiMessageSequence = 0;
         let aiConversationHistory = [];
+        let voiceMediaRecorder = null;
+        let voiceMediaStream = null;
+        let voiceRecordingChunks = [];
+        let pendingVoiceRecording = null;
+        const chatAudioObjectUrls = [];
+        window.addEventListener('beforeunload', () => {
+            chatAudioObjectUrls.forEach(audioUrl => URL.revokeObjectURL(audioUrl));
+        });
+        let voiceRecordingInterval = null;
+        let voiceRecordingStartedAt = 0;
+        let voiceRequestPending = false;
+        let sendVoiceWhenRecordingStops = false;
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
+        const aiApiBaseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+
+        function getAIAPIUrl(path) {
+            return `${aiApiBaseUrl}${path}`;
+        }
         let ordersHistory = [
             { id: 'OCOP-98231', date: '02/10/2026', total: 1530000, status: 'Đã giao hàng', items: ['Trà Đinh Nõn Tân Cương', 'Thịt Trâu Gác Bếp'] },
             { id: 'OCOP-77120', date: '25/09/2026', total: 2450000, status: 'Đang vận chuyển', items: ['Yến Sào Khánh Hòa Thượng Hạng'] }
@@ -2707,18 +2771,105 @@
         }
 
         function openLuckyGift() {
+            if (activeLuckyVoucher) return;
+
+            const offer = drawLuckyVoucherOffer();
+            activeLuckyVoucher = { ...offer, code: generateLuckyVoucherCode() };
+            luckyVoucherRedeemed = false;
+
             const resultEl = document.getElementById('intro-gift-result');
             const btnEl = document.getElementById('btn-draw-gift');
+            document.getElementById('lucky-gift-code').textContent = activeLuckyVoucher.code;
             resultEl.classList.remove('hidden');
-            btnEl.innerHTML = `<i class="fa-solid fa-check-double text-ocopGreen"></i><span>Đã Nhận Lộc Vàng</span>`;
+            btnEl.querySelector('i').className = 'fa-solid fa-check-double text-ocopGreen';
+            document.getElementById('i18n-lucky-button').textContent = currentLanguage === 'en'
+                ? 'Voucher received' : 'Đã Nhận Lộc Vàng';
             btnEl.disabled = true;
             btnEl.classList.add('opacity-80', 'cursor-not-allowed');
 
-            // Bắn pháo hoa vàng kim & phát âm thanh chuông may mắn!
+            renderCartItems();
             triggerGoldConfetti();
             playChimeSound();
+            showToast(currentLanguage === 'en'
+                ? `Congratulations! You won ${getLuckyVoucherDescription(activeLuckyVoucher)}.`
+                : `Chúc mừng! Bạn nhận được ${getLuckyVoucherDescription(activeLuckyVoucher)}.`, 'success');
+        }
 
-            showToast("Chúc mừng! Bạn nhận được Voucher Lộc Vàng giảm 50.000đ!", "success");
+        function drawLuckyVoucherOffer() {
+            const roll = Math.random() * 100;
+            let cumulativeChance = 0;
+            for (const offer of luckyVoucherOffers) {
+                cumulativeChance += offer.chance;
+                if (roll < cumulativeChance) return offer;
+            }
+            throw new Error('Lucky voucher chances must total 100%.');
+        }
+
+        function generateLuckyVoucherCode() {
+            const bytes = new Uint8Array(4);
+            if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+                window.crypto.getRandomValues(bytes);
+            } else {
+                bytes.forEach((_, index) => { bytes[index] = Math.floor(Math.random() * 256); });
+            }
+            const token = Array.from(bytes, value => value.toString(16).padStart(2, '0')).join('').toUpperCase();
+            return `OCOP-LOC-${token}`;
+        }
+
+        function getLuckyVoucherDescription(voucher) {
+            if (voucher.type === 'fixed') {
+                return currentLanguage === 'en' ? '50,000 VND off your order' : 'giảm 50.000đ cho đơn hàng';
+            }
+            const minimum = voucher.minimum.toLocaleString(currentLanguage === 'en' ? 'en-US' : 'vi-VN');
+            return currentLanguage === 'en'
+                ? `${Math.round(voucher.rate * 100)}% off orders of at least ${minimum} VND`
+                : `giảm ${Math.round(voucher.rate * 100)}% cho đơn từ ${minimum}đ`;
+        }
+
+        function getLuckyVoucherBenefit(voucher) {
+            if (voucher.type === 'fixed') {
+                return currentLanguage === 'en' ? '50,000 VND off' : 'giảm 50.000đ';
+            }
+            return currentLanguage === 'en'
+                ? `${Math.round(voucher.rate * 100)}% off`
+                : `giảm ${Math.round(voucher.rate * 100)}%`;
+        }
+
+        function getCartSubtotal() {
+            return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+        }
+
+        function getLuckyVoucherDiscount(subtotal = getCartSubtotal()) {
+            if (!activeLuckyVoucher || luckyVoucherRedeemed || subtotal < activeLuckyVoucher.minimum) return 0;
+            const discount = activeLuckyVoucher.type === 'fixed'
+                ? activeLuckyVoucher.amount
+                : Math.round(subtotal * activeLuckyVoucher.rate);
+            return Math.min(subtotal, discount);
+        }
+
+        function renderLuckyVoucherStatus(subtotal = getCartSubtotal()) {
+            if (!activeLuckyVoucher) return;
+
+            const messageEl = document.getElementById('lucky-gift-message');
+            if (luckyVoucherRedeemed) {
+                messageEl.textContent = currentLanguage === 'en' ? 'Voucher used.' : 'Voucher đã được sử dụng.';
+                return;
+            }
+
+            const discount = getLuckyVoucherDiscount(subtotal);
+            if (cart.length > 0 && discount > 0) {
+                messageEl.textContent = currentLanguage === 'en'
+                    ? `${getLuckyVoucherBenefit(activeLuckyVoucher)} applied: ${discount.toLocaleString('en-US')} VND off.`
+                    : `Đã áp dụng voucher ${getLuckyVoucherBenefit(activeLuckyVoucher)}, giảm ${discount.toLocaleString('vi-VN')}đ.`;
+            } else if (activeLuckyVoucher.minimum > 0) {
+                messageEl.textContent = currentLanguage === 'en'
+                    ? `${getLuckyVoucherBenefit(activeLuckyVoucher)} voucher saved. Add items to reach ${activeLuckyVoucher.minimum.toLocaleString('en-US')} VND to use it.`
+                    : `Đã lưu voucher ${getLuckyVoucherBenefit(activeLuckyVoucher)}. Thêm sản phẩm để đạt ${activeLuckyVoucher.minimum.toLocaleString('vi-VN')}đ và sử dụng.`;
+            } else {
+                messageEl.textContent = currentLanguage === 'en'
+                    ? `${getLuckyVoucherBenefit(activeLuckyVoucher)} voucher saved for your next order.`
+                    : `Đã lưu voucher ${getLuckyVoucherBenefit(activeLuckyVoucher)}, tự động áp dụng cho đơn hàng.`;
+            }
         }
 
         function scrollToProducts() {
@@ -3264,7 +3415,387 @@
             sendAIMessage();
         }
 
+        function setVoiceStatus(message, isError = false) {
+            const status = document.getElementById('chat-voice-status');
+            status.textContent = message;
+            status.classList.toggle('hidden', !message);
+            status.classList.toggle('mt-1.5', Boolean(message));
+            status.classList.toggle('text-red-600', isError);
+            status.classList.toggle('text-gray-500', !isError);
+        }
+
+        async function toggleVoiceRecording() {
+            if (voiceMediaRecorder && voiceMediaRecorder.state === 'recording') {
+                voiceMediaRecorder.stop();
+                return;
+            }
+            if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+                setVoiceStatus(currentLanguage === 'en'
+                    ? 'Voice recording is not supported in this browser or connection.'
+                    : 'Trình duyệt hoặc kết nối này chưa hỗ trợ ghi âm.', true);
+                return;
+            }
+
+            try {
+                voiceMediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const supportedTypes = [
+                    'audio/webm;codecs=opus',
+                    'audio/ogg;codecs=opus',
+                    'audio/mp4'
+                ];
+                const mimeType = supportedTypes.find(type => MediaRecorder.isTypeSupported(type));
+                voiceMediaRecorder = mimeType
+                    ? new MediaRecorder(voiceMediaStream, { mimeType })
+                    : new MediaRecorder(voiceMediaStream);
+                voiceRecordingChunks = [];
+                voiceMediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) voiceRecordingChunks.push(event.data);
+                };
+                voiceMediaRecorder.onerror = () => {
+                    releaseVoiceRecording();
+                    sendVoiceWhenRecordingStops = false;
+                    setVoiceStatus(currentLanguage === 'en'
+                        ? 'The browser could not record audio. Please try again.'
+                        : 'Không thể ghi âm. Vui lòng thử lại.', true);
+                };
+                voiceMediaRecorder.onstop = () => {
+                    if (voiceRecordingInterval) clearInterval(voiceRecordingInterval);
+                    voiceRecordingInterval = null;
+                    if (voiceMediaStream) voiceMediaStream.getTracks().forEach(track => track.stop());
+                    voiceMediaStream = null;
+
+                    const audioType = (voiceMediaRecorder && voiceMediaRecorder.mimeType) || 'audio/webm';
+                    voiceMediaRecorder = null;
+                    pendingVoiceRecording = new Blob(voiceRecordingChunks, { type: audioType });
+                    voiceRecordingChunks = [];
+
+                    const recordButton = document.getElementById('chat-voice-record');
+                    recordButton.innerHTML = '<i class="fa-solid fa-microphone text-xs"></i>';
+                    recordButton.setAttribute('aria-label', currentLanguage === 'en' ? 'Start recording' : 'Bắt đầu ghi âm');
+                    recordButton.title = recordButton.getAttribute('aria-label');
+
+                    if (!pendingVoiceRecording.size) {
+                        pendingVoiceRecording = null;
+                        sendVoiceWhenRecordingStops = false;
+                        setVoiceStatus(currentLanguage === 'en' ? 'No audio was recorded.' : 'Không có âm thanh được ghi lại.', true);
+                        return;
+                    }
+                    if (pendingVoiceRecording.size > 12 * 1024 * 1024) {
+                        pendingVoiceRecording = null;
+                        sendVoiceWhenRecordingStops = false;
+                        setVoiceStatus(currentLanguage === 'en'
+                            ? 'The recording is over 12 MB. Please record a shorter message.'
+                            : 'Bản ghi vượt quá 12 MB. Vui lòng ghi âm ngắn hơn.', true);
+                        return;
+                    }
+
+                    setVoiceStatus('');
+                    if (sendVoiceWhenRecordingStops) {
+                        sendVoiceWhenRecordingStops = false;
+                        sendRecordedVoice();
+                    }
+                };
+
+                voiceMediaRecorder.start();
+                voiceRecordingStartedAt = Date.now();
+                const recordButton = document.getElementById('chat-voice-record');
+                recordButton.innerHTML = '<i class="fa-solid fa-stop text-xs"></i>';
+                recordButton.setAttribute('aria-label', currentLanguage === 'en' ? 'Stop recording' : 'Dừng ghi âm');
+                recordButton.title = recordButton.getAttribute('aria-label');
+                setVoiceStatus(currentLanguage === 'en' ? 'Recording… 0:00' : 'Đang ghi âm… 0:00');
+                voiceRecordingInterval = window.setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - voiceRecordingStartedAt) / 1000);
+                    const time = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`;
+                    setVoiceStatus(`${currentLanguage === 'en' ? 'Recording…' : 'Đang ghi âm…'} ${time}`);
+                }, 1000);
+            } catch (error) {
+                releaseVoiceRecording();
+                setVoiceStatus(currentLanguage === 'en'
+                    ? 'Microphone access was denied or unavailable. Check browser permissions and try again.'
+                    : 'Không thể truy cập micro. Hãy kiểm tra quyền của trình duyệt rồi thử lại.', true);
+            }
+        }
+
+        function releaseVoiceRecording() {
+            if (voiceRecordingInterval) clearInterval(voiceRecordingInterval);
+            voiceRecordingInterval = null;
+            if (voiceMediaStream) voiceMediaStream.getTracks().forEach(track => track.stop());
+            voiceMediaStream = null;
+            voiceMediaRecorder = null;
+            voiceRecordingChunks = [];
+            const recordButton = document.getElementById('chat-voice-record');
+            recordButton.innerHTML = '<i class="fa-solid fa-microphone text-xs"></i>';
+            recordButton.setAttribute('aria-label', currentLanguage === 'en' ? 'Start recording' : 'Bắt đầu ghi âm');
+            recordButton.title = recordButton.getAttribute('aria-label');
+        }
+
+        function getAIProductPayload() {
+            return products.map(product => ({
+                id: product.id,
+                name: product.name,
+                nameEn: product.nameEn || productNamesEn[product.id - 1] || '',
+                region: product.region,
+                category: product.category,
+                stars: product.stars,
+                price: product.price,
+                rating: product.rating,
+                tag: product.tag,
+                description: product.desc
+            }));
+        }
+
+        async function convertVoiceRecordingToWav(recording) {
+            const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextConstructor) {
+                throw new Error(currentLanguage === 'en'
+                    ? 'This browser cannot prepare audio for recognition. Please use a recent browser.'
+                    : 'Trình duyệt chưa hỗ trợ xử lý âm thanh để nhận diện. Vui lòng dùng trình duyệt mới hơn.');
+            }
+
+            const audioContext = new AudioContextConstructor();
+            const sizeLimitError = new Error(currentLanguage === 'en'
+                ? 'The processed recording is over 12 MB. Please record a shorter message.'
+                : 'Bản ghi sau xử lý vượt quá 12 MB. Vui lòng ghi âm ngắn hơn.');
+            try {
+                const decodedAudio = await audioContext.decodeAudioData(await recording.arrayBuffer());
+                const targetSampleRate = 16000;
+                const frameCount = Math.ceil(decodedAudio.length * targetSampleRate / decodedAudio.sampleRate);
+                if (44 + frameCount * 2 > 12 * 1024 * 1024) {
+                    throw sizeLimitError;
+                }
+                const wavBuffer = new ArrayBuffer(44 + frameCount * 2);
+                const view = new DataView(wavBuffer);
+                const writeText = (offset, value) => {
+                    for (let index = 0; index < value.length; index += 1) {
+                        view.setUint8(offset + index, value.charCodeAt(index));
+                    }
+                };
+
+                writeText(0, 'RIFF');
+                view.setUint32(4, 36 + frameCount * 2, true);
+                writeText(8, 'WAVE');
+                writeText(12, 'fmt ');
+                view.setUint32(16, 16, true);
+                view.setUint16(20, 1, true);
+                view.setUint16(22, 1, true);
+                view.setUint32(24, targetSampleRate, true);
+                view.setUint32(28, targetSampleRate * 2, true);
+                view.setUint16(32, 2, true);
+                view.setUint16(34, 16, true);
+                writeText(36, 'data');
+                view.setUint32(40, frameCount * 2, true);
+
+                const channels = Array.from(
+                    { length: decodedAudio.numberOfChannels },
+                    (_, channelIndex) => decodedAudio.getChannelData(channelIndex)
+                );
+                for (let frame = 0; frame < frameCount; frame += 1) {
+                    const sourcePosition = frame * decodedAudio.sampleRate / targetSampleRate;
+                    const sourceFrame = Math.floor(sourcePosition);
+                    const fraction = sourcePosition - sourceFrame;
+                    let sample = 0;
+                    channels.forEach(channel => {
+                        const first = channel[Math.min(sourceFrame, channel.length - 1)] || 0;
+                        const second = channel[Math.min(sourceFrame + 1, channel.length - 1)] || 0;
+                        sample += first + (second - first) * fraction;
+                    });
+                    sample = Math.max(-1, Math.min(1, sample / channels.length));
+                    view.setInt16(44 + frame * 2, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
+                }
+
+                return new Blob([wavBuffer], { type: 'audio/wav' });
+            } catch (error) {
+                if (error === sizeLimitError) throw error;
+                console.error('Unable to convert the customer voice recording to WAV:', error);
+                throw new Error(currentLanguage === 'en'
+                    ? 'Could not read the recording. Please record it again and try once more.'
+                    : 'Không đọc được bản ghi âm. Vui lòng ghi âm lại rồi thử gửi lần nữa.');
+            } finally {
+                await audioContext.close();
+            }
+        }
+
+        function appendAIResponse(result, messagesEl, loadingId) {
+            const loadingNode = document.getElementById(loadingId);
+            if (loadingNode) loadingNode.remove();
+
+            const reply = document.createElement('div');
+            reply.className = 'flex items-start space-x-2';
+            reply.innerHTML = `
+                <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                    <p class="whitespace-pre-wrap"></p>
+                    <div class="ai-product-recommendations"></div>
+                </div>
+            `;
+            reply.querySelector('p').textContent = result.message;
+            const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
+                .map(id => products.find(product => product.id === id))
+                .filter(Boolean);
+            if (recommendedProducts.length) {
+                reply.querySelector('.ai-product-recommendations').innerHTML = renderAIProductRecommendations(
+                    recommendedProducts,
+                    currentLanguage === 'en' ? 'Recommended products' : 'Sản phẩm gợi ý',
+                    currentLanguage === 'en'
+                        ? 'Prices and product information are from the current catalogue.'
+                        : 'Giá và thông tin được lấy từ danh mục hiện tại.'
+                );
+            }
+            if (result.handoffAdmin) {
+                const handoffButton = document.createElement('button');
+                handoffButton.type = 'button';
+                handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
+                handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
+                handoffButton.addEventListener('click', toggleAdminSupport);
+                reply.querySelector('div.bg-white').append(handoffButton);
+            }
+            messagesEl.append(reply);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+
+            if (result.handoffAdmin) {
+                window.setTimeout(() => {
+                    const adminMenu = document.getElementById('admin-support-menu');
+                    if (adminMenu.classList.contains('hidden')) toggleAdminSupport();
+                }, 1200);
+            }
+        }
+
+        function appendAIError(messagesEl, loadingId, errorMessage) {
+            const loadingNode = document.getElementById(loadingId);
+            if (loadingNode) loadingNode.remove();
+
+            const failure = document.createElement('div');
+            failure.className = 'flex items-start space-x-2';
+            failure.innerHTML = `
+                <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                    <p class="ai-error-message"></p>
+                </div>
+            `;
+            failure.querySelector('.ai-error-message').textContent = errorMessage;
+            const contactButton = document.createElement('button');
+            contactButton.type = 'button';
+            contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
+            contactButton.textContent = currentLanguage === 'en' ? 'Contact admin' : 'Liên hệ admin';
+            contactButton.addEventListener('click', connectCustomerToAdmin);
+            failure.querySelector('div.bg-white').append(contactButton);
+            messagesEl.append(failure);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        async function sendRecordedVoice() {
+            if (voiceRequestPending || !pendingVoiceRecording) return;
+            voiceRequestPending = true;
+            document.getElementById('chat-send-button').disabled = true;
+            document.getElementById('chat-voice-record').disabled = true;
+            const messagesEl = document.getElementById('ai-chat-messages');
+            const loadingId = 'ai-loading-' + ++aiMessageSequence;
+            messagesEl.insertAdjacentHTML('beforeend', `
+                <div id="${loadingId}" class="flex items-start space-x-2">
+                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-500 text-xs shadow-sm flex items-center space-x-1.5">
+                        <i class="fa-solid fa-spinner fa-spin text-ocopGreen"></i>
+                        <span>${currentLanguage === 'en' ? 'Listening to your message...' : 'Đang nghe tin nhắn thoại...'}</span>
+                    </div>
+                </div>
+            `);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+
+            try {
+                const audioRecording = await convertVoiceRecordingToWav(pendingVoiceRecording);
+                if (audioRecording.size > 12 * 1024 * 1024) {
+                    throw new Error(currentLanguage === 'en'
+                        ? 'The processed recording is over 12 MB. Please record a shorter message.'
+                        : 'Bản ghi sau xử lý vượt quá 12 MB. Vui lòng ghi âm ngắn hơn.');
+                }
+                const reader = new FileReader();
+                const audioDataUrl = await new Promise((resolve, reject) => {
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => reject(reader.error || new Error('Không thể đọc bản ghi âm.'));
+                    reader.readAsDataURL(audioRecording);
+                });
+                const audioBase64 = String(audioDataUrl).split(',')[1];
+                const audioPrompt = currentLanguage === 'en'
+                    ? '[Customer sent a voice message. Listen, transcribe it faithfully, then respond.]'
+                    : '[Khách hàng gửi tin nhắn thoại. Hãy nghe, chép lại đúng nội dung và trả lời.]';
+                const response = await fetch(getAIAPIUrl('/api/ai/audio-chat'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        recordingConsent: true,
+                        language: currentLanguage,
+                        messages: [...aiConversationHistory.slice(-14), { role: 'user', text: audioPrompt }],
+                        products: getAIProductPayload(),
+                        audio: { mimeType: 'audio/wav', data: audioBase64 }
+                    })
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    const savedNotice = result.recordingId
+                        ? (currentLanguage === 'en'
+                            ? ' The recording was saved for staff review.'
+                            : ' Bản ghi đã được lưu để nhân viên hỗ trợ.')
+                        : '';
+                    throw new Error((result.error || (currentLanguage === 'en'
+                        ? 'The assistant could not process this recording.'
+                        : 'Trợ lý chưa thể xử lý bản ghi âm.')) + savedNotice);
+                }
+
+                const userMessage = document.createElement('div');
+                userMessage.className = 'flex items-start justify-end space-x-2';
+                const bubble = document.createElement('div');
+                bubble.className = 'max-w-[85%] space-y-1 rounded-2xl bg-ocopGreen p-3 text-xs leading-relaxed text-white shadow-sm';
+                const transcript = document.createElement('p');
+                transcript.className = 'whitespace-pre-wrap break-words';
+                transcript.textContent = result.transcription;
+                const player = document.createElement('audio');
+                player.controls = true;
+                const audioUrl = URL.createObjectURL(audioRecording);
+                chatAudioObjectUrls.push(audioUrl);
+                player.src = audioUrl;
+                player.className = 'h-8 max-w-full';
+                bubble.append(transcript, player);
+                const avatar = document.createElement('div');
+                avatar.className = 'mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-ocopGreen';
+                avatar.setAttribute('aria-hidden', 'true');
+                avatar.innerHTML = '<i class="fa-solid fa-user"></i>';
+                userMessage.append(bubble, avatar);
+                messagesEl.append(userMessage);
+
+                appendAIResponse(result, messagesEl, loadingId);
+                aiConversationHistory = [
+                    ...aiConversationHistory,
+                    { role: 'user', text: result.transcription },
+                    { role: 'assistant', text: result.message }
+                ].slice(-16);
+                pendingVoiceRecording = null;
+                setVoiceStatus('');
+            } catch (error) {
+                const errorMessage = window.location.protocol === 'file:' && error instanceof TypeError
+                    ? (currentLanguage === 'en'
+                        ? 'Could not reach the local AI server. Start it with npm start, then send your recording again.'
+                        : 'Không kết nối được máy chủ AI trên máy này. Hãy chạy npm start rồi gửi lại bản ghi âm.')
+                    : (error.message ||
+                        (currentLanguage === 'en' ? 'Could not send the voice recording.' : 'Không thể gửi bản ghi âm.'));
+                appendAIError(messagesEl, loadingId, errorMessage);
+                setVoiceStatus(errorMessage, true);
+            } finally {
+                voiceRequestPending = false;
+                document.getElementById('chat-send-button').disabled = false;
+                document.getElementById('chat-voice-record').disabled = false;
+            }
+        }
+
         async function sendAIMessage() {
+            if (voiceMediaRecorder && voiceMediaRecorder.state === 'recording') {
+                sendVoiceWhenRecordingStops = true;
+                voiceMediaRecorder.stop();
+                return;
+            }
+            if (pendingVoiceRecording) {
+                await sendRecordedVoice();
+                return;
+            }
             const inputEl = document.getElementById('ai-chat-input');
             const messagesEl = document.getElementById('ai-chat-messages');
             const text = inputEl.value.trim();
@@ -3297,24 +3828,13 @@
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             try {
-                const response = await fetch('/api/ai/chat', {
+                const response = await fetch(getAIAPIUrl('/api/ai/chat'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         language: currentLanguage,
                         messages: [...aiConversationHistory.slice(-14), { role: 'user', text }],
-                        products: products.map(product => ({
-                            id: product.id,
-                            name: product.name,
-                            nameEn: product.nameEn || productNamesEn[product.id - 1] || '',
-                            region: product.region,
-                            category: product.category,
-                            stars: product.stars,
-                            price: product.price,
-                            rating: product.rating,
-                            tag: product.tag,
-                            description: product.desc
-                        }))
+                        products: getAIProductPayload()
                     })
                 });
                 const result = await response.json().catch(() => ({}));
@@ -3324,75 +3844,20 @@
                         : 'Trợ lý AI hiện chưa thể trả lời.'));
                 }
 
-                const loadingNode = document.getElementById(loadingId);
-                if (loadingNode) loadingNode.remove();
-
-                const reply = document.createElement('div');
-                reply.className = 'flex items-start space-x-2';
-                reply.innerHTML = `
-                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
-                    <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
-                        <p class="whitespace-pre-wrap"></p>
-                        <div class="ai-product-recommendations"></div>
-                    </div>
-                `;
-                reply.querySelector('p').textContent = result.message;
-                const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
-                    .map(id => products.find(product => product.id === id))
-                    .filter(Boolean);
-                if (recommendedProducts.length) {
-                    reply.querySelector('.ai-product-recommendations').innerHTML = renderAIProductRecommendations(
-                        recommendedProducts,
-                        currentLanguage === 'en' ? 'Recommended products' : 'Sản phẩm gợi ý',
-                        currentLanguage === 'en'
-                            ? 'Prices and product information are from the current catalogue.'
-                            : 'Giá và thông tin được lấy từ danh mục hiện tại.'
-                    );
-                }
-                if (result.handoffAdmin) {
-                    const handoffButton = document.createElement('button');
-                    handoffButton.type = 'button';
-                    handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
-                    handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
-                    handoffButton.addEventListener('click', toggleAdminSupport);
-                    reply.querySelector('div.bg-white').append(handoffButton);
-                }
-                messagesEl.append(reply);
+                appendAIResponse(result, messagesEl, loadingId);
                 aiConversationHistory = [
                     ...aiConversationHistory,
                     { role: 'user', text },
                     { role: 'assistant', text: result.message }
                 ].slice(-16);
-                messagesEl.scrollTop = messagesEl.scrollHeight;
-
-                if (result.handoffAdmin) {
-                    window.setTimeout(() => {
-                        const adminMenu = document.getElementById('admin-support-menu');
-                        if (adminMenu.classList.contains('hidden')) toggleAdminSupport();
-                    }, 1200);
-                }
             } catch (error) {
-                const loadingNode = document.getElementById(loadingId);
-                if (loadingNode) loadingNode.remove();
-
-                const failure = document.createElement('div');
-                failure.className = 'flex items-start space-x-2';
-                failure.innerHTML = `
-                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
-                    <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
-                        <p class="ai-error-message"></p>
-                    </div>
-                `;
-                failure.querySelector('.ai-error-message').textContent = error.message ||
-                    (currentLanguage === 'en' ? 'The AI assistant could not connect.' : 'Không thể kết nối trợ lý AI.');
-                const contactButton = document.createElement('button');
-                contactButton.type = 'button';
-                contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
-                contactButton.textContent = currentLanguage === 'en' ? 'Contact admin' : 'Liên hệ admin';
-                contactButton.addEventListener('click', connectCustomerToAdmin);
-                failure.querySelector('div.bg-white').append(contactButton);
-                messagesEl.append(failure);
-                messagesEl.scrollTop = messagesEl.scrollHeight;
+                const errorMessage = window.location.protocol === 'file:' && error instanceof TypeError
+                    ? (currentLanguage === 'en'
+                        ? 'Could not reach the local AI server. Start it with npm start, then try again.'
+                        : 'Không kết nối được máy chủ AI trên máy này. Hãy chạy npm start rồi thử lại.')
+                    : (error.message ||
+                        (currentLanguage === 'en' ? 'The AI assistant could not connect.' : 'Không thể kết nối trợ lý AI.'));
+                appendAIError(messagesEl, loadingId, errorMessage);
             }
         }
 
@@ -3963,18 +4428,21 @@
             const container = document.getElementById('cart-items');
             const subtotalEl = document.getElementById('cart-subtotal');
             const totalEl = document.getElementById('cart-total');
+            const discountRow = document.getElementById('cart-discount-row');
+            const discountEl = document.getElementById('cart-discount');
+            const subtotal = getCartSubtotal();
+            const discount = getLuckyVoucherDiscount(subtotal);
 
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${currentLanguage === 'en' ? 'Your cart is empty.' : 'Giỏ hàng của bạn đang trống.'}</p>`;
                 subtotalEl.innerText = "0 ₫";
                 totalEl.innerText = "0 ₫";
+                discountRow.classList.add('hidden');
+                renderLuckyVoucherStatus(subtotal);
                 return;
             }
 
-            let subtotal = 0;
             container.innerHTML = cart.map(item => {
-                const itemTotal = item.price * item.qty;
-                subtotal += itemTotal;
                 return `
                 <div class="bg-white p-3 rounded-2xl border border-amber-200 flex items-center justify-between gap-3 shadow-xs">
                     <img src="${item.img}" class="w-14 h-14 object-cover rounded-xl border border-amber-100 flex-shrink-0">
@@ -3993,7 +4461,17 @@
             }).join('');
 
             subtotalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
-            totalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
+            totalEl.innerText = (subtotal - discount).toLocaleString('vi-VN') + " ₫";
+            discountRow.classList.toggle('hidden', !activeLuckyVoucher || luckyVoucherRedeemed);
+            if (activeLuckyVoucher && !luckyVoucherRedeemed) {
+                document.getElementById('i18n-cart-discount').innerText = currentLanguage === 'en'
+                    ? `Golden Fortune (${getLuckyVoucherBenefit(activeLuckyVoucher)}):`
+                    : `Lộc Vàng (${getLuckyVoucherBenefit(activeLuckyVoucher)}):`;
+                discountEl.innerText = discount > 0
+                    ? `-${discount.toLocaleString('vi-VN')} ₫`
+                    : `${currentLanguage === 'en' ? 'From' : 'Từ'} ${activeLuckyVoucher.minimum.toLocaleString(currentLanguage === 'en' ? 'en-US' : 'vi-VN')} ₫`;
+            }
+            renderLuckyVoucherStatus(subtotal);
         }
 
         function checkout() {
@@ -4002,7 +4480,8 @@
                 return;
             }
 
-            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            const subtotal = getCartSubtotal();
+            const totalAmount = subtotal - getLuckyVoucherDiscount(subtotal);
             currentOrderCode = `OCOP-${Math.floor(100000 + Math.random() * 900000)}`;
             const memo = `THANH TOAN ${currentOrderCode}`;
 
@@ -4030,7 +4509,8 @@
             }
 
             closeQRModal();
-            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            const subtotal = getCartSubtotal();
+            const totalAmount = subtotal - getLuckyVoucherDiscount(subtotal);
             const itemNames = cart.map(i => i.name);
 
             // Lưu lịch sử đơn hàng
@@ -4042,6 +4522,7 @@
                 items: itemNames
             });
 
+            if (activeLuckyVoucher) luckyVoucherRedeemed = true;
             cart = [];
             currentOrderCode = null;
             updateCartBadge();
@@ -4471,6 +4952,10 @@
             'i18n-intro-title2': '48 CURATED OCOP SPECIALTIES',
             'i18n-intro-desc': 'Explore regional specialties, compare product details and listed prices, then find a fitting idea with help from the shopping assistant.',
             'i18n-intro-award': 'VIETNAMESE FLAVORS • EXPLORE THE OCOP COLLECTION',
+            'i18n-lucky-title': 'Golden Fortune • Lucky Draw',
+            'i18n-lucky-button': 'Draw Golden Fortune',
+            'i18n-lucky-code-label': 'LUCKY CODE:',
+            'i18n-lucky-copy': 'Copy',
             'i18n-intro-pillar1': '48 Curated Specialties',
             'i18n-intro-pillar1-sub': 'Product details and listed prices',
             'i18n-intro-pillar2': 'Specialties from Vietnam',
@@ -4535,6 +5020,7 @@
             'i18n-cart-title': 'Shopping cart',
             'i18n-cart-empty': 'Your cart is empty.',
             'i18n-cart-subtotal': 'Subtotal:',
+            'i18n-cart-discount': 'Golden Fortune:',
             'i18n-cart-shipping': 'Shipping:',
             'i18n-free-shipping': 'Free',
             'i18n-cart-total': 'Total:',
@@ -4623,6 +5109,10 @@
                 const defaultText = originalUiText.get(id);
                 element.textContent = currentLanguage === 'en' ? englishUiText[id] : defaultText;
             });
+            if (activeLuckyVoucher) {
+                document.getElementById('i18n-lucky-button').textContent = currentLanguage === 'en'
+                    ? 'Voucher received' : 'Đã Nhận Lộc Vàng';
+            }
             const provinceSelect = document.getElementById('province-map-select');
             if (provinceSelect) {
                 provinceSelect.setAttribute('aria-label', currentLanguage === 'en'
@@ -4643,6 +5133,13 @@
                     button.setAttribute('aria-pressed', String(currentLanguage === 'en'));
                 }
             });
+            const chatLanguageButton = document.getElementById('chat-language-btn');
+            if (chatLanguageButton) {
+                chatLanguageButton.textContent = activeLanguage;
+                chatLanguageButton.title = languageButtonLabel;
+                chatLanguageButton.setAttribute('aria-label', languageButtonLabel);
+                chatLanguageButton.setAttribute('aria-pressed', String(currentLanguage === 'en'));
+            }
             document.getElementById('header-search-input').placeholder = currentLanguage === 'en'
                 ? 'Search specialties or regions...' : 'Tìm đặc sản, vùng miền...';
             document.getElementById('mobile-search-input').placeholder = currentLanguage === 'en'
@@ -4655,18 +5152,20 @@
             document.getElementById('ai-chat-input').placeholder = currentLanguage === 'en'
                 ? 'Try: gifts under 500k in the Mekong Delta' : 'Ví dụ: quà tặng dưới 500k ở miền Tây';
             document.getElementById('chat-send-button').setAttribute('aria-label', currentLanguage === 'en' ? 'Send message' : 'Gửi tin nhắn');
-            const chatMessages = document.getElementById('ai-chat-messages');
-            if (chatMessages.children.length === 1) {
-                document.getElementById('chat-greeting').textContent = currentLanguage === 'en'
-                    ? 'Hello! I can help you find a Vietnamese specialty that fits.'
-                    : 'Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.';
-                document.getElementById('chat-guidance').textContent = currentLanguage === 'en'
-                    ? 'Tell me the occasion, region, product type, or your budget.'
-                    : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
-                document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
-                    ? 'Messages and the product catalogue are sent to Google Gemini to generate replies; do not share passwords, OTPs, or payment details.'
-                    : 'Tin nhắn và danh mục được gửi tới Google Gemini để tạo phản hồi; không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
-            }
+            const voiceRecordLabel = voiceMediaRecorder && voiceMediaRecorder.state === 'recording'
+                ? (currentLanguage === 'en' ? 'Stop recording' : 'Dừng ghi âm')
+                : (currentLanguage === 'en' ? 'Start recording' : 'Bắt đầu ghi âm');
+            document.getElementById('chat-voice-record').setAttribute('aria-label', voiceRecordLabel);
+            document.getElementById('chat-voice-record').title = voiceRecordLabel;
+            document.getElementById('chat-greeting').textContent = currentLanguage === 'en'
+                ? 'Hello! I can help you find a Vietnamese specialty that fits.'
+                : 'Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.';
+            document.getElementById('chat-guidance').textContent = currentLanguage === 'en'
+                ? 'Tell me the occasion, region, product type, or your budget.'
+                : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
+            document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
+                ? 'Messages and the product catalogue are sent to Google Gemini to generate replies; do not share passwords, OTPs, or payment details.'
+                : 'Tin nhắn và danh mục được gửi tới Google Gemini để tạo phản hồi; không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
             const promptButtons = document.querySelectorAll('.chat-prompt');
             const prompts = currentLanguage === 'en'
                 ? [
