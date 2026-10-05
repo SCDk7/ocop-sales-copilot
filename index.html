@@ -5709,9 +5709,10 @@
     }
 })();
 </script>
-<!-- ============================================================== -->
-<!-- GSAP 3 + ScrollTrigger — Scroll Animations & Hover Effects     -->
-<!-- ============================================================== -->
+<!-- ================================================================ -->
+<!-- GSAP 3.12.5 + ScrollTrigger — TikTok-style Animations           -->
+<!-- GPU-smooth · force3D · Waterfall · Hover · Wiggle Loop          -->
+<!-- ================================================================ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
@@ -5721,128 +5722,218 @@
 
     gsap.registerPlugin(ScrollTrigger);
 
-    /* ─────────────────────────────────────────────────────────────
-       1. HERO BANNER — Text trượt lên, ảnh lướt vào từ bên phải
-    ───────────────────────────────────────────────────────────── */
-    const heroSection = document.querySelector('section.max-w-7xl:not(#products-section)');
-    if (heroSection) {
-        const heroTextCol  = heroSection.querySelector('.lg\\:col-span-7');
-        const heroImageCol = heroSection.querySelector('.lg\\:col-span-5');
-        if (heroTextCol) {
-            gsap.fromTo(heroTextCol,
-                { opacity: 0, y: 48 },
-                { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
-                  scrollTrigger: { trigger: heroSection, start: 'top 82%', toggleActions: 'play none none none' }
-                }
-            );
-        }
-        if (heroImageCol) {
-            gsap.fromTo(heroImageCol,
-                { opacity: 0, x: 60 },
-                { opacity: 1, x: 0, duration: 1, ease: 'power3.out', delay: 0.18,
-                  scrollTrigger: { trigger: heroSection, start: 'top 82%', toggleActions: 'play none none none' }
-                }
-            );
-        }
+    /* ─── Cấu hình toàn cục: GPU acceleration ────────────────────── */
+    gsap.config({ force3D: true });
+    gsap.defaults({ ease: 'power3.out', force3D: true });
+
+    /* ═══════════════════════════════════════════════════════════════
+       1. INTRO OVERLAY — Animate khi trang vừa tải
+    ═══════════════════════════════════════════════════════════════ */
+
+    // 1a. Hero title lướt từ dưới lên
+    const introTitle = document.querySelector('.intro-hero-title');
+    if (introTitle) {
+        gsap.fromTo(introTitle,
+            { opacity: 0, y: 50, force3D: true },
+            { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.2 }
+        );
     }
 
-    /* ─────────────────────────────────────────────────────────────
-       2. INTRO PILLARS — 4 trụ cột lướt lên khi cuộn trong Intro
-    ───────────────────────────────────────────────────────────── */
-    const introPillars = document.querySelectorAll('#ocop-intro-overlay .grid .gold-card-glow');
+    // 1b. Intro pillars nối đuôi nhau bay lên với back.out nảy nhẹ
+    const introPillars = document.querySelectorAll('.intro-pillars > div, #ocop-intro-overlay .grid > div');
     if (introPillars.length) {
         gsap.fromTo(introPillars,
-            { opacity: 0, y: 36 },
-            { opacity: 1, y: 0, stagger: 0.12, duration: 0.7, ease: 'back.out(1.4)',
-              scrollTrigger: { trigger: introPillars[0].closest('.grid'), start: 'top 88%', toggleActions: 'play none none none' }
+            { opacity: 0, y: 45, scale: 0.94, force3D: true },
+            {
+                opacity: 1, y: 0, scale: 1,
+                stagger: 0.13,
+                duration: 0.75,
+                ease: 'back.out(1.5)',
+                delay: 0.45
             }
         );
     }
 
-    /* ─────────────────────────────────────────────────────────────
-       3. INTRO REGION BOX — khu vực 3 miền lướt vào từ dưới
-    ───────────────────────────────────────────────────────────── */
-    const regionBox = document.querySelector('#ocop-intro-overlay .space-y-3 .bg-black\\/40');
-    if (regionBox) {
-        gsap.fromTo(regionBox,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
-              scrollTrigger: { trigger: regionBox, start: 'top 90%', toggleActions: 'play none none none' }
+    // 1c. Lucky golden box — wiggle tự động mỗi 3 giây để thu hút click
+    const luckyBox = document.querySelector('.lucky-golden-box, #lucky-box-btn, [onclick*="openLuckyGift"]');
+    if (luckyBox) {
+        function wiggleLuckyBox() {
+            gsap.timeline()
+                .to(luckyBox, { rotation: -8, duration: 0.1, ease: 'power1.inOut', force3D: true })
+                .to(luckyBox, { rotation: 8, duration: 0.1, ease: 'power1.inOut' })
+                .to(luckyBox, { rotation: -6, duration: 0.09, ease: 'power1.inOut' })
+                .to(luckyBox, { rotation: 6, duration: 0.09, ease: 'power1.inOut' })
+                .to(luckyBox, { rotation: 0, duration: 0.12, ease: 'elastic.out(1, 0.5)' });
+        }
+        wiggleLuckyBox(); // lần đầu ngay khi load
+        setInterval(wiggleLuckyBox, 3000);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       2. HERO BANNER (#shop-hero) — Text từ dưới + Image từ phải
+    ═══════════════════════════════════════════════════════════════ */
+    const heroSection = document.querySelector('#shop-hero, section.max-w-7xl:not(#products-section)');
+    if (heroSection) {
+        const heroText  = heroSection.querySelector('[class*="col-span-7"], [class*="col-span-6"]');
+        const heroImage = heroSection.querySelector('[class*="col-span-5"], [class*="col-span-6"]:last-child');
+
+        if (heroText) {
+            gsap.fromTo(heroText,
+                { opacity: 0, y: 40, force3D: true },
+                {
+                    opacity: 1, y: 0, duration: 0.9,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: heroSection,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        }
+        if (heroImage && heroImage !== heroText) {
+            gsap.fromTo(heroImage,
+                { opacity: 0, x: 50, force3D: true },
+                {
+                    opacity: 1, x: 0, duration: 1, delay: 0.15,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: heroSection,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       3. SIDEBAR — Lướt từ trái vào khi cuộn tới #products-section
+    ═══════════════════════════════════════════════════════════════ */
+    const sidebar = document.querySelector('aside.hidden.lg\\:block, aside[class*="hidden lg:block"]');
+    if (sidebar) {
+        gsap.fromTo(sidebar,
+            { opacity: 0, x: -35, force3D: true },
+            {
+                opacity: 1, x: 0, duration: 0.85,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '#products-section',
+                    start: 'top 78%',
+                    toggleActions: 'play none none none'
+                }
             }
         );
     }
 
-    /* ─────────────────────────────────────────────────────────────
-       4. PRODUCT GRID — Stagger waterfall khi cuộn tới
-       Tái kích hoạt mỗi khi renderProductsList() inject card mới
-    ───────────────────────────────────────────────────────────── */
+    /* ═══════════════════════════════════════════════════════════════
+       4. PRODUCT GRID — Waterfall Stagger (tái kích hoạt qua MutationObserver)
+    ═══════════════════════════════════════════════════════════════ */
+    let _cardAnimTween = null;
+    let _cardAnimTimer = null;
+
     function animateProductCards() {
         const cards = gsap.utils.toArray('.product-card');
         if (!cards.length) return;
-        // Kill ScrollTrigger cũ của card để không nhân đôi
+
+        // Dọn sạch tween cũ để tránh conflict
+        if (_cardAnimTween) {
+            _cardAnimTween.kill();
+            _cardAnimTween = null;
+        }
+        // Kill mọi ScrollTrigger có tag ocopCard
         ScrollTrigger.getAll()
             .filter(st => st.vars && st.vars._tag === 'ocopCard')
             .forEach(st => st.kill());
 
-        gsap.fromTo(cards,
-            { opacity: 0, y: 55, scale: 0.96 },
-            {
-                opacity: 1, y: 0, scale: 1,
-                stagger: 0.08,
-                duration: 0.65,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: '#product-grid',
-                    start: 'top 88%',
-                    toggleActions: 'play none none none',
-                    _tag: 'ocopCard'
-                }
+        // Set trạng thái ban đầu ngay lập tức (không flash)
+        gsap.set(cards, { opacity: 0, y: 55, scale: 0.95, force3D: true });
+
+        _cardAnimTween = gsap.to(cards, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            stagger: 0.07,
+            duration: 0.6,
+            ease: 'power3.out',
+            force3D: true,
+            scrollTrigger: {
+                trigger: '#product-grid',
+                start: 'top 90%',
+                toggleActions: 'play none none none',
+                _tag: 'ocopCard'
             }
-        );
+        });
     }
 
-    // Chờ renderProductsList() inject HTML xong rồi mới animate
-    window.addEventListener('DOMContentLoaded', () => setTimeout(animateProductCards, 220));
+    // Gọi ngay sau khi render sản phẩm xong
+    if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', () => setTimeout(animateProductCards, 250));
+    } else {
+        setTimeout(animateProductCards, 250);
+    }
 
-    // Theo dõi #product-grid để tái animate khi filter thay đổi
+    // MutationObserver: tái animate mỗi khi product-grid thay đổi (filter/search)
     const productGrid = document.getElementById('product-grid');
     if (productGrid) {
-        new MutationObserver(() => setTimeout(animateProductCards, 80))
-            .observe(productGrid, { childList: true });
+        const mo = new MutationObserver(() => {
+            clearTimeout(_cardAnimTimer);
+            _cardAnimTimer = setTimeout(animateProductCards, 100);
+        });
+        mo.observe(productGrid, { childList: true, subtree: false });
     }
 
-    /* ─────────────────────────────────────────────────────────────
-       5. HOVER EFFECTS — Card nâng lên + ảnh zoom nhẹ (GPU-smooth)
-    ───────────────────────────────────────────────────────────── */
+    /* ═══════════════════════════════════════════════════════════════
+       5. HOVER EFFECTS — GPU Smooth: Card nâng + Ảnh zoom 8%
+    ═══════════════════════════════════════════════════════════════ */
+    // Dùng event delegation để hoạt động cả với card được inject sau
     document.addEventListener('mouseover', (e) => {
         const card = e.target.closest('.product-card');
         if (!card) return;
-        const img = card.querySelector('.h-48 img');
-        gsap.to(card, { y: -6, boxShadow: '0 22px 48px -8px rgba(15,56,44,0.22)', duration: 0.28, ease: 'power2.out', overwrite: 'auto' });
-        if (img) gsap.to(img, { scale: 1.08, duration: 0.38, ease: 'power2.out', overwrite: 'auto' });
+        const img = card.querySelector('img');
+        gsap.to(card, {
+            y: -8,
+            boxShadow: '0 24px 50px -10px rgba(15,56,44,0.25)',
+            duration: 0.3,
+            ease: 'power2.out',
+            overwrite: 'auto',
+            force3D: true
+        });
+        if (img) {
+            gsap.to(img, {
+                scale: 1.08,
+                duration: 0.38,
+                ease: 'power2.out',
+                overwrite: 'auto',
+                force3D: true
+            });
+        }
     });
 
     document.addEventListener('mouseout', (e) => {
         const card = e.target.closest('.product-card');
         if (!card) return;
+        // Không reset nếu chuột chỉ di chuyển sang phần tử con bên trong card
         if (card.contains(e.relatedTarget)) return;
-        const img = card.querySelector('.h-48 img');
-        gsap.to(card, { y: 0, boxShadow: '0 1px 4px rgba(0,0,0,0.07)', duration: 0.28, ease: 'power2.inOut', overwrite: 'auto' });
-        if (img) gsap.to(img, { scale: 1, duration: 0.32, ease: 'power2.inOut', overwrite: 'auto' });
+        const img = card.querySelector('img');
+        gsap.to(card, {
+            y: 0,
+            boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
+            duration: 0.3,
+            ease: 'power2.inOut',
+            overwrite: 'auto',
+            force3D: true
+        });
+        if (img) {
+            gsap.to(img, {
+                scale: 1,
+                duration: 0.3,
+                ease: 'power2.inOut',
+                overwrite: 'auto',
+                force3D: true
+            });
+        }
     });
-
-    /* ─────────────────────────────────────────────────────────────
-       6. SIDEBAR — Fade-in từ bên trái khi cuộn tới products-section
-    ───────────────────────────────────────────────────────────── */
-    const sidebar = document.querySelector('aside.hidden.lg\\:block');
-    if (sidebar) {
-        gsap.fromTo(sidebar,
-            { opacity: 0, x: -30 },
-            { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out',
-              scrollTrigger: { trigger: '#products-section', start: 'top 80%', toggleActions: 'play none none none' }
-            }
-        );
-    }
 
 })();
 </script>
