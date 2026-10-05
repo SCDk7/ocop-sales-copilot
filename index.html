@@ -467,6 +467,29 @@
             background: #e8eee5;
             font: 500 0.75rem 'Plus Jakarta Sans', sans-serif;
         }
+        .province-map .province-name-tooltip {
+            padding: 0;
+            border: 0;
+            color: #fffdf7;
+            background: transparent;
+            box-shadow: none;
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-shadow: 0 1px 3px #0f382c, 0 0 6px #0f382c;
+            pointer-events: none;
+        }
+        .province-map .province-name-tooltip::before {
+            display: none;
+        }
+        .province-map .leaflet-interactive:focus {
+            outline: none;
+        }
+        .province-map .leaflet-interactive:focus-visible {
+            stroke: #fff0a6 !important;
+            stroke-width: 3px !important;
+            stroke-linejoin: round;
+            vector-effect: non-scaling-stroke;
+        }
         .province-map .leaflet-control-layers,
         .province-map .leaflet-bar {
             overflow: hidden;
@@ -517,6 +540,23 @@
             font-weight: 700;
             line-height: 1.5;
         }
+        .province-map-select {
+            width: min(100%, 22rem);
+            min-height: 2.75rem;
+            padding: 0.55rem 0.75rem;
+            border: 1px solid rgba(15, 56, 44, 0.18);
+            border-radius: 0.75rem;
+            color: #23473b;
+            background: rgba(255, 255, 255, 0.9);
+            font: inherit;
+            font-size: 0.75rem;
+            font-weight: 700;
+            touch-action: manipulation;
+        }
+        .province-map-select:focus-visible {
+            outline: 2px solid #d4af37;
+            outline-offset: 2px;
+        }
         .province-map-clear {
             flex-shrink: 0;
             border: 1px solid rgba(15, 56, 44, 0.16);
@@ -551,6 +591,18 @@
             border-radius: 0.9rem;
             background: rgba(255, 255, 255, 0.78);
             box-shadow: 0 3px 10px rgba(15, 56, 44, 0.05);
+            cursor: pointer;
+            transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+        }
+        .province-product-card:active {
+            border-color: rgba(212, 175, 55, 0.7);
+            background: #fffdf7;
+        }
+        .province-product-card .province-product-link,
+        .province-product-card > button {
+            min-height: 2.75rem;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         .province-product-card .province-product-link {
             display: flex;
@@ -576,6 +628,9 @@
             outline-offset: 3px;
             border-radius: 0.5rem;
         }
+        .province-product-card .province-product-link:active {
+            opacity: 0.72;
+        }
         .province-product-card img {
             width: 3.25rem;
             height: 3.25rem;
@@ -592,6 +647,14 @@
             flex: 0 0 auto;
         }
         @media (max-width: 640px) {
+            .province-product-card {
+                gap: 0.55rem;
+                padding: 0.55rem;
+            }
+            .province-product-card > button {
+                min-width: 3.5rem;
+                min-height: 2.75rem;
+            }
             .intro-region-heading {
                 flex-direction: column;
                 align-items: flex-start;
@@ -1169,6 +1232,13 @@
             border-color: rgba(212, 175, 55, 0.88);
             box-shadow: 0 16px 32px rgba(15, 56, 44, 0.13), 0 3px 8px rgba(212, 175, 55, 0.1);
         }
+        @keyframes productCardTargeted {
+            0%, 100% { box-shadow: 0 6px 18px rgba(15, 56, 44, 0.07), 0 1px 2px rgba(15, 56, 44, 0.04); }
+            35%, 70% { border-color: #d4af37; box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.24), 0 16px 32px rgba(15, 56, 44, 0.14); }
+        }
+        #products-section .product-card.product-card-targeted {
+            animation: productCardTargeted 1.8s ease-out;
+        }
         #products-section .product-card:focus-within {
             border-color: rgba(212, 175, 55, 0.88);
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16), 0 12px 28px rgba(15, 56, 44, 0.1);
@@ -1500,6 +1570,10 @@
                         </span>
                         <span class="intro-region-caption" id="i18n-intro-region-caption">Chọn tỉnh/thành để lọc đặc sản OCOP tương ứng</span>
                     </div>
+                    <label class="sr-only" for="province-map-select" id="province-map-select-label">Chọn nhanh tỉnh/thành</label>
+                    <select id="province-map-select" class="province-map-select" aria-label="Chọn tỉnh/thành trên bản đồ" onchange="selectProvinceById(this.value)" disabled>
+                        <option id="province-map-select-placeholder" value="">Chọn nhanh tỉnh/thành...</option>
+                    </select>
                 </div>
                 <div>
                     <div id="province-map" class="province-map" role="region" aria-label="Bản đồ tương tác 63 tỉnh thành Việt Nam"></div>
@@ -1918,7 +1992,7 @@
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
                     <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
-                        <img src="ai-avatar.jpg" alt="Trợ lý AI OCOP" class="w-full h-full rounded-2xl object-cover ring-2 ring-ocopGold shadow">
+                        <img src="chat-avatar.svg" alt="Trợ lý AI OCOP" class="w-full h-full rounded-2xl object-cover ring-2 ring-ocopGold shadow">
                         <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
                     <div>
@@ -1933,11 +2007,15 @@
             
             <div id="ai-chat-messages" class="flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
                 <div class="flex items-start space-x-2">
-                    <img src="ai-avatar.jpg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <img src="chat-avatar.svg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
                         <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.</p>
+<<<<<<< HEAD
                         <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn, ảnh tìm kiếm và danh mục được gửi tới Google Gemini; không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
+=======
+                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn và ảnh bạn gửi có thể được nhân viên xem; ảnh được lưu trên máy chủ và gửi tới Google Gemini để trả lời. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
+>>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
                     </div>
                 </div>
             </div>
@@ -1951,14 +2029,26 @@
                 <button onclick="sendQuickPrompt('Tôi muốn đổi trả hàng')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">↩️ Đổi trả</button>
             </div>
             
+<<<<<<< HEAD
             <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
                 <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
                 <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+=======
+            <div id="ai-chat-composer" class="p-3 bg-white border-t border-gray-100 space-y-2">
+                <input type="file" id="ai-chat-image-input" accept="image/*" multiple hidden>
+                <div id="ai-chat-image-previews" class="flex flex-wrap gap-2" hidden></div>
+                <p id="ai-chat-image-hint" class="text-[10px] text-gray-500" hidden></p>
+                <div class="flex items-center space-x-2">
+                    <button type="button" id="chat-add-image-button" onclick="document.getElementById('ai-chat-image-input').click()" aria-label="Thêm ảnh" title="Thêm ảnh (dán Ctrl+V hoặc kéo thả)" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-image text-sm"></i></button>
+                    <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter'){event.preventDefault();sendAIMessage()}" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
+                    <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 flex-shrink-0 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+                </div>
+>>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
             </div>
         </div>
         
         <button onclick="toggleAIChat()" class="relative group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 transition duration-300 cursor-pointer">
-            <img src="ai-avatar.jpg" alt="Mở trò chuyện với trợ lý AI OCOP" class="w-full h-full rounded-full object-cover p-0.5">
+            <img src="chat-avatar.svg" alt="Mở trò chuyện với trợ lý AI OCOP" class="w-full h-full rounded-full object-cover p-0.5">
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow">AI</span>
         </button>
     </div>
@@ -2348,8 +2438,12 @@
         let currentOrderCode = null;
         let aiMessageSequence = 0;
         let aiConversationHistory = [];
+<<<<<<< HEAD
         let isAIRequestPending = false;
         let activeSearchRecognition = null;
+=======
+        let pendingAIImages = [];
+>>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
         let ordersHistory = [
@@ -2357,8 +2451,14 @@
             { id: 'OCOP-77120', date: '25/09/2026', total: 2450000, status: 'Đang vận chuyển', items: ['Yến Sào Khánh Hòa Thượng Hạng'] }
         ];
 
+        function restorePageScrollState() {
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        }
+
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
+            restorePageScrollState();
             updateCatalogCounts();
             applyLanguage(currentLanguage);
             renderProducts(products);
@@ -2607,12 +2707,18 @@
         function openIntroModal() {
             const overlay = document.getElementById('ocop-intro-overlay');
             overlay.classList.remove('hidden', 'curtain-closing');
+            restorePageScrollState();
             playChimeSound();
         }
 
-        function enterOcopMarket(mode) {
+        function enterOcopMarket(mode, onEntered = null) {
             const overlay = document.getElementById('ocop-intro-overlay');
-            if (overlay.classList.contains('hidden') || overlay.classList.contains('curtain-closing')) return;
+            if (overlay.classList.contains('hidden')) {
+                restorePageScrollState();
+                if (typeof onEntered === 'function') onEntered();
+                return;
+            }
+            if (overlay.classList.contains('curtain-closing')) return;
             playWhooshSound();
             stopIntroMusic();
             overlay.classList.add('curtain-closing');
@@ -2620,6 +2726,7 @@
             setTimeout(() => {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('curtain-closing');
+                restorePageScrollState();
 
                 if (mode === 'gift') {
                     setCategoryFilter('gift', document.querySelectorAll('.cat-side-btn')[2]);
@@ -2632,7 +2739,8 @@
                 } else if (mode === 'admin') {
                     toggleAdminSupport();
                 } else {
-                    scrollToProducts();
+                    if (typeof onEntered === 'function') onEntered();
+                    else scrollToProducts();
                 }
             }, 460);
         }
@@ -2655,6 +2763,21 @@
         function scrollToProducts() {
             const sec = document.getElementById('products-section');
             if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openProvinceProductDetails(productId) {
+            if (!products.some(product => product.id === productId)) return;
+
+            setCategoryFilter('all');
+            filterProductsGlobal('');
+            playWhooshSound();
+            stopIntroMusic();
+
+            const overlay = document.getElementById('ocop-intro-overlay');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('curtain-closing');
+            restorePageScrollState();
+            openQuickView(productId);
         }
 
         // -------------------------------------------------------------
@@ -2680,7 +2803,7 @@
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
                 return `
-                <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md flex flex-col justify-between group relative">
+                <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md flex flex-col justify-between group relative" data-product-id="${p.id}">
                     <div>
                         <div class="relative h-48 sm:h-52 overflow-hidden bg-amber-100/50">
                             <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full object-cover">
@@ -2864,6 +2987,10 @@
             const cards = provinceProducts.map(product => {
                 const card = document.createElement('article');
                 card.className = 'province-product-card';
+                card.addEventListener('click', event => {
+                    if (event.target instanceof Element && event.target.closest('.province-product-add-button')) return;
+                    openProvinceProductDetails(product.id);
+                });
 
                 const detailsButton = document.createElement('button');
                 detailsButton.type = 'button';
@@ -2871,7 +2998,10 @@
                 detailsButton.setAttribute('aria-label', currentLanguage === 'en'
                     ? `View details for ${getProductName(product)}`
                     : `Xem chi tiết ${getProductName(product)}`);
-                detailsButton.addEventListener('click', () => openQuickView(product.id));
+                detailsButton.addEventListener('click', event => {
+                    event.stopPropagation();
+                    openProvinceProductDetails(product.id);
+                });
 
                 const image = document.createElement('img');
                 image.src = product.img;
@@ -2892,7 +3022,7 @@
 
                 const addButton = document.createElement('button');
                 addButton.type = 'button';
-                addButton.className = 'rounded-lg bg-[#0f382c] px-2.5 py-2 text-[10px] font-extrabold text-white transition hover:bg-[#165b46]';
+                addButton.className = 'province-product-add-button rounded-lg bg-[#0f382c] px-2.5 py-2 text-[10px] font-extrabold text-white transition hover:bg-[#165b46]';
                 addButton.setAttribute('aria-label', currentLanguage === 'en'
                     ? `Add ${getProductName(product)} to cart`
                     : `Thêm ${getProductName(product)} vào giỏ hàng`);
@@ -2919,9 +3049,48 @@
         function clearSelectedProvince() {
             selectedProvince = null;
             provinceProductsHidden = false;
+            const provinceSelect = document.getElementById('province-map-select');
+            if (provinceSelect) provinceSelect.value = '';
             provinceBoundaryLayer?.setStyle(getProvinceStyle);
             publishProvinceSelection();
             filterProductsGlobal(document.getElementById('product-search').value);
+        }
+
+        function selectProvinceById(provinceId) {
+            if (!provinceId || !provinceBoundaryLayer) return;
+            let selectedFeature = null;
+            provinceBoundaryLayer.eachLayer(layer => {
+                if (layer.feature.properties.id === provinceId) selectedFeature = layer.feature;
+            });
+            if (selectedFeature) selectProvince(selectedFeature.properties);
+        }
+
+        function selectProvince(province) {
+            selectedProvince = { id: province.id, name: province.name };
+            provinceProductsHidden = false;
+            provinceBoundaryLayer?.setStyle(getProvinceStyle);
+
+            const provinceSelect = document.getElementById('province-map-select');
+            if (provinceSelect) provinceSelect.value = province.id;
+
+            publishProvinceSelection();
+            filterProductsGlobal(document.getElementById('product-search').value);
+            revealProvinceProductsOnMobile();
+        }
+
+        function revealProvinceProductsOnMobile() {
+            if (!window.matchMedia('(max-width: 1023px)').matches) return;
+            const panel = document.getElementById('province-products-panel');
+            const overlay = document.getElementById('ocop-intro-overlay');
+            if (!panel || panel.classList.contains('hidden')) return;
+            if (!overlay || overlay.classList.contains('hidden')) return;
+
+            window.requestAnimationFrame(() => {
+                const panelTop = panel.getBoundingClientRect().top;
+                const overlayTop = overlay.getBoundingClientRect().top;
+                const targetScrollTop = overlay.scrollTop + panelTop - overlayTop - 12;
+                overlay.scrollTop = Math.min(targetScrollTop, overlay.scrollHeight - overlay.clientHeight);
+            });
         }
 
         async function initializeProvinceMap() {
@@ -2944,6 +3113,14 @@
                 if (provinceData.features.some(feature => !feature.properties?.id || !feature.properties?.name)) {
                     throw new Error('Province GeoJSON contains a feature without an ID or name.');
                 }
+                const provinceSelect = document.getElementById('province-map-select');
+                provinceData.features.forEach(feature => {
+                    const option = document.createElement('option');
+                    option.value = feature.properties.id;
+                    option.textContent = feature.properties.name;
+                    provinceSelect.append(option);
+                });
+                provinceSelect.disabled = false;
                 const islandsResponse = await fetch('./data/vietnam-islands.geojson');
                 if (!islandsResponse.ok) throw new Error(`Island GeoJSON request failed with HTTP ${islandsResponse.status}.`);
                 const islandsData = await islandsResponse.json();
@@ -2998,20 +3175,18 @@
                     style: getProvinceStyle,
                     attribution: '<a href="https://www.geoboundaries.org/" target="_blank" rel="noopener noreferrer">geoBoundaries</a> · CC BY 4.0',
                     onEachFeature: (feature, layer) => {
-                        layer.bindTooltip(feature.properties.name, { sticky: true });
+                        layer.bindTooltip(feature.properties.name, {
+                            sticky: true,
+                            className: 'province-name-tooltip'
+                        });
                         layer.on({
-                            mouseover: event => event.target.setStyle({ weight: 2.5, fillOpacity: 0.88 }),
+                            mouseover: event => event.target.setStyle(
+                                selectedProvince?.id === feature.properties.id
+                                    ? getProvinceStyle(feature)
+                                    : { weight: 2.5, fillOpacity: 0.88 }
+                            ),
                             mouseout: event => provinceBoundaryLayer.resetStyle(event.target),
-                            click: () => {
-                                selectedProvince = {
-                                    id: feature.properties.id,
-                                    name: feature.properties.name
-                                };
-                                provinceProductsHidden = false;
-                                provinceBoundaryLayer.setStyle(getProvinceStyle);
-                                publishProvinceSelection();
-                                filterProductsGlobal(document.getElementById('product-search').value);
-                            }
+                            click: () => selectProvince(feature.properties)
                         });
                     }
                 }).addTo(provinceMap);
@@ -3288,30 +3463,293 @@
             }
         }
 
+        function renderIssueSupportReply(promptText = '') {
+            const messagesEl = document.getElementById('ai-chat-messages');
+            const normalizedPrompt = (promptText || '').trim();
+            const alreadyRendered = [...messagesEl.querySelectorAll('.chat-quick-prompt-message')].some(node =>
+                (node.textContent || '').replace(/\s+/g, ' ').trim() === normalizedPrompt
+            );
+            if (alreadyRendered) return;
+
+            messagesEl.querySelectorAll('button[data-admin-contact="true"]').forEach(button => button.remove());
+
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-quick-prompt-message flex items-start justify-end';
+            const userBubble = document.createElement('div');
+            userBubble.className = 'max-w-[80%] bg-[#0F382C] text-white px-4 py-3 rounded-[22px_22px_8px_22px] text-sm leading-relaxed shadow-sm';
+            userBubble.textContent = normalizedPrompt || 'Tôi nhận hàng bị lỗi';
+            userMessage.appendChild(userBubble);
+
+            const assistantWrap = document.createElement('div');
+            assistantWrap.className = 'flex items-end gap-2.5';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'flex h-7 w-7 items-center justify-center rounded-full bg-[#F3EAD5] text-[10px] font-bold text-[#0F382C] shadow-sm';
+            avatar.textContent = 'AI';
+
+            const assistantBubble = document.createElement('div');
+            assistantBubble.className = 'max-w-[85%] rounded-[18px_18px_18px_6px] border border-[#E8D5A8] bg-white px-3.5 py-3 text-sm leading-relaxed text-[#1F1F1F] shadow-sm';
+
+            const assistantText = document.createElement('p');
+            assistantText.className = 'm-0 whitespace-pre-line';
+            assistantText.textContent = 'Chào Quý khách, để chúng tôi hỗ trợ kiểm tra và xử lý chính xác nhất, Quý khách vui lòng gửi ảnh chụp sản phẩm đang gặp lỗi (bao gồm hình ảnh tổng quan sản phẩm, vị trí hỏng, hộp/tem nhãn, và nếu có mã đơn hàng/serial). Những hình ảnh này sẽ giúp chúng tôi xác định nguyên nhân và hỗ trợ Quý khách trong trường hợp đổi trả hoặc hoàn hàng theo chính sách.\n\nNếu có thể, Quý khách vui lòng gửi thêm video ngắn hoặc hình ảnh rõ nét về lỗi sản phẩm để chúng tôi đánh giá nhanh hơn. Chúng tôi rất xin lỗi vì sự bất tiện này và sẽ hỗ trợ Quý khách tốt nhất.\n\nCảm ơn Quý khách đã quan tâm và hợp tác.';
+
+            const contactButton = document.createElement('button');
+            contactButton.type = 'button';
+            contactButton.dataset.adminContact = 'true';
+            contactButton.className = 'mt-2.5 rounded-xl border border-[#E9D8A5] bg-white px-3 py-2 text-[11px] font-bold text-[#173B30] hover:bg-[#F8F1E3]';
+            contactButton.textContent = 'Liên hệ admin';
+            contactButton.addEventListener('click', connectCustomerToAdmin);
+
+            assistantBubble.append(assistantText, contactButton);
+            assistantWrap.append(avatar, assistantBubble);
+            messagesEl.append(userMessage, assistantWrap);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
         function sendQuickPrompt(promptText) {
+            const normalized = (promptText || '').toLowerCase();
+            const isComplaintPrompt = /(hàng lỗi|hang loi|nhận hàng bị lỗi|nhan hang bi loi|đổi trả|doi tra|hoàn hàng|hoan hang|giao sai|sai hàng|lack|missing item)/i.test(normalized);
+            if (isComplaintPrompt) {
+                renderIssueSupportReply(promptText);
+                return;
+            }
             document.getElementById('ai-chat-input').value = promptText;
             sendAIMessage();
+        }
+
+        const maxAIChatImages = 10;
+        const maxAIChatImageBytes = 100 * 1024 * 1024;
+        const supportedAIChatImageTypes = new Set([
+            'image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'
+        ]);
+
+        function renderAIChatImagePreviews() {
+            const previews = document.getElementById('ai-chat-image-previews');
+            const hint = document.getElementById('ai-chat-image-hint');
+            previews.replaceChildren();
+            previews.hidden = pendingAIImages.length === 0;
+            hint.hidden = pendingAIImages.length === 0;
+            hint.textContent = currentLanguage === 'en'
+                ? 'Paste, drop, or upload up to 10 images (100 MB each).'
+                : 'Dán, kéo-thả hoặc tải tối đa 10 ảnh (100 MB mỗi ảnh).';
+
+            pendingAIImages.forEach((image, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative';
+                const preview = document.createElement('img');
+                preview.src = image.previewUrl;
+                preview.alt = image.file.name;
+                preview.className = 'h-14 w-14 rounded-lg border border-gray-200 object-cover';
+                const remove = document.createElement('button');
+                remove.type = 'button';
+                remove.className = 'absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white shadow';
+                remove.setAttribute('aria-label', currentLanguage === 'en' ? 'Remove image' : 'Xóa ảnh');
+                remove.innerHTML = '&times;';
+                remove.addEventListener('click', () => {
+                    URL.revokeObjectURL(image.previewUrl);
+                    pendingAIImages.splice(index, 1);
+                    renderAIChatImagePreviews();
+                });
+                wrapper.append(preview, remove);
+                previews.append(wrapper);
+            });
+        }
+
+        async function addAIChatImages(fileList) {
+            const imageFiles = [...fileList].filter(file => file.type.startsWith('image/'));
+            if (!imageFiles.length) return;
+            if (imageFiles.some(file => !supportedAIChatImageTypes.has(file.type))) {
+                showToast(currentLanguage === 'en'
+                    ? 'Supported images: JPEG, PNG, WebP, HEIC, and HEIF.'
+                    : 'Hỗ trợ ảnh JPEG, PNG, WebP, HEIC và HEIF.', 'error');
+                return;
+            }
+            if (imageFiles.some(file => file.size === 0 || file.size > maxAIChatImageBytes)) {
+                showToast(currentLanguage === 'en'
+                    ? 'Each image must be 100 MB or smaller.'
+                    : 'Mỗi ảnh phải có dung lượng không quá 100 MB.', 'error');
+                return;
+            }
+            if (pendingAIImages.length + imageFiles.length > maxAIChatImages) {
+                showToast(currentLanguage === 'en'
+                    ? 'Attach up to 10 images per message.'
+                    : 'Mỗi tin nhắn đính kèm tối đa 10 ảnh.', 'error');
+                return;
+            }
+
+            try {
+                const previews = imageFiles.map(file => ({
+                    file,
+                    previewUrl: URL.createObjectURL(file),
+                    id: null
+                }));
+                pendingAIImages.push(...previews);
+                renderAIChatImagePreviews();
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function uploadPendingAIChatImages(images) {
+            const newImages = images.filter(image => !image.id);
+            for (const image of newImages) {
+                const response = await fetch('/api/ai/images', {
+                    method: 'POST',
+                    headers: { 'Content-Type': image.file.type },
+                    body: image.file
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(result.error || (currentLanguage === 'en'
+                        ? 'Unable to save the images.'
+                        : 'Không thể lưu ảnh.'));
+                }
+                if (!result.image || typeof result.image.id !== 'string') {
+                    throw new Error(currentLanguage === 'en'
+                        ? 'The server returned an invalid image upload response.'
+                        : 'Máy chủ trả về kết quả tải ảnh không hợp lệ.');
+                }
+                image.id = result.image.id;
+            }
+        }
+
+        const aiChatWindow = document.getElementById('ai-chat-window');
+        const aiChatImageInput = document.getElementById('ai-chat-image-input');
+        aiChatImageInput.addEventListener('change', () => {
+            addAIChatImages(aiChatImageInput.files);
+            aiChatImageInput.value = '';
+        });
+        document.getElementById('ai-chat-input').addEventListener('paste', event => {
+            const files = [...(event.clipboardData?.items || [])]
+                .filter(item => item.kind === 'file')
+                .map(item => item.getAsFile())
+                .filter(Boolean);
+            if (files.length) {
+                event.preventDefault();
+                addAIChatImages(files);
+            }
+        });
+        ['dragenter', 'dragover'].forEach(eventName => aiChatWindow.addEventListener(eventName, event => {
+            if ([...(event.dataTransfer?.items || [])].some(item => item.kind === 'file')) {
+                event.preventDefault();
+                aiChatWindow.classList.add('ring-2', 'ring-emerald-400');
+            }
+        }));
+        ['dragleave', 'drop'].forEach(eventName => aiChatWindow.addEventListener(eventName, event => {
+            aiChatWindow.classList.remove('ring-2', 'ring-emerald-400');
+            if (eventName === 'drop' && event.dataTransfer?.files.length) {
+                event.preventDefault();
+                addAIChatImages(event.dataTransfer.files);
+            }
+        }));
+
+        const aiCatalogSyncIntervalMs = 10 * 60 * 1000;
+
+        function getAIProductPayload() {
+            return products.map(product => ({
+                id: product.id,
+                name: product.name,
+                nameEn: product.nameEn || productNamesEn[product.id - 1] || '',
+                region: product.region,
+                category: product.category,
+                stars: product.stars,
+                price: product.price,
+                rating: product.rating,
+                tag: product.tag,
+                description: product.desc
+            }));
+        }
+
+        async function syncAIWebsiteCatalog() {
+            try {
+                const response = await fetch('/api/ai/catalog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ products: getAIProductPayload() })
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(result.error || 'Không thể đồng bộ danh mục với trợ lý AI.');
+                }
+                console.info(`AI catalog synced: ${result.productCount} products.`);
+            } catch (error) {
+                console.error('Unable to sync website catalog with AI:', error);
+            }
+        }
+
+        window.setTimeout(syncAIWebsiteCatalog, 0);
+        window.setInterval(syncAIWebsiteCatalog, aiCatalogSyncIntervalMs);
+
+        function createLocalCatalogReply(query, hasImages = false) {
+            lastAIRecommendedProductIds = [];
+            lastAIRecommendationCriteria = null;
+            if (hasImages) {
+                return {
+                    message: currentLanguage === 'en'
+                        ? 'I could not identify the product from this image. Please describe it in more detail or send another image so I can help.'
+                        : 'Mình chưa nhận diện được sản phẩm từ ảnh này. Bạn hãy mô tả chi tiết hơn hoặc gửi ảnh khác để mình hỗ trợ nhé.',
+                    productIds: [],
+                    handoffAdmin: false,
+                    localFallback: true
+                };
+            }
+            const generated = generateAIResponse(query);
+            const recommendsProducts = /^\s*</.test(generated);
+            const handoffAdmin = isAIAdminContactRequest(query);
+            return {
+                message: recommendsProducts
+                    ? currentLanguage === 'en'
+                        ? 'Here are some options from the current website catalogue.'
+                        : 'Mình tìm được một số sản phẩm phù hợp trong danh mục hiện tại.'
+                    : generated,
+                productIds: lastAIRecommendedProductIds.slice(0, 3),
+                handoffAdmin,
+                localFallback: true
+            };
         }
 
         async function sendAIMessage() {
             const inputEl = document.getElementById('ai-chat-input');
             const messagesEl = document.getElementById('ai-chat-messages');
             const text = inputEl.value.trim();
+            const messageImages = pendingAIImages.slice();
+            const messageText = text || (currentLanguage === 'en'
+                ? 'Please review the attached product image and help me.'
+                : 'Vui lòng xem ảnh sản phẩm tôi gửi và hỗ trợ giúp tôi.');
 
+<<<<<<< HEAD
             if (!text || isAIRequestPending) return;
             isAIRequestPending = true;
             const sendButton = document.getElementById('chat-send-button');
             sendButton.disabled = true;
             sendButton.setAttribute('aria-busy', 'true');
+=======
+            if (!text && !messageImages.length) return;
+>>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
 
-            messagesEl.insertAdjacentHTML('beforeend', `
-                <div class="flex items-start justify-end space-x-2">
-                    <div class="bg-ocopGreen text-white p-3 rounded-2xl text-xs max-w-[85%] shadow-sm leading-relaxed break-words">
-                    </div>
-                    <div class="w-7 h-7 rounded-full bg-emerald-100 text-ocopGreen font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
-                </div>
-            `);
-            messagesEl.lastElementChild.firstElementChild.textContent = text;
+            const userMessage = document.createElement('div');
+            userMessage.className = 'flex items-start justify-end space-x-2';
+            const userBubble = document.createElement('div');
+            userBubble.className = 'bg-ocopGreen text-white p-3 rounded-2xl text-xs max-w-[85%] shadow-sm leading-relaxed break-words space-y-2';
+            if (text) {
+                const userText = document.createElement('p');
+                userText.textContent = text;
+                userBubble.append(userText);
+            }
+            messageImages.forEach(image => {
+                const preview = document.createElement('img');
+                preview.src = image.previewUrl;
+                preview.alt = image.file.name;
+                preview.className = 'max-h-40 max-w-full rounded-lg object-contain';
+                userBubble.append(preview);
+            });
+            const userAvatar = document.createElement('div');
+            userAvatar.className = 'w-7 h-7 rounded-full bg-emerald-100 text-ocopGreen font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5';
+            userAvatar.setAttribute('aria-hidden', 'true');
+            userAvatar.innerHTML = '<i class="fa-solid fa-user"></i>';
+            userMessage.append(userBubble, userAvatar);
+            messagesEl.append(userMessage);
 
             inputEl.value = '';
             messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -3320,30 +3758,43 @@
             const loadingId = 'ai-loading-' + ++aiMessageSequence;
             messagesEl.insertAdjacentHTML('beforeend', `
                 <div id="${loadingId}" class="flex items-start space-x-2">
-                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <img src="chat-avatar.svg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-500 text-xs shadow-sm flex items-center space-x-1.5">
                         <i class="fa-solid fa-spinner fa-spin text-ocopGreen"></i>
-                        <span>${currentLanguage === 'en' ? 'Finding suitable options...' : 'Đang tìm lựa chọn phù hợp...'}</span>
+                        <span>${messageImages.length
+                            ? currentLanguage === 'en' ? 'Saving image and preparing a reply...' : 'Đang lưu ảnh và chuẩn bị phản hồi...'
+                            : currentLanguage === 'en' ? 'Finding suitable options...' : 'Đang tìm lựa chọn phù hợp...'}</span>
                     </div>
                 </div>
             `);
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             try {
+                await uploadPendingAIChatImages(messageImages);
                 const response = await fetch('/api/ai/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         language: currentLanguage,
+<<<<<<< HEAD
                         messages: [...aiConversationHistory.slice(-14), { role: 'user', text }],
                         products: getAIProductPayload()
+=======
+                        messages: [...aiConversationHistory.slice(-14), { role: 'user', text: messageText }],
+                        products: getAIProductPayload(),
+                        imageIds: messageImages.map(image => image.id)
+>>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
                     })
                 });
-                const result = await response.json().catch(() => ({}));
+                let result = await response.json().catch(() => ({}));
                 if (!response.ok) {
-                    throw new Error(result.error || (currentLanguage === 'en'
-                        ? 'The AI assistant is temporarily unavailable.'
-                        : 'Trợ lý AI hiện chưa thể trả lời.'));
+                    if (response.status === 503) {
+                        result = createLocalCatalogReply(text, messageImages.length > 0);
+                    } else {
+                        throw new Error(result.error || (currentLanguage === 'en'
+                            ? 'The AI assistant is temporarily unavailable.'
+                            : 'Trợ lý AI hiện chưa thể trả lời.'));
+                    }
                 }
 
                 const loadingNode = document.getElementById(loadingId);
@@ -3352,13 +3803,23 @@
                 const reply = document.createElement('div');
                 reply.className = 'flex items-start space-x-2';
                 reply.innerHTML = `
-                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <img src="chat-avatar.svg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
                         <p class="whitespace-pre-wrap"></p>
                         <div class="ai-product-recommendations"></div>
                     </div>
                 `;
                 reply.querySelector('p').textContent = result.message;
+                if (result.localFallback) {
+                    if (!messageImages.length) {
+                        const fallbackNote = document.createElement('p');
+                        fallbackNote.className = 'text-[10px] text-gray-500';
+                        fallbackNote.textContent = currentLanguage === 'en'
+                            ? 'Quick answer from the website catalogue. Connect Gemini for open-ended AI replies.'
+                            : 'Gợi ý nhanh từ danh mục website; cần cấu hình Gemini để bật trả lời AI tự do.';
+                        reply.querySelector('div.bg-white').append(fallbackNote);
+                    }
+                }
                 const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
                     .map(id => products.find(product => product.id === id))
                     .filter(Boolean);
@@ -3374,17 +3835,23 @@
                 if (result.handoffAdmin) {
                     const handoffButton = document.createElement('button');
                     handoffButton.type = 'button';
+                    handoffButton.dataset.adminContact = 'true';
                     handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
-                    handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
+                    handoffButton.textContent = 'Mở liên hệ admin';
                     handoffButton.addEventListener('click', toggleAdminSupport);
-                    reply.querySelector('div.bg-white').append(handoffButton);
+                    const existingAdminButton = reply.querySelector('button[data-admin-contact="true"]');
+                    if (!existingAdminButton) {
+                        reply.querySelector('div.bg-white').append(handoffButton);
+                    }
                 }
                 messagesEl.append(reply);
                 aiConversationHistory = [
                     ...aiConversationHistory,
-                    { role: 'user', text },
+                    { role: 'user', text: messageText },
                     { role: 'assistant', text: result.message }
                 ].slice(-16);
+                pendingAIImages = pendingAIImages.filter(image => !messageImages.includes(image));
+                renderAIChatImagePreviews();
                 messagesEl.scrollTop = messagesEl.scrollHeight;
 
                 if (result.handoffAdmin) {
@@ -3394,23 +3861,23 @@
                     }, 1200);
                 }
             } catch (error) {
+                if (!inputEl.value.trim()) inputEl.value = text;
                 const loadingNode = document.getElementById(loadingId);
                 if (loadingNode) loadingNode.remove();
 
                 const failure = document.createElement('div');
                 failure.className = 'flex items-start space-x-2';
                 failure.innerHTML = `
-                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <img src="chat-avatar.svg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
                         <p class="ai-error-message"></p>
                     </div>
                 `;
-                failure.querySelector('.ai-error-message').textContent = error.message ||
-                    (currentLanguage === 'en' ? 'The AI assistant could not connect.' : 'Không thể kết nối trợ lý AI.');
+                failure.querySelector('.ai-error-message').textContent = error.message || 'Không thể kết nối trợ lý AI.';
                 const contactButton = document.createElement('button');
                 contactButton.type = 'button';
                 contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
-                contactButton.textContent = currentLanguage === 'en' ? 'Contact admin' : 'Liên hệ admin';
+                contactButton.textContent = 'Liên hệ admin';
                 contactButton.addEventListener('click', connectCustomerToAdmin);
                 failure.querySelector('div.bg-white').append(contactButton);
                 messagesEl.append(failure);
@@ -3439,9 +3906,7 @@
             const aiRelevanceScores = new Map();
 
             if (isAIAdminContactRequest(q)) {
-                return english
-                    ? 'Please wait a moment while I open the available direct admin contacts. Choose an admin to message them on Facebook.'
-                    : 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
+                return 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
             }
 
             const serviceGuidance = getAIServiceGuidance(q, english);
@@ -3693,29 +4158,15 @@
             if (!issue) return null;
 
             const guidance = {
-                defect: english
-                    ? 'I’m sorry the item arrived in this condition. Please stop using or consuming it, keep the item and packaging, and take clear photos or an unboxing video showing the issue, parcel label, and expiry/batch details. Our team must review the order and confirm the available remedy; I can’t promise an exchange or refund before that review.'
-                    : 'Mình rất tiếc vì sản phẩm gặp tình trạng này. Anh/chị vui lòng tạm ngừng sử dụng/tiêu thụ sản phẩm, giữ lại sản phẩm và bao bì, chụp ảnh hoặc video rõ tình trạng lỗi, nhãn kiện hàng và hạn sử dụng/số lô. Nhân viên cần kiểm tra đơn và xác nhận phương án xử lý; chatbot chưa thể cam kết đổi hàng hay hoàn tiền trước khi kiểm tra.',
-                wrongOrMissing: english
-                    ? 'Please compare the parcel with your order, keep the outer packaging and shipping label, and photograph the items received. Our team needs the order details and photos to verify a missing or incorrect item and advise the next step.'
-                    : 'Anh/chị vui lòng đối chiếu kiện hàng với đơn đặt, giữ lại bao bì và nhãn vận chuyển, đồng thời chụp ảnh các sản phẩm đã nhận. Nhân viên cần mã đơn và hình ảnh để xác minh hàng thiếu/giao nhầm và hướng dẫn bước tiếp theo.',
-                return: english
-                    ? 'Return or exchange eligibility, deadlines, and shipping arrangements depend on the order and product condition. Please keep the item, seal, and packaging, and contact our team with your order number and reason before sending anything back. They will confirm the applicable policy; I can’t promise eligibility or a refund here.'
-                    : 'Điều kiện, thời hạn đổi trả và cách gửi hàng phụ thuộc vào đơn hàng và tình trạng sản phẩm. Anh/chị vui lòng giữ sản phẩm, tem niêm phong và bao bì; liên hệ nhân viên với mã đơn cùng lý do trước khi gửi trả. Nhân viên sẽ xác nhận chính sách áp dụng; chatbot chưa thể xác nhận đủ điều kiện hoặc hứa hoàn tiền.',
-                payment: english
-                    ? 'Please don’t make another payment yet. Check your bank/payment app for the transaction status and keep the receipt or transaction reference. Our team can verify whether the order was paid; never share your password, PIN, or one-time verification code.'
-                    : 'Anh/chị vui lòng chưa thanh toán lại ngay. Hãy kiểm tra trạng thái giao dịch trong ứng dụng ngân hàng/ví và lưu biên lai hoặc mã giao dịch để nhân viên đối soát đơn. Không chia sẻ mật khẩu, mã PIN hay mã OTP.',
-                delivery: english
-                    ? 'Please check the order confirmation and tracking details, if available. Keep the order number and contact our team to verify the delivery status and next steps. Delivery timing can vary, so I can’t confirm an arrival date without checking the shipment.'
-                    : 'Anh/chị vui lòng kiểm tra xác nhận đơn và thông tin theo dõi vận chuyển (nếu có). Chuẩn bị mã đơn rồi liên hệ nhân viên để kiểm tra tình trạng giao và hướng xử lý. Thời gian giao có thể thay đổi nên chatbot chưa thể xác nhận ngày nhận khi chưa kiểm tra vận đơn.',
-                order: english
-                    ? 'I can’t access live order records from this chat. Please contact our team with your order number and the change or status you need; they can check whether the order can still be updated or cancelled.'
-                    : 'Chatbot hiện không truy cập được dữ liệu đơn hàng trực tiếp. Anh/chị vui lòng liên hệ nhân viên, cung cấp mã đơn và yêu cầu cần kiểm tra; nhân viên sẽ xác nhận đơn còn có thể chỉnh sửa hoặc hủy hay không.',
-                purchase: english
-                    ? 'Please check that required fields are complete, refresh the page, and try adding the item to your cart once. If you already submitted payment, don’t pay again until it is verified. Contact our team if the issue continues.'
-                    : 'Anh/chị vui lòng kiểm tra các trường bắt buộc, tải lại trang và thử thêm sản phẩm vào giỏ một lần. Nếu đã gửi thanh toán, đừng thanh toán lại trước khi được đối soát. Nếu lỗi vẫn tiếp diễn, hãy liên hệ nhân viên để được hỗ trợ.'
+                defect: 'Mình rất tiếc vì sản phẩm gặp tình trạng này. Anh/chị vui lòng tạm ngừng sử dụng/tiêu thụ sản phẩm, giữ lại sản phẩm và bao bì, chụp ảnh hoặc video rõ tình trạng lỗi, nhãn kiện hàng và hạn sử dụng/số lô. Nhân viên cần kiểm tra đơn và xác nhận phương án xử lý; chatbot chưa thể cam kết đổi hàng hay hoàn tiền trước khi kiểm tra.',
+                wrongOrMissing: 'Anh/chị vui lòng đối chiếu kiện hàng với đơn đặt, giữ lại bao bì và nhãn vận chuyển, đồng thời chụp ảnh các sản phẩm đã nhận. Nhân viên cần mã đơn và hình ảnh để xác minh hàng thiếu/giao nhầm và hướng dẫn bước tiếp theo.',
+                return: 'Điều kiện, thời hạn đổi trả và cách gửi hàng phụ thuộc vào đơn hàng và tình trạng sản phẩm. Anh/chị vui lòng giữ sản phẩm, tem niêm phong và bao bì; liên hệ nhân viên với mã đơn cùng lý do trước khi gửi trả. Nhân viên sẽ xác nhận chính sách áp dụng; chatbot chưa thể xác nhận đủ điều kiện hoặc hứa hoàn tiền.',
+                payment: 'Anh/chị vui lòng chưa thanh toán lại ngay. Hãy kiểm tra trạng thái giao dịch trong ứng dụng ngân hàng/ví và lưu biên lai hoặc mã giao dịch để nhân viên đối soát đơn. Không chia sẻ mật khẩu, mã PIN hay mã OTP.',
+                delivery: 'Anh/chị vui lòng kiểm tra xác nhận đơn và thông tin theo dõi vận chuyển (nếu có). Chuẩn bị mã đơn rồi liên hệ nhân viên để kiểm tra tình trạng giao và hướng xử lý. Thời gian giao có thể thay đổi nên chatbot chưa thể xác nhận ngày nhận khi chưa kiểm tra vận đơn.',
+                order: 'Chatbot hiện không truy cập được dữ liệu đơn hàng trực tiếp. Anh/chị vui lòng liên hệ nhân viên, cung cấp mã đơn và yêu cầu cần kiểm tra; nhân viên sẽ xác nhận đơn còn có thể chỉnh sửa hoặc hủy hay không.',
+                purchase: 'Anh/chị vui lòng kiểm tra các trường bắt buộc, tải lại trang và thử thêm sản phẩm vào giỏ một lần. Nếu đã gửi thanh toán, đừng thanh toán lại trước khi được đối soát. Nếu lỗi vẫn tiếp diễn, hãy liên hệ nhân viên để được hỗ trợ.'
             }[issue.type];
-            const contactLabel = english ? 'Contact an admin' : 'Liên hệ admin trực tiếp';
+            const contactLabel = 'Liên hệ admin trực tiếp';
             return `<p>${escapeAIHtml(guidance)}</p><button onclick="connectCustomerToAdmin()" class="rounded-lg bg-ocopGreen px-3 py-2 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${contactLabel}</button>`;
         }
 
@@ -3747,13 +4198,11 @@
 
         function connectCustomerToAdmin() {
             const messagesEl = document.getElementById('ai-chat-messages');
-            const message = currentLanguage === 'en'
-                ? 'Please wait a moment while I open the available direct admin contacts. Choose an admin to message them on Facebook.'
-                : 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
+            const message = 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
             const wrapper = document.createElement('div');
             wrapper.className = 'flex items-start space-x-2';
             wrapper.innerHTML = `
-                <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                <img src="chat-avatar.svg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                 <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] break-words"></div>
             `;
             wrapper.lastElementChild.textContent = message;
@@ -4097,6 +4546,8 @@
             updateWishlistBadge();
             const currentSearch = document.getElementById('product-search').value;
             filterProductsGlobal(currentSearch);
+            renderWishlistItems();
+            updateQuickViewWishlistButton(productId);
         }
 
         function updateWishlistBadge() {
@@ -4119,9 +4570,14 @@
                         <span class="text-[10px] text-amber-800">${p.region} • ${p.stars}★</span>
                         <div class="text-red-600 font-extrabold text-xs mt-0.5">${p.price.toLocaleString('vi-VN')} ₫</div>
                     </div>
-                    <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white p-2 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition cursor-pointer">
-                        <i class="fa-solid fa-cart-plus"></i>
-                    </button>
+                    <div class="flex shrink-0 items-center gap-2">
+                        <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${currentLanguage === 'en' ? `Remove ${getProductName(p)} from favorites` : `Bỏ ${getProductName(p)} khỏi yêu thích`}" title="${currentLanguage === 'en' ? 'Remove from favorites' : 'Bỏ yêu thích'}" class="flex h-10 w-10 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100 cursor-pointer">
+                            <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" onclick="addToCart(${p.id})" aria-label="${currentLanguage === 'en' ? `Add ${getProductName(p)} to cart` : `Thêm ${getProductName(p)} vào giỏ hàng`}" title="${currentLanguage === 'en' ? 'Add to cart' : 'Thêm vào giỏ'}" class="bg-ocopGreen text-white p-2 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition cursor-pointer">
+                            <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
@@ -4156,15 +4612,40 @@
                             <span class="text-2xl font-black text-red-600">${p.price.toLocaleString('vi-VN')} ₫</span>
                             <span class="text-xs text-gray-400 line-through">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
                         </div>
-                        <button onclick="addToCart(${p.id}); closeQuickView();" class="w-full bg-ocopGreen text-white py-3 rounded-2xl font-bold text-xs hover:bg-ocopGreenLight transition flex items-center justify-center space-x-2 shadow-lg cursor-pointer">
-                            <i class="fa-solid fa-cart-plus text-ocopGold"></i>
-                            <span>${currentLanguage === 'en' ? 'Add to cart' : 'Thêm Vào Giỏ Hàng Mua Ngay'}</span>
-                        </button>
+                        <div class="flex items-stretch gap-2">
+                            <button id="quickview-wishlist-toggle" type="button" onclick="toggleWishlist(${p.id})" class="flex min-h-12 w-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200 bg-white text-gray-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 cursor-pointer" aria-label="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}" aria-pressed="false" title="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}">
+                                <i class="fa-regular fa-heart text-lg" aria-hidden="true"></i>
+                            </button>
+                            <button onclick="addToCart(${p.id}); closeQuickView();" class="min-h-12 flex-1 rounded-2xl bg-ocopGreen py-3 text-xs font-bold text-white shadow-lg transition hover:bg-ocopGreenLight flex items-center justify-center space-x-2 cursor-pointer">
+                                <i class="fa-solid fa-cart-plus text-ocopGold"></i>
+                                <span>${currentLanguage === 'en' ? 'Add to cart' : 'Thêm Vào Giỏ Hàng Mua Ngay'}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
 
+            updateQuickViewWishlistButton(productId);
             document.getElementById('quickview-modal').classList.remove('hidden');
+        }
+
+        function updateQuickViewWishlistButton(productId) {
+            const button = document.getElementById('quickview-wishlist-toggle');
+            if (!button) return;
+
+            const isFavorite = wishlist.includes(productId);
+            const label = currentLanguage === 'en'
+                ? (isFavorite ? 'Remove from favorites' : 'Add to favorites')
+                : (isFavorite ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích');
+            button.setAttribute('aria-label', label);
+            button.setAttribute('title', label);
+            button.setAttribute('aria-pressed', String(isFavorite));
+            button.className = `flex min-h-12 w-14 shrink-0 items-center justify-center rounded-2xl border transition cursor-pointer ${
+                isFavorite
+                    ? 'border-red-200 bg-red-50 text-red-600'
+                    : 'border-amber-200 bg-white text-gray-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600'
+            }`;
+            button.querySelector('i').className = `${isFavorite ? 'fa-solid' : 'fa-regular'} fa-heart text-lg`;
         }
 
         function closeQuickView() {
@@ -4214,6 +4695,7 @@
                 tabLogin.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer";
                 tabReg.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer";
             }
+            translateAuthUi();
         }
 
         function setAuthField(fieldId, inputId, visible, required) {
@@ -4286,6 +4768,7 @@
                     document.getElementById('auth-title').innerText = "Xác Nhận Số Điện Thoại";
                     submitBtn.innerText = "Xác Nhận OTP và Tạo Tài Khoản";
                     document.getElementById('auth-otp').focus();
+                    translateAuthUi();
                 }
             } catch (error) {
                 showToast(error.message || 'Không thể xử lý yêu cầu. Vui lòng thử lại.', "error");
@@ -4483,6 +4966,8 @@
             'i18n-ticker4-copy': '🚚 Shipping offers depend on order conditions',
             'i18n-intro-region-header': 'Explore Vietnam specialties on the map',
             'i18n-intro-region-caption': 'Select a province to filter matching OCOP specialties',
+            'province-map-select-label': 'Quickly select a province or city',
+            'province-map-select-placeholder': 'Select a province or city...',
             'province-map-clear': 'Clear selection',
             'i18n-intro-btn-enter': 'Explore 48 OCOP specialties',
             'i18n-intro-quick-header': 'What are you looking for?',
@@ -4615,8 +5100,14 @@
                 const defaultText = originalUiText.get(id);
                 element.textContent = currentLanguage === 'en' ? englishUiText[id] : defaultText;
             });
+            const provinceSelect = document.getElementById('province-map-select');
+            if (provinceSelect) {
+                provinceSelect.setAttribute('aria-label', currentLanguage === 'en'
+                    ? 'Quickly select a province or city'
+                    : 'Chọn tỉnh/thành trên bản đồ');
+            }
 
-            const targetLanguage = currentLanguage === 'en' ? 'VI' : 'EN';
+            const targetLanguage = currentLanguage.toUpperCase();
             ['intro-language-btn', 'site-language-btn'].forEach(id => {
                 const button = document.getElementById(id);
                 if (button) {
@@ -4660,9 +5151,22 @@
                     ? 'Tell me the occasion, region, product type, or your budget.'
                     : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
                 document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
+<<<<<<< HEAD
                     ? 'Messages, images used for search, and the product catalogue are sent to Google Gemini; do not share passwords, OTPs, or payment details.'
                     : 'Tin nhắn, ảnh tìm kiếm và danh mục được gửi tới Google Gemini; không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
+=======
+                    ? 'Messages are sent to Google Gemini; attached images are stored for staff review and may be sent to Gemini. Do not share passwords, OTPs, or payment details.'
+                    : 'Tin nhắn được gửi tới Google Gemini; ảnh đính kèm được lưu để nhân viên xem và có thể gửi tới Gemini. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
+>>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
             }
+            document.getElementById('chat-add-image-button').setAttribute(
+                'aria-label',
+                currentLanguage === 'en' ? 'Add image' : 'Thêm ảnh'
+            );
+            document.getElementById('chat-add-image-button').title = currentLanguage === 'en'
+                ? 'Add an image (paste or drag and drop)'
+                : 'Thêm ảnh (dán Ctrl+V hoặc kéo thả)';
+            renderAIChatImagePreviews();
             const promptButtons = document.querySelectorAll('.chat-prompt');
             const prompts = currentLanguage === 'en'
                 ? [
@@ -4686,6 +5190,7 @@
                 button.textContent = prompts[index][0];
                 button.onclick = () => sendQuickPrompt(prompts[index][1]);
             });
+            translateAuthUi();
             updateCatalogCounts();
             updateIntroMusicButton();
             updateProvinceSelectionStatus();
@@ -4699,9 +5204,63 @@
             }
         }
 
+        function translateAuthUi() {
+            const en = currentLanguage === 'en';
+            const text = (selector, english, vietnamese) => {
+                const element = document.querySelector(selector);
+                if (element) element.textContent = en ? english : vietnamese;
+            };
+            const placeholder = (selector, english, vietnamese) => {
+                const element = document.querySelector(selector);
+                if (element) element.placeholder = en ? english : vietnamese;
+            };
+            text('#auth-title', authStep === 'otp' ? 'Verify your phone' : authTab === 'register' ? 'Create your OCOP account' : 'Account login', authStep === 'otp' ? 'X\u00e1c nh\u1eadn s\u1ed1 \u0111i\u1ec7n tho\u1ea1i' : authTab === 'register' ? '\u0110\u0103ng k\u00fd t\u00e0i kho\u1ea3n OCOP' : '\u0110\u0103ng nh\u1eadp t\u00e0i kho\u1ea3n');
+            text('#auth-modal .text-center p', 'Manage orders and redeem offers', 'Qu\u1ea3n l\u00fd \u0111\u01a1n h\u00e0ng v\u00e0 t\u00edch \u0111i\u1ec3m \u01b0u \u0111\u00e3i');
+            text('#tab-login', 'Log in', '\u0110\u0103ng nh\u1eadp');
+            text('#tab-register', 'Create account', '\u0110\u0103ng k\u00fd');
+            text('label[for="auth-name"]', 'Full name *', 'H\u1ecd v\u00e0 t\u00ean *');
+            text('label[for="auth-phone"]', 'Phone number for SMS code *', 'S\u1ed1 \u0111i\u1ec7n tho\u1ea1i nh\u1eadn m\u00e3 OTP *');
+            text('label[for="auth-address"]', 'Address *', '\u0110\u1ecba ch\u1ec9 *');
+            text('label[for="auth-email"]', 'Email (optional)', 'Gmail / Email (kh\u00f4ng b\u1eaft bu\u1ed9c)');
+            text('label[for="auth-password"]', 'Password *', 'M\u1eadt kh\u1ea9u *');
+            text('label[for="auth-password-confirm"]', 'Confirm password *', 'X\u00e1c nh\u1eadn l\u1ea1i m\u1eadt kh\u1ea9u *');
+            text('label[for="auth-otp"]', 'SMS code *', 'M\u00e3 OTP *');
+            text('#otp-section button', 'Resend code', 'G\u1eedi l\u1ea1i m\u00e3 OTP');
+            placeholder('#auth-name', 'Nguyen Van A', 'Nguy\u1ec5n V\u0103n A');
+            placeholder('#auth-address', 'Street, ward, city or province', 'S\u1ed1 nh\u00e0, \u0111\u01b0\u1eddng, ph\u01b0\u1eddng/x\u00e3, t\u1ec9nh/th\u00e0nh ph\u1ed1');
+            placeholder('#auth-password', 'At least 8 characters', 'T\u1ed1i thi\u1ec3u 8 k\u00fd t\u1ef1');
+            placeholder('#auth-password-confirm', 'Enter your password again', 'Nh\u1eadp l\u1ea1i m\u1eadt kh\u1ea9u');
+            placeholder('#auth-otp', 'Enter the 6-digit code', 'Nh\u1eadp m\u00e3 g\u1ed3m 6 ch\u1eef s\u1ed1');
+            text('#auth-submit-btn', authStep === 'otp' ? 'Verify and create account' : authTab === 'register' ? 'Create account' : 'Log in', authStep === 'otp' ? 'X\u00e1c nh\u1eadn OTP v\u00e0 t\u1ea1o t\u00e0i kho\u1ea3n' : authTab === 'register' ? 'T\u1ea1o t\u00e0i kho\u1ea3n m\u1edbi' : '\u0110\u0103ng nh\u1eadp');
+            const form = document.getElementById('auth-form');
+            if (form && !form.dataset.localizedValidation) {
+                form.dataset.localizedValidation = 'true';
+                form.addEventListener('invalid', event => {
+                    const field = event.target;
+                    if (!(field instanceof HTMLInputElement)) return;
+                    const validity = field.validity;
+                    let message = '';
+                    if (validity.valueMissing) message = currentLanguage === 'en' ? 'Please fill out this field.' : 'Vui l\u00f2ng nh\u1eadp th\u00f4ng tin n\u00e0y.';
+                    else if (validity.typeMismatch) message = currentLanguage === 'en' ? 'Please enter a valid value.' : 'Vui l\u00f2ng nh\u1eadp \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng.';
+                    else if (validity.tooShort) message = currentLanguage === 'en' ? `Please enter at least ${field.minLength} characters.` : `Vui l\u00f2ng nh\u1eadp \u00edt nh\u1ea5t ${field.minLength} k\u00fd t\u1ef1.`;
+                    else if (validity.patternMismatch) message = currentLanguage === 'en' ? 'Please check the required format.' : 'Vui l\u00f2ng ki\u1ec3m tra \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng.';
+                    field.setCustomValidity(message);
+                }, true);
+                form.addEventListener('input', event => {
+                    if (event.target instanceof HTMLInputElement) event.target.setCustomValidity('');
+                });
+            }
+        }
+
         function toggleLanguage() {
             applyLanguage(currentLanguage === 'vi' ? 'en' : 'vi');
         }
+
+        window.addEventListener('storage', event => {
+            if (event.key === 'ocop-language' && (event.newValue === 'vi' || event.newValue === 'en')) {
+                applyLanguage(event.newValue);
+            }
+        });
         
     </script>
     <script>
