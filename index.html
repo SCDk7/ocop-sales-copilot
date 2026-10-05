@@ -5449,5 +5449,57 @@
     }
 })();
 </script>
+<!-- Nhúng thư viện GSAP và ScrollTrigger từ CDN -->
+<script src="https://cloudflare.com"></script>
+<script src="https://cloudflare.com"></script>
+
+<script>
+  // Đăng ký plugin ScrollTrigger với GSAP
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 1. Hiệu ứng cho Banner chính khi vừa tải trang
+  gsap.from(".hero-title", { opacity: 0, y: 50, duration: 1, ease: "power2.out" });
+  gsap.from(".hero-sub", { opacity: 0, y: 30, duration: 1, delay: 0.3, ease: "power2.out" });
+
+  // 2. Hiệu ứng cuộn trang xuất hiện các phần tử (Fade-in & Up khi cuộn tới)
+  gsap.utils.toArray('.product-card').forEach((card) => {
+    gsap.from(card, {
+      scrollTrigger: {
+        trigger: card,
+        start: "top 85%", // Kích hoạt hiệu ứng khi đỉnh thẻ card chạm 85% chiều cao màn hình
+        toggleActions: "play none none none"
+      },
+      opacity: 0,
+      y: 60,
+      duration: 0.8,
+      ease: "power2.out"
+    });
+  });
+
+  // 3. Hiệu ứng cuộn trang kể chuyện (Text bay từ hai bên vào)
+  gsap.utils.toArray('.story-section').forEach((section) => {
+    gsap.from(section.querySelector('.story-text'), {
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%",
+      },
+      opacity: 0,
+      x: -50,
+      duration: 1,
+      ease: "power2.out"
+    });
+    
+    gsap.from(section.querySelector('.story-image'), {
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%",
+      },
+      opacity: 0,
+      x: 50,
+      duration: 1,
+      ease: "power2.out"
+    });
+  });
+</script>
 </body>
 </html>
