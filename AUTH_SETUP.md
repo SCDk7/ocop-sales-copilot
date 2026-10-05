@@ -31,10 +31,12 @@ configuration error.
 The chatbot uses Gemini through the Express server. Install Node.js 18 or newer,
 open PowerShell in the project folder, and run
 `powershell -ExecutionPolicy Bypass -File .\setup-gemini.ps1`. The script asks
-for the Google AI Studio API key with hidden input, updates only
-`GEMINI_API_KEY` in the ignored local `.env` file, installs dependencies if
-needed, and starts the server. Never send the key in chat or add it to browser
-code. `GEMINI_MODEL` is optional and defaults to `gemini-2.5-flash`.
+for the Google AI Studio API key with hidden input and verifies the key/model
+with a small Gemini request before updating `GEMINI_API_KEY` in the ignored
+local `.env` file. It installs dependencies if needed and starts the server. If
+port 3000 already has a service, restart the OCOP server in its existing
+terminal to load the updated key. Never send the key in chat or add it to
+browser code. `GEMINI_MODEL` is optional and defaults to `gemini-2.5-flash`.
 
 Customer messages and the product catalogue are sent to Google Gemini to
 generate replies; customers are warned not to share passwords, OTPs, or payment

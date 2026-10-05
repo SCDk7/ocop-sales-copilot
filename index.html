@@ -3795,7 +3795,7 @@
                         });
                         result = await response.json().catch(() => ({}));
                         if (!response.ok) {
-                            if (response.status === 503) {
+                            if (response.status === 502 || response.status === 503) {
                                 result = createLocalCatalogReply(text, messageImages.length > 0);
                             } else {
                                 throw new Error(result.error || (currentLanguage === 'en'
@@ -3832,11 +3832,11 @@
                     fallbackNote.className = 'text-[10px] text-gray-500';
                     fallbackNote.textContent = messageImages.length
                         ? currentLanguage === 'en'
-                            ? 'Image analysis is unavailable while the assistant server is offline; this reply is based on your text only.'
-                            : 'Máy chủ trợ lý đang ngoại tuyến nên chưa phân tích được ảnh; phản hồi này chỉ dựa trên nội dung bạn nhập.'
+                            ? 'Gemini image analysis is unavailable right now; this reply is based on your text only.'
+                            : 'Hiện chưa phân tích được ảnh bằng Gemini; phản hồi này chỉ dựa trên nội dung bạn nhập.'
                         : currentLanguage === 'en'
-                            ? 'Quick answer from the website catalogue. Connect Gemini for open-ended AI replies.'
-                            : 'Gợi ý nhanh từ danh mục website; cần cấu hình Gemini để bật trả lời AI tự do.';
+                            ? 'Quick answer from the current catalogue. Gemini is unavailable for open-ended replies right now.'
+                            : 'Gợi ý nhanh từ danh mục hiện tại; Gemini tạm thời chưa sẵn sàng cho hội thoại tự do.';
                     reply.querySelector('div.bg-white').append(fallbackNote);
                 }
                 const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
