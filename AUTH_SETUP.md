@@ -28,17 +28,27 @@ configuration error.
 
 ## Gemini AI shopping assistant
 
-The chatbot uses Gemini through the Express server. Copy `.env.example` to
-`.env`, set `GEMINI_API_KEY` to a key from Google AI Studio, and restart the
-server. `GEMINI_MODEL` is optional and defaults to `gemini-2.5-flash`. The key
-stays on the server and must never be added to browser code. Customer messages
-and the product catalogue are sent to Google Gemini to generate replies;
-customers are warned not to share passwords, OTPs, or payment details. Without
-a Gemini key, the storefront uses its local catalogue advisor for product
-suggestions and common support questions; open-ended Gemini replies and visual
-image matching remain unavailable. For order-specific or complaint cases, the
-assistant opens the existing admin contact choices; it does not establish a
-live in-site chat or automatically notify a human.
+The chatbot uses Gemini through the Express server. Install Node.js 18 or newer,
+open PowerShell in the project folder, and run
+`powershell -ExecutionPolicy Bypass -File .\setup-gemini.ps1`. The script asks
+for the Google AI Studio API key with hidden input, updates only
+`GEMINI_API_KEY` in the ignored local `.env` file, installs dependencies if
+needed, and starts the server. Never send the key in chat or add it to browser
+code. `GEMINI_MODEL` is optional and defaults to `gemini-2.5-flash`.
+
+Customer messages and the product catalogue are sent to Google Gemini to
+generate replies; customers are warned not to share passwords, OTPs, or payment
+details. Without a Gemini key, the storefront uses its local catalogue advisor
+for product suggestions and budget-based combos; open-ended Gemini replies and
+visual image matching remain unavailable. Combo totals are calculated from
+current catalogue prices and must not exceed the stated budget. For new
+purchase requests, the assistant can suggest selected products and add them to
+the cart only after the customer chooses to continue. The customer must review
+the cart and complete checkout; the assistant does not place or confirm an
+order, receive payment, reserve stock, or arrange delivery. For existing
+order-specific or complaint cases, the assistant opens the existing admin
+contact choices; it does not establish a live in-site chat or automatically
+notify a human.
 
 Voice search requires a supported browser, microphone permission, and HTTPS
 (localhost is supported). Product image search sends a compressed image
