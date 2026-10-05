@@ -4953,6 +4953,7 @@
                 button.onclick = () => sendQuickPrompt(prompts[index][1]);
             });
             translateAuthUi();
+            translateRemainingPageText();
             updateCatalogCounts();
             updateIntroMusicButton();
             updateProvinceSelectionStatus();
@@ -4963,6 +4964,75 @@
                 localStorage.setItem('ocop-language', currentLanguage);
             } catch (error) {
                 console.warn('Language preference could not be saved to browser storage:', error);
+            }
+        }
+
+        const remainingTextNodes = new WeakMap();
+        const remainingAttributes = new WeakMap();
+
+        function translateRemainingPageText() {
+            const english = currentLanguage === 'en';
+            const labels = [
+                ['#intro-lucky-card .tracking-wide', 'AI Lucky Draw ? Take your chance'],
+                ['#intro-lucky-card > div:first-child > div > div > p', 'Try your luck to win a VND 50,000 voucher or nationwide free shipping.'],
+                ['#btn-draw-gift span', 'Draw a lucky voucher'],
+                ['#intro-gift-result .text-amber-300', 'VOUCHER CODE:'],
+                ['#intro-gift-result button span', 'Copy code'],
+                ['#province-map-clear', 'Clear selection'],
+                ['#admin-support-menu h4', 'Direct support on Facebook'],
+                ['#admin-support-menu h4 + p', 'Choose an admin to open a message'],
+                ['#admin-support-menu .flex-1 > span:first-child', 'OCOP product advice', 'Order support', 'Wholesale pricing & gifts', 'Customer care'],
+                ['#admin-support-menu .flex-1 > span:nth-child(2)', 'Online', 'Online', 'Online', 'Online'],
+                ['#orders-drawer h3', 'Purchase history'],
+                ['#contact-footer h5', 'OCOP Sales Copilot Vietnam ? all rights reserved'],
+                ['#contact-footer h6', 'Contact information', 'Customer support', 'About OCOP Sales Copilot AI'],
+                ['#contact-footer .md\\:col-span-4:first-child li:nth-child(2) span', 'Hotline: 1900 888 688 (toll-free)'],
+                ['#contact-footer .md\\:col-span-4:nth-child(2) li a', 'Nationwide shipping policy', '100% exchange policy', 'VietQR payment guide'],
+                ['#contact-footer .md\\:col-span-4:nth-child(3) p', 'A platform connecting Vietnam?s leading agricultural products directly with consumers nationwide, featuring certified 4- and 5-star OCOP specialties.'],
+                ['#contact-footer a[href="#"]', 'Terms of service', 'Privacy policy']
+            ];
+            labels.forEach(([selector, ...translations]) => {
+                document.querySelectorAll(selector).forEach((element, index) => {
+                    const textNode = [...element.childNodes].reverse().find(node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim());
+                    if (!textNode) return;
+                    if (!remainingTextNodes.has(textNode)) remainingTextNodes.set(textNode, textNode.nodeValue);
+                    if (english && translations[index]) textNode.nodeValue = textNode.nodeValue.replace(textNode.nodeValue.trim(), translations[index]);
+                    else if (!english) textNode.nodeValue = remainingTextNodes.get(textNode);
+                });
+            });
+
+            const attributes = [
+                ['#user-btn', 'title', 'Sign in / Account'],
+                ['#user-btn', 'aria-label', 'Sign in / Account'],
+                ['#site-language-btn', 'title', 'Switch language'],
+                ['#header-search-clear', 'title', 'Clear search'],
+                ['#header-search-clear', 'aria-label', 'Clear search'],
+                ['#mobile-search-clear', 'title', 'Clear search'],
+                ['#mobile-search-clear', 'aria-label', 'Clear search'],
+                ['#sidebar-search-clear', 'title', 'Clear search'],
+                ['#sidebar-search-clear', 'aria-label', 'Clear search'],
+                ['#chat-add-image-button', 'title', 'Add an image (paste or drag and drop)'],
+                ['#chat-add-image-button', 'aria-label', 'Add image'],
+                ['#chat-send-button', 'aria-label', 'Send message']
+            ];
+            attributes.forEach(([selector, name, value]) => {
+                const element = document.querySelector(selector);
+                if (!element) return;
+                let saved = remainingAttributes.get(element);
+                if (!saved) {
+                    saved = {};
+                    remainingAttributes.set(element, saved);
+                }
+                if (!(name in saved)) saved[name] = element.getAttribute(name);
+                if (english) element.setAttribute(name, value);
+                else if (saved[name] === null) element.removeAttribute(name);
+                else element.setAttribute(name, saved[name]);
+            });
+
+            const footerParagraph = document.querySelector('#contact-footer .md\\:col-span-4:first-child > ul li:nth-child(1) span');
+            if (footerParagraph) {
+                if (!remainingTextNodes.has(footerParagraph)) remainingTextNodes.set(footerParagraph, footerParagraph.textContent);
+                footerParagraph.textContent = english ? '496 Nguyen Thi Minh Khai St, Ward 2, District 3, Ho Chi Minh City' : remainingTextNodes.get(footerParagraph);
             }
         }
 
