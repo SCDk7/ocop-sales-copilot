@@ -3687,7 +3687,7 @@
         window.setTimeout(syncAIWebsiteCatalog, 0);
         window.setInterval(syncAIWebsiteCatalog, aiCatalogSyncIntervalMs);
 
-        function createLocalCatalogReply(query, hasImages = false) {
+        function createLocalCatalogReply(query, hasImages = false, fallbackReason = null) {
             lastAIRecommendedProductIds = [];
             lastAIRecommendationCriteria = null;
             lastAIComboMarkup = null;
@@ -3713,6 +3713,7 @@
                 productIds: lastAIRecommendedProductIds.slice(0, 3),
                 handoffAdmin,
                 localMarkup: lastAIComboMarkup,
+                fallbackReason,
                 localFallback: true
             };
         }
@@ -3796,7 +3797,11 @@
                         result = await response.json().catch(() => ({}));
                         if (!response.ok) {
                             if (response.status === 502 || response.status === 503) {
-                                result = createLocalCatalogReply(text, messageImages.length > 0);
+                                result = createLocalCatalogReply(
+                                    text,
+                                    messageImages.length > 0,
+                                    result.code || (response.status === 503 ? 'GEMINI_UNAVAILABLE' : 'GEMINI_PROVIDER_UNAVAILABLE')
+                                );
                             } else {
                                 throw new Error(result.error || (currentLanguage === 'en'
                                     ? 'The AI assistant is temporarily unavailable.'
@@ -3830,7 +3835,16 @@
                 if (result.localFallback) {
                     const fallbackNote = document.createElement('p');
                     fallbackNote.className = 'text-[10px] text-gray-500';
-                    fallbackNote.textContent = messageImages.length
+                    const geminiSetupIssue = [
+                        'GEMINI_AUTH_INVALID',
+                        'GEMINI_ACCESS_DENIED',
+                        'GEMINI_MODEL_UNAVAILABLE'
+                    ].includes(result.fallbackReason);
+                    fallbackNote.textContent = geminiSetupIssue
+                        ? currentLanguage === 'en'
+                            ? 'Product suggestions use the current catalogue. Gemini needs an administrator to check its API key, access, or model configuration.'
+                            : 'Gợi ý sản phẩm đang dựa trên danh mục. Gemini cần quản trị viên kiểm tra API key, quyền truy cập hoặc model trong cấu hình.'
+                        : messageImages.length
                         ? currentLanguage === 'en'
                             ? 'Gemini image analysis is unavailable right now; this reply is based on your text only.'
                             : 'Hiện chưa phân tích được ảnh bằng Gemini; phản hồi này chỉ dựa trên nội dung bạn nhập.'

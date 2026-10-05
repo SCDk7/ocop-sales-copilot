@@ -431,6 +431,51 @@ function getAIModelConfiguration() {
   return { apiKey, model };
 }
 
+function getGeminiProviderFailure(response, result, operation) {
+  const providerError = result && result.error || {};
+  const providerStatus = typeof providerError.status === 'string' ? providerError.status : '';
+  const failure = (code, message) => ({
+    status: 503,
+    body: { error: message, code, providerStatus: response.status }
+  });
+
+  if (response.status === 401 || providerStatus === 'UNAUTHENTICATED') {
+    return failure(
+      'GEMINI_AUTH_INVALID',
+      'Gemini chưa xác thực được API key. Quản trị viên cần cập nhật key hợp lệ trong .env rồi khởi động lại máy chủ.'
+    );
+  }
+  if (response.status === 403 || providerStatus === 'PERMISSION_DENIED') {
+    return failure(
+      'GEMINI_ACCESS_DENIED',
+      'Gemini từ chối quyền truy cập. Quản trị viên cần kiểm tra quyền API, dự án Google AI Studio và trạng thái key.'
+    );
+  }
+  if (response.status === 404 || providerStatus === 'NOT_FOUND') {
+    return failure(
+      'GEMINI_MODEL_UNAVAILABLE',
+      'Không tìm thấy mô hình Gemini đã cấu hình. Quản trị viên cần kiểm tra GEMINI_MODEL trong .env.'
+    );
+  }
+  if (response.status === 429 || providerStatus === 'RESOURCE_EXHAUSTED') {
+    return failure(
+      'GEMINI_QUOTA_EXCEEDED',
+      'Gemini đang quá tải hoặc đã hết hạn mức. Vui lòng thử lại sau ít phút.'
+    );
+  }
+
+  const statusCode = Number.isInteger(response.status) ? response.status : 'unknown';
+  console.error(`Gemini ${operation} failed:`, statusCode, providerStatus || 'Provider error');
+  return {
+    status: 502,
+    body: {
+      error: 'Trợ lý AI hiện chưa thể kết nối tới Gemini. Vui lòng thử lại sau.',
+      code: 'GEMINI_PROVIDER_UNAVAILABLE',
+      providerStatus: response.status
+    }
+  };
+}
+
 async function uploadImageToGeminiFilesApi(image, configuration, signal) {
   const imageBuffer = fs.readFileSync(path.join(CHAT_IMAGES_DIR, image.fileName));
   const startResponse = await fetch('https://generativelanguage.googleapis.com/upload/v1beta/files', {
@@ -782,8 +827,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
 
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
-      console.error('Gemini request failed:', response.status, result.error && result.error.status || 'Provider error');
-      return { status: 502, body: { error: 'Trợ lý AI chưa thể trả lời lúc này. Vui lòng thử lại hoặc liên hệ admin.' } };
+      return getGeminiProviderFailure(response, result, 'chat request');
     }
 
     const output = result.candidates && result.candidates[0] &&
@@ -943,9 +987,10 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
 
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
-      console.error('Gemini audio request failed:', response.status, result.error && result.error.status || 'Provider error');
-      return res.status(502).json({
-        error: 'Trợ lý AI chưa thể xử lý giọng nói lúc này. Bản ghi âm đã được lưu để nhân viên hỗ trợ.',
+      const failure = getGeminiProviderFailure(response, result, 'audio request');
+      return res.status(failure.status).json({
+        ...failure.body,
+        error: `${failure.body.error} Bản ghi âm đã được lưu để nhân viên hỗ trợ.`,
         recordingId: recording.id
       });
     }
