@@ -265,7 +265,6 @@
                 left: auto;
                 align-items: flex-end;
             }
-            #chat-voice-record,
             #chat-send-button {
                 min-width: 44px;
                 min-height: 44px;
@@ -2039,12 +2038,8 @@
             </div>
             
             <div class="border-t border-emerald-100 bg-white px-3 pt-2.5">
-                <p id="chat-voice-status" class="hidden mt-1.5 text-[10px] font-semibold text-gray-500" role="status" aria-live="polite"></p>
             </div>
             <div class="p-3 bg-white flex items-center gap-2">
-                <button id="chat-voice-record" type="button" onclick="toggleVoiceRecording()" aria-label="Bắt đầu ghi âm" title="Bắt đầu ghi âm" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-emerald-200 bg-emerald-50 text-ocopGreen hover:bg-emerald-100 transition flex items-center justify-center font-bold shadow cursor-pointer">
-                    <i class="fa-solid fa-microphone text-xs"></i>
-                </button>
                 <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
                 <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer"><i class="fa-solid fa-paper-plane text-xs"></i></button>
             </div>
@@ -2452,18 +2447,6 @@
         let currentOrderCode = null;
         let aiMessageSequence = 0;
         let aiConversationHistory = [];
-        let voiceMediaRecorder = null;
-        let voiceMediaStream = null;
-        let voiceRecordingChunks = [];
-        let pendingVoiceRecording = null;
-        const chatAudioObjectUrls = [];
-        window.addEventListener('beforeunload', () => {
-            chatAudioObjectUrls.forEach(audioUrl => URL.revokeObjectURL(audioUrl));
-        });
-        let voiceRecordingInterval = null;
-        let voiceRecordingStartedAt = 0;
-        let voiceRequestPending = false;
-        let sendVoiceWhenRecordingStops = false;
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
         const aiApiBaseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
@@ -3415,120 +3398,6 @@
             sendAIMessage();
         }
 
-        function setVoiceStatus(message, isError = false) {
-            const status = document.getElementById('chat-voice-status');
-            status.textContent = message;
-            status.classList.toggle('hidden', !message);
-            status.classList.toggle('mt-1.5', Boolean(message));
-            status.classList.toggle('text-red-600', isError);
-            status.classList.toggle('text-gray-500', !isError);
-        }
-
-        async function toggleVoiceRecording() {
-            if (voiceMediaRecorder && voiceMediaRecorder.state === 'recording') {
-                voiceMediaRecorder.stop();
-                return;
-            }
-            if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
-                setVoiceStatus(currentLanguage === 'en'
-                    ? 'Voice recording is not supported in this browser or connection.'
-                    : 'Trình duyệt hoặc kết nối này chưa hỗ trợ ghi âm.', true);
-                return;
-            }
-
-            try {
-                voiceMediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                const supportedTypes = [
-                    'audio/webm;codecs=opus',
-                    'audio/ogg;codecs=opus',
-                    'audio/mp4'
-                ];
-                const mimeType = supportedTypes.find(type => MediaRecorder.isTypeSupported(type));
-                voiceMediaRecorder = mimeType
-                    ? new MediaRecorder(voiceMediaStream, { mimeType })
-                    : new MediaRecorder(voiceMediaStream);
-                voiceRecordingChunks = [];
-                voiceMediaRecorder.ondataavailable = event => {
-                    if (event.data.size > 0) voiceRecordingChunks.push(event.data);
-                };
-                voiceMediaRecorder.onerror = () => {
-                    releaseVoiceRecording();
-                    sendVoiceWhenRecordingStops = false;
-                    setVoiceStatus(currentLanguage === 'en'
-                        ? 'The browser could not record audio. Please try again.'
-                        : 'Không thể ghi âm. Vui lòng thử lại.', true);
-                };
-                voiceMediaRecorder.onstop = () => {
-                    if (voiceRecordingInterval) clearInterval(voiceRecordingInterval);
-                    voiceRecordingInterval = null;
-                    if (voiceMediaStream) voiceMediaStream.getTracks().forEach(track => track.stop());
-                    voiceMediaStream = null;
-
-                    const audioType = (voiceMediaRecorder && voiceMediaRecorder.mimeType) || 'audio/webm';
-                    voiceMediaRecorder = null;
-                    pendingVoiceRecording = new Blob(voiceRecordingChunks, { type: audioType });
-                    voiceRecordingChunks = [];
-
-                    const recordButton = document.getElementById('chat-voice-record');
-                    recordButton.innerHTML = '<i class="fa-solid fa-microphone text-xs"></i>';
-                    recordButton.setAttribute('aria-label', currentLanguage === 'en' ? 'Start recording' : 'Bắt đầu ghi âm');
-                    recordButton.title = recordButton.getAttribute('aria-label');
-
-                    if (!pendingVoiceRecording.size) {
-                        pendingVoiceRecording = null;
-                        sendVoiceWhenRecordingStops = false;
-                        setVoiceStatus(currentLanguage === 'en' ? 'No audio was recorded.' : 'Không có âm thanh được ghi lại.', true);
-                        return;
-                    }
-                    if (pendingVoiceRecording.size > 12 * 1024 * 1024) {
-                        pendingVoiceRecording = null;
-                        sendVoiceWhenRecordingStops = false;
-                        setVoiceStatus(currentLanguage === 'en'
-                            ? 'The recording is over 12 MB. Please record a shorter message.'
-                            : 'Bản ghi vượt quá 12 MB. Vui lòng ghi âm ngắn hơn.', true);
-                        return;
-                    }
-
-                    setVoiceStatus('');
-                    if (sendVoiceWhenRecordingStops) {
-                        sendVoiceWhenRecordingStops = false;
-                        sendRecordedVoice();
-                    }
-                };
-
-                voiceMediaRecorder.start();
-                voiceRecordingStartedAt = Date.now();
-                const recordButton = document.getElementById('chat-voice-record');
-                recordButton.innerHTML = '<i class="fa-solid fa-stop text-xs"></i>';
-                recordButton.setAttribute('aria-label', currentLanguage === 'en' ? 'Stop recording' : 'Dừng ghi âm');
-                recordButton.title = recordButton.getAttribute('aria-label');
-                setVoiceStatus(currentLanguage === 'en' ? 'Recording… 0:00' : 'Đang ghi âm… 0:00');
-                voiceRecordingInterval = window.setInterval(() => {
-                    const elapsed = Math.floor((Date.now() - voiceRecordingStartedAt) / 1000);
-                    const time = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`;
-                    setVoiceStatus(`${currentLanguage === 'en' ? 'Recording…' : 'Đang ghi âm…'} ${time}`);
-                }, 1000);
-            } catch (error) {
-                releaseVoiceRecording();
-                setVoiceStatus(currentLanguage === 'en'
-                    ? 'Microphone access was denied or unavailable. Check browser permissions and try again.'
-                    : 'Không thể truy cập micro. Hãy kiểm tra quyền của trình duyệt rồi thử lại.', true);
-            }
-        }
-
-        function releaseVoiceRecording() {
-            if (voiceRecordingInterval) clearInterval(voiceRecordingInterval);
-            voiceRecordingInterval = null;
-            if (voiceMediaStream) voiceMediaStream.getTracks().forEach(track => track.stop());
-            voiceMediaStream = null;
-            voiceMediaRecorder = null;
-            voiceRecordingChunks = [];
-            const recordButton = document.getElementById('chat-voice-record');
-            recordButton.innerHTML = '<i class="fa-solid fa-microphone text-xs"></i>';
-            recordButton.setAttribute('aria-label', currentLanguage === 'en' ? 'Start recording' : 'Bắt đầu ghi âm');
-            recordButton.title = recordButton.getAttribute('aria-label');
-        }
-
         function getAIProductPayload() {
             return products.map(product => ({
                 id: product.id,
@@ -3542,77 +3411,6 @@
                 tag: product.tag,
                 description: product.desc
             }));
-        }
-
-        async function convertVoiceRecordingToWav(recording) {
-            const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContextConstructor) {
-                throw new Error(currentLanguage === 'en'
-                    ? 'This browser cannot prepare audio for recognition. Please use a recent browser.'
-                    : 'Trình duyệt chưa hỗ trợ xử lý âm thanh để nhận diện. Vui lòng dùng trình duyệt mới hơn.');
-            }
-
-            const audioContext = new AudioContextConstructor();
-            const sizeLimitError = new Error(currentLanguage === 'en'
-                ? 'The processed recording is over 12 MB. Please record a shorter message.'
-                : 'Bản ghi sau xử lý vượt quá 12 MB. Vui lòng ghi âm ngắn hơn.');
-            try {
-                const decodedAudio = await audioContext.decodeAudioData(await recording.arrayBuffer());
-                const targetSampleRate = 16000;
-                const frameCount = Math.ceil(decodedAudio.length * targetSampleRate / decodedAudio.sampleRate);
-                if (44 + frameCount * 2 > 12 * 1024 * 1024) {
-                    throw sizeLimitError;
-                }
-                const wavBuffer = new ArrayBuffer(44 + frameCount * 2);
-                const view = new DataView(wavBuffer);
-                const writeText = (offset, value) => {
-                    for (let index = 0; index < value.length; index += 1) {
-                        view.setUint8(offset + index, value.charCodeAt(index));
-                    }
-                };
-
-                writeText(0, 'RIFF');
-                view.setUint32(4, 36 + frameCount * 2, true);
-                writeText(8, 'WAVE');
-                writeText(12, 'fmt ');
-                view.setUint32(16, 16, true);
-                view.setUint16(20, 1, true);
-                view.setUint16(22, 1, true);
-                view.setUint32(24, targetSampleRate, true);
-                view.setUint32(28, targetSampleRate * 2, true);
-                view.setUint16(32, 2, true);
-                view.setUint16(34, 16, true);
-                writeText(36, 'data');
-                view.setUint32(40, frameCount * 2, true);
-
-                const channels = Array.from(
-                    { length: decodedAudio.numberOfChannels },
-                    (_, channelIndex) => decodedAudio.getChannelData(channelIndex)
-                );
-                for (let frame = 0; frame < frameCount; frame += 1) {
-                    const sourcePosition = frame * decodedAudio.sampleRate / targetSampleRate;
-                    const sourceFrame = Math.floor(sourcePosition);
-                    const fraction = sourcePosition - sourceFrame;
-                    let sample = 0;
-                    channels.forEach(channel => {
-                        const first = channel[Math.min(sourceFrame, channel.length - 1)] || 0;
-                        const second = channel[Math.min(sourceFrame + 1, channel.length - 1)] || 0;
-                        sample += first + (second - first) * fraction;
-                    });
-                    sample = Math.max(-1, Math.min(1, sample / channels.length));
-                    view.setInt16(44 + frame * 2, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
-                }
-
-                return new Blob([wavBuffer], { type: 'audio/wav' });
-            } catch (error) {
-                if (error === sizeLimitError) throw error;
-                console.error('Unable to convert the customer voice recording to WAV:', error);
-                throw new Error(currentLanguage === 'en'
-                    ? 'Could not read the recording. Please record it again and try once more.'
-                    : 'Không đọc được bản ghi âm. Vui lòng ghi âm lại rồi thử gửi lần nữa.');
-            } finally {
-                await audioContext.close();
-            }
         }
 
         function appendAIResponse(result, messagesEl, loadingId) {
@@ -3683,119 +3481,7 @@
             messagesEl.scrollTop = messagesEl.scrollHeight;
         }
 
-        async function sendRecordedVoice() {
-            if (voiceRequestPending || !pendingVoiceRecording) return;
-            voiceRequestPending = true;
-            document.getElementById('chat-send-button').disabled = true;
-            document.getElementById('chat-voice-record').disabled = true;
-            const messagesEl = document.getElementById('ai-chat-messages');
-            const loadingId = 'ai-loading-' + ++aiMessageSequence;
-            messagesEl.insertAdjacentHTML('beforeend', `
-                <div id="${loadingId}" class="flex items-start space-x-2">
-                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
-                    <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-500 text-xs shadow-sm flex items-center space-x-1.5">
-                        <i class="fa-solid fa-spinner fa-spin text-ocopGreen"></i>
-                        <span>${currentLanguage === 'en' ? 'Listening to your message...' : 'Đang nghe tin nhắn thoại...'}</span>
-                    </div>
-                </div>
-            `);
-            messagesEl.scrollTop = messagesEl.scrollHeight;
-
-            try {
-                const audioRecording = await convertVoiceRecordingToWav(pendingVoiceRecording);
-                if (audioRecording.size > 12 * 1024 * 1024) {
-                    throw new Error(currentLanguage === 'en'
-                        ? 'The processed recording is over 12 MB. Please record a shorter message.'
-                        : 'Bản ghi sau xử lý vượt quá 12 MB. Vui lòng ghi âm ngắn hơn.');
-                }
-                const reader = new FileReader();
-                const audioDataUrl = await new Promise((resolve, reject) => {
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = () => reject(reader.error || new Error('Không thể đọc bản ghi âm.'));
-                    reader.readAsDataURL(audioRecording);
-                });
-                const audioBase64 = String(audioDataUrl).split(',')[1];
-                const audioPrompt = currentLanguage === 'en'
-                    ? '[Customer sent a voice message. Listen, transcribe it faithfully, then respond.]'
-                    : '[Khách hàng gửi tin nhắn thoại. Hãy nghe, chép lại đúng nội dung và trả lời.]';
-                const response = await fetch(getAIAPIUrl('/api/ai/audio-chat'), {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        recordingConsent: true,
-                        language: currentLanguage,
-                        messages: [...aiConversationHistory.slice(-14), { role: 'user', text: audioPrompt }],
-                        products: getAIProductPayload(),
-                        audio: { mimeType: 'audio/wav', data: audioBase64 }
-                    })
-                });
-                const result = await response.json().catch(() => ({}));
-                if (!response.ok) {
-                    const savedNotice = result.recordingId
-                        ? (currentLanguage === 'en'
-                            ? ' The recording was saved for staff review.'
-                            : ' Bản ghi đã được lưu để nhân viên hỗ trợ.')
-                        : '';
-                    throw new Error((result.error || (currentLanguage === 'en'
-                        ? 'The assistant could not process this recording.'
-                        : 'Trợ lý chưa thể xử lý bản ghi âm.')) + savedNotice);
-                }
-
-                const userMessage = document.createElement('div');
-                userMessage.className = 'flex items-start justify-end space-x-2';
-                const bubble = document.createElement('div');
-                bubble.className = 'max-w-[85%] space-y-1 rounded-2xl bg-ocopGreen p-3 text-xs leading-relaxed text-white shadow-sm';
-                const transcript = document.createElement('p');
-                transcript.className = 'whitespace-pre-wrap break-words';
-                transcript.textContent = result.transcription;
-                const player = document.createElement('audio');
-                player.controls = true;
-                const audioUrl = URL.createObjectURL(audioRecording);
-                chatAudioObjectUrls.push(audioUrl);
-                player.src = audioUrl;
-                player.className = 'h-8 max-w-full';
-                bubble.append(transcript, player);
-                const avatar = document.createElement('div');
-                avatar.className = 'mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-ocopGreen';
-                avatar.setAttribute('aria-hidden', 'true');
-                avatar.innerHTML = '<i class="fa-solid fa-user"></i>';
-                userMessage.append(bubble, avatar);
-                messagesEl.append(userMessage);
-
-                appendAIResponse(result, messagesEl, loadingId);
-                aiConversationHistory = [
-                    ...aiConversationHistory,
-                    { role: 'user', text: result.transcription },
-                    { role: 'assistant', text: result.message }
-                ].slice(-16);
-                pendingVoiceRecording = null;
-                setVoiceStatus('');
-            } catch (error) {
-                const errorMessage = window.location.protocol === 'file:' && error instanceof TypeError
-                    ? (currentLanguage === 'en'
-                        ? 'Could not reach the local AI server. Start it with npm start, then send your recording again.'
-                        : 'Không kết nối được máy chủ AI trên máy này. Hãy chạy npm start rồi gửi lại bản ghi âm.')
-                    : (error.message ||
-                        (currentLanguage === 'en' ? 'Could not send the voice recording.' : 'Không thể gửi bản ghi âm.'));
-                appendAIError(messagesEl, loadingId, errorMessage);
-                setVoiceStatus(errorMessage, true);
-            } finally {
-                voiceRequestPending = false;
-                document.getElementById('chat-send-button').disabled = false;
-                document.getElementById('chat-voice-record').disabled = false;
-            }
-        }
-
         async function sendAIMessage() {
-            if (voiceMediaRecorder && voiceMediaRecorder.state === 'recording') {
-                sendVoiceWhenRecordingStops = true;
-                voiceMediaRecorder.stop();
-                return;
-            }
-            if (pendingVoiceRecording) {
-                await sendRecordedVoice();
-                return;
-            }
             const inputEl = document.getElementById('ai-chat-input');
             const messagesEl = document.getElementById('ai-chat-messages');
             const text = inputEl.value.trim();
@@ -3809,9 +3495,8 @@
                     <div class="w-7 h-7 rounded-full bg-emerald-100 text-ocopGreen font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
                 </div>
             `);
-            messagesEl.lastElementChild.firstElementChild.textContent = text;
-
-            inputEl.value = '';
+            const userMessage = messagesEl.lastElementChild;
+            userMessage.firstElementChild.textContent = text;
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             // Giả lập AI đang gõ
@@ -3845,12 +3530,15 @@
                 }
 
                 appendAIResponse(result, messagesEl, loadingId);
+                if (inputEl.value.trim() === text) inputEl.value = '';
                 aiConversationHistory = [
                     ...aiConversationHistory,
                     { role: 'user', text },
                     { role: 'assistant', text: result.message }
                 ].slice(-16);
             } catch (error) {
+                userMessage.remove();
+                if (!inputEl.value.trim()) inputEl.value = text;
                 const errorMessage = window.location.protocol === 'file:' && error instanceof TypeError
                     ? (currentLanguage === 'en'
                         ? 'Could not reach the local AI server. Start it with npm start, then try again.'
@@ -5152,11 +4840,6 @@
             document.getElementById('ai-chat-input').placeholder = currentLanguage === 'en'
                 ? 'Try: gifts under 500k in the Mekong Delta' : 'Ví dụ: quà tặng dưới 500k ở miền Tây';
             document.getElementById('chat-send-button').setAttribute('aria-label', currentLanguage === 'en' ? 'Send message' : 'Gửi tin nhắn');
-            const voiceRecordLabel = voiceMediaRecorder && voiceMediaRecorder.state === 'recording'
-                ? (currentLanguage === 'en' ? 'Stop recording' : 'Dừng ghi âm')
-                : (currentLanguage === 'en' ? 'Start recording' : 'Bắt đầu ghi âm');
-            document.getElementById('chat-voice-record').setAttribute('aria-label', voiceRecordLabel);
-            document.getElementById('chat-voice-record').title = voiceRecordLabel;
             document.getElementById('chat-greeting').textContent = currentLanguage === 'en'
                 ? 'Hello! I can help you find a Vietnamese specialty that fits.'
                 : 'Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.';
