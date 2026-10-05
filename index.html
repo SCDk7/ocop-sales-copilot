@@ -3260,7 +3260,57 @@
             }
         }
 
+        function renderIssueSupportReply(promptText = '') {
+            const messagesEl = document.getElementById('ai-chat-messages');
+            const normalizedPrompt = (promptText || '').trim();
+            const alreadyRendered = [...messagesEl.querySelectorAll('.chat-quick-prompt-message')].some(node =>
+                (node.textContent || '').replace(/\s+/g, ' ').trim() === normalizedPrompt
+            );
+            if (alreadyRendered) return;
+
+            messagesEl.querySelectorAll('button[data-admin-contact="true"]').forEach(button => button.remove());
+
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-quick-prompt-message flex items-start justify-end';
+            const userBubble = document.createElement('div');
+            userBubble.className = 'max-w-[80%] bg-[#0F382C] text-white px-4 py-3 rounded-[22px_22px_8px_22px] text-sm leading-relaxed shadow-sm';
+            userBubble.textContent = normalizedPrompt || 'Tôi nhận hàng bị lỗi';
+            userMessage.appendChild(userBubble);
+
+            const assistantWrap = document.createElement('div');
+            assistantWrap.className = 'flex items-end gap-2.5';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'flex h-7 w-7 items-center justify-center rounded-full bg-[#F3EAD5] text-[10px] font-bold text-[#0F382C] shadow-sm';
+            avatar.textContent = 'AI';
+
+            const assistantBubble = document.createElement('div');
+            assistantBubble.className = 'max-w-[85%] rounded-[18px_18px_18px_6px] border border-[#E8D5A8] bg-white px-3.5 py-3 text-sm leading-relaxed text-[#1F1F1F] shadow-sm';
+
+            const assistantText = document.createElement('p');
+            assistantText.className = 'm-0 whitespace-pre-line';
+            assistantText.textContent = 'Chào Quý khách, để chúng tôi hỗ trợ kiểm tra và xử lý chính xác nhất, Quý khách vui lòng gửi ảnh chụp sản phẩm đang gặp lỗi (bao gồm hình ảnh tổng quan sản phẩm, vị trí hỏng, hộp/tem nhãn, và nếu có mã đơn hàng/serial). Những hình ảnh này sẽ giúp chúng tôi xác định nguyên nhân và hỗ trợ Quý khách trong trường hợp đổi trả hoặc hoàn hàng theo chính sách.\n\nNếu có thể, Quý khách vui lòng gửi thêm video ngắn hoặc hình ảnh rõ nét về lỗi sản phẩm để chúng tôi đánh giá nhanh hơn. Chúng tôi rất xin lỗi vì sự bất tiện này và sẽ hỗ trợ Quý khách tốt nhất.\n\nCảm ơn Quý khách đã quan tâm và hợp tác.';
+
+            const contactButton = document.createElement('button');
+            contactButton.type = 'button';
+            contactButton.dataset.adminContact = 'true';
+            contactButton.className = 'mt-2.5 rounded-xl border border-[#E9D8A5] bg-white px-3 py-2 text-[11px] font-bold text-[#173B30] hover:bg-[#F8F1E3]';
+            contactButton.textContent = 'Liên hệ admin';
+            contactButton.addEventListener('click', connectCustomerToAdmin);
+
+            assistantBubble.append(assistantText, contactButton);
+            assistantWrap.append(avatar, assistantBubble);
+            messagesEl.append(userMessage, assistantWrap);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
         function sendQuickPrompt(promptText) {
+            const normalized = (promptText || '').toLowerCase();
+            const isComplaintPrompt = /(hàng lỗi|hang loi|nhận hàng bị lỗi|nhan hang bi loi|đổi trả|doi tra|hoàn hàng|hoan hang|giao sai|sai hàng|lack|missing item)/i.test(normalized);
+            if (isComplaintPrompt) {
+                renderIssueSupportReply(promptText);
+                return;
+            }
             document.getElementById('ai-chat-input').value = promptText;
             sendAIMessage();
         }
@@ -3569,10 +3619,14 @@
                 if (result.handoffAdmin) {
                     const handoffButton = document.createElement('button');
                     handoffButton.type = 'button';
+                    handoffButton.dataset.adminContact = 'true';
                     handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
-                    handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
+                    handoffButton.textContent = 'Mở liên hệ admin';
                     handoffButton.addEventListener('click', toggleAdminSupport);
-                    reply.querySelector('div.bg-white').append(handoffButton);
+                    const existingAdminButton = reply.querySelector('button[data-admin-contact="true"]');
+                    if (!existingAdminButton) {
+                        reply.querySelector('div.bg-white').append(handoffButton);
+                    }
                 }
                 messagesEl.append(reply);
                 aiConversationHistory = [
@@ -3603,12 +3657,11 @@
                         <p class="ai-error-message"></p>
                     </div>
                 `;
-                failure.querySelector('.ai-error-message').textContent = error.message ||
-                    (currentLanguage === 'en' ? 'The AI assistant could not connect.' : 'Không thể kết nối trợ lý AI.');
+                failure.querySelector('.ai-error-message').textContent = error.message || 'Không thể kết nối trợ lý AI.';
                 const contactButton = document.createElement('button');
                 contactButton.type = 'button';
                 contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
-                contactButton.textContent = currentLanguage === 'en' ? 'Contact admin' : 'Liên hệ admin';
+                contactButton.textContent = 'Liên hệ admin';
                 contactButton.addEventListener('click', connectCustomerToAdmin);
                 failure.querySelector('div.bg-white').append(contactButton);
                 messagesEl.append(failure);
@@ -3633,9 +3686,7 @@
             const aiRelevanceScores = new Map();
 
             if (isAIAdminContactRequest(q)) {
-                return english
-                    ? 'Please wait a moment while I open the available direct admin contacts. Choose an admin to message them on Facebook.'
-                    : 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
+                return 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
             }
 
             const serviceGuidance = getAIServiceGuidance(q, english);
@@ -3887,29 +3938,15 @@
             if (!issue) return null;
 
             const guidance = {
-                defect: english
-                    ? 'I’m sorry the item arrived in this condition. Please stop using or consuming it, keep the item and packaging, and take clear photos or an unboxing video showing the issue, parcel label, and expiry/batch details. Our team must review the order and confirm the available remedy; I can’t promise an exchange or refund before that review.'
-                    : 'Mình rất tiếc vì sản phẩm gặp tình trạng này. Anh/chị vui lòng tạm ngừng sử dụng/tiêu thụ sản phẩm, giữ lại sản phẩm và bao bì, chụp ảnh hoặc video rõ tình trạng lỗi, nhãn kiện hàng và hạn sử dụng/số lô. Nhân viên cần kiểm tra đơn và xác nhận phương án xử lý; chatbot chưa thể cam kết đổi hàng hay hoàn tiền trước khi kiểm tra.',
-                wrongOrMissing: english
-                    ? 'Please compare the parcel with your order, keep the outer packaging and shipping label, and photograph the items received. Our team needs the order details and photos to verify a missing or incorrect item and advise the next step.'
-                    : 'Anh/chị vui lòng đối chiếu kiện hàng với đơn đặt, giữ lại bao bì và nhãn vận chuyển, đồng thời chụp ảnh các sản phẩm đã nhận. Nhân viên cần mã đơn và hình ảnh để xác minh hàng thiếu/giao nhầm và hướng dẫn bước tiếp theo.',
-                return: english
-                    ? 'Return or exchange eligibility, deadlines, and shipping arrangements depend on the order and product condition. Please keep the item, seal, and packaging, and contact our team with your order number and reason before sending anything back. They will confirm the applicable policy; I can’t promise eligibility or a refund here.'
-                    : 'Điều kiện, thời hạn đổi trả và cách gửi hàng phụ thuộc vào đơn hàng và tình trạng sản phẩm. Anh/chị vui lòng giữ sản phẩm, tem niêm phong và bao bì; liên hệ nhân viên với mã đơn cùng lý do trước khi gửi trả. Nhân viên sẽ xác nhận chính sách áp dụng; chatbot chưa thể xác nhận đủ điều kiện hoặc hứa hoàn tiền.',
-                payment: english
-                    ? 'Please don’t make another payment yet. Check your bank/payment app for the transaction status and keep the receipt or transaction reference. Our team can verify whether the order was paid; never share your password, PIN, or one-time verification code.'
-                    : 'Anh/chị vui lòng chưa thanh toán lại ngay. Hãy kiểm tra trạng thái giao dịch trong ứng dụng ngân hàng/ví và lưu biên lai hoặc mã giao dịch để nhân viên đối soát đơn. Không chia sẻ mật khẩu, mã PIN hay mã OTP.',
-                delivery: english
-                    ? 'Please check the order confirmation and tracking details, if available. Keep the order number and contact our team to verify the delivery status and next steps. Delivery timing can vary, so I can’t confirm an arrival date without checking the shipment.'
-                    : 'Anh/chị vui lòng kiểm tra xác nhận đơn và thông tin theo dõi vận chuyển (nếu có). Chuẩn bị mã đơn rồi liên hệ nhân viên để kiểm tra tình trạng giao và hướng xử lý. Thời gian giao có thể thay đổi nên chatbot chưa thể xác nhận ngày nhận khi chưa kiểm tra vận đơn.',
-                order: english
-                    ? 'I can’t access live order records from this chat. Please contact our team with your order number and the change or status you need; they can check whether the order can still be updated or cancelled.'
-                    : 'Chatbot hiện không truy cập được dữ liệu đơn hàng trực tiếp. Anh/chị vui lòng liên hệ nhân viên, cung cấp mã đơn và yêu cầu cần kiểm tra; nhân viên sẽ xác nhận đơn còn có thể chỉnh sửa hoặc hủy hay không.',
-                purchase: english
-                    ? 'Please check that required fields are complete, refresh the page, and try adding the item to your cart once. If you already submitted payment, don’t pay again until it is verified. Contact our team if the issue continues.'
-                    : 'Anh/chị vui lòng kiểm tra các trường bắt buộc, tải lại trang và thử thêm sản phẩm vào giỏ một lần. Nếu đã gửi thanh toán, đừng thanh toán lại trước khi được đối soát. Nếu lỗi vẫn tiếp diễn, hãy liên hệ nhân viên để được hỗ trợ.'
+                defect: 'Mình rất tiếc vì sản phẩm gặp tình trạng này. Anh/chị vui lòng tạm ngừng sử dụng/tiêu thụ sản phẩm, giữ lại sản phẩm và bao bì, chụp ảnh hoặc video rõ tình trạng lỗi, nhãn kiện hàng và hạn sử dụng/số lô. Nhân viên cần kiểm tra đơn và xác nhận phương án xử lý; chatbot chưa thể cam kết đổi hàng hay hoàn tiền trước khi kiểm tra.',
+                wrongOrMissing: 'Anh/chị vui lòng đối chiếu kiện hàng với đơn đặt, giữ lại bao bì và nhãn vận chuyển, đồng thời chụp ảnh các sản phẩm đã nhận. Nhân viên cần mã đơn và hình ảnh để xác minh hàng thiếu/giao nhầm và hướng dẫn bước tiếp theo.',
+                return: 'Điều kiện, thời hạn đổi trả và cách gửi hàng phụ thuộc vào đơn hàng và tình trạng sản phẩm. Anh/chị vui lòng giữ sản phẩm, tem niêm phong và bao bì; liên hệ nhân viên với mã đơn cùng lý do trước khi gửi trả. Nhân viên sẽ xác nhận chính sách áp dụng; chatbot chưa thể xác nhận đủ điều kiện hoặc hứa hoàn tiền.',
+                payment: 'Anh/chị vui lòng chưa thanh toán lại ngay. Hãy kiểm tra trạng thái giao dịch trong ứng dụng ngân hàng/ví và lưu biên lai hoặc mã giao dịch để nhân viên đối soát đơn. Không chia sẻ mật khẩu, mã PIN hay mã OTP.',
+                delivery: 'Anh/chị vui lòng kiểm tra xác nhận đơn và thông tin theo dõi vận chuyển (nếu có). Chuẩn bị mã đơn rồi liên hệ nhân viên để kiểm tra tình trạng giao và hướng xử lý. Thời gian giao có thể thay đổi nên chatbot chưa thể xác nhận ngày nhận khi chưa kiểm tra vận đơn.',
+                order: 'Chatbot hiện không truy cập được dữ liệu đơn hàng trực tiếp. Anh/chị vui lòng liên hệ nhân viên, cung cấp mã đơn và yêu cầu cần kiểm tra; nhân viên sẽ xác nhận đơn còn có thể chỉnh sửa hoặc hủy hay không.',
+                purchase: 'Anh/chị vui lòng kiểm tra các trường bắt buộc, tải lại trang và thử thêm sản phẩm vào giỏ một lần. Nếu đã gửi thanh toán, đừng thanh toán lại trước khi được đối soát. Nếu lỗi vẫn tiếp diễn, hãy liên hệ nhân viên để được hỗ trợ.'
             }[issue.type];
-            const contactLabel = english ? 'Contact an admin' : 'Liên hệ admin trực tiếp';
+            const contactLabel = 'Liên hệ admin trực tiếp';
             return `<p>${escapeAIHtml(guidance)}</p><button onclick="connectCustomerToAdmin()" class="rounded-lg bg-ocopGreen px-3 py-2 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${contactLabel}</button>`;
         }
 
@@ -3941,9 +3978,7 @@
 
         function connectCustomerToAdmin() {
             const messagesEl = document.getElementById('ai-chat-messages');
-            const message = currentLanguage === 'en'
-                ? 'Please wait a moment while I open the available direct admin contacts. Choose an admin to message them on Facebook.'
-                : 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
+            const message = 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
             const wrapper = document.createElement('div');
             wrapper.className = 'flex items-start space-x-2';
             wrapper.innerHTML = `
