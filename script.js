@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const aiAvatars = document.querySelectorAll('.ai-avatar, .copilot-avatar, img[alt*="AI"]');
     aiAvatars.forEach((img) => {
-        img.src = 'ai-avatar.jpg';
+        img.src = 'chat-avatar.svg';
     });
 
     const searchInput = document.getElementById('headerSearchInput');
