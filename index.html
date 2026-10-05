@@ -2433,6 +2433,7 @@
         let pendingAIImages = [];
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
+        let lastAIComboMarkup = null;
         let ordersHistory = [
             { id: 'OCOP-98231', date: '02/10/2026', total: 1530000, status: 'Đã giao hàng', items: ['Trà Đinh Nõn Tân Cương', 'Thịt Trâu Gác Bếp'] },
             { id: 'OCOP-77120', date: '25/09/2026', total: 2450000, status: 'Đang vận chuyển', items: ['Yến Sào Khánh Hòa Thượng Hạng'] }
@@ -3689,6 +3690,7 @@
         function createLocalCatalogReply(query, hasImages = false) {
             lastAIRecommendedProductIds = [];
             lastAIRecommendationCriteria = null;
+            lastAIComboMarkup = null;
             if (hasImages) {
                 return {
                     message: currentLanguage === 'en'
@@ -3710,6 +3712,7 @@
                     : generated,
                 productIds: lastAIRecommendedProductIds.slice(0, 3),
                 handoffAdmin,
+                localMarkup: lastAIComboMarkup,
                 localFallback: true
             };
         }
@@ -3839,14 +3842,57 @@
                 const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
                     .map(id => products.find(product => product.id === id))
                     .filter(Boolean);
-                if (recommendedProducts.length) {
-                    reply.querySelector('.ai-product-recommendations').innerHTML = renderAIProductRecommendations(
+                const recommendationsEl = reply.querySelector('.ai-product-recommendations');
+                if (result.localMarkup) {
+                    recommendationsEl.innerHTML = result.localMarkup;
+                } else if (recommendedProducts.length && isAIComboRequest(text)) {
+                    const budget = parseAIBudget(normalizeSearchText(text));
+                    const comboTotal = recommendedProducts.reduce((total, product) => total + product.price, 0);
+                    if (recommendedProducts.length < 2 || !budget || comboTotal > budget) {
+                        reply.querySelector('p').textContent = currentLanguage === 'en'
+                            ? budget
+                                ? recommendedProducts.length < 2
+                                    ? 'I could not verify a multi-product combo within your budget. Please try another budget or category.'
+                                    : 'I could not verify a combo within your budget. Please try a higher budget or a different category.'
+                                : 'What total budget should I use for your combo?'
+                            : budget
+                                ? recommendedProducts.length < 2
+                                    ? 'Mình chưa xác minh được combo gồm nhiều sản phẩm trong ngân sách này. Anh/chị thử đổi ngân sách hoặc nhóm đặc sản nhé.'
+                                    : 'Mình chưa xác minh được combo trong ngân sách này. Anh/chị thử tăng ngân sách hoặc chọn nhóm đặc sản khác nhé.'
+                                : 'Anh/chị muốn combo có tổng ngân sách khoảng bao nhiêu?';
+                    } else {
+                        recommendationsEl.innerHTML = renderAIComboRecommendations(
+                            [recommendedProducts],
+                            currentLanguage === 'en' ? 'Combo ideas' : 'Gợi ý combo đặc sản',
+                            currentLanguage === 'en'
+                                ? 'The total uses current catalogue prices; review the items before adding them to your cart.'
+                                : 'Tổng tiền tính theo giá danh mục hiện tại; anh/chị vui lòng kiểm tra combo trước khi thêm vào giỏ.'
+                        );
+                    }
+                } else if (recommendedProducts.length) {
+                    recommendationsEl.innerHTML = renderAIProductRecommendations(
                         recommendedProducts,
                         currentLanguage === 'en' ? 'Recommended products' : 'Sản phẩm gợi ý',
                         currentLanguage === 'en'
                             ? 'Prices and product information are from the current catalogue.'
                             : 'Giá và thông tin được lấy từ danh mục hiện tại.'
                     );
+                    if (isAIOrderRequest(text)) {
+                        const orderButton = document.createElement('button');
+                        orderButton.type = 'button';
+                        orderButton.className = 'w-full rounded-lg bg-amber-500 px-3 py-2 text-xs font-extrabold text-ocopGreen hover:bg-amber-400';
+                        orderButton.textContent = currentLanguage === 'en'
+                            ? 'Add selected products to cart to continue'
+                            : 'Thêm sản phẩm đã chọn vào giỏ để tiếp tục đặt hàng';
+                        orderButton.addEventListener('click', () => addProductsToCart(recommendedProducts.map(product => product.id)));
+                        recommendationsEl.append(orderButton);
+                        const orderNote = document.createElement('p');
+                        orderNote.className = 'text-[10px] text-gray-500';
+                        orderNote.textContent = currentLanguage === 'en'
+                            ? 'Your order is not submitted or paid until you review the cart and complete checkout.'
+                            : 'Đơn chưa được gửi hoặc thanh toán cho đến khi anh/chị kiểm tra giỏ hàng và hoàn tất bước thanh toán.';
+                        recommendationsEl.append(orderNote);
+                    }
                 }
                 if (result.handoffAdmin) {
                     const handoffButton = document.createElement('button');
@@ -3924,6 +3970,7 @@
             const budgetFloor = parseAIBudgetFloor(q);
             const category = getAIProductCategory(q);
             const matchingRegions = getAIRegionProducts(q);
+            const isComboRequest = isAIComboRequest(q);
             let relevantTerms = [];
             const requestedStars = /\b(5 sao|5 star|nam sao|top|cao cap|ban chay|danh gia cao)\b/.test(q)
                 ? 5
@@ -3954,6 +4001,33 @@
                 return english
                     ? 'You’re welcome. Share a budget or occasion if you would like more suggestions.'
                     : 'Rất vui được hỗ trợ anh/chị. Nếu muốn xem thêm lựa chọn, anh/chị có thể cho mình biết ngân sách hoặc dịp tặng nhé.';
+            }
+            if (isComboRequest) {
+                if (!budget) {
+                    lastAIComboMarkup = null;
+                    return english
+                        ? 'What total budget should I use for the combo? For example, “a regional food combo under 500k”.'
+                        : 'Anh/chị muốn combo có tổng ngân sách khoảng bao nhiêu? Ví dụ: “combo đặc sản dưới 500k”.';
+                }
+                const combos = getAIComboRecommendations({ budget, budgetFloor, category, requestedStars, matchingRegions });
+                if (!combos.length) {
+                    lastAIComboMarkup = null;
+                    return english
+                        ? `I could not find a combo within ${budget.toLocaleString('en-US')} VND. Would you like to adjust the budget or try another category?`
+                        : `Mình chưa tìm được combo phù hợp trong mức ${budget.toLocaleString('vi-VN')} ₫. Anh/chị muốn điều chỉnh ngân sách hoặc thử nhóm khác không?`;
+                }
+                lastAIRecommendedProductIds = combos[0].map(product => product.id);
+                lastAIRecommendationCriteria = { category, terms: [], stars: requestedStars, maxPrice: budget, minPrice: budgetFloor, regionIds: matchingRegions ? matchingRegions.map(product => product.id) : null };
+                lastAIComboMarkup = renderAIComboRecommendations(
+                    combos,
+                    english ? 'Combos within your budget' : 'Combo đặc sản trong ngân sách',
+                    english
+                        ? 'Each total is calculated from current catalogue prices and does not exceed your stated budget.'
+                        : 'Tổng giá dùng theo danh mục hiện tại và không vượt ngân sách anh/chị đưa ra.'
+                );
+                return english
+                    ? 'I found a few combinations that fit your budget. Review the items and total below before adding a combo to your cart.'
+                    : 'Mình đã tìm một vài cách kết hợp phù hợp ngân sách. Anh/chị xem sản phẩm và tổng tiền bên dưới trước khi thêm combo vào giỏ nhé.';
             }
             if (/\b(giao hang|phi ship|van chuyen|freeship|mien phi ship|shipping|delivery)\b/.test(q)) {
                 return english
@@ -4125,6 +4199,51 @@
             return english
                 ? 'Search by product, province, category, OCOP star rating, or budget. For example: “gift under 500k”, “5-star tea”, or “Ca Mau specialty”.'
                 : 'Mình có thể giúp tìm theo tên sản phẩm, tỉnh thành, nhóm hàng, hạng sao hoặc ngân sách. Ví dụ: “quà biếu dưới 500k”, “trà 5 sao” hoặc “đặc sản Cà Mau”.';
+        }
+
+        function isAIComboRequest(query) {
+            return matchesAIConcept(query, [
+                'combo', 'bo qua', 'set qua', 'gio qua', 'set dac san',
+                'meal set', 'gift set', 'bundle'
+            ]);
+        }
+
+        function isAIOrderRequest(query) {
+            return matchesAIConcept(query, [
+                'mua', 'dat hang', 'dat mon', 'dat giup', 'dat dum', 'chot don', 'cho toi lay', 'toi lay',
+                'buy', 'purchase', 'place an order', 'i will take', 'ill take', 'add to cart'
+            ]);
+        }
+
+        function getAIComboRecommendations({ budget, budgetFloor, category, stars, matchingRegions }) {
+            const candidates = products.filter(product =>
+                product.price <= budget &&
+                (!category || product.category === category) &&
+                (!stars || product.stars === stars) &&
+                (!matchingRegions || matchingRegions.includes(product))
+            );
+            const combos = [];
+            const addCombo = items => {
+                const total = items.reduce((sum, product) => sum + product.price, 0);
+                if (total < (budgetFloor || 0) || total > budget) return;
+                const categoryCount = new Set(items.map(product => product.category)).size;
+                const averageRating = items.reduce((sum, product) => sum + product.rating, 0) / items.length;
+                const averageStars = items.reduce((sum, product) => sum + product.stars, 0) / items.length;
+                const score = total / budget * 10 + (items.length - 2) * 0.8 + categoryCount * 0.6 +
+                    averageRating * 0.2 + averageStars * 0.2;
+                combos.push({ items, score });
+            };
+
+            for (let first = 0; first < candidates.length; first++) {
+                for (let second = first + 1; second < candidates.length; second++) {
+                    addCombo([candidates[first], candidates[second]]);
+                    for (let third = second + 1; third < candidates.length; third++) {
+                        addCombo([candidates[first], candidates[second], candidates[third]]);
+                    }
+                }
+            }
+            combos.sort((left, right) => right.score - left.score);
+            return combos.slice(0, 3).map(combo => combo.items);
         }
 
         function getAIServiceGuidance(query, english) {
@@ -4397,6 +4516,30 @@
             return `<p class="font-bold text-ocopGreen">${escapeAIHtml(title)}</p><div class="space-y-2">${cards}</div><p class="text-[10px] text-gray-500">${escapeAIHtml(note)}</p>`;
         }
 
+        function renderAIComboRecommendations(combos, title, note) {
+            const bundleCards = combos.map(combo => {
+                const total = combo.reduce((sum, product) => sum + product.price, 0);
+                const productIds = combo.map(product => product.id).join(',');
+                const items = combo.map(product => `
+                    <li class="flex items-start justify-between gap-2">
+                        <span>${escapeAIHtml(getProductName(product))}</span>
+                        <span class="whitespace-nowrap font-semibold">${product.price.toLocaleString('vi-VN')} ₫</span>
+                    </li>
+                `).join('');
+                return `
+                    <article class="rounded-xl border border-emerald-100 bg-emerald-50/50 p-2.5">
+                        <ul class="space-y-1 text-[11px] text-gray-700">${items}</ul>
+                        <p class="mt-2 border-t border-emerald-100 pt-2 text-right text-xs font-extrabold text-ocopGreen">${currentLanguage === 'en' ? 'Combo total' : 'Tổng combo'}: ${total.toLocaleString('vi-VN')} ₫</p>
+                        <button type="button" onclick="addProductsToCart([${productIds}])" class="mt-2 w-full rounded-lg bg-ocopGreen px-2.5 py-2 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${currentLanguage === 'en' ? 'Add this combo to cart' : 'Thêm combo này vào giỏ'}</button>
+                    </article>
+                `;
+            }).join('');
+            const checkoutNote = currentLanguage === 'en'
+                ? 'Adding a combo does not submit or pay for an order. Review your cart and complete checkout yourself.'
+                : 'Thêm combo không đồng nghĩa đã gửi đơn hoặc thanh toán. Anh/chị vui lòng kiểm tra giỏ và tự hoàn tất bước thanh toán.';
+            return `<p class="font-bold text-ocopGreen">${escapeAIHtml(title)}</p><div class="space-y-2">${bundleCards}</div><p class="text-[10px] text-gray-500">${escapeAIHtml(note)}</p><p class="text-[10px] text-gray-500">${checkoutNote}</p>`;
+        }
+
         function escapeAIHtml(value) {
             return String(value).replace(/[&<>"']/g, character => ({
                 '&': '&amp;',
@@ -4442,6 +4585,30 @@
             showToast(currentLanguage === 'en'
                 ? `Added "${getProductName(prod)}" to your cart.`
                 : `Đã thêm "${prod.name}" vào giỏ hàng!`, "success");
+        }
+
+        function addProductsToCart(productIds) {
+            const selectedProducts = [...new Set(productIds)]
+                .map(productId => products.find(product => product.id === productId))
+                .filter(Boolean);
+            if (!selectedProducts.length) {
+                showToast(currentLanguage === 'en'
+                    ? 'No valid products were selected.'
+                    : 'Không có sản phẩm hợp lệ để thêm vào giỏ.', 'error');
+                return;
+            }
+
+            selectedProducts.forEach(product => {
+                const existing = cart.find(item => item.id === product.id);
+                if (existing) existing.qty += 1;
+                else cart.push({ ...product, qty: 1 });
+            });
+            updateCartBadge();
+            renderCartItems();
+            showToast(currentLanguage === 'en'
+                ? `Added ${selectedProducts.length} selected product${selectedProducts.length === 1 ? '' : 's'} to your cart. Review the cart to continue checkout.`
+                : `Đã thêm ${selectedProducts.length} sản phẩm vào giỏ. Anh/chị vui lòng kiểm tra giỏ để tiếp tục đặt hàng.`, 'success');
+            if (document.getElementById('cart-drawer').classList.contains('hidden')) toggleCart();
         }
 
         function updateCartQty(productId, delta) {
