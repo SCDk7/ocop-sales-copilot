@@ -42,13 +42,13 @@ try {
             }
         }
     }
-    $endpoint = "https://generativelanguage.googleapis.com/v1beta/models/$($model):generateContent?key=$([uri]::EscapeDataString($apiKey))"
+    $endpoint = "https://generativelanguage.googleapis.com/v1beta/models/$($model):generateContent"
     $testRequest = @{
         contents = @(@{ role = 'user'; parts = @(@{ text = 'Reply with the single word OK.' }) })
         generationConfig = @{ maxOutputTokens = 8; temperature = 0 }
     } | ConvertTo-Json -Depth 6 -Compress
     try {
-        $testResponse = Invoke-RestMethod -Uri $endpoint -Method Post -ContentType 'application/json' -Body $testRequest -TimeoutSec 30 -ErrorAction Stop
+        $testResponse = Invoke-RestMethod -Uri $endpoint -Method Post -Headers @{ 'x-goog-api-key' = $apiKey } -ContentType 'application/json' -Body $testRequest -TimeoutSec 30 -ErrorAction Stop
     } catch {
         throw 'Google rejected this Gemini API key or model. Create/copy a valid key from Google AI Studio, verify the selected model is available, then run this script again. The existing .env was not changed.'
     }

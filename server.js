@@ -802,10 +802,12 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     const endpoint = new URL(
       `https://generativelanguage.googleapis.com/v1beta/models/${configuration.model}:generateContent`
     );
-    endpoint.searchParams.set('key', configuration.apiKey);
     const response = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': configuration.apiKey
+      },
       body: JSON.stringify({
         system_instruction: {
           parts: [{ text: buildAISystemInstruction(validation) }]
@@ -948,7 +950,6 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
     const endpoint = new URL(
       `https://generativelanguage.googleapis.com/v1beta/models/${configuration.model}:generateContent`
     );
-    endpoint.searchParams.set('key', configuration.apiKey);
     const contents = validation.messages.map(message => ({
       role: message.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: message.text }]
@@ -964,7 +965,10 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
 
     const response = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': configuration.apiKey
+      },
       body: JSON.stringify({
         system_instruction: {
           parts: [{ text: buildAISystemInstruction(validation, { includeTranscription: true }) }]
