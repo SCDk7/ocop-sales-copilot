@@ -31,32 +31,34 @@ configuration error.
 The chatbot uses Gemini through the Express server. Copy `.env.example` to
 `.env`, set `GEMINI_API_KEY` to a key from Google AI Studio, and restart the
 server. `GEMINI_MODEL` is optional and defaults to `gemini-2.5-flash`. The key
-stays on the server and must never be added to browser code. Without a key, the
-chatbot reports that the AI is not configured and offers the existing admin
-contacts. Customer messages and the product catalogue are sent to Google
-Gemini to generate replies; customers are warned not to share passwords, OTPs,
-or payment details. For order-specific or complaint cases, the assistant opens
-the existing admin contact choices; it does not establish a live in-site chat
-or automatically notify a human.
+stays on the server and must never be added to browser code. Customer messages
+and the product catalogue are sent to Google Gemini to generate replies;
+customers are warned not to share passwords, OTPs, or payment details. Without
+a Gemini key, the storefront uses its local catalogue advisor for product
+suggestions and common support questions; open-ended Gemini replies remain
+unavailable. For order-specific or complaint cases, the assistant opens the
+existing admin contact choices; it does not establish a live in-site chat or
+automatically notify a human.
+
+Customers can attach up to ten JPEG, PNG, WebP, HEIC, or HEIF images per
+message (100 MB each) by selecting multiple files, pasting with
+Ctrl+V, or dragging them into the chat. Images are uploaded individually and
+saved in the private `.private-data/chat-images` directory, are
+available to staff at `/admin/recordings`, and are sent to Gemini when image
+analysis is available. To handle image batches larger than 70 MB, the server
+uses Gemini's Files API; those provider-side copies are automatically removed
+after 48 hours. Staff access uses `AUDIO_ADMIN_PASSWORD` (at least 24
+characters); staff can view and permanently delete saved images. Configure this
+password before collecting customer images. Keep the private data directory
+secure and back it up only to protected storage.
 
 For local use, run `npm start` to start the API. You can open the site from the
-server at `http://localhost:3000`, or keep `index.html` open directly as a file;
-the chatbot will send text and voice messages to the local API at that address.
-The local server must remain running, but the site does not need to be published
-on the internet.
-
-## Customer voice recordings
-
-Customers start recording immediately by pressing the microphone button, then
-press the chat send button to send the recording. The browser may still ask for
-microphone permission. The audio is sent to Gemini for
-transcription and a reply, then stored under `.private-data/audio-recordings`
-until staff deletes it. The protected staff page is `/admin/recordings`; set
-`AUDIO_ADMIN_PASSWORD` in `.env` to a unique random value of at least 24
-characters. Staff sessions expire after eight hours. Audio storage is limited
-to 1 GB; staff must delete recordings to free space. Keep `.private-data` on a
-persistent, access-controlled disk, use HTTPS in production, and include that
-directory in encrypted backups only if your retention policy permits it.
+server at `http://localhost:3000`. The storefront sends its current product
+catalogue to the API when it opens and refreshes that AI context every 10
+minutes while the page remains open. Each chat request also includes the
+current catalogue. The catalogue itself is maintained in the website source;
+publish changes and reload the page for them to be picked up. The local server
+must remain running, but the site does not need to be published on the internet.
 
 Verified customer records are stored in `.private-data/customers.json`, outside
 the static website directory and excluded from Git. Passwords are stored as

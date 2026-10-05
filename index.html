@@ -255,26 +255,10 @@
                 max-height: min(70dvh, 34rem);
                 border-radius: 1.35rem;
             }
-            #ai-chat-window {
-                height: min(70vh, 34rem);
-                height: min(70dvh, 34rem);
-            }
             #ai-chat-widget {
-                right: calc(0.75rem + env(safe-area-inset-right, 0px));
-                bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+                right: 0.75rem;
                 left: auto;
                 align-items: flex-end;
-            }
-            #chat-send-button {
-                min-width: 44px;
-                min-height: 44px;
-                touch-action: manipulation;
-            }
-            #ai-chat-input {
-                min-width: 0;
-                font-size: 16px !important;
-                -webkit-text-size-adjust: 100%;
-                touch-action: manipulation;
             }
             #admin-support-widget {
                 right: 0.75rem;
@@ -912,20 +896,9 @@
             color: #775b12;
             background: rgba(212, 175, 55, 0.15);
             border-color: rgba(212, 175, 55, 0.38);
-            box-sizing: border-box;
-            width: fit-content;
-            max-width: 100%;
-            gap: 0.4rem;
-            padding: 0.45rem 0.75rem;
-            font-size: 0.7rem;
-            line-height: 1.35;
-            flex-wrap: wrap;
         }
         #ocop-intro-overlay #intro-award-badge i {
             color: #9b771e !important;
-        }
-        #ocop-intro-overlay #lucky-gift-code {
-            color: #111827 !important;
         }
         #ocop-intro-overlay #intro-lucky-card {
             background: linear-gradient(115deg, rgba(250, 246, 230, 0.96), rgba(243, 247, 239, 0.98));
@@ -1559,29 +1532,30 @@
                         </div>
                         <div>
                             <div class="flex items-center space-x-2">
-                                <span id="i18n-lucky-title" class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">Lộc Vàng AI • Bốc Thẻ May Mắn</span>
+                                <span class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">Lộc Vàng AI • Bốc Thẻ May Mắn</span>
                                 <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse uppercase shadow">Lì Xì OCOP</span>
                             </div>
+                            <p class="text-[11px] text-amber-100/90 font-medium mt-0.5">Bốc thẻ may mắn nhận ngay voucher 50.000đ hoặc Miễn phí giao hàng toàn quốc</p>
                         </div>
                     </div>
                     <button id="btn-draw-gift" onclick="openLuckyGift()" class="intro-mega-btn w-full sm:w-auto flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition flex items-center justify-center space-x-2 cursor-pointer">
                         <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
-                        <span id="i18n-lucky-button">Bốc Thẻ Lộc Vàng</span>
+                        <span>Bốc Thẻ Lộc Vàng</span>
                     </button>
                 </div>
 
                 <!-- Kết quả thẻ bài Lộc Vàng VIP -->
                 <div id="intro-gift-result" class="hidden mt-3 pt-3 border-t border-amber-400/40 animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-black/60 p-3 rounded-2xl backdrop-blur-md">
                     <div class="flex items-center space-x-2.5 text-left">
-                        <span class="text-xs text-amber-300 font-black uppercase flex items-center"><i class="fa-solid fa-gift mr-1 text-ocopGold"></i> <span id="i18n-lucky-code-label">MÃ LỘC:</span></span>
-                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner"></span>
+                        <span class="text-xs text-amber-300 font-black uppercase flex items-center"><i class="fa-solid fa-gift mr-1 text-ocopGold"></i> MÃ LỘC:</span>
+                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner">OCOP-TINHOA50</span>
                         <button onclick="copyToClipboard(document.getElementById('lucky-gift-code').innerText, 'Mã voucher OCOP');" class="text-xs bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-ocopGreen font-black px-3 py-1 rounded-lg transition flex items-center space-x-1 cursor-pointer shadow">
                             <i class="fa-regular fa-copy"></i>
-                            <span id="i18n-lucky-copy">Sao chép</span>
+                            <span>Sao chép</span>
                         </button>
                     </div>
-                    <span id="lucky-gift-message" class="text-[11px] sm:text-xs text-emerald-300 font-extrabold flex items-center">
-                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400 text-sm"></i>
+                    <span class="text-[11px] sm:text-xs text-emerald-300 font-extrabold flex items-center">
+                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400 text-sm"></i> Đã tự động kích hoạt giảm 50.000đ vào đơn hàng!
                     </span>
                 </div>
             </div>
@@ -2011,10 +1985,7 @@
                         <span class="text-[10px] text-emerald-200 font-semibold" id="chat-subtitle">Gợi ý theo nhu cầu và ngân sách</span>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button id="chat-language-btn" type="button" onclick="toggleLanguage()" class="rounded-lg border border-amber-200/40 px-2 py-1 text-[10px] font-black text-amber-100 hover:bg-white/10" aria-label="Chuyển ngôn ngữ" title="Chuyển ngôn ngữ">VI</button>
-                    <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer" aria-label="Đóng chatbot"><i class="fa-solid fa-xmark"></i></button>
-                </div>
+                <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div id="ai-chat-messages" class="flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
@@ -2023,7 +1994,7 @@
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
                         <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.</p>
-                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn và danh mục được gửi tới Google Gemini để tạo phản hồi; không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
+                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn và ảnh bạn gửi có thể được nhân viên xem; ảnh được lưu trên máy chủ và gửi tới Google Gemini để trả lời. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
                     </div>
                 </div>
             </div>
@@ -2037,11 +2008,15 @@
                 <button onclick="sendQuickPrompt('Tôi muốn đổi trả hàng')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">↩️ Đổi trả</button>
             </div>
             
-            <div class="border-t border-emerald-100 bg-white px-3 pt-2.5">
-            </div>
-            <div class="p-3 bg-white flex items-center gap-2">
-                <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
-                <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+            <div id="ai-chat-composer" class="p-3 bg-white border-t border-gray-100 space-y-2">
+                <input type="file" id="ai-chat-image-input" accept="image/*" multiple hidden>
+                <div id="ai-chat-image-previews" class="flex flex-wrap gap-2" hidden></div>
+                <p id="ai-chat-image-hint" class="text-[10px] text-gray-500" hidden></p>
+                <div class="flex items-center space-x-2">
+                    <button type="button" id="chat-add-image-button" onclick="document.getElementById('ai-chat-image-input').click()" aria-label="Thêm ảnh" title="Thêm ảnh (dán Ctrl+V hoặc kéo thả)" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-image text-sm"></i></button>
+                    <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter'){event.preventDefault();sendAIMessage()}" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
+                    <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 flex-shrink-0 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+                </div>
             </div>
         </div>
         
@@ -2213,10 +2188,6 @@
                     <div class="flex justify-between">
                         <span id="i18n-cart-subtotal">Tạm tính:</span>
                         <span id="cart-subtotal" class="font-bold text-gray-800">0 ₫</span>
-                    </div>
-                    <div id="cart-discount-row" class="hidden flex justify-between text-emerald-700">
-                        <span id="i18n-cart-discount">Lộc Vàng:</span>
-                        <span id="cart-discount" class="font-bold">0 ₫</span>
                     </div>
                     <div class="flex justify-between">
                         <span id="i18n-cart-shipping">Phí vận chuyển:</span>
@@ -2416,13 +2387,6 @@
         // Biến trạng thái toàn cục
         let cart = [];
         let wishlist = [];
-        const luckyVoucherOffers = [
-            { type: 'fixed', amount: 50000, minimum: 0, chance: 70 },
-            { type: 'percent', rate: 0.1, minimum: 1500000, chance: 20 },
-            { type: 'percent', rate: 0.15, minimum: 2000000, chance: 10 }
-        ];
-        let activeLuckyVoucher = null;
-        let luckyVoucherRedeemed = false;
         let currentCategory = 'all';
         function getSavedLanguage() {
             try {
@@ -2447,13 +2411,9 @@
         let currentOrderCode = null;
         let aiMessageSequence = 0;
         let aiConversationHistory = [];
+        let pendingAIImages = [];
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
-        const aiApiBaseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
-
-        function getAIAPIUrl(path) {
-            return `${aiApiBaseUrl}${path}`;
-        }
         let ordersHistory = [
             { id: 'OCOP-98231', date: '02/10/2026', total: 1530000, status: 'Đã giao hàng', items: ['Trà Đinh Nõn Tân Cương', 'Thịt Trâu Gác Bếp'] },
             { id: 'OCOP-77120', date: '25/09/2026', total: 2450000, status: 'Đang vận chuyển', items: ['Yến Sào Khánh Hòa Thượng Hạng'] }
@@ -2754,105 +2714,18 @@
         }
 
         function openLuckyGift() {
-            if (activeLuckyVoucher) return;
-
-            const offer = drawLuckyVoucherOffer();
-            activeLuckyVoucher = { ...offer, code: generateLuckyVoucherCode() };
-            luckyVoucherRedeemed = false;
-
             const resultEl = document.getElementById('intro-gift-result');
             const btnEl = document.getElementById('btn-draw-gift');
-            document.getElementById('lucky-gift-code').textContent = activeLuckyVoucher.code;
             resultEl.classList.remove('hidden');
-            btnEl.querySelector('i').className = 'fa-solid fa-check-double text-ocopGreen';
-            document.getElementById('i18n-lucky-button').textContent = currentLanguage === 'en'
-                ? 'Voucher received' : 'Đã Nhận Lộc Vàng';
+            btnEl.innerHTML = `<i class="fa-solid fa-check-double text-ocopGreen"></i><span>Đã Nhận Lộc Vàng</span>`;
             btnEl.disabled = true;
             btnEl.classList.add('opacity-80', 'cursor-not-allowed');
 
-            renderCartItems();
+            // Bắn pháo hoa vàng kim & phát âm thanh chuông may mắn!
             triggerGoldConfetti();
             playChimeSound();
-            showToast(currentLanguage === 'en'
-                ? `Congratulations! You won ${getLuckyVoucherDescription(activeLuckyVoucher)}.`
-                : `Chúc mừng! Bạn nhận được ${getLuckyVoucherDescription(activeLuckyVoucher)}.`, 'success');
-        }
 
-        function drawLuckyVoucherOffer() {
-            const roll = Math.random() * 100;
-            let cumulativeChance = 0;
-            for (const offer of luckyVoucherOffers) {
-                cumulativeChance += offer.chance;
-                if (roll < cumulativeChance) return offer;
-            }
-            throw new Error('Lucky voucher chances must total 100%.');
-        }
-
-        function generateLuckyVoucherCode() {
-            const bytes = new Uint8Array(4);
-            if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
-                window.crypto.getRandomValues(bytes);
-            } else {
-                bytes.forEach((_, index) => { bytes[index] = Math.floor(Math.random() * 256); });
-            }
-            const token = Array.from(bytes, value => value.toString(16).padStart(2, '0')).join('').toUpperCase();
-            return `OCOP-LOC-${token}`;
-        }
-
-        function getLuckyVoucherDescription(voucher) {
-            if (voucher.type === 'fixed') {
-                return currentLanguage === 'en' ? '50,000 VND off your order' : 'giảm 50.000đ cho đơn hàng';
-            }
-            const minimum = voucher.minimum.toLocaleString(currentLanguage === 'en' ? 'en-US' : 'vi-VN');
-            return currentLanguage === 'en'
-                ? `${Math.round(voucher.rate * 100)}% off orders of at least ${minimum} VND`
-                : `giảm ${Math.round(voucher.rate * 100)}% cho đơn từ ${minimum}đ`;
-        }
-
-        function getLuckyVoucherBenefit(voucher) {
-            if (voucher.type === 'fixed') {
-                return currentLanguage === 'en' ? '50,000 VND off' : 'giảm 50.000đ';
-            }
-            return currentLanguage === 'en'
-                ? `${Math.round(voucher.rate * 100)}% off`
-                : `giảm ${Math.round(voucher.rate * 100)}%`;
-        }
-
-        function getCartSubtotal() {
-            return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-        }
-
-        function getLuckyVoucherDiscount(subtotal = getCartSubtotal()) {
-            if (!activeLuckyVoucher || luckyVoucherRedeemed || subtotal < activeLuckyVoucher.minimum) return 0;
-            const discount = activeLuckyVoucher.type === 'fixed'
-                ? activeLuckyVoucher.amount
-                : Math.round(subtotal * activeLuckyVoucher.rate);
-            return Math.min(subtotal, discount);
-        }
-
-        function renderLuckyVoucherStatus(subtotal = getCartSubtotal()) {
-            if (!activeLuckyVoucher) return;
-
-            const messageEl = document.getElementById('lucky-gift-message');
-            if (luckyVoucherRedeemed) {
-                messageEl.textContent = currentLanguage === 'en' ? 'Voucher used.' : 'Voucher đã được sử dụng.';
-                return;
-            }
-
-            const discount = getLuckyVoucherDiscount(subtotal);
-            if (cart.length > 0 && discount > 0) {
-                messageEl.textContent = currentLanguage === 'en'
-                    ? `${getLuckyVoucherBenefit(activeLuckyVoucher)} applied: ${discount.toLocaleString('en-US')} VND off.`
-                    : `Đã áp dụng voucher ${getLuckyVoucherBenefit(activeLuckyVoucher)}, giảm ${discount.toLocaleString('vi-VN')}đ.`;
-            } else if (activeLuckyVoucher.minimum > 0) {
-                messageEl.textContent = currentLanguage === 'en'
-                    ? `${getLuckyVoucherBenefit(activeLuckyVoucher)} voucher saved. Add items to reach ${activeLuckyVoucher.minimum.toLocaleString('en-US')} VND to use it.`
-                    : `Đã lưu voucher ${getLuckyVoucherBenefit(activeLuckyVoucher)}. Thêm sản phẩm để đạt ${activeLuckyVoucher.minimum.toLocaleString('vi-VN')}đ và sử dụng.`;
-            } else {
-                messageEl.textContent = currentLanguage === 'en'
-                    ? `${getLuckyVoucherBenefit(activeLuckyVoucher)} voucher saved for your next order.`
-                    : `Đã lưu voucher ${getLuckyVoucherBenefit(activeLuckyVoucher)}, tự động áp dụng cho đơn hàng.`;
-            }
+            showToast("Chúc mừng! Bạn nhận được Voucher Lộc Vàng giảm 50.000đ!", "success");
         }
 
         function scrollToProducts() {
@@ -2910,6 +2783,9 @@
                                     ${p.stars} ${currentLanguage === 'en' ? 'STAR' : 'SAO QUỐC GIA'}
                                 </span>
                             </div>
+                            <button onclick="toggleWishlist(${p.id})" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md text-red-500 flex items-center justify-center hover:scale-110 transition shadow cursor-pointer">
+                                <i class="${isFav ? 'fa-solid text-red-600' : 'fa-regular'} fa-heart"></i>
+                            </button>
                             <button onclick="openQuickView(${p.id})" class="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-xl backdrop-blur-md transition flex items-center space-x-1 cursor-pointer">
                                 <i class="fa-solid fa-eye text-ocopGold"></i>
                                 <span>${currentLanguage === 'en' ? 'Quick view' : 'Xem nhanh'}</span>
@@ -2924,24 +2800,15 @@
                             <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${productDescription}</p>
                         </div>
                     </div>
-                    <div class="p-4 pt-0 border-t border-amber-100/60 mt-2 flex items-center justify-between gap-2">
+                    <div class="p-4 pt-0 border-t border-amber-100/60 mt-2 flex items-center justify-between">
                         <div>
                             <span class="block text-xs text-gray-400 line-through">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
                             <span class="font-black text-red-600 text-base sm:text-lg">${p.price.toLocaleString('vi-VN')} ₫</span>
                         </div>
-                        <div class="flex shrink-0 items-center gap-1.5">
-                            <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${isFav
-                                ? (currentLanguage === 'en' ? `Remove ${productName} from favorites` : `Bỏ ${productName} khỏi yêu thích`)
-                                : (currentLanguage === 'en' ? `Add ${productName} to favorites` : `Thêm ${productName} vào yêu thích`)}" title="${isFav
-                                ? (currentLanguage === 'en' ? 'Remove from favorites' : 'Bỏ yêu thích')
-                                : (currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích')}" aria-pressed="${isFav}" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${isFav ? 'border-red-200 bg-red-50 text-red-600' : 'border-amber-200 bg-white text-gray-500 hover:border-red-200 hover:bg-red-50 hover:text-red-600'} transition cursor-pointer">
-                                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" onclick="addToCart(${p.id})" class="bg-ocopGreen text-white hover:bg-ocopGreenLight min-h-10 px-2.5 rounded-xl font-bold transition flex items-center justify-center gap-1.5 shadow hover:scale-105 active:scale-95 cursor-pointer">
-                                <i class="fa-solid fa-cart-plus text-ocopGold text-xs" aria-hidden="true"></i>
-                                <span class="text-xs">${currentLanguage === 'en' ? 'Add to cart' : 'Thêm giỏ'}</span>
-                            </button>
-                        </div>
+                        <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white hover:bg-ocopGreenLight p-2.5 rounded-xl font-bold transition flex items-center space-x-1.5 shadow hover:scale-105 active:scale-95 cursor-pointer">
+                            <i class="fa-solid fa-cart-plus text-ocopGold text-xs"></i>
+                            <span class="text-xs">${currentLanguage === 'en' ? 'Add to cart' : 'Thêm giỏ'}</span>
+                        </button>
                     </div>
                 </div>
                 `;
@@ -3398,6 +3265,134 @@
             sendAIMessage();
         }
 
+        const maxAIChatImages = 10;
+        const maxAIChatImageBytes = 100 * 1024 * 1024;
+        const supportedAIChatImageTypes = new Set([
+            'image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'
+        ]);
+
+        function renderAIChatImagePreviews() {
+            const previews = document.getElementById('ai-chat-image-previews');
+            const hint = document.getElementById('ai-chat-image-hint');
+            previews.replaceChildren();
+            previews.hidden = pendingAIImages.length === 0;
+            hint.hidden = pendingAIImages.length === 0;
+            hint.textContent = currentLanguage === 'en'
+                ? 'Paste, drop, or upload up to 10 images (100 MB each).'
+                : 'Dán, kéo-thả hoặc tải tối đa 10 ảnh (100 MB mỗi ảnh).';
+
+            pendingAIImages.forEach((image, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative';
+                const preview = document.createElement('img');
+                preview.src = image.previewUrl;
+                preview.alt = image.file.name;
+                preview.className = 'h-14 w-14 rounded-lg border border-gray-200 object-cover';
+                const remove = document.createElement('button');
+                remove.type = 'button';
+                remove.className = 'absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white shadow';
+                remove.setAttribute('aria-label', currentLanguage === 'en' ? 'Remove image' : 'Xóa ảnh');
+                remove.innerHTML = '&times;';
+                remove.addEventListener('click', () => {
+                    URL.revokeObjectURL(image.previewUrl);
+                    pendingAIImages.splice(index, 1);
+                    renderAIChatImagePreviews();
+                });
+                wrapper.append(preview, remove);
+                previews.append(wrapper);
+            });
+        }
+
+        async function addAIChatImages(fileList) {
+            const imageFiles = [...fileList].filter(file => file.type.startsWith('image/'));
+            if (!imageFiles.length) return;
+            if (imageFiles.some(file => !supportedAIChatImageTypes.has(file.type))) {
+                showToast(currentLanguage === 'en'
+                    ? 'Supported images: JPEG, PNG, WebP, HEIC, and HEIF.'
+                    : 'Hỗ trợ ảnh JPEG, PNG, WebP, HEIC và HEIF.', 'error');
+                return;
+            }
+            if (imageFiles.some(file => file.size === 0 || file.size > maxAIChatImageBytes)) {
+                showToast(currentLanguage === 'en'
+                    ? 'Each image must be 100 MB or smaller.'
+                    : 'Mỗi ảnh phải có dung lượng không quá 100 MB.', 'error');
+                return;
+            }
+            if (pendingAIImages.length + imageFiles.length > maxAIChatImages) {
+                showToast(currentLanguage === 'en'
+                    ? 'Attach up to 10 images per message.'
+                    : 'Mỗi tin nhắn đính kèm tối đa 10 ảnh.', 'error');
+                return;
+            }
+
+            try {
+                const previews = imageFiles.map(file => ({
+                    file,
+                    previewUrl: URL.createObjectURL(file),
+                    id: null
+                }));
+                pendingAIImages.push(...previews);
+                renderAIChatImagePreviews();
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function uploadPendingAIChatImages(images) {
+            const newImages = images.filter(image => !image.id);
+            for (const image of newImages) {
+                const response = await fetch('/api/ai/images', {
+                    method: 'POST',
+                    headers: { 'Content-Type': image.file.type },
+                    body: image.file
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(result.error || (currentLanguage === 'en'
+                        ? 'Unable to save the images.'
+                        : 'Không thể lưu ảnh.'));
+                }
+                if (!result.image || typeof result.image.id !== 'string') {
+                    throw new Error(currentLanguage === 'en'
+                        ? 'The server returned an invalid image upload response.'
+                        : 'Máy chủ trả về kết quả tải ảnh không hợp lệ.');
+                }
+                image.id = result.image.id;
+            }
+        }
+
+        const aiChatWindow = document.getElementById('ai-chat-window');
+        const aiChatImageInput = document.getElementById('ai-chat-image-input');
+        aiChatImageInput.addEventListener('change', () => {
+            addAIChatImages(aiChatImageInput.files);
+            aiChatImageInput.value = '';
+        });
+        document.getElementById('ai-chat-input').addEventListener('paste', event => {
+            const files = [...(event.clipboardData?.items || [])]
+                .filter(item => item.kind === 'file')
+                .map(item => item.getAsFile())
+                .filter(Boolean);
+            if (files.length) {
+                event.preventDefault();
+                addAIChatImages(files);
+            }
+        });
+        ['dragenter', 'dragover'].forEach(eventName => aiChatWindow.addEventListener(eventName, event => {
+            if ([...(event.dataTransfer?.items || [])].some(item => item.kind === 'file')) {
+                event.preventDefault();
+                aiChatWindow.classList.add('ring-2', 'ring-emerald-400');
+            }
+        }));
+        ['dragleave', 'drop'].forEach(eventName => aiChatWindow.addEventListener(eventName, event => {
+            aiChatWindow.classList.remove('ring-2', 'ring-emerald-400');
+            if (eventName === 'drop' && event.dataTransfer?.files.length) {
+                event.preventDefault();
+                addAIChatImages(event.dataTransfer.files);
+            }
+        }));
+
+        const aiCatalogSyncIntervalMs = 10 * 60 * 1000;
+
         function getAIProductPayload() {
             return products.map(product => ({
                 id: product.id,
@@ -3413,90 +3408,89 @@
             }));
         }
 
-        function appendAIResponse(result, messagesEl, loadingId) {
-            const loadingNode = document.getElementById(loadingId);
-            if (loadingNode) loadingNode.remove();
-
-            const reply = document.createElement('div');
-            reply.className = 'flex items-start space-x-2';
-            reply.innerHTML = `
-                <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
-                <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
-                    <p class="whitespace-pre-wrap"></p>
-                    <div class="ai-product-recommendations"></div>
-                </div>
-            `;
-            reply.querySelector('p').textContent = result.message;
-            const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
-                .map(id => products.find(product => product.id === id))
-                .filter(Boolean);
-            if (recommendedProducts.length) {
-                reply.querySelector('.ai-product-recommendations').innerHTML = renderAIProductRecommendations(
-                    recommendedProducts,
-                    currentLanguage === 'en' ? 'Recommended products' : 'Sản phẩm gợi ý',
-                    currentLanguage === 'en'
-                        ? 'Prices and product information are from the current catalogue.'
-                        : 'Giá và thông tin được lấy từ danh mục hiện tại.'
-                );
-            }
-            if (result.handoffAdmin) {
-                const handoffButton = document.createElement('button');
-                handoffButton.type = 'button';
-                handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
-                handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
-                handoffButton.addEventListener('click', toggleAdminSupport);
-                reply.querySelector('div.bg-white').append(handoffButton);
-            }
-            messagesEl.append(reply);
-            messagesEl.scrollTop = messagesEl.scrollHeight;
-
-            if (result.handoffAdmin) {
-                window.setTimeout(() => {
-                    const adminMenu = document.getElementById('admin-support-menu');
-                    if (adminMenu.classList.contains('hidden')) toggleAdminSupport();
-                }, 1200);
+        async function syncAIWebsiteCatalog() {
+            try {
+                const response = await fetch('/api/ai/catalog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ products: getAIProductPayload() })
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(result.error || 'Không thể đồng bộ danh mục với trợ lý AI.');
+                }
+                console.info(`AI catalog synced: ${result.productCount} products.`);
+            } catch (error) {
+                console.error('Unable to sync website catalog with AI:', error);
             }
         }
 
-        function appendAIError(messagesEl, loadingId, errorMessage) {
-            const loadingNode = document.getElementById(loadingId);
-            if (loadingNode) loadingNode.remove();
+        window.setTimeout(syncAIWebsiteCatalog, 0);
+        window.setInterval(syncAIWebsiteCatalog, aiCatalogSyncIntervalMs);
 
-            const failure = document.createElement('div');
-            failure.className = 'flex items-start space-x-2';
-            failure.innerHTML = `
-                <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
-                <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
-                    <p class="ai-error-message"></p>
-                </div>
-            `;
-            failure.querySelector('.ai-error-message').textContent = errorMessage;
-            const contactButton = document.createElement('button');
-            contactButton.type = 'button';
-            contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
-            contactButton.textContent = currentLanguage === 'en' ? 'Contact admin' : 'Liên hệ admin';
-            contactButton.addEventListener('click', connectCustomerToAdmin);
-            failure.querySelector('div.bg-white').append(contactButton);
-            messagesEl.append(failure);
-            messagesEl.scrollTop = messagesEl.scrollHeight;
+        function createLocalCatalogReply(query, hasImages = false) {
+            lastAIRecommendedProductIds = [];
+            lastAIRecommendationCriteria = null;
+            if (hasImages) {
+                return {
+                    message: currentLanguage === 'en'
+                        ? 'I could not identify the product from this image. Please describe it in more detail or send another image so I can help.'
+                        : 'Mình chưa nhận diện được sản phẩm từ ảnh này. Bạn hãy mô tả chi tiết hơn hoặc gửi ảnh khác để mình hỗ trợ nhé.',
+                    productIds: [],
+                    handoffAdmin: false,
+                    localFallback: true
+                };
+            }
+            const generated = generateAIResponse(query);
+            const recommendsProducts = /^\s*</.test(generated);
+            const handoffAdmin = isAIAdminContactRequest(query);
+            return {
+                message: recommendsProducts
+                    ? currentLanguage === 'en'
+                        ? 'Here are some options from the current website catalogue.'
+                        : 'Mình tìm được một số sản phẩm phù hợp trong danh mục hiện tại.'
+                    : generated,
+                productIds: lastAIRecommendedProductIds.slice(0, 3),
+                handoffAdmin,
+                localFallback: true
+            };
         }
 
         async function sendAIMessage() {
             const inputEl = document.getElementById('ai-chat-input');
             const messagesEl = document.getElementById('ai-chat-messages');
             const text = inputEl.value.trim();
+            const messageImages = pendingAIImages.slice();
+            const messageText = text || (currentLanguage === 'en'
+                ? 'Please review the attached product image and help me.'
+                : 'Vui lòng xem ảnh sản phẩm tôi gửi và hỗ trợ giúp tôi.');
 
-            if (!text) return;
+            if (!text && !messageImages.length) return;
 
-            messagesEl.insertAdjacentHTML('beforeend', `
-                <div class="flex items-start justify-end space-x-2">
-                    <div class="bg-ocopGreen text-white p-3 rounded-2xl text-xs max-w-[85%] shadow-sm leading-relaxed break-words">
-                    </div>
-                    <div class="w-7 h-7 rounded-full bg-emerald-100 text-ocopGreen font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
-                </div>
-            `);
-            const userMessage = messagesEl.lastElementChild;
-            userMessage.firstElementChild.textContent = text;
+            const userMessage = document.createElement('div');
+            userMessage.className = 'flex items-start justify-end space-x-2';
+            const userBubble = document.createElement('div');
+            userBubble.className = 'bg-ocopGreen text-white p-3 rounded-2xl text-xs max-w-[85%] shadow-sm leading-relaxed break-words space-y-2';
+            if (text) {
+                const userText = document.createElement('p');
+                userText.textContent = text;
+                userBubble.append(userText);
+            }
+            messageImages.forEach(image => {
+                const preview = document.createElement('img');
+                preview.src = image.previewUrl;
+                preview.alt = image.file.name;
+                preview.className = 'max-h-40 max-w-full rounded-lg object-contain';
+                userBubble.append(preview);
+            });
+            const userAvatar = document.createElement('div');
+            userAvatar.className = 'w-7 h-7 rounded-full bg-emerald-100 text-ocopGreen font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5';
+            userAvatar.setAttribute('aria-hidden', 'true');
+            userAvatar.innerHTML = '<i class="fa-solid fa-user"></i>';
+            userMessage.append(userBubble, userAvatar);
+            messagesEl.append(userMessage);
+
+            inputEl.value = '';
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             // Giả lập AI đang gõ
@@ -3506,46 +3500,119 @@
                     <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-500 text-xs shadow-sm flex items-center space-x-1.5">
                         <i class="fa-solid fa-spinner fa-spin text-ocopGreen"></i>
-                        <span>${currentLanguage === 'en' ? 'Finding suitable options...' : 'Đang tìm lựa chọn phù hợp...'}</span>
+                        <span>${messageImages.length
+                            ? currentLanguage === 'en' ? 'Saving image and preparing a reply...' : 'Đang lưu ảnh và chuẩn bị phản hồi...'
+                            : currentLanguage === 'en' ? 'Finding suitable options...' : 'Đang tìm lựa chọn phù hợp...'}</span>
                     </div>
                 </div>
             `);
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             try {
-                const response = await fetch(getAIAPIUrl('/api/ai/chat'), {
+                await uploadPendingAIChatImages(messageImages);
+                const response = await fetch('/api/ai/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         language: currentLanguage,
-                        messages: [...aiConversationHistory.slice(-14), { role: 'user', text }],
-                        products: getAIProductPayload()
+                        messages: [...aiConversationHistory.slice(-14), { role: 'user', text: messageText }],
+                        products: getAIProductPayload(),
+                        imageIds: messageImages.map(image => image.id)
                     })
                 });
-                const result = await response.json().catch(() => ({}));
+                let result = await response.json().catch(() => ({}));
                 if (!response.ok) {
-                    throw new Error(result.error || (currentLanguage === 'en'
-                        ? 'The AI assistant is temporarily unavailable.'
-                        : 'Trợ lý AI hiện chưa thể trả lời.'));
+                    if (response.status === 503) {
+                        result = createLocalCatalogReply(text, messageImages.length > 0);
+                    } else {
+                        throw new Error(result.error || (currentLanguage === 'en'
+                            ? 'The AI assistant is temporarily unavailable.'
+                            : 'Trợ lý AI hiện chưa thể trả lời.'));
+                    }
                 }
 
-                appendAIResponse(result, messagesEl, loadingId);
-                if (inputEl.value.trim() === text) inputEl.value = '';
+                const loadingNode = document.getElementById(loadingId);
+                if (loadingNode) loadingNode.remove();
+
+                const reply = document.createElement('div');
+                reply.className = 'flex items-start space-x-2';
+                reply.innerHTML = `
+                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                        <p class="whitespace-pre-wrap"></p>
+                        <div class="ai-product-recommendations"></div>
+                    </div>
+                `;
+                reply.querySelector('p').textContent = result.message;
+                if (result.localFallback) {
+                    if (!messageImages.length) {
+                        const fallbackNote = document.createElement('p');
+                        fallbackNote.className = 'text-[10px] text-gray-500';
+                        fallbackNote.textContent = currentLanguage === 'en'
+                            ? 'Quick answer from the website catalogue. Connect Gemini for open-ended AI replies.'
+                            : 'Gợi ý nhanh từ danh mục website; cần cấu hình Gemini để bật trả lời AI tự do.';
+                        reply.querySelector('div.bg-white').append(fallbackNote);
+                    }
+                }
+                const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
+                    .map(id => products.find(product => product.id === id))
+                    .filter(Boolean);
+                if (recommendedProducts.length) {
+                    reply.querySelector('.ai-product-recommendations').innerHTML = renderAIProductRecommendations(
+                        recommendedProducts,
+                        currentLanguage === 'en' ? 'Recommended products' : 'Sản phẩm gợi ý',
+                        currentLanguage === 'en'
+                            ? 'Prices and product information are from the current catalogue.'
+                            : 'Giá và thông tin được lấy từ danh mục hiện tại.'
+                    );
+                }
+                if (result.handoffAdmin) {
+                    const handoffButton = document.createElement('button');
+                    handoffButton.type = 'button';
+                    handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
+                    handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
+                    handoffButton.addEventListener('click', toggleAdminSupport);
+                    reply.querySelector('div.bg-white').append(handoffButton);
+                }
+                messagesEl.append(reply);
                 aiConversationHistory = [
                     ...aiConversationHistory,
-                    { role: 'user', text },
+                    { role: 'user', text: messageText },
                     { role: 'assistant', text: result.message }
                 ].slice(-16);
+                pendingAIImages = pendingAIImages.filter(image => !messageImages.includes(image));
+                renderAIChatImagePreviews();
+                messagesEl.scrollTop = messagesEl.scrollHeight;
+
+                if (result.handoffAdmin) {
+                    window.setTimeout(() => {
+                        const adminMenu = document.getElementById('admin-support-menu');
+                        if (adminMenu.classList.contains('hidden')) toggleAdminSupport();
+                    }, 1200);
+                }
             } catch (error) {
-                userMessage.remove();
                 if (!inputEl.value.trim()) inputEl.value = text;
-                const errorMessage = window.location.protocol === 'file:' && error instanceof TypeError
-                    ? (currentLanguage === 'en'
-                        ? 'Could not reach the local AI server. Start it with npm start, then try again.'
-                        : 'Không kết nối được máy chủ AI trên máy này. Hãy chạy npm start rồi thử lại.')
-                    : (error.message ||
-                        (currentLanguage === 'en' ? 'The AI assistant could not connect.' : 'Không thể kết nối trợ lý AI.'));
-                appendAIError(messagesEl, loadingId, errorMessage);
+                const loadingNode = document.getElementById(loadingId);
+                if (loadingNode) loadingNode.remove();
+
+                const failure = document.createElement('div');
+                failure.className = 'flex items-start space-x-2';
+                failure.innerHTML = `
+                    <img src="ai-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                        <p class="ai-error-message"></p>
+                    </div>
+                `;
+                failure.querySelector('.ai-error-message').textContent = error.message ||
+                    (currentLanguage === 'en' ? 'The AI assistant could not connect.' : 'Không thể kết nối trợ lý AI.');
+                const contactButton = document.createElement('button');
+                contactButton.type = 'button';
+                contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
+                contactButton.textContent = currentLanguage === 'en' ? 'Contact admin' : 'Liên hệ admin';
+                contactButton.addEventListener('click', connectCustomerToAdmin);
+                failure.querySelector('div.bg-white').append(contactButton);
+                messagesEl.append(failure);
+                messagesEl.scrollTop = messagesEl.scrollHeight;
             }
         }
 
@@ -4116,21 +4183,18 @@
             const container = document.getElementById('cart-items');
             const subtotalEl = document.getElementById('cart-subtotal');
             const totalEl = document.getElementById('cart-total');
-            const discountRow = document.getElementById('cart-discount-row');
-            const discountEl = document.getElementById('cart-discount');
-            const subtotal = getCartSubtotal();
-            const discount = getLuckyVoucherDiscount(subtotal);
 
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${currentLanguage === 'en' ? 'Your cart is empty.' : 'Giỏ hàng của bạn đang trống.'}</p>`;
                 subtotalEl.innerText = "0 ₫";
                 totalEl.innerText = "0 ₫";
-                discountRow.classList.add('hidden');
-                renderLuckyVoucherStatus(subtotal);
                 return;
             }
 
+            let subtotal = 0;
             container.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.qty;
+                subtotal += itemTotal;
                 return `
                 <div class="bg-white p-3 rounded-2xl border border-amber-200 flex items-center justify-between gap-3 shadow-xs">
                     <img src="${item.img}" class="w-14 h-14 object-cover rounded-xl border border-amber-100 flex-shrink-0">
@@ -4149,17 +4213,7 @@
             }).join('');
 
             subtotalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
-            totalEl.innerText = (subtotal - discount).toLocaleString('vi-VN') + " ₫";
-            discountRow.classList.toggle('hidden', !activeLuckyVoucher || luckyVoucherRedeemed);
-            if (activeLuckyVoucher && !luckyVoucherRedeemed) {
-                document.getElementById('i18n-cart-discount').innerText = currentLanguage === 'en'
-                    ? `Golden Fortune (${getLuckyVoucherBenefit(activeLuckyVoucher)}):`
-                    : `Lộc Vàng (${getLuckyVoucherBenefit(activeLuckyVoucher)}):`;
-                discountEl.innerText = discount > 0
-                    ? `-${discount.toLocaleString('vi-VN')} ₫`
-                    : `${currentLanguage === 'en' ? 'From' : 'Từ'} ${activeLuckyVoucher.minimum.toLocaleString(currentLanguage === 'en' ? 'en-US' : 'vi-VN')} ₫`;
-            }
-            renderLuckyVoucherStatus(subtotal);
+            totalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
         }
 
         function checkout() {
@@ -4168,8 +4222,7 @@
                 return;
             }
 
-            const subtotal = getCartSubtotal();
-            const totalAmount = subtotal - getLuckyVoucherDiscount(subtotal);
+            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             currentOrderCode = `OCOP-${Math.floor(100000 + Math.random() * 900000)}`;
             const memo = `THANH TOAN ${currentOrderCode}`;
 
@@ -4197,8 +4250,7 @@
             }
 
             closeQRModal();
-            const subtotal = getCartSubtotal();
-            const totalAmount = subtotal - getLuckyVoucherDiscount(subtotal);
+            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             const itemNames = cart.map(i => i.name);
 
             // Lưu lịch sử đơn hàng
@@ -4210,7 +4262,6 @@
                 items: itemNames
             });
 
-            if (activeLuckyVoucher) luckyVoucherRedeemed = true;
             cart = [];
             currentOrderCode = null;
             updateCartBadge();
@@ -4640,10 +4691,6 @@
             'i18n-intro-title2': '48 CURATED OCOP SPECIALTIES',
             'i18n-intro-desc': 'Explore regional specialties, compare product details and listed prices, then find a fitting idea with help from the shopping assistant.',
             'i18n-intro-award': 'VIETNAMESE FLAVORS • EXPLORE THE OCOP COLLECTION',
-            'i18n-lucky-title': 'Golden Fortune • Lucky Draw',
-            'i18n-lucky-button': 'Draw Golden Fortune',
-            'i18n-lucky-code-label': 'LUCKY CODE:',
-            'i18n-lucky-copy': 'Copy',
             'i18n-intro-pillar1': '48 Curated Specialties',
             'i18n-intro-pillar1-sub': 'Product details and listed prices',
             'i18n-intro-pillar2': 'Specialties from Vietnam',
@@ -4708,7 +4755,6 @@
             'i18n-cart-title': 'Shopping cart',
             'i18n-cart-empty': 'Your cart is empty.',
             'i18n-cart-subtotal': 'Subtotal:',
-            'i18n-cart-discount': 'Golden Fortune:',
             'i18n-cart-shipping': 'Shipping:',
             'i18n-free-shipping': 'Free',
             'i18n-cart-total': 'Total:',
@@ -4797,10 +4843,6 @@
                 const defaultText = originalUiText.get(id);
                 element.textContent = currentLanguage === 'en' ? englishUiText[id] : defaultText;
             });
-            if (activeLuckyVoucher) {
-                document.getElementById('i18n-lucky-button').textContent = currentLanguage === 'en'
-                    ? 'Voucher received' : 'Đã Nhận Lộc Vàng';
-            }
             const provinceSelect = document.getElementById('province-map-select');
             if (provinceSelect) {
                 provinceSelect.setAttribute('aria-label', currentLanguage === 'en'
@@ -4808,26 +4850,16 @@
                     : 'Chọn tỉnh/thành trên bản đồ');
             }
 
-            const activeLanguage = currentLanguage === 'en' ? 'EN' : 'VI';
-            const languageButtonLabel = currentLanguage === 'en'
-                ? 'Current language: English. Switch to Vietnamese.'
-                : 'Ngôn ngữ hiện tại: Tiếng Việt. Chuyển sang tiếng Anh.';
+            const targetLanguage = currentLanguage === 'en' ? 'VI' : 'EN';
             ['intro-language-btn', 'site-language-btn'].forEach(id => {
                 const button = document.getElementById(id);
                 if (button) {
-                    button.textContent = activeLanguage;
-                    button.title = languageButtonLabel;
-                    button.setAttribute('aria-label', languageButtonLabel);
+                    button.textContent = targetLanguage;
+                    button.title = currentLanguage === 'en' ? 'Switch to Vietnamese' : 'Chuyển sang tiếng Anh';
+                    button.setAttribute('aria-label', currentLanguage === 'en' ? 'Switch language to Vietnamese' : 'Chuyển sang tiếng Anh');
                     button.setAttribute('aria-pressed', String(currentLanguage === 'en'));
                 }
             });
-            const chatLanguageButton = document.getElementById('chat-language-btn');
-            if (chatLanguageButton) {
-                chatLanguageButton.textContent = activeLanguage;
-                chatLanguageButton.title = languageButtonLabel;
-                chatLanguageButton.setAttribute('aria-label', languageButtonLabel);
-                chatLanguageButton.setAttribute('aria-pressed', String(currentLanguage === 'en'));
-            }
             document.getElementById('header-search-input').placeholder = currentLanguage === 'en'
                 ? 'Search specialties or regions...' : 'Tìm đặc sản, vùng miền...';
             document.getElementById('mobile-search-input').placeholder = currentLanguage === 'en'
@@ -4840,15 +4872,26 @@
             document.getElementById('ai-chat-input').placeholder = currentLanguage === 'en'
                 ? 'Try: gifts under 500k in the Mekong Delta' : 'Ví dụ: quà tặng dưới 500k ở miền Tây';
             document.getElementById('chat-send-button').setAttribute('aria-label', currentLanguage === 'en' ? 'Send message' : 'Gửi tin nhắn');
-            document.getElementById('chat-greeting').textContent = currentLanguage === 'en'
-                ? 'Hello! I can help you find a Vietnamese specialty that fits.'
-                : 'Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.';
-            document.getElementById('chat-guidance').textContent = currentLanguage === 'en'
-                ? 'Tell me the occasion, region, product type, or your budget.'
-                : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
-            document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
-                ? 'Messages and the product catalogue are sent to Google Gemini to generate replies; do not share passwords, OTPs, or payment details.'
-                : 'Tin nhắn và danh mục được gửi tới Google Gemini để tạo phản hồi; không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
+            const chatMessages = document.getElementById('ai-chat-messages');
+            if (chatMessages.children.length === 1) {
+                document.getElementById('chat-greeting').textContent = currentLanguage === 'en'
+                    ? 'Hello! I can help you find a Vietnamese specialty that fits.'
+                    : 'Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.';
+                document.getElementById('chat-guidance').textContent = currentLanguage === 'en'
+                    ? 'Tell me the occasion, region, product type, or your budget.'
+                    : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
+                document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
+                    ? 'Messages are sent to Google Gemini; attached images are stored for staff review and may be sent to Gemini. Do not share passwords, OTPs, or payment details.'
+                    : 'Tin nhắn được gửi tới Google Gemini; ảnh đính kèm được lưu để nhân viên xem và có thể gửi tới Gemini. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
+            }
+            document.getElementById('chat-add-image-button').setAttribute(
+                'aria-label',
+                currentLanguage === 'en' ? 'Add image' : 'Thêm ảnh'
+            );
+            document.getElementById('chat-add-image-button').title = currentLanguage === 'en'
+                ? 'Add an image (paste or drag and drop)'
+                : 'Thêm ảnh (dán Ctrl+V hoặc kéo thả)';
+            renderAIChatImagePreviews();
             const promptButtons = document.querySelectorAll('.chat-prompt');
             const prompts = currentLanguage === 'en'
                 ? [

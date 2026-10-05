@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Quản lý ghi âm khách hàng - OCOP</title>
+    <title>Dữ liệu hỗ trợ khách hàng - OCOP</title>
     <style>
         :root { color-scheme: light; font-family: system-ui, sans-serif; color: #19382c; background: #f5f6f1; }
         * { box-sizing: border-box; }
@@ -29,6 +29,7 @@
         audio { display: block; width: 100%; margin: .75rem 0; }
         .transcript { white-space: pre-wrap; }
         .response { padding: .75rem; border-radius: .7rem; background: #eff5ef; white-space: pre-wrap; }
+        .customer-image { display: block; max-width: min(100%, 420px); max-height: 360px; margin: .75rem 0; border-radius: .7rem; object-fit: contain; background: #f5f6f1; }
         [hidden] { display: none !important; }
         @media (max-width: 480px) {
             body { padding: 1rem .65rem; }
@@ -39,12 +40,12 @@
 <body>
     <main>
         <header>
-            <h1>Ghi âm hỗ trợ khách hàng</h1>
+            <h1>Dữ liệu hỗ trợ khách hàng</h1>
             <button id="logout-button" type="button" hidden>Đăng xuất</button>
         </header>
         <section id="login-panel" class="panel">
             <h2>Đăng nhập nhân viên</h2>
-            <p class="hint">Các bản ghi được lưu trên máy chủ cho đến khi nhân viên xóa. Chỉ người được cấp mật khẩu quản trị mới có thể nghe hoặc xóa.</p>
+            <p class="hint">Ảnh khách gửi và bản ghi âm (nếu có) được lưu trên máy chủ đến khi nhân viên xóa. Chỉ nhân viên có mật khẩu quản trị mới xem hoặc xóa được.</p>
             <form id="login-form">
                 <label for="admin-password">Mật khẩu quản trị</label>
                 <input id="admin-password" type="password" autocomplete="current-password" required>
@@ -59,6 +60,13 @@
             </div>
             <p id="recordings-status" class="hint" role="status"></p>
             <div id="recordings-list"></div>
+            <hr style="margin:1.5rem 0;border:0;border-top:1px solid #dce6dc">
+            <div class="recording-head">
+                <h2>Ảnh khách gửi trong chat</h2>
+                <button id="refresh-images-button" type="button">Tải lại ảnh</button>
+            </div>
+            <p id="images-status" class="hint" role="status"></p>
+            <div id="images-list"></div>
         </section>
     </main>
     <script>
@@ -67,6 +75,8 @@
         const loginError = document.getElementById('login-error');
         const recordingsStatus = document.getElementById('recordings-status');
         const recordingsList = document.getElementById('recordings-list');
+        const imagesStatus = document.getElementById('images-status');
+        const imagesList = document.getElementById('images-list');
         const logoutButton = document.getElementById('logout-button');
 
         function showLogin(message = '') {
@@ -130,9 +140,71 @@
                     card.append(head, player, transcriptTitle, transcript, responseTitle, assistantResponse, deleteButton);
                     recordingsList.append(card);
                 });
+                await loadChatImages();
             } catch (error) {
                 recordingsStatus.textContent = error.message;
                 recordingsStatus.className = 'hint error';
+            }
+        }
+
+        async function loadChatImages() {
+            imagesStatus.textContent = 'Đang tải ảnh...';
+            imagesStatus.className = 'hint';
+            try {
+                const response = await fetch('/api/admin/chat-images', { cache: 'no-store' });
+                const result = await response.json().catch(() => ({}));
+                if (response.status === 401) return showLogin(result.error || 'Vui lòng đăng nhập lại.');
+                if (!response.ok) throw new Error(result.error || 'Không thể tải ảnh khách gửi.');
+
+                imagesList.replaceChildren();
+                imagesStatus.textContent = result.length ? `${result.length} ảnh đang lưu trên máy chủ.` : 'Chưa có ảnh khách gửi.';
+                result.forEach(image => {
+                    const card = document.createElement('article');
+                    card.className = 'recording';
+                    const head = document.createElement('div');
+                    head.className = 'recording-head';
+                    const date = document.createElement('strong');
+                    date.textContent = new Date(image.createdAt).toLocaleString('vi-VN');
+                    const details = document.createElement('span');
+                    details.className = 'meta';
+                    details.textContent = `${image.mimeType.toUpperCase()} · ${(image.bytes / 1024 / 1024).toFixed(2)} MB`;
+                    head.append(date, details);
+
+                    const preview = document.createElement('img');
+                    preview.className = 'customer-image';
+                    preview.alt = 'Ảnh sản phẩm khách gửi';
+                    preview.loading = 'lazy';
+                    preview.src = `/api/admin/chat-images/${encodeURIComponent(image.id)}`;
+
+                    const message = document.createElement('p');
+                    message.className = 'transcript';
+                    message.textContent = image.messageText || 'Khách gửi ảnh, chưa kèm nội dung mô tả.';
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.type = 'button';
+                    deleteButton.className = 'danger';
+                    deleteButton.textContent = 'Xóa ảnh';
+                    deleteButton.addEventListener('click', () => deleteChatImage(image.id));
+                    card.append(head, preview, message, deleteButton);
+                    imagesList.append(card);
+                });
+            } catch (error) {
+                imagesStatus.textContent = error.message;
+                imagesStatus.className = 'hint error';
+            }
+        }
+
+        async function deleteChatImage(id) {
+            if (!window.confirm('Xóa vĩnh viễn ảnh khách gửi này?')) return;
+            try {
+                const response = await fetch(`/api/admin/chat-images/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                const result = await response.json().catch(() => ({}));
+                if (response.status === 401) return showLogin(result.error || 'Vui lòng đăng nhập lại.');
+                if (!response.ok) throw new Error(result.error || 'Không thể xóa ảnh.');
+                await loadChatImages();
+            } catch (error) {
+                imagesStatus.textContent = error.message;
+                imagesStatus.className = 'hint error';
             }
         }
 
@@ -175,6 +247,7 @@
             showLogin();
         });
         document.getElementById('refresh-button').addEventListener('click', loadRecordings);
+        document.getElementById('refresh-images-button').addEventListener('click', loadChatImages);
         loadRecordings();
     </script>
 </body>
