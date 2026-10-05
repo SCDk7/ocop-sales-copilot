@@ -5381,6 +5381,7 @@
                 button.onclick = () => sendQuickPrompt(prompts[index][1]);
             });
             translateAuthUi();
+            translateRemainingPageText();
             updateCatalogCounts();
             updateIntroMusicButton();
             updateProvinceSelectionStatus();
@@ -5391,6 +5392,75 @@
                 localStorage.setItem('ocop-language', currentLanguage);
             } catch (error) {
                 console.warn('Language preference could not be saved to browser storage:', error);
+            }
+        }
+
+        const remainingTextNodes = new WeakMap();
+        const remainingAttributes = new WeakMap();
+
+        function translateRemainingPageText() {
+            const english = currentLanguage === 'en';
+            const labels = [
+                ['#intro-lucky-card .tracking-wide', 'AI Lucky Draw ? Take your chance'],
+                ['#intro-lucky-card > div:first-child > div > div > p', 'Try your luck to win a VND 50,000 voucher or nationwide free shipping.'],
+                ['#btn-draw-gift span', 'Draw a lucky voucher'],
+                ['#intro-gift-result .text-amber-300', 'VOUCHER CODE:'],
+                ['#intro-gift-result button span', 'Copy code'],
+                ['#province-map-clear', 'Clear selection'],
+                ['#admin-support-menu h4', 'Direct support on Facebook'],
+                ['#admin-support-menu h4 + p', 'Choose an admin to open a message'],
+                ['#admin-support-menu .flex-1 > span:first-child', 'OCOP product advice', 'Order support', 'Wholesale pricing & gifts', 'Customer care'],
+                ['#admin-support-menu .flex-1 > span:nth-child(2)', 'Online', 'Online', 'Online', 'Online'],
+                ['#orders-drawer h3', 'Purchase history'],
+                ['#contact-footer h5', 'OCOP Sales Copilot Vietnam ? all rights reserved'],
+                ['#contact-footer h6', 'Contact information', 'Customer support', 'About OCOP Sales Copilot AI'],
+                ['#contact-footer .md\\:col-span-4:first-child li:nth-child(2) span', 'Hotline: 1900 888 688 (toll-free)'],
+                ['#contact-footer .md\\:col-span-4:nth-child(2) li a', 'Nationwide shipping policy', '100% exchange policy', 'VietQR payment guide'],
+                ['#contact-footer .md\\:col-span-4:nth-child(3) p', 'A platform connecting Vietnam?s leading agricultural products directly with consumers nationwide, featuring certified 4- and 5-star OCOP specialties.'],
+                ['#contact-footer a[href="#"]', 'Terms of service', 'Privacy policy']
+            ];
+            labels.forEach(([selector, ...translations]) => {
+                document.querySelectorAll(selector).forEach((element, index) => {
+                    const textNode = [...element.childNodes].reverse().find(node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim());
+                    if (!textNode) return;
+                    if (!remainingTextNodes.has(textNode)) remainingTextNodes.set(textNode, textNode.nodeValue);
+                    if (english && translations[index]) textNode.nodeValue = textNode.nodeValue.replace(textNode.nodeValue.trim(), translations[index]);
+                    else if (!english) textNode.nodeValue = remainingTextNodes.get(textNode);
+                });
+            });
+
+            const attributes = [
+                ['#user-btn', 'title', 'Sign in / Account'],
+                ['#user-btn', 'aria-label', 'Sign in / Account'],
+                ['#site-language-btn', 'title', 'Switch language'],
+                ['#header-search-clear', 'title', 'Clear search'],
+                ['#header-search-clear', 'aria-label', 'Clear search'],
+                ['#mobile-search-clear', 'title', 'Clear search'],
+                ['#mobile-search-clear', 'aria-label', 'Clear search'],
+                ['#sidebar-search-clear', 'title', 'Clear search'],
+                ['#sidebar-search-clear', 'aria-label', 'Clear search'],
+                ['#chat-add-image-button', 'title', 'Add an image (paste or drag and drop)'],
+                ['#chat-add-image-button', 'aria-label', 'Add image'],
+                ['#chat-send-button', 'aria-label', 'Send message']
+            ];
+            attributes.forEach(([selector, name, value]) => {
+                const element = document.querySelector(selector);
+                if (!element) return;
+                let saved = remainingAttributes.get(element);
+                if (!saved) {
+                    saved = {};
+                    remainingAttributes.set(element, saved);
+                }
+                if (!(name in saved)) saved[name] = element.getAttribute(name);
+                if (english) element.setAttribute(name, value);
+                else if (saved[name] === null) element.removeAttribute(name);
+                else element.setAttribute(name, saved[name]);
+            });
+
+            const footerParagraph = document.querySelector('#contact-footer .md\\:col-span-4:first-child > ul li:nth-child(1) span');
+            if (footerParagraph) {
+                if (!remainingTextNodes.has(footerParagraph)) remainingTextNodes.set(footerParagraph, footerParagraph.textContent);
+                footerParagraph.textContent = english ? '496 Nguyen Thi Minh Khai St, Ward 2, District 3, Ho Chi Minh City' : remainingTextNodes.get(footerParagraph);
             }
         }
 
@@ -5637,6 +5707,143 @@
     } else {
         applyStaggerDelays(); initHero3DParallax(); initScrollDrivenReveal();
     }
+})();
+</script>
+<!-- ============================================================== -->
+<!-- GSAP 3 + ScrollTrigger — Scroll Animations & Hover Effects     -->
+<!-- ============================================================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+(function initGSAP() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ─────────────────────────────────────────────────────────────
+       1. HERO BANNER — Text trượt lên, ảnh lướt vào từ bên phải
+    ───────────────────────────────────────────────────────────── */
+    const heroSection = document.querySelector('section.max-w-7xl:not(#products-section)');
+    if (heroSection) {
+        const heroTextCol  = heroSection.querySelector('.lg\\:col-span-7');
+        const heroImageCol = heroSection.querySelector('.lg\\:col-span-5');
+        if (heroTextCol) {
+            gsap.fromTo(heroTextCol,
+                { opacity: 0, y: 48 },
+                { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+                  scrollTrigger: { trigger: heroSection, start: 'top 82%', toggleActions: 'play none none none' }
+                }
+            );
+        }
+        if (heroImageCol) {
+            gsap.fromTo(heroImageCol,
+                { opacity: 0, x: 60 },
+                { opacity: 1, x: 0, duration: 1, ease: 'power3.out', delay: 0.18,
+                  scrollTrigger: { trigger: heroSection, start: 'top 82%', toggleActions: 'play none none none' }
+                }
+            );
+        }
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       2. INTRO PILLARS — 4 trụ cột lướt lên khi cuộn trong Intro
+    ───────────────────────────────────────────────────────────── */
+    const introPillars = document.querySelectorAll('#ocop-intro-overlay .grid .gold-card-glow');
+    if (introPillars.length) {
+        gsap.fromTo(introPillars,
+            { opacity: 0, y: 36 },
+            { opacity: 1, y: 0, stagger: 0.12, duration: 0.7, ease: 'back.out(1.4)',
+              scrollTrigger: { trigger: introPillars[0].closest('.grid'), start: 'top 88%', toggleActions: 'play none none none' }
+            }
+        );
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       3. INTRO REGION BOX — khu vực 3 miền lướt vào từ dưới
+    ───────────────────────────────────────────────────────────── */
+    const regionBox = document.querySelector('#ocop-intro-overlay .space-y-3 .bg-black\\/40');
+    if (regionBox) {
+        gsap.fromTo(regionBox,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+              scrollTrigger: { trigger: regionBox, start: 'top 90%', toggleActions: 'play none none none' }
+            }
+        );
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       4. PRODUCT GRID — Stagger waterfall khi cuộn tới
+       Tái kích hoạt mỗi khi renderProductsList() inject card mới
+    ───────────────────────────────────────────────────────────── */
+    function animateProductCards() {
+        const cards = gsap.utils.toArray('.product-card');
+        if (!cards.length) return;
+        // Kill ScrollTrigger cũ của card để không nhân đôi
+        ScrollTrigger.getAll()
+            .filter(st => st.vars && st.vars._tag === 'ocopCard')
+            .forEach(st => st.kill());
+
+        gsap.fromTo(cards,
+            { opacity: 0, y: 55, scale: 0.96 },
+            {
+                opacity: 1, y: 0, scale: 1,
+                stagger: 0.08,
+                duration: 0.65,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '#product-grid',
+                    start: 'top 88%',
+                    toggleActions: 'play none none none',
+                    _tag: 'ocopCard'
+                }
+            }
+        );
+    }
+
+    // Chờ renderProductsList() inject HTML xong rồi mới animate
+    window.addEventListener('DOMContentLoaded', () => setTimeout(animateProductCards, 220));
+
+    // Theo dõi #product-grid để tái animate khi filter thay đổi
+    const productGrid = document.getElementById('product-grid');
+    if (productGrid) {
+        new MutationObserver(() => setTimeout(animateProductCards, 80))
+            .observe(productGrid, { childList: true });
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       5. HOVER EFFECTS — Card nâng lên + ảnh zoom nhẹ (GPU-smooth)
+    ───────────────────────────────────────────────────────────── */
+    document.addEventListener('mouseover', (e) => {
+        const card = e.target.closest('.product-card');
+        if (!card) return;
+        const img = card.querySelector('.h-48 img');
+        gsap.to(card, { y: -6, boxShadow: '0 22px 48px -8px rgba(15,56,44,0.22)', duration: 0.28, ease: 'power2.out', overwrite: 'auto' });
+        if (img) gsap.to(img, { scale: 1.08, duration: 0.38, ease: 'power2.out', overwrite: 'auto' });
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        const card = e.target.closest('.product-card');
+        if (!card) return;
+        if (card.contains(e.relatedTarget)) return;
+        const img = card.querySelector('.h-48 img');
+        gsap.to(card, { y: 0, boxShadow: '0 1px 4px rgba(0,0,0,0.07)', duration: 0.28, ease: 'power2.inOut', overwrite: 'auto' });
+        if (img) gsap.to(img, { scale: 1, duration: 0.32, ease: 'power2.inOut', overwrite: 'auto' });
+    });
+
+    /* ─────────────────────────────────────────────────────────────
+       6. SIDEBAR — Fade-in từ bên trái khi cuộn tới products-section
+    ───────────────────────────────────────────────────────────── */
+    const sidebar = document.querySelector('aside.hidden.lg\\:block');
+    if (sidebar) {
+        gsap.fromTo(sidebar,
+            { opacity: 0, x: -30 },
+            { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out',
+              scrollTrigger: { trigger: '#products-section', start: 'top 80%', toggleActions: 'play none none none' }
+            }
+        );
+    }
+
 })();
 </script>
 </body>
