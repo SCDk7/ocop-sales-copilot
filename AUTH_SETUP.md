@@ -35,10 +35,15 @@ stays on the server and must never be added to browser code. Customer messages
 and the product catalogue are sent to Google Gemini to generate replies;
 customers are warned not to share passwords, OTPs, or payment details. Without
 a Gemini key, the storefront uses its local catalogue advisor for product
-suggestions and common support questions; open-ended Gemini replies remain
-unavailable. For order-specific or complaint cases, the assistant opens the
-existing admin contact choices; it does not establish a live in-site chat or
-automatically notify a human.
+suggestions and common support questions; open-ended Gemini replies and visual
+image matching remain unavailable. For order-specific or complaint cases, the
+assistant opens the existing admin contact choices; it does not establish a
+live in-site chat or automatically notify a human.
+
+Voice search requires a supported browser, microphone permission, and HTTPS
+(localhost is supported). Product image search sends a compressed image
+(maximum 1 MB) to Gemini for visual matching; search images are not retained by
+the app.
 
 Customers can attach up to ten JPEG, PNG, WebP, HEIC, or HEIF images per
 message (100 MB each) by selecting multiple files, pasting with
@@ -57,8 +62,8 @@ server at `http://localhost:3000`. The storefront sends its current product
 catalogue to the API when it opens and refreshes that AI context every 10
 minutes while the page remains open. Each chat request also includes the
 current catalogue. The catalogue itself is maintained in the website source;
-publish changes and reload the page for them to be picked up. The local server
-must remain running, but the site does not need to be published on the internet.
+publish changes and reload the page for them to be picked up. The local server must remain running, but the site does not need to be
+published on the internet.
 
 Verified customer records are stored in `.private-data/customers.json`, outside
 the static website directory and excluded from Git. Passwords are stored as

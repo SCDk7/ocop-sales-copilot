@@ -46,6 +46,7 @@ const AI_REQUEST_WINDOW_MS = 60 * 1000;
 const MAX_AI_REQUESTS_PER_WINDOW = 20;
 const MAX_AI_MESSAGES = 16;
 const MAX_AI_MESSAGE_LENGTH = 1200;
+const MAX_AI_IMAGE_BYTES = 1024 * 1024;
 const MAX_CHAT_IMAGE_BYTES = 100 * 1024 * 1024;
 const MAX_CHAT_IMAGES_PER_MESSAGE = 10;
 const MAX_STORED_CHAT_IMAGE_BYTES = 1024 * 1024 * 1024;
@@ -53,7 +54,9 @@ const GEMINI_INLINE_IMAGE_LIMIT_BYTES = 70 * 1024 * 1024;
 const MAX_AUDIO_BYTES = 12 * 1024 * 1024;
 const MAX_AUDIO_RECORDING_BYTES = 1024 * 1024 * 1024;
 const AUDIO_ADMIN_SESSION_TTL_MS = 8 * 60 * 60 * 1000;
-const FILE_ORIGIN_AI_ROUTES = new Set(['/api/ai/chat', '/api/ai/catalog', '/api/ai/images']);
+const FILE_ORIGIN_AI_ROUTES = new Set([
+  '/api/ai/chat', '/api/ai/catalog', '/api/ai/images', '/api/ai/search-image', '/api/ai/audio-chat'
+]);
 const pendingRegistrations = new Map();
 const otpSentAt = new Map();
 const loginAttempts = new Map();
@@ -76,7 +79,8 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  if (req.path === '/api/ai/audio-chat' || req.path === '/api/ai/chat' || req.path === '/api/ai/images') return next();
+  if (req.path === '/api/ai/audio-chat' || req.path === '/api/ai/chat' ||
+      req.path === '/api/ai/images' || req.path === '/api/ai/search-image') return next();
   return express.json({ limit: '48kb' })(req, res, next);
 });
 
@@ -548,6 +552,34 @@ function buildAISystemInstruction({ products, language }, { includeTranscription
   ].join('\n');
 }
 
+function isAIRateLimited(ip) {
+  const now = Date.now();
+  const attempts = aiRequestAttempts.get(ip);
+  if (attempts && attempts.resetAt > now && attempts.count >= MAX_AI_REQUESTS_PER_WINDOW) return true;
+  const nextAttempts = attempts && attempts.resetAt > now
+    ? { count: attempts.count + 1, resetAt: attempts.resetAt }
+    : { count: 1, resetAt: now + AI_REQUEST_WINDOW_MS };
+  aiRequestAttempts.set(ip, nextAttempts);
+  return false;
+}
+
+function validateAIImage(dataUrl) {
+  const match = typeof dataUrl === 'string'
+    ? /^data:image\/(jpeg|png|webp);base64,([A-Za-z0-9+/]+={0,2})$/.exec(dataUrl)
+    : null;
+  if (!match || match[2].length > Math.ceil(MAX_AI_IMAGE_BYTES * 4 / 3) + 4) return null;
+
+  const bytes = Buffer.from(match[2], 'base64');
+  if (!bytes.length || bytes.length > MAX_AI_IMAGE_BYTES) return null;
+  const validSignature = match[1] === 'jpeg'
+    ? bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+    : match[1] === 'png'
+      ? bytes.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))
+      : bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 12) === 'WEBP';
+  if (!validSignature) return null;
+  return { mimeType: `image/${match[1]}`, data: match[2] };
+}
+
 app.post('/api/ai/catalog', (req, res) => {
   const catalog = validateAIProductCatalog(req.body && req.body.products);
   if (catalog.error) return res.status(400).json({ error: catalog.error });
@@ -567,14 +599,9 @@ app.post('/api/ai/images', express.raw({
   limit: `${MAX_CHAT_IMAGE_BYTES / (1024 * 1024)}mb`
 }), (req, res) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
-  const now = Date.now();
-  const attempts = aiRequestAttempts.get(ip);
-  if (attempts && attempts.resetAt > now && attempts.count >= MAX_AI_REQUESTS_PER_WINDOW) {
+  if (isAIRateLimited(ip)) {
     return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
   }
-  aiRequestAttempts.set(ip, attempts && attempts.resetAt > now
-    ? { count: attempts.count + 1, resetAt: attempts.resetAt }
-    : { count: 1, resetAt: now + AI_REQUEST_WINDOW_MS });
 
   if (!Buffer.isBuffer(req.body)) {
     return res.status(400).json({ error: 'Tệp ảnh không hợp lệ.' });
@@ -582,9 +609,8 @@ app.post('/api/ai/images', express.raw({
 
   try {
     const savedImages = saveChatImagesFromRequest([{ buffer: req.body }], '');
-    return res.status(201).json({
-      image: savedImages.map(({ id, mimeType, bytes, createdAt }) => ({ id, mimeType, bytes, createdAt }))[0]
-    });
+    const { id, mimeType, bytes, createdAt } = savedImages[0];
+    return res.status(201).json({ image: { id, mimeType, bytes, createdAt } });
   } catch (error) {
     if (error.status) return res.status(error.status).json({ error: error.message });
     console.error('Unable to save customer chat images:', error.message);
@@ -592,17 +618,11 @@ app.post('/api/ai/images', express.raw({
   }
 });
 
-app.post('/api/ai/chat', express.json({ limit: '48kb' }), async (req, res) => {
+async function handleAIChatRequest(req, res) {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
-  const now = Date.now();
-  const attempts = aiRequestAttempts.get(ip);
-  if (attempts && attempts.resetAt > now && attempts.count >= MAX_AI_REQUESTS_PER_WINDOW) {
+  if (isAIRateLimited(ip)) {
     return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
   }
-  const nextAttempts = attempts && attempts.resetAt > now
-    ? { count: attempts.count + 1, resetAt: attempts.resetAt }
-    : { count: 1, resetAt: now + AI_REQUEST_WINDOW_MS };
-  aiRequestAttempts.set(ip, nextAttempts);
 
   const requestBody = req.body && typeof req.body === 'object' ? req.body : {};
   const requestProducts = Array.isArray(requestBody.products)
@@ -646,27 +666,58 @@ app.post('/api/ai/chat', express.json({ limit: '48kb' }), async (req, res) => {
       imageIds
     });
   }
+  const result = await generateAIResponse(validation, { attachedImages });
+  return res.status(result.status).json({ ...result.body, imageIds });
+}
 
+app.post('/api/ai/chat', express.json({ limit: '48kb' }), handleAIChatRequest);
+
+app.post('/api/ai/search-image', express.json({ limit: '2mb' }), async (req, res) => {
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  if (isAIRateLimited(ip)) {
+    return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
+  }
+
+  const image = validateAIImage(req.body && req.body.imageData);
+  if (!image) {
+    return res.status(400).json({ error: 'Ảnh không hợp lệ hoặc vượt quá dung lượng 1 MB. Vui lòng chọn ảnh JPEG, PNG hoặc WebP khác.' });
+  }
+  const validation = validateAIRequest({
+    language: req.body.language,
+    messages: [{
+      role: 'user',
+      text: req.body.language === 'en'
+        ? 'Identify the visible product and its distinctive features. Match it only with the supplied catalogue and recommend up to 3 visually similar products by ID. If no close match exists, return no product IDs and say so.'
+        : 'Nhận diện sản phẩm và đặc điểm nổi bật nhìn thấy trong ảnh. Chỉ đối chiếu với danh mục được cung cấp và gợi ý tối đa 3 sản phẩm tương tự bằng ID. Nếu không có sản phẩm phù hợp, không trả về ID và hãy nói rõ.'
+    }],
+    products: req.body.products
+  });
+  if (validation.error) return res.status(400).json({ error: validation.error });
+
+  const result = await generateAIResponse(validation, { imageData: image });
+  return res.status(result.status).json(result.body);
+});
+
+async function generateAIResponse(validation, { attachedImages = [], imageData = null } = {}) {
   let configuration;
   try {
     configuration = getAIModelConfiguration();
   } catch (error) {
-    return res.status(error.status || 500).json({ error: error.message });
+    return { status: error.status || 500, body: { error: error.message } };
   }
 
   const controller = new AbortController();
   const totalAttachedImageBytes = attachedImages.reduce((total, image) => total + image.bytes, 0);
   const timeoutMs = totalAttachedImageBytes > GEMINI_INLINE_IMAGE_LIMIT_BYTES
     ? 600000
-    : attachedImages.length ? 120000 : 30000;
+    : attachedImages.length || imageData ? 120000 : 30000;
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const contents = validation.messages.map(message => ({
       role: message.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: message.text }]
     }));
-    if (attachedImages.length) {
-      if (totalAttachedImageBytes > GEMINI_INLINE_IMAGE_LIMIT_BYTES) {
+    if (attachedImages.length && totalAttachedImageBytes > GEMINI_INLINE_IMAGE_LIMIT_BYTES) {
         for (const image of attachedImages) {
           const fileUri = await uploadImageToGeminiFilesApi(image, configuration, controller.signal);
           contents[contents.length - 1].parts.push({
@@ -676,17 +727,23 @@ app.post('/api/ai/chat', express.json({ limit: '48kb' }), async (req, res) => {
             }
           });
         }
-      } else {
-        for (const image of attachedImages) {
-          const imageBuffer = fs.readFileSync(path.join(CHAT_IMAGES_DIR, image.fileName));
-          contents[contents.length - 1].parts.push({
-            inline_data: {
-              mime_type: image.mimeType,
-              data: imageBuffer.toString('base64')
-            }
-          });
-        }
+    } else {
+      for (const image of attachedImages) {
+        const imageBuffer = fs.readFileSync(path.join(CHAT_IMAGES_DIR, image.fileName));
+        contents[contents.length - 1].parts.push({
+          inline_data: {
+            mime_type: image.mimeType,
+            data: imageBuffer.toString('base64')
+          }
+        });
       }
+    }
+    if (imageData) {
+      contents[contents.length - 1].parts.push({
+        inline_data: { mime_type: imageData.mimeType, data: imageData.data }
+      });
+    }
+    if (attachedImages.length || imageData) {
       contents[contents.length - 1].parts.push({
         text: 'Review the attached customer product image(s) as context for the customer message. Do not claim a return, refund, or replacement is approved; ask for missing details and explain staff must verify.'
       });
@@ -724,7 +781,7 @@ app.post('/api/ai/chat', express.json({ limit: '48kb' }), async (req, res) => {
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
       console.error('Gemini request failed:', response.status, result.error && result.error.status || 'Provider error');
-      return res.status(502).json({ error: 'Trợ lý AI chưa thể trả lời lúc này. Vui lòng thử lại hoặc liên hệ admin.' });
+      return { status: 502, body: { error: 'Trợ lý AI chưa thể trả lời lúc này. Vui lòng thử lại hoặc liên hệ admin.' } };
     }
 
     const output = result.candidates && result.candidates[0] &&
@@ -735,48 +792,51 @@ app.post('/api/ai/chat', express.json({ limit: '48kb' }), async (req, res) => {
       answer = JSON.parse(output);
     } catch {
       console.error('Gemini returned an invalid structured response.');
-      return res.status(502).json({ error: 'Trợ lý AI trả về câu trả lời không hợp lệ. Vui lòng thử lại.' });
+      return { status: 502, body: { error: 'Trợ lý AI trả về câu trả lời không hợp lệ. Vui lòng thử lại.' } };
     }
     if (!answer || typeof answer.message !== 'string' || !answer.message.trim() ||
         !Array.isArray(answer.productIds) || typeof answer.handoffAdmin !== 'boolean') {
       console.error('Gemini response did not match the expected schema.');
-      return res.status(502).json({ error: 'Trợ lý AI trả về câu trả lời không hợp lệ. Vui lòng thử lại.' });
+      return { status: 502, body: { error: 'Trợ lý AI trả về câu trả lời không hợp lệ. Vui lòng thử lại.' } };
     }
 
     const validProductIds = new Set(validation.products.map(product => product.id));
     const productIds = [...new Set(answer.productIds.filter(id =>
       Number.isInteger(id) && validProductIds.has(id)
     ))].slice(0, 3);
-    const noSimilarImageProductMessage = isImageProductLookupRequest(lastMessage.text)
-      ? validation.language === 'en'
-        ? 'I could not find a similar product in the current catalogue. Please describe the product and its distinctive features in more detail, or send another clear image so I can check again.'
-        : 'Mình chưa tìm thấy sản phẩm tương tự trong danh mục hiện tại. Bạn hãy mô tả chi tiết hơn tên hoặc đặc điểm sản phẩm, hoặc gửi ảnh khác rõ hơn để mình kiểm tra lại nhé.'
-      : null;
-    const normalizedAnswer = answer.message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const lastMessage = validation.messages[validation.messages.length - 1];
+    let message = answer.message.trim().slice(0, MAX_AI_MESSAGE_LENGTH);
+    const normalizedAnswer = message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     const imageNeedsClarification = /khong ro|chua ro|khong the nhan dang|chua the nhan dang|khong nhan dien duoc|chua nhan dien duoc|anh khong ro|cannot identify|can't identify|unclear image|image is unclear/.test(normalizedAnswer);
-    const unidentifiedProductMessage = validation.language === 'en'
-      ? 'I could not identify the product from this image. Please describe it in more detail or send another image so I can help.'
-      : 'Mình chưa nhận diện được sản phẩm từ ảnh này. Bạn hãy mô tả chi tiết hơn hoặc gửi ảnh khác để mình hỗ trợ nhé.';
-    return res.json({
-      message: attachedImages.length && !productIds.length && imageNeedsClarification
-        ? unidentifiedProductMessage
-        : attachedImages.length && !productIds.length && noSimilarImageProductMessage
-          ? noSimilarImageProductMessage
-        : answer.message.trim().slice(0, MAX_AI_MESSAGE_LENGTH),
-      productIds,
-      handoffAdmin: answer.handoffAdmin,
-      imageIds
-    });
+    const isImageLookup = Boolean(imageData) ||
+      (attachedImages.length > 0 && isImageProductLookupRequest(lastMessage.text));
+    if (isImageLookup && !productIds.length) {
+      message = imageNeedsClarification
+        ? validation.language === 'en'
+          ? 'I could not identify the product from this image. Please describe it in more detail or send a clearer image.'
+          : 'Mình chưa nhận diện được sản phẩm từ ảnh này. Bạn hãy mô tả chi tiết hơn hoặc gửi ảnh rõ hơn nhé.'
+        : validation.language === 'en'
+          ? 'I could not find a similar product in the current catalogue. Please describe its distinctive features or send another clear image.'
+          : 'Mình chưa tìm thấy sản phẩm tương tự trong danh mục hiện tại. Bạn hãy mô tả đặc điểm sản phẩm hoặc gửi ảnh khác rõ hơn nhé.';
+    }
+    return {
+      status: 200,
+      body: {
+        message,
+        productIds,
+        handoffAdmin: answer.handoffAdmin
+      }
+    };
   } catch (error) {
     if (error.name === 'AbortError') {
-      return res.status(504).json({ error: 'Trợ lý AI phản hồi quá lâu. Vui lòng thử lại.' });
+      return { status: 504, body: { error: 'Trợ lý AI phản hồi quá lâu. Vui lòng thử lại.' } };
     }
     console.error('Gemini connection failed:', error.name || 'Unknown error');
-    return res.status(502).json({ error: 'Không thể kết nối tới trợ lý AI. Vui lòng thử lại hoặc liên hệ admin.' });
+    return { status: 502, body: { error: 'Không thể kết nối tới trợ lý AI. Vui lòng thử lại hoặc liên hệ admin.' } };
   } finally {
     clearTimeout(timeout);
   }
-});
+}
 
 app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
