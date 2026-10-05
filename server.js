@@ -434,12 +434,16 @@ function getAIModelConfiguration() {
 function getGeminiProviderFailure(response, result, operation) {
   const providerError = result && result.error || {};
   const providerStatus = typeof providerError.status === 'string' ? providerError.status : '';
+  const providerReasons = Array.isArray(providerError.details)
+    ? providerError.details.map(detail => detail && detail.reason).filter(Boolean)
+    : [];
   const failure = (code, message) => ({
     status: 503,
     body: { error: message, code, providerStatus: response.status }
   });
 
-  if (response.status === 401 || providerStatus === 'UNAUTHENTICATED') {
+  if (response.status === 401 || providerStatus === 'UNAUTHENTICATED' ||
+      providerReasons.includes('API_KEY_INVALID')) {
     return failure(
       'GEMINI_AUTH_INVALID',
       'Gemini chưa xác thực được API key. Quản trị viên cần cập nhật key hợp lệ trong .env rồi khởi động lại máy chủ.'

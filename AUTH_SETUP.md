@@ -52,6 +52,13 @@ order-specific or complaint cases, the assistant opens the existing admin
 contact choices; it does not establish a live in-site chat or automatically
 notify a human.
 
+If Gemini rejects a key, denies API access, or cannot find the configured
+model, chat replies continue using catalogue-based suggestions and explicitly
+ask an administrator to check the Gemini configuration. Quota exhaustion and
+temporary provider failures also retain the local shopping fallback; image
+matching reports that it cannot complete rather than pretending the image was
+analyzed.
+
 Voice search requires a supported browser, microphone permission, and HTTPS
 (localhost is supported). Product image search sends a compressed image
 (maximum 1 MB) to Gemini for visual matching; search images are not retained by
