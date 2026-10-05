@@ -4475,6 +4475,7 @@
                 tabLogin.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer";
                 tabReg.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer";
             }
+            translateAuthUi();
         }
 
         function setAuthField(fieldId, inputId, visible, required) {
@@ -4547,6 +4548,7 @@
                     document.getElementById('auth-title').innerText = "Xác Nhận Số Điện Thoại";
                     submitBtn.innerText = "Xác Nhận OTP và Tạo Tài Khoản";
                     document.getElementById('auth-otp').focus();
+                    translateAuthUi();
                 }
             } catch (error) {
                 showToast(error.message || 'Không thể xử lý yêu cầu. Vui lòng thử lại.', "error");
@@ -4885,7 +4887,7 @@
                     : 'Chọn tỉnh/thành trên bản đồ');
             }
 
-            const targetLanguage = currentLanguage === 'en' ? 'VI' : 'EN';
+            const targetLanguage = currentLanguage.toUpperCase();
             ['intro-language-btn', 'site-language-btn'].forEach(id => {
                 const button = document.getElementById(id);
                 if (button) {
@@ -4950,6 +4952,7 @@
                 button.textContent = prompts[index][0];
                 button.onclick = () => sendQuickPrompt(prompts[index][1]);
             });
+            translateAuthUi();
             updateCatalogCounts();
             updateIntroMusicButton();
             updateProvinceSelectionStatus();
@@ -4963,9 +4966,63 @@
             }
         }
 
+        function translateAuthUi() {
+            const en = currentLanguage === 'en';
+            const text = (selector, english, vietnamese) => {
+                const element = document.querySelector(selector);
+                if (element) element.textContent = en ? english : vietnamese;
+            };
+            const placeholder = (selector, english, vietnamese) => {
+                const element = document.querySelector(selector);
+                if (element) element.placeholder = en ? english : vietnamese;
+            };
+            text('#auth-title', authStep === 'otp' ? 'Verify your phone' : authTab === 'register' ? 'Create your OCOP account' : 'Account login', authStep === 'otp' ? 'X\u00e1c nh\u1eadn s\u1ed1 \u0111i\u1ec7n tho\u1ea1i' : authTab === 'register' ? '\u0110\u0103ng k\u00fd t\u00e0i kho\u1ea3n OCOP' : '\u0110\u0103ng nh\u1eadp t\u00e0i kho\u1ea3n');
+            text('#auth-modal .text-center p', 'Manage orders and redeem offers', 'Qu\u1ea3n l\u00fd \u0111\u01a1n h\u00e0ng v\u00e0 t\u00edch \u0111i\u1ec3m \u01b0u \u0111\u00e3i');
+            text('#tab-login', 'Log in', '\u0110\u0103ng nh\u1eadp');
+            text('#tab-register', 'Create account', '\u0110\u0103ng k\u00fd');
+            text('label[for="auth-name"]', 'Full name *', 'H\u1ecd v\u00e0 t\u00ean *');
+            text('label[for="auth-phone"]', 'Phone number for SMS code *', 'S\u1ed1 \u0111i\u1ec7n tho\u1ea1i nh\u1eadn m\u00e3 OTP *');
+            text('label[for="auth-address"]', 'Address *', '\u0110\u1ecba ch\u1ec9 *');
+            text('label[for="auth-email"]', 'Email (optional)', 'Gmail / Email (kh\u00f4ng b\u1eaft bu\u1ed9c)');
+            text('label[for="auth-password"]', 'Password *', 'M\u1eadt kh\u1ea9u *');
+            text('label[for="auth-password-confirm"]', 'Confirm password *', 'X\u00e1c nh\u1eadn l\u1ea1i m\u1eadt kh\u1ea9u *');
+            text('label[for="auth-otp"]', 'SMS code *', 'M\u00e3 OTP *');
+            text('#otp-section button', 'Resend code', 'G\u1eedi l\u1ea1i m\u00e3 OTP');
+            placeholder('#auth-name', 'Nguyen Van A', 'Nguy\u1ec5n V\u0103n A');
+            placeholder('#auth-address', 'Street, ward, city or province', 'S\u1ed1 nh\u00e0, \u0111\u01b0\u1eddng, ph\u01b0\u1eddng/x\u00e3, t\u1ec9nh/th\u00e0nh ph\u1ed1');
+            placeholder('#auth-password', 'At least 8 characters', 'T\u1ed1i thi\u1ec3u 8 k\u00fd t\u1ef1');
+            placeholder('#auth-password-confirm', 'Enter your password again', 'Nh\u1eadp l\u1ea1i m\u1eadt kh\u1ea9u');
+            placeholder('#auth-otp', 'Enter the 6-digit code', 'Nh\u1eadp m\u00e3 g\u1ed3m 6 ch\u1eef s\u1ed1');
+            text('#auth-submit-btn', authStep === 'otp' ? 'Verify and create account' : authTab === 'register' ? 'Create account' : 'Log in', authStep === 'otp' ? 'X\u00e1c nh\u1eadn OTP v\u00e0 t\u1ea1o t\u00e0i kho\u1ea3n' : authTab === 'register' ? 'T\u1ea1o t\u00e0i kho\u1ea3n m\u1edbi' : '\u0110\u0103ng nh\u1eadp');
+            const form = document.getElementById('auth-form');
+            if (form && !form.dataset.localizedValidation) {
+                form.dataset.localizedValidation = 'true';
+                form.addEventListener('invalid', event => {
+                    const field = event.target;
+                    if (!(field instanceof HTMLInputElement)) return;
+                    const validity = field.validity;
+                    let message = '';
+                    if (validity.valueMissing) message = currentLanguage === 'en' ? 'Please fill out this field.' : 'Vui l\u00f2ng nh\u1eadp th\u00f4ng tin n\u00e0y.';
+                    else if (validity.typeMismatch) message = currentLanguage === 'en' ? 'Please enter a valid value.' : 'Vui l\u00f2ng nh\u1eadp \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng.';
+                    else if (validity.tooShort) message = currentLanguage === 'en' ? `Please enter at least ${field.minLength} characters.` : `Vui l\u00f2ng nh\u1eadp \u00edt nh\u1ea5t ${field.minLength} k\u00fd t\u1ef1.`;
+                    else if (validity.patternMismatch) message = currentLanguage === 'en' ? 'Please check the required format.' : 'Vui l\u00f2ng ki\u1ec3m tra \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng.';
+                    field.setCustomValidity(message);
+                }, true);
+                form.addEventListener('input', event => {
+                    if (event.target instanceof HTMLInputElement) event.target.setCustomValidity('');
+                });
+            }
+        }
+
         function toggleLanguage() {
             applyLanguage(currentLanguage === 'vi' ? 'en' : 'vi');
         }
+
+        window.addEventListener('storage', event => {
+            if (event.key === 'ocop-language' && (event.newValue === 'vi' || event.newValue === 'en')) {
+                applyLanguage(event.newValue);
+            }
+        });
         
     </script>
     <script>
