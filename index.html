@@ -2005,17 +2005,13 @@
                 <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div id="ai-chat-messages" class="flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs">
+            <div id="ai-chat-messages" class="min-h-0 flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs" role="log" aria-live="polite" aria-relevant="additions">
                 <div class="flex items-start space-x-2">
                     <img src="chat-avatar.svg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
                         <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.</p>
-<<<<<<< HEAD
-                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn, ảnh tìm kiếm và danh mục được gửi tới Google Gemini; không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
-=======
-                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn và ảnh bạn gửi có thể được nhân viên xem; ảnh được lưu trên máy chủ và gửi tới Google Gemini để trả lời. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
->>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
+                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn được gửi tới Google Gemini; ảnh đính kèm được lưu trên máy chủ để nhân viên xem và có thể gửi tới Gemini. Ảnh tìm kiếm cũng được gửi tới Gemini. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
                     </div>
                 </div>
             </div>
@@ -2029,11 +2025,6 @@
                 <button onclick="sendQuickPrompt('Tôi muốn đổi trả hàng')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">↩️ Đổi trả</button>
             </div>
             
-<<<<<<< HEAD
-            <div class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
-                <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter') sendAIMessage()" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
-                <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait"><i class="fa-solid fa-paper-plane text-xs"></i></button>
-=======
             <div id="ai-chat-composer" class="p-3 bg-white border-t border-gray-100 space-y-2">
                 <input type="file" id="ai-chat-image-input" accept="image/*" multiple hidden>
                 <div id="ai-chat-image-previews" class="flex flex-wrap gap-2" hidden></div>
@@ -2041,9 +2032,8 @@
                 <div class="flex items-center space-x-2">
                     <button type="button" id="chat-add-image-button" onclick="document.getElementById('ai-chat-image-input').click()" aria-label="Thêm ảnh" title="Thêm ảnh (dán Ctrl+V hoặc kéo thả)" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-image text-sm"></i></button>
                     <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter'){event.preventDefault();sendAIMessage()}" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
-                    <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 flex-shrink-0 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+                    <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 flex-shrink-0 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait"><i class="fa-solid fa-paper-plane text-xs"></i></button>
                 </div>
->>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
             </div>
         </div>
         
@@ -2438,12 +2428,9 @@
         let currentOrderCode = null;
         let aiMessageSequence = 0;
         let aiConversationHistory = [];
-<<<<<<< HEAD
         let isAIRequestPending = false;
         let activeSearchRecognition = null;
-=======
         let pendingAIImages = [];
->>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
         let ordersHistory = [
@@ -3340,7 +3327,21 @@
             try {
                 const image = new Image();
                 image.src = objectUrl;
-                await image.decode();
+                let decodeTimer;
+                try {
+                    await Promise.race([
+                        image.decode(),
+                        new Promise((resolve, reject) => {
+                            decodeTimer = window.setTimeout(() => reject(new Error(
+                                currentLanguage === 'en'
+                                    ? 'The selected image could not be decoded.'
+                                    : 'Không thể đọc ảnh đã chọn.'
+                            )), 10000);
+                        })
+                    ]);
+                } finally {
+                    window.clearTimeout(decodeTimer);
+                }
                 if (!image.naturalWidth || !image.naturalHeight) throw new Error('Ảnh không đọc được.');
 
                 const maxDimension = 1024;
@@ -3389,7 +3390,7 @@
             try {
                 const imageData = await createSearchImageDataUrl(file);
                 filterProductsGlobal('');
-                const response = await fetch('/api/ai/search-image', {
+                const response = await fetch(getAIEndpoint('/api/ai/search-image'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -3518,6 +3519,10 @@
             sendAIMessage();
         }
 
+        function getAIEndpoint(path) {
+            return window.location.protocol === 'file:' ? `http://localhost:3000${path}` : path;
+        }
+
         const maxAIChatImages = 10;
         const maxAIChatImageBytes = 100 * 1024 * 1024;
         const supportedAIChatImageTypes = new Set([
@@ -3594,7 +3599,7 @@
         async function uploadPendingAIChatImages(images) {
             const newImages = images.filter(image => !image.id);
             for (const image of newImages) {
-                const response = await fetch('/api/ai/images', {
+                const response = await fetch(getAIEndpoint('/api/ai/images'), {
                     method: 'POST',
                     headers: { 'Content-Type': image.file.type },
                     body: image.file
@@ -3663,7 +3668,7 @@
 
         async function syncAIWebsiteCatalog() {
             try {
-                const response = await fetch('/api/ai/catalog', {
+                const response = await fetch(getAIEndpoint('/api/ai/catalog'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ products: getAIProductPayload() })
@@ -3718,15 +3723,11 @@
                 ? 'Please review the attached product image and help me.'
                 : 'Vui lòng xem ảnh sản phẩm tôi gửi và hỗ trợ giúp tôi.');
 
-<<<<<<< HEAD
-            if (!text || isAIRequestPending) return;
+            if ((!text && !messageImages.length) || isAIRequestPending) return;
             isAIRequestPending = true;
             const sendButton = document.getElementById('chat-send-button');
             sendButton.disabled = true;
             sendButton.setAttribute('aria-busy', 'true');
-=======
-            if (!text && !messageImages.length) return;
->>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
 
             const userMessage = document.createElement('div');
             userMessage.className = 'flex items-start justify-end space-x-2';
@@ -3770,31 +3771,44 @@
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             try {
-                await uploadPendingAIChatImages(messageImages);
-                const response = await fetch('/api/ai/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        language: currentLanguage,
-<<<<<<< HEAD
-                        messages: [...aiConversationHistory.slice(-14), { role: 'user', text }],
-                        products: getAIProductPayload()
-=======
-                        messages: [...aiConversationHistory.slice(-14), { role: 'user', text: messageText }],
-                        products: getAIProductPayload(),
-                        imageIds: messageImages.map(image => image.id)
->>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
-                    })
-                });
-                let result = await response.json().catch(() => ({}));
-                if (!response.ok) {
-                    if (response.status === 503) {
+                let result;
+                try {
+                    await uploadPendingAIChatImages(messageImages);
+                } catch (error) {
+                    if (!(error instanceof TypeError)) throw error;
+                    result = createLocalCatalogReply(text, messageImages.length > 0);
+                }
+                if (!result) {
+                    try {
+                        const response = await fetch(getAIEndpoint('/api/ai/chat'), {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                language: currentLanguage,
+                                messages: [...aiConversationHistory.slice(-14), { role: 'user', text: messageText }],
+                                products: getAIProductPayload(),
+                                imageIds: messageImages.map(image => image.id)
+                            })
+                        });
+                        result = await response.json().catch(() => ({}));
+                        if (!response.ok) {
+                            if (response.status === 503) {
+                                result = createLocalCatalogReply(text, messageImages.length > 0);
+                            } else {
+                                throw new Error(result.error || (currentLanguage === 'en'
+                                    ? 'The AI assistant is temporarily unavailable.'
+                                    : 'Trợ lý AI hiện chưa thể trả lời.'));
+                            }
+                        }
+                    } catch (error) {
+                        if (!(error instanceof TypeError)) throw error;
                         result = createLocalCatalogReply(text, messageImages.length > 0);
-                    } else {
-                        throw new Error(result.error || (currentLanguage === 'en'
-                            ? 'The AI assistant is temporarily unavailable.'
-                            : 'Trợ lý AI hiện chưa thể trả lời.'));
                     }
+                }
+                if (!result || typeof result.message !== 'string' || !Array.isArray(result.productIds)) {
+                    throw new Error(currentLanguage === 'en'
+                        ? 'The assistant returned an incomplete reply. Please try again.'
+                        : 'Trợ lý trả về nội dung chưa đầy đủ. Vui lòng thử lại.');
                 }
 
                 const loadingNode = document.getElementById(loadingId);
@@ -3811,14 +3825,16 @@
                 `;
                 reply.querySelector('p').textContent = result.message;
                 if (result.localFallback) {
-                    if (!messageImages.length) {
-                        const fallbackNote = document.createElement('p');
-                        fallbackNote.className = 'text-[10px] text-gray-500';
-                        fallbackNote.textContent = currentLanguage === 'en'
+                    const fallbackNote = document.createElement('p');
+                    fallbackNote.className = 'text-[10px] text-gray-500';
+                    fallbackNote.textContent = messageImages.length
+                        ? currentLanguage === 'en'
+                            ? 'Image analysis is unavailable while the assistant server is offline; this reply is based on your text only.'
+                            : 'Máy chủ trợ lý đang ngoại tuyến nên chưa phân tích được ảnh; phản hồi này chỉ dựa trên nội dung bạn nhập.'
+                        : currentLanguage === 'en'
                             ? 'Quick answer from the website catalogue. Connect Gemini for open-ended AI replies.'
                             : 'Gợi ý nhanh từ danh mục website; cần cấu hình Gemini để bật trả lời AI tự do.';
-                        reply.querySelector('div.bg-white').append(fallbackNote);
-                    }
+                    reply.querySelector('div.bg-white').append(fallbackNote);
                 }
                 const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
                     .map(id => products.find(product => product.id === id))
@@ -3837,7 +3853,7 @@
                     handoffButton.type = 'button';
                     handoffButton.dataset.adminContact = 'true';
                     handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
-                    handoffButton.textContent = 'Mở liên hệ admin';
+                    handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
                     handoffButton.addEventListener('click', toggleAdminSupport);
                     const existingAdminButton = reply.querySelector('button[data-admin-contact="true"]');
                     if (!existingAdminButton) {
@@ -3873,13 +3889,25 @@
                         <p class="ai-error-message"></p>
                     </div>
                 `;
-                failure.querySelector('.ai-error-message').textContent = error.message || 'Không thể kết nối trợ lý AI.';
+                const connectionFailed = error instanceof TypeError || /failed to fetch|networkerror/i.test(error.message || '');
+                failure.querySelector('.ai-error-message').textContent = connectionFailed
+                    ? currentLanguage === 'en'
+                        ? 'Could not reach the assistant server. Check that the OCOP app is running, then try again.'
+                        : 'Chưa kết nối được máy chủ trợ lý. Vui lòng kiểm tra ứng dụng OCOP đang chạy rồi thử lại.'
+                    : error.message || (currentLanguage === 'en'
+                        ? 'The assistant could not reply. Please try again.'
+                        : 'Trợ lý chưa thể trả lời. Vui lòng thử lại.');
+                const retryButton = document.createElement('button');
+                retryButton.type = 'button';
+                retryButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
+                retryButton.textContent = currentLanguage === 'en' ? 'Try again' : 'Thử lại';
+                retryButton.addEventListener('click', sendAIMessage);
                 const contactButton = document.createElement('button');
                 contactButton.type = 'button';
                 contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
-                contactButton.textContent = 'Liên hệ admin';
+                contactButton.textContent = currentLanguage === 'en' ? 'Contact support' : 'Liên hệ admin';
                 contactButton.addEventListener('click', connectCustomerToAdmin);
-                failure.querySelector('div.bg-white').append(contactButton);
+                failure.querySelector('div.bg-white').append(retryButton, contactButton);
                 messagesEl.append(failure);
                 messagesEl.scrollTop = messagesEl.scrollHeight;
             } finally {
@@ -5151,13 +5179,8 @@
                     ? 'Tell me the occasion, region, product type, or your budget.'
                     : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
                 document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
-<<<<<<< HEAD
-                    ? 'Messages, images used for search, and the product catalogue are sent to Google Gemini; do not share passwords, OTPs, or payment details.'
-                    : 'Tin nhắn, ảnh tìm kiếm và danh mục được gửi tới Google Gemini; không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
-=======
-                    ? 'Messages are sent to Google Gemini; attached images are stored for staff review and may be sent to Gemini. Do not share passwords, OTPs, or payment details.'
-                    : 'Tin nhắn được gửi tới Google Gemini; ảnh đính kèm được lưu để nhân viên xem và có thể gửi tới Gemini. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
->>>>>>> 012d323b9777c3363e92a762f2f78608bfe34e2a
+                    ? 'Messages are sent to Google Gemini; attached images are stored for staff review and may be sent to Gemini. Images used for visual search are also sent to Gemini. Do not share passwords, OTPs, or payment details.'
+                    : 'Tin nhắn được gửi tới Google Gemini; ảnh đính kèm được lưu trên máy chủ để nhân viên xem và có thể gửi tới Gemini. Ảnh tìm kiếm cũng được gửi tới Gemini. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
             }
             document.getElementById('chat-add-image-button').setAttribute(
                 'aria-label',
