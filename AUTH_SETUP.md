@@ -35,9 +35,12 @@ stays on the server and must never be added to browser code. Without a key, the
 chatbot reports that the AI is not configured and offers the existing admin
 contacts. Customer messages and the product catalogue are sent to Google
 Gemini to generate replies; customers are warned not to share passwords, OTPs,
-or payment details. For order-specific or complaint cases, the assistant opens
-the existing admin contact choices; it does not establish a live in-site chat
-or automatically notify a human.
+or payment details. Product image search also sends a compressed image
+(maximum 1 MB) to Gemini for visual matching. Voice search requires a supported
+browser, microphone permission, and HTTPS (localhost is supported). For
+order-specific or complaint cases, the assistant opens the existing admin
+contact choices; it does not establish a live in-site chat or automatically
+notify a human.
 
 Verified customer records are stored in `.private-data/customers.json`, outside
 the static website directory and excluded from Git. Passwords are stored as

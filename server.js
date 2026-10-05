@@ -42,12 +42,14 @@ const AI_REQUEST_WINDOW_MS = 60 * 1000;
 const MAX_AI_REQUESTS_PER_WINDOW = 20;
 const MAX_AI_MESSAGES = 16;
 const MAX_AI_MESSAGE_LENGTH = 1200;
+const MAX_AI_IMAGE_BYTES = 1024 * 1024;
 const pendingRegistrations = new Map();
 const otpSentAt = new Map();
 const loginAttempts = new Map();
 const registrationAttempts = new Map();
 const aiRequestAttempts = new Map();
 
+app.use('/api/ai/search-image', express.json({ limit: '2mb' }));
 app.use(express.json({ limit: '48kb' }));
 
 let customers = [];
@@ -233,26 +235,40 @@ function buildAISystemInstruction({ products, language }) {
   ].join('\n');
 }
 
-app.post('/api/ai/chat', async (req, res) => {
-  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+function isAIRateLimited(ip) {
   const now = Date.now();
   const attempts = aiRequestAttempts.get(ip);
-  if (attempts && attempts.resetAt > now && attempts.count >= MAX_AI_REQUESTS_PER_WINDOW) {
-    return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
-  }
+  if (attempts && attempts.resetAt > now && attempts.count >= MAX_AI_REQUESTS_PER_WINDOW) return true;
   const nextAttempts = attempts && attempts.resetAt > now
     ? { count: attempts.count + 1, resetAt: attempts.resetAt }
     : { count: 1, resetAt: now + AI_REQUEST_WINDOW_MS };
   aiRequestAttempts.set(ip, nextAttempts);
+  return false;
+}
 
-  const validation = validateAIRequest(req.body);
-  if (validation.error) return res.status(400).json({ error: validation.error });
+function validateAIImage(dataUrl) {
+  const match = typeof dataUrl === 'string'
+    ? /^data:image\/(jpeg|png|webp);base64,([A-Za-z0-9+/]+={0,2})$/.exec(dataUrl)
+    : null;
+  if (!match || match[2].length > Math.ceil(MAX_AI_IMAGE_BYTES * 4 / 3) + 4) return null;
 
+  const bytes = Buffer.from(match[2], 'base64');
+  if (!bytes.length || bytes.length > MAX_AI_IMAGE_BYTES) return null;
+  const validSignature = match[1] === 'jpeg'
+    ? bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+    : match[1] === 'png'
+      ? bytes.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))
+      : bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 12) === 'WEBP';
+  if (!validSignature) return null;
+  return { mimeType: `image/${match[1]}`, data: match[2] };
+}
+
+async function generateAIResponse(validation, image = null) {
   let configuration;
   try {
     configuration = getAIModelConfiguration();
   } catch (error) {
-    return res.status(error.status || 500).json({ error: error.message });
+    return { status: error.status || 500, body: { error: error.message } };
   }
 
   const controller = new AbortController();
@@ -269,10 +285,18 @@ app.post('/api/ai/chat', async (req, res) => {
         system_instruction: {
           parts: [{ text: buildAISystemInstruction(validation) }]
         },
-        contents: validation.messages.map(message => ({
-          role: message.role === 'assistant' ? 'model' : 'user',
-          parts: [{ text: message.text }]
-        })),
+        contents: image
+          ? [{
+              role: 'user',
+              parts: [
+                { text: validation.messages[0].text },
+                { inline_data: { mime_type: image.mimeType, data: image.data } }
+              ]
+            }]
+          : validation.messages.map(message => ({
+              role: message.role === 'assistant' ? 'model' : 'user',
+              parts: [{ text: message.text }]
+            })),
         generationConfig: {
           temperature: 0.35,
           maxOutputTokens: 900,
@@ -294,7 +318,7 @@ app.post('/api/ai/chat', async (req, res) => {
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
       console.error('Gemini request failed:', response.status, result.error && result.error.status || 'Provider error');
-      return res.status(502).json({ error: 'Trợ lý AI chưa thể trả lời lúc này. Vui lòng thử lại hoặc liên hệ admin.' });
+      return { status: 502, body: { error: 'Trợ lý AI chưa thể trả lời lúc này. Vui lòng thử lại hoặc liên hệ admin.' } };
     }
 
     const output = result.candidates && result.candidates[0] &&
@@ -305,32 +329,75 @@ app.post('/api/ai/chat', async (req, res) => {
       answer = JSON.parse(output);
     } catch {
       console.error('Gemini returned an invalid structured response.');
-      return res.status(502).json({ error: 'Trợ lý AI trả về câu trả lời không hợp lệ. Vui lòng thử lại.' });
+      return { status: 502, body: { error: 'Trợ lý AI trả về câu trả lời không hợp lệ. Vui lòng thử lại.' } };
     }
     if (!answer || typeof answer.message !== 'string' || !answer.message.trim() ||
         !Array.isArray(answer.productIds) || typeof answer.handoffAdmin !== 'boolean') {
       console.error('Gemini response did not match the expected schema.');
-      return res.status(502).json({ error: 'Trợ lý AI trả về câu trả lời không hợp lệ. Vui lòng thử lại.' });
+      return { status: 502, body: { error: 'Trợ lý AI trả về câu trả lời không hợp lệ. Vui lòng thử lại.' } };
     }
 
     const validProductIds = new Set(validation.products.map(product => product.id));
     const productIds = [...new Set(answer.productIds.filter(id =>
       Number.isInteger(id) && validProductIds.has(id)
     ))].slice(0, 3);
-    return res.json({
-      message: answer.message.trim().slice(0, MAX_AI_MESSAGE_LENGTH),
-      productIds,
-      handoffAdmin: answer.handoffAdmin
-    });
+    return {
+      status: 200,
+      body: {
+        message: answer.message.trim().slice(0, MAX_AI_MESSAGE_LENGTH),
+        productIds,
+        handoffAdmin: answer.handoffAdmin
+      }
+    };
   } catch (error) {
     if (error.name === 'AbortError') {
-      return res.status(504).json({ error: 'Trợ lý AI phản hồi quá lâu. Vui lòng thử lại.' });
+      return { status: 504, body: { error: 'Trợ lý AI phản hồi quá lâu. Vui lòng thử lại.' } };
     }
     console.error('Gemini connection failed:', error.name || 'Unknown error');
-    return res.status(502).json({ error: 'Không thể kết nối tới trợ lý AI. Vui lòng thử lại hoặc liên hệ admin.' });
+    return { status: 502, body: { error: 'Không thể kết nối tới trợ lý AI. Vui lòng thử lại hoặc liên hệ admin.' } };
   } finally {
     clearTimeout(timeout);
   }
+}
+
+app.post('/api/ai/chat', async (req, res) => {
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  if (isAIRateLimited(ip)) {
+    return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
+  }
+
+  const validation = validateAIRequest(req.body);
+  if (validation.error) return res.status(400).json({ error: validation.error });
+  const result = await generateAIResponse(validation);
+  return res.status(result.status).json(result.body);
+});
+
+app.post('/api/ai/search-image', async (req, res) => {
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  if (isAIRateLimited(ip)) {
+    return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
+  }
+
+  const image = validateAIImage(req.body && req.body.imageData);
+  if (!image) {
+    return res.status(400).json({ error: 'Ảnh không hợp lệ hoặc vượt quá dung lượng 1 MB. Vui lòng chọn ảnh JPEG, PNG hoặc WebP khác.' });
+  }
+
+  const language = req.body.language === 'en' ? 'en' : 'vi';
+  const validation = validateAIRequest({
+    language,
+    messages: [{
+      role: 'user',
+      text: language === 'en'
+        ? 'Identify the visible product or its visual characteristics from this image. Match it only to the supplied catalogue and recommend the closest products by ID. Do not invent catalogue details.'
+        : 'Nhận diện sản phẩm hoặc đặc điểm nhìn thấy trong ảnh. Chỉ đối chiếu với danh mục được cung cấp và gợi ý sản phẩm gần giống nhất bằng ID. Không tự tạo thông tin sản phẩm.'
+    }],
+    products: req.body.products
+  });
+  if (validation.error) return res.status(400).json({ error: validation.error });
+
+  const result = await generateAIResponse(validation, image);
+  return res.status(result.status).json(result.body);
 });
 
 const aiRateLimitCleanup = setInterval(() => {
