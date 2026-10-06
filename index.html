@@ -4218,6 +4218,7 @@
         }
 
 async function sendAIMessage() {
+            const requestLanguage = currentLanguage;
             const inputEl = document.getElementById('ai-chat-input');
             const messagesEl = document.getElementById('ai-chat-messages');
             const text = inputEl.value.trim();
@@ -4287,7 +4288,7 @@ async function sendAIMessage() {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
-                                language: currentLanguage,
+                                language: requestLanguage,
                                 messages: [...aiConversationHistory.slice(-14), { role: 'user', text: messageText }],
                                 products: getAIProductPayload(),
                                 imageIds: messageImages.map(image => image.id)
@@ -4393,7 +4394,9 @@ async function sendAIMessage() {
                         reply.querySelector('div.bg-white').append(handoffButton);
                     }
                 }
+                reply.dataset.chatReplyLanguage = requestLanguage;
                 messagesEl.append(reply);
+                if (requestLanguage !== currentLanguage) syncChatLanguage();
                 aiConversationHistory = [
                     ...aiConversationHistory,
                     { role: 'user', text: messageText },
@@ -4405,7 +4408,7 @@ async function sendAIMessage() {
 
                 // ── Dynamic chips: refresh the chip bar with contextual suggestions ──
                 const chipBar = document.querySelector('#ai-chat-window .p-2.bg-amber-50\\/80');
-                if (chipBar && Array.isArray(result.dynamic_chips) && result.dynamic_chips.length) {
+                if (chipBar && Array.isArray(result.dynamic_chips)) {
                     chipBar.innerHTML = '';
                     result.dynamic_chips.forEach(label => {
                         const btn = document.createElement('button');
@@ -5775,6 +5778,54 @@ async function sendAIMessage() {
         }
 
         let originalUiText = null;
+        let chatLanguageRevision = 0;
+        const chatTextTranslations = new WeakMap();
+        async function syncChatLanguage() {
+            const revision = ++chatLanguageRevision;
+            const language = currentLanguage;
+            const pending = [];
+            document.querySelectorAll('#ai-chat-messages [data-chat-reply-language]').forEach(reply => {
+                const walker = document.createTreeWalker(reply, NodeFilter.SHOW_TEXT);
+                while (walker.nextNode()) {
+                    const node = walker.currentNode;
+                    if (!node.nodeValue.trim()) continue;
+                    let cached = chatTextTranslations.get(node);
+                    if (!cached) {
+                        cached = { [reply.dataset.chatReplyLanguage]: node.nodeValue };
+                        chatTextTranslations.set(node, cached);
+                    }
+                    if (cached[language]) node.nodeValue = cached[language];
+                    else pending.push({ node, cached, text: node.nodeValue });
+                }
+            });
+            for (let start = 0; start < pending.length;) {
+                const batch = [];
+                let length = 0;
+                while (start < pending.length && batch.length < 100 && length + pending[start].text.length <= 24000) {
+                    const entry = pending[start++];
+                    length += entry.text.length;
+                    batch.push(entry);
+                }
+                if (!batch.length) break;
+                try {
+                    const response = await fetch(getAIEndpoint('/api/ai/translate'), {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ language, texts: batch.map(entry => entry.text) })
+                    });
+                    if (!response.ok) throw new Error('Translation unavailable');
+                    const result = await response.json();
+                    if (!Array.isArray(result.texts) || result.texts.length !== batch.length) throw new Error('Invalid translation');
+                    batch.forEach((entry, index) => {
+                        entry.cached[language] = result.texts[index];
+                        if (revision === chatLanguageRevision && currentLanguage === language && entry.node.isConnected) entry.node.nodeValue = result.texts[index];
+                    });
+                } catch (error) {
+                    console.warn('Chat translation unavailable; preserving original messages.');
+                    break;
+                }
+            }
+        }
+
         function applyLanguage(language) {
             currentLanguage = language === 'en' ? 'en' : 'vi';
             document.documentElement.lang = currentLanguage;
@@ -5878,10 +5929,13 @@ async function sendAIMessage() {
                 ];
             promptButtons.forEach((button, index) => {
                 if (!prompts[index]) return;
-                button.textContent = prompts[index][0];
-                button.onclick = () => sendQuickPrompt(prompts[index][1]);
+                const translatedButton = button.cloneNode(false);
+                translatedButton.textContent = prompts[index][0];
+                translatedButton.onclick = () => sendQuickPrompt(prompts[index][1]);
+                button.replaceWith(translatedButton);
             });
             translateAuthUi();
+            syncChatLanguage();
             translateRemainingPageText();
             updateCatalogCounts();
             updateIntroMusicButton();
