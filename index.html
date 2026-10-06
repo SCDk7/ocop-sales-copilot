@@ -1372,6 +1372,73 @@
                 scroll-behavior: auto !important;
             }
         }
+        /* Intro: dark green cards over the existing animated Dong Son drum. */
+        #ocop-intro-overlay > .fixed > .drum-rotate,
+        #ocop-intro-overlay > .fixed > .drum-rotate-reverse {
+            display: block;
+            opacity: 0.3;
+            transform-origin: center;
+        }
+        #ocop-intro-overlay > .fixed > .drum-rotate { opacity: 0.2; }
+        #ocop-intro-overlay .drum-rotate svg { stroke: #d4af37; }
+        #ocop-intro-overlay .drum-rotate svg [fill]:not([fill="none"]) { fill: #d4af37; }
+        #ocop-intro-overlay .intro-card-glass,
+        #ocop-intro-overlay .intro-pillars > div,
+        #ocop-intro-overlay #intro-lucky-card {
+            background: linear-gradient(135deg, rgba(17, 61, 47, 0.96), rgba(10, 38, 30, 0.96));
+            color: #f5f3df;
+            border-color: rgba(212, 175, 55, 0.38);
+        }
+        #ocop-intro-overlay .intro-pillars > div .text-amber-100,
+        #ocop-intro-overlay .intro-regions .intro-region-kicker,
+        #ocop-intro-overlay #intro-lucky-card .text-amber-300 {
+            color: #f1d68d !important;
+        }
+        #ocop-intro-overlay .intro-pillars > div [id$="-sub"],
+        #ocop-intro-overlay #i18n-intro-region-caption,
+        #ocop-intro-overlay .intro-regions .text-amber-200,
+        #ocop-intro-overlay .intro-regions .text-amber-100\/80 {
+            color: #c2d7c9 !important;
+        }
+        #ocop-intro-overlay .province-map-select,
+        #ocop-intro-overlay .intro-regions .bg-black\/60,
+        #ocop-intro-overlay #intro-gift-result {
+            background: #163f32;
+            color: #f4edce;
+            border-color: rgba(212, 175, 55, 0.35);
+            color-scheme: dark;
+        }
+        #ocop-intro-overlay #lucky-gift-description { color: #f4edce !important; }
+        #ocop-intro-overlay .province-map-status,
+        #ocop-intro-overlay #province-products-title { color: #c2d7c9 !important; }
+        #ocop-intro-overlay #province-products-toggle {
+            background: #20533f;
+            color: #f1d68d;
+            border-color: rgba(212, 175, 55, 0.35);
+        }
+        #ocop-intro-overlay #province-products-panel:not(.hidden) {
+            background: rgba(15, 56, 44, 0.98);
+            border-color: rgba(212, 175, 55, 0.35);
+        }
+        @media (max-width: 767px) {
+            /* Keep form text at 16px to prevent mobile Safari focus zoom. */
+            input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+            textarea,
+            select { font-size: 16px !important; }
+            #ocop-intro-overlay .intro-pillars > div {
+                height: auto;
+                min-height: 4.5rem;
+            }
+            #ocop-intro-overlay .intro-regions { min-width: 0; }
+            #ocop-intro-overlay .province-map-select { width: 100%; max-width: 100%; }
+            #ocop-intro-overlay .drum-rotate,
+            #ocop-intro-overlay .drum-rotate-reverse { max-width: none; }
+        }
+        #ocop-intro-overlay #lucky-gift-code { background: #ecd788; color: #000 !important; }
+        @media (prefers-reduced-motion: reduce) {
+            #ocop-intro-overlay .drum-rotate,
+            #ocop-intro-overlay .drum-rotate-reverse { animation: none !important; }
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">

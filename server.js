@@ -612,6 +612,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     languageInstruction,
 
     "=== CONVERSATION ACCURACY RULES ===",
+    "For EVERY message, first determine the user's goal from their exact words, conversation history and attachments. Check each factual claim against the provided catalogue or relevant source. Do not treat keyword matches as sufficient understanding. Never invent the customer's needs, budget, product, order status, or problem. If the goal or an essential detail is ambiguous, set understandingStatus=needs_clarification and ask one focused question; return no productIds. Otherwise set understandingStatus=understood and answer only the identified request. Perform these checks internally; do not expose reasoning steps or a checklist to the customer.",
     "1. Answer the customer's latest message first. Use earlier messages only to resolve references such as 'this product', 'that one', or a correction.",
     "Before replying, read the complete conversation, identify the customer's actual concern, and check supplied catalogue and Wikipedia evidence. A complaint can concern service, delivery, payment or products: never assume damage. Acknowledge stated facts, ask one focused clarification when details are missing, and do not repeat questions already answered. Never claim an order, refund or damage was verified without evidence. For support requests do not recommend unrelated products.",
     "2. Identify whether the customer asks about a product, price, province, comparison, gift, use, shipping, voucher, or support. Answer that question directly before suggesting a purchase.",
@@ -1350,13 +1351,14 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
           responseSchema: {
             type: 'OBJECT',
             properties: {
+              understandingStatus: { type: 'STRING', enum: ['understood', 'needs_clarification'] },
               message: { type: 'STRING' },
               productIds: { type: 'ARRAY', items: { type: 'INTEGER' } },
               imageMatchStatus: { type: 'STRING', enum: ['exact', 'similar', 'unknown', 'not_applicable'] },
               handoffAdmin: { type: 'BOOLEAN' },
               dynamic_chips: { type: 'ARRAY', items: { type: 'STRING' } }
             },
-            required: ['message', 'productIds', 'imageMatchStatus', 'handoffAdmin', 'dynamic_chips']
+            required: ['understandingStatus', 'message', 'productIds', 'imageMatchStatus', 'handoffAdmin', 'dynamic_chips']
           }
         }
       }),
@@ -1383,6 +1385,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     }
 
     if (!answer || typeof answer.message !== 'string' || !answer.message.trim() ||
+        !['understood', 'needs_clarification'].includes(answer.understandingStatus) ||
         !Array.isArray(answer.productIds) || typeof answer.imageMatchStatus !== 'string' ||
         typeof answer.handoffAdmin !== 'boolean') {
       console.warn('Gemini schema mismatch, falling back gracefully');
@@ -1399,6 +1402,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     let productIds = [...new Set(answer.productIds.filter(id =>
       Number.isInteger(id) && validProductIds.has(id)
     ))].slice(0, 3);
+    if (answer.understandingStatus === 'needs_clarification') productIds = [];
     const lastMessage = validation.messages[validation.messages.length - 1];
     let message = answer.message.trim().slice(0, MAX_AI_MESSAGE_LENGTH);
     const isImageLookup = Boolean(imageData) ||
@@ -1431,12 +1435,13 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
           .slice(0, 4)
       : [];
 
+    if (answer.understandingStatus === 'needs_clarification') productIds = [];
     return {
       status: 200,
       body: {
         text_response: message,
         suggested_products: productIds,
-        dynamic_chips: dynamic_chips.length > 0 ? dynamic_chips : ["Quà biếu", "5 sao", "Dưới 200k"],
+        dynamic_chips: dynamic_chips.length > 0 ? dynamic_chips : answer.understandingStatus === 'needs_clarification' ? [] : ["Quà biếu", "5 sao", "Dưới 200k"],
         message,
         productIds,
         imageMatchStatus,
@@ -1545,12 +1550,13 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
             type: 'OBJECT',
             properties: {
               transcription: { type: 'STRING' },
+              understandingStatus: { type: 'STRING', enum: ['understood', 'needs_clarification'] },
               message: { type: 'STRING' },
               productIds: { type: 'ARRAY', items: { type: 'INTEGER' } },
               handoffAdmin: { type: 'BOOLEAN' },
               dynamic_chips: { type: 'ARRAY', items: { type: 'STRING' } }
             },
-            required: ['transcription', 'message', 'productIds', 'handoffAdmin', 'dynamic_chips']
+            required: ['understandingStatus', 'transcription', 'message', 'productIds', 'handoffAdmin', 'dynamic_chips']
           }
         }
       }),
@@ -1590,7 +1596,7 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
     }
 
     const validProductIds = new Set(validation.products.map(product => product.id));
-    const productIds = [...new Set(answer.productIds.filter(id =>
+    const productIds = answer.understandingStatus === 'needs_clarification' ? [] : [...new Set(answer.productIds.filter(id =>
       Number.isInteger(id) && validProductIds.has(id)
     ))].slice(0, 3);
     recording.transcript = answer.transcription.trim().slice(0, MAX_AI_MESSAGE_LENGTH);
