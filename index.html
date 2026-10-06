@@ -233,10 +233,6 @@
         #admin-support-widget {
             animation: none;
         }
-        body:has(#ocop-intro-overlay:not(.hidden)) #ai-chat-widget,
-        #ai-chat-widget.hidden {
-            display: none !important;
-        }
         #ai-chat-window,
         #admin-support-menu {
             width: min(24rem, calc(100vw - 1.5rem));
@@ -277,18 +273,13 @@
         @media (max-width: 640px) {
             #ai-chat-window,
             #admin-support-menu {
-                height: min(70dvh, 32rem);
-                max-height: calc(100dvh - 5.5rem);
+                max-height: min(70dvh, 34rem);
                 border-radius: 1.35rem;
             }
             #ai-chat-widget {
                 right: 0.75rem;
                 left: auto;
-                bottom: max(0.75rem, env(safe-area-inset-bottom));
                 align-items: flex-end;
-            }
-            #ai-chat-messages {
-                padding: 0.75rem;
             }
             #admin-support-widget {
                 right: 0.75rem;
@@ -464,21 +455,23 @@
             display: inline-flex;
             align-items: center;
             gap: 0.55rem;
-            font-size: 0.78rem;
+            font-size: 0.82rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             font-weight: 900;
-            color: #1d4d3d;
+            color: #FFE69A;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
         .intro-region-kicker i {
-            color: #d4af37;
-            font-size: 0.9rem;
+            color: #FFDF00;
+            font-size: 0.95rem;
+            filter: drop-shadow(0 0 8px rgba(255, 223, 0, 0.7));
         }
         .intro-region-caption {
             display: block;
-            color: rgba(29, 77, 61, 0.7);
+            color: #A3C9BD;
             font-size: 0.78rem;
-            font-weight: 700;
+            font-weight: 600;
             letter-spacing: 0.01em;
         }
         .province-map {
@@ -486,15 +479,15 @@
             min-height: 300px;
             overflow: hidden;
             isolation: isolate;
-            border: 1px solid rgba(15, 56, 44, 0.16);
-            border-radius: 1rem;
-            background: #e8eee5;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), 0 8px 20px rgba(15,56,44,0.08);
+            border: 1.5px solid rgba(212, 175, 55, 0.4);
+            border-radius: 1.25rem;
+            background: #031710;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 0, 0, 0.6);
         }
         .province-map .leaflet-container {
             width: 100%;
             height: 100%;
-            background: #e8eee5;
+            background: #031710;
             font: 500 0.75rem 'Plus Jakarta Sans', sans-serif;
         }
         .province-map .province-name-tooltip {
@@ -523,46 +516,54 @@
         .province-map .leaflet-control-layers,
         .province-map .leaflet-bar {
             overflow: hidden;
-            border: 1px solid rgba(15, 56, 44, 0.2);
-            border-radius: 0.65rem;
-            box-shadow: 0 3px 12px rgba(15, 56, 44, 0.16);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            background: rgba(6, 26, 19, 0.85);
+            backdrop-filter: blur(10px);
         }
         .province-map .leaflet-bar a,
         .province-map .leaflet-control-layers {
-            color: #0f382c;
-            background: #fffdf7;
+            color: #FFE69A !important;
+            background: rgba(6, 26, 19, 0.9) !important;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.25) !important;
         }
         .province-map .leaflet-bar a:hover,
         .province-map .leaflet-control-layers-toggle:hover {
-            color: #0f382c;
-            background: #f5e7ae;
+            color: #ffffff !important;
+            background: rgba(212, 175, 55, 0.4) !important;
         }
         .province-map .leaflet-control-attribution {
-            color: #23473b;
-            background: rgba(255, 253, 247, 0.88);
+            color: #A7F3D0;
+            background: rgba(4, 18, 13, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 6px;
+            margin: 4px;
         }
         @media (min-width: 641px) {
             .province-map .leaflet-control-attribution {
-                padding: 1px 3px;
-                font-size: 7px;
+                padding: 2px 6px;
+                font-size: 8px;
                 line-height: 1.3;
                 white-space: nowrap;
             }
         }
         .province-map .leaflet-control-attribution a {
-            color: #0f5b43;
+            color: #FDE047;
             font-weight: 700;
         }
         .province-map .province-island-label {
-            padding: 0.25rem 0.45rem;
-            border: 1px solid rgba(212, 175, 55, 0.8);
-            border-radius: 0.45rem;
-            color: #fffdf7;
-            background: rgba(15, 56, 44, 0.92);
-            font-size: 0.68rem;
+            padding: 0.35rem 0.65rem;
+            border: 1.5px solid #FFDF00 !important;
+            border-radius: 0.6rem;
+            color: #FFFDF7 !important;
+            background: rgba(6, 26, 19, 0.95) !important;
+            font-size: 0.72rem;
             font-weight: 800;
-            box-shadow: 0 2px 8px rgba(15, 56, 44, 0.25);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.6) !important;
             cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
         .province-map-status {
             color: #45675d;
@@ -573,18 +574,23 @@
         .province-map-select {
             width: min(100%, 22rem);
             min-height: 2.75rem;
-            padding: 0.55rem 0.75rem;
-            border: 1px solid rgba(15, 56, 44, 0.18);
-            border-radius: 0.75rem;
-            color: #23473b;
-            background: rgba(255, 255, 255, 0.9);
+            padding: 0.55rem 0.85rem;
+            border: 1.5px solid rgba(212, 175, 55, 0.45);
+            border-radius: 0.85rem;
+            color: #FFF8DB;
+            background: rgba(4, 20, 15, 0.92);
             font: inherit;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             font-weight: 700;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
             touch-action: manipulation;
         }
+        .province-map-select option {
+            background: #061c14;
+            color: #FFF8DB;
+        }
         .province-map-select:focus-visible {
-            outline: 2px solid #d4af37;
+            outline: 2px solid #FFDF00;
             outline-offset: 2px;
         }
         .province-map-clear {
@@ -704,285 +710,401 @@
         .gift-wobble-anim {
             animation: giftHeartbeat 3.2s ease-in-out infinite;
         }
-        #ocop-intro-overlay {
-            color: #183b30;
-            background:
-                radial-gradient(ellipse at 12% 8%, rgba(212, 175, 55, 0.2), transparent 40%),
-                radial-gradient(ellipse at 88% 82%, rgba(22, 91, 70, 0.16), transparent 42%),
-                radial-gradient(ellipse at 50% 46%, rgba(255, 255, 255, 0.78), transparent 58%),
-                linear-gradient(135deg, #f5f1e6 0%, #fbfaf6 48%, #edf2e9 100%);
-            background-size: 150% 150%;
-            animation: introBackdropFlow 24s ease-in-out infinite alternate;
-            padding: clamp(0.75rem, 2.5vw, 2rem);
+        /* ==============================================================
+           THEME HOÀNG KIM & NGỌC BÍCH - OCOP LUXURY HERITAGE DESIGN
+           ============================================================== */
+        @keyframes livingEmeraldMesh {
+            0% {
+                background-position: 0% 10%, 100% 90%, 50% 50%, 0% 0%;
+            }
+            50% {
+                background-position: 100% 60%, 0% 40%, 65% 35%, 100% 100%;
+            }
+            100% {
+                background-position: 0% 10%, 100% 90%, 50% 50%, 0% 0%;
+            }
         }
-        @keyframes introBackdropFlow {
-            0% { background-position: 0% 20%; }
-            100% { background-position: 100% 80%; }
+        #ocop-intro-overlay {
+            color: #ffffff;
+            background:
+                radial-gradient(circle at 12% 15%, rgba(16, 185, 129, 0.28) 0%, transparent 48%),
+                radial-gradient(circle at 88% 85%, rgba(212, 175, 55, 0.28) 0%, transparent 48%),
+                radial-gradient(circle at 50% 50%, rgba(6, 78, 59, 0.38) 0%, transparent 62%),
+                linear-gradient(150deg, #02120b 0%, #06281e 35%, #083427 65%, #02120b 100%);
+            background-size: 160% 160%, 160% 160%, 140% 140%, 100% 100%;
+            animation: livingEmeraldMesh 16s ease-in-out infinite;
+            padding: clamp(0.75rem, 2vw, 1.75rem);
+            position: fixed;
+            inset: 0;
+            z-index: 100;
         }
         #ocop-intro-overlay::before,
         #ocop-intro-overlay::after {
             content: "";
             position: fixed;
             z-index: 0;
-            width: min(54vw, 42rem);
+            width: min(55vw, 45rem);
             aspect-ratio: 1;
-            border: 1px solid rgba(15, 56, 44, 0.1);
             border-radius: 50%;
             pointer-events: none;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.18), rgba(22, 91, 70, 0.08) 38%, transparent 70%);
-            filter: blur(2px);
-            animation: introAuroraFloat 18s ease-in-out infinite alternate;
+            filter: blur(85px);
+            opacity: 0.55;
+            animation: introAuroraFloat 16s ease-in-out infinite alternate;
         }
         #ocop-intro-overlay::before {
-            top: -28%;
-            left: -20%;
-            box-shadow: 0 0 0 2.5rem rgba(15, 56, 44, 0.035), 0 0 0 5rem rgba(15, 56, 44, 0.02), 0 0 100px rgba(212, 175, 55, 0.16);
+            top: -15%;
+            left: -10%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.42), transparent 70%);
         }
         #ocop-intro-overlay::after {
-            right: -20%;
-            bottom: -34%;
+            right: -10%;
+            bottom: -20%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.38), transparent 70%);
             animation-delay: -8s;
-            box-shadow: 0 0 0 2.5rem rgba(15, 56, 44, 0.035), 0 0 0 5rem rgba(15, 56, 44, 0.02), 0 0 100px rgba(212, 175, 55, 0.16);
         }
         @keyframes introAuroraFloat {
-            0% { transform: translate3d(-2%, 1%, 0) scale(0.96); }
-            100% { transform: translate3d(4%, -3%, 0) scale(1.08); }
+            0% {
+                transform: scale(0.92) translate3d(-40px, -30px, 0) rotate(0deg);
+                opacity: 0.35;
+            }
+            50% {
+                transform: scale(1.28) translate3d(60px, 50px, 0) rotate(25deg);
+                opacity: 0.65;
+            }
+            100% {
+                transform: scale(0.92) translate3d(-40px, -30px, 0) rotate(0deg);
+                opacity: 0.35;
+            }
         }
         #ocop-intro-overlay > .fixed {
-            opacity: 0.62;
+            opacity: 1;
         }
         #ocop-intro-overlay > .fixed > div:not(canvas):not(.intro-ambient-orb) {
-            display: none;
+            display: block;
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb {
             display: block;
-            opacity: 0.7;
-            filter: blur(90px);
-            animation: introOrbFloat 16s ease-in-out infinite alternate;
+            opacity: 0.65;
+            filter: blur(95px);
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb--blue {
-            background-color: rgba(22, 91, 70, 0.18);
+            background-color: rgba(16, 185, 129, 0.35);
+            animation: introOrbFloatBlue 13s ease-in-out infinite alternate !important;
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb--cyan {
-            background-color: rgba(212, 175, 55, 0.14);
-            animation-delay: -6s;
+            background-color: rgba(6, 182, 212, 0.28);
+            animation: introOrbFloatCyan 15s ease-in-out infinite alternate !important;
+            animation-delay: -5s;
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb--gold {
-            background-color: rgba(232, 190, 91, 0.2);
-            animation-delay: -11s;
+            background-color: rgba(212, 175, 55, 0.32);
+            animation: introOrbFloatGold 17s ease-in-out infinite alternate !important;
+            animation-delay: -9s;
         }
-        @keyframes introOrbFloat {
-            0% { transform: translate3d(-2%, 0, 0) scale(0.94); }
-            100% { transform: translate3d(3%, -4%, 0) scale(1.06); }
+        @keyframes introOrbFloatBlue {
+            0% { transform: translate3d(-60px, -40px, 0) scale(0.9); }
+            50% { transform: translate3d(80px, 70px, 0) scale(1.22); }
+            100% { transform: translate3d(-60px, -40px, 0) scale(0.9); }
         }
-        #ocop-intro-overlay > .fixed > div.intro-waterlight:not(canvas):not(.intro-ambient-orb) {
-            display: block;
+        @keyframes introOrbFloatCyan {
+            0% { transform: translate3d(-50%, -50%, 0) scale(0.95); }
+            50% { transform: translate3d(calc(-50% + 70px), calc(-50% - 50px), 0) scale(1.25); }
+            100% { transform: translate3d(-50%, -50%, 0) scale(0.95); }
+        }
+        @keyframes introOrbFloatGold {
+            0% { transform: translate3d(40px, 60px, 0) scale(1.15); }
+            50% { transform: translate3d(-90px, -70px, 0) scale(0.85); }
+            100% { transform: translate3d(40px, 60px, 0) scale(1.15); }
+        }
+        .intro-waterlight {
             position: absolute;
             inset: 0;
-            opacity: 0.58;
-            background-image:
-                radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.62), transparent 57%),
-                repeating-radial-gradient(ellipse at 18% 118%, transparent 0 34px, rgba(22, 91, 70, 0.1) 36px 37px, transparent 40px 66px),
-                repeating-radial-gradient(ellipse at 86% 122%, transparent 0 46px, rgba(212, 175, 55, 0.11) 48px 49px, transparent 52px 82px),
-                linear-gradient(165deg, transparent 36%, rgba(255, 255, 255, 0.42) 52%, transparent 68%);
-            background-size: 100% 100%, 125% 115%, 130% 120%, 190% 100%;
-            background-position: center, 0% 100%, 100% 100%, 0% 50%;
-            animation: introWaterShimmer 18s ease-in-out infinite alternate;
             pointer-events: none;
+            background:
+                radial-gradient(ellipse at 35% 25%, rgba(253, 230, 138, 0.16) 0%, transparent 45%),
+                radial-gradient(ellipse at 65% 75%, rgba(52, 211, 153, 0.2) 0%, transparent 45%);
+            background-size: 180% 180%;
+            animation: waterlightWave 11s ease-in-out infinite;
+            mix-blend-mode: screen;
         }
-        @keyframes introWaterShimmer {
-            0% {
-                background-position: center, 0% 100%, 100% 100%, 0% 50%;
-                opacity: 0.38;
-            }
-            100% {
-                background-position: center, 100% 88%, 0% 92%, 100% 50%;
-                opacity: 0.72;
-            }
+        @keyframes waterlightWave {
+            0% { background-position: 0% 0%; opacity: 0.18; }
+            50% { background-position: 100% 100%; opacity: 0.35; }
+            100% { background-position: 0% 0%; opacity: 0.18; }
         }
-        #ocop-intro-overlay .bg-black\/50 {
-            background: rgba(255, 255, 255, 0.76);
-            border-color: rgba(15, 56, 44, 0.12);
-        }
-        #ocop-intro-overlay .shadow-gold-glow {
-            box-shadow: 0 8px 24px rgba(15, 56, 44, 0.1);
-        }
-        #ocop-intro-overlay .bg-amber-500\/20,
-        #ocop-intro-overlay .bg-amber-500\/35,
-        #ocop-intro-overlay .bg-ocopGold\/35 {
-            background-color: rgba(212, 175, 55, 0.14);
-        }
-        #ocop-intro-overlay .glass-antigravity {
-            color: #23473b;
-            background: rgba(255, 255, 255, 0.76);
-            border-color: rgba(15, 56, 44, 0.14);
-            box-shadow: 0 12px 32px rgba(15, 56, 44, 0.08);
-            backdrop-filter: blur(18px);
-        }
-        #ocop-intro-overlay .intro-card-glass,
-        #ocop-intro-overlay .lucky-golden-box {
-            color: #23473b;
-            background: rgba(250, 248, 240, 0.97);
-            border-color: rgba(212, 175, 55, 0.34);
-            box-shadow: 0 12px 28px rgba(2, 20, 14, 0.2);
-        }
-        #ocop-intro-overlay .intro-card-glass:hover,
-        #ocop-intro-overlay .lucky-golden-box:hover {
-            border-color: rgba(212, 175, 55, 0.7);
-            box-shadow: 0 16px 36px rgba(15, 56, 44, 0.14);
-        }
-        #ocop-intro-overlay .intro-pill-btn {
-            color: #315c4b;
-            background: rgba(255, 255, 255, 0.78);
-            border-color: rgba(15, 56, 44, 0.18);
-        }
-        #ocop-intro-overlay .intro-pill-btn:hover {
-            background: rgba(239, 244, 234, 0.96);
-            border-color: rgba(212, 175, 55, 0.56);
+
+        /* HEADER THANH LỊCH GLASSMORPHISM */
+        #ocop-intro-overlay .intro-header {
+            background: rgba(6, 24, 18, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 9999px;
+            padding: 0.65rem 1.25rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         #ocop-intro-overlay .intro-brand-mark {
             color: #fff;
-            background: linear-gradient(145deg, #165b46, #0f382c);
-            border-color: rgba(255, 255, 255, 0.92);
-            box-shadow: 0 8px 24px rgba(15, 56, 44, 0.22);
-        }
-        #ocop-intro-overlay .intro-hero-title,
-        #ocop-intro-overlay .intro-hero-title span {
-            text-shadow: 0 2px 18px rgba(15, 56, 44, 0.1);
-            filter: none;
-        }
-        #ocop-intro-overlay .intro-gold-gradient {
-            background: linear-gradient(110deg, #0f382c, #b89528 42%, #165b46 74%, #0f382c);
-            background-size: 250% auto;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: goldShine 8s linear infinite;
-        }
-        #ocop-intro-overlay .intro-live-ticker {
-            color: #315c4b;
-            background: rgba(255, 255, 255, 0.78);
-            border-color: rgba(15, 56, 44, 0.16);
-            box-shadow: 0 8px 24px rgba(15, 56, 44, 0.08);
-        }
-        #ocop-intro-overlay .intro-live-ticker .ticker-content {
-            color: #52685b;
-        }
-        #ocop-intro-overlay .intro-live-ticker .intro-live-label {
-            color: #16856b;
-        }
-        #ocop-intro-overlay .intro-ai-consult-btn {
-            color: #315c4b !important;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(241, 244, 234, 0.96));
-            border-color: rgba(15, 56, 44, 0.18);
-            box-shadow: 0 6px 18px rgba(15, 56, 44, 0.08);
-        }
-        #ocop-intro-overlay .intro-ai-consult-btn:hover {
-            color: #173c30 !important;
-            background: linear-gradient(135deg, #fff, #f1f4ea);
-            border-color: rgba(212, 175, 55, 0.62);
-            box-shadow: 0 8px 22px rgba(15, 56, 44, 0.12);
-        }
-        #ocop-intro-overlay #i18n-intro-desc {
-            color: #52685b !important;
-        }
-        #ocop-intro-overlay .text-white {
-            color: #173c30 !important;
-        }
-        #ocop-intro-overlay .text-amber-100,
-        #ocop-intro-overlay .text-amber-200,
-        #ocop-intro-overlay .text-amber-300,
-        #ocop-intro-overlay .text-amber-400,
-        #ocop-intro-overlay .text-ocopGold {
-            color: #8c6b16 !important;
-        }
-        #ocop-intro-overlay [class*="text-amber-"] {
-            color: #607166 !important;
-        }
-        #ocop-intro-overlay .border-amber-500\/20,
-        #ocop-intro-overlay .border-amber-500\/25,
-        #ocop-intro-overlay .border-amber-300\/40,
-        #ocop-intro-overlay .border-ocopGold\/40 {
-            border-color: rgba(15, 56, 44, 0.16) !important;
-        }
-        #ocop-intro-overlay .gold-card-glow {
-            box-shadow: 0 12px 30px rgba(15, 56, 44, 0.08);
-        }
-        #ocop-intro-overlay .gold-gradient-text {
-            background: linear-gradient(110deg, #0f382c, #b89528 52%, #165b46);
-            background-size: 100% auto;
-            background-clip: text;
-            -webkit-background-clip: text;
-            animation: none;
-            -webkit-text-fill-color: transparent;
-        }
-        #ocop-intro-overlay .intro-mark {
-            color: #fff;
-            background: linear-gradient(145deg, #165b46, #0a261e);
-            border-color: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 8px 22px rgba(15, 56, 44, 0.18);
-        }
-        #ocop-intro-overlay #intro-award-badge {
-            color: #775b12;
-            background: rgba(212, 175, 55, 0.15);
-            border-color: rgba(212, 175, 55, 0.38);
-        }
-        #ocop-intro-overlay #intro-award-badge i {
-            color: #9b771e !important;
-        }
-        #ocop-intro-overlay #intro-lucky-card {
-            background: linear-gradient(115deg, rgba(250, 246, 230, 0.96), rgba(243, 247, 239, 0.98));
-            border-color: rgba(212, 175, 55, 0.5);
-            box-shadow: 0 12px 28px rgba(15, 56, 44, 0.1);
-        }
-        #ocop-intro-overlay #intro-lucky-card .text-amber-300,
-        #ocop-intro-overlay #intro-lucky-card .text-amber-100\/90 {
-            color: #725816 !important;
-        }
-        #ocop-intro-overlay #intro-gift-result {
-            background: rgba(255, 255, 255, 0.76);
-            border-color: rgba(15, 56, 44, 0.15);
-        }
-        #ocop-intro-overlay #intro-gift-result .text-white {
-            color: #23473b !important;
-        }
-        #ocop-intro-overlay #intro-gift-result .text-amber-200 {
-            color: #725816 !important;
-        }
-        #ocop-intro-overlay #intro-gift-result .text-emerald-300,
-        #ocop-intro-overlay #intro-gift-result .text-emerald-400 {
-            color: #16856b !important;
-        }
-        #ocop-intro-overlay #btn-draw-gift,
-        #ocop-intro-overlay #intro-enter-market,
-        #ocop-intro-overlay #intro-skip-button {
-            border-color: rgba(255, 255, 255, 0.85);
-            background: linear-gradient(110deg, #0f382c, #165b46);
-            color: #fff !important;
-            box-shadow: 0 8px 20px rgba(15, 56, 44, 0.2);
-        }
-        #ocop-intro-overlay #intro-enter-market {
-            background: linear-gradient(110deg, #165b46, #0a261e);
-        }
-        #ocop-intro-overlay #intro-enter-market .text-ocopGreen {
-            color: #fff !important;
+            background: linear-gradient(135deg, #10b981, #065f46);
+            border: 2px solid #f6d884;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
         }
         #ocop-intro-overlay #intro-sound-btn,
         #ocop-intro-overlay #intro-language-btn {
-            color: #315c4b;
-            background: rgba(255, 255, 255, 0.72);
-            border-color: rgba(15, 56, 44, 0.16);
+            color: #fce8ad;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
         }
-        #ocop-intro-overlay button[onclick="enterOcopMarket('ai')"],
-        #ocop-intro-overlay button[onclick="enterOcopMarket('admin')"] {
-            color: #315c4b;
-            background: rgba(239, 244, 234, 0.88);
-            border-color: rgba(15, 56, 44, 0.16);
+        #ocop-intro-overlay #intro-sound-btn:hover,
+        #ocop-intro-overlay #intro-language-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.7);
+            transform: scale(1.05);
         }
-        #ocop-intro-overlay kbd {
-            color: #315c4b;
-            background: #fff;
-            border-color: rgba(15, 56, 44, 0.2);
+        #ocop-intro-overlay #intro-skip-button {
+            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 50%, #B8860B 100%) !important;
+            color: #051a12 !important;
+            font-weight: 800 !important;
+            border: 1px solid #FFF3C4 !important;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.5) !important;
+            transition: all 0.3s ease;
+        }
+        #ocop-intro-overlay #intro-skip-button:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.8) !important;
+        }
+
+        /* LIVE TICKER BAR */
+        #ocop-intro-overlay .intro-live-ticker {
+            background: rgba(3, 16, 12, 0.65) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.3) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        }
+        #ocop-intro-overlay .intro-live-ticker .ticker-content {
+            color: #f7e6b5 !important;
+            font-weight: 600;
+        }
+        #ocop-intro-overlay .intro-live-ticker .intro-live-label {
+            color: #34d399 !important;
+        }
+
+        /* NATIONAL SEAL BADGE */
+        #ocop-intro-overlay #intro-award-badge {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.16) 0%, rgba(16, 185, 129, 0.16) 100%) !important;
+            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
+            color: #FFF3C4 !important;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25) !important;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+        #ocop-intro-overlay #intro-award-badge i {
+            color: #FFDF00 !important;
+            filter: drop-shadow(0 0 8px rgba(255, 223, 0, 0.8));
+        }
+
+        /* HERO TITLE & TEXT */
+        #ocop-intro-overlay .intro-hero-title {
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+        }
+        #ocop-intro-overlay #i18n-intro-title1 {
+            color: #ffffff !important;
+            font-weight: 800;
+            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.25), 0 4px 15px rgba(0, 0, 0, 0.8);
+        }
+        #ocop-intro-overlay .intro-gold-gradient,
+        #ocop-intro-overlay #i18n-intro-title2 {
+            background: linear-gradient(135deg, #FFFDE8 0%, #FDE082 25%, #D4AF37 55%, #A87B1D 85%, #FFE99E 100%) !important;
+            background-size: 200% auto !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            animation: goldShine 7s linear infinite !important;
+            filter: drop-shadow(0 2px 14px rgba(212, 175, 55, 0.5)) !important;
+        }
+        #ocop-intro-overlay #i18n-intro-desc {
+            color: #d1e7dd !important;
+            font-size: clamp(0.85rem, 1.35vw, 0.95rem);
+            line-height: 1.65;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        /* 4 TRỤ CỘT HOLOGRAM GLASS CARDS (THAY THẾ THẺ BEIGE CŨ) */
+        #ocop-intro-overlay .intro-pillars > div {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(212, 175, 55, 0.3) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        #ocop-intro-overlay .intro-pillars > div:hover {
+            transform: translateY(-5px) scale(1.025) !important;
+            border-color: rgba(212, 175, 55, 0.8) !important;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.4) !important;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+        }
+        #ocop-intro-overlay .intro-pillars span[id^="i18n-intro-pillar"]:not([id$="-sub"]) {
+            color: #ffffff !important;
+            font-weight: 800 !important;
+            font-size: 0.8rem !important;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+        }
+        #ocop-intro-overlay .intro-pillars span[id$="-sub"] {
+            color: #fde68a !important;
+            font-weight: 500 !important;
+            font-size: 0.68rem !important;
+            opacity: 0.95;
+        }
+
+        /* HÒM LỘC VÀNG AI CAPSUlE */
+        #ocop-intro-overlay #intro-lucky-card {
+            background: linear-gradient(135deg, rgba(26, 18, 5, 0.82) 0%, rgba(42, 28, 7, 0.88) 100%) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
+            box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(212, 175, 55, 0.12) !important;
+            border-radius: 24px !important;
+        }
+        #ocop-intro-overlay #intro-lucky-card .text-amber-300 {
+            color: #FDE047 !important;
+        }
+        #ocop-intro-overlay #intro-lucky-card .text-amber-100\/90 {
+            color: #FEF08A !important;
+        }
+        #ocop-intro-overlay #btn-draw-gift {
+            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 50%, #B8860B 100%) !important;
+            color: #061B13 !important;
+            font-weight: 800 !important;
+            border: 1px solid #FFF8DB !important;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5) !important;
+        }
+        #ocop-intro-overlay #btn-draw-gift:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.8) !important;
+        }
+
+        /* BẢN ĐỒ VIỆT NAM (KHUNG CHỈ HUY KHÔNG GIAN SANG TRỌNG) */
+        #ocop-intro-overlay .intro-regions {
+            background: linear-gradient(160deg, rgba(8, 28, 22, 0.88) 0%, rgba(3, 15, 11, 0.94) 100%) !important;
+            backdrop-filter: blur(24px) !important;
+            -webkit-backdrop-filter: blur(24px) !important;
+            border: 1.5px solid rgba(212, 175, 55, 0.42) !important;
+            border-radius: 28px !important;
+            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.85), inset 0 0 35px rgba(212, 175, 55, 0.1) !important;
+            padding: clamp(1rem, 2vw, 1.5rem) !important;
+        }
+        #ocop-intro-overlay .intro-region-kicker {
+            color: #FFE69A !important;
+            font-weight: 800 !important;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            letter-spacing: 0.05em;
+        }
+        #ocop-intro-overlay .intro-region-caption {
+            color: #A3C9BD !important;
+            font-size: 0.82rem !important;
+            font-weight: 500;
+        }
+        #ocop-intro-overlay .province-map-select {
+            background: rgba(4, 20, 15, 0.92) !important;
+            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
+            color: #FFF8DB !important;
+            border-radius: 14px !important;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.6);
+            font-weight: 700 !important;
+        }
+        #ocop-intro-overlay .province-map-select option {
+            background: #072118;
+            color: #FFF8DB;
+        }
+        #ocop-intro-overlay .province-map {
+            border: 1.5px solid rgba(212, 175, 55, 0.35) !important;
+            border-radius: 18px !important;
+            overflow: hidden !important;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6), inset 0 0 25px rgba(0,0,0,0.5) !important;
+        }
+        #ocop-intro-overlay .province-map-status {
+            color: #6EE7B7 !important;
+            font-weight: 700;
+        }
+        #ocop-intro-overlay .province-map-clear {
+            background: rgba(212, 175, 55, 0.18) !important;
+            border: 1px solid rgba(212, 175, 55, 0.5) !important;
+            color: #FFF3C4 !important;
+            border-radius: 10px !important;
+            font-weight: 800 !important;
+            transition: all 0.2s ease;
+        }
+        #ocop-intro-overlay .province-map-clear:hover:not(:disabled) {
+            background: rgba(212, 175, 55, 0.4) !important;
+            color: #ffffff !important;
+            border-color: #FFDF00 !important;
+        }
+        #ocop-intro-overlay .intro-actions #intro-enter-market {
+            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 50%, #B8860B 100%) !important;
+            color: #061B13 !important;
+            font-weight: 900 !important;
+            border: 2px solid #FFF8DB !important;
+            box-shadow: 0 10px 35px rgba(212, 175, 55, 0.6) !important;
+            border-radius: 20px !important;
+            transition: all 0.35s ease;
+        }
+        #ocop-intro-overlay .intro-actions #intro-enter-market:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 15px 45px rgba(212, 175, 55, 0.85) !important;
+        }
+        #ocop-intro-overlay .intro-pill-btn {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: 1px solid rgba(212, 175, 55, 0.3) !important;
+            color: #FDE68A !important;
+            backdrop-filter: blur(12px) !important;
+            transition: all 0.25s ease !important;
+        }
+        #ocop-intro-overlay .intro-pill-btn:hover {
+            background: rgba(212, 175, 55, 0.25) !important;
+            border-color: #FFDF00 !important;
+            color: #ffffff !important;
+            transform: translateY(-2px) scale(1.04);
+        }
+        #ocop-intro-overlay #province-products-panel:not(.hidden) {
+            background: rgba(4, 20, 15, 0.95) !important;
+            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.8), inset 0 0 25px rgba(212, 175, 55, 0.1) !important;
+            color: #ffffff !important;
+        }
+        #ocop-intro-overlay #province-products-title {
+            color: #FDE68A !important;
+        }
+        #ocop-intro-overlay .province-product-card {
+            background: rgba(8, 32, 24, 0.85) !important;
+            border: 1px solid rgba(212, 175, 55, 0.35) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+        }
+        #ocop-intro-overlay .province-product-card:hover {
+            background: rgba(14, 48, 36, 0.95) !important;
+            border-color: rgba(212, 175, 55, 0.75) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.3) !important;
+        }
+        #ocop-intro-overlay .province-product-card .province-product-name {
+            color: #FFF8DB !important;
+            font-weight: 800 !important;
+        }
+        #ocop-intro-overlay .province-product-card p {
+            color: #6EE7B7 !important;
+        }
+        #ocop-intro-overlay .province-product-card .province-product-add-button {
+            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 100%) !important;
+            color: #061B13 !important;
+            font-weight: 800 !important;
+            border: 1px solid #FFF8DB !important;
+            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4) !important;
+        }
+        #ocop-intro-overlay .province-product-card .province-product-add-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.7) !important;
         }
 
         @media (max-width: 640px) {
@@ -1013,25 +1135,8 @@
             min-height: 2rem;
         }
         #ocop-intro-overlay {
-            color: #f8f5e9;
-            background:
-                radial-gradient(ellipse at 80% 8%, rgba(212, 175, 55, 0.13), transparent 34rem),
-                radial-gradient(ellipse at 10% 84%, rgba(51, 112, 77, 0.32), transparent 42rem),
-                repeating-linear-gradient(135deg, transparent 0 148px, rgba(238, 218, 157, 0.025) 149px 150px, transparent 151px 260px),
-                linear-gradient(135deg, #102c22 0%, #173a2d 54%, #0e281f 100%);
             color-scheme: dark;
             overscroll-behavior: contain;
-        }
-        #ocop-intro-overlay::before,
-        #ocop-intro-overlay::after {
-            border-color: rgba(223, 195, 113, 0.1);
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.1), rgba(22, 91, 70, 0.08) 38%, transparent 70%);
-            animation-duration: 38s;
-        }
-        #ocop-intro-overlay > .fixed { opacity: 0.45; }
-        #ocop-intro-overlay > .fixed > .intro-ambient-orb,
-        #ocop-intro-overlay > .fixed > canvas:not(#intro-confetti-canvas) {
-            display: none;
         }
         #ocop-intro-overlay .curtain-closing { animation: curtainExit 0.42s ease forwards; }
         #ocop-intro-overlay .intro-stage {
@@ -1081,122 +1186,25 @@
             font-size: clamp(0.82rem, 1.15vw, 0.98rem);
             color: #deded2 !important;
         }
-        #ocop-intro-overlay .intro-card-glass,
         #ocop-intro-overlay .intro-pillars > div {
-            color: #23473b;
-            background: rgba(250, 248, 240, 0.97);
-            border: 1px solid rgba(212, 175, 55, 0.32);
-            box-shadow: 0 10px 24px rgba(2, 20, 14, 0.17);
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+            padding: 0.75rem 0.65rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
         }
-        #ocop-intro-overlay .intro-card-glass:hover,
-        #ocop-intro-overlay .intro-pillars > div:hover {
-            border-color: rgba(212, 175, 55, 0.68);
-            box-shadow: 0 13px 26px rgba(2, 20, 14, 0.2);
+        #ocop-intro-overlay .intro-actions {
+            padding-top: 0;
+            text-align: left;
         }
-        #ocop-intro-overlay .intro-regions:hover,
-        #ocop-intro-overlay .intro-pillars > div:hover {
-            transform: none;
-        }
-        #ocop-intro-overlay .intro-pillars > div { padding: 0.7rem; }
-        #ocop-intro-overlay .intro-pillars > div .text-amber-100 { color: #23473b !important; }
-        #ocop-intro-overlay .intro-pillars > div .text-amber-300\/80,
-        #ocop-intro-overlay .intro-pillars > div .text-emerald-300\/80,
-        #ocop-intro-overlay .intro-pillars > div .text-cyan-300\/80,
-        #ocop-intro-overlay .intro-pillars > div .text-yellow-300\/80 {
-            color: #66746a !important;
-        }
-        #ocop-intro-overlay .intro-pillars > div > div {
-            width: 2rem;
-            height: 2rem;
-            margin-bottom: 0.35rem;
-            box-shadow: none;
-        }
-        #ocop-intro-overlay #intro-lucky-card {
-            background: linear-gradient(130deg, #f8f1dd, #fffdf7);
-            border: 1px solid rgba(212, 175, 55, 0.62);
-            box-shadow: 0 10px 24px rgba(2, 20, 14, 0.16);
-        }
-        #ocop-intro-overlay #intro-lucky-card .gift-wobble-anim { animation: none; }
-        #ocop-intro-overlay #intro-lucky-card .text-amber-300,
-        #ocop-intro-overlay #intro-lucky-card .text-amber-100\/90 { color: #405a43 !important; }
-        #ocop-intro-overlay #intro-lucky-card .text-emerald-300 { color: #315f47 !important; }
-        #ocop-intro-overlay #intro-lucky-card .animate-pulse { animation: none; }
-        #ocop-intro-overlay .intro-regions {
-            align-self: stretch;
-            padding: clamp(1rem, 1.8vw, 1.5rem);
-        }
-        #ocop-intro-overlay .intro-regions [class*="border-amber-400"] { border-color: rgba(15, 56, 44, 0.12); }
-        #ocop-intro-overlay .intro-regions .bg-black\/60 {
-            background: #edf0e8;
-            border-color: rgba(15, 56, 44, 0.1);
-        }
-        #ocop-intro-overlay .intro-actions { padding-top: 0; text-align: left; }
         #ocop-intro-overlay #intro-gift-result {
-            color: #23473b;
-            background: #e9f1e9;
-            border-color: rgba(22, 91, 70, 0.2);
+            background: rgba(4, 24, 18, 0.88);
+            border: 1.5px solid rgba(212, 175, 55, 0.45);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         }
-        #ocop-intro-overlay #intro-gift-result .text-white { color: #23473b !important; }
-        #ocop-intro-overlay #intro-enter-market {
-            color: #173a2d !important;
-            background: linear-gradient(110deg, #f0d995, #d4af37);
-            border: 1px solid #f4e4ae;
-            box-shadow: 0 8px 22px rgba(2, 20, 14, 0.18);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        #ocop-intro-overlay #intro-enter-market:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(2, 20, 14, 0.24);
-        }
-        #ocop-intro-overlay .intro-pill-btn {
-            color: #f8f5e9;
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(238, 218, 157, 0.24);
-            backdrop-filter: none;
-        }
-        #ocop-intro-overlay .intro-pill-btn:hover {
-            color: #fff;
-            background: rgba(212, 175, 55, 0.17);
-            border-color: rgba(238, 218, 157, 0.58);
-            transform: translateY(-1px);
-            box-shadow: none;
-        }
-        #ocop-intro-overlay .intro-live-ticker {
-            color: #f8f5e9;
-            background: rgba(4, 22, 16, 0.38);
-            border-color: rgba(238, 218, 157, 0.18);
-            box-shadow: none;
-        }
-        #ocop-intro-overlay .intro-live-ticker .ticker-content { color: #e5e1d2; }
-        #ocop-intro-overlay .intro-seal-badge {
-            color: #f8f1d8;
-            background: rgba(212, 175, 55, 0.12);
-            border-color: rgba(212, 175, 55, 0.35);
-            box-shadow: none;
-        }
-        #ocop-intro-overlay .gold-gradient-text,
-        #ocop-intro-overlay .intro-gold-gradient {
-            background: linear-gradient(110deg, #e9d28f, #fff5d5 45%, #d5af4c 78%, #f0d995);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: none;
-            filter: none;
-            text-shadow: none;
-        }
-        #ocop-intro-overlay .text-white { color: #f8f5e9 !important; }
-        #ocop-intro-overlay .text-amber-100,
-        #ocop-intro-overlay .text-amber-200,
-        #ocop-intro-overlay .text-amber-300,
-        #ocop-intro-overlay .text-amber-400,
-        #ocop-intro-overlay .text-ocopGold { color: #e9d28f !important; }
-        #ocop-intro-overlay .animate-bounce,
-        #ocop-intro-overlay .animate-pulse,
-        #ocop-intro-overlay .animate-ping { animation: none !important; }
-        #ocop-intro-overlay .btn-sweep::after { display: none; }
+
         #shop-hero {
             padding-top: clamp(1.5rem, 4vw, 3.5rem);
             padding-bottom: clamp(1.5rem, 4vw, 3.5rem);
@@ -1325,11 +1333,12 @@
                 margin: 0;
                 overflow-y: auto;
                 overscroll-behavior: contain;
-                border: 1px solid rgba(15, 56, 44, 0.15);
+                border: 1.5px solid rgba(212, 175, 55, 0.45);
                 border-radius: 1rem;
                 padding: 0.75rem;
-                background: rgba(250, 248, 240, 0.98);
-                box-shadow: 0 12px 30px rgba(15, 56, 44, 0.22);
+                background: rgba(4, 22, 16, 0.96);
+                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(212, 175, 55, 0.1);
+                color: #ffffff;
             }
         }
         @media (max-width: 640px) {
@@ -1374,73 +1383,6 @@
                 transition: none !important;
                 scroll-behavior: auto !important;
             }
-        }
-        /* Intro: dark green cards over the existing animated Dong Son drum. */
-        #ocop-intro-overlay > .fixed > .drum-rotate,
-        #ocop-intro-overlay > .fixed > .drum-rotate-reverse {
-            display: block;
-            opacity: 0.3;
-            transform-origin: center;
-        }
-        #ocop-intro-overlay > .fixed > .drum-rotate { opacity: 0.2; }
-        #ocop-intro-overlay .drum-rotate svg { stroke: #d4af37; }
-        #ocop-intro-overlay .drum-rotate svg [fill]:not([fill="none"]) { fill: #d4af37; }
-        #ocop-intro-overlay .intro-card-glass,
-        #ocop-intro-overlay .intro-pillars > div,
-        #ocop-intro-overlay #intro-lucky-card {
-            background: linear-gradient(135deg, rgba(17, 61, 47, 0.96), rgba(10, 38, 30, 0.96));
-            color: #f5f3df;
-            border-color: rgba(212, 175, 55, 0.38);
-        }
-        #ocop-intro-overlay .intro-pillars > div .text-amber-100,
-        #ocop-intro-overlay .intro-regions .intro-region-kicker,
-        #ocop-intro-overlay #intro-lucky-card .text-amber-300 {
-            color: #f1d68d !important;
-        }
-        #ocop-intro-overlay .intro-pillars > div [id$="-sub"],
-        #ocop-intro-overlay #i18n-intro-region-caption,
-        #ocop-intro-overlay .intro-regions .text-amber-200,
-        #ocop-intro-overlay .intro-regions .text-amber-100\/80 {
-            color: #c2d7c9 !important;
-        }
-        #ocop-intro-overlay .province-map-select,
-        #ocop-intro-overlay .intro-regions .bg-black\/60,
-        #ocop-intro-overlay #intro-gift-result {
-            background: #163f32;
-            color: #f4edce;
-            border-color: rgba(212, 175, 55, 0.35);
-            color-scheme: dark;
-        }
-        #ocop-intro-overlay #lucky-gift-description { color: #f4edce !important; }
-        #ocop-intro-overlay .province-map-status,
-        #ocop-intro-overlay #province-products-title { color: #c2d7c9 !important; }
-        #ocop-intro-overlay #province-products-toggle {
-            background: #20533f;
-            color: #f1d68d;
-            border-color: rgba(212, 175, 55, 0.35);
-        }
-        #ocop-intro-overlay #province-products-panel:not(.hidden) {
-            background: rgba(15, 56, 44, 0.98);
-            border-color: rgba(212, 175, 55, 0.35);
-        }
-        @media (max-width: 767px) {
-            /* Keep form text at 16px to prevent mobile Safari focus zoom. */
-            input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
-            textarea,
-            select { font-size: 16px !important; }
-            #ocop-intro-overlay .intro-pillars > div {
-                height: auto;
-                min-height: 4.5rem;
-            }
-            #ocop-intro-overlay .intro-regions { min-width: 0; }
-            #ocop-intro-overlay .province-map-select { width: 100%; max-width: 100%; }
-            #ocop-intro-overlay .drum-rotate,
-            #ocop-intro-overlay .drum-rotate-reverse { max-width: none; }
-        }
-        #ocop-intro-overlay #lucky-gift-code { background: #ecd788; color: #000 !important; }
-        @media (prefers-reduced-motion: reduce) {
-            #ocop-intro-overlay .drum-rotate,
-            #ocop-intro-overlay .drum-rotate-reverse { animation: none !important; }
         }
     </style>
 </head>
@@ -1631,7 +1573,7 @@
                                 <span class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">Lộc Vàng AI • Bốc Thẻ May Mắn</span>
                                 <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse uppercase shadow">Lì Xì OCOP</span>
                             </div>
-                            <p id="intro-voucher-description" hidden style="display: none;" class="text-[11px] text-black font-medium mt-0.5">Giảm 30.000đ cho đơn từ 500.000đ, 60.000đ từ 1.200.000đ hoặc 100.000đ từ 2.000.000đ. Không cộng dồn ưu đãi.</p>
+                            <p class="text-[11px] text-amber-100/90 font-medium mt-0.5">Bốc thẻ may mắn nhận ngay voucher 50.000đ hoặc Miễn phí giao hàng toàn quốc</p>
                         </div>
                     </div>
                     <button id="btn-draw-gift" onclick="openLuckyGift()" class="intro-mega-btn w-full sm:w-auto flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition flex items-center justify-center space-x-2 cursor-pointer">
@@ -1642,22 +1584,22 @@
 
                 <!-- Kết quả thẻ bài Lộc Vàng VIP -->
                 <div id="intro-gift-result" class="hidden mt-3 pt-3 border-t border-amber-400/40 animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-black/60 p-3 rounded-2xl backdrop-blur-md">
-                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 text-left">
+                    <div class="flex items-center space-x-2.5 text-left">
                         <span class="text-xs text-amber-300 font-black uppercase flex items-center"><i class="fa-solid fa-gift mr-1 text-ocopGold"></i> MÃ LỘC:</span>
-                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-black bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner">OCOP-QUA30</span>
+                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner">OCOP-TINHOA50</span>
                         <button onclick="copyToClipboard(document.getElementById('lucky-gift-code').innerText, 'Mã voucher OCOP');" class="text-xs bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-ocopGreen font-black px-3 py-1 rounded-lg transition flex items-center space-x-1 cursor-pointer shadow">
                             <i class="fa-regular fa-copy"></i>
                             <span>Sao chép</span>
                         </button>
                     </div>
-                    <span id="lucky-gift-description" class="w-full sm:w-auto text-[11px] sm:text-xs text-black font-extrabold flex items-center justify-center sm:justify-start text-center sm:text-left">
-                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-700 text-sm"></i> Giảm 30.000đ cho đơn từ 500.000đ.
+                    <span class="text-[11px] sm:text-xs text-emerald-300 font-extrabold flex items-center">
+                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400 text-sm"></i> Đã tự động kích hoạt giảm 50.000đ vào đơn hàng!
                     </span>
                 </div>
             </div>
 
             <!-- BẢN ĐỒ TƯƠNG TÁC TỈNH THÀNH VIỆT NAM -->
-            <div class="intro-regions w-full max-w-3xl intro-card-glass rounded-3xl p-4 sm:p-5 border border-amber-400/40 shadow-2xl text-left space-y-3.5">
+            <div class="intro-regions w-full max-w-3xl intro-map-console rounded-3xl p-4 sm:p-5 border border-amber-400/40 shadow-2xl text-left space-y-3.5">
                 <div class="intro-region-top">
                     <div class="intro-region-heading">
                         <span class="intro-region-kicker">
@@ -1895,7 +1837,7 @@
                 <div class="lg:col-span-5">
                     <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group hover:border-ocopGold/60 transition-all duration-500">
                         <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
-                            <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1000&q=80" alt="OCOP National Products" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                            <img src="images/p5.jpg" alt="OCOP National Products" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5 text-white">
                                 <span class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-1.5 shadow">
                                     ★ Tinh Hoa Nông Sản Việt
@@ -2083,7 +2025,7 @@
     </main>
     
     <!-- 5. WIDGET CHATBOT AI ANTIGRAVITY (BÊN PHẢI, DƯỚI ADMIN) -->
-    <div id="ai-chat-widget" hidden style="display: none;" class="hidden fixed bottom-3 sm:bottom-6 right-3 sm:right-6 left-auto z-[99999] flex flex-col items-end pointer-events-auto">
+    <div id="ai-chat-widget" class="fixed bottom-3 sm:bottom-6 right-3 sm:right-6 left-auto z-[99999] flex flex-col items-end pointer-events-auto">
         <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-96 max-h-[min(72vh,38rem)] h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-emerald-100 flex flex-col overflow-hidden mb-3 animate-pop-in">
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
@@ -2314,10 +2256,6 @@
                         <span id="i18n-cart-shipping">Phí vận chuyển:</span>
                         <span class="font-bold text-emerald-700" id="i18n-free-shipping">Miễn phí toàn quốc</span>
                     </div>
-                    <div id="cart-voucher-row" class="hidden flex flex-col gap-0.5 text-emerald-800 sm:flex-row sm:justify-between">
-                        <span id="cart-voucher-label">Ưu đãi voucher:</span>
-                        <span id="cart-voucher-discount" class="font-bold">-0 ₫</span>
-                    </div>
                     <div class="flex justify-between text-sm font-extrabold pt-1.5 border-t border-amber-200 text-gray-900">
                         <span id="i18n-cart-total">Tổng cộng:</span>
                         <span id="cart-total" class="text-red-600">0 ₫</span>
@@ -2512,12 +2450,6 @@
         // Biến trạng thái toàn cục
         let cart = [];
         let wishlist = [];
-        let activeVoucher = null;
-        const luckyVoucherOffers = [
-            { code: 'OCOP-QUA30', discount: 30000, minOrder: 500000 },
-            { code: 'OCOP-COMBO60', discount: 60000, minOrder: 1200000 },
-            { code: 'OCOP-TINHHOA100', discount: 100000, minOrder: 2000000 }
-        ];
         let currentCategory = 'all';
         function getSavedLanguage() {
             try {
@@ -2545,7 +2477,6 @@
         let isAIRequestPending = false;
         let activeSearchRecognition = null;
         let pendingAIImages = [];
-        let lastAIImageSearch = null;
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
         let lastAIComboMarkup = null;
@@ -2562,7 +2493,6 @@
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
             restorePageScrollState();
-            setAIChatWidgetVisibility(document.getElementById('ocop-intro-overlay').classList.contains('hidden'));
             updateCatalogCounts();
             applyLanguage(currentLanguage);
             renderProducts(products);
@@ -2979,7 +2909,6 @@
         function openIntroModal() {
             const overlay = document.getElementById('ocop-intro-overlay');
             overlay.classList.remove('hidden', 'curtain-closing');
-            setAIChatWidgetVisibility(false);
             restorePageScrollState();
             playChimeSound();
         }
@@ -2987,7 +2916,6 @@
         function enterOcopMarket(mode, onEntered = null) {
             const overlay = document.getElementById('ocop-intro-overlay');
             if (overlay.classList.contains('hidden')) {
-                setAIChatWidgetVisibility(true);
                 restorePageScrollState();
                 if (typeof onEntered === 'function') onEntered();
                 return;
@@ -3000,7 +2928,6 @@
             setTimeout(() => {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('curtain-closing');
-                setAIChatWidgetVisibility(true);
                 restorePageScrollState();
 
                 if (mode === 'gift') {
@@ -3023,22 +2950,16 @@
         function openLuckyGift() {
             const resultEl = document.getElementById('intro-gift-result');
             const btnEl = document.getElementById('btn-draw-gift');
-            const voucher = luckyVoucherOffers[Math.floor(Math.random() * luckyVoucherOffers.length)];
-            activeVoucher = voucher;
             resultEl.classList.remove('hidden');
-            document.getElementById('lucky-gift-code').innerText = voucher.code;
-            document.getElementById('lucky-gift-description').innerHTML =
-                `<i class="fa-solid fa-circle-check mr-1.5 text-emerald-700 text-sm"></i>Giảm ${voucher.discount.toLocaleString('vi-VN')}đ cho đơn từ ${voucher.minOrder.toLocaleString('vi-VN')}đ. Áp dụng một lần, không cộng dồn ưu đãi.`;
             btnEl.innerHTML = `<i class="fa-solid fa-check-double text-ocopGreen"></i><span>Đã Nhận Lộc Vàng</span>`;
             btnEl.disabled = true;
             btnEl.classList.add('opacity-80', 'cursor-not-allowed');
-            renderCartItems();
 
             // Bắn pháo hoa vàng kim & phát âm thanh chuông may mắn!
             triggerGoldConfetti();
             playChimeSound();
 
-            showToast(`Chúc mừng! Bạn nhận được ${voucher.code}: giảm ${voucher.discount.toLocaleString('vi-VN')}đ.`, "success");
+            showToast("Chúc mừng! Bạn nhận được Voucher Lộc Vàng giảm 50.000đ!", "success");
         }
 
         function scrollToProducts() {
@@ -3057,7 +2978,6 @@
             const overlay = document.getElementById('ocop-intro-overlay');
             overlay.classList.add('hidden');
             overlay.classList.remove('curtain-closing');
-            setAIChatWidgetVisibility(true);
             restorePageScrollState();
             openQuickView(productId);
         }
@@ -3766,18 +3686,6 @@
                 win.classList.add('hidden');
             }
         }
-
-        function setAIChatWidgetVisibility(isVisible) {
-            const widget = document.getElementById('ai-chat-widget');
-            const chatWindow = document.getElementById('ai-chat-window');
-            if (!widget) return;
-            const introVisible = !document.getElementById('ocop-intro-overlay').classList.contains('hidden');
-            isVisible = Boolean(isVisible) && !introVisible;
-            widget.hidden = !isVisible;
-            widget.style.display = isVisible ? '' : 'none';
-            widget.classList.toggle('hidden', !isVisible);
-            if (!isVisible && chatWindow) chatWindow.classList.add('hidden');
-        }
         window.toggleAIChat = toggleAIChat;
 
         function renderIssueSupportReply(promptText = '') {
@@ -3837,14 +3745,6 @@
             }
             document.getElementById('ai-chat-input').value = promptText;
             sendAIMessage();
-        }
-
-        function retryLastAIImageSearch() {
-            if (!lastAIImageSearch || isAIRequestPending) return;
-            sendAIMessage({
-                images: lastAIImageSearch.images,
-                messageText: lastAIImageSearch.messageText
-            });
         }
 
         function getAIEndpoint(path) {
@@ -4074,13 +3974,6 @@
         }
 
         function createLocalCatalogReply(query, hasImages = false) {
-            const topicText = normalizeSearchText(String(query || '')).replace(/[.!?,]+/g, '').trim();
-            if (/^(?:ngu|do ngu|may ngu|ban ngu|stupid|idiot)$|\b(?:chan nhau|yeu nhau|hen ho|lam nguoi yeu|be my girlfriend|be my boyfriend|date me)\b/.test(topicText)) {
-                return {
-                    message: currentLanguage === 'en' ? 'I currently do not have authority to respond to this matter.' : 'Hiện tại tôi không có quyền hạn để trả lời vấn đề này.',
-                    productIds: [], dynamic_chips: [], handoffAdmin: false, localFallback: true
-                };
-            }
             lastAIRecommendedProductIds = [];
             lastAIRecommendationCriteria = null;
             lastAIComboMarkup = null;
@@ -4106,8 +3999,8 @@
             if (isComplaint) {
                 return {
                     message: english
-                        ? "Please describe what happened and provide the order number if available. Our support team can review the details and confirm the appropriate next step. A return or refund requires staff verification."
-                        : "Dạ, Anh/Chị mô tả sự việc và cung cấp mã đơn nếu có để nhân viên kiểm tra nhé. Phương án đổi trả hoặc hoàn tiền cần được xác nhận sau khi kiểm tra.",
+                        ? "I am truly sorry for the inconvenience with your order! OCOP Copilot provides a 100% replacement or full refund within 7 days for damaged or defective items.\n\n👉 Please keep the original packaging and connect directly with our Customer Care Admin below so we can resolve this right away:"
+                        : "Dạ, em rất tiếc và thành thật xin lỗi Anh/Chị về sự cố đơn hàng này ạ! OCOP Copilot cam kết 100% quyền lợi khách hàng với chính sách Đổi mới 1-1 miễn phí hoặc Hoàn tiền trong 7 ngày đối với sản phẩm lỗi do vận chuyển hoặc nhà sản xuất.\n\n👉 Anh/Chị vui lòng giữ lại bao bì, chụp ảnh sản phẩm và nhắn tin trực tiếp cho Admin phụ trách CSKH & Đổi trả dưới đây để được xử lý ngay lập tức nhé ạ:",
                     localMarkup: getAdminContactCardsHTML(),
                     productIds: [],
                     dynamic_chips: ["Admin 4 - Đổi trả", "Hotline: 0987.654.321", "Chính sách đổi trả"],
@@ -4146,7 +4039,7 @@
             }
 
             // 3. CHUYÊN ĐỀ KIẾN THỨC CHỨNG NHẬN OCOP & TRUY XUẤT NGUỒN GỐC (OCOP STANDARDS)
-            const isOcopKnowledge = /(ocop la gi|y nghia ocop|tieu chuan ocop|sao ocop|truy xuat|chinh hang|nguon goc)/.test(normalized) || /(?:4|5|bon|nam)\s*sao.*(?:la gi|nghia la|khac nhau|khac gi|tieu chuan)|(?:phan biet|so sanh|tieu chuan).*?(?:4|5|bon|nam)\s*sao/.test(normalized);
+            const isOcopKnowledge = /(ocop la gi|y nghia ocop|tieu chuan ocop|4 sao|5 sao|sao ocop|truy xuat|chinh hang|nguon goc)/.test(normalized);
             if (isOcopKnowledge) {
                 return {
                     message: english
@@ -4215,7 +4108,7 @@
             }
 
             let minStars = null;
-            if (/5\s*(?:sao|s\b)|nam\s*sao|thuong hang|quoc gia|hang nhat|xuat sac/.test(normalized)) minStars = 5;
+            if (/5\s*sao|nam\s*sao|thuong hang|quoc gia|hang nhat|xuat sac/.test(normalized)) minStars = 5;
             else if (/4\s*sao|bon\s*sao/.test(normalized)) minStars = 4;
 
             const isGift = /bieu|tang|sep|doi tac|bo me|cha me|ong ba|tet|mung tho|tri an|suc khoe|ngoai giao/.test(normalized);
@@ -4261,24 +4154,13 @@
 
             // Regions
             let regionKw = null;
-            const exactRegion = [...new Set(products.map(product => product.region).filter(Boolean))]
-                .find(region => {
-                    const normalizedRegion = normalizeSearchText(region);
-                    return normalizedRegion.length >= 3 && normalized.includes(normalizedRegion);
-                });
-            if (exactRegion) {
-                regionKw = exactRegion;
-                const byExactRegion = matched.filter(product =>
-                    normalizeSearchText(product.region) === normalizeSearchText(exactRegion)
-                );
-                if (byExactRegion.length) matched = byExactRegion;
-            } else if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|yen bai|tuyen quang/.test(normalized)) regionKw = "Tây Bắc";
+            if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|yen bai|tuyen quang/.test(normalized)) regionKw = "Tây Bắc";
             else if (/mien tay|dong bang song cuu long|ben tre|ca mau|an giang|soc trang|dong thap|kien giang|phu quoc|hau giang/.test(normalized)) regionKw = "Miền Tây";
             else if (/tay nguyen|dak lak|gia lai|lam dong|da lat|dak nong/.test(normalized)) regionKw = "Tây Nguyên";
             else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|hue|quang tri|ninh thuan/.test(normalized)) regionKw = "Miền Trung";
             else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|hung yen|bac giang|mien bac/.test(normalized)) regionKw = "Miền Bắc";
 
-            if (regionKw && !exactRegion) {
+            if (regionKw) {
                 const byR = matched.filter(p =>
                     (p.region && p.region.toLowerCase().includes(regionKw.toLowerCase())) ||
                     (p.desc && p.desc.toLowerCase().includes(regionKw.toLowerCase()))
@@ -4292,10 +4174,6 @@
 
             let storyIntro = "Dạ, em là OCOP AI! Em trân trọng gửi đến Anh/Chị những đặc sản tinh hoa vùng miền được chứng nhận 4–5 sao OCOP xuất sắc:";
             let dynamic_chips = ["⭐ 5 sao", "🎁 Quà biếu", "💰 Dưới 200k", "🍵 Trà"];
-
-            if (minStars === 5) {
-                storyIntro = english ? 'Here are some representative 5-star OCOP products from our catalogue:' : 'Dạ, em giới thiệu một số đặc sản OCOP 5 sao tiêu biểu trong danh mục để Anh/Chị tham khảo:';
-            }
 
             if (kwCategory === "trà") {
                 storyIntro = "Dạ, nói đến đệ nhất danh trà Việt Nam, núi cao Tây Bắc quanh năm sương mây và vùng chè Tân Cương, Tam Đảo tạo nên những búp trà thượng hạng với hương thơm cốm non thanh khiết và hậu vị ngọt sâu lan tỏa:";
@@ -4338,12 +4216,12 @@
             };
         }
 
-async function sendAIMessage(retryImageSearch = null) {
+async function sendAIMessage() {
             const inputEl = document.getElementById('ai-chat-input');
             const messagesEl = document.getElementById('ai-chat-messages');
-            const text = retryImageSearch ? '' : inputEl.value.trim();
-            const messageImages = retryImageSearch ? retryImageSearch.images.slice() : pendingAIImages.slice();
-            const messageText = retryImageSearch?.messageText || text || (currentLanguage === 'en'
+            const text = inputEl.value.trim();
+            const messageImages = pendingAIImages.slice();
+            const messageText = text || (currentLanguage === 'en'
                 ? 'Please review the attached product image and help me.'
                 : 'Vui lòng xem ảnh sản phẩm tôi gửi và hỗ trợ giúp tôi.');
 
@@ -4376,7 +4254,7 @@ async function sendAIMessage(retryImageSearch = null) {
             userMessage.append(userBubble, userAvatar);
             messagesEl.append(userMessage);
 
-            if (!retryImageSearch) inputEl.value = '';
+            inputEl.value = '';
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             // Giả lập AI đang gõ
@@ -4520,12 +4398,7 @@ async function sendAIMessage(retryImageSearch = null) {
                     { role: 'user', text: messageText },
                     { role: 'assistant', text: result.message }
                 ].slice(-16);
-                if (messageImages.length) {
-                    lastAIImageSearch = { images: messageImages.slice(), messageText };
-                }
-                if (!retryImageSearch) {
-                    pendingAIImages = pendingAIImages.filter(image => !messageImages.includes(image));
-                }
+                pendingAIImages = pendingAIImages.filter(image => !messageImages.includes(image));
                 renderAIChatImagePreviews();
                 messagesEl.scrollTop = messagesEl.scrollHeight;
 
@@ -4537,13 +4410,7 @@ async function sendAIMessage(retryImageSearch = null) {
                         const btn = document.createElement('button');
                         btn.className = 'chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer text-[10px] font-bold';
                         btn.textContent = label;
-                        btn.addEventListener('click', () => {
-                            if ((label === 'Thử lại' || label === 'Try again') && lastAIImageSearch) {
-                                retryLastAIImageSearch();
-                                return;
-                            }
-                            sendQuickPrompt(label);
-                        });
+                        btn.addEventListener('click', () => sendQuickPrompt(label));
                         chipBar.appendChild(btn);
                     });
                 }
@@ -4580,13 +4447,7 @@ async function sendAIMessage(retryImageSearch = null) {
                 retryButton.type = 'button';
                 retryButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
                 retryButton.textContent = currentLanguage === 'en' ? 'Try again' : 'Thử lại';
-                retryButton.addEventListener('click', () => {
-                    if (messageImages.length) {
-                        sendAIMessage({ images: messageImages, messageText });
-                        return;
-                    }
-                    sendAIMessage();
-                });
+                retryButton.addEventListener('click', sendAIMessage);
                 const contactButton = document.createElement('button');
                 contactButton.type = 'button';
                 contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
@@ -5268,28 +5129,15 @@ async function sendAIMessage(retryImageSearch = null) {
             document.getElementById('cart-count').innerText = totalQty;
         }
 
-        function getCartSubtotal() {
-            return cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        }
-
-        function getVoucherDiscount(subtotal = getCartSubtotal()) {
-            if (!activeVoucher || subtotal < activeVoucher.minOrder) return 0;
-            return Math.min(activeVoucher.discount, subtotal);
-        }
-
         function renderCartItems() {
             const container = document.getElementById('cart-items');
             const subtotalEl = document.getElementById('cart-subtotal');
             const totalEl = document.getElementById('cart-total');
-            const voucherRow = document.getElementById('cart-voucher-row');
-            const voucherLabel = document.getElementById('cart-voucher-label');
-            const voucherDiscount = document.getElementById('cart-voucher-discount');
 
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${currentLanguage === 'en' ? 'Your cart is empty.' : 'Giỏ hàng của bạn đang trống.'}</p>`;
                 subtotalEl.innerText = "0 ₫";
                 totalEl.innerText = "0 ₫";
-                voucherRow.classList.add('hidden');
                 return;
             }
 
@@ -5314,19 +5162,8 @@ async function sendAIMessage(retryImageSearch = null) {
                 `;
             }).join('');
 
-            const discount = getVoucherDiscount(subtotal);
             subtotalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
-            if (activeVoucher) {
-                voucherRow.classList.remove('hidden');
-                const minOrder = activeVoucher.minOrder.toLocaleString('vi-VN') + " ₫";
-                voucherLabel.innerText = discount
-                    ? `${activeVoucher.code} đã áp dụng`
-                    : `${activeVoucher.code}: đơn từ ${minOrder}`;
-                voucherDiscount.innerText = discount ? `-${discount.toLocaleString('vi-VN')} ₫` : "Chưa đủ điều kiện";
-            } else {
-                voucherRow.classList.add('hidden');
-            }
-            totalEl.innerText = (subtotal - discount).toLocaleString('vi-VN') + " ₫";
+            totalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
         }
 
         function checkout() {
@@ -5335,7 +5172,7 @@ async function sendAIMessage(retryImageSearch = null) {
                 return;
             }
 
-            const totalAmount = getCartSubtotal() - getVoucherDiscount();
+            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             currentOrderCode = `OCOP-${Math.floor(100000 + Math.random() * 900000)}`;
             const memo = `THANH TOAN ${currentOrderCode}`;
 
@@ -5363,7 +5200,7 @@ async function sendAIMessage(retryImageSearch = null) {
             }
 
             closeQRModal();
-            const totalAmount = getCartSubtotal() - getVoucherDiscount();
+            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
             const itemNames = cart.map(i => i.name);
 
             // Lưu lịch sử đơn hàng
@@ -5376,7 +5213,6 @@ async function sendAIMessage(retryImageSearch = null) {
             });
 
             cart = [];
-            activeVoucher = null;
             currentOrderCode = null;
             updateCartBadge();
             renderCartItems();
@@ -6066,7 +5902,7 @@ async function sendAIMessage(retryImageSearch = null) {
             const english = currentLanguage === 'en';
             const labels = [
                 ['#intro-lucky-card .tracking-wide', 'AI Lucky Draw ? Take your chance'],
-                ['#intro-lucky-card > div:first-child > div > div > p', 'Draw an order-value voucher for your next purchase.'],
+                ['#intro-lucky-card > div:first-child > div > div > p', 'Try your luck to win a VND 50,000 voucher or nationwide free shipping.'],
                 ['#btn-draw-gift span', 'Draw a lucky voucher'],
                 ['#intro-gift-result .text-amber-300', 'VOUCHER CODE:'],
                 ['#intro-gift-result button span', 'Copy code'],
@@ -6517,5 +6353,5 @@ async function sendAIMessage(retryImageSearch = null) {
 <script src="toiuu.js"></script>
 <script src="script.js"></script>
 </body>
-
 </html>
+G
