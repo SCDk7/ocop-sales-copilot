@@ -1432,6 +1432,91 @@
             #ocop-intro-overlay .intro-pillars > div { animation: none !important; transform: none !important; }
             html { scroll-behavior: auto; }
         }
+
+        /* ============================================================== */
+        /* HOẠT ẢNH MINH HỌA VÌ SAO CHỌN ĐẶC SẢN OCOP (IMAGE 3) */
+        /* ============================================================== */
+        @keyframes juggleItem1 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-22px) rotate(15deg); }
+        }
+        @keyframes juggleItem2 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-28px) rotate(-18deg); }
+        }
+        @keyframes juggleItem3 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(22deg); }
+        }
+        @keyframes juggleItem4 {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(-14deg); }
+        }
+        @keyframes steamRise {
+            0% { transform: translateY(0px) scale(0.95); opacity: 0.2; }
+            50% { transform: translateY(-14px) scale(1.08); opacity: 0.95; }
+            100% { transform: translateY(-26px) scale(1.2); opacity: 0; }
+        }
+        @keyframes bagPackBounce {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-8px) scale(1.03); }
+        }
+        @keyframes bubbleFloatAnim1 {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+        @keyframes bubbleFloatAnim2 {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-8px) scale(1.06); }
+        }
+        .why-us-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(254, 253, 248, 0.92) 100%);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(245, 158, 11, 0.15);
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .why-us-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 22px 35px -10px rgba(6, 78, 59, 0.15), 0 0 0 1.5px rgba(217, 119, 6, 0.35);
+        }
+        .product-card {
+            background: linear-gradient(180deg, #ffffff 0%, #fdfcf9 100%);
+            border: 1px solid rgba(245, 158, 11, 0.22);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 22px 36px -10px rgba(6, 78, 59, 0.18), 0 0 0 1.5px rgba(217, 119, 6, 0.45);
+        }
+        .product-card-image-wrap {
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card-image-wrap::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 70%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+            transform: skewX(-25deg);
+            z-index: 10;
+            pointer-events: none;
+            transition: none;
+        }
+        .product-card:hover .product-card-image-wrap::before {
+            left: 220%;
+            transition: left 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .product-card-image {
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .product-card:hover .product-card-image {
+            transform: scale(1.08);
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
@@ -1911,6 +1996,266 @@
             </div>
         </section>
 
+        <!-- SECTION 3.5: VÌ SAO THỰC KHÁCH CHỌN ĐẶC SẢN OCOP (IMAGE 3 ANIMATIONS) -->
+        <section id="why-choose-us-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">
+            <!-- Header section với cánh trang trí hoa văn vàng -->
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <div class="inline-flex items-center space-x-2 text-xs font-black tracking-widest text-amber-700 uppercase bg-amber-100/70 border border-amber-300 px-3.5 py-1 rounded-full mb-3 shadow-xs">
+                    <i class="fa-solid fa-award text-amber-600"></i>
+                    <span>Cam Kết Chất Lượng Vượt Trội</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight flex items-center justify-center gap-3">
+                    <span class="hidden sm:inline-block h-0.5 w-12 bg-gradient-to-r from-transparent to-amber-500 rounded-full"></span>
+                    <span>VÌ SAO THỰC KHÁCH CHỌN ĐẶC SẢN OCOP</span>
+                    <span class="hidden sm:inline-block h-0.5 w-12 bg-gradient-to-l from-transparent to-amber-500 rounded-full"></span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-ocopGreen via-amber-400 to-ocopGreen mx-auto rounded-full mt-2 mb-3"></div>
+                <p class="text-xs sm:text-sm text-gray-600 font-medium max-w-xl mx-auto">
+                    Mỗi sản phẩm là một niềm tự hào văn hóa bản địa, được tuyển chọn kỹ lưỡng từ nguồn cội đất mẹ và kiểm định an toàn nghiêm ngặt
+                </p>
+            </div>
+
+            <!-- 4 thẻ hoạt ảnh vector minh họa sinh động theo ảnh mẫu 3 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- THẺ 1: NGUYÊN LIỆU LUÔN TƯƠI MỚI (Đầu bếp tung hứng rau củ hoa quả) -->
+                <div class="why-us-card bg-white/90 border border-amber-200/80 rounded-3xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center justify-between group relative overflow-hidden">
+                    <div class="absolute -top-12 -right-12 w-28 h-28 bg-emerald-100/40 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+                    <div class="w-full h-44 flex items-center justify-center relative mb-3">
+                        <svg viewBox="0 0 200 180" class="w-40 h-40 drop-shadow-sm select-none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Nền vòng tròn sáng -->
+                            <circle cx="100" cy="95" r="70" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2" stroke-dasharray="4 4" />
+                            <!-- Đầu bếp -->
+                            <g class="chef-body">
+                                <path d="M75 145 C75 120, 125 120, 125 145 Z" fill="#ffffff" stroke="#047857" stroke-width="2.5" />
+                                <rect x="95" y="125" width="10" height="20" fill="#047857" rx="3" />
+                                <circle cx="97" cy="130" r="1.5" fill="#fef08a" />
+                                <circle cx="97" cy="137" r="1.5" fill="#fef08a" />
+                                <!-- Cổ & Mặt -->
+                                <circle cx="100" cy="112" r="15" fill="#fde68a" stroke="#d97706" stroke-width="2" />
+                                <!-- Mắt cười & má hồng -->
+                                <path d="M94 110 Q97 107 100 110" stroke="#78350f" stroke-width="1.8" fill="none" stroke-linecap="round" />
+                                <path d="M102 110 Q105 107 108 110" stroke="#78350f" stroke-width="1.8" fill="none" stroke-linecap="round" />
+                                <path d="M96 116 Q100 120 104 116" stroke="#b91c1c" stroke-width="2" fill="none" stroke-linecap="round" />
+                                <ellipse cx="91" cy="114" rx="2.5" ry="1.5" fill="#f87171" opacity="0.6" />
+                                <ellipse cx="109" cy="114" rx="2.5" ry="1.5" fill="#f87171" opacity="0.6" />
+                                <!-- Mũ đầu bếp tròn phồng cao -->
+                                <path d="M86 98 C80 92, 85 78, 93 82 C96 74, 106 74, 110 82 C118 78, 122 92, 116 98 Z" fill="#ffffff" stroke="#047857" stroke-width="2" />
+                                <rect x="88" y="96" width="26" height="5" fill="#047857" rx="2" />
+                                <!-- Tay giơ lên tung hứng -->
+                                <path d="M76 130 Q65 118 68 106" stroke="#fde68a" stroke-width="5" stroke-linecap="round" fill="none" />
+                                <path d="M124 130 Q135 118 132 106" stroke="#fde68a" stroke-width="5" stroke-linecap="round" fill="none" />
+                            </g>
+                            <!-- Rau củ quả tung hứng trên không (Keyframes) -->
+                            <!-- Cà chua -->
+                            <g class="juggle-item-1" style="animation: juggleItem1 2.8s ease-in-out infinite;">
+                                <circle cx="65" cy="80" r="9" fill="#ef4444" stroke="#991b1b" stroke-width="1.5" />
+                                <path d="M65 71 L65 67 M62 69 L68 69" stroke="#15803d" stroke-width="2" stroke-linecap="round" />
+                            </g>
+                            <!-- Súp lơ xanh -->
+                            <g class="juggle-item-2" style="animation: juggleItem2 3.2s ease-in-out infinite;">
+                                <circle cx="85" cy="50" r="10" fill="#22c55e" stroke="#15803d" stroke-width="1.5" />
+                                <circle cx="92" cy="48" r="8" fill="#16a34a" />
+                                <circle cx="78" cy="48" r="7" fill="#15803d" />
+                                <rect x="83" y="58" width="4" height="7" fill="#86efac" rx="1" />
+                            </g>
+                            <!-- Cà rốt cam tươi -->
+                            <g class="juggle-item-3" style="animation: juggleItem3 2.9s ease-in-out infinite;">
+                                <path d="M118 48 L126 68 L114 62 Z" fill="#f97316" stroke="#c2410c" stroke-width="1.5" />
+                                <path d="M118 48 L118 42 M118 48 L114 43 M118 48 L122 43" stroke="#16a34a" stroke-width="2" stroke-linecap="round" />
+                            </g>
+                            <!-- Trái bắp / hạt ngũ cốc vàng -->
+                            <g class="juggle-item-4" style="animation: juggleItem4 3.4s ease-in-out infinite;">
+                                <ellipse cx="138" cy="78" rx="8" ry="11" fill="#eab308" stroke="#ca8a04" stroke-width="1.5" transform="rotate(25 138 78)" />
+                                <path d="M142 85 Q145 92 148 95" stroke="#15803d" stroke-width="2" stroke-linecap="round" fill="none" />
+                            </g>
+                            <!-- Ngôi sao tươi mới lấp lánh -->
+                            <path d="M50 65 L52 70 L57 71 L53 74 L54 79 L50 76 L46 79 L47 74 L43 71 L48 70 Z" fill="#fbbf24" opacity="0.8" class="animate-pulse" />
+                            <path d="M150 55 L151.5 58.5 L155 59 L152 61.5 L153 65 L150 63 L147 65 L148 61.5 L145 59 L148.5 58.5 Z" fill="#fbbf24" opacity="0.8" class="animate-pulse" />
+                        </svg>
+                    </div>
+                    <div class="space-y-1.5">
+                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-ocopGreen transition">Nguyên liệu luôn tươi mới</h3>
+                        <p class="text-xs text-gray-500 leading-relaxed font-medium">
+                            100% nông sản sạch, đạt chuẩn OCOP 4-5 sao và tiêu chuẩn VietGAP thu hoạch tại vườn bản địa.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-emerald-700 bg-emerald-50 py-1.5 rounded-xl">
+                        <i class="fa-solid fa-seedling text-emerald-600"></i>
+                        <span>Tươi sạch tự nhiên</span>
+                    </div>
+                </div>
+
+                <!-- THẺ 2: MÓN ĂN NGON MIỆNG & ĐẦY ĐẶN (Đầu bếp bưng đĩa bốc khói thơm lừng) -->
+                <div class="why-us-card bg-white/90 border border-amber-200/80 rounded-3xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center justify-between group relative overflow-hidden">
+                    <div class="absolute -top-12 -right-12 w-28 h-28 bg-amber-100/40 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+                    <div class="w-full h-44 flex items-center justify-center relative mb-3">
+                        <svg viewBox="0 0 200 180" class="w-40 h-40 drop-shadow-sm select-none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Vòng tròn nền -->
+                            <circle cx="100" cy="95" r="70" fill="#fffbeb" stroke="#fde68a" stroke-width="2" stroke-dasharray="4 4" />
+                            <!-- Đầu bếp -->
+                            <g class="chef-dish-cook">
+                                <path d="M78 145 C78 122, 122 122, 122 145 Z" fill="#ffffff" stroke="#b45309" stroke-width="2.5" />
+                                <rect x="96" y="125" width="8" height="20" fill="#d97706" rx="2" />
+                                <!-- Cổ & Mặt cười thích thú -->
+                                <circle cx="100" cy="110" r="14" fill="#fde68a" stroke="#d97706" stroke-width="2" />
+                                <path d="M94 108 Q97 105 100 108" stroke="#78350f" stroke-width="1.8" fill="none" stroke-linecap="round" />
+                                <path d="M101 108 Q104 105 107 108" stroke="#78350f" stroke-width="1.8" fill="none" stroke-linecap="round" />
+                                <path d="M96 114 Q100 119 104 114" stroke="#dc2626" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                                <ellipse cx="91" cy="112" rx="2.5" ry="1.5" fill="#f87171" opacity="0.6" />
+                                <ellipse cx="109" cy="112" rx="2.5" ry="1.5" fill="#f87171" opacity="0.6" />
+                                <!-- Mũ đầu bếp cao -->
+                                <path d="M88 96 C82 90, 87 76, 94 80 C97 72, 107 72, 110 80 C117 76, 122 90, 116 96 Z" fill="#ffffff" stroke="#b45309" stroke-width="2" />
+                                <rect x="88" y="94" width="24" height="4" fill="#d97706" rx="2" />
+                                <!-- Cánh tay bưng đĩa tiệc -->
+                                <path d="M80 128 L65 125 L60 120" stroke="#fde68a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                                <path d="M120 128 L135 125 L140 120" stroke="#fde68a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                            </g>
+                            <!-- Đĩa bạc / vòm phục vụ đầy đặn -->
+                            <g class="dish-platter">
+                                <ellipse cx="100" cy="132" rx="38" ry="10" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+                                <ellipse cx="100" cy="129" rx="30" ry="7" fill="#fbbf24" stroke="#d97706" stroke-width="1.5" />
+                                <circle cx="95" cy="127" r="4" fill="#ef4444" />
+                                <circle cx="105" cy="126" r="4" fill="#22c55e" />
+                                <circle cx="100" cy="125" r="3.5" fill="#f97316" />
+                            </g>
+                            <!-- Làn khói nóng nghi ngút thơm lừng bay lên -->
+                            <g class="steam-group" style="animation: steamRise 2.4s ease-in-out infinite;">
+                                <path d="M92 118 Q86 102 94 88 Q100 74 94 62" stroke="#fbbf24" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.85" />
+                                <path d="M100 116 Q108 98 100 84 Q94 70 102 58" stroke="#f59e0b" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.9" />
+                                <path d="M108 118 Q114 104 106 90 Q100 76 108 65" stroke="#fde047" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8" />
+                            </g>
+                            <!-- Ngôi sao thơm ngon -->
+                            <circle cx="130" cy="75" r="3" fill="#f59e0b" class="animate-ping" opacity="0.75" />
+                            <path d="M65 75 L67 80 L72 81 L68 84 L69 89 L65 86 L61 89 L62 84 L58 81 L63 80 Z" fill="#fbbf24" opacity="0.9" />
+                        </svg>
+                    </div>
+                    <div class="space-y-1.5">
+                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-amber-600 transition">Món ăn ngon miệng & đầy đặn</h3>
+                        <p class="text-xs text-gray-500 leading-relaxed font-medium">
+                            Giữ trọn hương vị truyền thống tinh tế, chế biến tỉ mỉ, đầy đặn đậm đà phong vị quê hương.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-amber-700 bg-amber-50 py-1.5 rounded-xl">
+                        <i class="fa-solid fa-utensils text-amber-600"></i>
+                        <span>Chuẩn vị truyền thống</span>
+                    </div>
+                </div>
+
+                <!-- THẺ 3: ĐÓNG GÓI TIỆN LỢI & CHU ĐÁO (Nhân viên / Shipper đóng hộp quà và túi xách) -->
+                <div class="why-us-card bg-white/90 border border-amber-200/80 rounded-3xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center justify-between group relative overflow-hidden">
+                    <div class="absolute -top-12 -right-12 w-28 h-28 bg-blue-100/40 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+                    <div class="w-full h-44 flex items-center justify-center relative mb-3">
+                        <svg viewBox="0 0 200 180" class="w-40 h-40 drop-shadow-sm select-none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Nền tròn -->
+                            <circle cx="100" cy="95" r="70" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2" stroke-dasharray="4 4" />
+                            <!-- Nhân viên đóng gói / Shipper OCOP -->
+                            <g class="packer-body">
+                                <path d="M75 145 C75 125, 125 125, 125 145 Z" fill="#0284c7" stroke="#0369a1" stroke-width="2" />
+                                <circle cx="100" cy="110" r="14" fill="#fde68a" stroke="#0284c7" stroke-width="2" />
+                                <!-- Mũ lưỡi trai phong cách giao vận -->
+                                <path d="M86 102 C86 92, 114 92, 114 102 Z" fill="#0284c7" />
+                                <path d="M96 95 L124 95 C126 95, 128 99, 120 102 L96 102 Z" fill="#38bdf8" />
+                                <!-- Mắt & nụ cười tươi -->
+                                <circle cx="95" cy="108" r="1.5" fill="#0f172a" />
+                                <circle cx="105" cy="108" r="1.5" fill="#0f172a" />
+                                <path d="M96 114 Q100 118 104 114" stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round" />
+                                <!-- Cánh tay gói quà -->
+                                <path d="M78 132 L68 126 L62 135" stroke="#fde68a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                                <path d="M122 132 L132 126 L138 135" stroke="#fde68a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                            </g>
+                            <!-- Hộp quà OCOP nắp mở thắt nơ & túi xách (Keyframe bounce) -->
+                            <g class="pack-gift-group" style="animation: bagPackBounce 3s ease-in-out infinite;">
+                                <!-- Thùng carton quà đặc sản cao cấp -->
+                                <rect x="52" y="125" width="46" height="36" fill="#f59e0b" stroke="#d97706" stroke-width="2" rx="4" />
+                                <rect x="50" y="122" width="50" height="8" fill="#d97706" rx="2" />
+                                <!-- Ruy băng đỏ thắt nơ sang trọng -->
+                                <line x1="75" y1="122" x2="75" y2="161" stroke="#ef4444" stroke-width="4" />
+                                <circle cx="75" cy="122" r="4" fill="#dc2626" />
+                                <!-- Túi xách OCOP bên cạnh -->
+                                <rect x="106" y="118" width="42" height="42" fill="#10b981" stroke="#047857" stroke-width="2" rx="4" />
+                                <path d="M117 118 C117 108, 137 108, 137 118" stroke="#065f46" stroke-width="3" fill="none" stroke-linecap="round" />
+                                <polygon points="127,130 130,138 139,139 133,145 134,154 127,150 120,154 121,145 115,139 124,138" fill="#fef08a" transform="scale(0.6) translate(80, 80)" />
+                            </g>
+                            <!-- Biểu tượng an toàn vận chuyển -->
+                            <circle cx="148" cy="68" r="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" />
+                            <path d="M142 68 L146 72 L154 64" stroke="#16a34a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                            <!-- Tem nhãn hút chân không -->
+                            <rect x="42" y="76" width="22" height="14" fill="#fee2e2" stroke="#ef4444" stroke-width="1.2" rx="3" />
+                            <text x="44" y="86" font-size="7" font-weight="bold" fill="#b91c1c">PRO</text>
+                        </svg>
+                    </div>
+                    <div class="space-y-1.5">
+                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-sky-600 transition">Đóng gói tiện lợi & chu đáo</h3>
+                        <p class="text-xs text-gray-500 leading-relaxed font-medium">
+                            Đóng gói hút chân không, hộp quà OCOP trang nhã kèm tem truy xuất nguồn gốc QR chính hãng.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-sky-700 bg-sky-50 py-1.5 rounded-xl">
+                        <i class="fa-solid fa-box-check text-sky-600"></i>
+                        <span>An toàn & Lịch thiệp</span>
+                    </div>
+                </div>
+
+                <!-- THẺ 4: CHĂM SÓC TẬN TÂM 24/7 (Nhân viên CSKH đeo tai nghe, tư vấn tận tình) -->
+                <div class="why-us-card bg-white/90 border border-amber-200/80 rounded-3xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center justify-between group relative overflow-hidden">
+                    <div class="absolute -top-12 -right-12 w-28 h-28 bg-rose-100/40 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
+                    <div class="w-full h-44 flex items-center justify-center relative mb-3">
+                        <svg viewBox="0 0 200 180" class="w-40 h-40 drop-shadow-sm select-none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Vòng tròn nền -->
+                            <circle cx="100" cy="95" r="70" fill="#fff1f2" stroke="#fecdd3" stroke-width="2" stroke-dasharray="4 4" />
+                            <!-- Bàn làm việc & Laptop -->
+                            <rect x="55" y="146" width="90" height="8" fill="#e2e8f0" rx="3" stroke="#cbd5e1" stroke-width="1.5" />
+                            <rect x="82" y="132" width="36" height="20" fill="#334155" rx="3" />
+                            <rect x="85" y="135" width="30" height="14" fill="#38bdf8" rx="2" />
+                            <!-- Logo quả táo / mầm cây trên laptop -->
+                            <circle cx="100" cy="142" r="2" fill="#ffffff" />
+                            <!-- Nhân viên CSKH nữ dễ thương -->
+                            <g class="support-rep">
+                                <path d="M78 145 C78 126, 122 126, 122 145 Z" fill="#e11d48" stroke="#be123c" stroke-width="2" />
+                                <circle cx="100" cy="108" r="14" fill="#fde68a" stroke="#d97706" stroke-width="2" />
+                                <!-- Mái tóc gọn gàng -->
+                                <path d="M86 104 C86 92, 114 92, 114 104 C116 112, 114 122, 112 122 C108 122, 108 108, 100 108 C92 108, 92 122, 88 122 C86 122, 84 112, 86 104 Z" fill="#451a03" />
+                                <!-- Mắt sáng & Nụ cười chuyên nghiệp -->
+                                <circle cx="95" cy="107" r="1.5" fill="#451a03" />
+                                <circle cx="105" cy="107" r="1.5" fill="#451a03" />
+                                <path d="M96 113 Q100 117 104 113" stroke="#e11d48" stroke-width="2" fill="none" stroke-linecap="round" />
+                                <ellipse cx="91" cy="111" rx="2.5" ry="1.5" fill="#fda4af" />
+                                <ellipse cx="109" cy="111" rx="2.5" ry="1.5" fill="#fda4af" />
+                                <!-- Tai nghe Headset CSKH chuyên nghiệp -->
+                                <path d="M85 106 C85 92, 115 92, 115 106" stroke="#0f172a" stroke-width="3.5" fill="none" stroke-linecap="round" />
+                                <circle cx="86" cy="107" r="4.5" fill="#0f172a" />
+                                <circle cx="114" cy="107" r="4.5" fill="#0f172a" />
+                                <!-- Micro nối vào miệng -->
+                                <path d="M114 109 Q110 117 104 116" stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round" />
+                                <circle cx="103" cy="116" r="2" fill="#ef4444" />
+                            </g>
+                            <!-- Bong bóng chat phản hồi bay bổng 24/7 -->
+                            <g class="chat-bubble-1" style="animation: bubbleFloatAnim1 3s ease-in-out infinite;">
+                                <rect x="130" y="55" width="46" height="26" fill="#ffffff" stroke="#e11d48" stroke-width="1.8" rx="8" />
+                                <polygon points="142,81 148,81 144,87" fill="#ffffff" stroke="#e11d48" stroke-width="1.5" />
+                                <text x="136" y="72" font-size="10" font-weight="900" fill="#e11d48">24/7 ❤️</text>
+                            </g>
+                            <g class="chat-bubble-2" style="animation: bubbleFloatAnim2 3.6s ease-in-out infinite;">
+                                <circle cx="56" cy="74" r="15" fill="#ffffff" stroke="#059669" stroke-width="1.8" />
+                                <path d="M50 74 L54 78 L63 69" stroke="#059669" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                            <circle cx="140" cy="105" r="2.5" fill="#f43f5e" class="animate-ping" />
+                        </svg>
+                    </div>
+                    <div class="space-y-1.5">
+                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-rose-600 transition">Chăm sóc tận tâm 24/7</h3>
+                        <p class="text-xs text-gray-500 leading-relaxed font-medium">
+                            Đội ngũ tư vấn viên & Trợ lý OCOP AI đồng hành hỗ trợ mọi lúc, giải đáp mọi yêu cầu đặt hàng.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-rose-700 bg-rose-50 py-1.5 rounded-xl">
+                        <i class="fa-solid fa-headset text-rose-600"></i>
+                        <span>Hỗ trợ nhiệt tình</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 4. SIDEBAR & DANH SÁCH SẢN PHẨM -->
         <section id="products-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <!-- THANH DANH MỤC TRƯỢT NGANG TIỆN LỢI CHO ĐIỆN THOẠI & TABLET -->
@@ -2036,24 +2381,70 @@
                                 </button>
                             </div>
                         </div>
+
+                        <!-- Thẻ Cam Kết An Tâm Mua Sắm OCOP (Sidebar) -->
+                        <div class="mt-4 pt-3 border-t border-amber-200/90 space-y-2.5">
+                            <div class="bg-gradient-to-br from-emerald-50/90 to-amber-50/70 p-3.5 rounded-2xl border border-emerald-200/70 shadow-xs space-y-2.5">
+                                <div class="flex items-center space-x-2 text-ocopGreen font-black text-xs uppercase tracking-wider">
+                                    <i class="fa-solid fa-shield-halved text-amber-600"></i>
+                                    <span>Cam Kết Chất Lượng</span>
+                                </div>
+                                <ul class="text-[11px] space-y-2 text-gray-700 font-bold">
+                                    <li class="flex items-start space-x-2">
+                                        <i class="fa-solid fa-truck-fast text-emerald-600 mt-0.5 text-xs"></i>
+                                        <span>Freeship toàn quốc từ 500k</span>
+                                    </li>
+                                    <li class="flex items-start space-x-2">
+                                        <i class="fa-solid fa-award text-amber-500 mt-0.5 text-xs"></i>
+                                        <span>100% Chính gốc 63 tỉnh thành</span>
+                                    </li>
+                                    <li class="flex items-start space-x-2">
+                                        <i class="fa-solid fa-rotate-left text-sky-600 mt-0.5 text-xs"></i>
+                                        <span>Đổi trả an tâm trong 7 ngày</span>
+                                    </li>
+                                </ul>
+                                <div class="pt-2 border-t border-emerald-200/50 flex items-center justify-between text-[10px] text-gray-500 font-semibold">
+                                    <span>Hotline CSKH:</span>
+                                    <a href="tel:1900888688" class="text-red-600 font-extrabold hover:underline">1900 888 688</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </aside>
                 
                 <!-- LƯỚI SẢN PHẨM PHÍA BÊN PHẢI -->
                 <div class="flex-1">
-                    <!-- Header Kết Quả Lưới Sản Phẩm -->
-                    <div class="flex items-center justify-between gap-3 mb-4 bg-amber-50/80 px-4 py-2.5 rounded-2xl border border-amber-200 text-xs font-bold text-gray-700">
-                        <div class="flex items-center space-x-2">
-                            <span id="search-status-text">Hiển thị <span id="product-count-badge" class="text-ocopGreen font-extrabold">40</span> đặc sản OCOP</span>
+                    <!-- Header Kết Quả & Thanh Điều Khiển Lưới Sản Phẩm -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-5 bg-gradient-to-r from-amber-50/90 via-white/80 to-emerald-50/90 p-3 sm:px-4 sm:py-3 rounded-2xl border border-amber-200/90 shadow-sm text-xs font-bold text-gray-700">
+                        <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                            <span class="inline-flex items-center gap-1.5 bg-ocopGreen text-white px-2.5 py-1 rounded-xl text-xs font-black shadow-xs">
+                                <i class="fa-solid fa-box-open text-amber-300"></i>
+                                <span id="product-count-badge">77</span>
+                            </span>
+                            <span id="search-status-text" class="text-gray-800 font-extrabold">Đặc sản OCOP chuẩn Quốc Gia</span>
                         </div>
-                        <div class="flex items-center gap-3 shrink-0">
+                        
+                        <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+                            <!-- Bộ Sắp Xếp Nhanh -->
+                            <div class="relative flex items-center gap-1.5 bg-white border border-amber-300/80 px-2.5 py-1.5 rounded-xl shadow-2xs hover:border-ocopGreen transition">
+                                <i class="fa-solid fa-arrow-down-short-wide text-amber-600 text-[11px]"></i>
+                                <label for="product-sort-select" class="sr-only">Sắp xếp sản phẩm</label>
+                                <select id="product-sort-select" onchange="changeProductSort(this.value)" class="bg-transparent text-gray-800 font-extrabold text-xs focus:outline-none cursor-pointer pr-1">
+                                    <option value="default">Sắp xếp: Mặc định</option>
+                                    <option value="price-asc">Giá: Thấp đến cao</option>
+                                    <option value="price-desc">Giá: Cao đến thấp</option>
+                                    <option value="rating-desc">Đánh giá sao cao nhất</option>
+                                    <option value="stars-desc">OCOP 5 Sao ưu tiên</option>
+                                </select>
+                            </div>
+                            
                             <input type="file" id="image-search-file" accept="image/*" class="hidden" onchange="searchProductsByImage(this.files[0])">
-                            <button type="button" id="image-search-button" onclick="document.getElementById('image-search-file').click()" aria-label="Tìm sản phẩm bằng hình ảnh" title="Ảnh được gửi tới Google Gemini để tìm sản phẩm tương tự" class="text-ocopGreen hover:text-ocopGreenLight flex items-center gap-1.5 font-extrabold transition cursor-pointer disabled:opacity-60 disabled:cursor-wait">
-                                <i class="fa-solid fa-camera text-amber-700"></i>
+                            <button type="button" id="image-search-button" onclick="document.getElementById('image-search-file').click()" aria-label="Tìm sản phẩm bằng hình ảnh" title="Ảnh được gửi tới Google Gemini để tìm sản phẩm tương tự" class="bg-emerald-50 text-ocopGreen hover:bg-emerald-100 hover:text-ocopGreenDark px-2.5 py-1.5 rounded-xl border border-emerald-300/80 flex items-center gap-1.5 font-extrabold transition cursor-pointer shadow-2xs disabled:opacity-60 disabled:cursor-wait">
+                                <i class="fa-solid fa-camera text-amber-600"></i>
                                 <span class="hidden sm:inline">Tìm bằng ảnh</span>
                             </button>
-                            <button onclick="resetFilters()" class="text-amber-800 hover:text-ocopGreen flex items-center space-x-1 font-extrabold transition cursor-pointer">
-                                <i class="fa-solid fa-rotate-right"></i>
+                            <button onclick="resetFilters()" title="Đặt lại bộ lọc" class="bg-amber-100/80 text-amber-900 hover:bg-amber-200 px-2.5 py-1.5 rounded-xl border border-amber-300 flex items-center space-x-1.5 font-extrabold transition cursor-pointer shadow-2xs group">
+                                <i class="fa-solid fa-rotate-right group-hover:rotate-180 transition-transform duration-500"></i>
                                 <span>Đặt lại</span>
                             </button>
                         </div>
@@ -3056,6 +3447,16 @@
         }
 
         // -------------------------------------------------------------
+        let currentSortMode = 'default';
+
+        function changeProductSort(mode) {
+            currentSortMode = mode;
+            const sortSelect = document.getElementById('product-sort-select');
+            if (sortSelect && sortSelect.value !== mode) sortSelect.value = mode;
+            filterProductsGlobal(document.getElementById('product-search')?.value || '');
+        }
+
+        // -------------------------------------------------------------
         // RENDER VÀ LỌC LƯỚI SẢN PHẨM
         // -------------------------------------------------------------
         function renderProducts(items) {
@@ -3064,7 +3465,7 @@
             const countBadge = document.getElementById('product-count-badge');
 
             lastRenderedProducts = items;
-            countBadge.innerText = items.length;
+            if (countBadge) countBadge.innerText = items.length;
 
             if (items.length === 0) {
                 grid.innerHTML = '';
@@ -3077,44 +3478,74 @@
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
+                const discountPercent = (p.origPrice && p.origPrice > p.price) ? Math.round(((p.origPrice - p.price) / p.origPrice) * 100) : 0;
+                
                 return `
-                <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md flex flex-col justify-between group relative" data-product-id="${p.id}">
+                <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md hover:shadow-2xl flex flex-col justify-between group relative transition-all duration-300" data-product-id="${p.id}">
                     <div>
-                        <div class="relative h-48 sm:h-52 overflow-hidden bg-amber-100/50">
+                        <div class="product-card-image-wrap relative h-52 sm:h-56 overflow-hidden bg-amber-50">
                             <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full object-cover">
-                            <div class="absolute top-3 left-3 flex flex-col space-y-1">
-                                <span class="bg-ocopGreen text-ocopGold text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md border border-ocopGold/30">
-                                    ${p.region}
+                            
+                            <!-- Nhãn Vùng Miền & Đạt Chuẩn OCOP -->
+                            <div class="absolute top-3 left-3 flex flex-col space-y-1.5 z-10 pointer-events-none">
+                                <span class="bg-slate-900/85 text-amber-200 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md backdrop-blur-md border border-amber-400/40 flex items-center gap-1 w-fit">
+                                    <i class="fa-solid fa-location-dot text-amber-400 text-[9px]"></i>
+                                    <span>${p.region}</span>
                                 </span>
-                                <span class="bg-amber-500 text-ocopGreen font-black text-[9px] px-2 py-0.5 rounded-full uppercase shadow">
-                                    ${p.stars} ${currentLanguage === 'en' ? 'STAR' : 'SAO QUỐC GIA'}
+                                <span class="bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full uppercase shadow flex items-center gap-1 border border-yellow-200 w-fit">
+                                    <i class="fa-solid fa-star text-amber-950 text-[8px]"></i>
+                                    <span>${p.stars} ${currentLanguage === 'en' ? 'STARS' : 'SAO QUỐC GIA'}</span>
                                 </span>
                             </div>
-                            <button onclick="toggleWishlist(${p.id})" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md text-red-500 flex items-center justify-center hover:scale-110 transition shadow cursor-pointer">
-                                <i class="${isFav ? 'fa-solid text-red-600' : 'fa-regular'} fa-heart"></i>
-                            </button>
-                            <button onclick="openQuickView(${p.id})" class="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-xl backdrop-blur-md transition flex items-center space-x-1 cursor-pointer">
-                                <i class="fa-solid fa-eye text-ocopGold"></i>
+
+                            <!-- Huy Hiệu Giảm Giá & Nút Yêu Thích -->
+                            <div class="absolute top-3 right-3 flex items-center space-x-1.5 z-10">
+                                ${discountPercent > 0 ? `
+                                <span class="bg-gradient-to-r from-rose-600 to-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md border border-rose-300/40 animate-pulse">
+                                    -${discountPercent}%
+                                </span>` : ''}
+                                <button onclick="toggleWishlist(${p.id})" aria-label="Yêu thích" class="w-8 h-8 rounded-full bg-white/90 backdrop-blur-md text-red-500 flex items-center justify-center hover:scale-110 active:scale-95 transition shadow-md cursor-pointer border border-rose-100 group/heart">
+                                    <i class="${isFav ? 'fa-solid text-red-600 scale-110' : 'fa-regular group-hover/heart:scale-110'} fa-heart text-xs transition-transform"></i>
+                                </button>
+                            </div>
+
+                            <!-- Tem Nguồn Gốc & Nút Xem Nhanh -->
+                            <div class="absolute bottom-3 left-3 bg-emerald-950/75 backdrop-blur-md text-emerald-200 text-[9px] font-bold px-2 py-0.5 rounded-lg border border-emerald-500/40 flex items-center gap-1 z-10 pointer-events-none">
+                                <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                                <span>100% Chính gốc</span>
+                            </div>
+                            <button onclick="openQuickView(${p.id})" class="absolute bottom-3 right-3 bg-slate-900/80 hover:bg-slate-950 text-white text-[10px] font-extrabold px-3 py-1.5 rounded-xl backdrop-blur-md transition-all flex items-center space-x-1.5 shadow-lg border border-white/20 hover:scale-105 active:scale-95 cursor-pointer z-10">
+                                <i class="fa-solid fa-eye text-amber-300"></i>
                                 <span>${currentLanguage === 'en' ? 'Quick view' : 'Xem nhanh'}</span>
                             </button>
                         </div>
+
+                        <!-- Thông Tin Chi Tiết Thẻ -->
                         <div class="p-4 space-y-2">
-                            <div class="flex items-center justify-between text-[11px] text-amber-800 font-bold">
-                                <span><i class="fa-solid fa-star text-yellow-500 mr-1"></i>${p.rating} (${p.reviews} ${currentLanguage === 'en' ? 'reviews' : 'đánh giá'})</span>
-                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md text-[10px]">${currentLanguage === 'en' ? (p.tagEn || 'OCOP specialty') : p.tag}</span>
+                            <div class="flex items-center justify-between text-[11px] font-bold">
+                                <span class="text-amber-800 flex items-center gap-1">
+                                    <i class="fa-solid fa-star text-yellow-500"></i>
+                                    <span>${p.rating}</span>
+                                    <span class="text-gray-400 font-normal">(${p.reviews} ${currentLanguage === 'en' ? 'reviews' : 'đánh giá'})</span>
+                                </span>
+                                <span class="bg-amber-100/80 text-amber-900 font-extrabold px-2 py-0.5 rounded-lg text-[10px] border border-amber-200">
+                                    ${currentLanguage === 'en' ? (p.tagEn || 'OCOP specialty') : p.tag}
+                                </span>
                             </div>
-                            <h3 class="font-extrabold text-sm text-gray-900 group-hover:text-ocopGreen transition line-clamp-2 leading-snug">${productName}</h3>
-                            <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${productDescription}</p>
+                            <h3 class="font-extrabold text-sm text-gray-900 group-hover:text-ocopGreen transition-colors duration-200 line-clamp-2 leading-snug">${productName}</h3>
+                            <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed font-medium">${productDescription}</p>
                         </div>
                     </div>
-                    <div class="p-4 pt-0 border-t border-amber-100/60 mt-2 flex items-center justify-between">
+
+                    <!-- Footer Thẻ: Giá & Nút Thêm Giỏ -->
+                    <div class="p-4 pt-3 border-t border-amber-100/70 mt-1 flex items-center justify-between bg-amber-50/20">
                         <div>
-                            <span class="block text-xs text-gray-400 line-through">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
-                            <span class="font-black text-red-600 text-base sm:text-lg">${p.price.toLocaleString('vi-VN')} ₫</span>
+                            <span class="block text-xs text-gray-400 line-through leading-none mb-1">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
+                            <span class="font-black text-red-600 text-base sm:text-lg tracking-tight">${p.price.toLocaleString('vi-VN')} ₫</span>
                         </div>
-                        <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white hover:bg-ocopGreenLight p-2.5 rounded-xl font-bold transition flex items-center space-x-1.5 shadow hover:scale-105 active:scale-95 cursor-pointer">
-                            <i class="fa-solid fa-cart-plus text-ocopGold text-xs"></i>
-                            <span class="text-xs">${currentLanguage === 'en' ? 'Add to cart' : 'Thêm giỏ'}</span>
+                        <button onclick="addToCart(${p.id})" class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 hover:from-emerald-700 hover:to-amber-700 text-white px-3.5 py-2.5 rounded-xl font-bold transition-all flex items-center space-x-1.5 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 cursor-pointer border border-emerald-600/30 group/btn">
+                            <i class="fa-solid fa-cart-plus text-amber-300 text-xs group-hover/btn:rotate-12 transition-transform"></i>
+                            <span class="text-xs font-black tracking-wide">${currentLanguage === 'en' ? 'Add to cart' : 'Thêm giỏ'}</span>
                         </button>
                     </div>
                 </div>
@@ -3166,8 +3597,20 @@
                 });
             }
 
-            renderProducts(filtered);
-            updateProvinceSelectionStatus(filtered.length);
+            // Sắp xếp danh sách sản phẩm theo lựa chọn
+            let sortedFiltered = [...filtered];
+            if (currentSortMode === 'price-asc') {
+                sortedFiltered.sort((a, b) => a.price - b.price);
+            } else if (currentSortMode === 'price-desc') {
+                sortedFiltered.sort((a, b) => b.price - a.price);
+            } else if (currentSortMode === 'rating-desc') {
+                sortedFiltered.sort((a, b) => b.rating - a.rating);
+            } else if (currentSortMode === 'stars-desc') {
+                sortedFiltered.sort((a, b) => (b.stars - a.stars) || (b.rating - a.rating));
+            }
+
+            renderProducts(sortedFiltered);
+            updateProvinceSelectionStatus(sortedFiltered.length);
         }
 
         function normalizeSearchText(value) {
@@ -3734,6 +4177,9 @@
         }
 
         function resetFilters() {
+            currentSortMode = 'default';
+            const sortSelect = document.getElementById('product-sort-select');
+            if (sortSelect) sortSelect.value = 'default';
             if (selectedProvince) clearSelectedProvince();
             setCategoryFilter('all');
             clearSearchInput();
