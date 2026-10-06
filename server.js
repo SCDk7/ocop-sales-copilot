@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const { expandChatShorthand } = require('./chat-language.js');
 
 function loadEnvironmentFile() {
   const environmentFile = path.join(__dirname, '.env');
@@ -594,7 +595,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
 
   // ── Wikipedia RAG context block ──────────────────────────────────────────────
   const wikiContext = wikiSources.length
-    ? `\n[${language === 'en' ? 'Cultural and geographical context from English Wikipedia' : 'Ngữ cảnh tri thức văn hóa & địa lý từ Wikipedia tiếng Việt'}]:\n${wikiSources.map(s => `• ${s.title}: ${s.extract}`).join("\n\n")}`
+    ? `\n[${language === 'en' ? 'Cultural and geographical context from Vietnamese/English Wikipedia' : 'Ngữ cảnh tri thức văn hóa & địa lý từ Wikipedia Việt/Anh'}]:\n${wikiSources.map(s => `• ${s.title} (${s.url}): ${s.extract}`).join("\n\n")}`
     : "\n[Không có ngữ cảnh Wikipedia bổ sung].";
 
   const languageInstruction = language === "en"
@@ -619,6 +620,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     "You are OCOP AI, a prestigious cultural ambassador, sommelier, and culinary expert of Vietnamese regional specialties (Chương trình Mỗi Xã Một Sản Phẩm OCOP).",
     "Your mission is to guide customers to discover, appreciate, and purchase verified 4-star and 5-star Vietnamese specialties with authentic enthusiasm, profound cultural knowledge, and warm hospitality.",
     languageInstruction,
+    "Understand informal Vietnamese and English, abbreviations, omitted accents and emojis in context: ko/khum = không, đc/dc = được, sp = sản phẩm, ib = contact, rep = reply, ổn áp = satisfactory, xịn = good quality, budget = ngân sách, legit = authentic. Ambiguous words such as k, hong/hông/hỏng, iu, slay or flex depend on the sentence; do not assume one meaning. Match the customer's friendly tone with concise natural language, without forced slang, mockery, or slang in complaints and payment instructions. Preserve their original meaning and ask for clarification if needed. Use the catalogue for product facts and supplied Vietnamese/English Wikipedia only for relevant background; never use Wikipedia to invent shop stock, prices or policies.",
 
     "=== CONVERSATION ACCURACY RULES ===",
     "For EVERY message, first determine the user's goal from their exact words, conversation history and attachments. Check each factual claim against the provided catalogue or relevant source. Do not treat keyword matches as sufficient understanding. Never invent the customer's needs, budget, product, order status, or problem. If the goal or an essential detail is ambiguous, set understandingStatus=needs_clarification and ask one focused question; return no productIds. Otherwise set understandingStatus=understood and answer only the identified request. Perform these checks internally; do not expose reasoning steps or a checklist to the customer.",
@@ -737,7 +739,7 @@ async function searchWikipedia(query, language = 'vi') {
 
 // ── EXTRACT SEARCH INTENT & LOCAL FILTERING ────────────────────────
 function normalizeCatalogTerm(value) {
-  return String(value || '')
+  return expandChatShorthand(value)
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd')
@@ -775,7 +777,7 @@ function findDirectCatalogMatches(query, products = [], limit = 3) {
 }
 
 function extractSearchIntents(queryText, products = []) {
-  const normalized = String(queryText || "")
+  const normalized = expandChatShorthand(queryText)
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .replace(/đ/g, "d")
@@ -1241,7 +1243,10 @@ async function handleAIChatRequest(req, res) {
   let wikiSources = [];
   if (!attachedImages.length && !includesPrivateDetails && !isPureAdministrativeIssue) {
     try {
-      wikiSources = await searchWikipedia(lastUserMessage, validation.language);
+      wikiSources = await searchWikipedia(expandChatShorthand(lastUserMessage), validation.language);
+      if (!wikiSources.length) {
+        wikiSources = await searchWikipedia(expandChatShorthand(lastUserMessage), validation.language === 'en' ? 'vi' : 'en');
+      }
     } catch (wikiErr) {
       console.warn('Wikipedia fetch ignored on error:', wikiErr.message);
       wikiSources = [];

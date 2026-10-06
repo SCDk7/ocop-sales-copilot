@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OCOP Sales Copilot - 48 Đặc Sản Việt Nam</title>
     
+    <script src="chat-language.js"></script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -3098,7 +3099,7 @@
         }
 
         function normalizeSearchText(value) {
-            return String(value)
+            return expandChatShorthand(value)
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '')
                 .replace(/đ/g, 'd')
