@@ -154,13 +154,13 @@ async function sendChatMessage(customPrompt) {
     const messageText = String(customPrompt || (inputEl ? inputEl.value : '')).trim();
     if (!messageText) return;
 
-    if (inputEl) inputEl.value = '';
-
-    // If main index.html already has an active AI conversation handler, delegate
-    if (typeof window.sendAIMessage === 'function' && !customPrompt) {
-        // Let inline script handle it if it was typed
+    // If main index.html already has an active AI conversation handler, delegate seamlessly
+    if (typeof window.sendAIMessage === 'function') {
+        if (inputEl) inputEl.value = messageText;
+        return window.sendAIMessage();
     }
 
+    if (inputEl) inputEl.value = '';
     appendChatMessageBubble('User', messageText, true);
 
     const chatBox = getActiveChatMessages();
@@ -275,27 +275,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Hook Suggestion Chips Click Events
-    document.querySelectorAll('.chat-prompt, [data-prompt]').forEach(chip => {
-        chip.addEventListener('click', function (e) {
+    // 2. Global unified toggle function for OCOP AI
+    if (typeof window.toggleAIChat !== 'function') {
+        window.toggleAIChat = function() {
+            const chatWin = document.getElementById('ai-chat-window') || document.getElementById('chat-widget');
+            if (!chatWin) return;
+            const isHidden = chatWin.classList.contains('hidden');
+            if (isHidden) {
+                chatWin.classList.remove('hidden');
+                const adminMenu = document.getElementById('admin-support-menu');
+                if (adminMenu) adminMenu.classList.add('hidden');
+                const inp = document.getElementById('ai-chat-input') || document.getElementById('chat-input');
+                if (inp) setTimeout(() => inp.focus(), 120);
+                const msgBox = document.getElementById('ai-chat-messages') || document.getElementById('chat-messages');
+                if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
+            } else {
+                chatWin.classList.add('hidden');
+            }
+        };
+    }
+
+    // 3. Phím tắt tiện lợi (Ctrl+/ hoặc Cmd+/) để mở nhanh OCOP AI
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === '/') {
             e.preventDefault();
-            const text = this.getAttribute('data-prompt') || this.textContent.trim().replace(/^[^\w\s\u00C0-\u1EF9]+/u, '').trim();
-            sendChatMessage(text);
-        });
+            if (typeof window.toggleAIChat === 'function') {
+                window.toggleAIChat();
+            }
+        }
     });
 
-    // 3. Hook Toggle Chatbot Window
-    const toggleBtns = document.querySelectorAll('#chatbot-toggle-btn, [onclick*="toggleAIChat"]');
-    toggleBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const chatWin = getActiveChatWindow();
-            if (chatWin) {
-                chatWin.classList.toggle('hidden');
-                if (!chatWin.classList.contains('hidden') && inputEl) {
-                    inputEl.focus();
-                }
-            }
-        });
+    // 4. Hook any chatbot toggle buttons that do NOT already have onclick attributes
+    document.querySelectorAll('#chatbot-toggle-btn').forEach(btn => {
+        if (!btn.getAttribute('onclick')) {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (typeof window.toggleAIChat === 'function') window.toggleAIChat();
+            });
+        }
     });
 
     // 4. Hook Header Search Input

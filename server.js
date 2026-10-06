@@ -572,39 +572,52 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
   const productContext = JSON.stringify(products);
   const filteredContext = (Array.isArray(filteredProducts) && filteredProducts.length > 0)
     ? `\n[Sản phẩm OCOP phù hợp nhất với từ khóa/nhu cầu người dùng hiện tại]:\n${JSON.stringify(filteredProducts)}`
-    : '';
+    : "";
 
   // ── Wikipedia RAG context block ──────────────────────────────────────────────
   const wikiContext = wikiSources.length
-    ? `\n[Ngữ cảnh tri thức văn hóa & địa lý từ Wikipedia tiếng Việt]:\n${wikiSources.map(s => `• ${s.title}: ${s.extract}`).join('\n\n')}`
-    : '\n[Không có ngữ cảnh Wikipedia bổ sung].';
+    ? `\n[Ngữ cảnh tri thức văn hóa & địa lý từ Wikipedia tiếng Việt]:\n${wikiSources.map(s => `• ${s.title}: ${s.extract}`).join("\n\n")}`
+    : "\n[Không có ngữ cảnh Wikipedia bổ sung].";
 
-  const languageInstruction = language === 'en'
-    ? 'Reply in English with a warm, prestigious, and culturally rich tone.'
+  const languageInstruction = language === "en"
+    ? "Reply in English with an elegant, prestigious, culturally rich, and welcoming tone. Address the customer politely."
     : 'Trả lời bằng tiếng Việt tự nhiên, ấm áp, lịch thiệp. Dùng đại từ xưng hô tôn trọng ("Dạ", "Anh/Chị"). Mở đầu câu trả lời bằng "Dạ" một cách duyên dáng.';
 
-  const chipsInstruction = language === 'en'
+  const chipsInstruction = language === "en"
     ? `In dynamic_chips, return 2–4 short, contextually smart suggestion buttons (max 20 chars each, e.g., ["Gifts", "Under 200k", "5-star", "Specialty Tea"]).`
     : `Trong dynamic_chips, trả về 2–4 nhãn nút gợi ý ngắn thông minh (tối đa 20 ký tự mỗi nhãn) bám sát ngữ cảnh câu trả lời (ví dụ: ["Quà biếu", "Dưới 200k", "5 sao", "Trà đặc sản", "Miền Tây", "Combo tiết kiệm"]).`;
 
   const schemaInstruction = includeTranscription
-    ? `Chỉ trả về JSON đúng schema: transcription (string), message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), handoffAdmin (boolean), dynamic_chips (mảng string).`
-    : `Chỉ trả về JSON đúng schema: message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), handoffAdmin (boolean), dynamic_chips (mảng string).`;
+    ? "Chỉ trả về JSON đúng schema: transcription (string), message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), handoffAdmin (boolean), dynamic_chips (mảng string)."
+    : "Chỉ trả về JSON đúng schema: message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), handoffAdmin (boolean), dynamic_chips (mảng string).";
 
   return [
-    'You are OCOP AI, a prestigious cultural ambassador and premium culinary expert of Vietnamese specialties.',
-    'Your goal is to guide users to discover and buy regional OCOP products with complete confidence and enthusiasm.',
+    "You are OCOP AI, a prestigious cultural ambassador, sommelier, and culinary expert of Vietnamese regional specialties (Chương trình Mỗi Xã Một Sản Phẩm OCOP).",
+    "Your mission is to guide customers to discover, appreciate, and purchase verified 4-star and 5-star Vietnamese specialties with authentic enthusiasm, profound cultural knowledge, and warm hospitality.",
     languageInstruction,
 
-    '=== NGUYÊN TẮC TƯ VẤN & BÁN HÀNG OCOP AI ===',
-    '1. VĂN HÓA & NGHỆ THUẬT ẨM THỰC: Khi người dùng hỏi về bất kỳ sản phẩm nào (ví dụ: "Trà", "Yến sào", "đặc sản Tây Bắc", "Miền Tây"), đừng chỉ liệt kê giá khô khan. Hãy khéo léo hòa quyện câu chuyện văn hóa, khí hậu thổ nhưỡng (độ cao, sương mù, vách đá, truyền thống trăm năm) từ ngữ cảnh Wikipedia để câu trả lời hấp dẫn và thuyết phục.',
-    '2. DỮ LIỆU CHÍNH XÁC: Khi người dùng tìm sản phẩm theo ngân sách (như "dưới 200k"), số sao ("5 sao", "4 sao") hoặc chủng loại, hãy ưu tiên dùng danh sách [Sản phẩm OCOP phù hợp nhất] được lọc sẵn dưới đây để trích dẫn chính xác Tên, Giá niêm yết, Số sao OCOP và Tỉnh thành. Tuyệt đối không bịa đặt sản phẩm hoặc sai lệch giá.',
-    '3. GỢI Ý MÃ SẢN PHẨM: Trả về tối đa 3 mã ID sản phẩm phù hợp nhất trong mảng `productIds`.',
-    '4. CALL-TO-ACTION (LỜI KÊU GỌI HÀNH ĐỘNG): Luôn kết thúc câu trả lời bằng một lời kêu gọi hành động (Call-to-Action) ấm áp, khích lệ người dùng thêm vào giỏ hàng hoặc trải nghiệm thử đặc sản vùng miền.',
+    "=== BỘ QUY TẮC HUẤN LUYỆN CHUYÊN GIA OCOP AI ===",
+    "1. AM HIỂU THỔ NHƯỠNG & KHÍ HẬU VÙNG MIỀN (TERROIR EXPERTISE):",
+    "   • Tây Bắc (Hà Giang, Sơn La, Lào Cai): Quanh năm mây phủ trên độ cao >2000m, sương giá Hoàng Liên Sơn ấp ủ nên búp Trà Shan Tuyết Cổ Thụ trắng muốt, nước vàng óng như mật ong, tiền chát dịu hậu ngọt sâu ngút ngàn.",
+    "   • Trung du Bắc Bộ (Thái Nguyên, Vĩnh Phúc, Hà Nội): Dòng sông Công và núi Tam Đảo chở che thổ nhưỡng cho Trà Đinh Nõn Tân Cương đệ nhất danh trà (hái 1 tôm 1 lá) và Trà Sen Tây Hồ ướp gạo sen Bách Diệp thanh tao của người Hà thành.",
+    "   • Duyên hải Nam Trung Bộ & Đảo (Khánh Hòa, Quảng Nam, Lý Sơn): Nắng gió mặn mòi tạo nên Yến Sào đảo thiên nhiên Khánh Hòa sợi dai giòn bồi bổ khí huyết; Sâm Ngọc Linh núi Ngọc Linh chứa 52 hợp chất saponin quý giá nhất thế giới; Tỏi Đen Cô Đơn Lý Sơn lên men tự nhiên dẻo ngọt như ô mai.",
+    "   • Tây Nguyên (Gia Lai, Đắk Lắk): Đất đỏ bazan màu mỡ triệu năm nuôi dưỡng Cà phê Robusta Buôn Ma Thuột đậm đà nồng nàn, Mật Ong Hoa Cà Phê vàng óng tinh khiết và Tiêu đen Chư Sê cay thơm nồng đượm.",
+    "   • Nam Bộ & Đồng bằng sông Cửu Long (Bến Tre, Kiên Giang, Sóc Trăng): Phù sa màu mỡ sông Tiền sông Hậu tạo nên Kẹo dừa Bến Tre dẻo béo, Nước mắm Phú Quốc truyền thống cá cơm than ủ chượp thùng gỗ bời lời 43 độ đạm, Gạo ST25 đoạt giải ngon nhất thế giới.",
 
-    '=== XỬ LÝ KHIẾU NẠI & HỖ TRỢ ===',
-    '• Nếu khách hàng phản ánh hàng lỗi, thiếu hàng hoặc đổi trả, hướng dẫn giữ lại sản phẩm và bao bì, bật handoffAdmin=true để kết nối nhân viên hỗ trợ.',
-    '• Tuyệt đối không hỏi mật khẩu, OTP hay mã thẻ ngân hàng.',
+    "2. NGHỆ THUẬT TƯ VẤN THEO MỤC ĐÍCH & NGÂN SÁCH (OCCASION & BUDGET MATCHING):",
+    "   • Quà biếu Sếp, Đối tác ngoại giao: Ưu tiên dòng 5 sao Quốc gia sang trọng như Yến Sào Khánh Hòa, Trà Sen Tây Hồ, Sâm Ngọc Linh, Trà Đinh Nõn Tân Cương (thể hiện sự trọng vọng, tri ân và đẳng cấp).",
+    "   • Quà tặng sức khỏe Cha Mẹ, Người lớn tuổi: Gợi ý Yến sào, Sâm Ngọc Linh, Tỏi đen Lý Sơn, Mật ong hoa cà phê.",
+    "   • Tiệc trà đạo & Thưởng ngoạn: Phối hợp Trà Shan Tuyết / Trà Tân Cương cùng Bánh cốm Làng Vòng Hà Nội.",
+    "   • Ngân sách tiết kiệm dưới 200k: Tự hào giới thiệu các thức quà bình dân chuẩn OCOP 4 sao như Kẹo dừa Bến Tre (65.000đ), Bánh cốm Làng Vòng (85.000đ), Bơ sáp Đắk Lắk (120.000đ), Quế ống Trà Bồng (145.000đ), Mật ong hoa cà phê (180.000đ).",
+
+    "3. NGUYÊN TẮC BÁN HÀNG & CHÍNH XÁC:",
+    "   • Luôn trích dẫn chính xác Tên sản phẩm, Giá niêm yết, Số sao OCOP và Tỉnh thành từ danh mục bên dưới. Tuyệt đối không tự bịa đặt giá hoặc tên gọi.",
+    "   • Trả về tối đa 3 mã ID sản phẩm xuất sắc nhất trong mảng `productIds`.",
+    "   • Kết thúc bằng lời chúc ấm áp và lời mời (Call-to-Action) bấm nút thêm vào giỏ hàng hoặc trải nghiệm sản phẩm.",
+
+    "=== HỖ TRỢ KHIẾU NẠI & AN TOÀN BẢO MẬT ===",
+    "• Nếu khách hàng phản ánh hàng lỗi, thiếu hàng hoặc muốn đổi trả, hướng dẫn giữ lại bao bì và sản phẩm, đồng thời bật `handoffAdmin: true` để kết nối tư vấn viên Facebook.",
+    "• Tuyệt đối không yêu cầu mật khẩu, mã OTP, số tài khoản hay thông tin bảo mật của khách hàng.",
 
     chipsInstruction,
     schemaInstruction,
@@ -612,10 +625,8 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     filteredContext,
     `\n[Danh mục toàn bộ sản phẩm OCOP]:\n${productContext}`,
     wikiContext
-  ].join('\n');
+  ].join("\n");
 }
-
-
 
 const wikipediaSearchCache = new Map();
 const WIKIPEDIA_CACHE_TTL_MS = 10 * 60 * 1000;
@@ -663,53 +674,68 @@ async function searchVietnameseWikipedia(query) {
 
 // ── EXTRACT SEARCH INTENT & LOCAL FILTERING ────────────────────────
 function extractSearchIntents(queryText) {
-  const normalized = String(queryText || '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
+  const normalized = String(queryText || "")
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/đ/g, "d")
     .toLowerCase();
 
   let maxPrice = null;
-  const underMatch = normalized.match(/duoi\s+(\d+)\s*(k|nghin|ngan|trieu|tr)?/);
+  const underMatch = normalized.match(/(?:duoi|tam|khoang|duoi muc|gia re hon|it hon)\s+(\d+)\s*(k|nghin|ngan|trieu|tr)?/);
   if (underMatch) {
     let num = parseInt(underMatch[1], 10);
     const unit = underMatch[2];
-    if (unit === 'trieu' || unit === 'tr') num *= 1000000;
-    else if (unit === 'k' || unit === 'nghin' || unit === 'ngan' || num < 1000) num *= 1000;
+    if (unit === "trieu" || unit === "tr") num *= 1000000;
+    else if (unit === "k" || unit === "nghin" || unit === "ngan" || num < 1000) num *= 1000;
     maxPrice = num;
+  } else if (/gia re|tiet kiem|binh dan|hoc sinh|sinh vien/.test(normalized)) {
+    maxPrice = 200000;
   }
 
   let minStars = null;
-  if (/5\s*sao|nam\s*sao/.test(normalized)) minStars = 5;
+  if (/5\s*sao|nam\s*sao|thuong hang|hang nhat|xuat sac/.test(normalized)) minStars = 5;
   else if (/4\s*sao|bon\s*sao/.test(normalized)) minStars = 4;
 
+  let isGift = /bieu|tang|sep|doi tac|bo me|ong ba|tet|mung|le|tri an|suc khoe/.test(normalized);
+
   let categoryOrKeyword = null;
-  if (/\b(tra|che)\b/.test(normalized)) categoryOrKeyword = 'trà';
-  else if (/\b(yen|yen sao)\b/.test(normalized)) categoryOrKeyword = 'yến';
-  else if (/\b(mat ong)\b/.test(normalized)) categoryOrKeyword = 'mật ong';
-  else if (/\b(ca phe)\b/.test(normalized)) categoryOrKeyword = 'cà phê';
-  else if (/\b(gao)\b/.test(normalized)) categoryOrKeyword = 'gạo';
-  else if (/\b(ruou)\b/.test(normalized)) categoryOrKeyword = 'rượu';
-  else if (/\b(hat|dieu|mac ca)\b/.test(normalized)) categoryOrKeyword = 'hạt';
-  else if (/\b(banh|keo)\b/.test(normalized)) categoryOrKeyword = 'bánh';
+  if (/(tra|che|shan tuyet|dinh non|hoa vang|sen)/.test(normalized)) categoryOrKeyword = "trà";
+  else if (/(yen|yen sao|to yen)/.test(normalized)) categoryOrKeyword = "yến";
+  else if (/(sam|sam ngoc linh)/.test(normalized)) categoryOrKeyword = "sâm";
+  else if (/(mat ong|ong bac ha|ong hoa ca phe)/.test(normalized)) categoryOrKeyword = "mật ong";
+  else if (/(ca phe|robusta|arabica)/.test(normalized)) categoryOrKeyword = "cà phê";
+  else if (/(gao|st25|nep cai)/.test(normalized)) categoryOrKeyword = "gạo";
+  else if (/(toi|toi den|toi ly son)/.test(normalized)) categoryOrKeyword = "tỏi";
+  else if (/(nuoc mam|ca com|phu quoc)/.test(normalized)) categoryOrKeyword = "nước mắm";
+  else if (/(ruou|dong trung|ba kich)/.test(normalized)) categoryOrKeyword = "rượu";
+  else if (/(hat|dieu|mac ca|hat sen)/.test(normalized)) categoryOrKeyword = "hạt";
+  else if (/(banh|keo|com|pia|dua)/.test(normalized)) categoryOrKeyword = "bánh";
+  else if (/(gia vi|que|tieu|cham cheo)/.test(normalized)) categoryOrKeyword = "gia vị";
 
   let regionKeyword = null;
-  if (/tay bac|ha giang|sapa|lao cai|moc chau|son la/.test(normalized)) regionKeyword = 'Tây Bắc';
-  else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang/.test(normalized)) regionKeyword = 'Miền Tây';
-  else if (/tay nguyen|dak lak|gia lai|lam dong|da lat/.test(normalized)) regionKeyword = 'Tây Nguyên';
-  else if (/mien trung|quang nam|hue|khanh hoa/.test(normalized)) regionKeyword = 'Miền Trung';
+  if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
+  else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
+  else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
+  else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
+  else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
 
-  return { maxPrice, minStars, categoryOrKeyword, regionKeyword, rawText: queryText };
+  return { maxPrice, minStars, categoryOrKeyword, regionKeyword, isGift, rawText: queryText };
 }
 
 function filterProductsByIntent(products = [], intent = {}) {
   let matched = [...products];
 
   if (intent.maxPrice !== null) {
-    matched = matched.filter(p => Number.isFinite(p.price) && p.price <= intent.maxPrice);
+    const byPrice = matched.filter(p => Number.isFinite(p.price) && p.price <= intent.maxPrice);
+    if (byPrice.length > 0) matched = byPrice;
   }
   if (intent.minStars !== null) {
-    matched = matched.filter(p => p.stars >= intent.minStars);
+    const byStars = matched.filter(p => p.stars >= intent.minStars);
+    if (byStars.length > 0) matched = byStars;
+  }
+  if (intent.isGift) {
+    const byGift = matched.filter(p => p.category === "gift" || p.stars === 5 || p.price >= 500000);
+    if (byGift.length > 0) matched = byGift;
   }
   if (intent.categoryOrKeyword) {
     const kw = intent.categoryOrKeyword.toLowerCase();
@@ -729,28 +755,40 @@ function filterProductsByIntent(products = [], intent = {}) {
     if (byRegion.length > 0) matched = byRegion;
   }
 
-  // Fallback if matched empty but original products exist
   return matched.length > 0 ? matched : products.slice(0, 3);
 }
 
 // ── BULLETPROOF LOCAL FALLBACK RESPONSE ────────────────────────
-function buildLocalFallbackReply(query, products = [], language = 'vi') {
+function buildLocalFallbackReply(query, products = [], language = "vi") {
   const intent = extractSearchIntents(query);
   const matched = filterProductsByIntent(products, intent).slice(0, 3);
 
-  const productNames = matched.map(p => `• **${p.name}** (${p.stars}⭐ OCOP - ${p.region}) — ${(p.price || 0).toLocaleString('vi-VN')}đ`).join('\n');
+  const productNames = matched.map(p => `• **${p.name}** (${p.stars}⭐ OCOP - ${p.region}) — ${(p.price || 0).toLocaleString("vi-VN")}đ\n  _${p.description ? p.description.slice(0, 110) + "..." : "Đặc sản vùng miền tiêu biểu đạt chuẩn OCOP"}_`).join("\n\n");
   const productIds = matched.map(p => p.id);
 
-  const text_response = language === 'en'
-    ? `Dạ, here are exceptional Vietnamese OCOP specialties tailored to your request:\n\n${productNames}\n\nEach item is carefully crafted using time-honored local traditions. Feel free to add them to your cart to enjoy authentic regional flavors!`
-    : `Dạ, em xin gợi ý những đặc sản OCOP tiêu biểu rất phù hợp với tiêu chí của Anh/Chị:\n\n${productNames}\n\nĐây đều là những niềm tự hào ẩm thực vùng miền được chứng nhận OCOP chất lượng cao. Anh/Chị hãy nhấn chọn để thêm ngay vào giỏ hàng và thưởng thức trọn vẹn hương vị truyền thống nhé!`;
+  let intro = "Dạ, em xin gợi ý những đặc sản OCOP tinh hoa rất phù hợp với tiêu chí của Anh/Chị:";
+  let conclusion = "Mỗi sản phẩm đều được các nghệ nhân chế biến theo bí quyết truyền thống và đạt chứng nhận OCOP quốc gia. Anh/Chị nhấn vào nút để xem chi tiết hoặc thêm ngay vào giỏ hàng nhé!";
+  let dynamic_chips = ["5 sao", "Dưới 200k", "Quà biếu", "Trà đặc sản"];
 
-  const dynamic_chips = [
-    intent.maxPrice ? "Xem thêm" : "Dưới 200k",
-    "5 sao",
-    "Quà biếu",
-    "Đặc sản trà"
-  ];
+  if (intent.categoryOrKeyword === "trà") {
+    intro = "Dạ, nói đến nghệ thuật thưởng trà Việt Nam, núi cao Tây Bắc và Thái Nguyên lưu giữ những búp trà thượng hạng kết tinh từ sương gió đất trời. Em trân trọng gợi ý danh trà đạt chuẩn 5 sao:";
+    conclusion = "Khi thưởng thức, Anh/Chị nên tráng ấm nước sôi 85-90°C để giữ trọn sắc nước xanh trong và hậu vị ngọt sâu lan tỏa.";
+    dynamic_chips = ["Trà Shan Tuyết", "Trà Đinh Nõn", "Dưới 500k", "Quà biếu 5 sao"];
+  } else if (intent.isGift) {
+    intro = "Dạ, để biếu tặng lãnh đạo, đối tác hay kính dâng cha mẹ, một món quà OCOP 5 sao vừa trang trọng vừa trọn vẹn ý nghĩa sức khỏe là sự lựa chọn hoàn hảo nhất:";
+    conclusion = "Tất cả sản phẩm đều có bao bì hộp quà cao cấp, chứng nhận xuất xứ rõ ràng và mang lời chúc trường thọ, may mắn.";
+    dynamic_chips = ["Biếu Sếp", "Biếu Bố Mẹ", "5 sao cao cấp", "Dưới 500k"];
+  } else if (intent.maxPrice !== null && intent.maxPrice <= 300000) {
+    intro = `Dạ, với ngân sách tiết kiệm và hợp lý (dưới ${(intent.maxPrice).toLocaleString("vi-VN")}đ), OCOP có rất nhiều thức quà thanh tao, chất lượng chuẩn mực từ các làng nghề truyền thống:`;
+    conclusion = "Dù giá cả rất bình dân nhưng từng sản phẩm đều được kiểm định chất lượng OCOP nghiêm ngặt, an toàn cho cả gia đình.";
+    dynamic_chips = ["Mật ong Tây Nguyên", "Bánh cốm Hà Nội", "Kẹo dừa Bến Tre", "5 sao"];
+  } else if (intent.regionKeyword) {
+    intro = `Dạ, về vùng đất ${intent.regionKeyword} giàu bản sắc văn hóa và thổ nhưỡng trù phú, em xin giới thiệu những niềm tự hào ẩm thực vang danh gần xa:`;
+    conclusion = "Đây là tinh hoa được hội tụ từ đôi bàn tay cần lao của bà con nông dân và hợp tác xã địa phương.";
+    dynamic_chips = ["Đặc sản Tây Bắc", "Đặc sản Miền Tây", "5 sao", "Quà biếu"];
+  }
+
+  const text_response = `${intro}\n\n${productNames}\n\n${conclusion}`;
 
   return {
     text_response,
