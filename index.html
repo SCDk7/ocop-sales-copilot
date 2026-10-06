@@ -80,6 +80,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     
+    <!-- Project Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styledangcap.css">
+    <link rel="stylesheet" href="SuaLoiKoClick.css">
+
     <style>
         html {
             overflow-x: clip;
@@ -3794,25 +3799,23 @@
                             })
                         });
                         result = await response.json().catch(() => ({}));
-                        if (!response.ok) {
-                            if (response.status === 503) {
-                                result = createLocalCatalogReply(text, messageImages.length > 0);
-                            } else {
-                                throw new Error(result.error || (currentLanguage === 'en'
-                                    ? 'The AI assistant is temporarily unavailable.'
-                                    : 'Trợ lý AI hiện chưa thể trả lời.'));
-                            }
+                        if (!response.ok || !result || (!result.message && !result.text_response)) {
+                            result = createLocalCatalogReply(text, messageImages.length > 0);
+                        } else {
+                            result.message = result.text_response || result.message;
+                            result.productIds = result.suggested_products || result.productIds || [];
                         }
                     } catch (error) {
-                        if (!(error instanceof TypeError)) throw error;
                         result = createLocalCatalogReply(text, messageImages.length > 0);
                     }
                 }
-                if (!result || typeof result.message !== 'string' || !Array.isArray(result.productIds)) {
-                    throw new Error(currentLanguage === 'en'
-                        ? 'The assistant returned an incomplete reply. Please try again.'
-                        : 'Trợ lý trả về nội dung chưa đầy đủ. Vui lòng thử lại.');
+                if (!result || typeof result.message !== 'string') {
+                    result = createLocalCatalogReply(text, messageImages.length > 0);
                 }
+                if (!Array.isArray(result.productIds)) {
+                    result.productIds = [];
+                }
+
 
                 const loadingNode = document.getElementById(loadingId);
                 if (loadingNode) loadingNode.remove();
@@ -5860,5 +5863,12 @@
 
 })();
 </script>
+
+<!-- External Client Scripts -->
+<script src="data.js"></script>
+<script src="giohang.js"></script>
+<script src="toiuu.js"></script>
+<script src="script.js"></script>
 </body>
+
 </html>

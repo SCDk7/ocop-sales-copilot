@@ -55,7 +55,7 @@ const MAX_AUDIO_BYTES = 12 * 1024 * 1024;
 const MAX_AUDIO_RECORDING_BYTES = 1024 * 1024 * 1024;
 const AUDIO_ADMIN_SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 const FILE_ORIGIN_AI_ROUTES = new Set([
-  '/api/ai/chat', '/api/ai/catalog', '/api/ai/images', '/api/ai/search-image', '/api/ai/audio-chat'
+  '/api/ai/chat', '/api/chat', '/chat', '/api/ai/catalog', '/api/ai/images', '/api/ai/search-image', '/api/ai/audio-chat'
 ]);
 const configuredAICorsOrigins = new Set(
   (process.env.AI_CORS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean)
@@ -68,35 +68,46 @@ const aiRequestAttempts = new Map();
 const audioAdminLoginAttempts = new Map();
 const audioAdminSessions = new Map();
 
+// Load internal OCOP product catalog from ./data.js
+let defaultProducts = [];
+try {
+  const dataModule = require('./data.js');
+  defaultProducts = Array.isArray(dataModule)
+    ? dataModule
+    : dataModule.PRODUCTS || dataModule.products || [];
+  console.log(`Loaded ${defaultProducts.length} OCOP products from data.js`);
+} catch (dataErr) {
+  console.warn('Unable to load ./data.js:', dataErr.message);
+}
+
+// Universal CORS Middleware for seamless local & deployed frontend communication
 app.use((req, res, next) => {
-  if (!FILE_ORIGIN_AI_ROUTES.has(req.path)) return next();
-
   const origin = req.headers.origin;
-  const allowedOrigin = origin === 'null'
-    ? 'null'
-    : configuredAICorsOrigins.has(origin) ? origin : null;
-  if (!allowedOrigin) return next();
-
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
-  res.setHeader('Vary', 'Origin');
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-goog-api-key');
   if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     return res.status(204).end();
   }
   next();
 });
 
 app.use((req, res, next) => {
-  if (req.path === '/api/ai/audio-chat' || req.path === '/api/ai/chat' ||
-      req.path === '/api/ai/images' || req.path === '/api/ai/search-image') return next();
-  return express.json({ limit: '48kb' })(req, res, next);
+  if (req.path === '/api/ai/audio-chat' || req.path === '/api/ai/images') return next();
+  return express.json({ limit: '64kb' })(req, res, next);
 });
 
 let customers = [];
 let audioRecordings = [];
 let chatImages = [];
-let aiWebsiteCatalog = { products: [], updatedAt: null };
+let aiWebsiteCatalog = { products: defaultProducts, updatedAt: new Date().toISOString() };
+
 
 function readCustomers() {
   try {
@@ -360,19 +371,18 @@ function getTwilioConfiguration() {
 }
 
 function validateAIProductCatalog(input) {
-  if (!Array.isArray(input) || input.length === 0 || input.length > 48) {
-    return { error: 'Không thể tải danh mục sản phẩm. Vui lòng tải lại trang rồi thử lại.' };
+  if (!Array.isArray(input) || input.length === 0) {
+    return { products: defaultProducts };
   }
 
   const products = [];
   const productIds = new Set();
   for (const product of input) {
-    if (!product || !Number.isInteger(product.id) || product.id < 1 || product.id > 48 || productIds.has(product.id) ||
+    if (!product || !Number.isInteger(product.id) || product.id < 1 || product.id > 1000 || productIds.has(product.id) ||
         typeof product.name !== 'string' || !product.name.trim() ||
         typeof product.region !== 'string' || !Number.isFinite(product.price) ||
-        product.price < 0 || product.price > 100000000 || !Number.isInteger(product.stars) ||
-        product.stars < 1 || product.stars > 5) {
-      return { error: 'Thông tin danh mục sản phẩm không hợp lệ.' };
+        product.price < 0 || product.price > 100000000) {
+      continue;
     }
     productIds.add(product.id);
     products.push({
@@ -381,46 +391,66 @@ function validateAIProductCatalog(input) {
       nameEn: typeof product.nameEn === 'string' ? product.nameEn.trim().slice(0, 120) : '',
       region: product.region.trim().slice(0, 80),
       category: typeof product.category === 'string' ? product.category.slice(0, 40) : '',
-      stars: product.stars,
+      stars: Number.isInteger(product.stars) ? product.stars : 4,
       price: product.price,
       rating: Number.isFinite(product.rating) ? product.rating : null,
       tag: typeof product.tag === 'string' ? product.tag.trim().slice(0, 100) : '',
       description: typeof product.description === 'string' ? product.description.trim().slice(0, 350) : ''
     });
   }
-  return { products };
+  return { products: products.length > 0 ? products : defaultProducts };
 }
 
 function validateAIRequest(body) {
-  if (!body || !Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > MAX_AI_MESSAGES) {
-    return { error: 'Cuộc trò chuyện không hợp lệ. Vui lòng thử gửi lại tin nhắn.' };
+  if (!body || typeof body !== "object") {
+    return { error: "Cuộc trò chuyện không hợp lệ. Vui lòng gửi nội dung tin nhắn." };
   }
+
+  let rawMessages = body.messages;
+  if (!Array.isArray(rawMessages)) {
+    const singleText = body.message || body.prompt || body.query || body.text;
+    if (typeof singleText === "string" && singleText.trim()) {
+      rawMessages = [{ role: "user", text: singleText.trim() }];
+    } else {
+      return { error: "Cuộc trò chuyện không hợp lệ. Vui lòng gửi nội dung tin nhắn." };
+    }
+  }
+
+  if (rawMessages.length === 0 || rawMessages.length > MAX_AI_MESSAGES) {
+    return { error: "Cuộc trò chuyện không hợp lệ. Vui lòng thử gửi lại tin nhắn." };
+  }
+
   const catalog = validateAIProductCatalog(body.products);
-  if (catalog.error) return { error: catalog.error };
+  const products = (catalog && catalog.products && catalog.products.length > 0) ? catalog.products : defaultProducts;
 
   const messages = [];
   let previousRole = null;
   let totalMessageLength = 0;
-  for (const message of body.messages) {
-    if (!message || !['user', 'assistant'].includes(message.role) || typeof message.text !== 'string') {
-      return { error: 'Nội dung cuộc trò chuyện không hợp lệ.' };
-    }
-    const text = message.text.trim();
-    if (!text || text.length > MAX_AI_MESSAGE_LENGTH || message.role === previousRole) {
-      return { error: 'Tin nhắn quá dài hoặc cuộc trò chuyện không hợp lệ.' };
+  for (const message of rawMessages) {
+    if (!message) continue;
+    const role = message.role === "assistant" ? "assistant" : "user";
+    const text = typeof message.text === "string" ? message.text.trim() : (typeof message.content === "string" ? message.content.trim() : "");
+    if (!text) continue;
+    if (text.length > MAX_AI_MESSAGE_LENGTH) {
+      return { error: "Tin nhắn quá dài hoặc cuộc trò chuyện không hợp lệ." };
     }
     totalMessageLength += text.length;
     if (totalMessageLength > 12000) {
-      return { error: 'Cuộc trò chuyện đã quá dài. Vui lòng bắt đầu cuộc trò chuyện mới.' };
+      return { error: "Cuộc trò chuyện đã quá dài. Vui lòng bắt đầu cuộc trò chuyện mới." };
     }
-    messages.push({ role: message.role, text });
-    previousRole = message.role;
-  }
-  if (messages[0].role !== 'user' || messages[messages.length - 1].role !== 'user') {
-    return { error: 'Tin nhắn cuối cùng không hợp lệ.' };
+    messages.push({ role, text });
+    previousRole = role;
   }
 
-  return { messages, products: catalog.products, language: body.language === 'en' ? 'en' : 'vi' };
+  if (messages.length === 0) {
+    return { error: "Tin nhắn không có nội dung. Vui lòng thử lại." };
+  }
+
+  if (messages[messages.length - 1].role !== "user") {
+    messages.push({ role: "user", text: "Hãy tiếp tục tư vấn sản phẩm." });
+  }
+
+  return { messages, products, language: body.language === "en" ? "en" : "vi" };
 }
 
 function getAIModelConfiguration() {
@@ -538,8 +568,11 @@ function isImageProductLookupRequest(message) {
   return !supportTerms.some(term => normalizedMessage.includes(term));
 }
 
-function buildAISystemInstruction({ products, language }, { includeTranscription = false, wikiSources = [] } = {}) {
+function buildAISystemInstruction({ products, filteredProducts = [], language }, { includeTranscription = false, wikiSources = [] } = {}) {
   const productContext = JSON.stringify(products);
+  const filteredContext = (Array.isArray(filteredProducts) && filteredProducts.length > 0)
+    ? `\n[Sản phẩm OCOP phù hợp nhất với từ khóa/nhu cầu người dùng hiện tại]:\n${JSON.stringify(filteredProducts)}`
+    : '';
 
   // ── Wikipedia RAG context block ──────────────────────────────────────────────
   const wikiContext = wikiSources.length
@@ -565,7 +598,7 @@ function buildAISystemInstruction({ products, language }, { includeTranscription
 
     '=== NGUYÊN TẮC TƯ VẤN & BÁN HÀNG OCOP AI ===',
     '1. VĂN HÓA & NGHỆ THUẬT ẨM THỰC: Khi người dùng hỏi về bất kỳ sản phẩm nào (ví dụ: "Trà", "Yến sào", "đặc sản Tây Bắc", "Miền Tây"), đừng chỉ liệt kê giá khô khan. Hãy khéo léo hòa quyện câu chuyện văn hóa, khí hậu thổ nhưỡng (độ cao, sương mù, vách đá, truyền thống trăm năm) từ ngữ cảnh Wikipedia để câu trả lời hấp dẫn và thuyết phục.',
-    '2. DỮ LIỆU CHÍNH XÁC: Khi người dùng tìm sản phẩm theo ngân sách (như "dưới 200k"), số sao ("5 sao", "4 sao") hoặc chủng loại, chỉ dùng danh mục sản phẩm được cung cấp để trích dẫn chính xác Tên, Giá niêm yết, Số sao OCOP và Tỉnh thành. Tuyệt đối không bịa đặt sản phẩm hoặc sai lệch giá.',
+    '2. DỮ LIỆU CHÍNH XÁC: Khi người dùng tìm sản phẩm theo ngân sách (như "dưới 200k"), số sao ("5 sao", "4 sao") hoặc chủng loại, hãy ưu tiên dùng danh sách [Sản phẩm OCOP phù hợp nhất] được lọc sẵn dưới đây để trích dẫn chính xác Tên, Giá niêm yết, Số sao OCOP và Tỉnh thành. Tuyệt đối không bịa đặt sản phẩm hoặc sai lệch giá.',
     '3. GỢI Ý MÃ SẢN PHẨM: Trả về tối đa 3 mã ID sản phẩm phù hợp nhất trong mảng `productIds`.',
     '4. CALL-TO-ACTION (LỜI KÊU GỌI HÀNH ĐỘNG): Luôn kết thúc câu trả lời bằng một lời kêu gọi hành động (Call-to-Action) ấm áp, khích lệ người dùng thêm vào giỏ hàng hoặc trải nghiệm thử đặc sản vùng miền.',
 
@@ -576,10 +609,12 @@ function buildAISystemInstruction({ products, language }, { includeTranscription
     chipsInstruction,
     schemaInstruction,
 
-    `\n[Danh mục sản phẩm OCOP từ cơ sở dữ liệu]:\n${productContext}`,
+    filteredContext,
+    `\n[Danh mục toàn bộ sản phẩm OCOP]:\n${productContext}`,
     wikiContext
   ].join('\n');
 }
+
 
 
 const wikipediaSearchCache = new Map();
@@ -860,11 +895,16 @@ async function handleAIChatRequest(req, res) {
     }
   }
 
-  const result = await generateAIResponse(validation, { attachedImages, wikiSources });
-  return res.status(result.status).json({ ...result.body, imageIds });
+  const userIntent = extractSearchIntents(lastUserMessage);
+  const filteredProducts = filterProductsByIntent(validation.products, userIntent);
+
+  const result = await generateAIResponse(validation, { attachedImages, wikiSources, filteredProducts, userIntent });
+  return res.status(result.status || 200).json({ ...result.body, imageIds });
 }
 
-app.post('/api/ai/chat', express.json({ limit: '48kb' }), handleAIChatRequest);
+app.post('/api/ai/chat', handleAIChatRequest);
+app.post('/api/chat', handleAIChatRequest);
+app.post('/chat', handleAIChatRequest);
 
 app.post('/api/ai/search-image', express.json({ limit: '2mb' }), async (req, res) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
@@ -892,17 +932,21 @@ app.post('/api/ai/search-image', express.json({ limit: '2mb' }), async (req, res
   return res.status(result.status).json(result.body);
 });
 
-async function generateAIResponse(validation, { attachedImages = [], imageData = null, wikiSources = [] } = {}) {
+async function generateAIResponse(validation, { attachedImages = [], imageData = null, wikiSources = [], filteredProducts = [], userIntent = {} } = {}) {
   let configuration;
   const lastUserMessage = validation.messages[validation.messages.length - 1].text;
+  const targetProducts = (Array.isArray(filteredProducts) && filteredProducts.length > 0)
+    ? filteredProducts
+    : validation.products;
 
   try {
     configuration = getAIModelConfiguration();
   } catch (configError) {
     console.warn('Gemini not configured or invalid key, triggering bulletproof fallback:', configError.message);
-    const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+    const fallbackData = buildLocalFallbackReply(lastUserMessage, targetProducts, validation.language);
     return { status: 200, body: fallbackData };
   }
+
 
   const controller = new AbortController();
   const totalAttachedImageBytes = attachedImages.reduce((total, image) => total + image.bytes, 0);
@@ -956,7 +1000,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         system_instruction: {
-          parts: [{ text: buildAISystemInstruction(validation, { wikiSources }) }]
+          parts: [{ text: buildAISystemInstruction({ ...validation, filteredProducts }, { wikiSources }) }]
         },
         contents,
         generationConfig: {
@@ -981,7 +1025,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
       console.warn('Gemini API call failed, falling back gracefully:', response.status, result.error?.message);
-      const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+      const fallbackData = buildLocalFallbackReply(lastUserMessage, targetProducts, validation.language);
       return { status: 200, body: fallbackData };
     }
 
@@ -993,14 +1037,14 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       answer = JSON.parse(output);
     } catch {
       console.warn('Gemini JSON parse failed, falling back gracefully');
-      const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+      const fallbackData = buildLocalFallbackReply(lastUserMessage, targetProducts, validation.language);
       return { status: 200, body: fallbackData };
     }
 
     if (!answer || typeof answer.message !== 'string' || !answer.message.trim() ||
         !Array.isArray(answer.productIds) || typeof answer.handoffAdmin !== 'boolean') {
       console.warn('Gemini schema mismatch, falling back gracefully');
-      const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+      const fallbackData = buildLocalFallbackReply(lastUserMessage, targetProducts, validation.language);
       return { status: 200, body: fallbackData };
     }
 
@@ -1047,12 +1091,13 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
 
   } catch (error) {
     console.warn('Gemini call errored/timed out, triggering bulletproof fallback:', error.message);
-    const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+    const fallbackData = buildLocalFallbackReply(lastUserMessage, targetProducts, validation.language);
     return { status: 200, body: fallbackData };
   } finally {
     clearTimeout(timeout);
   }
 }
+
 
 app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
