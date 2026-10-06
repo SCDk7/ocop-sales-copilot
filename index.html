@@ -1992,7 +1992,7 @@
     </main>
     
     <!-- 5. WIDGET CHATBOT AI ANTIGRAVITY (BÊN PHẢI, DƯỚI ADMIN) -->
-    <div id="ai-chat-widget" class="fixed bottom-3 sm:bottom-6 right-3 sm:right-6 left-auto z-[99999] flex flex-col items-end pointer-events-auto">
+    <div id="ai-chat-widget" class="hidden fixed bottom-3 sm:bottom-6 right-3 sm:right-6 left-auto z-[99999] flex flex-col items-end pointer-events-auto">
         <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-96 max-h-[min(72vh,38rem)] h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-emerald-100 flex flex-col overflow-hidden mb-3 animate-pop-in">
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
@@ -2709,6 +2709,7 @@
         function openIntroModal() {
             const overlay = document.getElementById('ocop-intro-overlay');
             overlay.classList.remove('hidden', 'curtain-closing');
+            setAIChatWidgetVisibility(false);
             restorePageScrollState();
             playChimeSound();
         }
@@ -2716,6 +2717,7 @@
         function enterOcopMarket(mode, onEntered = null) {
             const overlay = document.getElementById('ocop-intro-overlay');
             if (overlay.classList.contains('hidden')) {
+                setAIChatWidgetVisibility(true);
                 restorePageScrollState();
                 if (typeof onEntered === 'function') onEntered();
                 return;
@@ -2728,6 +2730,7 @@
             setTimeout(() => {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('curtain-closing');
+                setAIChatWidgetVisibility(true);
                 restorePageScrollState();
 
                 if (mode === 'gift') {
@@ -2778,6 +2781,7 @@
             const overlay = document.getElementById('ocop-intro-overlay');
             overlay.classList.add('hidden');
             overlay.classList.remove('curtain-closing');
+            setAIChatWidgetVisibility(true);
             restorePageScrollState();
             openQuickView(productId);
         }
@@ -3485,6 +3489,14 @@
             } else {
                 win.classList.add('hidden');
             }
+        }
+
+        function setAIChatWidgetVisibility(isVisible) {
+            const widget = document.getElementById('ai-chat-widget');
+            const chatWindow = document.getElementById('ai-chat-window');
+            if (!widget) return;
+            widget.classList.toggle('hidden', !isVisible);
+            if (!isVisible && chatWindow) chatWindow.classList.add('hidden');
         }
         window.toggleAIChat = toggleAIChat;
 
