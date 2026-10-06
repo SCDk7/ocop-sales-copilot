@@ -568,11 +568,18 @@ function isImageProductLookupRequest(message) {
   return !supportTerms.some(term => normalizedMessage.includes(term));
 }
 
-function buildAISystemInstruction({ products, filteredProducts = [], language }, { includeTranscription = false, wikiSources = [], hasImages = false } = {}) {
+function buildAISystemInstruction({ products, filteredProducts = [], language }, { includeTranscription = false, wikiSources = [], hasImages = false, customerIntent = {} } = {}) {
   const productContext = JSON.stringify(products);
   const filteredContext = (Array.isArray(filteredProducts) && filteredProducts.length > 0)
     ? `\n[Sản phẩm OCOP phù hợp nhất với từ khóa/nhu cầu người dùng hiện tại]:\n${JSON.stringify(filteredProducts)}`
     : "";
+  const intentContext = `\n[Tín hiệu đã nhận diện từ câu hỏi hiện tại]: ${JSON.stringify({
+    category: customerIntent.categoryOrKeyword || null,
+    province: customerIntent.exactRegion || null,
+    region: customerIntent.regionKeyword || null,
+    maxPrice: customerIntent.maxPrice || null,
+    gift: Boolean(customerIntent.isGift)
+  })}`;
 
   // ── Wikipedia RAG context block ──────────────────────────────────────────────
   const wikiContext = wikiSources.length
@@ -601,6 +608,14 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     "You are OCOP AI, a prestigious cultural ambassador, sommelier, and culinary expert of Vietnamese regional specialties (Chương trình Mỗi Xã Một Sản Phẩm OCOP).",
     "Your mission is to guide customers to discover, appreciate, and purchase verified 4-star and 5-star Vietnamese specialties with authentic enthusiasm, profound cultural knowledge, and warm hospitality.",
     languageInstruction,
+
+    "=== CONVERSATION ACCURACY RULES ===",
+    "1. Answer the customer's latest message first. Use earlier messages only to resolve references such as 'this product', 'that one', or a correction.",
+    "2. Identify whether the customer asks about a product, price, province, comparison, gift, use, shipping, voucher, or support. Answer that question directly before suggesting a purchase.",
+    "3. A named province is strict: only recommend products from that exact province. Never substitute a different province or silently broaden it to a region.",
+    "4. Only return productIds for products that answer the question. Do not show unrelated popular products. For FAQ, shipping, voucher, or support questions, return productIds: [].",
+    "5. If the request is ambiguous or the catalogue does not contain the requested item, say so clearly and ask one short, useful follow-up question. Never guess a product, price, availability, or policy.",
+    "6. If the customer corrects a previous answer, acknowledge the correction and use the new information. When there is no attached image, set imageMatchStatus to not_applicable.",
 
     "=== BỘ QUY TẮC HUẤN LUYỆN CHUYÊN GIA OCOP AI ===",
     "1. AM HIỂU THỔ NHƯỠNG & KHÍ HẬU VÙNG MIỀN (TERROIR EXPERTISE):",
@@ -651,6 +666,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     schemaInstruction,
     imageSearchInstruction,
 
+    intentContext,
     filteredContext,
     `\n[Danh mục toàn bộ sản phẩm OCOP]:\n${productContext}`,
     wikiContext
@@ -709,6 +725,35 @@ function normalizeCatalogTerm(value) {
     .replace(/đ/g, 'd')
     .toLowerCase()
     .trim();
+}
+
+const CATALOG_QUERY_STOP_WORDS = new Set([
+  'toi', 'minh', 'em', 'anh', 'chi', 'ban', 'cho', 'hoi', 'muon', 'can', 'tim',
+  'xem', 'tu', 'van', 'gia', 'bao', 'nhieu', 'co', 'khong', 'san', 'pham',
+  'dac', 'san', 'loai', 'nay', 'kia', 'voi', 'va', 'hay', 'giup', 'nhe'
+]);
+
+function findDirectCatalogMatches(query, products = [], limit = 3) {
+  const normalizedQuery = normalizeCatalogTerm(query);
+  const terms = [...new Set(normalizedQuery.split(/[^a-z0-9]+/)
+    .filter(term => term.length >= 3 && !CATALOG_QUERY_STOP_WORDS.has(term)))];
+  if (!terms.length) return [];
+
+  return products.map(product => {
+    const name = normalizeCatalogTerm(product.name);
+    const searchable = normalizeCatalogTerm([
+      product.name, product.nameEn, product.region, product.category, product.tag, product.description
+    ].filter(Boolean).join(' '));
+    let score = 0;
+    for (const term of terms) {
+      if (name.includes(term)) score += 6;
+      else if (searchable.includes(term)) score += 2;
+    }
+    return { product, score };
+  }).filter(({ score }) => score >= 4)
+    .sort((first, second) => second.score - first.score || (second.product.rating || 0) - (first.product.rating || 0))
+    .slice(0, limit)
+    .map(({ product }) => product);
 }
 
 function extractSearchIntents(queryText, products = []) {
@@ -816,6 +861,9 @@ function filterProductsByIntent(products = [], intent = {}) {
     );
     if (byRegion.length > 0) matched = byRegion;
   }
+
+  const directMatches = findDirectCatalogMatches(intent.rawText, matched);
+  if (directMatches.length > 0) return directMatches;
 
   return matched.length > 0 ? matched : products.slice(0, 3);
 }
@@ -943,7 +991,24 @@ function buildLocalFallbackReply(query, products = [], language = "vi") {
   }
 
   // 6. Matched Catalog Products
-  const matched = filterProductsByIntent(products, intent).slice(0, 3);
+  const directMatches = findDirectCatalogMatches(query, products);
+  const hasSpecificRequest = directMatches.length > 0 || intent.categoryOrKeyword || intent.exactRegion ||
+    intent.regionKeyword || intent.maxPrice !== null || intent.minStars !== null || intent.isGift;
+  if (!hasSpecificRequest) {
+    const message = english
+      ? 'I want to make sure I understand. Are you looking for a product, a province, a budget, a gift, delivery help, or order support?'
+      : 'Dạ, để tư vấn đúng hơn, Anh/Chị đang cần tìm sản phẩm nào, đặc sản tỉnh nào, mức giá bao nhiêu, quà biếu hay hỗ trợ đơn hàng ạ?';
+    return {
+      text_response: message,
+      message,
+      suggested_products: [],
+      productIds: [],
+      dynamic_chips: english ? ['Products', 'Gift ideas', 'Delivery help'] : ['Tìm sản phẩm', 'Quà biếu', 'Hỗ trợ đơn hàng'],
+      handoffAdmin: false,
+      fallback: true
+    };
+  }
+  const matched = (directMatches.length > 0 ? directMatches : filterProductsByIntent(products, intent)).slice(0, 3);
   const productNames = matched.map(p => "• **" + p.name + "** (" + p.stars + "⭐ OCOP - " + p.region + ") — " + (p.price || 0).toLocaleString("vi-VN") + "đ\n  _" + (p.description ? p.description.slice(0, 110) + "..." : "Đặc sản vùng miền tiêu biểu đạt chuẩn OCOP") + "_").join("\n\n");
   const productIds = matched.map(p => p.id);
 
@@ -1263,7 +1328,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         system_instruction: {
-          parts: [{ text: buildAISystemInstruction({ ...validation, filteredProducts }, { wikiSources, hasImages }) }]
+          parts: [{ text: buildAISystemInstruction({ ...validation, filteredProducts }, { wikiSources, hasImages, customerIntent: userIntent }) }]
         },
         contents,
         generationConfig: {
