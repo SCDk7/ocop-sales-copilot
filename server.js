@@ -621,8 +621,21 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     "   • Trả về tối đa 3 mã ID sản phẩm xuất sắc nhất trong mảng `productIds`.",
     "   • Kết thúc bằng lời chúc ấm áp và lời mời (Call-to-Action) bấm nút thêm vào giỏ hàng hoặc trải nghiệm sản phẩm.",
 
+    "4. HƯỚNG DẪN THƯỞNG THỨC & PHA CHẾ (SOMMELIER TIPS):",
+    "   • Pha trà Shan Tuyết & Trà Tân Cương: Nước 85°C–90°C (không dùng nước sôi 100°C), tráng trà 3 giây, hãm 20–35 giây. Búp cổ thụ pha được 8–10 tuần nước.",
+    "   • Chưng Yến Sào: Ngâm nở 25–30 phút, chưng cách thủy lửa nhỏ 20 phút, nêm đường phèn và gừng tươi ở 5 phút cuối.",
+    "   • Nấu gạo ST25: Tỷ lệ nước 1:1 hoặc 1:1.1, vo nhẹ tay để giữ trọn vitamin nhóm B và hương lá dứa thơm mát.",
+
+    "5. QUY TRÌNH GIAO HÀNG & ĐỒNG KIỂM COD:",
+    "   • Hỏa tốc nội thành Hà Nội & TP.HCM 2–4h; toàn quốc 2–3 ngày với thùng xốp bọc chống sốc chuyên dụng.",
+    "   • Khách hàng được quyền mở hộp kiểm tra hàng trước khi thanh toán (Đồng kiểm COD). Miễn phí ship cho đơn từ 500.000đ.",
+
+    "6. CHỨNG NHẬN OCOP & TRUY XUẤT NGUỒN GỐC:",
+    "   • OCOP 4 sao: Tiêu chuẩn chất lượng xuất sắc cấp tỉnh. OCOP 5 sao: Quốc bảo nông đặc sản cấp Quốc gia xuất khẩu.",
+    "   • 100% sản phẩm có mã QR truy xuất nguồn gốc tận hợp tác xã/nông hộ bản địa.",
+
     "=== HỖ TRỢ KHIẾU NẠI & AN TOÀN BẢO MẬT ===",
-    "• Nếu khách hàng phản ánh hàng lỗi, thiếu hàng hoặc muốn đổi trả, hướng dẫn giữ lại bao bì và sản phẩm, đồng thời bật `handoffAdmin: true` để kết nối tư vấn viên Facebook.",
+    "• Nếu khách hàng phản ánh hàng lỗi, hỏng hóc, bể vỡ, thiếu hàng hoặc muốn đổi trả: Chân thành xin lỗi khách, nhắc chính sách Đổi mới 1-1 hoặc Hoàn tiền 7 ngày, hướng dẫn chụp ảnh sản phẩm, BẮT BUỘC đặt `handoffAdmin: true` và trả `productIds: []` để kết nối tư vấn viên admin hỗ trợ.",
     "• Tuyệt đối không yêu cầu mật khẩu, mã OTP, số tài khoản hay thông tin bảo mật của khách hàng.",
 
     chipsInstruction,
@@ -687,6 +700,16 @@ function extractSearchIntents(queryText) {
     .replace(/đ/g, "d")
     .toLowerCase();
 
+  const isComplaint = /\b(hang loi|hang bi loi|san pham bi loi|san pham loi|bi loi|bi hong|hu hong|vo nat|bi vo|bi be|mop meo|bi mop|bi dap|chay khet|het han|qua han|bi moc|am moc|doi mau|kem chat luong|thieu hang|giao thieu|giao nham|giao sai|sai hang|doi tra|tra hang|hoan tien|chua nhan duoc hang|chua nhan hang|mat tien|khieu nai|phan nan)\b|\b(loi|hong)\s+(hang|san pham|dong goi|nap|hop|chai|lo)\b|^(hang loi|loi|hong|doi tra|tra hang)$/.test(normalized);
+
+  const isShipping = /(ship|giao hang|van chuyen|phi ship|bao lau|nhan hang|phi van chuyen|cod|thanh toan khi nhan|hoa toc|toan quoc)/.test(normalized);
+
+  const isOcopKnowledge = /(ocop la gi|y nghia ocop|tieu chuan ocop|4 sao|5 sao|sao ocop|truy xuat|chinh hang|nguon goc)/.test(normalized);
+
+  const isUsage = /(cach dung|cach pha|cach che bien|huong dan su dung|cach nau|cach uong|cach bao quan|pha tra|chung yen)/.test(normalized);
+
+  const isHealth = /(suc khoe|duong sinh|nguoi gia|nguoi lon tuoi|cha me|bo me|tre em|ba bau|mat ngu|tieu duong|giai ruou|da day|de khang|bo than|huyet ap)/.test(normalized);
+
   let maxPrice = null;
   const underMatch = normalized.match(/(?:duoi|tam|khoang|duoi muc|gia re hon|it hon)\s+(\d+)\s*(k|nghin|ngan|trieu|tr)?/);
   if (underMatch) {
@@ -706,18 +729,19 @@ function extractSearchIntents(queryText) {
   let isGift = /bieu|tang|sep|doi tac|bo me|ong ba|tet|mung|le|tri an|suc khoe/.test(normalized);
 
   let categoryOrKeyword = null;
-  if (/(tra|che|shan tuyet|dinh non|hoa vang|sen)/.test(normalized)) categoryOrKeyword = "trà";
-  else if (/(yen|yen sao|to yen)/.test(normalized)) categoryOrKeyword = "yến";
-  else if (/(sam|sam ngoc linh)/.test(normalized)) categoryOrKeyword = "sâm";
-  else if (/(mat ong|ong bac ha|ong hoa ca phe)/.test(normalized)) categoryOrKeyword = "mật ong";
-  else if (/(ca phe|robusta|arabica)/.test(normalized)) categoryOrKeyword = "cà phê";
-  else if (/(gao|st25|nep cai)/.test(normalized)) categoryOrKeyword = "gạo";
-  else if (/(toi|toi den|toi ly son)/.test(normalized)) categoryOrKeyword = "tỏi";
-  else if (/(nuoc mam|ca com|phu quoc)/.test(normalized)) categoryOrKeyword = "nước mắm";
-  else if (/(ruou|dong trung|ba kich)/.test(normalized)) categoryOrKeyword = "rượu";
-  else if (/(hat|dieu|mac ca|hat sen)/.test(normalized)) categoryOrKeyword = "hạt";
-  else if (/(banh|keo|com|pia|dua)/.test(normalized)) categoryOrKeyword = "bánh";
-  else if (/(gia vi|que|tieu|cham cheo)/.test(normalized)) categoryOrKeyword = "gia vị";
+  if (/\b(tra|che|shan tuyet|dinh non|hoa vang|sen|oolong|suoi giang|moc chau)\b/.test(normalized)) categoryOrKeyword = "trà";
+  else if (/\b(yen|yen sao|to yen)\b/.test(normalized)) categoryOrKeyword = "yến";
+  else if (/\b(sam|sam ngoc linh)\b/.test(normalized)) categoryOrKeyword = "sâm";
+  else if (/\b(mat ong|ong bac ha|ong hoa ca phe)\b/.test(normalized)) categoryOrKeyword = "mật ong";
+  else if (/\b(ca phe|robusta|arabica|buon ma thuot)\b/.test(normalized)) categoryOrKeyword = "cà phê";
+  else if (/\b(gao|st25|nep cai|seng cu)\b/.test(normalized)) categoryOrKeyword = "gạo";
+  else if (/\b(toi|toi den|toi ly son)\b/.test(normalized)) categoryOrKeyword = "tỏi";
+  else if (/\b(nuoc mam|ca com|phu quoc)\b/.test(normalized)) categoryOrKeyword = "nước mắm";
+  else if (/\b(ruou|dong trung|ba kich|ruou mo|yen tu)\b/.test(normalized)) categoryOrKeyword = "rượu";
+  else if (/\b(hat|dieu|mac ca|hat sen)\b/.test(normalized)) categoryOrKeyword = "hạt";
+  else if (/\b(banh|keo|com|pia|dua)\b/.test(normalized)) categoryOrKeyword = "bánh";
+  else if (/\b(gia vi|que|tieu|cham cheo|mac khen|doi)\b/.test(normalized)) categoryOrKeyword = "gia vị";
+  else if (/\b(thit|trau|kho ca|cha muc|bo|lon)\b/.test(normalized)) categoryOrKeyword = "đặc sản mặn";
 
   let regionKeyword = null;
   if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
@@ -726,7 +750,7 @@ function extractSearchIntents(queryText) {
   else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
   else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
 
-  return { maxPrice, minStars, categoryOrKeyword, regionKeyword, isGift, rawText: queryText };
+  return { isComplaint, isShipping, isOcopKnowledge, isUsage, isHealth, maxPrice, minStars, categoryOrKeyword, regionKeyword, isGift, rawText: queryText };
 }
 
 function filterProductsByIntent(products = [], intent = {}) {
@@ -768,34 +792,152 @@ function filterProductsByIntent(products = [], intent = {}) {
 // ── BULLETPROOF LOCAL FALLBACK RESPONSE ────────────────────────
 function buildLocalFallbackReply(query, products = [], language = "vi") {
   const intent = extractSearchIntents(query);
-  const matched = filterProductsByIntent(products, intent).slice(0, 3);
+  const english = language === "en";
 
-  const productNames = matched.map(p => `• **${p.name}** (${p.stars}⭐ OCOP - ${p.region}) — ${(p.price || 0).toLocaleString("vi-VN")}đ\n  _${p.description ? p.description.slice(0, 110) + "..." : "Đặc sản vùng miền tiêu biểu đạt chuẩn OCOP"}_`).join("\n\n");
+  // 1. Complaint & Returns
+  if (intent.isComplaint) {
+    const msg = english
+      ? "I am truly sorry for the inconvenience with your order! OCOP Copilot provides a 100% replacement or full refund within 7 days for damaged or defective items.\n\n👉 Please keep the original packaging and click \"Open admin contacts\" below so our support team can assist you immediately."
+      : "Dạ, em rất tiếc và thành thật xin lỗi Anh/Chị về sự cố đơn hàng này ạ! OCOP Copilot cam kết 100% quyền lợi khách hàng với chính sách Đổi mới 1-1 miễn phí hoặc Hoàn tiền trong 7 ngày đối với sản phẩm lỗi do vận chuyển hoặc nhà sản xuất.\n\n👉 Anh/Chị vui lòng giữ lại bao bì, chụp ảnh sản phẩm và nhấn nút \"Mở liên hệ admin\" bên dưới để được chuyên viên hỗ trợ giải quyết ngay lập tức nhé ạ!";
+    return {
+      text_response: msg,
+      message: msg,
+      suggested_products: [],
+      productIds: [],
+      dynamic_chips: ["Mở liên hệ Admin", "Chính sách đổi trả", "Hotline: 0987.654.321"],
+      handoffAdmin: true,
+      fallback: true
+    };
+  }
+
+  // 2. Shipping & Delivery
+  if (intent.isShipping) {
+    const msg = english
+      ? "OCOP Copilot ships nationwide with dedicated shockproof packaging for delicate regional delicacies:\n\n🚚 Delivery Times:\n• Hanoi & HCMC: Express delivery in 2–4 hours or same-day standard.\n• Nationwide: 2–3 business days.\n\n🛡️ Customer Rights:\n• Inspect goods upon arrival before payment (COD inspection).\n• Free shipping on orders from 500,000₫ or gift combos."
+      : "Dạ, OCOP Copilot hỗ trợ giao hàng toàn quốc với quy trình đóng gói chống sốc chuyên dụng cho nông sản và đặc sản cao cấp ạ:\n\n🚚 Thời gian giao hàng:\n• Nội thành Hà Nội & TP.HCM: Hỏa tốc trong 2–4 giờ hoặc tiêu chuẩn trong ngày.\n• Các tỉnh thành khác: 2–3 ngày làm việc.\n\n🛡️ Quyền lợi khách hàng:\n• Được kiểm tra hàng trước khi thanh toán (Đồng kiểm COD).\n• Miễn phí vận chuyển cho đơn hàng từ 500.000đ hoặc các combo quà tặng.";
+    return {
+      text_response: msg,
+      message: msg,
+      suggested_products: [],
+      productIds: [],
+      dynamic_chips: ["Đồng kiểm COD", "Giao hỏa tốc 2-4h", "Combo quà 5 sao", "Hotline: 0987.654.321"],
+      handoffAdmin: false,
+      fallback: true
+    };
+  }
+
+  // 3. OCOP Knowledge
+  if (intent.isOcopKnowledge) {
+    const msg = english
+      ? "OCOP (One Province One Product) is a national initiative celebrating Vietnam's cultural treasures and terroir:\n\n⭐ 4-Star OCOP: Exceptional provincial standards with high market and safety verification.\n⭐⭐ 5-Star OCOP: \"National Masterpieces\" representing Vietnamese gastronomy and culture to the world.\n\n100% of products on OCOP Copilot feature anti-counterfeit QR codes traceable directly to local cooperatives!"
+      : "Dạ, OCOP (One Province One Product - Mỗi Xã Một Sản Phẩm) là chương trình quốc gia tôn vinh nông đặc sản tinh hoa của 63 tỉnh thành Việt Nam:\n\n⭐ OCOP 4 sao: Tiêu chuẩn chất lượng xuất sắc cấp tỉnh, quy trình khép kín và an toàn tuyệt đối.\n⭐⭐ OCOP 5 sao: \"Quốc bảo ẩm thực\" - tiêu chuẩn Quốc gia đại diện cho văn hóa Việt Nam vươn tầm quốc tế.\n\n100% sản phẩm trên OCOP Copilot đều có tem truy xuất nguồn gốc QR Code tận làng nghề/hợp tác xã bản địa ạ!";
+    return {
+      text_response: msg,
+      message: msg,
+      suggested_products: [],
+      productIds: [],
+      dynamic_chips: ["⭐ Đặc sản 5 sao", "Tây Bắc", "Tây Nguyên", "Miền Tây"],
+      handoffAdmin: false,
+      fallback: true
+    };
+  }
+
+  // 4. Sommelier & Usage Instructions
+  if (intent.isUsage) {
+    if (intent.categoryOrKeyword === "trà") {
+      const msg = english
+        ? "🍵 Sommelier brewing guide for premium Vietnamese tea:\n• Water temperature: 85°C–90°C (never boiling 100°C to preserve tender tips).\n• Warm teapot, steep for 25–35 seconds.\n• Pour completely; can be brewed 8–10 infusions with enduring lingering sweetness."
+        : "🍵 Nghệ thuật pha trà Shan Tuyết Cổ Thụ & Trà Tân Cương chuẩn danh trà:\n\n1. Nhiệt độ nước: 85°C – 90°C (tránh dùng nước sôi 100°C làm cháy búp non).\n2. Tráng ấm & đánh thức trà: Rót nước ngập lá rồi chắt nhanh trong 3 giây.\n3. Hãm trà: Hãm từ 20 – 35 giây mỗi tuần trà. Chắt kiệt ra chén tống trước khi chia ra chén quân.\n4. Thưởng thức: Trà Shan Tuyết cổ thụ pha được 8–10 tuần nước vẫn giữ nguyên sắc nước vàng óng và hậu ngọt sâu lan tỏa.";
+      const pIds = products.filter(p => [2, 3, 47].includes(p.id)).map(p => p.id);
+      return {
+        text_response: msg,
+        message: msg,
+        suggested_products: pIds,
+        productIds: pIds,
+        dynamic_chips: ["Trà Shan Tuyết 5★", "Trà Đinh Nõn Tân Cương", "Trà Sen Tây Hồ"],
+        handoffAdmin: false,
+        fallback: true
+      };
+    }
+    if (intent.categoryOrKeyword === "yến") {
+      const msg = english
+        ? "🕊️ Premium Bird's Nest preparation guide:\n• Soak pure bird's nest in cool water for 25–30 minutes.\n• Double boil in a ceramic bowl over low heat for 20 minutes.\n• Add rock sugar and fresh ginger slices during the final 5 minutes for a warming tonic."
+        : "🕊️ Hướng dẫn chưng Yến Sào Khánh Hòa giữ trọn vẹn 18 loại axit amin quý:\n\n1. Ngâm nở: Ngâm tổ yến trong nước tinh khiết 25–30 phút cho sợi tơi mềm.\n2. Chưng cách thủy: Đặt thố sứ vào nồi chưng lửa nhỏ trong 20 phút.\n3. Nêm gia vị: Cho đường phèn và vài lát gừng tươi vào 5 phút cuối để khử tính hàn.\n4. Thời điểm vàng: Dùng lúc bụng đói buổi sáng sớm hoặc 30 phút trước khi ngủ để hấp thu tối đa dinh dưỡng.";
+      const pIds = products.filter(p => p.id === 1).map(p => p.id);
+      return {
+        text_response: msg,
+        message: msg,
+        suggested_products: pIds,
+        productIds: pIds,
+        dynamic_chips: ["Yến Sào Khánh Hòa", "Sâm Ngọc Linh", "Bồi bổ sức khỏe"],
+        handoffAdmin: false,
+        fallback: true
+      };
+    }
+  }
+
+  // 5. Health & Wellness
+  if (intent.isHealth) {
+    const healthItems = products.filter(p => [1, 4, 12, 18, 25].includes(p.id) || p.stars === 5).slice(0, 3);
+    const pIds = healthItems.map(p => p.id);
+    const pList = healthItems.map(p => "• **" + p.name + "** (" + p.stars + "⭐ OCOP - " + p.region + ") — " + (p.price || 0).toLocaleString("vi-VN") + "đ").join("\n");
+    const msg = english
+      ? "For vitality, immune defense, and restorative longevity, here are Vietnam's most treasured natural elixirs:\n\n" + pList
+      : "Dạ, để bồi bổ sức khỏe cho đấng sinh thành, người lớn tuổi hay nâng cao đề kháng thể lực, OCOP AI trân trọng giới thiệu những quốc bảo dược liệu thiên nhiên đạt chuẩn 5 sao:\n\n" + pList + "\n\nMỗi sản phẩm đều chứa hàm lượng dược chất dồi dào, giúp ngủ ngon, ổn định huyết áp và hồi phục sinh lực an toàn tự nhiên.";
+    return {
+      text_response: msg,
+      message: msg,
+      suggested_products: pIds,
+      productIds: pIds,
+      dynamic_chips: ["Yến Sào Khánh Hòa", "Sâm Ngọc Linh", "Tỏi Đen Lý Sơn", "Mật Ong Rừng"],
+      handoffAdmin: false,
+      fallback: true
+    };
+  }
+
+  // 6. Matched Catalog Products
+  const matched = filterProductsByIntent(products, intent).slice(0, 3);
+  const productNames = matched.map(p => "• **" + p.name + "** (" + p.stars + "⭐ OCOP - " + p.region + ") — " + (p.price || 0).toLocaleString("vi-VN") + "đ\n  _" + (p.description ? p.description.slice(0, 110) + "..." : "Đặc sản vùng miền tiêu biểu đạt chuẩn OCOP") + "_").join("\n\n");
   const productIds = matched.map(p => p.id);
 
   let intro = "Dạ, em xin gợi ý những đặc sản OCOP tinh hoa rất phù hợp với tiêu chí của Anh/Chị:";
   let conclusion = "Mỗi sản phẩm đều được các nghệ nhân chế biến theo bí quyết truyền thống và đạt chứng nhận OCOP quốc gia. Anh/Chị nhấn vào nút để xem chi tiết hoặc thêm ngay vào giỏ hàng nhé!";
-  let dynamic_chips = ["5 sao", "Dưới 200k", "Quà biếu", "Trà đặc sản"];
+  let dynamic_chips = ["⭐ 5 sao", "🎁 Quà biếu", "💰 Dưới 200k", "🍵 Trà"];
 
   if (intent.categoryOrKeyword === "trà") {
     intro = "Dạ, nói đến nghệ thuật thưởng trà Việt Nam, núi cao Tây Bắc và Thái Nguyên lưu giữ những búp trà thượng hạng kết tinh từ sương gió đất trời. Em trân trọng gợi ý danh trà đạt chuẩn 5 sao:";
     conclusion = "Khi thưởng thức, Anh/Chị nên tráng ấm nước sôi 85-90°C để giữ trọn sắc nước xanh trong và hậu vị ngọt sâu lan tỏa.";
     dynamic_chips = ["Trà Shan Tuyết", "Trà Đinh Nõn", "Dưới 500k", "Quà biếu 5 sao"];
+  } else if (intent.categoryOrKeyword === "cà phê") {
+    intro = "Dạ, trên vùng đất đỏ bazan Tây Nguyên màu mỡ triệu năm, hạt Cà phê Robusta Buôn Ma Thuột đậm đà nồng nàn cùng Arabica Cầu Đất thanh tao mang hương thơm quyến rũ vươn tầm quốc tế:";
+    dynamic_chips = ["Robusta Buôn Ma Thuột", "Arabica Cầu Đất", "Mật ong hoa cà phê", "Quà Tây Nguyên"];
+  } else if (intent.categoryOrKeyword === "nước mắm") {
+    intro = "Dạ, nước mắm Phú Quốc truyền thống được ủ chượp từ cá cơm than tươi rói trong thùng gỗ bời lời ròng rã trên 12 tháng, đạt độ đạm tự nhiên 43°N đậm đà sóng sánh:";
+    dynamic_chips = ["Nước Mắm Phú Quốc 43°N", "Gạo ST25 Sóc Trăng", "Tiêu đen Chư Sê", "Đặc sản Miền Tây"];
+  } else if (intent.categoryOrKeyword === "gạo") {
+    intro = "Dạ, Gạo ST25 Sóc Trăng - niềm tự hào được vinh danh Gạo ngon nhất thế giới, hạt thon dài trắng trong, khi chín dẻo thơm ngát mùi lá dứa và cốm non:";
+    dynamic_chips = ["Gạo ST25 Sóc Trăng", "Gạo Séng Cù Tây Bắc", "Nước mắm truyền thống", "Dưới 200k"];
+  } else if (intent.categoryOrKeyword === "mật ong") {
+    intro = "Dạ, Mật ong bạc hà Mèo Vạc hoa cúc dại tím đá vôi Hà Giang và Mật ong hoa cà phê Tây Nguyên là những giọt mật tinh khiết nhất chắt lọc từ thiên nhiên đại ngàn:";
+    dynamic_chips = ["Mật ong Bạc Hà Mèo Vạc", "Mật ong Hoa Cà Phê", "Sâm Ngọc Linh", "Bồi bổ sức khỏe"];
+  } else if (intent.categoryOrKeyword === "tỏi") {
+    intro = "Dạ, Tỏi Đen Cô Đơn Lý Sơn lên men tự nhiên 60 ngày từ đất đảo núi lửa, dẻo ngọt bùi như ô mai và giàu hoạt chất SAC giúp hạ mỡ máu, bảo vệ tim mạch:";
+    dynamic_chips = ["Tỏi Đen Lý Sơn 5★", "Sâm Ngọc Linh", "Yến Sào Khánh Hòa", "Quà biếu sức khỏe"];
   } else if (intent.isGift) {
     intro = "Dạ, để biếu tặng lãnh đạo, đối tác hay kính dâng cha mẹ, một món quà OCOP 5 sao vừa trang trọng vừa trọn vẹn ý nghĩa sức khỏe là sự lựa chọn hoàn hảo nhất:";
     conclusion = "Tất cả sản phẩm đều có bao bì hộp quà cao cấp, chứng nhận xuất xứ rõ ràng và mang lời chúc trường thọ, may mắn.";
     dynamic_chips = ["Biếu Sếp", "Biếu Bố Mẹ", "5 sao cao cấp", "Dưới 500k"];
   } else if (intent.maxPrice !== null && intent.maxPrice <= 300000) {
-    intro = `Dạ, với ngân sách tiết kiệm và hợp lý (dưới ${(intent.maxPrice).toLocaleString("vi-VN")}đ), OCOP có rất nhiều thức quà thanh tao, chất lượng chuẩn mực từ các làng nghề truyền thống:`;
+    intro = "Dạ, với ngân sách tiết kiệm và hợp lý (dưới " + intent.maxPrice.toLocaleString("vi-VN") + "đ), OCOP có rất nhiều thức quà thanh tao, chất lượng chuẩn mực từ các làng nghề truyền thống:";
     conclusion = "Dù giá cả rất bình dân nhưng từng sản phẩm đều được kiểm định chất lượng OCOP nghiêm ngặt, an toàn cho cả gia đình.";
     dynamic_chips = ["Mật ong Tây Nguyên", "Bánh cốm Hà Nội", "Kẹo dừa Bến Tre", "5 sao"];
   } else if (intent.regionKeyword) {
-    intro = `Dạ, về vùng đất ${intent.regionKeyword} giàu bản sắc văn hóa và thổ nhưỡng trù phú, em xin giới thiệu những niềm tự hào ẩm thực vang danh gần xa:`;
+    intro = "Dạ, về vùng đất " + intent.regionKeyword + " giàu bản sắc văn hóa và thổ nhưỡng trù phú, em xin giới thiệu những niềm tự hào ẩm thực vang danh gần xa:";
     conclusion = "Đây là tinh hoa được hội tụ từ đôi bàn tay cần lao của bà con nông dân và hợp tác xã địa phương.";
     dynamic_chips = ["Đặc sản Tây Bắc", "Đặc sản Miền Tây", "5 sao", "Quà biếu"];
   }
 
-  const text_response = `${intro}\n\n${productNames}\n\n${conclusion}`;
+  const text_response = intro + "\n\n" + productNames + "\n\n" + conclusion;
 
   return {
     text_response,
