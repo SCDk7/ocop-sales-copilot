@@ -589,12 +589,12 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
 
   const schemaInstruction = includeTranscription
     ? "Chỉ trả về JSON đúng schema: transcription (string), message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), handoffAdmin (boolean), dynamic_chips (mảng string)."
-    : "Chỉ trả về JSON đúng schema: message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), handoffAdmin (boolean), dynamic_chips (mảng string).";
+    : "Chỉ trả về JSON đúng schema: message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), imageMatchStatus (exact|similar|unknown|not_applicable), handoffAdmin (boolean), dynamic_chips (mảng string).";
 
   const imageSearchInstruction = hasImages
     ? language === 'en'
-      ? 'REQUIRED IMAGE-FIRST PRODUCT SEARCH: Before writing the reply, inspect every attached image, identify the visible product and distinguishing details, then rank the supplied catalogue from the closest match to the least similar match using product type, packaging, visible labels, colour, shape, ingredients, and region. Return at most 3 productIds in that ranking order. Return only items that are genuinely supported by the image; never fill the list with unrelated popular products. If there is no confident match, return an empty productIds array and say that no close catalogue match was found. For damage or complaint photos, identify any matching catalogue item first, then prioritize safe support guidance and set handoffAdmin=true when staff review is needed.'
-      : 'BẮT BUỘC KIỂM TRA ẢNH VÀ TÌM SẢN PHẨM KHỚP HOẶC GẦN GIỐNG NHẤT TRƯỚC KHI TRẢ LỜI: Trước khi viết câu trả lời, hãy xem từng ảnh đính kèm, nhận diện sản phẩm nhìn thấy và các dấu hiệu riêng, sau đó xếp hạng sản phẩm trong danh mục từ khớp nhất đến ít giống hơn dựa trên loại sản phẩm, bao bì, nhãn nhìn thấy, màu sắc, hình dáng, thành phần và vùng miền. Trả tối đa 3 productIds theo đúng thứ tự này. Chỉ đưa vào productIds những sản phẩm thực sự được ảnh hỗ trợ; không gợi ý sản phẩm phổ biến nhưng không liên quan. Nếu không có sản phẩm khớp đủ tin cậy, trả productIds rỗng và nói rõ chưa tìm thấy sản phẩm khớp hoặc gần giống trong danh mục. Với ảnh khiếu nại hoặc hàng lỗi, vẫn kiểm tra sản phẩm trước, sau đó ưu tiên hướng dẫn hỗ trợ an toàn và đặt handoffAdmin=true khi cần nhân viên xác minh.'
+      ? 'REQUIRED IMAGE-FIRST PRODUCT SEARCH: Before writing the reply, inspect every attached image, identify the visible product and distinguishing details, then rank the supplied catalogue from the closest match to the least similar match using product type, packaging, visible labels, colour, shape, ingredients, and region. Always return imageMatchStatus: exact only for a confident direct catalogue match; similar when the product type is known but no exact catalogue item is confirmed; unknown when it cannot be identified; not_applicable when there is no image. Return at most 3 genuinely related productIds in ranking order. For similar, use up to 2 related catalogue items; for unknown use an empty productIds array. Never fill this list with unrelated popular products. For damage or complaint photos, identify any matching catalogue item first, then prioritize safe support guidance and set handoffAdmin=true when staff review is needed.'
+      : 'BẮT BUỘC KIỂM TRA ẢNH VÀ TÌM SẢN PHẨM KHỚP HOẶC GẦN GIỐNG NHẤT TRƯỚC KHI TRẢ LỜI: Trước khi viết câu trả lời, hãy xem từng ảnh đính kèm, nhận diện sản phẩm nhìn thấy và các dấu hiệu riêng, sau đó xếp hạng sản phẩm trong danh mục từ khớp nhất đến ít giống hơn dựa trên loại sản phẩm, bao bì, nhãn nhìn thấy, màu sắc, hình dáng, thành phần và vùng miền. Luôn trả imageMatchStatus: exact khi chắc chắn khớp trực tiếp với sản phẩm trong danh mục; similar khi nhận ra loại sản phẩm nhưng chưa xác nhận được sản phẩm chính xác; unknown khi không thể nhận diện; not_applicable khi không có ảnh. Trả tối đa 3 productIds có liên quan theo đúng thứ tự; với similar chỉ chọn tối đa 2 sản phẩm liên quan, với unknown trả productIds rỗng. Không đưa sản phẩm nổi bật nhưng không liên quan vào productIds. Với ảnh khiếu nại hoặc hàng lỗi, vẫn kiểm tra sản phẩm trước, sau đó ưu tiên hướng dẫn hỗ trợ an toàn và đặt handoffAdmin=true khi cần nhân viên xác minh.'
     : '';
 
   return [
@@ -952,18 +952,30 @@ function buildLocalFallbackReply(query, products = [], language = "vi") {
 
 function buildAIUnavailableFallback(query, products, language, hasImages) {
   if (!hasImages) return buildLocalFallbackReply(query, products, language);
+  const featuredProductIds = getFeaturedProductIds(products);
   const message = language === 'en'
-    ? 'I cannot inspect and match the image against the catalogue right now, so I will not recommend an unverified product. Please try again shortly or describe the item.'
-    : 'Hiện mình chưa thể kiểm tra ảnh và đối chiếu với danh mục, nên chưa gợi ý sản phẩm khi chưa xác minh được. Bạn vui lòng thử lại sau hoặc mô tả sản phẩm giúp mình nhé.';
+    ? 'I could not identify the product from the image right now. Here are some featured OCOP products from our catalogue while you try again or describe the item.'
+    : 'Dạ, mình chưa nhận ra chính xác sản phẩm trong ảnh. Dưới đây là một số sản phẩm OCOP nổi bật để Anh/Chị tham khảo; Anh/Chị có thể gửi ảnh rõ hơn hoặc mô tả thêm giúp mình nhé.';
   return {
     text_response: message,
     message,
-    suggested_products: [],
-    productIds: [],
-    dynamic_chips: language === 'en' ? ['Try again', 'Describe it'] : ['Thử lại', 'Mô tả sản phẩm'],
+    suggested_products: featuredProductIds,
+    productIds: featuredProductIds,
+    dynamic_chips: language === 'en' ? ['Try again', 'Describe it', 'Featured products'] : ['Thử lại', 'Mô tả sản phẩm', 'Đặc sản nổi bật'],
     handoffAdmin: false,
     fallback: true
   };
+}
+
+function getFeaturedProductIds(products, limit = 3) {
+  return [...products]
+    .sort((first, second) =>
+      (Number(second.rating) || 0) - (Number(first.rating) || 0) ||
+      (Number(second.stars) || 0) - (Number(first.stars) || 0) ||
+      (Number(first.price) || 0) - (Number(second.price) || 0)
+    )
+    .slice(0, limit)
+    .map(product => product.id);
 }
 
 function isAIRateLimited(ip) {
@@ -1216,10 +1228,11 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
             properties: {
               message: { type: 'STRING' },
               productIds: { type: 'ARRAY', items: { type: 'INTEGER' } },
+              imageMatchStatus: { type: 'STRING', enum: ['exact', 'similar', 'unknown', 'not_applicable'] },
               handoffAdmin: { type: 'BOOLEAN' },
               dynamic_chips: { type: 'ARRAY', items: { type: 'STRING' } }
             },
-            required: ['message', 'productIds', 'handoffAdmin', 'dynamic_chips']
+            required: ['message', 'productIds', 'imageMatchStatus', 'handoffAdmin', 'dynamic_chips']
           }
         }
       }),
@@ -1246,30 +1259,39 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     }
 
     if (!answer || typeof answer.message !== 'string' || !answer.message.trim() ||
-        !Array.isArray(answer.productIds) || typeof answer.handoffAdmin !== 'boolean') {
+        !Array.isArray(answer.productIds) || typeof answer.imageMatchStatus !== 'string' ||
+        typeof answer.handoffAdmin !== 'boolean') {
       console.warn('Gemini schema mismatch, falling back gracefully');
       const fallbackData = buildAIUnavailableFallback(lastUserMessage, targetProducts, validation.language, hasImages);
       return { status: 200, body: fallbackData };
     }
 
     const validProductIds = new Set(validation.products.map(product => product.id));
-    const productIds = [...new Set(answer.productIds.filter(id =>
+    let productIds = [...new Set(answer.productIds.filter(id =>
       Number.isInteger(id) && validProductIds.has(id)
     ))].slice(0, 3);
     const lastMessage = validation.messages[validation.messages.length - 1];
     let message = answer.message.trim().slice(0, MAX_AI_MESSAGE_LENGTH);
-    const normalizedAnswer = message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    const imageNeedsClarification = /khong ro|chua ro|khong the nhan dang|chua the nhan dang|khong nhan dien duoc|chua nhan dien duoc|anh khong ro|cannot identify|can't identify|unclear image|image is unclear/.test(normalizedAnswer);
     const isImageLookup = Boolean(imageData) ||
       (attachedImages.length > 0 && isImageProductLookupRequest(lastMessage.text));
-    if (isImageLookup && !productIds.length) {
-      message = imageNeedsClarification
-        ? validation.language === 'en'
-          ? 'I could not identify the product from this image. Please describe it in more detail or send a clearer image.'
-          : 'Mình chưa nhận diện được sản phẩm từ ảnh này. Bạn hãy mô tả chi tiết hơn hoặc gửi ảnh rõ hơn nhé.'
-        : validation.language === 'en'
-          ? 'I could not find a similar product in the current catalogue. Please describe its distinctive features or send another clear image.'
-          : 'Mình chưa tìm thấy sản phẩm tương tự trong danh mục hiện tại. Bạn hãy mô tả đặc điểm sản phẩm hoặc gửi ảnh khác rõ hơn nhé.';
+    let imageMatchStatus = ['exact', 'similar', 'unknown', 'not_applicable'].includes(answer.imageMatchStatus)
+      ? answer.imageMatchStatus
+      : 'unknown';
+    if (isImageLookup && imageMatchStatus === 'exact' && !productIds.length) {
+      imageMatchStatus = 'unknown';
+    }
+    const normalizedAnswer = message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const imageNeedsClarification = /khong ro|chua ro|khong the nhan dang|chua the nhan dang|khong nhan dien duoc|chua nhan dien duoc|anh khong ro|cannot identify|can't identify|unclear image|image is unclear/.test(normalizedAnswer);
+    if (isImageLookup && imageMatchStatus !== 'exact') {
+      const relatedProductIds = imageMatchStatus === 'similar' ? productIds.slice(0, 2) : [];
+      const featuredProductIds = getFeaturedProductIds(validation.products)
+        .filter(id => !relatedProductIds.includes(id));
+      productIds = [...relatedProductIds, ...featuredProductIds].slice(0, 3);
+      const prefix = validation.language === 'en'
+        ? 'I could not identify the exact product in the image. Below are related catalogue products and a few featured OCOP products for your reference.'
+        : 'Dạ, mình chưa nhận ra chính xác sản phẩm trong ảnh. Dưới đây là một số sản phẩm tương tự và một số sản phẩm OCOP nổi bật để Anh/Chị tham khảo.';
+      const shouldKeepModelDetail = imageMatchStatus === 'similar' && !imageNeedsClarification;
+      message = shouldKeepModelDetail ? `${prefix}\n\n${message}` : prefix;
     }
 
     // Sanitise dynamic_chips: string-only, strip empties, cap length & count
@@ -1288,6 +1310,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
         dynamic_chips: dynamic_chips.length > 0 ? dynamic_chips : ["Quà biếu", "5 sao", "Dưới 200k"],
         message,
         productIds,
+        imageMatchStatus,
         handoffAdmin: answer.handoffAdmin,
         wikipediaSources: wikiSources.map(({ title, url }) => ({ title, url }))
       }
