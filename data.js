@@ -1571,7 +1571,7 @@ const PRODUCTS = [
     "reviews": 0,
     "tag": "Danh mục mới",
     "tagEn": "New collection",
-    "img": "images/catalog/import-35.jpg",
+    "img": "images/catalog/real-35.jpg",
     "desc": "Long nhãn Hưng Yên – Hưng Yên. Quy cách: Gói 500g. Giá tham khảo theo bảng giá shop cung cấp.",
     "descEn": "Hưng Yên Dried Longan from Hưng Yên. Pack size: 500g pack. Reference price supplied by the shop.",
     "packaging": "Gói 500g",
@@ -1580,7 +1580,8 @@ const PRODUCTS = [
     "imageSource": "https://www.vuadacsan.com.vn/long-nhan-tui-150g-dac-san-hung-yen",
     "imageIsSample": true,
     "certificationSource": "Danh sách do chủ shop cung cấp",
-    "catalogImport": "import-35"
+    "catalogImport": "import-35",
+    "imagePhotoSource": "https://www.vuadacsan.com.vn/image/catalog/product/long-nhan-hop-500g-dac-san-hung-yen1.jpg"
   },
   {
     "id": 99,
@@ -1595,16 +1596,17 @@ const PRODUCTS = [
     "reviews": 0,
     "tag": "Danh mục mới",
     "tagEn": "New collection",
-    "img": "images/catalog/import-36.jpg",
+    "img": "images/catalog/real-36.jpg",
     "desc": "Tương Bần – Hưng Yên. Quy cách: Chai/can 1 – 2 lít. Giá tham khảo theo bảng giá shop cung cấp.",
     "descEn": "Bần Fermented Soybean Sauce from Hưng Yên. Pack size: 1–2 litre bottle/container. Reference price supplied by the shop.",
     "packaging": "Chai/can 1 – 2 lít",
     "packagingEn": "1–2 litre bottle/container",
     "priceIsReference": true,
-    "imageSource": "https://trungthanh.com.vn/products/tuong-ban-trungthanh-500ml",
+    "imageSource": "https://tuongbanhuongquyet.com/san-pham/",
     "imageIsSample": true,
     "certificationSource": "Danh sách do chủ shop cung cấp",
-    "catalogImport": "import-36"
+    "catalogImport": "import-36",
+    "imagePhotoSource": "https://tuongbanhuongquyet.com/wp-content/uploads/2023/02/tuong-1-lit-anh-sp-scaled.jpg"
   },
   {
     "id": 100,
@@ -1931,16 +1933,17 @@ const PRODUCTS = [
     "reviews": 0,
     "tag": "Danh mục mới",
     "tagEn": "New collection",
-    "img": "images/catalog/import-59.jpg",
+    "img": "images/catalog/real-59.jpg",
     "desc": "Trà Cung đình Huế – Thừa Thiên Huế. Quy cách: Hộp thảo mộc đóng gói. Giá tham khảo theo bảng giá shop cung cấp.",
     "descEn": "Huế Royal Herbal Tea from Thừa Thiên Huế. Pack size: Boxed herbal tea. Reference price supplied by the shop.",
     "packaging": "Hộp thảo mộc đóng gói",
     "packagingEn": "Boxed herbal tea",
     "priceIsReference": true,
-    "imageSource": "https://moctrulyhue.com/collections/tra-moc-truly-hue",
+    "imageSource": "https://trangonviet.com.vn/vi/tra-thao-duoc/tra-cung-dinh-hue.html",
     "imageIsSample": true,
     "certificationSource": "Danh sách do chủ shop cung cấp",
-    "catalogImport": "import-59"
+    "catalogImport": "import-59",
+    "imagePhotoSource": "https://trangonviet.com.vn/upload/sanpham/081256825091.jpg"
   },
   {
     "id": 114,
@@ -2123,7 +2126,7 @@ const PRODUCTS = [
     "reviews": 0,
     "tag": "Danh mục mới",
     "tagEn": "New collection",
-    "img": "images/catalog/import-76.jpg",
+    "img": "images/catalog/real-76.jpg",
     "desc": "Thanh long sấy dẻo Bình Thuận – Bình Thuận. Quy cách: Túi hút chân không 300g. Giá tham khảo theo bảng giá shop cung cấp.",
     "descEn": "Bình Thuận Soft-Dried Dragon Fruit from Bình Thuận. Pack size: 300g vacuum-sealed bag. Reference price supplied by the shop.",
     "packaging": "Túi hút chân không 300g",
@@ -2132,7 +2135,8 @@ const PRODUCTS = [
     "imageSource": "https://thanhlongsachhoale.com/san-pham/thanh-long-do-say-deo-65g.html",
     "imageIsSample": true,
     "certificationSource": "Danh sách do chủ shop cung cấp",
-    "catalogImport": "import-76"
+    "catalogImport": "import-76",
+    "imagePhotoSource": "https://media.loveitopcdn.com/26483/z3455285498895-6fd725d06d5b6fefb43579df2fc51f05.jpg"
   },
   {
     "id": 122,
@@ -2195,7 +2199,7 @@ const PRODUCTS = [
     "reviews": 0,
     "tag": "Danh mục mới",
     "tagEn": "New collection",
-    "img": "images/catalog/import-80.png",
+    "img": "images/catalog/real-80.png",
     "desc": "Hạt mắc ca Gia Lai – Gia Lai. Quy cách: Hũ sấy khô 500g. Giá tham khảo theo bảng giá shop cung cấp.",
     "descEn": "Gia Lai Macadamia Nuts from Gia Lai. Pack size: 500g jar of dried nuts. Reference price supplied by the shop.",
     "packaging": "Hũ sấy khô 500g",
@@ -2204,7 +2208,8 @@ const PRODUCTS = [
     "imageSource": "https://songuyentaynguyen.com/products/hat-macca-sutn-gia-lai",
     "imageIsSample": true,
     "certificationSource": "Danh sách do chủ shop cung cấp",
-    "catalogImport": "import-80"
+    "catalogImport": "import-80",
+    "imagePhotoSource": "https://product.hstatic.net/200000917245/product/macca_1_e8977a2ffb23411c88c9bc6bc267e52b_master.png"
   },
   {
     "id": 125,
@@ -2339,7 +2344,7 @@ const PRODUCTS = [
     "reviews": 0,
     "tag": "Danh mục mới",
     "tagEn": "New collection",
-    "img": "images/catalog/import-98.jpg",
+    "img": "images/catalog/real-98.jpg",
     "desc": "Hạt tiêu Bàu Mây – Bà Rịa - Vũng Tàu. Quy cách: Hũ tiêu khô 500g. Giá tham khảo theo bảng giá shop cung cấp.",
     "descEn": "Bàu Mây Pepper from Bà Rịa - Vũng Tàu. Pack size: 500g jar of dried pepper. Reference price supplied by the shop.",
     "packaging": "Hũ tiêu khô 500g",
@@ -2348,7 +2353,8 @@ const PRODUCTS = [
     "imageSource": "https://baumay.com/vi/san-pham/tieu-den-bau-may-huu-co-hat-50-gr-hu-thuy-tinh-206.html",
     "imageIsSample": true,
     "certificationSource": "Danh sách do chủ shop cung cấp",
-    "catalogImport": "import-98"
+    "catalogImport": "import-98",
+    "imagePhotoSource": "https://baumay.com/data/product/500/tieu-den-bau-may-hu-50gr.jpg"
   },
   {
     "id": 131,
