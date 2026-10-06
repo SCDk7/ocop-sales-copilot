@@ -454,14 +454,16 @@ function validateAIRequest(body) {
 }
 
 function getAIModelConfiguration() {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'replace_with_your_gemini_api_key')
+    ? process.env.GEMINI_API_KEY
+    : 'AQ.Ab8RN6KD6Df3tZ0CgZDULgsjdjgpfmPScHb8hRt1WKDnHMOYyg';
   if (!apiKey) {
     const error = new Error('Trợ lý AI chưa được cấu hình. Vui lòng liên hệ quản trị viên.');
     error.status = 503;
     throw error;
   }
 
-  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const model = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
   if (!/^[a-zA-Z0-9._-]+$/.test(model)) {
     const error = new Error('Cấu hình mô hình AI không hợp lệ.');
     error.status = 500;
@@ -1222,40 +1224,56 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
         text: 'Review the attached customer product image(s) as context for the customer message. Do not claim a return, refund, or replacement is approved; ask for missing details and explain staff must verify.'
       });
     }
-    const endpoint = new URL(
-      `https://generativelanguage.googleapis.com/v1beta/models/${configuration.model}:generateContent`
-    );
-    endpoint.searchParams.set('key', configuration.apiKey);
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: buildAISystemInstruction({ ...validation, filteredProducts }, { wikiSources, hasImages }) }]
-        },
-        contents,
-        generationConfig: {
-          temperature: 0.55,
-          maxOutputTokens: 1100,
-          responseMimeType: 'application/json',
-          responseSchema: {
-            type: 'OBJECT',
-            properties: {
-              message: { type: 'STRING' },
-              productIds: { type: 'ARRAY', items: { type: 'INTEGER' } },
-              handoffAdmin: { type: 'BOOLEAN' },
-              dynamic_chips: { type: 'ARRAY', items: { type: 'STRING' } }
-            },
-            required: ['message', 'productIds', 'handoffAdmin', 'dynamic_chips']
-          }
-        }
-      }),
-      signal: controller.signal
-    });
+    const candidateModels = [configuration.model, 'gemini-3.1-flash-lite', 'gemini-3.8-flash'];
+    const uniqueModels = [...new Set(candidateModels)];
+    let response = null;
+    let result = {};
 
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      console.warn('Gemini API call failed, falling back gracefully:', response.status, result.error?.message);
+    for (const modelName of uniqueModels) {
+      const endpoint = new URL(
+        `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`
+      );
+      endpoint.searchParams.set('key', configuration.apiKey);
+      try {
+        response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            system_instruction: {
+              parts: [{ text: buildAISystemInstruction({ ...validation, filteredProducts }, { wikiSources, hasImages }) }]
+            },
+            contents,
+            generationConfig: {
+              temperature: 0.55,
+              maxOutputTokens: 1100,
+              responseMimeType: 'application/json',
+              responseSchema: {
+                type: 'OBJECT',
+                properties: {
+                  message: { type: 'STRING' },
+                  productIds: { type: 'ARRAY', items: { type: 'INTEGER' } },
+                  handoffAdmin: { type: 'BOOLEAN' },
+                  dynamic_chips: { type: 'ARRAY', items: { type: 'STRING' } }
+                },
+                required: ['message', 'productIds', 'handoffAdmin', 'dynamic_chips']
+              }
+            }
+          }),
+          signal: controller.signal
+        });
+
+        result = await response.json().catch(() => ({}));
+        if (response.ok) {
+          break;
+        }
+        console.warn(`Gemini model ${modelName} returned status ${response.status}:`, result.error?.message);
+      } catch (callErr) {
+        console.warn(`Gemini call error on ${modelName}:`, callErr.message);
+      }
+    }
+
+    if (!response || !response.ok) {
+      console.warn('All Gemini models failed, falling back gracefully to catalog:', response?.status, result?.error?.message);
       const fallbackData = buildAIUnavailableFallback(lastUserMessage, targetProducts, validation.language, hasImages);
       return { status: 200, body: fallbackData };
     }
