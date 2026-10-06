@@ -1517,9 +1517,129 @@
         .product-card:hover .product-card-image {
             transform: scale(1.08);
         }
+
+        /* ============================================================== */
+        /* HIỆU ỨNG TRANG TRÍ SỐNG ĐỘNG KHI CUỘN TRANG (SCROLL AMBIENCE) */
+        /* ============================================================== */
+        @keyframes auraBreathe {
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(1.15); }
+        }
+        @keyframes floatSlow1 {
+            0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+            50% { transform: translate(14px, -24px) rotate(16deg); }
+        }
+        @keyframes floatSlow2 {
+            0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+            50% { transform: translate(-18px, -28px) rotate(-14deg); }
+        }
+        @keyframes floatSlow3 {
+            0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+            50% { transform: translate(12px, -20px) rotate(-18deg); }
+        }
+        @keyframes spinUltraSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes spinUltraSlowReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes dealGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.2), inset 0 0 8px rgba(245, 158, 11, 0.1); }
+            50% { box-shadow: 0 0 22px rgba(245, 158, 11, 0.5), inset 0 0 14px rgba(245, 158, 11, 0.25); }
+        }
+        .animate-aura-breathe {
+            animation: auraBreathe 7s ease-in-out infinite;
+        }
+        .animate-spin-ultra-slow {
+            animation: spinUltraSlow 140s linear infinite;
+        }
+        .animate-spin-ultra-slow-rev {
+            animation: spinUltraSlowReverse 160s linear infinite;
+        }
+        .animate-marquee-flow {
+            display: inline-flex;
+            white-space: nowrap;
+            animation: marqueeScroll 34s linear infinite;
+        }
+        .animate-marquee-flow:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
+    <!-- THANH TIẾN TRÌNH CUỘN HOÀNG KIM (GOLDEN SCROLL PROGRESS BAR) -->
+    <div id="scroll-progress-container" class="fixed top-0 left-0 right-0 h-1 z-[99999] bg-transparent pointer-events-none" aria-hidden="true">
+        <div id="scroll-progress-bar" class="h-full w-0 bg-gradient-to-r from-emerald-600 via-amber-400 to-yellow-300 shadow-sm transition-[width] duration-100"></div>
+    </div>
+
+    <!-- HÌNH NỀN AMBIENT SỐNG ĐỘNG SUỐT TOÀN TRANG KHI CUỘN (FIXED SCROLL AMBIENCE) -->
+    <div id="scroll-ambient-background" class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+        <!-- Quầng sáng thở êm dịu (Breathing Aura Orbs) -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl animate-aura-breathe"></div>
+        <div class="absolute top-1/3 -right-40 w-[30rem] h-[30rem] rounded-full bg-amber-400/10 blur-3xl animate-aura-breathe" style="animation-delay: 2.5s;"></div>
+        <div class="absolute top-2/3 -left-32 w-[28rem] h-[28rem] rounded-full bg-emerald-600/10 blur-3xl animate-aura-breathe" style="animation-delay: 4.5s;"></div>
+        <div class="absolute -bottom-24 right-1/4 w-96 h-96 rounded-full bg-yellow-400/10 blur-3xl animate-aura-breathe" style="animation-delay: 1.5s;"></div>
+
+        <!-- Họa tiết Trống Đồng Đông Sơn khổng lồ xoay chậm bên sườn trái (Cultural Watermark) -->
+        <div class="absolute -left-64 top-1/4 w-[580px] h-[580px] opacity-[0.035] text-amber-900 animate-spin-ultra-slow select-none">
+            <svg viewBox="0 0 200 200" class="w-full h-full fill-current">
+                <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" stroke-width="2" />
+                <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" />
+                <circle cx="100" cy="100" r="62" fill="none" stroke="currentColor" stroke-width="2" />
+                <circle cx="100" cy="100" r="44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 2" />
+                <circle cx="100" cy="100" r="28" fill="none" stroke="currentColor" stroke-width="2" />
+                <polygon points="100,74 103,96 122,86 106,99 126,100 106,101 122,114 103,104 100,126 97,104 78,114 94,101 74,100 94,99 78,86 97,96" fill="currentColor" />
+                <path d="M100,10 A90,90 0 0,1 190,100" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="8 6" />
+                <path d="M10,100 A90,90 0 0,1 100,190" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="8 6" />
+            </svg>
+        </div>
+
+        <!-- Họa tiết Hoa Sen khổng lồ bên sườn phải (Lotus Watermark) -->
+        <div class="absolute -right-52 top-1/2 w-[520px] h-[520px] opacity-[0.035] text-emerald-900 animate-spin-ultra-slow-rev select-none">
+            <svg viewBox="0 0 200 200" class="w-full h-full fill-current">
+                <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" />
+                <path d="M100,30 C120,65 140,85 150,110 C140,140 110,160 100,170 C90,160 60,140 50,110 C60,85 80,65 100,30 Z" fill="none" stroke="currentColor" stroke-width="2" />
+                <path d="M100,45 C115,75 130,95 135,115 C125,135 108,150 100,158 C92,150 75,135 65,115 C70,95 85,75 100,45 Z" fill="currentColor" opacity="0.3" />
+                <path d="M60,120 C40,105 30,85 45,70 C65,75 80,95 90,110 Z" fill="none" stroke="currentColor" stroke-width="1.5" />
+                <path d="M140,120 C160,105 170,85 155,70 C135,75 120,95 110,110 Z" fill="none" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+        </div>
+
+        <!-- Hạt tinh hoa và lá thảo mộc OCOP lơ lửng ngẫu nhiên (Floating Organic Elements) -->
+        <div class="absolute left-[7%] top-[28%]" style="animation: floatSlow1 7s ease-in-out infinite;">
+            <svg class="w-7 h-7 text-emerald-600/25" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+            </svg>
+        </div>
+        <div class="absolute right-[9%] top-[42%]" style="animation: floatSlow2 8.5s ease-in-out infinite;">
+            <svg class="w-6 h-6 text-amber-500/25" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9" />
+            </svg>
+        </div>
+        <div class="absolute left-[12%] top-[68%]" style="animation: floatSlow3 9s ease-in-out infinite;">
+            <svg class="w-8 h-8 text-emerald-700/20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,22M12,4A8,8 0 0,1 20,12C20,14.4 18.9,16.5 17.2,18C15.8,16.8 14,16 12,16C10,16 8.2,16.8 6.8,18C5.1,16.5 4,14.4 4,12A8,8 0 0,1 12,4Z"/>
+            </svg>
+        </div>
+        <div class="absolute right-[6%] top-[82%]" style="animation: floatSlow1 8s ease-in-out infinite;">
+            <svg class="w-7 h-7 text-amber-600/25" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12,3L2,12H5V20H19V12H22L12,3M12,7.7L16,11.3V18H8V11.3L12,7.7Z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- NÚT LÊN ĐẦU TRANG SIÊU MƯỢT (BACK TO TOP) -->
+    <button id="back-to-top-btn" onclick="scrollToTopSmooth()" aria-label="Lên đầu trang" title="Lên đầu trang" class="fixed bottom-6 left-6 z-[999] opacity-0 pointer-events-none translate-y-6 transition-all duration-300 bg-gradient-to-r from-ocopGreen via-emerald-700 to-teal-800 text-white px-3.5 py-2.5 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 flex items-center space-x-2 border border-ocopGold/50 cursor-pointer group">
+        <i class="fa-solid fa-arrow-up text-amber-300 group-hover:-translate-y-1 transition-transform"></i>
+        <span class="text-xs font-black tracking-wide hidden sm:inline">Lên đầu trang</span>
+    </button>
+
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed top-24 inset-x-3 z-[110] flex flex-col items-end gap-2 pointer-events-none sm:left-auto sm:right-5" aria-live="polite" aria-atomic="false"></div>
 
@@ -2295,118 +2415,202 @@
                     </button>
                 </div>
             </div>
+            <!-- DẢI CHỮ CHẠY MARQUEE TINH HOA NÔNG SẢN VIỆT (TƯƠNG TÁC SỐNG ĐỘNG KHI CUỘN) -->
+            <div class="mb-6 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-950 text-amber-200 py-2.5 px-4 shadow-md border border-amber-400/30 flex items-center gap-3">
+                <span class="flex items-center gap-1.5 bg-amber-400 text-emerald-950 font-black text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0 shadow-sm animate-pulse">
+                    <i class="fa-solid fa-bolt text-red-600"></i>
+                    <span>TIN OCOP</span>
+                </span>
+                <div class="overflow-hidden flex-1 relative whitespace-nowrap">
+                    <div class="animate-marquee-flow text-xs font-bold space-x-8 inline-flex items-center">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-amber-300"></i> Miễn phí giao hàng toàn quốc từ 500k</span>
+                        <span class="text-amber-400/50">•</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-medal text-amber-300"></i> 100% Sản phẩm đạt chứng nhận OCOP 4 - 5 Sao Quốc Gia</span>
+                        <span class="text-amber-400/50">•</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-gift text-amber-300"></i> Hộp quà sang trọng thiết kế đậm đà bản sắc 63 tỉnh thành</span>
+                        <span class="text-amber-400/50">•</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-qrcode text-amber-300"></i> Quét mã VietQR nhận ngay ưu đãi & tích điểm thành viên</span>
+                        <span class="text-amber-400/50">•</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-headset text-amber-300"></i> Trợ lý AI OCOP Copilot tư vấn khẩu vị & quà biếu 24/7</span>
+                        <span class="text-amber-400/50">•</span>
+                        <!-- Lặp lại chuỗi cho vòng marquee mượt mà -->
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-amber-300"></i> Miễn phí giao hàng toàn quốc từ 500k</span>
+                        <span class="text-amber-400/50">•</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-medal text-amber-300"></i> 100% Sản phẩm đạt chứng nhận OCOP 4 - 5 Sao Quốc Gia</span>
+                        <span class="text-amber-400/50">•</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-gift text-amber-300"></i> Hộp quà sang trọng thiết kế đậm đà bản sắc 63 tỉnh thành</span>
+                        <span class="text-amber-400/50">•</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-qrcode text-amber-300"></i> Quét mã VietQR nhận ngay ưu đãi & tích điểm thành viên</span>
+                        <span class="text-amber-400/50">•</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-headset text-amber-300"></i> Trợ lý AI OCOP Copilot tư vấn khẩu vị & quà biếu 24/7</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="flex flex-col lg:flex-row gap-8">
-                <!-- SIDEBAR DANH MỤC & TÌM KIẾM DESKTOP -->
-                <aside class="hidden lg:block lg:w-72 flex-shrink-0 lg:sticky lg:top-24 lg:self-start">
-                    <div class="glass-panel rounded-3xl border border-amber-200 p-4 shadow-lg space-y-3">
-                        <div class="bg-gradient-to-r from-ocopGreen to-ocopGreenLight text-white px-4 py-3 rounded-2xl flex items-center justify-between shadow-sm">
-                            <div class="flex items-center space-x-2">
-                                <i class="fa-solid fa-layer-group text-ocopGold text-base"></i>
-                                <h4 class="font-extrabold text-sm tracking-wide" id="i18n-cat-header">Danh Mục Sản Phẩm</h4>
-                            </div>
-                            <span class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow">OCOP</span>
+                <!-- SIDEBAR DANH MỤC & TIỆN ÍCH DESKTOP (STICKY SUỐT CHIỀU DÀI CUỘN TRANG) -->
+                <aside class="hidden lg:block lg:w-72 flex-shrink-0">
+                    <div class="sticky top-24 space-y-3.5 max-h-[calc(100vh-6.5rem)] overflow-y-auto no-scrollbar pb-6">
+                        <!-- 1. LIVE SHOPPERS TICKER (BÁO KHÁCH TRỰC TIẾP) -->
+                        <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-950 text-emerald-100 p-3 rounded-2xl border border-emerald-500/40 shadow-sm text-xs flex items-center justify-between">
+                            <span class="flex items-center gap-2 font-bold">
+                                <span class="relative flex h-2.5 w-2.5">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                                </span>
+                                <span>68 khách đang xem đặc sản</span>
+                            </span>
+                            <span class="text-[9px] bg-emerald-800 text-amber-300 font-black px-2 py-0.5 rounded-full uppercase tracking-wider">Trực tiếp</span>
                         </div>
-                        
-                        <div class="space-y-1.5 text-xs font-bold" id="sidebar-categories">
-                            <button onclick="setCategoryFilter('all', this)" class="cat-side-btn active w-full text-left px-3.5 py-2.5 rounded-2xl bg-ocopGreen text-white font-extrabold transition-all duration-300 flex items-center justify-between shadow-md border-l-4 border-ocopGold cursor-pointer">
-                                <span class="flex items-center space-x-2.5">
-                                    <i class="fa-solid fa-wheat-awn text-ocopGold"></i>
-                                    <span id="i18n-cat-all">Tất cả đặc sản</span>
+
+                        <!-- 2. HỘP LỌC NHANH 3 MIỀN (BẮC - TRUNG - NAM) -->
+                        <div class="glass-panel p-3 rounded-2xl border border-amber-200/90 shadow-sm space-y-2">
+                            <div class="text-[11px] font-black text-amber-900 uppercase flex items-center justify-between">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-map-location-dot text-amber-600"></i>
+                                    <span>Khám Phá 3 Miền</span>
                                 </span>
-                                <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] font-extrabold">77</span>
-                            </button>
-                            <button onclick="setCategoryFilter('tea', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
-                                <span class="flex items-center space-x-2.5">
-                                    <i class="fa-solid fa-mug-hot text-amber-600"></i>
-                                    <span id="i18n-cat-tea">Trà & Dược Liệu</span>
-                                </span>
-                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">8</span>
-                            </button>
-                            <button onclick="setCategoryFilter('gift', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
-                                <span class="flex items-center space-x-2.5">
-                                    <i class="fa-solid fa-gift text-red-500"></i>
-                                    <span id="i18n-cat-gift">Quà Biếu Sức Khỏe</span>
-                                </span>
-                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">8</span>
-                            </button>
-                            <button onclick="setCategoryFilter('food', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
-                                <span class="flex items-center space-x-2.5">
-                                    <i class="fa-solid fa-bowl-rice text-emerald-600"></i>
-                                    <span id="i18n-cat-food">Nông Sản & Ẩm Thực</span>
-                                </span>
-                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">34</span>
-                            </button>
-                            <button onclick="setCategoryFilter('snack', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
-                                <span class="flex items-center space-x-2.5">
-                                    <i class="fa-solid fa-cookie-bite text-amber-700"></i>
-                                    <span id="i18n-cat-snack">Món Ngon & Đồ Nhắm</span>
-                                </span>
-                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">19</span>
-                            </button>
-                            <button onclick="setCategoryFilter('spice', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
-                                <span class="flex items-center space-x-2.5">
-                                    <i class="fa-solid fa-bottle-droplet text-indigo-600"></i>
-                                    <span id="i18n-cat-spice">Gia Vị Truyền Thống</span>
-                                </span>
-                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">8</span>
-                            </button>
-                            <div class="pt-2 border-t border-amber-200 space-y-1.5">
-                                <button onclick="setCategoryFilter('5star', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
-                                    <span class="flex items-center space-x-2">
-                                        <i class="fa-solid fa-star text-yellow-500"></i>
-                                        <span id="i18n-cat-5star">Chứng nhận OCOP 5 Sao</span>
-                                    </span>
-                                    <span class="bg-yellow-100 text-yellow-900 px-2 py-0.5 rounded-full text-[10px] font-extrabold">39</span>
-                                </button>
-                                <button onclick="setCategoryFilter('4star', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
-                                    <span class="flex items-center space-x-2">
-                                        <i class="fa-solid fa-award text-emerald-600"></i>
-                                        <span id="i18n-cat-4star">Chứng nhận OCOP 4 Sao</span>
-                                    </span>
-                                    <span class="bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-full text-[10px] font-extrabold">38</span>
-                                </button>
+                                <span class="text-[10px] text-gray-400 font-normal">Ghim vùng</span>
                             </div>
-                        </div>
-                        <!-- Ô Tìm Kiếm Sidebar -->
-                        <div class="pt-3 border-t border-amber-200">
-                            <div class="relative">
-                                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-700/60 text-xs"></i>
-                                <label for="product-search" class="sr-only">Tìm kiếm đặc sản theo tên hoặc vùng miền</label>
-                                <input type="search" id="product-search" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)" placeholder="Tên đặc sản hoặc tỉnh thành..." autocomplete="off" aria-controls="product-grid" class="site-search-input w-full pl-9 pr-20 py-2.5 text-sm rounded-xl border border-emerald-200 focus:outline-none bg-emerald-50/50 transition">
-                                <button type="button" onclick="startVoiceSearch('product-search')" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-ocopGreen rounded-full cursor-pointer">
-                                    <i class="fa-solid fa-microphone"></i>
+                            <div class="grid grid-cols-3 gap-1.5 text-[11px] font-extrabold" id="macro-region-pills">
+                                <button onclick="filterByMacroRegion('bac', this)" class="macro-reg-btn px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-ocopGreen hover:text-white transition text-center border border-amber-200 cursor-pointer">
+                                    🏔️ Bắc (25)
                                 </button>
-                                <button id="sidebar-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs cursor-pointer rounded-full">
-                                    <i class="fa-solid fa-circle-xmark"></i>
+                                <button onclick="filterByMacroRegion('trung', this)" class="macro-reg-btn px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-ocopGreen hover:text-white transition text-center border border-amber-200 cursor-pointer">
+                                    🌊 Trung (19)
+                                </button>
+                                <button onclick="filterByMacroRegion('nam', this)" class="macro-reg-btn px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-ocopGreen hover:text-white transition text-center border border-amber-200 cursor-pointer">
+                                    🌴 Nam (33)
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Thẻ Cam Kết An Tâm Mua Sắm OCOP (Sidebar) -->
-                        <div class="mt-4 pt-3 border-t border-amber-200/90 space-y-2.5">
-                            <div class="bg-gradient-to-br from-emerald-50/90 to-amber-50/70 p-3.5 rounded-2xl border border-emerald-200/70 shadow-xs space-y-2.5">
-                                <div class="flex items-center space-x-2 text-ocopGreen font-black text-xs uppercase tracking-wider">
-                                    <i class="fa-solid fa-shield-halved text-amber-600"></i>
-                                    <span>Cam Kết Chất Lượng</span>
+                        <!-- 3. DANH MỤC SẢN PHẨM & TÌM KIẾM CHÍNH -->
+                        <div class="glass-panel rounded-3xl border border-amber-200 p-4 shadow-lg space-y-3">
+                            <div class="bg-gradient-to-r from-ocopGreen to-ocopGreenLight text-white px-4 py-3 rounded-2xl flex items-center justify-between shadow-sm">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fa-solid fa-layer-group text-ocopGold text-base"></i>
+                                    <h4 class="font-extrabold text-sm tracking-wide" id="i18n-cat-header">Danh Mục Sản Phẩm</h4>
                                 </div>
-                                <ul class="text-[11px] space-y-2 text-gray-700 font-bold">
-                                    <li class="flex items-start space-x-2">
-                                        <i class="fa-solid fa-truck-fast text-emerald-600 mt-0.5 text-xs"></i>
-                                        <span>Freeship toàn quốc từ 500k</span>
-                                    </li>
-                                    <li class="flex items-start space-x-2">
-                                        <i class="fa-solid fa-award text-amber-500 mt-0.5 text-xs"></i>
-                                        <span>100% Chính gốc 63 tỉnh thành</span>
-                                    </li>
-                                    <li class="flex items-start space-x-2">
-                                        <i class="fa-solid fa-rotate-left text-sky-600 mt-0.5 text-xs"></i>
-                                        <span>Đổi trả an tâm trong 7 ngày</span>
-                                    </li>
-                                </ul>
-                                <div class="pt-2 border-t border-emerald-200/50 flex items-center justify-between text-[10px] text-gray-500 font-semibold">
-                                    <span>Hotline CSKH:</span>
-                                    <a href="tel:1900888688" class="text-red-600 font-extrabold hover:underline">1900 888 688</a>
+                                <span class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow">OCOP</span>
+                            </div>
+                            
+                            <div class="space-y-1.5 text-xs font-bold" id="sidebar-categories">
+                                <button onclick="setCategoryFilter('all', this)" class="cat-side-btn active w-full text-left px-3.5 py-2.5 rounded-2xl bg-ocopGreen text-white font-extrabold transition-all duration-300 flex items-center justify-between shadow-md border-l-4 border-ocopGold cursor-pointer">
+                                    <span class="flex items-center space-x-2.5">
+                                        <i class="fa-solid fa-wheat-awn text-ocopGold"></i>
+                                        <span id="i18n-cat-all">Tất cả đặc sản</span>
+                                    </span>
+                                    <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] font-extrabold">77</span>
+                                </button>
+                                <button onclick="setCategoryFilter('tea', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
+                                    <span class="flex items-center space-x-2.5">
+                                        <i class="fa-solid fa-mug-hot text-amber-600"></i>
+                                        <span id="i18n-cat-tea">Trà & Dược Liệu</span>
+                                    </span>
+                                    <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">8</span>
+                                </button>
+                                <button onclick="setCategoryFilter('gift', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
+                                    <span class="flex items-center space-x-2.5">
+                                        <i class="fa-solid fa-gift text-red-500"></i>
+                                        <span id="i18n-cat-gift">Quà Biếu Sức Khỏe</span>
+                                    </span>
+                                    <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">8</span>
+                                </button>
+                                <button onclick="setCategoryFilter('food', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
+                                    <span class="flex items-center space-x-2.5">
+                                        <i class="fa-solid fa-bowl-rice text-emerald-600"></i>
+                                        <span id="i18n-cat-food">Nông Sản & Ẩm Thực</span>
+                                    </span>
+                                    <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">34</span>
+                                </button>
+                                <button onclick="setCategoryFilter('snack', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
+                                    <span class="flex items-center space-x-2.5">
+                                        <i class="fa-solid fa-cookie-bite text-amber-700"></i>
+                                        <span id="i18n-cat-snack">Món Ngon & Đồ Nhắm</span>
+                                    </span>
+                                    <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">19</span>
+                                </button>
+                                <button onclick="setCategoryFilter('spice', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
+                                    <span class="flex items-center space-x-2.5">
+                                        <i class="fa-solid fa-bottle-droplet text-indigo-600"></i>
+                                        <span id="i18n-cat-spice">Gia Vị Truyền Thống</span>
+                                    </span>
+                                    <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold">8</span>
+                                </button>
+                                <div class="pt-2 border-t border-amber-200 space-y-1.5">
+                                    <button onclick="setCategoryFilter('5star', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
+                                        <span class="flex items-center space-x-2">
+                                            <i class="fa-solid fa-star text-yellow-500"></i>
+                                            <span id="i18n-cat-5star">Chứng nhận OCOP 5 Sao</span>
+                                        </span>
+                                        <span class="bg-yellow-100 text-yellow-900 px-2 py-0.5 rounded-full text-[10px] font-extrabold">39</span>
+                                    </button>
+                                    <button onclick="setCategoryFilter('4star', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-gray-700 hover:bg-amber-100/80 hover:text-ocopGreen transition-all duration-200 flex items-center justify-between border border-amber-100 cursor-pointer">
+                                        <span class="flex items-center space-x-2">
+                                            <i class="fa-solid fa-award text-emerald-600"></i>
+                                            <span id="i18n-cat-4star">Chứng nhận OCOP 4 Sao</span>
+                                        </span>
+                                        <span class="bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded-full text-[10px] font-extrabold">38</span>
+                                    </button>
                                 </div>
+                            </div>
+                            <!-- Ô Tìm Kiếm Sidebar -->
+                            <div class="pt-3 border-t border-amber-200">
+                                <div class="relative">
+                                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-700/60 text-xs"></i>
+                                    <label for="product-search" class="sr-only">Tìm kiếm đặc sản theo tên hoặc vùng miền</label>
+                                    <input type="search" id="product-search" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)" placeholder="Tên đặc sản hoặc tỉnh thành..." autocomplete="off" aria-controls="product-grid" class="site-search-input w-full pl-9 pr-20 py-2.5 text-sm rounded-xl border border-emerald-200 focus:outline-none bg-emerald-50/50 transition">
+                                    <button type="button" onclick="startVoiceSearch('product-search')" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-ocopGreen rounded-full cursor-pointer">
+                                        <i class="fa-solid fa-microphone"></i>
+                                    </button>
+                                    <button id="sidebar-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs cursor-pointer rounded-full">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. HỘP QUÀ VOUCHER GIỜ VÀNG (FLASH VOUCHER BOX) -->
+                        <div class="bg-gradient-to-br from-amber-500 via-amber-600 to-yellow-600 text-slate-950 p-3.5 rounded-2xl shadow-lg border border-yellow-200 space-y-2 relative overflow-hidden" style="animation: dealGlow 4s ease-in-out infinite;">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-black uppercase tracking-wider bg-slate-950 text-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                    <i class="fa-solid fa-gift text-amber-400"></i> ƯU ĐÃI HÔM NAY
+                                </span>
+                                <span class="text-xs font-black text-white">-10% ĐƠN ĐẦU</span>
+                            </div>
+                            <p class="text-[11px] text-slate-900 font-bold leading-tight">Nhập mã khi thanh toán để nhận ngay quà tặng OCOP.</p>
+                            <div class="bg-white/95 rounded-xl p-1.5 flex items-center justify-between border border-amber-200">
+                                <span class="font-black text-xs tracking-widest text-emerald-800 ml-1.5 font-mono">OCOP2026</span>
+                                <button onclick="copyToClipboard('OCOP2026', 'Mã ưu đãi OCOP2026')" class="bg-ocopGreen text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg hover:bg-ocopGreenLight transition cursor-pointer">
+                                    Chép mã
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 5. THẺ CAM KẾT AN TÂM MUA SẮM OCOP -->
+                        <div class="bg-gradient-to-br from-emerald-50/90 to-amber-50/70 p-3.5 rounded-2xl border border-emerald-200/70 shadow-xs space-y-2.5">
+                            <div class="flex items-center space-x-2 text-ocopGreen font-black text-xs uppercase tracking-wider">
+                                <i class="fa-solid fa-shield-halved text-amber-600"></i>
+                                <span>Cam Kết Chất Lượng</span>
+                            </div>
+                            <ul class="text-[11px] space-y-2 text-gray-700 font-bold">
+                                <li class="flex items-start space-x-2">
+                                    <i class="fa-solid fa-truck-fast text-emerald-600 mt-0.5 text-xs"></i>
+                                    <span>Freeship toàn quốc từ 500k</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <i class="fa-solid fa-award text-amber-500 mt-0.5 text-xs"></i>
+                                    <span>100% Chính gốc 63 tỉnh thành</span>
+                                </li>
+                                <li class="flex items-start space-x-2">
+                                    <i class="fa-solid fa-rotate-left text-sky-600 mt-0.5 text-xs"></i>
+                                    <span>Đổi trả an tâm trong 7 ngày</span>
+                                </li>
+                            </ul>
+                            <div class="pt-2 border-t border-emerald-200/50 flex items-center justify-between text-[10px] text-gray-500 font-semibold">
+                                <span>Hotline CSKH:</span>
+                                <a href="tel:1900888688" class="text-red-600 font-extrabold hover:underline">1900 888 688</a>
                             </div>
                         </div>
                     </div>
@@ -3456,6 +3660,30 @@
             filterProductsGlobal(document.getElementById('product-search')?.value || '');
         }
 
+        const MACRO_REGIONS = {
+            bac: ["Hà Nội", "Hải Phòng", "Quảng Ninh", "Bắc Giang", "Bắc Ninh", "Hải Dương", "Hưng Yên", "Hà Nam", "Nam Định", "Thái Bình", "Ninh Bình", "Hà Giang", "Cao Bằng", "Bắc Kạn", "Lạng Sơn", "Tuyên Quang", "Thái Nguyên", "Phú Thọ", "Vĩnh Phúc", "Lào Cai", "Yên Bái", "Điện Biên", "Hòa Bình", "Lai Châu", "Sơn La"],
+            trung: ["Thanh Hóa", "Nghệ An", "Hà Tĩnh", "Quảng Bình", "Quảng Trị", "Thừa Thiên Huế", "Đà Nẵng", "Quảng Nam", "Quảng Ngãi", "Bình Định", "Phú Yên", "Khánh Hòa", "Ninh Thuận", "Bình Thuận", "Kon Tum", "Gia Lai", "Đắk Lắk", "Đắk Nông", "Lâm Đồng"],
+            nam: ["TP. Hồ Chí Minh", "Bình Phước", "Bình Dương", "Đồng Nai", "Tây Ninh", "Bà Rịa - Vũng Tàu", "Long An", "Đồng Tháp", "Tiền Giang", "An Giang", "Bến Tre", "Vĩnh Long", "Trà Vinh", "Hậu Giang", "Kiên Giang", "Sóc Trăng", "Bạc Liêu", "Cà Mau", "Cần Thơ"]
+        };
+
+        let currentMacroRegion = null;
+
+        function filterByMacroRegion(macro, btn) {
+            const btns = document.querySelectorAll('.macro-reg-btn');
+            if (currentMacroRegion === macro) {
+                currentMacroRegion = null;
+                btns.forEach(b => b.classList.remove('bg-ocopGreen', 'text-white'));
+                showToast("Hiển thị toàn bộ đặc sản 63 tỉnh thành", "info");
+            } else {
+                currentMacroRegion = macro;
+                btns.forEach(b => b.classList.remove('bg-ocopGreen', 'text-white'));
+                if (btn) btn.classList.add('bg-ocopGreen', 'text-white');
+                const name = macro === 'bac' ? 'Miền Bắc' : (macro === 'trung' ? 'Miền Trung' : 'Miền Nam');
+                showToast("Đang lọc đặc sản " + name, "success");
+            }
+            filterProductsGlobal(document.getElementById('product-search')?.value || '');
+        }
+
         // -------------------------------------------------------------
         // RENDER VÀ LỌC LƯỚI SẢN PHẨM
         // -------------------------------------------------------------
@@ -3474,13 +3702,14 @@
             }
 
             noMsg.style.display = 'none';
-            grid.innerHTML = items.map(p => {
+            grid.innerHTML = items.map((p, idx) => {
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
                 const discountPercent = (p.origPrice && p.origPrice > p.price) ? Math.round(((p.origPrice - p.price) / p.origPrice) * 100) : 0;
+                const isHotSeller = (p.stars === 5 && (p.reviews >= 150 || p.rating >= 4.9)) || p.id <= 3;
                 
-                return `
+                let cardHtml = `
                 <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md hover:shadow-2xl flex flex-col justify-between group relative transition-all duration-300" data-product-id="${p.id}">
                     <div>
                         <div class="product-card-image-wrap relative h-52 sm:h-56 overflow-hidden bg-amber-50">
@@ -3500,8 +3729,12 @@
 
                             <!-- Huy Hiệu Giảm Giá & Nút Yêu Thích -->
                             <div class="absolute top-3 right-3 flex items-center space-x-1.5 z-10">
+                                ${isHotSeller ? `
+                                <span class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-black text-[9px] px-2 py-0.5 rounded-full shadow-md border border-yellow-300/50 flex items-center gap-1 animate-pulse">
+                                    <i class="fa-solid fa-fire text-yellow-300"></i> BÁN CHẠY
+                                </span>` : ''}
                                 ${discountPercent > 0 ? `
-                                <span class="bg-gradient-to-r from-rose-600 to-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md border border-rose-300/40 animate-pulse">
+                                <span class="bg-gradient-to-r from-rose-600 to-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md border border-rose-300/40">
                                     -${discountPercent}%
                                 </span>` : ''}
                                 <button onclick="toggleWishlist(${p.id})" aria-label="Yêu thích" class="w-8 h-8 rounded-full bg-white/90 backdrop-blur-md text-red-500 flex items-center justify-center hover:scale-110 active:scale-95 transition shadow-md cursor-pointer border border-rose-100 group/heart">
@@ -3550,6 +3783,33 @@
                     </div>
                 </div>
                 `;
+
+                // Chèn banner cảm hứng giữa dòng sản phẩm khi lướt (Mid-feed Banner sau 3 hàng)
+                if (idx === 8 && items.length >= 10) {
+                    cardHtml += `
+                    <div class="col-span-1 sm:col-span-2 xl:col-span-3 my-4 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-900 text-white shadow-2xl border-2 border-amber-400/40 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-amber-400/15 rounded-full blur-2xl pointer-events-none"></div>
+                        <div class="space-y-2.5 max-w-xl text-center md:text-left relative z-10">
+                            <div class="inline-flex items-center gap-1.5 bg-amber-400 text-emerald-950 font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                                <i class="fa-solid fa-award text-amber-900"></i>
+                                <span>Tự Hào Nông Sản 63 Tỉnh Thành</span>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-black text-amber-100 tracking-tight">Mỗi món đặc sản là một câu chuyện văn hóa</h3>
+                            <p class="text-xs text-emerald-100/85 leading-relaxed font-medium">
+                                Kết nối trực tiếp người tiêu dùng tới các làng nghề truyền thống và hợp tác xã OCOP. Nông sản sạch 100% kiểm định nguồn gốc.
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 shrink-0 relative z-10 flex-wrap justify-center">
+                            <button onclick="toggleAIChat()" class="bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-500 text-slate-950 px-5 py-3 rounded-2xl font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition flex items-center space-x-2 cursor-pointer border border-yellow-200">
+                                <i class="fa-solid fa-wand-magic-sparkles text-amber-900"></i>
+                                <span>Nhờ AI gợi ý món ngon</span>
+                            </button>
+                        </div>
+                    </div>
+                    `;
+                }
+
+                return cardHtml;
             }).join('');
         }
 
@@ -3583,6 +3843,11 @@
                 else filtered = filtered.filter(p => p.category === currentCategory);
             }
 
+            if (currentMacroRegion && MACRO_REGIONS[currentMacroRegion]) {
+                const allowedProvinces = MACRO_REGIONS[currentMacroRegion].map(normalizeProvinceName);
+                filtered = filtered.filter(p => allowedProvinces.includes(normalizeProvinceName(p.region)));
+            }
+
             if (selectedProvince) {
                 const selectedProvinceName = normalizeProvinceName(selectedProvince.name);
                 filtered = filtered.filter(product => normalizeProvinceName(product.region) === selectedProvinceName);
@@ -3611,6 +3876,30 @@
 
             renderProducts(sortedFiltered);
             updateProvinceSelectionStatus(sortedFiltered.length);
+        }
+
+        // Lắng nghe sự kiện cuộn trang để cập nhật thanh tiến trình và nút lên đầu trang
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+            const bar = document.getElementById('scroll-progress-bar');
+            if (bar) bar.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
+
+            const btt = document.getElementById('back-to-top-btn');
+            if (btt) {
+                if (winScroll > 320) {
+                    btt.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-6');
+                    btt.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    btt.classList.add('opacity-0', 'pointer-events-none', 'translate-y-6');
+                    btt.classList.remove('opacity-100', 'translate-y-0');
+                }
+            }
+        }, { passive: true });
+
+        function scrollToTopSmooth() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function normalizeSearchText(value) {
@@ -4180,6 +4469,8 @@
             currentSortMode = 'default';
             const sortSelect = document.getElementById('product-sort-select');
             if (sortSelect) sortSelect.value = 'default';
+            currentMacroRegion = null;
+            document.querySelectorAll('.macro-reg-btn').forEach(b => b.classList.remove('bg-ocopGreen', 'text-white'));
             if (selectedProvince) clearSelectedProvince();
             setCategoryFilter('all');
             clearSearchInput();
