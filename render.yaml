@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ocop-sales-copilot
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    autoDeploy: true
