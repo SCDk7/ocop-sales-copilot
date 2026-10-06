@@ -2673,7 +2673,7 @@
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
                     <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
-                        <img src="chat-avatar.svg" alt="Trợ lý AI OCOP" class="w-full h-full rounded-2xl object-cover ring-2 ring-ocopGold shadow">
+                        <img src="chat-avatar.jpg" alt="Trợ lý AI OCOP" class="w-full h-full rounded-2xl object-cover ring-2 ring-ocopGold shadow">
                         <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white animate-pulse"></span>
                     </div>
                     <div>
@@ -2694,7 +2694,7 @@
             
             <div id="ai-chat-messages" class="min-h-0 flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs" role="log" aria-live="polite" aria-relevant="additions">
                 <div class="flex items-start space-x-2">
-                    <img src="chat-avatar.svg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <img src="chat-avatar.jpg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
                         <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.</p>
@@ -2726,7 +2726,7 @@
         </div>
         
         <button id="ai-chat-toggle-btn" type="button" onclick="toggleAIChat()" aria-label="Mở trò chuyện với trợ lý AI OCOP" class="relative z-10 group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer pointer-events-auto">
-            <img src="chat-avatar.svg" alt="Mở trò chuyện với trợ lý AI OCOP" class="w-full h-full rounded-full object-cover p-0.5 pointer-events-none">
+            <img src="chat-avatar.jpg" alt="Mở trò chuyện với trợ lý AI OCOP" class="w-full h-full rounded-full object-cover p-0.5 pointer-events-none">
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow animate-pulse pointer-events-none">AI</span>
             <span class="absolute right-full mr-3 bg-ocopGreenDark/95 text-amber-200 text-[11px] font-semibold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-xl border border-ocopGold/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">Hỏi OCOP AI tư vấn ✨</span>
         </button>
@@ -5004,7 +5004,7 @@ async function sendAIMessage() {
             const loadingId = 'ai-loading-' + ++aiMessageSequence;
             messagesEl.insertAdjacentHTML('beforeend', `
                 <div id="${loadingId}" class="flex items-start space-x-2">
-                    <img src="chat-avatar.svg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <img src="chat-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-500 text-xs shadow-sm flex items-center space-x-1.5">
                         <i class="fa-solid fa-spinner fa-spin text-ocopGreen"></i>
                         <span>${messageImages.length
@@ -5060,7 +5060,7 @@ async function sendAIMessage() {
                 const reply = document.createElement('div');
                 reply.className = 'flex items-start space-x-2';
                 reply.innerHTML = `
-                    <img src="chat-avatar.svg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <img src="chat-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
                         <p class="whitespace-pre-wrap"></p>
                         <div class="ai-product-recommendations"></div>
@@ -5175,7 +5175,7 @@ async function sendAIMessage() {
                 const failure = document.createElement('div');
                 failure.className = 'flex items-start space-x-2';
                 failure.innerHTML = `
-                    <img src="chat-avatar.svg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                    <img src="chat-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
                         <p class="ai-error-message"></p>
                     </div>
@@ -5594,7 +5594,7 @@ async function sendAIMessage() {
             const wrapper = document.createElement('div');
             wrapper.className = 'flex items-start space-x-2';
             wrapper.innerHTML = `
-                <img src="chat-avatar.svg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+                <img src="chat-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                 <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] break-words"></div>
             `;
             wrapper.lastElementChild.textContent = message;
