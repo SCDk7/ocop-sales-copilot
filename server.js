@@ -461,7 +461,7 @@ function getAIModelConfiguration() {
     throw error;
   }
 
-  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const model = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
   if (!/^[a-zA-Z0-9._-]+$/.test(model)) {
     const error = new Error('Cấu hình mô hình AI không hợp lệ.');
     error.status = 500;
@@ -583,7 +583,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
 
   // ── Wikipedia RAG context block ──────────────────────────────────────────────
   const wikiContext = wikiSources.length
-    ? `\n[Ngữ cảnh tri thức văn hóa & địa lý từ Wikipedia tiếng Việt]:\n${wikiSources.map(s => `• ${s.title}: ${s.extract}`).join("\n\n")}`
+    ? `\n[${language === 'en' ? 'Cultural and geographical context from English Wikipedia' : 'Ngữ cảnh tri thức văn hóa & địa lý từ Wikipedia tiếng Việt'}]:\n${wikiSources.map(s => `• ${s.title}: ${s.extract}`).join("\n\n")}`
     : "\n[Không có ngữ cảnh Wikipedia bổ sung].";
 
   const languageInstruction = language === "en"
@@ -677,14 +677,19 @@ const wikipediaSearchCache = new Map();
 const WIKIPEDIA_CACHE_TTL_MS = 10 * 60 * 1000;
 
 async function searchVietnameseWikipedia(query) {
+  return searchWikipedia(query, 'vi');
+}
+
+async function searchWikipedia(query, language = 'vi') {
+  const wikiLanguage = language === 'en' ? 'en' : 'vi';
   const searchText = String(query || '').replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 180);
   if (searchText.length < 3) return [];
 
-  const cacheKey = searchText.toLocaleLowerCase('vi');
+  const cacheKey = `${wikiLanguage}:${searchText.toLocaleLowerCase(wikiLanguage)}`;
   const cached = wikipediaSearchCache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) return cached.sources;
 
-  const endpoint = new URL('https://vi.wikipedia.org/w/api.php');
+  const endpoint = new URL(`https://${wikiLanguage}.wikipedia.org/w/api.php`);
   endpoint.search = new URLSearchParams({
     action: 'query', generator: 'search', gsrsearch: searchText, gsrnamespace: '0', gsrlimit: '3',
     prop: 'extracts', exintro: '1', explaintext: '1', exchars: '900', format: 'json', formatversion: '2'
@@ -704,7 +709,7 @@ async function searchVietnameseWikipedia(query) {
       .map(page => ({
         title: page.title.slice(0, 180),
         extract: page.extract.replace(/\s+/g, ' ').slice(0, 900),
-        url: `https://vi.wikipedia.org/?curid=${page.pageid}`
+        url: `https://${wikiLanguage}.wikipedia.org/?curid=${page.pageid}`
       }));
     wikipediaSearchCache.set(cacheKey, { sources, expiresAt: Date.now() + WIKIPEDIA_CACHE_TTL_MS });
     if (wikipediaSearchCache.size > 200) wikipediaSearchCache.delete(wikipediaSearchCache.keys().next().value);
@@ -769,7 +774,7 @@ function extractSearchIntents(queryText, products = []) {
 
   const isShipping = /(ship|giao hang|van chuyen|phi ship|bao lau|nhan hang|phi van chuyen|cod|thanh toan khi nhan|hoa toc|toan quoc)/.test(normalized);
 
-  const isOcopKnowledge = /(ocop la gi|y nghia ocop|tieu chuan ocop|4 sao|5 sao|sao ocop|truy xuat|chinh hang|nguon goc)/.test(normalized);
+  const isOcopKnowledge = /(ocop la gi|y nghia ocop|tieu chuan ocop|sao ocop|truy xuat|chinh hang|nguon goc)/.test(normalized) || /(?:4|5|bon|nam)\s*sao.*(?:la gi|nghia la|khac nhau|khac gi|tieu chuan)|(?:phan biet|so sanh|tieu chuan).*?(?:4|5|bon|nam)\s*sao/.test(normalized);
 
   const isUsage = /(cach dung|cach pha|cach che bien|huong dan su dung|cach nau|cach uong|cach bao quan|pha tra|chung yen)/.test(normalized);
 
@@ -788,7 +793,7 @@ function extractSearchIntents(queryText, products = []) {
   }
 
   let minStars = null;
-  if (/5\s*sao|nam\s*sao|thuong hang|hang nhat|xuat sac/.test(normalized)) minStars = 5;
+  if (/5\s*(?:sao|s\b)|nam\s*sao|thuong hang|hang nhat|xuat sac/.test(normalized)) minStars = 5;
   else if (/4\s*sao|bon\s*sao/.test(normalized)) minStars = 4;
 
   let isGift = /bieu|tang|sep|doi tac|bo me|ong ba|tet|mung|le|tri an|suc khoe/.test(normalized);
@@ -1016,6 +1021,10 @@ function buildLocalFallbackReply(query, products = [], language = "vi") {
   let conclusion = "Mỗi sản phẩm đều được các nghệ nhân chế biến theo bí quyết truyền thống và đạt chứng nhận OCOP quốc gia. Anh/Chị nhấn vào nút để xem chi tiết hoặc thêm ngay vào giỏ hàng nhé!";
   let dynamic_chips = ["⭐ 5 sao", "🎁 Quà biếu", "💰 Dưới 200k", "🍵 Trà"];
 
+  if (intent.minStars === 5) {
+    intro = english ? 'Here are some representative 5-star OCOP products from our catalogue:' : 'Dạ, em giới thiệu một số đặc sản OCOP 5 sao tiêu biểu trong danh mục để Anh/Chị tham khảo:';
+  }
+
   if (intent.categoryOrKeyword === "trà") {
     intro = "Dạ, nói đến nghệ thuật thưởng trà Việt Nam, núi cao Tây Bắc và Thái Nguyên lưu giữ những búp trà thượng hạng kết tinh từ sương gió đất trời. Em trân trọng gợi ý danh trà đạt chuẩn 5 sao:";
     conclusion = "Khi thưởng thức, Anh/Chị nên tráng ấm nước sôi 85-90°C để giữ trọn sắc nước xanh trong và hậu vị ngọt sâu lan tỏa.";
@@ -1208,14 +1217,14 @@ async function handleAIChatRequest(req, res) {
   const normalizedQuery = lastUserMessage.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase();
   const includesPrivateDetails = /\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b|\+?\d[\d ()-]{7,}\d|\b(otp|password|mat khau|ma don hang|order number)\b/i.test(lastUserMessage);
   
-  // RAG: Query Wikipedia when user asks about culture, regions, or raw ingredients
+  // RAG: Use the Wikipedia edition matching the selected interface language.
   const hasCulturalOrProductEntity = /\b(tra|che|yen|yen sao|mat ong|ca phe|gao|ruou|hat|tay bac|ha giang|mien tay|mien trung|tay nguyen|ben tre|dak lak|khanh hoa|hue|sa pa|moc chau)\b/.test(normalizedQuery);
   const isPureAdministrativeIssue = /\b(khieu nai|doi tra|tra hang|hoan tien|chuyen khoan|mat tien|chua nhan hang)\b/.test(normalizedQuery);
 
   let wikiSources = [];
   if (!attachedImages.length && !includesPrivateDetails && (!isPureAdministrativeIssue || hasCulturalOrProductEntity)) {
     try {
-      wikiSources = await searchVietnameseWikipedia(lastUserMessage);
+      wikiSources = await searchWikipedia(lastUserMessage, validation.language);
     } catch (wikiErr) {
       console.warn('Wikipedia fetch ignored on error:', wikiErr.message);
       wikiSources = [];
