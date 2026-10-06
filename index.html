@@ -2426,17 +2426,17 @@
                                     <i class="fa-solid fa-map-location-dot text-amber-600"></i>
                                     <span>Khám Phá 3 Miền</span>
                                 </span>
-                                <span class="text-[10px] text-gray-400 font-normal">Ghim vùng</span>
+                                <span id="macro-region-hint" class="text-[10px] text-gray-400 font-normal">Số sản phẩm</span>
                             </div>
                             <div class="grid grid-cols-3 gap-1.5 text-[11px] font-extrabold" id="macro-region-pills">
-                                <button onclick="filterByMacroRegion('bac', this)" class="macro-reg-btn px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-ocopGreen hover:text-white transition text-center border border-amber-200 cursor-pointer">
-                                    🏔️ Bắc (25)
+                                <button data-macro-region="bac" aria-pressed="false" onclick="filterByMacroRegion('bac', this)" class="macro-reg-btn px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-ocopGreen hover:text-white transition text-center border border-amber-200 cursor-pointer">
+                                    🏔️ Bắc
                                 </button>
-                                <button onclick="filterByMacroRegion('trung', this)" class="macro-reg-btn px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-ocopGreen hover:text-white transition text-center border border-amber-200 cursor-pointer">
-                                    🌊 Trung (19)
+                                <button data-macro-region="trung" aria-pressed="false" onclick="filterByMacroRegion('trung', this)" class="macro-reg-btn px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-ocopGreen hover:text-white transition text-center border border-amber-200 cursor-pointer">
+                                    🌊 Trung
                                 </button>
-                                <button onclick="filterByMacroRegion('nam', this)" class="macro-reg-btn px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-ocopGreen hover:text-white transition text-center border border-amber-200 cursor-pointer">
-                                    🌴 Nam (33)
+                                <button data-macro-region="nam" aria-pressed="false" onclick="filterByMacroRegion('nam', this)" class="macro-reg-btn px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-ocopGreen hover:text-white transition text-center border border-amber-200 cursor-pointer">
+                                    🌴 Nam
                                 </button>
                             </div>
                         </div>
@@ -3664,12 +3664,31 @@
 
         let currentMacroRegion = null;
 
+        function productMatchesMacroRegion(product, macro) {
+            const province = normalizeProvinceName(product.region);
+            return (MACRO_REGIONS[macro] || []).some(name => normalizeProvinceName(name) === province);
+        }
+
+        function updateMacroRegionCounts() {
+            const english = currentLanguage === 'en';
+            const labels = { bac: english ? 'North' : 'Bắc', trung: english ? 'Central' : 'Trung', nam: english ? 'South' : 'Nam' };
+            const icons = { bac: '🏔️', trung: '🌊', nam: '🌴' };
+            document.querySelectorAll('[data-macro-region]').forEach(button => {
+                const macro = button.dataset.macroRegion;
+                const count = products.filter(product => productMatchesMacroRegion(product, macro)).length;
+                button.textContent = `${icons[macro]} ${labels[macro]} (${count})`;
+                button.title = english ? `${count} products in this region. Click again to clear.` : `${count} sản phẩm thuộc miền này. Bấm lần nữa để bỏ lọc.`;
+                button.setAttribute('aria-pressed', String(currentMacroRegion === macro));
+            });
+            document.getElementById('macro-region-hint').textContent = english ? 'Products' : 'Số sản phẩm';
+        }
+
         function filterByMacroRegion(macro, btn) {
             const btns = document.querySelectorAll('.macro-reg-btn');
             if (currentMacroRegion === macro) {
                 currentMacroRegion = null;
                 btns.forEach(b => b.classList.remove('bg-ocopGreen', 'text-white'));
-                showToast("Hiển thị toàn bộ đặc sản 63 tỉnh thành", "info");
+                showToast(currentLanguage === 'en' ? 'Showing products from all regions' : 'Hiển thị đặc sản tất cả các miền', "info");
             } else {
                 currentMacroRegion = macro;
                 btns.forEach(b => b.classList.remove('bg-ocopGreen', 'text-white'));
@@ -3677,6 +3696,7 @@
                 const name = macro === 'bac' ? 'Miền Bắc' : (macro === 'trung' ? 'Miền Trung' : 'Miền Nam');
                 showToast("Đang lọc đặc sản " + name, "success");
             }
+            updateMacroRegionCounts();
             filterProductsGlobal(document.getElementById('product-search')?.value || '');
         }
 
@@ -3839,8 +3859,7 @@
             }
 
             if (currentMacroRegion && MACRO_REGIONS[currentMacroRegion]) {
-                const allowedProvinces = MACRO_REGIONS[currentMacroRegion].map(normalizeProvinceName);
-                filtered = filtered.filter(p => allowedProvinces.includes(normalizeProvinceName(p.region)));
+                filtered = filtered.filter(product => productMatchesMacroRegion(product, currentMacroRegion));
             }
 
             if (selectedProvince) {
@@ -6849,6 +6868,7 @@ async function sendAIMessage() {
         };
 
         function updateCatalogCounts() {
+            updateMacroRegionCounts();
             const counts = {
                 all: products.length,
                 tea: products.filter(product => product.category === 'tea').length,
