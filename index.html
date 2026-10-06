@@ -1540,7 +1540,7 @@
                                 <span class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">Lộc Vàng AI • Bốc Thẻ May Mắn</span>
                                 <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse uppercase shadow">Lì Xì OCOP</span>
                             </div>
-                            <p class="text-[11px] text-amber-100/90 font-medium mt-0.5">Bốc thẻ may mắn nhận ngay voucher 50.000đ hoặc Miễn phí giao hàng toàn quốc</p>
+                            <p class="text-[11px] text-black font-medium mt-0.5">Bốc thẻ nhận ưu đãi theo giá trị đơn, áp dụng một mã cho mỗi khách hàng.</p>
                         </div>
                     </div>
                     <button id="btn-draw-gift" onclick="openLuckyGift()" class="intro-mega-btn w-full sm:w-auto flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition flex items-center justify-center space-x-2 cursor-pointer">
@@ -1553,14 +1553,14 @@
                 <div id="intro-gift-result" class="hidden mt-3 pt-3 border-t border-amber-400/40 animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-black/60 p-3 rounded-2xl backdrop-blur-md">
                     <div class="flex items-center space-x-2.5 text-left">
                         <span class="text-xs text-amber-300 font-black uppercase flex items-center"><i class="fa-solid fa-gift mr-1 text-ocopGold"></i> MÃ LỘC:</span>
-                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner">OCOP-TINHOA50</span>
+                        <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner">OCOP-QUA30</span>
                         <button onclick="copyToClipboard(document.getElementById('lucky-gift-code').innerText, 'Mã voucher OCOP');" class="text-xs bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-ocopGreen font-black px-3 py-1 rounded-lg transition flex items-center space-x-1 cursor-pointer shadow">
                             <i class="fa-regular fa-copy"></i>
                             <span>Sao chép</span>
                         </button>
                     </div>
-                    <span class="text-[11px] sm:text-xs text-emerald-300 font-extrabold flex items-center">
-                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-400 text-sm"></i> Đã tự động kích hoạt giảm 50.000đ vào đơn hàng!
+                    <span id="lucky-gift-description" class="text-[11px] sm:text-xs text-black font-extrabold flex items-center">
+                        <i class="fa-solid fa-circle-check mr-1.5 text-emerald-700 text-sm"></i> Giảm 30.000đ cho đơn từ 500.000đ.
                     </span>
                 </div>
             </div>
@@ -2223,6 +2223,10 @@
                         <span id="i18n-cart-shipping">Phí vận chuyển:</span>
                         <span class="font-bold text-emerald-700" id="i18n-free-shipping">Miễn phí toàn quốc</span>
                     </div>
+                    <div id="cart-voucher-row" class="hidden flex justify-between text-emerald-800">
+                        <span id="cart-voucher-label">Ưu đãi voucher:</span>
+                        <span id="cart-voucher-discount" class="font-bold">-0 ₫</span>
+                    </div>
                     <div class="flex justify-between text-sm font-extrabold pt-1.5 border-t border-amber-200 text-gray-900">
                         <span id="i18n-cart-total">Tổng cộng:</span>
                         <span id="cart-total" class="text-red-600">0 ₫</span>
@@ -2417,6 +2421,12 @@
         // Biến trạng thái toàn cục
         let cart = [];
         let wishlist = [];
+        let activeVoucher = null;
+        const luckyVoucherOffers = [
+            { code: 'OCOP-QUA30', discount: 30000, minOrder: 500000 },
+            { code: 'OCOP-COMBO60', discount: 60000, minOrder: 1200000 },
+            { code: 'OCOP-TINHHOA100', discount: 100000, minOrder: 2000000 }
+        ];
         let currentCategory = 'all';
         function getSavedLanguage() {
             try {
@@ -2753,16 +2763,22 @@
         function openLuckyGift() {
             const resultEl = document.getElementById('intro-gift-result');
             const btnEl = document.getElementById('btn-draw-gift');
+            const voucher = luckyVoucherOffers[Math.floor(Math.random() * luckyVoucherOffers.length)];
+            activeVoucher = voucher;
             resultEl.classList.remove('hidden');
+            document.getElementById('lucky-gift-code').innerText = voucher.code;
+            document.getElementById('lucky-gift-description').innerHTML =
+                `<i class="fa-solid fa-circle-check mr-1.5 text-emerald-700 text-sm"></i>Giảm ${voucher.discount.toLocaleString('vi-VN')}đ cho đơn từ ${voucher.minOrder.toLocaleString('vi-VN')}đ. Áp dụng một lần, không cộng dồn ưu đãi.`;
             btnEl.innerHTML = `<i class="fa-solid fa-check-double text-ocopGreen"></i><span>Đã Nhận Lộc Vàng</span>`;
             btnEl.disabled = true;
             btnEl.classList.add('opacity-80', 'cursor-not-allowed');
+            renderCartItems();
 
             // Bắn pháo hoa vàng kim & phát âm thanh chuông may mắn!
             triggerGoldConfetti();
             playChimeSound();
 
-            showToast("Chúc mừng! Bạn nhận được Voucher Lộc Vàng giảm 50.000đ!", "success");
+            showToast(`Chúc mừng! Bạn nhận được ${voucher.code}: giảm ${voucher.discount.toLocaleString('vi-VN')}đ.`, "success");
         }
 
         function scrollToProducts() {
@@ -4977,15 +4993,28 @@ async function sendAIMessage(retryImageSearch = null) {
             document.getElementById('cart-count').innerText = totalQty;
         }
 
+        function getCartSubtotal() {
+            return cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        }
+
+        function getVoucherDiscount(subtotal = getCartSubtotal()) {
+            if (!activeVoucher || subtotal < activeVoucher.minOrder) return 0;
+            return Math.min(activeVoucher.discount, subtotal);
+        }
+
         function renderCartItems() {
             const container = document.getElementById('cart-items');
             const subtotalEl = document.getElementById('cart-subtotal');
             const totalEl = document.getElementById('cart-total');
+            const voucherRow = document.getElementById('cart-voucher-row');
+            const voucherLabel = document.getElementById('cart-voucher-label');
+            const voucherDiscount = document.getElementById('cart-voucher-discount');
 
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${currentLanguage === 'en' ? 'Your cart is empty.' : 'Giỏ hàng của bạn đang trống.'}</p>`;
                 subtotalEl.innerText = "0 ₫";
                 totalEl.innerText = "0 ₫";
+                voucherRow.classList.add('hidden');
                 return;
             }
 
@@ -5010,8 +5039,19 @@ async function sendAIMessage(retryImageSearch = null) {
                 `;
             }).join('');
 
+            const discount = getVoucherDiscount(subtotal);
             subtotalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
-            totalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
+            if (activeVoucher) {
+                voucherRow.classList.remove('hidden');
+                const minOrder = activeVoucher.minOrder.toLocaleString('vi-VN') + " ₫";
+                voucherLabel.innerText = discount
+                    ? `${activeVoucher.code} đã áp dụng`
+                    : `${activeVoucher.code}: đơn từ ${minOrder}`;
+                voucherDiscount.innerText = discount ? `-${discount.toLocaleString('vi-VN')} ₫` : "Chưa đủ điều kiện";
+            } else {
+                voucherRow.classList.add('hidden');
+            }
+            totalEl.innerText = (subtotal - discount).toLocaleString('vi-VN') + " ₫";
         }
 
         function checkout() {
@@ -5020,7 +5060,7 @@ async function sendAIMessage(retryImageSearch = null) {
                 return;
             }
 
-            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            const totalAmount = getCartSubtotal() - getVoucherDiscount();
             currentOrderCode = `OCOP-${Math.floor(100000 + Math.random() * 900000)}`;
             const memo = `THANH TOAN ${currentOrderCode}`;
 
@@ -5048,7 +5088,7 @@ async function sendAIMessage(retryImageSearch = null) {
             }
 
             closeQRModal();
-            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            const totalAmount = getCartSubtotal() - getVoucherDiscount();
             const itemNames = cart.map(i => i.name);
 
             // Lưu lịch sử đơn hàng
@@ -5061,6 +5101,7 @@ async function sendAIMessage(retryImageSearch = null) {
             });
 
             cart = [];
+            activeVoucher = null;
             currentOrderCode = null;
             updateCartBadge();
             renderCartItems();
@@ -5750,7 +5791,7 @@ async function sendAIMessage(retryImageSearch = null) {
             const english = currentLanguage === 'en';
             const labels = [
                 ['#intro-lucky-card .tracking-wide', 'AI Lucky Draw ? Take your chance'],
-                ['#intro-lucky-card > div:first-child > div > div > p', 'Try your luck to win a VND 50,000 voucher or nationwide free shipping.'],
+                ['#intro-lucky-card > div:first-child > div > div > p', 'Draw an order-value voucher for your next purchase.'],
                 ['#btn-draw-gift span', 'Draw a lucky voucher'],
                 ['#intro-gift-result .text-amber-300', 'VOUCHER CODE:'],
                 ['#intro-gift-result button span', 'Copy code'],
