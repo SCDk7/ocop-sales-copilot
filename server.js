@@ -1428,14 +1428,16 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     }
     const normalizedAnswer = message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     const imageNeedsClarification = /khong ro|chua ro|khong the nhan dang|chua the nhan dang|khong nhan dien duoc|chua nhan dien duoc|anh khong ro|cannot identify|can't identify|unclear image|image is unclear/.test(normalizedAnswer);
-    if (isImageLookup && imageMatchStatus !== 'exact') {
+    if (isImageLookup && imageMatchStatus !== 'exact' && answer.understandingStatus === 'understood') {
       const relatedProductIds = imageMatchStatus === 'similar' ? productIds.slice(0, 2) : [];
-      const featuredProductIds = getFeaturedProductIds(validation.products)
-        .filter(id => !relatedProductIds.includes(id));
-      productIds = [...relatedProductIds, ...featuredProductIds].slice(0, 3);
-      const prefix = validation.language === 'en'
-        ? 'I could not identify the exact product in the image. Below are related catalogue products and a few featured OCOP products for your reference.'
-        : 'Dạ, mình chưa nhận ra chính xác sản phẩm trong ảnh. Dưới đây là một số sản phẩm tương tự và một số sản phẩm OCOP nổi bật để Anh/Chị tham khảo.';
+      productIds = relatedProductIds;
+      const prefix = imageMatchStatus === 'similar'
+        ? validation.language === 'en'
+          ? 'I could not confirm the exact product. Here are similar catalogue products for reference.'
+          : 'Dạ, em chưa xác nhận được đúng sản phẩm. Đây là các sản phẩm tương tự trong danh mục để Anh/Chị tham khảo.'
+        : validation.language === 'en'
+          ? 'I could not identify this product. Please send a clearer photo of its label or tell me its name.'
+          : 'Dạ, em chưa nhận diện được sản phẩm này. Anh/Chị gửi ảnh nhãn rõ hơn hoặc cho em biết tên sản phẩm nhé.';
       const shouldKeepModelDetail = imageMatchStatus === 'similar' && !imageNeedsClarification;
       message = shouldKeepModelDetail ? `${prefix}\n\n${message}` : prefix;
     }
@@ -1454,7 +1456,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       body: {
         text_response: message,
         suggested_products: productIds,
-        dynamic_chips: dynamic_chips.length > 0 ? dynamic_chips : answer.understandingStatus === 'needs_clarification' ? [] : ["Quà biếu", "5 sao", "Dưới 200k"],
+        dynamic_chips: answer.understandingStatus === 'needs_clarification' || (isImageLookup && imageMatchStatus === 'unknown') ? [] : dynamic_chips,
         message,
         productIds,
         imageMatchStatus,
@@ -1599,6 +1601,7 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
       });
     }
     if (!answer || typeof answer.transcription !== 'string' || !answer.transcription.trim() ||
+        !['understood', 'needs_clarification'].includes(answer.understandingStatus) ||
         typeof answer.message !== 'string' || !answer.message.trim() ||
         !Array.isArray(answer.productIds) || typeof answer.handoffAdmin !== 'boolean') {
       console.error('Gemini audio response did not match the expected schema.');
