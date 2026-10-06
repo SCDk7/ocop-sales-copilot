@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="ocop-api-base" content="">
     <title>OCOP Sales Copilot - 48 Đặc Sản Việt Nam</title>
     
     <!-- Tailwind CSS CDN -->
@@ -3521,6 +3522,8 @@
         }
 
         function getAIEndpoint(path) {
+            const configuredBase = document.querySelector('meta[name="ocop-api-base"]')?.content.trim();
+            if (configuredBase) return new URL(path, configuredBase.endsWith('/') ? configuredBase : `${configuredBase}/`).toString();
             return window.location.protocol === 'file:' ? `http://localhost:3000${path}` : path;
         }
 
@@ -3607,7 +3610,12 @@
                 });
                 const result = await response.json().catch(() => ({}));
                 if (!response.ok) {
-                    throw new Error(result.error || (currentLanguage === 'en'
+                    const missingAPIMessage = response.status === 404
+                        ? (currentLanguage === 'en'
+                            ? 'Image upload is not configured on this static website yet. Please contact the site administrator.'
+                            : 'Máy chủ nhận ảnh chưa được cấu hình cho trang web này. Vui lòng liên hệ quản trị viên.')
+                        : '';
+                    throw new Error(result.error || missingAPIMessage || (currentLanguage === 'en'
                         ? 'Unable to save the images.'
                         : 'Không thể lưu ảnh.'));
                 }
@@ -3795,7 +3803,9 @@
                         });
                         result = await response.json().catch(() => ({}));
                         if (!response.ok) {
-                            if (response.status === 503) {
+                            // Static hosts often serve the page without mounting the Express API.
+                            // Keep text recommendations usable when the chat route is missing or offline.
+                            if ([404, 405, 502, 503].includes(response.status)) {
                                 result = createLocalCatalogReply(text, messageImages.length > 0);
                             } else {
                                 throw new Error(result.error || (currentLanguage === 'en'

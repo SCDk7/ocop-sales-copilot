@@ -82,3 +82,19 @@ number of attempts. Protect this file as personal data, back it up securely, and
 use a managed database with appropriate access controls for production. Since
 customer login uses the full name as requested, each registered full name must
 be unique.
+
+## GitHub Pages and public API hosting
+
+GitHub Pages serves only the static storefront; it does not run `server.js`.
+For a Pages deployment, host this Node server separately over HTTPS, set the
+`AI_CORS_ORIGINS` environment variable on that server to the exact storefront
+origin (for example, `https://scdk7.github.io`), and set the
+`ocop-api-base` meta tag in `index.html` to the backend origin (for example,
+`https://your-api.example.com`). Do not include a path in the backend URL.
+Keep Gemini and other secrets in the backend host's environment settings.
+
+Chat text recommendations have a local catalogue fallback if the API is
+unavailable. Image uploads and Gemini replies require the separately hosted
+API. The server stores customer records and uploaded images on disk, so a
+production host must provide persistent private storage and HTTPS; ephemeral
+server filesystems will lose that data after a restart or redeploy.

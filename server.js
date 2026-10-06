@@ -57,6 +57,9 @@ const AUDIO_ADMIN_SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 const FILE_ORIGIN_AI_ROUTES = new Set([
   '/api/ai/chat', '/api/ai/catalog', '/api/ai/images', '/api/ai/search-image', '/api/ai/audio-chat'
 ]);
+const configuredAICorsOrigins = new Set(
+  (process.env.AI_CORS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean)
+);
 const pendingRegistrations = new Map();
 const otpSentAt = new Map();
 const loginAttempts = new Map();
@@ -66,9 +69,15 @@ const audioAdminLoginAttempts = new Map();
 const audioAdminSessions = new Map();
 
 app.use((req, res, next) => {
-  if (!FILE_ORIGIN_AI_ROUTES.has(req.path) || req.headers.origin !== 'null') return next();
+  if (!FILE_ORIGIN_AI_ROUTES.has(req.path)) return next();
 
-  res.setHeader('Access-Control-Allow-Origin', 'null');
+  const origin = req.headers.origin;
+  const allowedOrigin = origin === 'null'
+    ? 'null'
+    : configuredAICorsOrigins.has(origin) ? origin : null;
+  if (!allowedOrigin) return next();
+
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
   res.setHeader('Vary', 'Origin');
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
