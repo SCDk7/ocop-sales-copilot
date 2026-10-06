@@ -30,7 +30,7 @@ test('follow-up budget keeps requirements; new product request resets them', () 
 test('closest combo agrees with exhaustive search, never exceeds budget', () => {
   for (let seed = 1; seed <= 35; seed++) {
     const products = Array.from({ length: 12 }, (_, id) => ({ id, name: String(id), price: ((id * 37 + seed * 19) % 130 + 10) * 1000 }));
-    const intent = { maxPrice: seed * 13000, minPrice: seed * 5000 };
+    const intent = { maxPrice: seed * 13000, minPrice: seed * 5000, smallItems: true };
     let expected = 0;
     for (let mask = 1; mask < 2 ** products.length; mask++) {
       const items = products.filter((_, index) => mask & (1 << index));
@@ -55,11 +55,51 @@ test('combos can contain six or more items and prefer variety at equal totals', 
   assert.equal(six.items.length, 6);
   assert.equal(six.total, 600000);
   assert.equal(shopping.closest(products, { maxPrice: 800000 }).items.length, 8);
-  const diverse = shopping.closest([...products, { id: 9, price: 400000 }], { maxPrice: 600000 });
+  const diverse = shopping.closest([...products, { id: 9, price: 400000 }], { maxPrice: 600000, smallItems: true });
   assert.equal(diverse.items.length, 6);
   const rated = shopping.closest([{ id: 1, price: 100000, rating: 3 }, { id: 2, price: 100000, rating: 5 }, { id: 3, price: 200000, rating: 5 }], { maxPrice: 300000 });
   assert.deepEqual(rated.items.map(p => p.id), [2, 3]);
   assert.match(shopping.reply(six, {}, 'vi').message, /6 món/);
+});
+
+test('six million budget prefers substantial items instead of dozens of cheap fillers', () => {
+  const data = require('./data.js');
+  const products = Array.isArray(data) ? data : data.PRODUCTS || data.products;
+  const plan = shopping.closest(products, { maxPrice: 6000000 });
+  assert.ok(plan);
+  assert.ok(plan.total <= 6000000);
+  assert.ok(plan.items.length <= 8);
+  assert.ok(plan.items.every(product => product.price >= 750000));
+  assert.ok(plan.averagePrice >= 750000);
+  const cheap = shopping.closest(products, { maxPrice: 6000000, smallItems: true, perItemMax: 100000 });
+  assert.ok(cheap.items.every(product => product.price <= 100000));
+  assert.ok(cheap.items.length > plan.items.length);
+});
+
+test('latest budget and preferences replace old values without interpreting per-item caps as total', () => {
+  const products = [{ region: 'Hà Giang' }, { region: 'Bến Tre' }];
+  const history = [{ role: 'user', text: 'Combo trà Hà Giang 6 triệu' }];
+  let intent = shopping.resolve([...history, { role: 'user', text: 'Đổi ngân sách xuống 2 triệu' }], products);
+  assert.equal(intent.maxPrice, 2000000);
+  assert.equal(intent.categoryOrKeyword, 'trà');
+  assert.equal(intent.exactRegion, 'Hà Giang');
+  intent = shopping.resolve([...history, { role: 'user', text: 'Mỗi món dưới 100k' }], products);
+  assert.equal(intent.maxPrice, 6000000);
+  assert.equal(intent.perItemMax, 100000);
+  assert.equal(intent.smallItems, true);
+  intent = shopping.resolve([...history, { role: 'user', text: 'Mỗi món dưới 100k' }, { role: 'user', text: 'Đổi sang cao cấp, không chọn món rẻ' }], products);
+  assert.equal(intent.smallItems, false);
+  assert.equal(intent.perItemMax, null);
+  intent = shopping.resolve([...history, { role: 'user', text: 'Đổi sang bánh Bến Tre 1 triệu' }], products);
+  assert.equal(intent.maxPrice, 1000000);
+  assert.equal(intent.categoryOrKeyword, 'bánh');
+  assert.equal(intent.exactRegion, 'Bến Tre');
+  assert.equal(intent.rawText, 'Đổi sang bánh Bến Tre 1 triệu');
+});
+
+test('a single item must not displace a valid multi-item combo at the same total', () => {
+  const plan = shopping.closest([{ id: 1, price: 100000 }, { id: 2, price: 200000 }, { id: 3, price: 300000 }], { maxPrice: 300000 });
+  assert.deepEqual(plan.items.map(product => product.id), [1, 2]);
 });
 
 test('server filters do not silently discard an impossible constraint', () => {
