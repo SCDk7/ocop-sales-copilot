@@ -543,8 +543,8 @@ function getGeneralComplaintClarification(message, language) {
     return null;
   }
   return language === 'en'
-    ? 'I’m not sure which product or what problem you mean yet. Please tell me the product name and describe the issue (a photo would help). I can help check return or replacement options after the issue is reviewed.'
-    : 'Mình chưa rõ sản phẩm nào đang bị lỗi và lỗi cụ thể ra sao. Bạn cho mình biết tên sản phẩm, mô tả vấn đề hoặc gửi ảnh nhé. Mình sẽ hỗ trợ kiểm tra phương án hoàn hàng hay gửi sản phẩm thay thế sau khi tình trạng được xác nhận.';
+    ? 'I understand you would like to make a complaint. What happened: a product issue, delivery, payment, or service? Please describe your concern so I can help with the right next step.'
+    : 'Dạ, em đã nhận được yêu cầu khiếu nại của Anh/Chị. Anh/Chị muốn phản ánh về sản phẩm, giao hàng, thanh toán hay thái độ phục vụ ạ? Anh/Chị mô tả sự việc để em hiểu đúng rồi hướng dẫn bước xử lý phù hợp nhé.';
 }
 
 function isImageProductLookupRequest(message) {
@@ -578,7 +578,9 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     province: customerIntent.exactRegion || null,
     region: customerIntent.regionKeyword || null,
     maxPrice: customerIntent.maxPrice || null,
-    gift: Boolean(customerIntent.isGift)
+    gift: Boolean(customerIntent.isGift),
+    complaint: Boolean(customerIntent.isComplaint),
+    stars: customerIntent.minStars || null
   })}`;
 
   // ── Wikipedia RAG context block ──────────────────────────────────────────────
@@ -611,6 +613,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
 
     "=== CONVERSATION ACCURACY RULES ===",
     "1. Answer the customer's latest message first. Use earlier messages only to resolve references such as 'this product', 'that one', or a correction.",
+    "Before replying, read the complete conversation, identify the customer's actual concern, and check supplied catalogue and Wikipedia evidence. A complaint can concern service, delivery, payment or products: never assume damage. Acknowledge stated facts, ask one focused clarification when details are missing, and do not repeat questions already answered. Never claim an order, refund or damage was verified without evidence. For support requests do not recommend unrelated products.",
     "2. Identify whether the customer asks about a product, price, province, comparison, gift, use, shipping, voucher, or support. Answer that question directly before suggesting a purchase.",
     "3. A named province is strict: only recommend products from that exact province. Never substitute a different province or silently broaden it to a region.",
     "4. Only return productIds for products that answer the question. Do not show unrelated popular products. For FAQ, shipping, voucher, or support questions, return productIds: [].",
@@ -682,7 +685,7 @@ async function searchVietnameseWikipedia(query) {
 
 async function searchWikipedia(query, language = 'vi') {
   const wikiLanguage = language === 'en' ? 'en' : 'vi';
-  const searchText = String(query || '').replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 180);
+  const searchText = String(query || '').replace(/[\u0000-\u001f]/g, ' ').replace(/^(?:please\s+)?(?:tell me about|what is|what are|explain|give me information about)\s+/i, '').replace(/\s+/g, ' ').trim().slice(0, 180);
   if (searchText.length < 3) return [];
 
   const cacheKey = `${wikiLanguage}:${searchText.toLocaleLowerCase(wikiLanguage)}`;
@@ -695,7 +698,7 @@ async function searchWikipedia(query, language = 'vi') {
     prop: 'extracts', exintro: '1', explaintext: '1', exchars: '900', format: 'json', formatversion: '2'
   }).toString();
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 2500);
+  const timeout = setTimeout(() => controller.abort(), 5000);
   try {
     const response = await fetch(endpoint, {
       headers: { 'User-Agent': 'OCOPSalesCopilot/1.0 (Vietnamese customer assistant)' },
@@ -803,7 +806,7 @@ function extractSearchIntents(queryText, products = []) {
   else if (/\b(yen|yen sao|to yen)\b/.test(normalized)) categoryOrKeyword = "yến";
   else if (/\b(sam|sam ngoc linh)\b/.test(normalized)) categoryOrKeyword = "sâm";
   else if (/\b(mat ong|ong bac ha|ong hoa ca phe)\b/.test(normalized)) categoryOrKeyword = "mật ong";
-  else if (/\b(ca phe|robusta|arabica|buon ma thuot)\b/.test(normalized)) categoryOrKeyword = "cà phê";
+  else if (/\b(ca phe|coffee|robusta|arabica|buon ma thuot)\b/.test(normalized)) categoryOrKeyword = "cà phê";
   else if (/\b(gao|st25|nep cai|seng cu)\b/.test(normalized)) categoryOrKeyword = "gạo";
   else if (/\b(toi|toi den|toi ly son)\b/.test(normalized)) categoryOrKeyword = "tỏi";
   else if (/\b(nuoc mam|ca com|phu quoc)\b/.test(normalized)) categoryOrKeyword = "nước mắm";
@@ -881,8 +884,8 @@ function buildLocalFallbackReply(query, products = [], language = "vi") {
   // 1. Complaint & Returns
   if (intent.isComplaint) {
     const msg = english
-      ? "I am truly sorry for the inconvenience with your order! OCOP Copilot provides a 100% replacement or full refund within 7 days for damaged or defective items.\n\n👉 Please keep the original packaging and contact our Customer Care Admin below so we can resolve this right away:\n• Admin 4 - Thiện Bảo (Customer Care & 1-1 Returns): https://web.facebook.com/huynh.tran.thien.bao.842171\n📞 Hotline: 0987.654.321"
-      : "Dạ, em rất tiếc và thành thật xin lỗi Anh/Chị về sự cố đơn hàng này ạ! OCOP Copilot cam kết 100% quyền lợi khách hàng với chính sách Đổi mới 1-1 miễn phí hoặc Hoàn tiền trong 7 ngày đối với sản phẩm lỗi do vận chuyển hoặc nhà sản xuất.\n\n👉 Anh/Chị vui lòng giữ lại bao bì, chụp ảnh sản phẩm và nhắn tin trực tiếp cho Admin CSKH dưới đây để được xử lý ngay lập tức nhé ạ:\n• 👨‍💼 Admin 4 - Thiện Bảo (Chăm Sóc Khách Hàng & Đổi Trả 1-1): https://web.facebook.com/huynh.tran.thien.bao.842171\n📞 Hotline hỗ trợ 24/7: 0987.654.321";
+      ? "Please describe what happened and provide the order number if available. Our support team can review the details and confirm the appropriate next step. A return or refund requires staff verification."
+      : "Dạ, Anh/Chị mô tả sự việc và cung cấp mã đơn nếu có để nhân viên kiểm tra nhé. Phương án đổi trả hoặc hoàn tiền cần được xác nhận sau khi kiểm tra.";
     return {
       text_response: msg,
       message: msg,
@@ -1205,7 +1208,7 @@ async function handleAIChatRequest(req, res) {
     validation.messages[validation.messages.length - 1].text,
     validation.language
   );
-  if (complaintClarification && !attachedImages.length) {
+  if (complaintClarification && !attachedImages.length && validation.messages.length === 1) {
     return res.json({
       message: complaintClarification,
       productIds: [],
@@ -1222,7 +1225,7 @@ async function handleAIChatRequest(req, res) {
   const isPureAdministrativeIssue = /\b(khieu nai|doi tra|tra hang|hoan tien|chuyen khoan|mat tien|chua nhan hang)\b/.test(normalizedQuery);
 
   let wikiSources = [];
-  if (!attachedImages.length && !includesPrivateDetails && (!isPureAdministrativeIssue || hasCulturalOrProductEntity)) {
+  if (!attachedImages.length && !includesPrivateDetails && !isPureAdministrativeIssue) {
     try {
       wikiSources = await searchWikipedia(lastUserMessage, validation.language);
     } catch (wikiErr) {
@@ -1289,7 +1292,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
   const totalAttachedImageBytes = attachedImages.reduce((total, image) => total + image.bytes, 0);
   const timeoutMs = totalAttachedImageBytes > GEMINI_INLINE_IMAGE_LIMIT_BYTES
     ? 600000
-    : attachedImages.length || imageData ? 120000 : 15000;
+    : attachedImages.length || imageData ? 120000 : 30000;
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
