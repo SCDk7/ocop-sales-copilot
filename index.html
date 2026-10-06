@@ -2437,6 +2437,7 @@
         let isAIRequestPending = false;
         let activeSearchRecognition = null;
         let pendingAIImages = [];
+        let lastAIImageSearch = null;
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
         let lastAIComboMarkup = null;
@@ -3539,6 +3540,14 @@
             sendAIMessage();
         }
 
+        function retryLastAIImageSearch() {
+            if (!lastAIImageSearch || isAIRequestPending) return;
+            sendAIMessage({
+                images: lastAIImageSearch.images,
+                messageText: lastAIImageSearch.messageText
+            });
+        }
+
         function getAIEndpoint(path) {
             return window.location.protocol === 'file:' ? `http://localhost:3000${path}` : path;
         }
@@ -3871,13 +3880,24 @@
 
             // Regions
             let regionKw = null;
-            if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|yen bai|tuyen quang/.test(normalized)) regionKw = "Tây Bắc";
+            const exactRegion = [...new Set(products.map(product => product.region).filter(Boolean))]
+                .find(region => {
+                    const normalizedRegion = normalizeSearchText(region);
+                    return normalizedRegion.length >= 3 && normalized.includes(normalizedRegion);
+                });
+            if (exactRegion) {
+                regionKw = exactRegion;
+                const byExactRegion = matched.filter(product =>
+                    normalizeSearchText(product.region) === normalizeSearchText(exactRegion)
+                );
+                if (byExactRegion.length) matched = byExactRegion;
+            } else if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|yen bai|tuyen quang/.test(normalized)) regionKw = "Tây Bắc";
             else if (/mien tay|dong bang song cuu long|ben tre|ca mau|an giang|soc trang|dong thap|kien giang|phu quoc|hau giang/.test(normalized)) regionKw = "Miền Tây";
             else if (/tay nguyen|dak lak|gia lai|lam dong|da lat|dak nong/.test(normalized)) regionKw = "Tây Nguyên";
             else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|hue|quang tri|ninh thuan/.test(normalized)) regionKw = "Miền Trung";
             else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|hung yen|bac giang|mien bac/.test(normalized)) regionKw = "Miền Bắc";
 
-            if (regionKw) {
+            if (regionKw && !exactRegion) {
                 const byR = matched.filter(p =>
                     (p.region && p.region.toLowerCase().includes(regionKw.toLowerCase())) ||
                     (p.desc && p.desc.toLowerCase().includes(regionKw.toLowerCase()))
@@ -3933,12 +3953,12 @@
             };
         }
 
-async function sendAIMessage() {
+async function sendAIMessage(retryImageSearch = null) {
             const inputEl = document.getElementById('ai-chat-input');
             const messagesEl = document.getElementById('ai-chat-messages');
-            const text = inputEl.value.trim();
-            const messageImages = pendingAIImages.slice();
-            const messageText = text || (currentLanguage === 'en'
+            const text = retryImageSearch ? '' : inputEl.value.trim();
+            const messageImages = retryImageSearch ? retryImageSearch.images.slice() : pendingAIImages.slice();
+            const messageText = retryImageSearch?.messageText || text || (currentLanguage === 'en'
                 ? 'Please review the attached product image and help me.'
                 : 'Vui lòng xem ảnh sản phẩm tôi gửi và hỗ trợ giúp tôi.');
 
@@ -3971,7 +3991,7 @@ async function sendAIMessage() {
             userMessage.append(userBubble, userAvatar);
             messagesEl.append(userMessage);
 
-            inputEl.value = '';
+            if (!retryImageSearch) inputEl.value = '';
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             // Giả lập AI đang gõ
@@ -4115,7 +4135,12 @@ async function sendAIMessage() {
                     { role: 'user', text: messageText },
                     { role: 'assistant', text: result.message }
                 ].slice(-16);
-                pendingAIImages = pendingAIImages.filter(image => !messageImages.includes(image));
+                if (messageImages.length) {
+                    lastAIImageSearch = { images: messageImages.slice(), messageText };
+                }
+                if (!retryImageSearch) {
+                    pendingAIImages = pendingAIImages.filter(image => !messageImages.includes(image));
+                }
                 renderAIChatImagePreviews();
                 messagesEl.scrollTop = messagesEl.scrollHeight;
 
@@ -4127,7 +4152,13 @@ async function sendAIMessage() {
                         const btn = document.createElement('button');
                         btn.className = 'chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer text-[10px] font-bold';
                         btn.textContent = label;
-                        btn.addEventListener('click', () => sendQuickPrompt(label));
+                        btn.addEventListener('click', () => {
+                            if ((label === 'Thử lại' || label === 'Try again') && lastAIImageSearch) {
+                                retryLastAIImageSearch();
+                                return;
+                            }
+                            sendQuickPrompt(label);
+                        });
                         chipBar.appendChild(btn);
                     });
                 }
@@ -4164,7 +4195,13 @@ async function sendAIMessage() {
                 retryButton.type = 'button';
                 retryButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
                 retryButton.textContent = currentLanguage === 'en' ? 'Try again' : 'Thử lại';
-                retryButton.addEventListener('click', sendAIMessage);
+                retryButton.addEventListener('click', () => {
+                    if (messageImages.length) {
+                        sendAIMessage({ images: messageImages, messageText });
+                        return;
+                    }
+                    sendAIMessage();
+                });
                 const contactButton = document.createElement('button');
                 contactButton.type = 'button';
                 contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';

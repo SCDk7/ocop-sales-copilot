@@ -693,7 +693,16 @@ async function searchVietnameseWikipedia(query) {
 }
 
 // ── EXTRACT SEARCH INTENT & LOCAL FILTERING ────────────────────────
-function extractSearchIntents(queryText) {
+function normalizeCatalogTerm(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .toLowerCase()
+    .trim();
+}
+
+function extractSearchIntents(queryText, products = []) {
   const normalized = String(queryText || "")
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
@@ -744,17 +753,28 @@ function extractSearchIntents(queryText) {
   else if (/\b(thit|trau|kho ca|cha muc|bo|lon)\b/.test(normalized)) categoryOrKeyword = "đặc sản mặn";
 
   let regionKeyword = null;
+  const exactRegion = [...new Set(products.map(product => product.region).filter(Boolean))]
+    .find(region => {
+      const normalizedRegion = normalizeCatalogTerm(region);
+      return normalizedRegion.length >= 3 && normalized.includes(normalizedRegion);
+    }) || null;
   if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
   else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
   else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
   else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
   else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
 
-  return { isComplaint, isShipping, isOcopKnowledge, isUsage, isHealth, maxPrice, minStars, categoryOrKeyword, regionKeyword, isGift, rawText: queryText };
+  return { isComplaint, isShipping, isOcopKnowledge, isUsage, isHealth, maxPrice, minStars, categoryOrKeyword, regionKeyword, exactRegion, isGift, rawText: queryText };
 }
 
 function filterProductsByIntent(products = [], intent = {}) {
   let matched = [...products];
+
+  if (intent.exactRegion) {
+    const exactRegion = normalizeCatalogTerm(intent.exactRegion);
+    const byExactRegion = matched.filter(product => normalizeCatalogTerm(product.region) === exactRegion);
+    if (byExactRegion.length > 0) matched = byExactRegion;
+  }
 
   if (intent.maxPrice !== null) {
     const byPrice = matched.filter(p => Number.isFinite(p.price) && p.price <= intent.maxPrice);
@@ -791,7 +811,7 @@ function filterProductsByIntent(products = [], intent = {}) {
 
 // ── BULLETPROOF LOCAL FALLBACK RESPONSE ────────────────────────
 function buildLocalFallbackReply(query, products = [], language = "vi") {
-  const intent = extractSearchIntents(query);
+  const intent = extractSearchIntents(query, products);
   const english = language === "en";
 
   // 1. Complaint & Returns
@@ -1110,7 +1130,7 @@ async function handleAIChatRequest(req, res) {
     }
   }
 
-  const userIntent = extractSearchIntents(lastUserMessage);
+  const userIntent = extractSearchIntents(lastUserMessage, validation.products);
   const filteredProducts = filterProductsByIntent(validation.products, userIntent);
 
   const result = await generateAIResponse(validation, { attachedImages, wikiSources, filteredProducts, userIntent });
@@ -1266,7 +1286,12 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       return { status: 200, body: fallbackData };
     }
 
-    const validProductIds = new Set(validation.products.map(product => product.id));
+    const responseProducts = userIntent.exactRegion
+      ? validation.products.filter(product =>
+          normalizeCatalogTerm(product.region) === normalizeCatalogTerm(userIntent.exactRegion)
+        )
+      : validation.products;
+    const validProductIds = new Set(responseProducts.map(product => product.id));
     let productIds = [...new Set(answer.productIds.filter(id =>
       Number.isInteger(id) && validProductIds.has(id)
     ))].slice(0, 3);
