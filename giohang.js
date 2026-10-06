@@ -1,5 +1,5 @@
-// js/cart.js
-export class CartManager {
+// giohang.js - OCOP Cart & Wishlist Manager
+class CartManager {
     constructor() {
         this.cart = JSON.parse(localStorage.getItem('ocop_cart')) || [];
         this.wishlist = JSON.parse(localStorage.getItem('ocop_wishlist')) || [];
@@ -43,4 +43,11 @@ export class CartManager {
     getItemCount() {
         return this.cart.reduce((sum, item) => sum + item.quantity, 0);
     }
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { CartManager };
+}
+if (typeof window !== 'undefined') {
+    window.CartManager = CartManager;
 }
