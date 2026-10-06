@@ -419,6 +419,7 @@ function getAIModelConfiguration() {
   if (!apiKey) {
     const error = new Error('Trợ lý AI chưa được cấu hình. Vui lòng liên hệ quản trị viên.');
     error.status = 503;
+    error.code = 'GEMINI_AUTH_INVALID';
     throw error;
   }
 
@@ -426,43 +427,121 @@ function getAIModelConfiguration() {
   if (!/^[a-zA-Z0-9._-]+$/.test(model)) {
     const error = new Error('Cấu hình mô hình AI không hợp lệ.');
     error.status = 500;
+    error.code = 'GEMINI_MODEL_UNAVAILABLE';
     throw error;
   }
   return { apiKey, model };
 }
 
-function getGeminiProviderFailure(response, result, operation) {
+function extractBudgetFromQuery(text) {
+  const normalized = String(text || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .toLowerCase();
+
+  const budgetPatterns = [
+    /(duoi|under|less than|dưới|tối đa|max|maximum)\s*(\d+(?:[.,]\d+)?)\s*(k|nghin|k\b|tr|triệu|m)?/i,
+    /(<=|<)\s*(\d+(?:[.,]\d+)?)\s*(k|nghin|tr|triệu|m)?/i,
+    /(\d+(?:[.,]\d+)?)\s*(k|nghin|tr|triệu|m)\s*(duoi|under|dưới|tối đa|max)/i
+  ];
+
+  for (const match of normalized.matchAll(/(\d+(?:[.,]\d+)?)\s*(k|nghin|tr|triệu|m)?/g)) {
+    const value = Number(match[1].replace(/,/g, ''));
+    const unit = match[2] || '';
+    if (!Number.isFinite(value) || value <= 0) continue;
+
+    const amount = unit === 'tr' || unit === 'triệu' || unit === 'm'
+      ? value * 1000000
+      : unit === 'k' || unit === 'nghin'
+        ? value * 1000
+        : value;
+
+    if (/(duoi|dưới|under|less than|<=|<|tối đa|max)/.test(normalized)) {
+      return amount;
+    }
+
+    if (budgetPatterns.some(pattern => pattern.test(normalized))) {
+      return amount;
+    }
+  }
+
+  return null;
+}
+
+function buildLocalFallbackResponse(validation, reason = 'GEMINI_UNAVAILABLE') {
+  const lastMessage = validation.messages[validation.messages.length - 1];
+  const query = String(lastMessage && lastMessage.text ? lastMessage.text : '');
+  const normalizedQuery = query
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .toLowerCase();
+
+  const budget = extractBudgetFromQuery(query);
+  const products = (validation.products || []).filter(product => {
+    if (budget && product.price > budget) return false;
+    if (!budget && /\b(tea|tra|thuc uong|gift|qua|quà|food|do an|food)/i.test(normalizedQuery) && product.category && product.category.toLowerCase().includes('thuc')) {
+      return false;
+    }
+    return true;
+  });
+
+  const ranked = [...products].sort((left, right) => {
+    if (budget) return left.price - right.price;
+    return (right.stars * 100 + (right.rating || 0) * 10) - (left.stars * 100 + (left.rating || 0) * 10);
+  }).slice(0, 3);
+
+  const productIds = ranked.map(product => product.id);
+  const language = validation.language === 'en';
+  return {
+    status: 200,
+    body: {
+      message: language
+        ? 'I used the current product catalogue because the Gemini service is temporarily unavailable. Here are a few relevant options.'
+        : 'Mình đang dùng danh mục sản phẩm hiện tại vì dịch vụ Gemini tạm thời không khả dụng. Dưới đây là một vài lựa chọn phù hợp.',
+      productIds,
+      handoffAdmin: false,
+      localFallback: true,
+      code: reason
+    }
+  };
+}
+
+function getGeminiProviderFailure(response, result, operation, validation = null) {
   const providerError = result && result.error || {};
   const providerStatus = typeof providerError.status === 'string' ? providerError.status : '';
   const providerReasons = Array.isArray(providerError.details)
     ? providerError.details.map(detail => detail && detail.reason).filter(Boolean)
     : [];
-  const failure = (code, message) => ({
-    status: 503,
-    body: { error: message, code, providerStatus: response.status }
-  });
+  const fallback = (code, message, status = 200) => {
+    if (validation) {
+      return { status, body: { ...buildLocalFallbackResponse(validation, code).body, error: message, providerStatus: response.status } };
+    }
+    return { status, body: { error: message, code, providerStatus: response.status } };
+  };
 
   if (response.status === 401 || providerStatus === 'UNAUTHENTICATED' ||
       providerReasons.includes('API_KEY_INVALID')) {
-    return failure(
+    return fallback(
       'GEMINI_AUTH_INVALID',
       'Gemini chưa xác thực được API key. Quản trị viên cần cập nhật key hợp lệ trong .env rồi khởi động lại máy chủ.'
     );
   }
   if (response.status === 403 || providerStatus === 'PERMISSION_DENIED') {
-    return failure(
+    return fallback(
       'GEMINI_ACCESS_DENIED',
       'Gemini từ chối quyền truy cập. Quản trị viên cần kiểm tra quyền API, dự án Google AI Studio và trạng thái key.'
     );
   }
   if (response.status === 404 || providerStatus === 'NOT_FOUND') {
-    return failure(
+    return fallback(
       'GEMINI_MODEL_UNAVAILABLE',
       'Không tìm thấy mô hình Gemini đã cấu hình. Quản trị viên cần kiểm tra GEMINI_MODEL trong .env.'
     );
   }
   if (response.status === 429 || providerStatus === 'RESOURCE_EXHAUSTED') {
-    return failure(
+    return fallback(
       'GEMINI_QUOTA_EXCEEDED',
       'Gemini đang quá tải hoặc đã hết hạn mức. Vui lòng thử lại sau ít phút.'
     );
@@ -470,14 +549,11 @@ function getGeminiProviderFailure(response, result, operation) {
 
   const statusCode = Number.isInteger(response.status) ? response.status : 'unknown';
   console.error(`Gemini ${operation} failed:`, statusCode, providerStatus || 'Provider error');
-  return {
-    status: 502,
-    body: {
-      error: 'Trợ lý AI hiện chưa thể kết nối tới Gemini. Vui lòng thử lại sau.',
-      code: 'GEMINI_PROVIDER_UNAVAILABLE',
-      providerStatus: response.status
-    }
-  };
+  return fallback(
+    'GEMINI_PROVIDER_UNAVAILABLE',
+    'Trợ lý AI hiện chưa thể kết nối tới Gemini. Vui lòng thử lại sau.',
+    200
+  );
 }
 
 async function uploadImageToGeminiFilesApi(image, configuration, signal) {
@@ -833,7 +909,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
 
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
-      return getGeminiProviderFailure(response, result, 'chat request');
+      return getGeminiProviderFailure(response, result, 'chat request', validation);
     }
 
     const output = result.candidates && result.candidates[0] &&

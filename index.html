@@ -79,6 +79,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <!-- Three.js for antigravity particle background -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.min.js"></script>
     
     <style>
         html {
@@ -1358,9 +1360,22 @@
                 scroll-behavior: auto !important;
             }
         }
+        /* ── Three.js Antigravity Particle Canvas ── */
+        #threejs-bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
+    <!-- Three.js Antigravity Particle Canvas (sits behind everything) -->
+    <canvas id="threejs-bg-canvas" aria-hidden="true"></canvas>
+
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed top-24 inset-x-3 z-[110] flex flex-col items-end gap-2 pointer-events-none sm:left-auto sm:right-5" aria-live="polite" aria-atomic="false"></div>
 
@@ -5951,5 +5966,128 @@
 
 })();
 </script>
+
+    <!-- ============================================================ -->
+    <!-- THREE.JS ANTIGRAVITY PARTICLE BACKGROUND                     -->
+    <!-- ============================================================ -->
+    <script>
+    (function () {
+        'use strict';
+
+        if (typeof THREE === 'undefined') return; // Safety guard
+
+        // ── Config ──────────────────────────────────────────────────
+        const PARTICLE_COUNT   = 3000;
+        const SPREAD           = 20;          // XYZ spread of particles
+        const BASE_SIZE        = 0.05;
+        const DRIFT_SPEED      = 0.002;       // Vertical sine-wave drift amplitude
+        const LERP_FACTOR      = 0.04;        // Mouse smoothing
+        const MOUSE_ROT_FACTOR = 0.25;
+        const SLOW_ROT_SPEED   = 0.018;       // Auto-rotation on Z
+
+        // Brand colours
+        const COLOR_DARK  = new THREE.Color('#00F0FF'); // intro (dark bg) → neon cyan
+        const COLOR_LIGHT = new THREE.Color('#D4AF37'); // main page (light bg) → OCOP gold
+
+        // ── Scene / Camera / Renderer ────────────────────────────────
+        const canvas   = document.getElementById('threejs-bg-canvas');
+        const scene    = new THREE.Scene();
+        const camera   = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 6;
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x000000, 0); // fully transparent
+
+        // ── Particles ────────────────────────────────────────────────
+        const positions   = new Float32Array(PARTICLE_COUNT * 3);
+        const offsets     = new Float32Array(PARTICLE_COUNT);   // per-particle sine offset
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            const i3 = i * 3;
+            positions[i3]     = (Math.random() - 0.5) * SPREAD;
+            positions[i3 + 1] = (Math.random() - 0.5) * SPREAD;
+            positions[i3 + 2] = (Math.random() - 0.5) * SPREAD;
+            offsets[i]        = Math.random() * Math.PI * 2;
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            size            : BASE_SIZE,
+            sizeAttenuation : true,
+            color           : COLOR_DARK,
+            transparent     : true,
+            opacity         : 0.75,
+            blending        : THREE.AdditiveBlending,
+            depthWrite      : false,
+        });
+
+        const particleSystem = new THREE.Points(geometry, material);
+        scene.add(particleSystem);
+
+        // ── Mouse parallax ──────────────────────────────────────────
+        const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+        window.addEventListener('mousemove', (e) => {
+            mouse.tx = (e.clientX / window.innerWidth)  * 2 - 1;
+            mouse.ty = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // ── Colour switcher based on which screen is active ─────────
+        // Dark intro overlay → bright cyan; light main page → warm gold
+        function getTargetColor() {
+            const intro = document.getElementById('ocop-intro-overlay');
+            if (!intro) return COLOR_LIGHT;
+            const style = window.getComputedStyle(intro);
+            const isVisible = style.display !== 'none'
+                && style.visibility !== 'hidden'
+                && parseFloat(style.opacity) > 0.05;
+            return isVisible ? COLOR_DARK : COLOR_LIGHT;
+        }
+
+        const currentColor = new THREE.Color();
+
+        // ── Animation loop ───────────────────────────────────────────
+        const clock = new THREE.Clock();
+
+        (function animate() {
+            requestAnimationFrame(animate);
+
+            const t   = clock.getElapsedTime();
+            const pos = particleSystem.geometry.attributes.position.array;
+
+            // Drift each particle along Y
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                pos[i * 3 + 1] += Math.sin(t + offsets[i]) * DRIFT_SPEED;
+            }
+            particleSystem.geometry.attributes.position.needsUpdate = true;
+
+            // Smooth mouse tracking (lerp)
+            mouse.x += (mouse.tx - mouse.x) * LERP_FACTOR;
+            mouse.y += (mouse.ty - mouse.y) * LERP_FACTOR;
+
+            particleSystem.rotation.y =  mouse.x * MOUSE_ROT_FACTOR;
+            particleSystem.rotation.x = -mouse.y * MOUSE_ROT_FACTOR;
+            particleSystem.rotation.z =  t * SLOW_ROT_SPEED;
+
+            // Lerp particle colour toward target
+            const target = getTargetColor();
+            currentColor.lerp(target, 0.03);
+            material.color.copy(currentColor);
+
+            renderer.render(scene, camera);
+        })();
+
+        // ── Resize handler ───────────────────────────────────────────
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+    })();
+    </script>
 </body>
 </html>
