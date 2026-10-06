@@ -111,3 +111,69 @@ test('server filters do not silently discard an impossible constraint', () => {
   const intent = { exactRegion: 'Hà Giang', maxPrice: 500000, minStars: null, isCombo: true };
   assert.equal(context.filterProductsByIntent(products, intent).length, 0);
 });
+
+test('screenshot request returns exactly four items for five million', () => {
+  const data = require('./data.js');
+  const products = Array.isArray(data) ? data : data.PRODUCTS || data.products;
+  const intent = shopping.resolve([{ role: 'user', text: 'gợi ý combo 4 món giá 5tr' }], products);
+  assert.equal(intent.minItems, 4);
+  assert.equal(intent.maxItems, 4);
+  assert.equal(intent.maxPrice, 5000000);
+  const plan = shopping.closest(products, intent);
+  assert.equal(plan.items.length, 4);
+  assert.equal(plan.total, 5000000);
+  assert.match(shopping.reply(plan, intent, 'vi').message, /combo 4 món/);
+  const next = shopping.resolve([{ role: 'user', text: 'gợi ý combo 4 món giá 5tr' }, { role: 'assistant', text: 'Combo 4 món' }, { role: 'user', text: 'đổi thành 6 món giá 3tr' }], products);
+  assert.equal(next.minItems, 6);
+  assert.equal(next.maxPrice, 3000000);
+  const changed = shopping.closest(products, next);
+  assert.equal(changed.items.length, 6);
+  assert.ok(changed.total <= 3000000);
+});
+
+test('item count ranges, limits, release and impossible requests', () => {
+  assert.deepEqual(shopping.itemCount('combo 5-6 món 2 triệu'), { minItems: 5, maxItems: 6 });
+  assert.deepEqual(shopping.itemCount('tối đa 4 món'), { minItems: 2, maxItems: 4 });
+  assert.deepEqual(shopping.itemCount('ít nhất 5 món'), { minItems: 5, maxItems: null });
+  assert.deepEqual(shopping.itemCount('combo 5tr'), {});
+  assert.deepEqual(shopping.itemCount('bao nhiêu món cũng được'), { minItems: null, maxItems: null });
+  const products = [{ id: 1, price: 100000 }, { id: 2, price: 200000 }];
+  const intent = { maxPrice: 500000, minItems: 4, maxItems: 4 };
+  assert.equal(shopping.closest(products, intent), null);
+  const reply = shopping.reply(null, intent, 'vi');
+  assert.match(reply.message, /combo 4 món/);
+  assert.deepEqual(reply.productIds, []);
+});
+
+test('requested count takes priority over the default price floor', () => {
+  const products = [50000, 70000, 100000, 780000].map((price, id) => ({ price, id }));
+  const plan = shopping.closest(products, { maxPrice: 1000000, minItems: 4, maxItems: 4 });
+  assert.equal(plan.items.length, 4);
+  assert.equal(plan.total, 1000000);
+  assert.equal(plan.smallItems, false);
+});
+
+test('written counts and product exclusions are respected across follow-ups', () => {
+  assert.deepEqual(shopping.itemCount('combo bốn món 5tr'), { minItems: 4, maxItems: 4 });
+  const products = [{ id: 1, name: 'Rượu', price: 500000 }, { id: 2, name: 'Trà', price: 400000 }, { id: 3, name: 'Bánh', price: 300000 }];
+  const intent = shopping.resolve([{ role: 'user', text: 'combo 2 món 1tr' }, { role: 'user', text: 'không lấy rượu' }], products);
+  const plan = shopping.closest(products, intent);
+  assert.deepEqual(plan.items.map(product => product.id), [3, 2]);
+  assert.equal(plan.items.length, 2);
+  assert.equal(plan.budget, 1000000);
+});
+
+test('server reads corrections as instructions rather than product names', () => {
+  const source = fs.readFileSync('server.js', 'utf8');
+  const context = { normalizeCatalogTerm: shopping.normalize, expandChatShorthand: text => text };
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('function extractSearchIntents('), source.indexOf('const REGION_PROVINCES =')), context);
+  assert.equal(context.extractSearchIntents('đổi thành 6 món giá 3tr', []).categoryOrKeyword, null);
+  assert.equal(context.extractSearchIntents('quà tặng bố mẹ', []).categoryOrKeyword, null);
+  const history = [{ role: 'user', text: 'combo 4 món giá 5tr' }, { role: 'user', text: 'đổi thành 6 món giá 3tr' }, { role: 'user', text: 'không lấy rượu' }];
+  const intent = shopping.resolve(history, [], context.extractSearchIntents);
+  assert.equal(intent.maxPrice, 3000000);
+  assert.equal(intent.minItems, 6);
+  assert.equal(intent.categoryOrKeyword, null);
+  assert.deepEqual(intent.excludedTerms, ['ruou']);
+});

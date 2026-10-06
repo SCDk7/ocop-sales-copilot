@@ -589,6 +589,9 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     province: customerIntent.exactRegion || null,
     region: customerIntent.regionKeyword || null,
     maxPrice: customerIntent.maxPrice || null,
+    minItems: customerIntent.minItems ?? null,
+    maxItems: customerIntent.maxItems ?? null,
+    excludedTerms: customerIntent.excludedTerms || [],
     gift: Boolean(customerIntent.isGift),
     complaint: Boolean(customerIntent.isComplaint),
     stars: customerIntent.minStars || null
@@ -890,8 +893,8 @@ function extractSearchIntents(queryText, products = []) {
   else if (/\b(ruou|dong trung|ba kich|ruou mo|yen tu)\b/.test(normalized)) categoryOrKeyword = "rượu";
   else if (/\b(hat|dieu|mac ca|hat sen)\b/.test(normalized)) categoryOrKeyword = "hạt";
   else if (/\b(banh|keo|com|pia|dua)\b/.test(normalized)) categoryOrKeyword = "bánh";
-  else if (/\b(gia vi|que|tieu|cham cheo|mac khen|doi)\b/.test(normalized)) categoryOrKeyword = "gia vị";
-  else if (/\b(thit|trau|kho ca|cha muc|bo|lon)\b/.test(normalized)) categoryOrKeyword = "đặc sản mặn";
+  else if (/\b(gia vi|que|hat tieu|cham cheo|mac khen|hat doi)\b/.test(normalized)) categoryOrKeyword = "gia vị";
+  else if (/\b(thit|trau|kho ca|cha muc|thit bo|thit lon)\b/.test(normalized)) categoryOrKeyword = "đặc sản mặn";
 
   let regionKeyword = null;
   const allProvinces = [...new Set(products.map(product => product.region).filter(Boolean))]
@@ -1466,7 +1469,7 @@ async function handleAIChatRequest(req, res) {
   }
   const lastUserMessage = validation.messages[validation.messages.length - 1].text;
   const userIntent = AIShopping.resolve(validation.messages, validation.products, extractSearchIntents);
-  const filteredProducts = filterProductsByIntent(validation.products, userIntent);
+  const filteredProducts = filterProductsByIntent(validation.products, userIntent).filter(product => AIShopping.allowed(product, userIntent));
   const shoppingRequest = !userIntent.isComplaint && !userIntent.isCSKH && !userIntent.isShipping && !userIntent.isUsage && !userIntent.isOcopKnowledge;
   if (shoppingRequest && userIntent.maxPrice && (userIntent.isCombo || userIntent.isGift || /toi co|minh co|ngan sach|tai chinh|budget/.test(normalizeCatalogTerm(lastUserMessage)))) {
     userIntent.isCombo = true;
