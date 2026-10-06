@@ -1549,7 +1549,7 @@
                                 <span class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">Lộc Vàng AI • Bốc Thẻ May Mắn</span>
                                 <span class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full animate-pulse uppercase shadow">Lì Xì OCOP</span>
                             </div>
-                            <p class="text-[11px] text-black font-medium mt-0.5">Bốc thẻ nhận ưu đãi theo giá trị đơn, áp dụng một mã cho mỗi khách hàng.</p>
+                            <p class="text-[11px] text-black font-medium mt-0.5">Giảm 30.000đ cho đơn từ 500.000đ, 60.000đ từ 1.200.000đ hoặc 100.000đ từ 2.000.000đ. Không cộng dồn ưu đãi.</p>
                         </div>
                     </div>
                     <button id="btn-draw-gift" onclick="openLuckyGift()" class="intro-mega-btn w-full sm:w-auto flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition flex items-center justify-center space-x-2 cursor-pointer">
@@ -2001,7 +2001,7 @@
     </main>
     
     <!-- 5. WIDGET CHATBOT AI ANTIGRAVITY (BÊN PHẢI, DƯỚI ADMIN) -->
-    <div id="ai-chat-widget" class="hidden fixed bottom-3 sm:bottom-6 right-3 sm:right-6 left-auto z-[99999] flex flex-col items-end pointer-events-auto">
+    <div id="ai-chat-widget" hidden style="display: none;" class="hidden fixed bottom-3 sm:bottom-6 right-3 sm:right-6 left-auto z-[99999] flex flex-col items-end pointer-events-auto">
         <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-96 max-h-[min(72vh,38rem)] h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-emerald-100 flex flex-col overflow-hidden mb-3 animate-pop-in">
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
@@ -2480,6 +2480,7 @@
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
             restorePageScrollState();
+            setAIChatWidgetVisibility(document.getElementById('ocop-intro-overlay').classList.contains('hidden'));
             updateCatalogCounts();
             applyLanguage(currentLanguage);
             renderProducts(products);
@@ -3520,6 +3521,10 @@
             const widget = document.getElementById('ai-chat-widget');
             const chatWindow = document.getElementById('ai-chat-window');
             if (!widget) return;
+            const introVisible = !document.getElementById('ocop-intro-overlay').classList.contains('hidden');
+            isVisible = Boolean(isVisible) && !introVisible;
+            widget.hidden = !isVisible;
+            widget.style.display = isVisible ? '' : 'none';
             widget.classList.toggle('hidden', !isVisible);
             if (!isVisible && chatWindow) chatWindow.classList.add('hidden');
         }
