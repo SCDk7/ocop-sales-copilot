@@ -1060,7 +1060,7 @@ function generateLocalComboReply(intent, products = [], language = "vi") {
 
   if (minPrice && currentTotal < minPrice) {
     let loops = 0;
-    while (currentTotal < minPrice && loops < 100) {
+    while (currentTotal < minPrice && loops < 300) {
       const idx = loops % comboItems.length;
       comboItems[idx].quantity += 1;
       currentTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);

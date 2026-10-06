@@ -4787,6 +4787,166 @@
             `;
         }
 
+        const REGION_PROVINCES = {
+            "Tây Bắc": ["ha giang", "lao cai", "son la", "dien bien", "lai chau", "yen bai", "hoa binh"],
+            "Tây Nguyên": ["gia lai", "dak lak", "dak nong", "lam dong", "kon tum"],
+            "Miền Trung": ["quang nam", "quang ngai", "thua thien hue", "hue", "quang tri", "da nang", "binh dinh", "phu yen", "khanh hoa", "ninh thuan", "nghe an", "ha tinh", "quang binh", "thanh hoa"],
+            "Miền Tây": ["kien giang", "phu quoc", "ben tre", "ca mau", "an giang", "long an", "soc trang", "hau giang", "can tho", "dong thap", "bac lieu", "tra vinh", "vinh long", "tien giang"],
+            "Miền Bắc": ["ha noi", "ha giang", "thai nguyen", "quang ninh", "lao cai", "nam dinh", "bac giang", "hung yen", "yen bai", "tuyen quang", "vinh phuc", "ninh binh", "bac kan", "cao bang", "lang son", "phu tho", "son la", "dien bien", "lai chau", "hoa binh", "ha nam", "hai duong", "hai phong", "thai binh"]
+        };
+
+        function generateClientLocalComboReply(intent, products = [], language = "vi") {
+            const english = language === "en";
+            const { minPrice, maxPrice, exactRegion, regionKeyword } = intent;
+            const rawLower = (intent.rawText || "").toLowerCase();
+
+            let candidates = [];
+            let scopeLabel = "";
+
+            if (exactRegion) {
+                const normExact = exactRegion.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().trim();
+                candidates = products.filter(p => (p.region || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().includes(normExact));
+                scopeLabel = english ? `Specialties of ${exactRegion}` : `Đặc sản tinh hoa ${exactRegion}`;
+            } else if (regionKeyword) {
+                const provs = REGION_PROVINCES[regionKeyword] || [];
+                candidates = products.filter(p => {
+                    const normReg = (p.region || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase();
+                    const normDesc = (p.desc || p.description || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase();
+                    return provs.some(pr => normReg.includes(pr)) || normDesc.includes(regionKeyword.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase());
+                });
+                scopeLabel = english ? `${regionKeyword} Regional Set` : `Đặc sản vùng ${regionKeyword}`;
+            }
+
+            const isTet = /(tet|xuan|sum hop|sum vay|dau nam|chuc tet)/.test(rawLower);
+            const isSep = /(sep|lanh dao|doi tac|vip|doanh nghiep|sang trong|cao cap|ngoai giao)/.test(rawLower);
+            const isHealth = intent.isHealth || /(suc khoe|duong sinh|cha me|bo me|nguoi gia|nguoi lon|boi bo|de khang)/.test(rawLower);
+            const isTea = /(tra|che|dam dao|thuong tra)/.test(rawLower);
+            const isKitchen = /(gia vi|bep|nau an|mam|muoi|tieu|gao)/.test(rawLower);
+            const isSnack = /(an vat|nham nhi|banh|keo|snack)/.test(rawLower);
+
+            let comboTitle = "";
+            if (scopeLabel) {
+                comboTitle = isSep || (minPrice && minPrice >= 5000000)
+                    ? (english ? `VIP Luxury ${scopeLabel} Set` : `Bộ Quà VIP Thượng Hạng ${scopeLabel}`)
+                    : (english ? `Signature ${scopeLabel} Combo` : `Combo Tinh Hoa ${scopeLabel}`);
+            } else if (isHealth) {
+                comboTitle = english ? "Longevity & Health Gift Set" : "Bộ Quà Dưỡng Sinh & Sức Khỏe Trường Thọ";
+            } else if (isSep || (minPrice && minPrice >= 5000000)) {
+                comboTitle = english ? "VIP Corporate & Executive Masterpiece Set" : "Bộ Quà VIP Doanh Nghiệp & Ngoại Giao";
+            } else if (isTea) {
+                comboTitle = english ? "Master Tea Connoisseur Set" : "Bộ Quà Thưởng Trà Đàm Đạo";
+            } else if (isKitchen) {
+                comboTitle = english ? "Authentic Vietnamese Kitchen Spice Set" : "Bộ Gia Vị Bếp Việt Đậm Đà Hương Quê";
+            } else if (isSnack) {
+                comboTitle = english ? "Vietnamese Heritage Snack Box" : "Hộp Bánh Mứt Ăn Vặt Nông Sản Việt";
+            } else if (isTet) {
+                comboTitle = english ? "Lunar New Year Reunion Gift Set" : "Bộ Quà Tết Đoàn Viên Như Ý";
+            } else if (maxPrice && maxPrice <= 500000) {
+                comboTitle = english ? "Pocket-Friendly Specialty Combo" : "Combo Đặc Sản Tiết Kiệm & Ý Nghĩa";
+            } else if (maxPrice && maxPrice <= 2000000) {
+                comboTitle = english ? "Family & Friends Specialty Gift Set" : "Bộ Quà Gia Đình & Thân Hữu Thắm Tình";
+            } else {
+                comboTitle = english ? "National OCOP 5-Star Specialty Combo" : "Combo Tinh Hoa Quốc Bảo OCOP 5 Sao";
+            }
+
+            if (candidates.length === 0) {
+                if (isHealth || isSep || (minPrice && minPrice >= 5000000)) {
+                    candidates = products.filter(p => [1, 4, 12, 18, 25, 47].includes(p.id) || p.stars === 5 || p.price >= 600000);
+                } else if (isTea) {
+                    candidates = products.filter(p => [2, 3, 47].includes(p.id) || (p.category && p.category.toLowerCase().includes("trà")));
+                } else if (isKitchen) {
+                    candidates = products.filter(p => [5, 6, 8, 14, 21].includes(p.id) || (p.category && p.category.toLowerCase().includes("gia vị")));
+                } else if (isSnack) {
+                    candidates = products.filter(p => [7, 9, 10, 11, 16, 20].includes(p.id) || (p.category && p.category.toLowerCase().includes("bánh")));
+                } else if (maxPrice && maxPrice <= 500000) {
+                    candidates = products.filter(p => p.price <= 250000);
+                } else {
+                    candidates = products.filter(p => p.stars === 5 || [1, 2, 4, 5, 10, 11, 12].includes(p.id));
+                }
+            }
+
+            if (candidates.length === 0) candidates = products.slice(0, 4);
+            candidates.sort((a, b) => (b.price || 0) - (a.price || 0));
+
+            let selected = candidates.slice(0, Math.min(candidates.length, 4));
+            let comboItems = selected.map(p => ({ product: p, quantity: 1 }));
+            let currentTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+            if (maxPrice && currentTotal > maxPrice) {
+                let subset = [];
+                let runningSum = 0;
+                for (const p of candidates) {
+                    if (runningSum + (p.price || 0) <= maxPrice && !subset.some(s => s.id === p.id)) {
+                        subset.push(p);
+                        runningSum += (p.price || 0);
+                        if (subset.length >= 3) break;
+                    }
+                }
+                if (subset.length > 0) {
+                    comboItems = subset.map(p => ({ product: p, quantity: 1 }));
+                    currentTotal = runningSum;
+                }
+            }
+
+            if (minPrice && currentTotal < minPrice) {
+                let loops = 0;
+                while (currentTotal < minPrice && loops < 300) {
+                    const idx = loops % comboItems.length;
+                    comboItems[idx].quantity += 1;
+                    currentTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+                    if (maxPrice && currentTotal > maxPrice) {
+                        comboItems[idx].quantity -= 1;
+                        break;
+                    }
+                    loops++;
+                }
+            }
+
+            const finalTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+            const productIds = comboItems.map(item => item.product.id);
+            lastAIRecommendedProductIds = productIds;
+
+            const itemsText = comboItems.map((item, idx) => {
+                const p = item.product;
+                const itemTotal = (p.price * item.quantity).toLocaleString("vi-VN");
+                const qtyStr = item.quantity > 1 ? ` (x${item.quantity})` : "";
+                const pDesc = p.desc || p.description;
+                return `${idx + 1}. **${p.name}**${qtyStr} — ${itemTotal}₫\n   • Chuẩn OCOP: ${p.stars}⭐ (${p.region})\n   • Đơn giá: ${p.price.toLocaleString("vi-VN")}₫/hộp\n   • Đặc trưng: ${pDesc ? pDesc.slice(0, 95) + "..." : "Đặc sản chính gốc sản xuất hữu cơ đạt chuẩn OCOP quốc gia."}`;
+            }).join("\n\n");
+
+            let intro = english
+                ? `🎁 Here is our curated combo **${comboTitle}** tailored to your request:`
+                : `🎁 Dạ, OCOP Copilot trân trọng thiết kế **${comboTitle}** theo đúng yêu cầu và ngân sách của Anh/Chị:`;
+
+            let totalText = english
+                ? `💰 **Total Combo Value**: **${finalTotal.toLocaleString("vi-VN")}₫**`
+                : `💰 **Tổng giá trị combo**: **${finalTotal.toLocaleString("vi-VN")}₫**`;
+
+            let packagingNote = english
+                ? `✨ **Gift Presentation & Services Included**:\n• Packaged in a premium lacquer/hard wooden gift box with elegant ribbons & personalized greeting card.\n• 100% genuine cooperative products with origin traceability QR code.\n• Free nationwide express shipping with shockproof fragile packaging.\n• Corporate VAT invoices available upon request.`
+                : `✨ **Quy cách đóng gói & Dịch vụ đi kèm**:\n• Đóng hộp quà sang trọng (hộp rương gỗ/sơn mài nẹp nhung cao cấp), thắt nơ lụa & thiệp viết tay theo yêu cầu.\n• 100% sản phẩm đạt chứng nhận OCOP chuẩn sao, có tem QR Code truy xuất nguồn gốc tận nơi sản xuất.\n• Miễn phí vận chuyển hỏa tốc toàn quốc, đóng thùng xốp chống va đập tiêu chuẩn.\n• Hỗ trợ xuất hóa đơn VAT và in/khắc laser logo doanh nghiệp cho đơn quà tặng.`;
+
+            let cta = english
+                ? `👉 You can click the product cards below to add the combo directly to your cart, or message our Admin for custom corporate gift sets!`
+                : `👉 Anh/Chị có thể bấm trực tiếp các thẻ sản phẩm bên dưới để thêm ngay vào giỏ hàng hoặc inbox Admin để tùy chỉnh số lượng nhé!`;
+
+            const fullMessage = `${intro}\n\n${itemsText}\n\n${totalText}\n\n${packagingNote}\n\n${cta}`;
+
+            const chips = english
+                ? ["Add combo to cart", "Adjust budget", "Corporate gift inquiry", "Hotline: 0987.654.321"]
+                : ["Thêm combo vào giỏ", "Tùy chỉnh ngân sách", "Inbox Admin 3 (Quà Tết/Doanh nghiệp)", "Hotline: 0987.654.321"];
+
+            return {
+                text_response: fullMessage,
+                message: fullMessage,
+                suggested_products: productIds,
+                productIds: productIds,
+                dynamic_chips: chips,
+                handoffAdmin: false,
+                localFallback: true
+            };
+        }
+
         function createLocalCatalogReply(query, hasImages = false) {
             lastAIRecommendedProductIds = [];
             lastAIRecommendationCriteria = null;
@@ -4836,6 +4996,51 @@
                     handoffAdmin: true,
                     localFallback: true
                 };
+            }
+
+            // 2.1 CHUYÊN ĐỀ COMBO & HỘP QUÀ TẶNG (OMNI COMBO & GIFT SETS)
+            const isCombo = /(combo|set qua|bo qua|gio qua|hop qua|goi qua|set dac san|gift set|bundle|tron goi|phoi qua|phoi giup|thiet ke qua)/.test(normalized);
+            if (isCombo) {
+                let minPrice = null;
+                const overMatch = normalized.match(/(?:tren|hon|tu|toi thieu|lon hon|cao hon|over|above|from)\s+(\d+(?:[.,]\d+)?)\s*(k|nghin|ngan|trieu|tr|m)?/);
+                if (overMatch) {
+                    let num = parseFloat(overMatch[1].replace(',', '.'));
+                    const unit = overMatch[2];
+                    if (unit === "trieu" || unit === "tr" || unit === "m") num *= 1000000;
+                    else if (unit === "k" || unit === "nghin" || unit === "ngan" || num < 1000) num *= 1000;
+                    minPrice = Math.round(num);
+                }
+
+                let maxPrice = null;
+                if (!/(?:tren|hon|tu|toi thieu|lon hon|cao hon|over|above)\s*(\d+)\s*(trieu|tr|m|k|nghin|ngan)\b/.test(normalized)) {
+                    const underMatch = normalized.match(/(?:duoi|tam|khoang|duoi muc|gia re hon|it hon|under|below|up to|max)\s+(\d+(?:[.,]\d+)?)\s*(k|nghin|ngan|trieu|tr|m)?/) ||
+                                       normalized.match(/(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)\b/);
+                    if (underMatch) {
+                        let num = parseFloat(underMatch[1].replace(',', '.'));
+                        const unit = underMatch[2];
+                        if (unit === "trieu" || unit === "tr" || unit === "m") num *= 1000000;
+                        else if (unit === "k" || unit === "nghin" || unit === "ngan" || num < 1000) num *= 1000;
+                        maxPrice = Math.round(num);
+                    }
+                }
+
+                const allProvinces = [...new Set(products.map(p => p.region).filter(Boolean))].sort((a, b) => b.length - a.length);
+                const exactRegion = allProvinces.find(r => {
+                    const nr = r.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().trim();
+                    return nr.length >= 3 && normalized.includes(nr);
+                }) || null;
+
+                let regionKeyword = null;
+                if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
+                else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
+                else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
+                else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
+                else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
+
+                const isHealthIntent = /(suc khoe|duong sinh|nguoi gia|nguoi lon tuoi|cha me|bo me|tre em|ba bau|mat ngu|tieu duong|giai ruou|da day|de khang|bo than|huyet ap)/.test(normalized);
+
+                const intent = { isCombo: true, minPrice, maxPrice, exactRegion, regionKeyword, isHealth: isHealthIntent, rawText: rawQuery };
+                return generateClientLocalComboReply(intent, products, english ? "en" : "vi");
             }
 
             // 2. CHUYÊN ĐỀ VẬN CHUYỂN, GIAO HÀNG & ĐỒNG KIỂM COD (SHIPPING & LOGISTICS)
@@ -5030,6 +5235,14 @@
             };
         }
 
+        function formatAIMessageText(text) {
+            if (!text) return '';
+            const escaped = escapeAIHtml(text);
+            return escaped
+                .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-emerald-950">$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em class="italic text-gray-700">$1</em>');
+        }
+
 async function sendAIMessage() {
             const requestLanguage = currentLanguage;
             const inputEl = document.getElementById('ai-chat-input');
@@ -5138,7 +5351,7 @@ async function sendAIMessage() {
                         <div class="ai-product-recommendations"></div>
                     </div>
                 `;
-                reply.querySelector('p').textContent = result.message;
+                reply.querySelector('p').innerHTML = formatAIMessageText(result.message);
 
                 const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
                     .map(id => products.find(product => product.id === id))
@@ -5147,29 +5360,13 @@ async function sendAIMessage() {
                 if (result.localMarkup) {
                     recommendationsEl.innerHTML = result.localMarkup;
                 } else if (recommendedProducts.length && isAIComboRequest(text)) {
-                    const budget = parseAIBudget(normalizeSearchText(text));
-                    const comboTotal = recommendedProducts.reduce((total, product) => total + product.price, 0);
-                    if (recommendedProducts.length < 2 || !budget || comboTotal > budget) {
-                        reply.querySelector('p').textContent = currentLanguage === 'en'
-                            ? budget
-                                ? recommendedProducts.length < 2
-                                    ? 'I could not verify a multi-product combo within your budget. Please try another budget or category.'
-                                    : 'I could not verify a combo within your budget. Please try a higher budget or a different category.'
-                                : 'What total budget should I use for your combo?'
-                            : budget
-                                ? recommendedProducts.length < 2
-                                    ? 'Mình chưa xác minh được combo gồm nhiều sản phẩm trong ngân sách này. Anh/chị thử đổi ngân sách hoặc nhóm đặc sản nhé.'
-                                    : 'Mình chưa xác minh được combo trong ngân sách này. Anh/chị thử tăng ngân sách hoặc chọn nhóm đặc sản khác nhé.'
-                                : 'Anh/chị muốn combo có tổng ngân sách khoảng bao nhiêu?';
-                    } else {
-                        recommendationsEl.innerHTML = renderAIComboRecommendations(
-                            [recommendedProducts],
-                            currentLanguage === 'en' ? 'Combo ideas' : 'Gợi ý combo đặc sản',
-                            currentLanguage === 'en'
-                                ? 'The total uses current catalogue prices; review the items before adding them to your cart.'
-                                : 'Tổng tiền tính theo giá danh mục hiện tại; anh/chị vui lòng kiểm tra combo trước khi thêm vào giỏ.'
-                        );
-                    }
+                    recommendationsEl.innerHTML = renderAIComboRecommendations(
+                        [recommendedProducts],
+                        currentLanguage === 'en' ? 'Combo ideas' : 'Gợi ý combo đặc sản',
+                        currentLanguage === 'en'
+                            ? 'The total uses current catalogue prices; review the items before adding them to your cart.'
+                            : 'Tổng tiền tính theo giá danh mục hiện tại; anh/chị vui lòng kiểm tra combo trước khi thêm vào giỏ.'
+                    );
                 } else if (recommendedProducts.length) {
                     recommendationsEl.innerHTML = renderAIProductRecommendations(
                         recommendedProducts,
@@ -5320,31 +5517,24 @@ async function sendAIMessage() {
                     : 'Rất vui được hỗ trợ anh/chị. Nếu muốn xem thêm lựa chọn, anh/chị có thể cho mình biết ngân sách hoặc dịp tặng nhé.';
             }
             if (isComboRequest) {
-                if (!budget) {
-                    lastAIComboMarkup = null;
-                    return english
-                        ? 'What total budget should I use for the combo? For example, “a regional food combo under 500k”.'
-                        : 'Anh/chị muốn combo có tổng ngân sách khoảng bao nhiêu? Ví dụ: “combo đặc sản dưới 500k”.';
+                const comboReply = generateClientLocalComboReply({
+                    isCombo: true,
+                    minPrice: budgetFloor,
+                    maxPrice: budget,
+                    exactRegion: matchingRegions && matchingRegions.length ? matchingRegions[0].region : null,
+                    rawText: query
+                }, products, english ? 'en' : 'vi');
+                if (comboReply && comboReply.message) {
+                    const recProds = (comboReply.productIds || []).map(id => products.find(p => p.id === id)).filter(Boolean);
+                    if (recProds.length) {
+                        lastAIComboMarkup = renderAIComboRecommendations(
+                            [recProds],
+                            english ? 'Combos within your budget' : 'Gợi ý combo đặc sản',
+                            english ? 'Calculated from current catalogue prices.' : 'Tính theo giá niêm yết chuẩn OCOP.'
+                        );
+                    }
+                    return comboReply.message;
                 }
-                const combos = getAIComboRecommendations({ budget, budgetFloor, category, requestedStars, matchingRegions });
-                if (!combos.length) {
-                    lastAIComboMarkup = null;
-                    return english
-                        ? `I could not find a combo within ${budget.toLocaleString('en-US')} VND. Would you like to adjust the budget or try another category?`
-                        : `Mình chưa tìm được combo phù hợp trong mức ${budget.toLocaleString('vi-VN')} ₫. Anh/chị muốn điều chỉnh ngân sách hoặc thử nhóm khác không?`;
-                }
-                lastAIRecommendedProductIds = combos[0].map(product => product.id);
-                lastAIRecommendationCriteria = { category, terms: [], stars: requestedStars, maxPrice: budget, minPrice: budgetFloor, regionIds: matchingRegions ? matchingRegions.map(product => product.id) : null };
-                lastAIComboMarkup = renderAIComboRecommendations(
-                    combos,
-                    english ? 'Combos within your budget' : 'Combo đặc sản trong ngân sách',
-                    english
-                        ? 'Each total is calculated from current catalogue prices and does not exceed your stated budget.'
-                        : 'Tổng giá dùng theo danh mục hiện tại và không vượt ngân sách anh/chị đưa ra.'
-                );
-                return english
-                    ? 'I found a few combinations that fit your budget. Review the items and total below before adding a combo to your cart.'
-                    : 'Mình đã tìm một vài cách kết hợp phù hợp ngân sách. Anh/chị xem sản phẩm và tổng tiền bên dưới trước khi thêm combo vào giỏ nhé.';
             }
             if (/\b(giao hang|phi ship|van chuyen|freeship|mien phi ship|shipping|delivery)\b/.test(q)) {
                 return english
@@ -5520,8 +5710,8 @@ async function sendAIMessage() {
 
         function isAIComboRequest(query) {
             return matchesAIConcept(query, [
-                'combo', 'bo qua', 'set qua', 'gio qua', 'set dac san',
-                'meal set', 'gift set', 'bundle'
+                'combo', 'bo qua', 'set qua', 'gio qua', 'hop qua', 'goi qua', 'set dac san',
+                'meal set', 'gift set', 'bundle', 'tron goi', 'phoi qua', 'phoi giup', 'thiet ke qua', 'thiet ke gio qua'
             ]);
         }
 
@@ -5683,6 +5873,10 @@ async function sendAIMessage() {
             const range = getAIBudgetRange(query);
             if (range) return range.max;
 
+            if (/(?:tren|hon|tu|toi thieu|lon hon|cao hon|over|above|from)\s*(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)\b/.test(query)) {
+                return null;
+            }
+
             const match = query.match(/(?:duoi|toi da|ngan sach|tam gia|khoang|budget|under|below|up to|max)?\s*(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)\b/);
             if (!match) {
                 const groupedPrice = query.match(/(?:duoi|toi da|ngan sach|tam gia|under|below|up to|max)?\s*(\d{1,3}(?:[.,]\d{3})+|\d{6,})\s*(?:d|dong|vnd|vnd)?(?:\b|$)/);
@@ -5693,7 +5887,11 @@ async function sendAIMessage() {
         }
 
         function parseAIBudgetFloor(query) {
-            return getAIBudgetRange(query)?.min ?? null;
+            const range = getAIBudgetRange(query);
+            if (range) return range.min;
+            const overMatch = query.match(/(?:tren|hon|tu|toi thieu|lon hon|cao hon|over|above|from)\s*(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)\b/);
+            if (overMatch) return parseAIBudgetAmount(overMatch[1], overMatch[2]);
+            return null;
         }
 
         function getAIBudgetRange(query) {
