@@ -1387,6 +1387,25 @@
         }
         body:has(#ocop-intro-overlay:not(.hidden)) #ai-chat-widget,
         #ai-chat-widget[hidden], #intro-voucher-description { display: none !important; }
+        #ocop-intro-overlay #lucky-gift-code { color: #000 !important; background: #ecd788; }
+        #ocop-intro-overlay #lucky-gift-description { color: #f4edce !important; overflow-wrap: anywhere; }
+        #ocop-intro-overlay #intro-gift-result { background: #143c2e; }
+        @media (max-width: 767px) {
+            input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+            select, textarea { font-size: 16px !important; }
+            #ocop-intro-overlay { padding: 12px; }
+            #ocop-intro-overlay .intro-stage,
+            #ocop-intro-overlay .intro-regions,
+            #ocop-intro-overlay #intro-lucky-card { min-width: 0; max-width: 100%; }
+            #ocop-intro-overlay .intro-pillars > div { height: auto; min-height: 4.5rem; }
+            #ocop-intro-overlay #intro-gift-result { align-items: stretch; gap: 12px; }
+            #ocop-intro-overlay #intro-gift-result > div { justify-content: flex-start; flex-wrap: wrap; }
+            #ocop-intro-overlay #lucky-gift-description { text-align: left; justify-content: flex-start; line-height: 1.6; }
+            #ocop-intro-overlay #btn-draw-gift { min-height: 44px; width: 100%; }
+            #ocop-intro-overlay .province-map { min-height: 240px; height: min(50svh, 380px); }
+            #ocop-intro-overlay .province-map-select { max-width: 100%; width: 100%; }
+            #ai-chat-window { width: calc(100vw - 24px); max-height: calc(100dvh - 100px); }
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
@@ -2503,6 +2522,10 @@
 
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
+            const intro = document.getElementById('ocop-intro-overlay');
+            const syncVisibility = () => setAIChatWidgetVisibility(intro.classList.contains('hidden'));
+            new MutationObserver(syncVisibility).observe(intro, { attributes: true, attributeFilter: ['class'] });
+            syncVisibility();
             restorePageScrollState();
             updateCatalogCounts();
             applyLanguage(currentLanguage);
