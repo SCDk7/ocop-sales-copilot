@@ -1992,7 +1992,7 @@
     </main>
     
     <!-- 5. WIDGET CHATBOT AI ANTIGRAVITY (BÊN PHẢI, DƯỚI ADMIN) -->
-    <div id="ai-chat-widget" class="fixed bottom-3 sm:bottom-6 right-3 sm:right-6 left-auto z-[60] flex flex-col items-end pointer-events-auto">
+    <div id="ai-chat-widget" class="fixed bottom-3 sm:bottom-6 right-3 sm:right-6 left-auto z-[99999] flex flex-col items-end pointer-events-auto">
         <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-96 max-h-[min(72vh,38rem)] h-[520px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-emerald-100 flex flex-col overflow-hidden mb-3 animate-pop-in">
             <div class="bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md">
                 <div class="flex items-center space-x-3">
@@ -2042,9 +2042,10 @@
             </div>
         </div>
         
-        <button type="button" onclick="toggleAIChat()" aria-label="Mở trò chuyện với trợ lý AI OCOP" class="relative z-10 pointer-events-auto group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 transition duration-300 cursor-pointer">
-            <img src="chat-avatar.svg" alt="Mở trò chuyện với trợ lý AI OCOP" class="w-full h-full rounded-full object-cover p-0.5">
-            <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow">AI</span>
+        <button id="ai-chat-toggle-btn" type="button" onclick="toggleAIChat()" aria-label="Mở trò chuyện với trợ lý AI OCOP" class="relative z-10 group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer pointer-events-auto">
+            <img src="chat-avatar.svg" alt="Mở trò chuyện với trợ lý AI OCOP" class="w-full h-full rounded-full object-cover p-0.5 pointer-events-none">
+            <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow animate-pulse pointer-events-none">AI</span>
+            <span class="absolute right-full mr-3 bg-ocopGreenDark/95 text-amber-200 text-[11px] font-semibold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-xl border border-ocopGold/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">Hỏi OCOP AI tư vấn ✨</span>
         </button>
     </div>
 
@@ -3463,12 +3464,21 @@
         // -------------------------------------------------------------
         function toggleAIChat() {
             const win = document.getElementById('ai-chat-window');
-            win.classList.toggle('hidden');
-            if (!win.classList.contains('hidden')) {
-                document.getElementById('admin-support-menu').classList.add('hidden');
-                document.getElementById('ai-chat-input').focus();
+            if (!win) return;
+            const isHidden = win.classList.contains('hidden');
+            if (isHidden) {
+                win.classList.remove('hidden');
+                const adminMenu = document.getElementById('admin-support-menu');
+                if (adminMenu) adminMenu.classList.add('hidden');
+                const inp = document.getElementById('ai-chat-input');
+                if (inp) setTimeout(() => inp.focus(), 120);
+                const msgBox = document.getElementById('ai-chat-messages');
+                if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
+            } else {
+                win.classList.add('hidden');
             }
         }
+        window.toggleAIChat = toggleAIChat;
 
         function renderIssueSupportReply(promptText = '') {
             const messagesEl = document.getElementById('ai-chat-messages');

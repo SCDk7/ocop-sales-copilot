@@ -140,9 +140,22 @@
     pointer-events: none; /* Quan trọng: Để chuột có thể click xuyên qua nền vào UI web */
 }
 
-/* Đảm bảo khung chứa hoặc body của bạn có nền tối màu xanh OCOP để hiệu ứng phát sáng nổi bật */
+/* Nền OCOP Heritage thanh lịch, ấm áp và chuẩn mực cho sàn thương mại đặc sản */
 body {
-    background: linear-gradient(135deg, #051e13 0%, #0c3320 100%) !important;
+    background-color: #FAF8F5;
+    color: #1F2937;
     margin: 0;
     overflow-x: hidden;
+}
+
+/* Đảm bảo nút và khung chat AI luôn nổi lên trên cùng và nhận sự kiện click hoàn hảo */
+#ai-chat-widget {
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+}
+
+#ai-chat-widget button,
+#ai-chat-widget input,
+#ai-chat-window {
+    pointer-events: auto !important;
 }
