@@ -134,21 +134,21 @@
             100% { width: 210%; height: 210%; opacity: 0; }
         }
         @keyframes drumRotate {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         @keyframes drumRotateReverse {
-            0% { transform: translate(-50%, -50%) rotate(360deg); }
-            100% { transform: translate(-50%, -50%) rotate(0deg); }
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
         }
         @keyframes sunPulse {
             0%, 100% {
-                transform: translate(-50%, -50%) scale(0.94);
+                transform: scale(0.94);
                 filter: drop-shadow(0 0 25px rgba(255, 223, 0, 0.75));
-                opacity: 0.75;
+                opacity: 0.8;
             }
             50% {
-                transform: translate(-50%, -50%) scale(1.18);
+                transform: scale(1.18);
                 filter: drop-shadow(0 0 65px rgba(255, 223, 0, 1)) drop-shadow(0 0 110px rgba(212, 175, 55, 0.85));
                 opacity: 1;
             }
@@ -165,9 +165,17 @@
             0% { opacity: 1; transform: translateY(0); }
             100% { opacity: 0; transform: translateY(-10px); pointer-events: none; }
         }
-        .drum-rotate { animation: drumRotate 24s linear infinite; }
-        .drum-rotate-reverse { animation: drumRotateReverse 36s linear infinite; }
-        .sun-pulse { animation: sunPulse 2.8s ease-in-out infinite; }
+        .drum-rotate,
+        .drum-rotate-reverse,
+        .sun-pulse {
+            transform-origin: center !important;
+            transform-box: fill-box !important;
+            will-change: transform !important;
+            display: block !important;
+        }
+        .drum-rotate { animation: drumRotate 18s linear infinite !important; }
+        .drum-rotate-reverse { animation: drumRotateReverse 22s linear infinite !important; }
+        .sun-pulse { animation: sunPulse 2.8s ease-in-out infinite !important; }
         .curtain-closing { animation: curtainExit 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         .gold-gradient-text {
             background: linear-gradient(135deg, #FFF9D2 0%, #D4AF37 35%, #FFF0B3 60%, #B89528 85%, #FFEAA7 100%);
@@ -1098,18 +1106,7 @@
             transform: scale(1.05);
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.7) !important;
         }
-        @media (prefers-reduced-motion: reduce) {
-            #ocop-intro-overlay,
-            #ocop-intro-overlay::before,
-            #ocop-intro-overlay::after,
-            #ocop-intro-overlay *,
-            #ocop-intro-overlay *::before,
-            #ocop-intro-overlay *::after {
-                animation: none !important;
-                scroll-behavior: auto !important;
-                transition: none !important;
-            }
-        }
+
         @media (max-width: 640px) {
             #ocop-intro-overlay > .relative.z-20.max-w-4xl {
                 padding-top: 1rem;
@@ -1381,9 +1378,7 @@
         @media (prefers-reduced-motion: reduce) {
             .product-card,
             .product-card-image,
-            #shop-hero *,
-            #ocop-intro-overlay::before,
-            #ocop-intro-overlay::after {
+            #shop-hero * {
                 animation: none !important;
                 transition: none !important;
                 scroll-behavior: auto !important;
@@ -1414,8 +1409,8 @@
             <div class="intro-waterlight" aria-hidden="true"></div>
 
             <!-- Vòng Tinh Vân Sao Vàng Hoàng Kim (Golden Celestial Starburst Ring) -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[980px] h-[980px] sm:w-[1300px] sm:h-[1300px] opacity-35 pointer-events-none drum-rotate">
-                <svg viewBox="0 0 1000 1000" fill="none" stroke="#FFE082" class="w-full h-full drop-shadow-[0_0_25px_rgba(255,224,130,0.7)]">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[980px] h-[980px] sm:w-[1300px] sm:h-[1300px] opacity-45 pointer-events-none flex items-center justify-center">
+                <svg id="dongson-starburst-svg" viewBox="0 0 1000 1000" fill="none" stroke="#FFE082" class="w-full h-full drum-rotate drop-shadow-[0_0_25px_rgba(255,224,130,0.7)]">
                     <circle cx="500" cy="500" r="485" stroke-width="1.8" stroke-dasharray="10 22"/>
                     <circle cx="500" cy="500" r="460" stroke-width="1.2" stroke-dasharray="4 14"/>
                     <circle cx="500" cy="500" r="435" stroke-width="1.5" stroke-dasharray="18 10"/>
@@ -1423,8 +1418,8 @@
             </div>
 
             <!-- Trống đồng Đông Sơn AI Hologram 3D (Vòng ngoài Vàng Hoàng Gia) -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[820px] h-[820px] sm:w-[1100px] sm:h-[1100px] opacity-45 pointer-events-none drum-rotate-reverse">
-                <svg viewBox="0 0 800 800" fill="none" stroke="#F5D061" class="w-full h-full drop-shadow-[0_0_35px_rgba(212,175,55,0.95)]">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[820px] h-[820px] sm:w-[1100px] sm:h-[1100px] opacity-65 pointer-events-none flex items-center justify-center">
+                <svg id="dongson-drum-svg" viewBox="0 0 800 800" fill="none" stroke="#F5D061" class="w-full h-full drum-rotate-reverse drop-shadow-[0_0_35px_rgba(212,175,55,0.95)]">
                     <circle cx="400" cy="400" r="392" stroke-width="2.5" stroke-dasharray="14 10"/>
                     <circle cx="400" cy="400" r="372" stroke-width="1.8"/>
                     <circle cx="400" cy="400" r="348" stroke-width="3" stroke-dasharray="24 14"/>
@@ -1442,8 +1437,8 @@
             </div>
 
             <!-- Vòng Trong Cyber Laser Cyan -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] sm:w-[780px] sm:h-[780px] opacity-40 pointer-events-none drum-rotate">
-                <svg viewBox="0 0 600 600" fill="none" stroke="#00F0FF" class="w-full h-full drop-shadow-[0_0_25px_rgba(0,240,255,0.85)]">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] sm:w-[780px] sm:h-[780px] opacity-55 pointer-events-none flex items-center justify-center">
+                <svg id="dongson-laser-svg" viewBox="0 0 600 600" fill="none" stroke="#00F0FF" class="w-full h-full drum-rotate drop-shadow-[0_0_25px_rgba(0,240,255,0.85)]">
                     <circle cx="300" cy="300" r="285" stroke-width="2.5" stroke-dasharray="10 8"/>
                     <circle cx="300" cy="300" r="255" stroke-width="1.8"/>
                     <circle cx="300" cy="300" r="225" stroke-width="2.5" stroke-dasharray="14 10"/>
@@ -1454,8 +1449,8 @@
             </div>
 
             <!-- Mặt Trời Đông Sơn 14 Tia Phát Sáng Hoàng Kim -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] opacity-85 pointer-events-none sun-pulse">
-                <svg viewBox="0 0 400 400" fill="none" stroke="#FFDF00" class="w-full h-full drop-shadow-[0_0_45px_rgba(255,223,0,0.95)]">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] opacity-90 pointer-events-none flex items-center justify-center">
+                <svg id="dongson-sun-svg" viewBox="0 0 400 400" fill="none" stroke="#FFDF00" class="w-full h-full sun-pulse drop-shadow-[0_0_45px_rgba(255,223,0,0.95)]">
                     <circle cx="200" cy="200" r="48" fill="#FFDF00" fill-opacity="0.6" stroke-width="3"/>
                     <polygon points="200,55 218,145 288,100 238,168 322,172 245,206 308,266 232,240 254,320 200,255 146,320 168,240 92,266 155,206 78,172 162,168 112,100 182,145" fill="#FFDF00" fill-opacity="0.65" stroke-width="2.5"/>
                 </svg>
@@ -2762,30 +2757,48 @@
         }
 
         // -------------------------------------------------------------
-        // HIỆU ỨNG TƯƠNG TÁC 3D PARALLAX NỀN TRỐNG ĐỒNG THEO CHUỘT
+        // HIỆU ỨNG TƯƠNG TÁC 3D PARALLAX & QUAY TRÒN TRỐNG ĐỒNG LIÊN TỤC
         // -------------------------------------------------------------
         function initIntroBackgroundParallax() {
             const bgContainer = document.getElementById('intro-bg-parallax-layer');
-            if (!bgContainer) return;
+            const drumSvg = document.getElementById('dongson-drum-svg');
+            const laserSvg = document.getElementById('dongson-laser-svg');
+            const starburstSvg = document.getElementById('dongson-starburst-svg');
 
             let targetX = 0;
             let targetY = 0;
             let currentX = 0;
             let currentY = 0;
 
+            let drumAngleOuter = 0;
+            let drumAngleInner = 0;
+            let drumAngleStarburst = 0;
+
             window.addEventListener('mousemove', (e) => {
                 targetX = (e.clientX / window.innerWidth - 0.5) * 28;
                 targetY = (e.clientY / window.innerHeight - 0.5) * 28;
             }, { passive: true });
 
-            function animateParallax() {
-                currentX += (targetX - currentX) * 0.05;
-                currentY += (targetY - currentY) * 0.05;
+            function animateBackground() {
+                // 1. Parallax mượt mà
+                if (bgContainer) {
+                    currentX += (targetX - currentX) * 0.05;
+                    currentY += (targetY - currentY) * 0.05;
+                    bgContainer.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
+                }
 
-                bgContainer.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
-                requestAnimationFrame(animateParallax);
+                // 2. Quay tròn trống đồng Đông Sơn liên tục (Chắc chắn 100% xoay tròn mượt mà)
+                drumAngleOuter = (drumAngleOuter - 0.32) % 360;
+                drumAngleInner = (drumAngleInner + 0.48) % 360;
+                drumAngleStarburst = (drumAngleStarburst + 0.22) % 360;
+
+                if (drumSvg) drumSvg.style.transform = `rotate(${drumAngleOuter.toFixed(2)}deg)`;
+                if (laserSvg) laserSvg.style.transform = `rotate(${drumAngleInner.toFixed(2)}deg)`;
+                if (starburstSvg) starburstSvg.style.transform = `rotate(${drumAngleStarburst.toFixed(2)}deg)`;
+
+                requestAnimationFrame(animateBackground);
             }
-            animateParallax();
+            animateBackground();
         }
 
         // -------------------------------------------------------------
