@@ -1406,6 +1406,32 @@
             #ocop-intro-overlay .province-map-select { max-width: 100%; width: 100%; }
             #ai-chat-window { width: calc(100vw - 24px); max-height: calc(100dvh - 100px); }
         }
+        #ocop-intro-overlay { animation: none; overscroll-behavior-y: contain; }
+        #ocop-intro-overlay::before, #ocop-intro-overlay::after,
+        #ocop-intro-overlay .intro-ambient-orb, #ocop-intro-overlay .intro-waterlight { animation: none !important; }
+        #ocop-intro-overlay .intro-card-glass,
+        #ocop-intro-overlay #intro-lucky-card,
+        #ocop-intro-overlay .intro-live-ticker {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        #ocop-intro-overlay.intro-scrolling *,
+        #ocop-intro-overlay.intro-scrolling *::before,
+        #ocop-intro-overlay.intro-scrolling *::after { animation-play-state: paused !important; }
+        @media (max-width: 767px), (pointer: coarse) {
+            #ambient-stardust-canvas, #ocop-intro-overlay .intro-ambient-orb,
+            #ocop-intro-overlay .intro-waterlight,
+            #ocop-intro-overlay::before, #ocop-intro-overlay::after { display: none !important; }
+            #ocop-intro-overlay *, #ai-chat-window {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            #ocop-intro-overlay svg { filter: none !important; }
+            #ocop-intro-overlay .drum-rotate { animation-duration: 160s; }
+            #ocop-intro-overlay .drum-rotate-reverse { animation-duration: 180s; }
+            #ocop-intro-overlay .intro-pillars > div { animation: none !important; transform: none !important; }
+            html { scroll-behavior: auto; }
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
@@ -2703,6 +2729,7 @@
         // -------------------------------------------------------------
         let stardustAnimationId = null;
         function initAmbientStardustCanvas() {
+            if (window.matchMedia('(max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
             const canvas = document.getElementById('ambient-stardust-canvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
@@ -2761,7 +2788,7 @@
 
             function renderStardust() {
                 const overlay = document.getElementById('ocop-intro-overlay');
-                if (overlay && overlay.classList.contains('hidden')) {
+                if (document.hidden || (overlay && (overlay.classList.contains('hidden') || overlay.classList.contains('intro-scrolling')))) {
                     stardustAnimationId = requestAnimationFrame(renderStardust);
                     return;
                 }
@@ -2823,45 +2850,14 @@
         // HIỆU ỨNG TƯƠNG TÁC 3D PARALLAX & QUAY TRÒN TRỐNG ĐỒNG LIÊN TỤC
         // -------------------------------------------------------------
         function initIntroBackgroundParallax() {
-            const bgContainer = document.getElementById('intro-bg-parallax-layer');
-            const drumSvg = document.getElementById('dongson-drum-svg');
-            const laserSvg = document.getElementById('dongson-laser-svg');
-            const starburstSvg = document.getElementById('dongson-starburst-svg');
-
-            let targetX = 0;
-            let targetY = 0;
-            let currentX = 0;
-            let currentY = 0;
-
-            let drumAngleOuter = 0;
-            let drumAngleInner = 0;
-            let drumAngleStarburst = 0;
-
-            window.addEventListener('mousemove', (e) => {
-                targetX = (e.clientX / window.innerWidth - 0.5) * 28;
-                targetY = (e.clientY / window.innerHeight - 0.5) * 28;
+            // Drum rotation uses CSS transforms instead of a permanent JS frame loop.
+            const intro = document.getElementById('ocop-intro-overlay');
+            let scrollTimer;
+            intro.addEventListener('scroll', () => {
+                intro.classList.add('intro-scrolling');
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => intro.classList.remove('intro-scrolling'), 140);
             }, { passive: true });
-
-            function animateBackground() {
-                // 1. Parallax mượt mà
-                if (bgContainer) {
-                    currentX += (targetX - currentX) * 0.05;
-                    currentY += (targetY - currentY) * 0.05;
-                    bgContainer.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
-                }
-
-                // 2. Quay tròn trống đồng Đông Sơn liên tục (Chắc chắn 100% xoay tròn mượt mà)
-                drumAngleOuter = (drumAngleOuter - 0.32) % 360;
-                drumAngleInner = (drumAngleInner + 0.48) % 360;
-                drumAngleStarburst = (drumAngleStarburst + 0.22) % 360;
-
-                if (drumSvg) drumSvg.style.transform = `rotate(${drumAngleOuter.toFixed(2)}deg)`;
-                if (laserSvg) laserSvg.style.transform = `rotate(${drumAngleInner.toFixed(2)}deg)`;
-                if (starburstSvg) starburstSvg.style.transform = `rotate(${drumAngleStarburst.toFixed(2)}deg)`;
-
-                requestAnimationFrame(animateBackground);
-            }
-            animateBackground();
         }
 
         // -------------------------------------------------------------
@@ -6407,6 +6403,7 @@ async function sendAIMessage() {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
     gsap.registerPlugin(ScrollTrigger);
+    if (window.matchMedia('(max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
 
     /* ─────────────────────────────────────────────────────────────
        1. HERO BANNER — Text trượt lên, ảnh lướt vào từ bên phải
