@@ -634,6 +634,15 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     "   • OCOP 4 sao: Tiêu chuẩn chất lượng xuất sắc cấp tỉnh. OCOP 5 sao: Quốc bảo nông đặc sản cấp Quốc gia xuất khẩu.",
     "   • 100% sản phẩm có mã QR truy xuất nguồn gốc tận hợp tác xã/nông hộ bản địa.",
 
+    "=== HỖ TRỢ CSKH & 4 ADMIN FACEBOOK TRỰC TIẾP ===",
+    "• Khi khách hàng hỏi về liên hệ CSKH, gặp nhân viên hỗ trợ, tư vấn viên, Facebook, hoặc hotline:",
+    "  Cung cấp danh sách 4 chuyên viên CSKH Facebook trực tiếp của OCOP:",
+    "  1. Admin 1 - Hoàng Bình (Tư Vấn OCOP & Đặt Hàng): https://web.facebook.com/binh.hoang.882202",
+    "  2. Admin 2 - Thảo Nguyên (Hỗ Trợ Đơn Hàng & Vận Chuyển COD): https://web.facebook.com/thao.nguyen.261107",
+    "  3. Admin 3 - Phúc Nguyễn (Báo Giá Sỉ & Hộp Quà Doanh Nghiệp): https://web.facebook.com/nguyen.phuc.327726",
+    "  4. Admin 4 - Thiện Bảo (Chăm Sóc Khách Hàng & Đổi Trả 1-1): https://web.facebook.com/huynh.tran.thien.bao.842171",
+    "  Hotline 24/7: 0987.654.321. BẮT BUỘC đặt handoffAdmin=true và trả productIds=[] để kích hoạt menu hỗ trợ.",
+
     "=== HỖ TRỢ KHIẾU NẠI & AN TOÀN BẢO MẬT ===",
     "• Nếu khách hàng phản ánh hàng lỗi, hỏng hóc, bể vỡ, thiếu hàng hoặc muốn đổi trả: Chân thành xin lỗi khách, nhắc chính sách Đổi mới 1-1 hoặc Hoàn tiền 7 ngày, hướng dẫn chụp ảnh sản phẩm, BẮT BUỘC đặt `handoffAdmin: true` và trả `productIds: []` để kết nối tư vấn viên admin hỗ trợ.",
     "• Tuyệt đối không yêu cầu mật khẩu, mã OTP, số tài khoản hay thông tin bảo mật của khách hàng.",
@@ -702,6 +711,8 @@ function extractSearchIntents(queryText) {
 
   const isComplaint = /\b(hang loi|hang bi loi|san pham bi loi|san pham loi|bi loi|bi hong|hu hong|vo nat|bi vo|bi be|mop meo|bi mop|bi dap|chay khet|het han|qua han|bi moc|am moc|doi mau|kem chat luong|thieu hang|giao thieu|giao nham|giao sai|sai hang|doi tra|tra hang|hoan tien|chua nhan duoc hang|chua nhan hang|mat tien|khieu nai|phan nan)\b|\b(loi|hong)\s+(hang|san pham|dong goi|nap|hop|chai|lo)\b|^(hang loi|loi|hong|doi tra|tra hang)$/.test(normalized);
 
+  const isCSKH = /(cskh|cham soc khach hang|lien he cskh|ho tro cskh|nhan vien cskh|gap nhan vien|gap admin|nhan vien ho tro|tu van vien|tong dai|hotline|facebook|fb|inbox admin|chat admin|lien he)/.test(normalized);
+
   const isShipping = /(ship|giao hang|van chuyen|phi ship|bao lau|nhan hang|phi van chuyen|cod|thanh toan khi nhan|hoa toc|toan quoc)/.test(normalized);
 
   const isOcopKnowledge = /(ocop la gi|y nghia ocop|tieu chuan ocop|4 sao|5 sao|sao ocop|truy xuat|chinh hang|nguon goc)/.test(normalized);
@@ -750,7 +761,7 @@ function extractSearchIntents(queryText) {
   else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
   else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
 
-  return { isComplaint, isShipping, isOcopKnowledge, isUsage, isHealth, maxPrice, minStars, categoryOrKeyword, regionKeyword, isGift, rawText: queryText };
+  return { isComplaint, isCSKH, isShipping, isOcopKnowledge, isUsage, isHealth, maxPrice, minStars, categoryOrKeyword, regionKeyword, isGift, rawText: queryText };
 }
 
 function filterProductsByIntent(products = [], intent = {}) {
@@ -797,14 +808,30 @@ function buildLocalFallbackReply(query, products = [], language = "vi") {
   // 1. Complaint & Returns
   if (intent.isComplaint) {
     const msg = english
-      ? "I am truly sorry for the inconvenience with your order! OCOP Copilot provides a 100% replacement or full refund within 7 days for damaged or defective items.\n\n👉 Please keep the original packaging and click \"Open admin contacts\" below so our support team can assist you immediately."
-      : "Dạ, em rất tiếc và thành thật xin lỗi Anh/Chị về sự cố đơn hàng này ạ! OCOP Copilot cam kết 100% quyền lợi khách hàng với chính sách Đổi mới 1-1 miễn phí hoặc Hoàn tiền trong 7 ngày đối với sản phẩm lỗi do vận chuyển hoặc nhà sản xuất.\n\n👉 Anh/Chị vui lòng giữ lại bao bì, chụp ảnh sản phẩm và nhấn nút \"Mở liên hệ admin\" bên dưới để được chuyên viên hỗ trợ giải quyết ngay lập tức nhé ạ!";
+      ? "I am truly sorry for the inconvenience with your order! OCOP Copilot provides a 100% replacement or full refund within 7 days for damaged or defective items.\n\n👉 Please keep the original packaging and contact our Customer Care Admin below so we can resolve this right away:\n• Admin 4 - Thiện Bảo (Customer Care & 1-1 Returns): https://web.facebook.com/huynh.tran.thien.bao.842171\n📞 Hotline: 0987.654.321"
+      : "Dạ, em rất tiếc và thành thật xin lỗi Anh/Chị về sự cố đơn hàng này ạ! OCOP Copilot cam kết 100% quyền lợi khách hàng với chính sách Đổi mới 1-1 miễn phí hoặc Hoàn tiền trong 7 ngày đối với sản phẩm lỗi do vận chuyển hoặc nhà sản xuất.\n\n👉 Anh/Chị vui lòng giữ lại bao bì, chụp ảnh sản phẩm và nhắn tin trực tiếp cho Admin CSKH dưới đây để được xử lý ngay lập tức nhé ạ:\n• 👨‍💼 Admin 4 - Thiện Bảo (Chăm Sóc Khách Hàng & Đổi Trả 1-1): https://web.facebook.com/huynh.tran.thien.bao.842171\n📞 Hotline hỗ trợ 24/7: 0987.654.321";
     return {
       text_response: msg,
       message: msg,
       suggested_products: [],
       productIds: [],
-      dynamic_chips: ["Mở liên hệ Admin", "Chính sách đổi trả", "Hotline: 0987.654.321"],
+      dynamic_chips: ["Inbox Admin 4 (CSKH)", "Chính sách đổi trả", "Hotline: 0987.654.321"],
+      handoffAdmin: true,
+      fallback: true
+    };
+  }
+
+  // 1.1. CSKH & 4 Facebook Admins
+  if (intent.isCSKH) {
+    const msg = english
+      ? "Our Customer Support Team is ready 24/7 across 4 dedicated Facebook channels:\n\n• 👨‍💼 Admin 1 - Speciality Consultant (Hoàng Bình): https://web.facebook.com/binh.hoang.882202\n• 👩‍💼 Admin 2 - Order & Delivery Support (Thảo Nguyên): https://web.facebook.com/thao.nguyen.261107\n• 👨‍💼 Admin 3 - Wholesale & Corporate Gifts (Phúc Nguyễn): https://web.facebook.com/nguyen.phuc.327726\n• 👨‍💼 Admin 4 - Customer Care & 1-1 Returns (Thiện Bảo): https://web.facebook.com/huynh.tran.thien.bao.842171\n\n📞 24/7 Hotline: 0987.654.321"
+      : "Dạ, đội ngũ Chăm sóc khách hàng (CSKH) OCOP luôn sẵn sàng hỗ trợ Anh/Chị 24/7 qua 4 chuyên viên Facebook trực tiếp dưới đây ạ:\n\n1. 👨‍💼 Admin 1 - Hoàng Bình (Tư Vấn OCOP & Đặt Hàng):\n👉 https://web.facebook.com/binh.hoang.882202\n\n2. 👩‍💼 Admin 2 - Thảo Nguyên (Hỗ Trợ Đơn Hàng & Vận Chuyển COD):\n👉 https://web.facebook.com/thao.nguyen.261107\n\n3. 👨‍💼 Admin 3 - Phúc Nguyễn (Báo Giá Sỉ & Hộp Quà Doanh Nghiệp):\n👉 https://web.facebook.com/nguyen.phuc.327726\n\n4. 👨‍💼 Admin 4 - Thiện Bảo (Chăm Sóc Khách Hàng & Đổi Trả 1-1):\n👉 https://web.facebook.com/huynh.tran.thien.bao.842171\n\n📞 Hotline hỗ trợ trực tiếp: 0987.654.321 (Miễn phí cuộc gọi)";
+    return {
+      text_response: msg,
+      message: msg,
+      suggested_products: [],
+      productIds: [],
+      dynamic_chips: ["Inbox Admin 1", "Inbox Admin 4", "Hotline: 0987.654.321", "Chính sách đổi trả"],
       handoffAdmin: true,
       fallback: true
     };
