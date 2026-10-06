@@ -86,7 +86,7 @@ function appendChatMessageBubble(sender, text, isUser = false) {
         `;
     } else {
         bubble.innerHTML = `
-            <img src="chat-avatar.svg" alt="OCOP AI" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
+            <img src="chat-avatar.jpg" alt="OCOP AI" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
             <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words text-xs">
                 <p class="whitespace-pre-wrap">${String(text).replace(/\n/g, '<br>')}</p>
                 <div class="ai-product-recommendations"></div>
@@ -325,8 +325,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Avatars replacement
     document.querySelectorAll('.ai-avatar, .copilot-avatar, img[alt*="AI"]').forEach((img) => {
-        if (!img.src.includes('chat-avatar.svg')) {
-            img.src = 'chat-avatar.svg';
+        if (!img.src.includes('chat-avatar.jpg')) {
+            img.src = 'chat-avatar.jpg';
         }
     });
 
