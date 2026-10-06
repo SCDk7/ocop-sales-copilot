@@ -1997,9 +1997,9 @@
                     </div>
                     <div>
                         <h4 class="font-extrabold text-xs tracking-wide text-amber-100 flex items-center">
-                            <span id="chat-title">AI tư vấn đặc sản</span>
+                            <span id="chat-title">OCOP AI</span>
                         </h4>
-                        <span class="text-[10px] text-emerald-200 font-semibold" id="chat-subtitle">Gợi ý theo nhu cầu và ngân sách</span>
+                        <span class="text-[10px] text-emerald-200 font-semibold" id="chat-subtitle">Chuyên gia đặc sản &amp; văn hóa Việt Nam</span>
                     </div>
                 </div>
                 <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
@@ -3916,6 +3916,20 @@
                 renderAIChatImagePreviews();
                 messagesEl.scrollTop = messagesEl.scrollHeight;
 
+                // ── Dynamic chips: refresh the chip bar with contextual suggestions ──
+                const chipBar = document.querySelector('#ai-chat-window .p-2.bg-amber-50\\/80');
+                if (chipBar && Array.isArray(result.dynamic_chips) && result.dynamic_chips.length) {
+                    chipBar.innerHTML = '';
+                    result.dynamic_chips.forEach(label => {
+                        const btn = document.createElement('button');
+                        btn.className = 'chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer text-[10px] font-bold';
+                        btn.textContent = label;
+                        btn.addEventListener('click', () => sendQuickPrompt(label));
+                        chipBar.appendChild(btn);
+                    });
+                }
+
+
                 if (result.handoffAdmin) {
                     window.setTimeout(() => {
                         const adminMenu = document.getElementById('admin-support-menu');
@@ -5331,17 +5345,17 @@
                     : 'Ảnh được gửi tới Google Gemini để tìm sản phẩm tương tự.';
                 imageSearchButton.setAttribute('aria-label', currentLanguage === 'en' ? 'Search products by image' : 'Tìm sản phẩm bằng hình ảnh');
             }
-            document.getElementById('chat-title').textContent = currentLanguage === 'en' ? 'AI shopping advice' : 'AI tư vấn';
+            document.getElementById('chat-title').textContent = currentLanguage === 'en' ? 'OCOP AI' : 'OCOP AI';
             document.getElementById('chat-subtitle').textContent = currentLanguage === 'en'
-                ? 'Suggestions tailored to your needs and budget' : 'Gợi ý theo nhu cầu và ngân sách';
+                ? 'Vietnamese specialty & cultural expert' : 'Chuyên gia đặc sản & văn hóa Việt Nam';
             document.getElementById('ai-chat-input').placeholder = currentLanguage === 'en'
                 ? 'Try: gifts under 500k in the Mekong Delta' : 'Ví dụ: quà tặng dưới 500k ở miền Tây';
             document.getElementById('chat-send-button').setAttribute('aria-label', currentLanguage === 'en' ? 'Send message' : 'Gửi tin nhắn');
             const chatMessages = document.getElementById('ai-chat-messages');
             if (chatMessages.children.length === 1) {
                 document.getElementById('chat-greeting').textContent = currentLanguage === 'en'
-                    ? 'Hello! I can help you find a Vietnamese specialty that fits.'
-                    : 'Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.';
+                    ? 'Hello! I am OCOP AI. How can I help you explore Vietnamese regional specialties today?'
+                    : 'Dạ, em là OCOP AI! Rất vui được hỗ trợ Anh/Chị khám phá đặc sản và quà biếu vùng miền hôm nay.';
                 document.getElementById('chat-guidance').textContent = currentLanguage === 'en'
                     ? 'Tell me the occasion, region, product type, or your budget.'
                     : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
