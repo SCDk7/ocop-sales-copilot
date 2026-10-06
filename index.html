@@ -257,13 +257,18 @@
         @media (max-width: 640px) {
             #ai-chat-window,
             #admin-support-menu {
-                max-height: min(70dvh, 34rem);
+                height: min(70dvh, 32rem);
+                max-height: calc(100dvh - 5.5rem);
                 border-radius: 1.35rem;
             }
             #ai-chat-widget {
                 right: 0.75rem;
                 left: auto;
+                bottom: max(0.75rem, env(safe-area-inset-bottom));
                 align-items: flex-end;
+            }
+            #ai-chat-messages {
+                padding: 0.75rem;
             }
             #admin-support-widget {
                 right: 0.75rem;
@@ -1551,7 +1556,7 @@
 
                 <!-- Kết quả thẻ bài Lộc Vàng VIP -->
                 <div id="intro-gift-result" class="hidden mt-3 pt-3 border-t border-amber-400/40 animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-2.5 bg-black/60 p-3 rounded-2xl backdrop-blur-md">
-                    <div class="flex items-center space-x-2.5 text-left">
+                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 text-left">
                         <span class="text-xs text-amber-300 font-black uppercase flex items-center"><i class="fa-solid fa-gift mr-1 text-ocopGold"></i> MÃ LỘC:</span>
                         <span id="lucky-gift-code" class="text-xs sm:text-sm font-black text-yellow-300 bg-amber-500/20 px-3.5 py-1 rounded-xl border border-amber-400 font-mono tracking-widest shadow-inner">OCOP-QUA30</span>
                         <button onclick="copyToClipboard(document.getElementById('lucky-gift-code').innerText, 'Mã voucher OCOP');" class="text-xs bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-ocopGreen font-black px-3 py-1 rounded-lg transition flex items-center space-x-1 cursor-pointer shadow">
@@ -1559,7 +1564,7 @@
                             <span>Sao chép</span>
                         </button>
                     </div>
-                    <span id="lucky-gift-description" class="text-[11px] sm:text-xs text-black font-extrabold flex items-center">
+                    <span id="lucky-gift-description" class="w-full sm:w-auto text-[11px] sm:text-xs text-black font-extrabold flex items-center justify-center sm:justify-start text-center sm:text-left">
                         <i class="fa-solid fa-circle-check mr-1.5 text-emerald-700 text-sm"></i> Giảm 30.000đ cho đơn từ 500.000đ.
                     </span>
                 </div>
@@ -2223,7 +2228,7 @@
                         <span id="i18n-cart-shipping">Phí vận chuyển:</span>
                         <span class="font-bold text-emerald-700" id="i18n-free-shipping">Miễn phí toàn quốc</span>
                     </div>
-                    <div id="cart-voucher-row" class="hidden flex justify-between text-emerald-800">
+                    <div id="cart-voucher-row" class="hidden flex flex-col gap-0.5 text-emerald-800 sm:flex-row sm:justify-between">
                         <span id="cart-voucher-label">Ưu đãi voucher:</span>
                         <span id="cart-voucher-discount" class="font-bold">-0 ₫</span>
                     </div>
