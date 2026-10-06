@@ -538,7 +538,7 @@ function isImageProductLookupRequest(message) {
   return !supportTerms.some(term => normalizedMessage.includes(term));
 }
 
-function buildAISystemInstruction({ products, language }, { includeTranscription = false, wikiSources = [] } = {}) {
+function buildAISystemInstruction({ products, language }, { includeTranscription = false, wikiSources = [], hasImages = false } = {}) {
   const productContext = JSON.stringify(products);
 
   // ── Wikipedia RAG context block ──────────────────────────────────────────────
@@ -558,6 +558,12 @@ function buildAISystemInstruction({ products, language }, { includeTranscription
     ? `Chỉ trả về JSON đúng schema: transcription (string), message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), handoffAdmin (boolean), dynamic_chips (mảng string).`
     : `Chỉ trả về JSON đúng schema: message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), handoffAdmin (boolean), dynamic_chips (mảng string).`;
 
+  const imageSearchInstruction = hasImages
+    ? language === 'en'
+      ? 'REQUIRED IMAGE-FIRST PRODUCT SEARCH: Before writing the reply, inspect every attached image, identify the visible product and distinguishing details, then search the supplied catalogue for the closest genuine matches using product type, packaging, visible labels, and region. Only after that search, answer the customer. Return productIds only for catalogue entries that visually match; never fill the list with unrelated products. If no confident match exists, return an empty productIds array and say you could not match the image. For damage or complaint photos, identify any matching catalogue item first, then prioritize safe support guidance and set handoffAdmin=true when staff review is needed.'
+      : 'BẮT BUỘC KIỂM TRA ẢNH VÀ TÌM TRONG DANH MỤC TRƯỚC KHI TRẢ LỜI: Trước khi viết câu trả lời, hãy xem từng ảnh đính kèm, nhận diện sản phẩm nhìn thấy và các dấu hiệu riêng, sau đó tìm sản phẩm khớp nhất trong danh mục được cung cấp bằng loại sản phẩm, bao bì, nhãn nhìn thấy và vùng miền. Chỉ trả lời khách sau khi đã đối chiếu danh mục. Chỉ đưa vào productIds những sản phẩm thực sự khớp với ảnh; không gợi ý sản phẩm không liên quan. Nếu không tìm được sản phẩm khớp đáng tin cậy, trả productIds rỗng và nói rõ chưa tìm thấy sản phẩm phù hợp. Với ảnh khiếu nại hoặc hàng lỗi, vẫn kiểm tra sản phẩm trước, sau đó ưu tiên hướng dẫn hỗ trợ an toàn và đặt handoffAdmin=true khi cần nhân viên xác minh.'
+    : '';
+
   return [
     'You are OCOP AI, a prestigious cultural ambassador and premium culinary expert of Vietnamese specialties.',
     'Your goal is to guide users to discover and buy regional OCOP products with complete confidence and enthusiasm.',
@@ -575,6 +581,7 @@ function buildAISystemInstruction({ products, language }, { includeTranscription
 
     chipsInstruction,
     schemaInstruction,
+    imageSearchInstruction,
 
     `\n[Danh mục sản phẩm OCOP từ cơ sở dữ liệu]:\n${productContext}`,
     wikiContext
@@ -723,6 +730,22 @@ function buildLocalFallbackReply(query, products = [], language = 'vi') {
     suggested_products: productIds,
     productIds,
     dynamic_chips,
+    handoffAdmin: false,
+    fallback: true
+  };
+}
+
+function buildAIUnavailableFallback(query, products, language, hasImages) {
+  if (!hasImages) return buildLocalFallbackReply(query, products, language);
+  const message = language === 'en'
+    ? 'I cannot inspect and match the image against the catalogue right now, so I will not recommend an unverified product. Please try again shortly or describe the item.'
+    : 'Hiện mình chưa thể kiểm tra ảnh và đối chiếu với danh mục, nên chưa gợi ý sản phẩm khi chưa xác minh được. Bạn vui lòng thử lại sau hoặc mô tả sản phẩm giúp mình nhé.';
+  return {
+    text_response: message,
+    message,
+    suggested_products: [],
+    productIds: [],
+    dynamic_chips: language === 'en' ? ['Try again', 'Describe it'] : ['Thử lại', 'Mô tả sản phẩm'],
     handoffAdmin: false,
     fallback: true
   };
@@ -895,12 +918,13 @@ app.post('/api/ai/search-image', express.json({ limit: '2mb' }), async (req, res
 async function generateAIResponse(validation, { attachedImages = [], imageData = null, wikiSources = [] } = {}) {
   let configuration;
   const lastUserMessage = validation.messages[validation.messages.length - 1].text;
+  const hasImages = attachedImages.length > 0 || Boolean(imageData);
 
   try {
     configuration = getAIModelConfiguration();
   } catch (configError) {
     console.warn('Gemini not configured or invalid key, triggering bulletproof fallback:', configError.message);
-    const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+    const fallbackData = buildAIUnavailableFallback(lastUserMessage, validation.products, validation.language, hasImages);
     return { status: 200, body: fallbackData };
   }
 
@@ -956,7 +980,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         system_instruction: {
-          parts: [{ text: buildAISystemInstruction(validation, { wikiSources }) }]
+          parts: [{ text: buildAISystemInstruction(validation, { wikiSources, hasImages }) }]
         },
         contents,
         generationConfig: {
@@ -981,7 +1005,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     const result = await response.json().catch(() => ({}));
     if (!response.ok) {
       console.warn('Gemini API call failed, falling back gracefully:', response.status, result.error?.message);
-      const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+      const fallbackData = buildAIUnavailableFallback(lastUserMessage, validation.products, validation.language, hasImages);
       return { status: 200, body: fallbackData };
     }
 
@@ -993,14 +1017,14 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       answer = JSON.parse(output);
     } catch {
       console.warn('Gemini JSON parse failed, falling back gracefully');
-      const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+      const fallbackData = buildAIUnavailableFallback(lastUserMessage, validation.products, validation.language, hasImages);
       return { status: 200, body: fallbackData };
     }
 
     if (!answer || typeof answer.message !== 'string' || !answer.message.trim() ||
         !Array.isArray(answer.productIds) || typeof answer.handoffAdmin !== 'boolean') {
       console.warn('Gemini schema mismatch, falling back gracefully');
-      const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+      const fallbackData = buildAIUnavailableFallback(lastUserMessage, validation.products, validation.language, hasImages);
       return { status: 200, body: fallbackData };
     }
 
@@ -1047,7 +1071,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
 
   } catch (error) {
     console.warn('Gemini call errored/timed out, triggering bulletproof fallback:', error.message);
-    const fallbackData = buildLocalFallbackReply(lastUserMessage, validation.products, validation.language);
+    const fallbackData = buildAIUnavailableFallback(lastUserMessage, validation.products, validation.language, hasImages);
     return { status: 200, body: fallbackData };
   } finally {
     clearTimeout(timeout);
