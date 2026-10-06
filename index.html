@@ -448,23 +448,21 @@
             display: inline-flex;
             align-items: center;
             gap: 0.55rem;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             font-weight: 900;
-            color: #FFE69A;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            color: #1d4d3d;
         }
         .intro-region-kicker i {
-            color: #FFDF00;
-            font-size: 0.95rem;
-            filter: drop-shadow(0 0 8px rgba(255, 223, 0, 0.7));
+            color: #d4af37;
+            font-size: 0.9rem;
         }
         .intro-region-caption {
             display: block;
-            color: #A3C9BD;
+            color: rgba(29, 77, 61, 0.7);
             font-size: 0.78rem;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.01em;
         }
         .province-map {
@@ -472,15 +470,15 @@
             min-height: 300px;
             overflow: hidden;
             isolation: isolate;
-            border: 1.5px solid rgba(212, 175, 55, 0.4);
-            border-radius: 1.25rem;
-            background: #031710;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(15, 56, 44, 0.16);
+            border-radius: 1rem;
+            background: #e8eee5;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), 0 8px 20px rgba(15,56,44,0.08);
         }
         .province-map .leaflet-container {
             width: 100%;
             height: 100%;
-            background: #031710;
+            background: #e8eee5;
             font: 500 0.75rem 'Plus Jakarta Sans', sans-serif;
         }
         .province-map .province-name-tooltip {
@@ -509,54 +507,46 @@
         .province-map .leaflet-control-layers,
         .province-map .leaflet-bar {
             overflow: hidden;
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-            background: rgba(6, 26, 19, 0.85);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(15, 56, 44, 0.2);
+            border-radius: 0.65rem;
+            box-shadow: 0 3px 12px rgba(15, 56, 44, 0.16);
         }
         .province-map .leaflet-bar a,
         .province-map .leaflet-control-layers {
-            color: #FFE69A !important;
-            background: rgba(6, 26, 19, 0.9) !important;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.25) !important;
+            color: #0f382c;
+            background: #fffdf7;
         }
         .province-map .leaflet-bar a:hover,
         .province-map .leaflet-control-layers-toggle:hover {
-            color: #ffffff !important;
-            background: rgba(212, 175, 55, 0.4) !important;
+            color: #0f382c;
+            background: #f5e7ae;
         }
         .province-map .leaflet-control-attribution {
-            color: #A7F3D0;
-            background: rgba(4, 18, 13, 0.75);
-            backdrop-filter: blur(8px);
-            border-radius: 6px;
-            margin: 4px;
+            color: #23473b;
+            background: rgba(255, 253, 247, 0.88);
         }
         @media (min-width: 641px) {
             .province-map .leaflet-control-attribution {
-                padding: 2px 6px;
-                font-size: 8px;
+                padding: 1px 3px;
+                font-size: 7px;
                 line-height: 1.3;
                 white-space: nowrap;
             }
         }
         .province-map .leaflet-control-attribution a {
-            color: #FDE047;
+            color: #0f5b43;
             font-weight: 700;
         }
         .province-map .province-island-label {
-            padding: 0.35rem 0.65rem;
-            border: 1.5px solid #FFDF00 !important;
-            border-radius: 0.6rem;
-            color: #FFFDF7 !important;
-            background: rgba(6, 26, 19, 0.95) !important;
-            font-size: 0.72rem;
+            padding: 0.25rem 0.45rem;
+            border: 1px solid rgba(212, 175, 55, 0.8);
+            border-radius: 0.45rem;
+            color: #fffdf7;
+            background: rgba(15, 56, 44, 0.92);
+            font-size: 0.68rem;
             font-weight: 800;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.6) !important;
+            box-shadow: 0 2px 8px rgba(15, 56, 44, 0.25);
             cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
         }
         .province-map-status {
             color: #45675d;
@@ -567,23 +557,18 @@
         .province-map-select {
             width: min(100%, 22rem);
             min-height: 2.75rem;
-            padding: 0.55rem 0.85rem;
-            border: 1.5px solid rgba(212, 175, 55, 0.45);
-            border-radius: 0.85rem;
-            color: #FFF8DB;
-            background: rgba(4, 20, 15, 0.92);
+            padding: 0.55rem 0.75rem;
+            border: 1px solid rgba(15, 56, 44, 0.18);
+            border-radius: 0.75rem;
+            color: #23473b;
+            background: rgba(255, 255, 255, 0.9);
             font: inherit;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
             touch-action: manipulation;
         }
-        .province-map-select option {
-            background: #061c14;
-            color: #FFF8DB;
-        }
         .province-map-select:focus-visible {
-            outline: 2px solid #FFDF00;
+            outline: 2px solid #d4af37;
             outline-offset: 2px;
         }
         .province-map-clear {
@@ -703,346 +688,285 @@
         .gift-wobble-anim {
             animation: giftHeartbeat 3.2s ease-in-out infinite;
         }
-        /* ==============================================================
-           THEME HOÀNG KIM & NGỌC BÍCH - OCOP LUXURY HERITAGE DESIGN
-           ============================================================== */
         #ocop-intro-overlay {
-            color: #ffffff;
+            color: #183b30;
             background:
-                radial-gradient(circle at 10% 12%, rgba(16, 185, 129, 0.22) 0%, transparent 45%),
-                radial-gradient(circle at 90% 88%, rgba(212, 175, 55, 0.22) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(6, 78, 59, 0.3) 0%, transparent 60%),
-                linear-gradient(150deg, #04140e 0%, #08241b 45%, #03100b 100%);
-            background-size: 100% 100%;
-            padding: clamp(0.75rem, 2vw, 1.75rem);
-            position: fixed;
-            inset: 0;
-            z-index: 100;
+                radial-gradient(ellipse at 12% 8%, rgba(212, 175, 55, 0.2), transparent 40%),
+                radial-gradient(ellipse at 88% 82%, rgba(22, 91, 70, 0.16), transparent 42%),
+                radial-gradient(ellipse at 50% 46%, rgba(255, 255, 255, 0.78), transparent 58%),
+                linear-gradient(135deg, #f5f1e6 0%, #fbfaf6 48%, #edf2e9 100%);
+            background-size: 150% 150%;
+            animation: introBackdropFlow 24s ease-in-out infinite alternate;
+            padding: clamp(0.75rem, 2.5vw, 2rem);
+        }
+        @keyframes introBackdropFlow {
+            0% { background-position: 0% 20%; }
+            100% { background-position: 100% 80%; }
         }
         #ocop-intro-overlay::before,
         #ocop-intro-overlay::after {
             content: "";
             position: fixed;
             z-index: 0;
-            width: min(50vw, 40rem);
+            width: min(54vw, 42rem);
             aspect-ratio: 1;
+            border: 1px solid rgba(15, 56, 44, 0.1);
             border-radius: 50%;
             pointer-events: none;
-            filter: blur(80px);
-            opacity: 0.45;
-            animation: introAuroraFloat 20s ease-in-out infinite alternate;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.18), rgba(22, 91, 70, 0.08) 38%, transparent 70%);
+            filter: blur(2px);
+            animation: introAuroraFloat 18s ease-in-out infinite alternate;
         }
         #ocop-intro-overlay::before {
-            top: -20%;
-            left: -15%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.35), transparent 70%);
+            top: -28%;
+            left: -20%;
+            box-shadow: 0 0 0 2.5rem rgba(15, 56, 44, 0.035), 0 0 0 5rem rgba(15, 56, 44, 0.02), 0 0 100px rgba(212, 175, 55, 0.16);
         }
         #ocop-intro-overlay::after {
-            right: -15%;
-            bottom: -25%;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.3), transparent 70%);
-            animation-delay: -10s;
+            right: -20%;
+            bottom: -34%;
+            animation-delay: -8s;
+            box-shadow: 0 0 0 2.5rem rgba(15, 56, 44, 0.035), 0 0 0 5rem rgba(15, 56, 44, 0.02), 0 0 100px rgba(212, 175, 55, 0.16);
+        }
+        @keyframes introAuroraFloat {
+            0% { transform: translate3d(-2%, 1%, 0) scale(0.96); }
+            100% { transform: translate3d(4%, -3%, 0) scale(1.08); }
         }
         #ocop-intro-overlay > .fixed {
-            opacity: 1;
+            opacity: 0.62;
         }
         #ocop-intro-overlay > .fixed > div:not(canvas):not(.intro-ambient-orb) {
-            display: block;
+            display: none;
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb {
             display: block;
-            opacity: 0.55;
-            filter: blur(100px);
-            animation: introOrbFloat 18s ease-in-out infinite alternate;
+            opacity: 0.7;
+            filter: blur(90px);
+            animation: introOrbFloat 16s ease-in-out infinite alternate;
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb--blue {
-            background-color: rgba(16, 185, 129, 0.25);
+            background-color: rgba(22, 91, 70, 0.18);
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb--cyan {
-            background-color: rgba(6, 182, 212, 0.18);
+            background-color: rgba(212, 175, 55, 0.14);
             animation-delay: -6s;
         }
         #ocop-intro-overlay > .fixed > .intro-ambient-orb--gold {
-            background-color: rgba(212, 175, 55, 0.22);
-            animation-delay: -12s;
+            background-color: rgba(232, 190, 91, 0.2);
+            animation-delay: -11s;
         }
         @keyframes introOrbFloat {
-            0% { transform: translate3d(-3%, 0, 0) scale(0.95); }
-            100% { transform: translate3d(3%, -4%, 0) scale(1.05); }
+            0% { transform: translate3d(-2%, 0, 0) scale(0.94); }
+            100% { transform: translate3d(3%, -4%, 0) scale(1.06); }
         }
-
-        /* HEADER THANH LỊCH GLASSMORPHISM */
-        #ocop-intro-overlay .intro-header {
-            background: rgba(6, 24, 18, 0.75);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(212, 175, 55, 0.35);
-            border-radius: 9999px;
-            padding: 0.65rem 1.25rem;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        #ocop-intro-overlay > .fixed > div.intro-waterlight:not(canvas):not(.intro-ambient-orb) {
+            display: block;
+            position: absolute;
+            inset: 0;
+            opacity: 0.58;
+            background-image:
+                radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.62), transparent 57%),
+                repeating-radial-gradient(ellipse at 18% 118%, transparent 0 34px, rgba(22, 91, 70, 0.1) 36px 37px, transparent 40px 66px),
+                repeating-radial-gradient(ellipse at 86% 122%, transparent 0 46px, rgba(212, 175, 55, 0.11) 48px 49px, transparent 52px 82px),
+                linear-gradient(165deg, transparent 36%, rgba(255, 255, 255, 0.42) 52%, transparent 68%);
+            background-size: 100% 100%, 125% 115%, 130% 120%, 190% 100%;
+            background-position: center, 0% 100%, 100% 100%, 0% 50%;
+            animation: introWaterShimmer 18s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes introWaterShimmer {
+            0% {
+                background-position: center, 0% 100%, 100% 100%, 0% 50%;
+                opacity: 0.38;
+            }
+            100% {
+                background-position: center, 100% 88%, 0% 92%, 100% 50%;
+                opacity: 0.72;
+            }
+        }
+        #ocop-intro-overlay .bg-black\/50 {
+            background: rgba(255, 255, 255, 0.76);
+            border-color: rgba(15, 56, 44, 0.12);
+        }
+        #ocop-intro-overlay .shadow-gold-glow {
+            box-shadow: 0 8px 24px rgba(15, 56, 44, 0.1);
+        }
+        #ocop-intro-overlay .bg-amber-500\/20,
+        #ocop-intro-overlay .bg-amber-500\/35,
+        #ocop-intro-overlay .bg-ocopGold\/35 {
+            background-color: rgba(212, 175, 55, 0.14);
+        }
+        #ocop-intro-overlay .glass-antigravity {
+            color: #23473b;
+            background: rgba(255, 255, 255, 0.76);
+            border-color: rgba(15, 56, 44, 0.14);
+            box-shadow: 0 12px 32px rgba(15, 56, 44, 0.08);
+            backdrop-filter: blur(18px);
+        }
+        #ocop-intro-overlay .intro-card-glass,
+        #ocop-intro-overlay .lucky-golden-box {
+            color: #23473b;
+            background: rgba(250, 248, 240, 0.97);
+            border-color: rgba(212, 175, 55, 0.34);
+            box-shadow: 0 12px 28px rgba(2, 20, 14, 0.2);
+        }
+        #ocop-intro-overlay .intro-card-glass:hover,
+        #ocop-intro-overlay .lucky-golden-box:hover {
+            border-color: rgba(212, 175, 55, 0.7);
+            box-shadow: 0 16px 36px rgba(15, 56, 44, 0.14);
+        }
+        #ocop-intro-overlay .intro-pill-btn {
+            color: #315c4b;
+            background: rgba(255, 255, 255, 0.78);
+            border-color: rgba(15, 56, 44, 0.18);
+        }
+        #ocop-intro-overlay .intro-pill-btn:hover {
+            background: rgba(239, 244, 234, 0.96);
+            border-color: rgba(212, 175, 55, 0.56);
         }
         #ocop-intro-overlay .intro-brand-mark {
             color: #fff;
-            background: linear-gradient(135deg, #10b981, #065f46);
-            border: 2px solid #f6d884;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            background: linear-gradient(145deg, #165b46, #0f382c);
+            border-color: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 8px 24px rgba(15, 56, 44, 0.22);
+        }
+        #ocop-intro-overlay .intro-hero-title,
+        #ocop-intro-overlay .intro-hero-title span {
+            text-shadow: 0 2px 18px rgba(15, 56, 44, 0.1);
+            filter: none;
+        }
+        #ocop-intro-overlay .intro-gold-gradient {
+            background: linear-gradient(110deg, #0f382c, #b89528 42%, #165b46 74%, #0f382c);
+            background-size: 250% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldShine 8s linear infinite;
+        }
+        #ocop-intro-overlay .intro-live-ticker {
+            color: #315c4b;
+            background: rgba(255, 255, 255, 0.78);
+            border-color: rgba(15, 56, 44, 0.16);
+            box-shadow: 0 8px 24px rgba(15, 56, 44, 0.08);
+        }
+        #ocop-intro-overlay .intro-live-ticker .ticker-content {
+            color: #52685b;
+        }
+        #ocop-intro-overlay .intro-live-ticker .intro-live-label {
+            color: #16856b;
+        }
+        #ocop-intro-overlay .intro-ai-consult-btn {
+            color: #315c4b !important;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(241, 244, 234, 0.96));
+            border-color: rgba(15, 56, 44, 0.18);
+            box-shadow: 0 6px 18px rgba(15, 56, 44, 0.08);
+        }
+        #ocop-intro-overlay .intro-ai-consult-btn:hover {
+            color: #173c30 !important;
+            background: linear-gradient(135deg, #fff, #f1f4ea);
+            border-color: rgba(212, 175, 55, 0.62);
+            box-shadow: 0 8px 22px rgba(15, 56, 44, 0.12);
+        }
+        #ocop-intro-overlay #i18n-intro-desc {
+            color: #52685b !important;
+        }
+        #ocop-intro-overlay .text-white {
+            color: #173c30 !important;
+        }
+        #ocop-intro-overlay .text-amber-100,
+        #ocop-intro-overlay .text-amber-200,
+        #ocop-intro-overlay .text-amber-300,
+        #ocop-intro-overlay .text-amber-400,
+        #ocop-intro-overlay .text-ocopGold {
+            color: #8c6b16 !important;
+        }
+        #ocop-intro-overlay [class*="text-amber-"] {
+            color: #607166 !important;
+        }
+        #ocop-intro-overlay .border-amber-500\/20,
+        #ocop-intro-overlay .border-amber-500\/25,
+        #ocop-intro-overlay .border-amber-300\/40,
+        #ocop-intro-overlay .border-ocopGold\/40 {
+            border-color: rgba(15, 56, 44, 0.16) !important;
+        }
+        #ocop-intro-overlay .gold-card-glow {
+            box-shadow: 0 12px 30px rgba(15, 56, 44, 0.08);
+        }
+        #ocop-intro-overlay .gold-gradient-text {
+            background: linear-gradient(110deg, #0f382c, #b89528 52%, #165b46);
+            background-size: 100% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: none;
+            -webkit-text-fill-color: transparent;
+        }
+        #ocop-intro-overlay .intro-mark {
+            color: #fff;
+            background: linear-gradient(145deg, #165b46, #0a261e);
+            border-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 8px 22px rgba(15, 56, 44, 0.18);
+        }
+        #ocop-intro-overlay #intro-award-badge {
+            color: #775b12;
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.38);
+        }
+        #ocop-intro-overlay #intro-award-badge i {
+            color: #9b771e !important;
+        }
+        #ocop-intro-overlay #intro-lucky-card {
+            background: linear-gradient(115deg, rgba(250, 246, 230, 0.96), rgba(243, 247, 239, 0.98));
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 12px 28px rgba(15, 56, 44, 0.1);
+        }
+        #ocop-intro-overlay #intro-lucky-card .text-amber-300,
+        #ocop-intro-overlay #intro-lucky-card .text-amber-100\/90 {
+            color: #725816 !important;
+        }
+        #ocop-intro-overlay #intro-gift-result {
+            background: rgba(255, 255, 255, 0.76);
+            border-color: rgba(15, 56, 44, 0.15);
+        }
+        #ocop-intro-overlay #intro-gift-result .text-white {
+            color: #23473b !important;
+        }
+        #ocop-intro-overlay #intro-gift-result .text-amber-200 {
+            color: #725816 !important;
+        }
+        #ocop-intro-overlay #intro-gift-result .text-emerald-300,
+        #ocop-intro-overlay #intro-gift-result .text-emerald-400 {
+            color: #16856b !important;
+        }
+        #ocop-intro-overlay #btn-draw-gift,
+        #ocop-intro-overlay #intro-enter-market,
+        #ocop-intro-overlay #intro-skip-button {
+            border-color: rgba(255, 255, 255, 0.85);
+            background: linear-gradient(110deg, #0f382c, #165b46);
+            color: #fff !important;
+            box-shadow: 0 8px 20px rgba(15, 56, 44, 0.2);
+        }
+        #ocop-intro-overlay #intro-enter-market {
+            background: linear-gradient(110deg, #165b46, #0a261e);
+        }
+        #ocop-intro-overlay #intro-enter-market .text-ocopGreen {
+            color: #fff !important;
         }
         #ocop-intro-overlay #intro-sound-btn,
         #ocop-intro-overlay #intro-language-btn {
-            color: #fce8ad;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            backdrop-filter: blur(10px);
-            transition: all 0.25s ease;
+            color: #315c4b;
+            background: rgba(255, 255, 255, 0.72);
+            border-color: rgba(15, 56, 44, 0.16);
         }
-        #ocop-intro-overlay #intro-sound-btn:hover,
-        #ocop-intro-overlay #intro-language-btn:hover {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: rgba(212, 175, 55, 0.7);
-            transform: scale(1.05);
+        #ocop-intro-overlay button[onclick="enterOcopMarket('ai')"],
+        #ocop-intro-overlay button[onclick="enterOcopMarket('admin')"] {
+            color: #315c4b;
+            background: rgba(239, 244, 234, 0.88);
+            border-color: rgba(15, 56, 44, 0.16);
         }
-        #ocop-intro-overlay #intro-skip-button {
-            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 50%, #B8860B 100%) !important;
-            color: #051a12 !important;
-            font-weight: 800 !important;
-            border: 1px solid #FFF3C4 !important;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.5) !important;
-            transition: all 0.3s ease;
-        }
-        #ocop-intro-overlay #intro-skip-button:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.8) !important;
-        }
-
-        /* LIVE TICKER BAR */
-        #ocop-intro-overlay .intro-live-ticker {
-            background: rgba(3, 16, 12, 0.65) !important;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(212, 175, 55, 0.3) !important;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        }
-        #ocop-intro-overlay .intro-live-ticker .ticker-content {
-            color: #f7e6b5 !important;
-            font-weight: 600;
-        }
-        #ocop-intro-overlay .intro-live-ticker .intro-live-label {
-            color: #34d399 !important;
-        }
-
-        /* NATIONAL SEAL BADGE */
-        #ocop-intro-overlay #intro-award-badge {
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.16) 0%, rgba(16, 185, 129, 0.16) 100%) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
-            color: #FFF3C4 !important;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25) !important;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-        }
-        #ocop-intro-overlay #intro-award-badge i {
-            color: #FFDF00 !important;
-            filter: drop-shadow(0 0 8px rgba(255, 223, 0, 0.8));
-        }
-
-        /* HERO TITLE & TEXT */
-        #ocop-intro-overlay .intro-hero-title {
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-        }
-        #ocop-intro-overlay #i18n-intro-title1 {
-            color: #ffffff !important;
-            font-weight: 800;
-            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.25), 0 4px 15px rgba(0, 0, 0, 0.8);
-        }
-        #ocop-intro-overlay .intro-gold-gradient,
-        #ocop-intro-overlay #i18n-intro-title2 {
-            background: linear-gradient(135deg, #FFFDE8 0%, #FDE082 25%, #D4AF37 55%, #A87B1D 85%, #FFE99E 100%) !important;
-            background-size: 200% auto !important;
-            background-clip: text !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            animation: goldShine 7s linear infinite !important;
-            filter: drop-shadow(0 2px 14px rgba(212, 175, 55, 0.5)) !important;
-        }
-        #ocop-intro-overlay #i18n-intro-desc {
-            color: #d1e7dd !important;
-            font-size: clamp(0.85rem, 1.35vw, 0.95rem);
-            line-height: 1.65;
-            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
-        }
-
-        /* 4 TRỤ CỘT HOLOGRAM GLASS CARDS (THAY THẾ THẺ BEIGE CŨ) */
-        #ocop-intro-overlay .intro-pillars > div {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(212, 175, 55, 0.3) !important;
-            border-radius: 20px !important;
-            box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        }
-        #ocop-intro-overlay .intro-pillars > div:hover {
-            transform: translateY(-5px) scale(1.025) !important;
-            border-color: rgba(212, 175, 55, 0.8) !important;
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.4) !important;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
-        }
-        #ocop-intro-overlay .intro-pillars span[id^="i18n-intro-pillar"]:not([id$="-sub"]) {
-            color: #ffffff !important;
-            font-weight: 800 !important;
-            font-size: 0.8rem !important;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-        }
-        #ocop-intro-overlay .intro-pillars span[id$="-sub"] {
-            color: #fde68a !important;
-            font-weight: 500 !important;
-            font-size: 0.68rem !important;
-            opacity: 0.95;
-        }
-
-        /* HÒM LỘC VÀNG AI CAPSUlE */
-        #ocop-intro-overlay #intro-lucky-card {
-            background: linear-gradient(135deg, rgba(26, 18, 5, 0.82) 0%, rgba(42, 28, 7, 0.88) 100%) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
-            box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(212, 175, 55, 0.12) !important;
-            border-radius: 24px !important;
-        }
-        #ocop-intro-overlay #intro-lucky-card .text-amber-300 {
-            color: #FDE047 !important;
-        }
-        #ocop-intro-overlay #intro-lucky-card .text-amber-100\/90 {
-            color: #FEF08A !important;
-        }
-        #ocop-intro-overlay #btn-draw-gift {
-            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 50%, #B8860B 100%) !important;
-            color: #061B13 !important;
-            font-weight: 800 !important;
-            border: 1px solid #FFF8DB !important;
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5) !important;
-        }
-        #ocop-intro-overlay #btn-draw-gift:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.8) !important;
-        }
-
-        /* BẢN ĐỒ VIỆT NAM (KHUNG CHỈ HUY KHÔNG GIAN SANG TRỌNG) */
-        #ocop-intro-overlay .intro-regions {
-            background: linear-gradient(160deg, rgba(8, 28, 22, 0.88) 0%, rgba(3, 15, 11, 0.94) 100%) !important;
-            backdrop-filter: blur(24px) !important;
-            -webkit-backdrop-filter: blur(24px) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.42) !important;
-            border-radius: 28px !important;
-            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.85), inset 0 0 35px rgba(212, 175, 55, 0.1) !important;
-            padding: clamp(1rem, 2vw, 1.5rem) !important;
-        }
-        #ocop-intro-overlay .intro-region-kicker {
-            color: #FFE69A !important;
-            font-weight: 800 !important;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-            letter-spacing: 0.05em;
-        }
-        #ocop-intro-overlay .intro-region-caption {
-            color: #A3C9BD !important;
-            font-size: 0.82rem !important;
-            font-weight: 500;
-        }
-        #ocop-intro-overlay .province-map-select {
-            background: rgba(4, 20, 15, 0.92) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
-            color: #FFF8DB !important;
-            border-radius: 14px !important;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.6);
-            font-weight: 700 !important;
-        }
-        #ocop-intro-overlay .province-map-select option {
-            background: #072118;
-            color: #FFF8DB;
-        }
-        #ocop-intro-overlay .province-map {
-            border: 1.5px solid rgba(212, 175, 55, 0.35) !important;
-            border-radius: 18px !important;
-            overflow: hidden !important;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.6), inset 0 0 25px rgba(0,0,0,0.5) !important;
-        }
-        #ocop-intro-overlay .province-map-status {
-            color: #6EE7B7 !important;
-            font-weight: 700;
-        }
-        #ocop-intro-overlay .province-map-clear {
-            background: rgba(212, 175, 55, 0.18) !important;
-            border: 1px solid rgba(212, 175, 55, 0.5) !important;
-            color: #FFF3C4 !important;
-            border-radius: 10px !important;
-            font-weight: 800 !important;
-            transition: all 0.2s ease;
-        }
-        #ocop-intro-overlay .province-map-clear:hover:not(:disabled) {
-            background: rgba(212, 175, 55, 0.4) !important;
-            color: #ffffff !important;
-            border-color: #FFDF00 !important;
-        }
-        #ocop-intro-overlay .intro-actions #intro-enter-market {
-            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 50%, #B8860B 100%) !important;
-            color: #061B13 !important;
-            font-weight: 900 !important;
-            border: 2px solid #FFF8DB !important;
-            box-shadow: 0 10px 35px rgba(212, 175, 55, 0.6) !important;
-            border-radius: 20px !important;
-            transition: all 0.35s ease;
-        }
-        #ocop-intro-overlay .intro-actions #intro-enter-market:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 15px 45px rgba(212, 175, 55, 0.85) !important;
-        }
-        #ocop-intro-overlay .intro-pill-btn {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border: 1px solid rgba(212, 175, 55, 0.3) !important;
-            color: #FDE68A !important;
-            backdrop-filter: blur(12px) !important;
-            transition: all 0.25s ease !important;
-        }
-        #ocop-intro-overlay .intro-pill-btn:hover {
-            background: rgba(212, 175, 55, 0.25) !important;
-            border-color: #FFDF00 !important;
-            color: #ffffff !important;
-            transform: translateY(-2px) scale(1.04);
-        }
-        #ocop-intro-overlay #province-products-panel:not(.hidden) {
-            background: rgba(4, 20, 15, 0.95) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.8), inset 0 0 25px rgba(212, 175, 55, 0.1) !important;
-            color: #ffffff !important;
-        }
-        #ocop-intro-overlay #province-products-title {
-            color: #FDE68A !important;
-        }
-        #ocop-intro-overlay .province-product-card {
-            background: rgba(8, 32, 24, 0.85) !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
-        }
-        #ocop-intro-overlay .province-product-card:hover {
-            background: rgba(14, 48, 36, 0.95) !important;
-            border-color: rgba(212, 175, 55, 0.75) !important;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.3) !important;
-        }
-        #ocop-intro-overlay .province-product-card .province-product-name {
-            color: #FFF8DB !important;
-            font-weight: 800 !important;
-        }
-        #ocop-intro-overlay .province-product-card p {
-            color: #6EE7B7 !important;
-        }
-        #ocop-intro-overlay .province-product-card .province-product-add-button {
-            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 100%) !important;
-            color: #061B13 !important;
-            font-weight: 800 !important;
-            border: 1px solid #FFF8DB !important;
-            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4) !important;
-        }
-        #ocop-intro-overlay .province-product-card .province-product-add-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.7) !important;
+        #ocop-intro-overlay kbd {
+            color: #315c4b;
+            background: #fff;
+            border-color: rgba(15, 56, 44, 0.2);
         }
         @media (prefers-reduced-motion: reduce) {
             #ocop-intro-overlay,
@@ -1084,8 +1008,25 @@
             min-height: 2rem;
         }
         #ocop-intro-overlay {
+            color: #f8f5e9;
+            background:
+                radial-gradient(ellipse at 80% 8%, rgba(212, 175, 55, 0.13), transparent 34rem),
+                radial-gradient(ellipse at 10% 84%, rgba(51, 112, 77, 0.32), transparent 42rem),
+                repeating-linear-gradient(135deg, transparent 0 148px, rgba(238, 218, 157, 0.025) 149px 150px, transparent 151px 260px),
+                linear-gradient(135deg, #102c22 0%, #173a2d 54%, #0e281f 100%);
             color-scheme: dark;
             overscroll-behavior: contain;
+        }
+        #ocop-intro-overlay::before,
+        #ocop-intro-overlay::after {
+            border-color: rgba(223, 195, 113, 0.1);
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1), rgba(22, 91, 70, 0.08) 38%, transparent 70%);
+            animation-duration: 38s;
+        }
+        #ocop-intro-overlay > .fixed { opacity: 0.45; }
+        #ocop-intro-overlay > .fixed > .intro-ambient-orb,
+        #ocop-intro-overlay > .fixed > canvas:not(#intro-confetti-canvas) {
+            display: none;
         }
         #ocop-intro-overlay .curtain-closing { animation: curtainExit 0.42s ease forwards; }
         #ocop-intro-overlay .intro-stage {
@@ -1135,25 +1076,122 @@
             font-size: clamp(0.82rem, 1.15vw, 0.98rem);
             color: #deded2 !important;
         }
+        #ocop-intro-overlay .intro-card-glass,
         #ocop-intro-overlay .intro-pillars > div {
-            padding: 0.75rem 0.65rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            cursor: pointer;
+            color: #23473b;
+            background: rgba(250, 248, 240, 0.97);
+            border: 1px solid rgba(212, 175, 55, 0.32);
+            box-shadow: 0 10px 24px rgba(2, 20, 14, 0.17);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
         }
-        #ocop-intro-overlay .intro-actions {
-            padding-top: 0;
-            text-align: left;
+        #ocop-intro-overlay .intro-card-glass:hover,
+        #ocop-intro-overlay .intro-pillars > div:hover {
+            border-color: rgba(212, 175, 55, 0.68);
+            box-shadow: 0 13px 26px rgba(2, 20, 14, 0.2);
         }
+        #ocop-intro-overlay .intro-regions:hover,
+        #ocop-intro-overlay .intro-pillars > div:hover {
+            transform: none;
+        }
+        #ocop-intro-overlay .intro-pillars > div { padding: 0.7rem; }
+        #ocop-intro-overlay .intro-pillars > div .text-amber-100 { color: #23473b !important; }
+        #ocop-intro-overlay .intro-pillars > div .text-amber-300\/80,
+        #ocop-intro-overlay .intro-pillars > div .text-emerald-300\/80,
+        #ocop-intro-overlay .intro-pillars > div .text-cyan-300\/80,
+        #ocop-intro-overlay .intro-pillars > div .text-yellow-300\/80 {
+            color: #66746a !important;
+        }
+        #ocop-intro-overlay .intro-pillars > div > div {
+            width: 2rem;
+            height: 2rem;
+            margin-bottom: 0.35rem;
+            box-shadow: none;
+        }
+        #ocop-intro-overlay #intro-lucky-card {
+            background: linear-gradient(130deg, #f8f1dd, #fffdf7);
+            border: 1px solid rgba(212, 175, 55, 0.62);
+            box-shadow: 0 10px 24px rgba(2, 20, 14, 0.16);
+        }
+        #ocop-intro-overlay #intro-lucky-card .gift-wobble-anim { animation: none; }
+        #ocop-intro-overlay #intro-lucky-card .text-amber-300,
+        #ocop-intro-overlay #intro-lucky-card .text-amber-100\/90 { color: #405a43 !important; }
+        #ocop-intro-overlay #intro-lucky-card .text-emerald-300 { color: #315f47 !important; }
+        #ocop-intro-overlay #intro-lucky-card .animate-pulse { animation: none; }
+        #ocop-intro-overlay .intro-regions {
+            align-self: stretch;
+            padding: clamp(1rem, 1.8vw, 1.5rem);
+        }
+        #ocop-intro-overlay .intro-regions [class*="border-amber-400"] { border-color: rgba(15, 56, 44, 0.12); }
+        #ocop-intro-overlay .intro-regions .bg-black\/60 {
+            background: #edf0e8;
+            border-color: rgba(15, 56, 44, 0.1);
+        }
+        #ocop-intro-overlay .intro-actions { padding-top: 0; text-align: left; }
         #ocop-intro-overlay #intro-gift-result {
-            background: rgba(4, 24, 18, 0.88);
-            border: 1.5px solid rgba(212, 175, 55, 0.45);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            color: #23473b;
+            background: #e9f1e9;
+            border-color: rgba(22, 91, 70, 0.2);
         }
-
+        #ocop-intro-overlay #intro-gift-result .text-white { color: #23473b !important; }
+        #ocop-intro-overlay #intro-enter-market {
+            color: #173a2d !important;
+            background: linear-gradient(110deg, #f0d995, #d4af37);
+            border: 1px solid #f4e4ae;
+            box-shadow: 0 8px 22px rgba(2, 20, 14, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        #ocop-intro-overlay #intro-enter-market:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(2, 20, 14, 0.24);
+        }
+        #ocop-intro-overlay .intro-pill-btn {
+            color: #f8f5e9;
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(238, 218, 157, 0.24);
+            backdrop-filter: none;
+        }
+        #ocop-intro-overlay .intro-pill-btn:hover {
+            color: #fff;
+            background: rgba(212, 175, 55, 0.17);
+            border-color: rgba(238, 218, 157, 0.58);
+            transform: translateY(-1px);
+            box-shadow: none;
+        }
+        #ocop-intro-overlay .intro-live-ticker {
+            color: #f8f5e9;
+            background: rgba(4, 22, 16, 0.38);
+            border-color: rgba(238, 218, 157, 0.18);
+            box-shadow: none;
+        }
+        #ocop-intro-overlay .intro-live-ticker .ticker-content { color: #e5e1d2; }
+        #ocop-intro-overlay .intro-seal-badge {
+            color: #f8f1d8;
+            background: rgba(212, 175, 55, 0.12);
+            border-color: rgba(212, 175, 55, 0.35);
+            box-shadow: none;
+        }
+        #ocop-intro-overlay .gold-gradient-text,
+        #ocop-intro-overlay .intro-gold-gradient {
+            background: linear-gradient(110deg, #e9d28f, #fff5d5 45%, #d5af4c 78%, #f0d995);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: none;
+            filter: none;
+            text-shadow: none;
+        }
+        #ocop-intro-overlay .text-white { color: #f8f5e9 !important; }
+        #ocop-intro-overlay .text-amber-100,
+        #ocop-intro-overlay .text-amber-200,
+        #ocop-intro-overlay .text-amber-300,
+        #ocop-intro-overlay .text-amber-400,
+        #ocop-intro-overlay .text-ocopGold { color: #e9d28f !important; }
+        #ocop-intro-overlay .animate-bounce,
+        #ocop-intro-overlay .animate-pulse,
+        #ocop-intro-overlay .animate-ping { animation: none !important; }
+        #ocop-intro-overlay .btn-sweep::after { display: none; }
         #shop-hero {
             padding-top: clamp(1.5rem, 4vw, 3.5rem);
             padding-bottom: clamp(1.5rem, 4vw, 3.5rem);
@@ -1282,12 +1320,11 @@
                 margin: 0;
                 overflow-y: auto;
                 overscroll-behavior: contain;
-                border: 1.5px solid rgba(212, 175, 55, 0.45);
+                border: 1px solid rgba(15, 56, 44, 0.15);
                 border-radius: 1rem;
                 padding: 0.75rem;
-                background: rgba(4, 22, 16, 0.96);
-                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(212, 175, 55, 0.1);
-                color: #ffffff;
+                background: rgba(250, 248, 240, 0.98);
+                box-shadow: 0 12px 30px rgba(15, 56, 44, 0.22);
             }
         }
         @media (max-width: 640px) {
@@ -1538,7 +1575,7 @@
             </div>
 
             <!-- BẢN ĐỒ TƯƠNG TÁC TỈNH THÀNH VIỆT NAM -->
-            <div class="intro-regions w-full max-w-3xl intro-map-console rounded-3xl p-4 sm:p-5 border border-amber-400/40 shadow-2xl text-left space-y-3.5">
+            <div class="intro-regions w-full max-w-3xl intro-card-glass rounded-3xl p-4 sm:p-5 border border-amber-400/40 shadow-2xl text-left space-y-3.5">
                 <div class="intro-region-top">
                     <div class="intro-region-heading">
                         <span class="intro-region-kicker">
@@ -1776,7 +1813,7 @@
                 <div class="lg:col-span-5">
                     <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group hover:border-ocopGold/60 transition-all duration-500">
                         <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
-                            <img src="images/p5.jpg" alt="OCOP National Products" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                            <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1000&q=80" alt="OCOP National Products" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5 text-white">
                                 <span class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-1.5 shadow">
                                     ★ Tinh Hoa Nông Sản Việt
