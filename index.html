@@ -2007,7 +2007,13 @@
                         <span class="text-[10px] text-emerald-200 font-semibold" id="chat-subtitle">Chuyên gia đặc sản &amp; văn hóa Việt Nam</span>
                     </div>
                 </div>
-                <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+                <div class="flex items-center space-x-1.5">
+                    <button onclick="toggleAdminSupport()" title="Liên hệ 4 Admin CSKH Facebook" class="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-white/20 hover:bg-white/30 text-[10px] font-bold text-amber-100 transition cursor-pointer border border-white/20 shadow-2xs">
+                        <i class="fa-brands fa-facebook-messenger text-xs text-blue-200"></i>
+                        <span>CSKH FB</span>
+                    </button>
+                    <button onclick="toggleAIChat()" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+                </div>
             </div>
             
             <div id="ai-chat-messages" class="min-h-0 flex-1 p-3.5 sm:p-4 overflow-y-auto space-y-3 bg-ocopWarmBg text-xs" role="log" aria-live="polite" aria-relevant="additions">
@@ -2022,6 +2028,7 @@
             </div>
             
             <div class="p-2 bg-amber-50/80 border-t border-amber-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[10px] font-bold">
+                <button onclick="sendQuickPrompt('Liên hệ CSKH')" class="chat-prompt px-2.5 py-1 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition whitespace-nowrap shadow-xs cursor-pointer flex items-center gap-1"><i class="fa-brands fa-facebook-messenger text-[10px]"></i><span>📞 CSKH (4 FB)</span></button>
                 <button onclick="sendQuickPrompt('Gợi ý đặc sản OCOP 5 sao')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">⭐ 5 sao</button>
                 <button onclick="sendQuickPrompt('Tư vấn quà biếu')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">🎁 Quà biếu</button>
                 <button onclick="sendQuickPrompt('Gợi ý đặc sản dưới 200k')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">💰 Dưới 200k</button>
@@ -3527,7 +3534,7 @@
 
         function sendQuickPrompt(promptText) {
             const normalized = (promptText || '').toLowerCase();
-            if (/(mở liên hệ admin|liên hệ admin|chat admin|gặp admin|hotline)/i.test(normalized)) {
+            if (promptText === 'Mở liên hệ Admin') {
                 toggleAdminSupport();
                 return;
             }
@@ -3715,6 +3722,65 @@
         window.setTimeout(syncAIWebsiteCatalog, 0);
         window.setInterval(syncAIWebsiteCatalog, aiCatalogSyncIntervalMs);
 
+        function getAdminContactCardsHTML() {
+            return `
+                <div class="mt-2.5 space-y-2 rounded-2xl bg-blue-50/80 p-2.5 border border-blue-200 text-left">
+                    <div class="flex items-center justify-between pb-1.5 border-b border-blue-200">
+                        <div class="flex items-center space-x-1.5 text-blue-900 font-extrabold text-[11px]">
+                            <i class="fa-brands fa-facebook-messenger text-blue-600 text-sm"></i>
+                            <span>Đội ngũ 4 Admin CSKH Facebook (24/7)</span>
+                        </div>
+                        <span class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Trực tuyến
+                        </span>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <a href="https://web.facebook.com/binh.hoang.882202" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2.5 p-2 rounded-xl bg-white hover:bg-blue-100/70 border border-blue-100 transition shadow-2xs group">
+                            <img src="admin1.jpg" alt="Admin 1" class="w-8 h-8 rounded-lg object-cover border border-blue-200 flex-shrink-0 group-hover:scale-105 transition">
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[11px] font-extrabold text-gray-800 group-hover:text-blue-700 truncate">Admin 1 - Hoàng Bình</div>
+                                <div class="text-[9px] text-gray-500 truncate">Tư vấn đặc sản OCOP &amp; Đặt hàng</div>
+                            </div>
+                            <span class="text-[10px] text-blue-600 font-bold px-2 py-0.5 rounded-md bg-blue-50 group-hover:bg-blue-600 group-hover:text-white transition flex-shrink-0">Inbox FB</span>
+                        </a>
+
+                        <a href="https://web.facebook.com/thao.nguyen.261107" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2.5 p-2 rounded-xl bg-white hover:bg-blue-100/70 border border-blue-100 transition shadow-2xs group">
+                            <img src="admin2.jpg" alt="Admin 2" class="w-8 h-8 rounded-lg object-cover border border-blue-200 flex-shrink-0 group-hover:scale-105 transition">
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[11px] font-extrabold text-gray-800 group-hover:text-blue-700 truncate">Admin 2 - Thảo Nguyên</div>
+                                <div class="text-[9px] text-gray-500 truncate">Hỗ trợ đơn hàng &amp; Vận chuyển COD</div>
+                            </div>
+                            <span class="text-[10px] text-blue-600 font-bold px-2 py-0.5 rounded-md bg-blue-50 group-hover:bg-blue-600 group-hover:text-white transition flex-shrink-0">Inbox FB</span>
+                        </a>
+
+                        <a href="https://web.facebook.com/nguyen.phuc.327726" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2.5 p-2 rounded-xl bg-white hover:bg-blue-100/70 border border-blue-100 transition shadow-2xs group">
+                            <img src="admin3.jpg" alt="Admin 3" class="w-8 h-8 rounded-lg object-cover border border-blue-200 flex-shrink-0 group-hover:scale-105 transition">
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[11px] font-extrabold text-gray-800 group-hover:text-blue-700 truncate">Admin 3 - Phúc Nguyễn</div>
+                                <div class="text-[9px] text-gray-500 truncate">Báo giá sỉ &amp; Hộp quà doanh nghiệp</div>
+                            </div>
+                            <span class="text-[10px] text-blue-600 font-bold px-2 py-0.5 rounded-md bg-blue-50 group-hover:bg-blue-600 group-hover:text-white transition flex-shrink-0">Inbox FB</span>
+                        </a>
+
+                        <a href="https://web.facebook.com/huynh.tran.thien.bao.842171" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2.5 p-2 rounded-xl bg-white hover:bg-blue-100/70 border border-blue-100 transition shadow-2xs group">
+                            <img src="admin4.jpg" alt="Admin 4" class="w-8 h-8 rounded-lg object-cover border border-blue-200 flex-shrink-0 group-hover:scale-105 transition">
+                            <div class="flex-1 min-w-0">
+                                <div class="text-[11px] font-extrabold text-gray-800 group-hover:text-blue-700 truncate">Admin 4 - Thiện Bảo</div>
+                                <div class="text-[9px] text-emerald-700 font-bold truncate">Chăm sóc khách hàng &amp; Đổi trả 1-1</div>
+                            </div>
+                            <span class="text-[10px] text-blue-600 font-bold px-2 py-0.5 rounded-md bg-blue-50 group-hover:bg-blue-600 group-hover:text-white transition flex-shrink-0">Inbox FB</span>
+                        </a>
+                    </div>
+
+                    <div class="pt-1.5 flex items-center justify-between text-[10px] text-gray-600 font-medium px-1 border-t border-blue-200/60">
+                        <span><i class="fa-solid fa-phone mr-1 text-ocopGreen"></i>Hotline: <strong class="text-ocopGreen font-bold">0987.654.321</strong></span>
+                        <button type="button" onclick="toggleAdminSupport()" class="text-blue-700 font-bold hover:underline cursor-pointer">Mở menu nổi ↗</button>
+                    </div>
+                </div>
+            `;
+        }
+
         function createLocalCatalogReply(query, hasImages = false) {
             lastAIRecommendedProductIds = [];
             lastAIRecommendationCriteria = null;
@@ -3741,10 +3807,26 @@
             if (isComplaint) {
                 return {
                     message: english
-                        ? "I am truly sorry for the inconvenience with your order! OCOP Copilot provides a 100% replacement or full refund within 7 days for damaged or defective items.\n\n👉 Please keep the original packaging and click \"Contact Admin\" below so our support team can assist you immediately."
-                        : "Dạ, em rất tiếc và thành thật xin lỗi Anh/Chị về sự cố đơn hàng này ạ! OCOP Copilot cam kết 100% quyền lợi khách hàng với chính sách Đổi mới 1-1 miễn phí hoặc Hoàn tiền trong 7 ngày đối với sản phẩm lỗi do vận chuyển hoặc nhà sản xuất.\n\n👉 Anh/Chị vui lòng giữ lại bao bì, chụp ảnh sản phẩm và nhấn nút \"Mở liên hệ admin\" bên dưới để được chuyên viên hỗ trợ giải quyết ngay lập tức nhé ạ!",
+                        ? "I am truly sorry for the inconvenience with your order! OCOP Copilot provides a 100% replacement or full refund within 7 days for damaged or defective items.\n\n👉 Please keep the original packaging and connect directly with our Customer Care Admin below so we can resolve this right away:"
+                        : "Dạ, em rất tiếc và thành thật xin lỗi Anh/Chị về sự cố đơn hàng này ạ! OCOP Copilot cam kết 100% quyền lợi khách hàng với chính sách Đổi mới 1-1 miễn phí hoặc Hoàn tiền trong 7 ngày đối với sản phẩm lỗi do vận chuyển hoặc nhà sản xuất.\n\n👉 Anh/Chị vui lòng giữ lại bao bì, chụp ảnh sản phẩm và nhắn tin trực tiếp cho Admin phụ trách CSKH & Đổi trả dưới đây để được xử lý ngay lập tức nhé ạ:",
+                    localMarkup: getAdminContactCardsHTML(),
                     productIds: [],
-                    dynamic_chips: ["Mở liên hệ Admin", "Chính sách đổi trả", "Hotline: 0987.654.321"],
+                    dynamic_chips: ["Admin 4 - Đổi trả", "Hotline: 0987.654.321", "Chính sách đổi trả"],
+                    handoffAdmin: true,
+                    localFallback: true
+                };
+            }
+
+            // 2. CHUYÊN ĐỀ LIÊN HỆ CSKH & 4 ADMIN FACEBOOK (CSKH SUPPORT)
+            const isCSKH = /(cskh|cham soc khach hang|lien he cskh|ho tro cskh|nhan vien cskh|gap nhan vien|gap admin|nhan vien ho tro|tu van vien|tong dai|hotline|facebook|fb|inbox admin|chat admin|lien he)/.test(normalized);
+            if (isCSKH) {
+                return {
+                    message: english
+                        ? "Our Customer Support Team is ready 24/7 across 4 dedicated Facebook channels. Please select an Admin below to chat directly:"
+                        : "Dạ, đội ngũ Chăm sóc khách hàng (CSKH) OCOP luôn sẵn sàng hỗ trợ Anh/Chị 24/7 qua 4 kênh Facebook trực tiếp dưới đây ạ! Anh/Chị có thể bấm vào chuyên viên phụ trách đúng nhu cầu để inbox nhận hỗ trợ ngay nhé:",
+                    localMarkup: getAdminContactCardsHTML(),
+                    productIds: [],
+                    dynamic_chips: ["Admin 1 - Tư vấn", "Admin 4 - CSKH 24/7", "Hotline: 0987.654.321", "Chính sách đổi trả"],
                     handoffAdmin: true,
                     localFallback: true
                 };
