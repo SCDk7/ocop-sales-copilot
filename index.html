@@ -3702,11 +3702,11 @@
             if (hasImages) {
                 return {
                     message: currentLanguage === 'en'
-                        ? 'I could not identify the product from this image. Please describe it in more detail or send another image so I can help.'
-                        : 'Mình chưa nhận diện được sản phẩm từ ảnh này. Bạn hãy mô tả chi tiết hơn hoặc gửi ảnh khác để mình hỗ trợ nhé.',
+                        ? 'We could not identify the product in this image. Please send another photo or describe the product in more detail.'
+                        : 'Chúng tôi chưa nhận diện được sản phẩm trong ảnh. Bạn vui lòng gửi lại ảnh hoặc mô tả chi tiết hơn để chúng tôi hỗ trợ nhé.',
                     productIds: [],
                     handoffAdmin: false,
-                    localFallback: true
+                    localFallback: false
                 };
             }
             const generated = generateAIResponse(query);
@@ -3786,7 +3786,7 @@
                 try {
                     await uploadPendingAIChatImages(messageImages);
                 } catch (error) {
-                    if (!(error instanceof TypeError)) throw error;
+                    if (!messageImages.length) throw error;
                     result = createLocalCatalogReply(text, messageImages.length > 0);
                 }
                 if (!result) {
@@ -3837,6 +3837,27 @@
                     </div>
                 `;
                 reply.querySelector('p').textContent = result.message;
+                const wikipediaSources = Array.isArray(result.wikipediaSources)
+                    ? result.wikipediaSources.filter(source => typeof source.title === 'string' && typeof source.url === 'string' && source.url.startsWith('https://vi.wikipedia.org/'))
+                    : [];
+                if (wikipediaSources.length) {
+                    const sourceList = document.createElement('div');
+                    sourceList.className = 'text-[10px] text-gray-500';
+                    const sourceLabel = document.createElement('span');
+                    sourceLabel.textContent = currentLanguage === 'en' ? 'Related Wikipedia articles: ' : 'Bài viết Wikipedia liên quan: ';
+                    sourceList.append(sourceLabel);
+                    wikipediaSources.forEach((source, index) => {
+                        if (index) sourceList.append(document.createTextNode(' · '));
+                        const link = document.createElement('a');
+                        link.href = source.url;
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        link.className = 'text-emerald-800 underline';
+                        link.textContent = source.title;
+                        sourceList.append(link);
+                    });
+                    reply.querySelector('div.bg-white').append(sourceList);
+                }
                 if (result.localFallback) {
                     const fallbackNote = document.createElement('p');
                     fallbackNote.className = 'text-[10px] text-gray-500';

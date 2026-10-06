@@ -36,6 +36,14 @@ for the Google AI Studio API key with hidden input, updates only
 needed, and starts the server. Never send the key in chat or add it to browser
 code. `GEMINI_MODEL` is optional and defaults to `gemini-2.5-flash`.
 
+For general questions, the server also searches Vietnamese Wikipedia through
+its MediaWiki API, passes a few short article introductions to Gemini, and
+shows the related articles below the reply. Search is skipped for image
+uploads, order/support requests, and messages containing likely contact or
+account details. If Wikipedia is unavailable, Gemini still answers without
+those excerpts. This uses the Wikipedia article search API; the homepage URL
+is not itself a knowledge feed.
+
 Customer messages and the product catalogue are sent to Google Gemini to
 generate replies; customers are warned not to share passwords, OTPs, or payment
 details. Without a Gemini key, the storefront uses its local catalogue advisor
