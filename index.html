@@ -8,6 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>OCOP Sales Copilot - Đặc Sản Tuyển Chọn 63 Tỉnh Thành Việt Nam</title>
     
+    <script src="ai-shopping.js?v=20261006_2"></script>
     <script src="chat-language.js?v=20261006_3"></script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -5334,6 +5335,18 @@ async function sendAIMessage() {
                 if (!result || typeof result.message !== 'string') {
                     result = createLocalCatalogReply(text, messageImages.length > 0);
                 }
+                const shoppingIntent = AIShopping.resolve([...aiConversationHistory, { role: 'user', text: messageText }], products);
+                const shoppingQuery = AIShopping.normalize(messageText);
+                if (!messageImages.length && result.understandingStatus !== 'needs_clarification' && !shoppingIntent.isComplaint && !shoppingIntent.isCSKH && !shoppingIntent.isShipping && !shoppingIntent.isUsage && !shoppingIntent.isOcopKnowledge && shoppingIntent.maxPrice && (shoppingIntent.isCombo || shoppingIntent.isGift || /toi co|minh co|ngan sach|tai chinh|budget/.test(shoppingQuery))) {
+                    if (!('combo' in result)) {
+                        const eligible = products.filter(product =>
+                            (!shoppingIntent.exactRegion || product.region === shoppingIntent.exactRegion) &&
+                            (!shoppingIntent.minStars || product.stars >= shoppingIntent.minStars) &&
+                            (!shoppingIntent.categoryOrKeyword || AIShopping.normalize([product.name, product.category, product.desc, product.description].join(' ')).includes(AIShopping.normalize(shoppingIntent.categoryOrKeyword)))
+                        );
+                        result = { ...result, ...AIShopping.reply(AIShopping.closest(eligible, shoppingIntent), shoppingIntent, requestLanguage), localMarkup: '' };
+                    }
+                }
                 if (!Array.isArray(result.productIds)) {
                     result.productIds = [];
                 }
@@ -5359,7 +5372,7 @@ async function sendAIMessage() {
                 const recommendationsEl = reply.querySelector('.ai-product-recommendations');
                 if (result.localMarkup) {
                     recommendationsEl.innerHTML = result.localMarkup;
-                } else if (recommendedProducts.length && isAIComboRequest(text)) {
+                } else if (recommendedProducts.length && (result.combo || isAIComboRequest(text))) {
                     recommendationsEl.innerHTML = renderAIComboRecommendations(
                         [recommendedProducts],
                         currentLanguage === 'en' ? 'Combo ideas' : 'Gợi ý combo đặc sản',
@@ -5403,6 +5416,21 @@ async function sendAIMessage() {
                     if (!existingAdminButton) {
                         reply.querySelector('div.bg-white').append(handoffButton);
                     }
+                }
+                if (Array.isArray(result.wikipediaSources) && result.wikipediaSources.length) {
+                    const sourceBox = document.createElement('div');
+                    sourceBox.className = 'text-[10px] text-gray-500 border-t pt-2 space-y-1';
+                    sourceBox.textContent = requestLanguage === 'en' ? 'Wikipedia background references:' : 'Nguồn tham khảo kiến thức Wikipedia:';
+                    result.wikipediaSources.forEach(source => {
+                        try {
+                            const url = new URL(source.url);
+                            if (url.protocol !== 'https:' || !/^(vi|en)\.wikipedia\.org$/.test(url.hostname)) return;
+                            const link = document.createElement('a');
+                            link.href = url.href; link.textContent = source.title; link.target = '_blank'; link.rel = 'noopener noreferrer';
+                            link.className = 'block text-emerald-700 underline'; sourceBox.append(link);
+                        } catch (_) { /* Ignore invalid reference URLs. */ }
+                    });
+                    reply.querySelector('div.bg-white').append(sourceBox);
                 }
                 reply.dataset.chatReplyLanguage = requestLanguage;
                 messagesEl.append(reply);
