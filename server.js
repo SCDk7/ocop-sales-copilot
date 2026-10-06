@@ -101,7 +101,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   if (req.path === '/api/ai/audio-chat' || req.path === '/api/ai/images') return next();
-  return express.json({ limit: '64kb' })(req, res, next);
+  return express.json({ limit: '256kb' })(req, res, next);
 });
 
 let customers = [];

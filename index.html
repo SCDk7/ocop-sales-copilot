@@ -2440,90 +2440,13 @@
     <!-- ============================================================== -->
     <!-- JAVASCRIPT XỬ LÝ HOÀN CHỈNH TOÀN BỘ CHỨC NĂNG WEBSITE -->
     <!-- ============================================================== -->
+    <script src="data.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // -------------------------------------------------------------
         // DỮ LIỆU DANH SÁCH ĐẶC SẢN OCOP CHUẨN 4 - 5 SAO
         // -------------------------------------------------------------
-        const products = [
-            { id: 1, name: "Yến Sào Khánh Hòa Thượng Hạng", region: "Khánh Hòa", category: "gift", stars: 5, price: 2450000, origPrice: 2800000, rating: 5.0, reviews: 142, tag: "Quà Biếu 5★", img: "images/p1.jpg", desc: "Tổ yến đảo thiên nhiên nguyên chất 100%, bồi bổ cơ thể tăng đề kháng, quà biếu ngoại giao cao cấp." },
-            { id: 2, name: "Trà Shan Tuyết Cổ Thụ Hà Giang", region: "Hà Giang", category: "tea", stars: 5, price: 680000, origPrice: 750000, rating: 4.9, reviews: 88, tag: "Đặc Sản Hà Giang", img: "images/p2.jpg", desc: "Búp trà cổ thụ trăm năm trên đỉnh cao nguyên đá Hà Giang, hương thơm thanh khiết ngọt hậu đượm đà." },
-            { id: 3, name: "Trà Đinh Nõn Tân Cương Thái Nguyên", region: "Thái Nguyên", category: "tea", stars: 5, price: 850000, origPrice: 950000, rating: 5.0, reviews: 210, tag: "Đệ Nhất Danh Trà", img: "images/p3.jpg", desc: "Tuyển chọn từng đọt trà non 1 tôm 2 lá, vị chát dịu nhẹ, hậu ngọt sâu kéo dài chuẩn đệ nhất trà." },
-            { id: 4, name: "Sâm Ngọc Linh Ngâm Mật Ong Rừng Quảng Nam", region: "Quảng Nam", category: "gift", stars: 5, price: 3200000, origPrice: 3600000, rating: 5.0, reviews: 75, tag: "Quốc Bảo Việt Nam", img: "images/p4.jpg", desc: "Sâm Ngọc Linh chứa 52 hợp chất saponin ngâm mật ong rừng tự nhiên, phục hồi thể lực toàn diện." },
-            { id: 5, name: "Nước Mắm Phú Quốc 43° Đạm Ủ Thùng Gỗ", region: "Kiên Giang", category: "spice", stars: 5, price: 220000, origPrice: 250000, rating: 4.9, reviews: 320, tag: "Mắm Truyền Thống", img: "images/p5.jpg", desc: "Ủ chượp thùng gỗ bời lời 12 tháng từ cá cơm than tươi, chuẩn vị đậm đà nguyên bản Phú Quốc." },
-            { id: 6, name: "Chả Mực Giã Tay Hạ Long", region: "Quảng Ninh", category: "food", stars: 5, price: 490000, origPrice: 550000, rating: 4.9, reviews: 180, tag: "Ẩm Thực Biển", img: "images/p6.jpg", desc: "Mực mai tươi sống giã tay truyền thống Hạ Long, miếng chả sần sật chiên vàng thơm nức mũi." },
-            { id: 7, name: "Tỏi Đen Lý Sơn Lên Men 60 Ngày", region: "Quảng Ngãi", category: "gift", stars: 5, price: 550000, origPrice: 620000, rating: 4.8, reviews: 95, tag: "Bổ Sức Khỏe", img: "images/p7.jpg", desc: "Lên men tự nhiên 60 ngày từ tỏi một củ đảo Lý Sơn, giàu chống oxy hóa hỗ trợ tim mạch." },
-            { id: 8, name: "Mật Ong Hoa Cà Phê Tây Nguyên", region: "Gia Lai", category: "food", stars: 4, price: 180000, origPrice: 220000, rating: 4.8, reviews: 260, tag: "Tây Nguyên Tinh Hoa", img: "images/p8.jpg", desc: "Mật ong nguyên chất sánh mịn thơm dịu hương hoa cà phê mùa xuân Tây Nguyên, không pha trộn." },
-            { id: 9, name: "Kẹo Dừa Bến Tre Nhân Sầu Riêng", region: "Bến Tre", category: "snack", stars: 4, price: 65000, origPrice: 80000, rating: 4.7, reviews: 410, tag: "Đặc Sản Bến Tre", img: "images/p9.jpg", desc: "Nước cốt dừa nguyên chất kết hợp mạch nha và sầu riêng tươi, dẻo thơm ngậy béo không dính răng." },
-            { id: 10, name: "Bánh Cốm Làng Vòng Hà Nội", region: "Hà Nội", category: "snack", stars: 4, price: 85000, origPrice: 100000, rating: 4.8, reviews: 150, tag: "Hà Thành Quà Quý", img: "images/p10.jpg", desc: "Vỏ cốm xanh dẻo thơm nhân đậu xanh dừa nạo ngào ngạt, chuẩn vị mùa thu Hà Nội làng Vòng." },
-            { id: 11, name: "Cua Biển Gạch Son Cà Mau", region: "Cà Mau", category: "food", stars: 5, price: 580000, origPrice: 650000, rating: 5.0, reviews: 195, tag: "Cực Nam Tổ Quốc", img: "images/p11.jpg", desc: "Cua gạch son thịt chắc nịch ngọt đậm đà từ vùng sinh thái rừng ngập mặn Cà Mau thuần túy." },
-            { id: 12, name: "Trà Hoa Vàng Tam Đảo Vĩnh Phúc", region: "Vĩnh Phúc", category: "tea", stars: 5, price: 1150000, origPrice: 1300000, rating: 4.9, reviews: 64, tag: "Nữ Hoàng Các Loại Trà", img: "images/p12.jpg", desc: "Bông trà hoa vàng sấy lạnh giữ nguyên hoạt chất quý, hạ huyết áp và mát gan thanh lọc hiệu quả." },
-            { id: 13, name: "Gạo Tám Xoan Hải Hậu Nam Định", region: "Nam Định", category: "food", stars: 4, price: 160000, origPrice: 190000, rating: 4.8, reviews: 110, tag: "Hạt Ngọc Việt", img: "images/p13.jpg", desc: "Hạt gạo thon nhỏ khi nấu chín tỏa hương thơm ngát tự nhiên, cơm dẻo mềm đậm đà tiến vua." },
-            { id: 14, name: "Hạt Điều Rang Muối Bình Phước Nguyên Vỏ Lụa", region: "Bình Phước", category: "snack", stars: 5, price: 280000, origPrice: 320000, rating: 4.9, reviews: 340, tag: "Nông Sản Xuất Khẩu", img: "images/p14.jpg", desc: "Hạt điều mẩy tròn rang củi nguyên vỏ lụa đỏ, giòn rụm béo bùi vị đậm đà từ vùng đất đỏ Bình Phước." },
-            { id: 15, name: "Thịt Trâu Gác Bếp Mắc Khén Tây Bắc", region: "Lào Cai", category: "snack", stars: 5, price: 790000, origPrice: 890000, rating: 5.0, reviews: 270, tag: "Món Ngon Núi Rừng", img: "images/p15.jpg", desc: "Thịt bắp trâu tươi ướp mắc khén hạt dổi hun khói củi bắp, giòn thơm dai xé sợi đậm bản sắc Tây Bắc." },
-            { id: 16, name: "Đông Trùng Hạ Thảo Đà Lạt Sấy Thăng Hoa", region: "Lâm Đồng", category: "gift", stars: 5, price: 1850000, origPrice: 2100000, rating: 4.9, reviews: 82, tag: "Dược Liệu Cao Cấp", img: "images/p16.jpg", desc: "Nuôi trồng sinh học tại Đà Lạt sấy thăng hoa bảo toàn hàm lượng Cordycepin và adenosine cao." },
-            { id: 17, name: "Bơ Sáp Đắk Lắk", region: "Đắk Lắk", category: "food", stars: 4, price: 120000, origPrice: 150000, rating: 4.7, reviews: 90, tag: "Trái Cây Tây Nguyên", img: "images/p17.jpg", desc: "Bơ sáp Đắk Lắk chín dẻo quánh vỏ mỏng ruột vàng ươm ngậy béo tự nhiên, không dùng chất bảo quản." },
-            { id: 18, name: "Mắm Cá Lăng An Giang", region: "An Giang", category: "spice", stars: 4, price: 140000, origPrice: 170000, rating: 4.8, reviews: 130, tag: "Đặc Sản Miền Tây", img: "images/p18.jpg", desc: "Cá lăng ủ thính gạo thơm phức đặc trưng An Giang, chưng thịt và hột vịt ăn với bún rất đậm đà." },
-            { id: 19, name: "Lạp Xưởng Tôm Cần Đước Long An", region: "Long An", category: "snack", stars: 4, price: 210000, origPrice: 250000, rating: 4.8, reviews: 205, tag: "Truyền Thống Nam Bộ", img: "images/p19.jpg", desc: "Lạp xưởng tươi tôm đất Cần Đước ngọt lịm kết hợp rượu mai quế lộ thơm, đặc sản Nam Bộ chính gốc." },
-            { id: 20, name: "Vải Thiều Lục Ngạn Bắc Giang Sấy Dẻo", region: "Bắc Giang", category: "snack", stars: 4, price: 130000, origPrice: 160000, rating: 4.9, reviews: 175, tag: "Nông Sản Bắc Giang", img: "images/p20.jpg", desc: "Vải thiều sấy nguyên quả cùi dày ngọt sắc, mùi thơm đặc trưng mùa vải Lục Ngạn chín." },
-            { id: 21, name: "Cao Chè Vằng Quảng Trị", region: "Quảng Trị", category: "tea", stars: 4, price: 190000, origPrice: 230000, rating: 4.8, reviews: 140, tag: "Sức Khỏe Mẹ & Bé", img: "images/p21.jpg", desc: "Chiết xuất từ lá chè vằng sẻ tự nhiên vùng Quảng Trị, giúp tiêu mỡ, đẹp da và mát gan tiêu độc." },
-            { id: 22, name: "Tiêu Đen Hữu Cơ Chư Sê Gia Lai", region: "Gia Lai", category: "spice", stars: 4, price: 150000, origPrice: 180000, rating: 4.9, reviews: 115, tag: "Gia Vị Đậm Đà", img: "images/p22.jpg", desc: "Hạt tiêu mẩy mập cay nồng dịu, hương thơm quyến rũ, trồng hữu cơ Chư Sê không thuốc hóa học." },
-            { id: 23, name: "Nhãn Lồng Hưng Yên", region: "Hưng Yên", category: "food", stars: 4, price: 175000, origPrice: 210000, rating: 4.9, reviews: 230, tag: "Nông Sản Phố Hiến", img: "images/p23.jpg", desc: "Nhãn lồng Hưng Yên chọn khi vừa độ chín, cùi dày vị ngọt thơm tự nhiên, hạt nhỏ đặc sản tiến vua." },
-            { id: 24, name: "Rượu Cần Men Lá Rừng Tây Nguyên", region: "Đắk Nông", category: "gift", stars: 4, price: 350000, origPrice: 400000, rating: 4.8, reviews: 78, tag: "Văn Hóa Tây Nguyên", img: "images/p24.jpg", desc: "Nếp nương ủ cùng 20 loại lá thuốc rừng Tây Nguyên, vị nồng ấm hài hòa đậm bản sắc văn hóa." },
-            { id: 25, name: "Bột Rau Má Sấy Lạnh Bình Dương", region: "Bình Dương", category: "tea", stars: 4, price: 230000, origPrice: 270000, rating: 4.7, reviews: 165, tag: "Healthy Life", img: "images/p25.jpg", desc: "Sấy lạnh giữ trọn diệp lục và chất xơ, hỗ trợ giải nhiệt mát gan, giữ dáng khỏe mạnh tự nhiên." },
-            { id: 26, name: "Mật Táo Đỏ Ninh Thuận", region: "Ninh Thuận", category: "food", stars: 4, price: 210000, origPrice: 250000, rating: 4.8, reviews: 88, tag: "Nắng Gió Ninh Thuận", img: "images/p26.jpg", desc: "Nấu từ táo đỏ Ninh Thuận chín mọng nguyên chất, bổ máu hạ đường huyết giúp ngủ ngon đẹp da." },
-            { id: 27, name: "Chả Cá Thát Lát Rút Xương Hậu Giang", region: "Hậu Giang", category: "food", stars: 5, price: 310000, origPrice: 360000, rating: 5.0, reviews: 145, tag: "Đặc Sản Miền Tây", img: "images/p27.jpg", desc: "Cá thát lát tươi rút xương tẩm ướp tiêu gia vị đồng quê, thịt dai giòn sần sật chiên vàng bắt cơm." },
-            { id: 28, name: "Bánh Pía Sóc Trăng Nhân Sầu Riêng Trứng Muối", region: "Sóc Trăng", category: "snack", stars: 4, price: 115000, origPrice: 140000, rating: 4.8, reviews: 380, tag: "Hương Vị Sóc Trăng", img: "images/p28.jpg", desc: "Vỏ bánh ngàn lớp xốp mịn ôm trọn nhân sầu riêng tươi quyện trứng muối đỏ au béo ngậy." },
-            { id: 29, name: "Chuối Sấy Dẻo Đồng Nai", region: "Đồng Nai", category: "snack", stars: 4, price: 80000, origPrice: 100000, rating: 4.7, reviews: 120, tag: "Nông Sản Đồng Nai", img: "images/p29.jpg", desc: "Chuối sứ chín cây sấy nhiệt nhẹ dẻo ngọt tự nhiên, không thêm đường không chất bảo quản." },
-            { id: 30, name: "Dầu Mè Đen Ép Lạnh Thừa Thiên Huế", region: "Thừa Thiên Huế", category: "spice", stars: 4, price: 165000, origPrice: 200000, rating: 4.9, reviews: 92, tag: "Cố Đô Tinh Hoa", img: "images/p30.jpg", desc: "Ép lạnh thủ công từ hạt mè đen thuần chủng Huế, giàu Omega-3 và vitamin E tốt cho tim mạch." },
-            { id: 31, name: "Nấm Hương Rừng Sa Pa Sấy Khô", region: "Lào Cai", category: "food", stars: 4, price: 240000, origPrice: 280000, rating: 4.8, reviews: 105, tag: "Sương Mù Sa Pa", img: "images/p31.jpg", desc: "Nấm hương rừng Sa Pa chân dài thơm lừng hái tự nhiên, xào nấu hay hầm canh đều ngon đậm đà." },
-            { id: 32, name: "Trà Shan Tuyết Cổ Thụ Suối Giàng Yên Bái", region: "Yên Bái", category: "tea", stars: 5, price: 920000, origPrice: 1050000, rating: 5.0, reviews: 160, tag: "Bách Niên Trà", img: "images/p32.jpg", desc: "Búp trà phủ lông tuyết trắng như sương trên cây cổ thụ 100 năm Suối Giàng, nước vàng vị chát dịu." },
-            { id: 33, name: "Tinh Dầu Sả Chanh Chưng Cất Tuyên Quang", region: "Tuyên Quang", category: "gift", stars: 4, price: 185000, origPrice: 220000, rating: 4.8, reviews: 85, tag: "Thảo Dược Thiên Nhiên", img: "images/p33.jpg", desc: "Chưng cất hơi nước 100% nguyên chất từ sả chanh tươi, khử khuẩn xua muỗi làm ấm phòng hiệu quả." },
-            { id: 34, name: "Đường Thốt Nốt Bảy Núi An Giang", region: "An Giang", category: "spice", stars: 4, price: 95000, origPrice: 120000, rating: 4.9, reviews: 310, tag: "Đặc Sản Bảy Núi", img: "images/p34.jpg", desc: "Đường tán thủ công từ nhị hoa thốt nốt vùng Bảy Núi, ngọt thanh dịu mát nấu chè kho cá cực ngon." },
-            { id: 35, name: "Mứt Dâu Tây Đà Lạt Rim Đường Nhẹ", region: "Lâm Đồng", category: "snack", stars: 4, price: 135000, origPrice: 160000, rating: 4.8, reviews: 240, tag: "Phố Hoa Đà Lạt", img: "images/p35.jpg", desc: "Dâu tây thủy canh Đà Lạt rim đường nhẹ giữ trọn vị chua ngọt và màu đỏ tươi tự nhiên." },
-            { id: 36, name: "Trà Oolong Mộc Châu Sơn La", region: "Sơn La", category: "tea", stars: 5, price: 450000, origPrice: 520000, rating: 4.9, reviews: 130, tag: "Cao Nguyên Mộc Châu", img: "images/p36.jpg", desc: "Viên trà tròn chặt lên men 30% trên cao nguyên Mộc Châu, nước xanh ngọc thơm hương hoa núi mây." },
-            { id: 37, name: "Khô Cá Lóc Đồng Tháp Mười", region: "Đồng Tháp", category: "food", stars: 4, price: 260000, origPrice: 300000, rating: 4.8, reviews: 190, tag: "Đất Sen Hồng", img: "images/p37.jpg", desc: "Cá lóc đồng ướp ớt tiêu phơi 3 nắng chuẩn vị miền Tây, nướng xé ăn kèm gỏi xoài cực hấp dẫn." },
-            { id: 38, name: "Rượu Sim Rừng Phú Quốc", region: "Kiên Giang", category: "gift", stars: 4, price: 290000, origPrice: 340000, rating: 4.8, reviews: 110, tag: "Đảo Ngọc Phú Quốc", img: "images/p38.jpg", desc: "Lên men từ quả sim rừng chín mọng đảo Phú Quốc, vị ngọt chát hài hòa trợ tiêu hóa tốt." },
-            { id: 39, name: "Hạt Mắc Ca Đắk Nông", region: "Đắk Nông", category: "snack", stars: 5, price: 310000, origPrice: 360000, rating: 5.0, reviews: 290, tag: "Nữ Hoàng Hạt Khô", img: "images/p39.jpg", desc: "Hạt mắc ca nứt vỏ tự nhiên vùng Đắk Nông, nhân trắng ngần béo ngậy, giàu dinh dưỡng tốt cho não." },
-            { id: 40, name: "Nước Cốt Dừa Ép Lạnh Bến Tre", region: "Bến Tre", category: "food", stars: 4, price: 105000, origPrice: 130000, rating: 4.9, reviews: 350, tag: "Xứ Dừa Tinh Hoa", img: "images/p40.jpg", desc: "Ép lạnh công nghệ hiện đại giữ trọn độ béo ngậy thanh tự nhiên, dùng nấu chè, kho và làm bánh." },
-            { id: 41, name: "Cà Phê Arabica Cầu Đất Đà Lạt Rang Mộc", region: "Lâm Đồng", category: "food", stars: 4, price: 185000, origPrice: 220000, rating: 4.9, reviews: 178, tag: "Hương Vị Cao Nguyên", img: "images/p41.jpg", desc: "Hạt Arabica tuyển chọn vùng Cầu Đất 1.500m, rang mộc giữ hương thơm dịu và vị chua thanh đặc trưng." },
-            { id: 42, name: "Chanh Leo Ruột Vàng Đà Lạt", region: "Lâm Đồng", category: "food", stars: 4, price: 120000, origPrice: 145000, rating: 4.8, reviews: 156, tag: "Đặc Sản Đà Lạt", img: "images/p42.jpg", desc: "Chanh leo chín mọng ruột vàng thơm Đà Lạt, vị chua ngọt tự nhiên, pha nước giải khát mát lạnh." },
-            { id: 43, name: "Tôm Khô Đất Mũi Cà Mau", region: "Cà Mau", category: "food", stars: 4, price: 390000, origPrice: 450000, rating: 4.9, reviews: 112, tag: "Đặc Sản Đất Mũi", img: "images/p43.jpg", desc: "Tôm đất chọn lọc phơi khô truyền thống vùng Đất Mũi, dùng nấu canh kho quẹt và làm mắm ngon." },
-            { id: 44, name: "Muối Tôm Tây Ninh", region: "Tây Ninh", category: "spice", stars: 4, price: 58000, origPrice: 70000, rating: 4.8, reviews: 205, tag: "Gia Vị Tây Ninh", img: "images/p44.jpg", desc: "Muối rang cùng tôm khô và ớt tươi theo công thức địa phương Tây Ninh, chấm trái cây rất đậm đà." },
-            { id: 45, name: "Tiêu Đen Phú Quốc", region: "Kiên Giang", category: "spice", stars: 4, price: 125000, origPrice: 150000, rating: 4.9, reviews: 142, tag: "Gia Vị Đảo Ngọc", img: "images/p45.jpg", desc: "Tiêu đen phơi khô tự nhiên trên đảo Phú Quốc, hạt chắc mẩy thơm nồng, xay tươi dùng hằng ngày." },
-            { id: 46, name: "Bánh Tráng Phơi Sương Tây Ninh", region: "Tây Ninh", category: "snack", stars: 4, price: 68000, origPrice: 82000, rating: 4.8, reviews: 188, tag: "Ẩm Thực Tây Ninh", img: "images/p46.jpg", desc: "Bánh tráng gạo phơi sương đêm mềm dẻo dai, cuốn rau rừng thịt luộc chấm mắm nem rất đặc trưng." },
-            { id: 47, name: "Trà Sen Hồ Tây Hà Nội", region: "Hà Nội", category: "tea", stars: 5, price: 720000, origPrice: 820000, rating: 5.0, reviews: 96, tag: "Nghệ Thuật Trà Hà Thành", img: "images/p47.jpg", desc: "Trà xanh Tân Cương ướp gạo sen Hồ Tây thủ công, hương sen thanh tao quyến rũ lưu hương rất lâu." },
-            { id: 48, name: "Quế Ống Trà Bồng Quảng Ngãi", region: "Quảng Ngãi", category: "spice", stars: 4, price: 145000, origPrice: 175000, rating: 4.8, reviews: 104, tag: "Hương Quế Miền Trung", img: "images/p48.jpg", desc: "Quế Trà Bồng thơm ấm nồng nàn, dùng pha trà, nấu phở, kho thịt hoặc làm quà tặng đặc sản Trung." },
-            { id: 49, name: "Bánh Khọt Vũng Tàu Tôm Tươi Giòn Rụm", region: "Bà Rịa–Vũng Tàu", category: "food", stars: 5, price: 75000, origPrice: 90000, rating: 5.0, reviews: 230, tag: "Đặc Sản Vũng Tàu", img: "images/p49.jpg", desc: "Bánh khọt vàng giòn rụm bên ngoài, nhân tôm biển tươi ngọt ăn kèm đu đủ bào và nước mắm chua ngọt chuẩn vị Vũng Tàu." },
-            { id: 50, name: "Miến Dong Na Rì Bắc Kạn Sợi Trong Dai Tự Nhiên", region: "Bắc Kạn", category: "food", stars: 4, price: 95000, origPrice: 115000, rating: 4.8, reviews: 115, tag: "Nông Sản Bắc Kạn", img: "images/p50.jpg", desc: "Làm từ 100% tinh bột dong riềng đỏ vùng núi Na Rì, sợi miến trong dai tự nhiên, nấu lâu không bị nát hay trương bở." },
-            { id: 51, name: "Mắm Ba Khía Muối Bạc Liêu Cay Nồng Đậm Vị", region: "Bạc Liêu", category: "food", stars: 4, price: 140000, origPrice: 165000, rating: 4.8, reviews: 168, tag: "Hương Vị Bạc Liêu", img: "images/p51.jpg", desc: "Ba khía tươi sống vùng rừng ngập mặn Bạc Liêu ủ muối đậm đà, trộn tỏi ớt chanh đường thơm nức mũi ăn cùng cơm nóng." },
-            { id: 52, name: "Bánh Phu Thê Đình Bảng Bắc Ninh Truyền Thống", region: "Bắc Ninh", category: "snack", stars: 5, price: 85000, origPrice: 105000, rating: 5.0, reviews: 280, tag: "Tinh Hoa Kinh Bắc", img: "images/p52.jpg", desc: "Vỏ bánh vàng dẻo trong suốt quyện cùi dừa nạo giòn sần sật ôm lấy nhân đậu xanh hạt sen ngọt dịu, biểu trưng gắn kết phu thê." },
-            { id: 53, name: "Bánh Ít Lá Gai Bình Định Dẻo Thơm Đậm Đà", region: "Bình Định", category: "snack", stars: 5, price: 65000, origPrice: 80000, rating: 4.9, reviews: 195, tag: "Đặc Sản Đất Võ", img: "images/p53.jpg", desc: "Bánh gói lá chuối hình tháp, vỏ đen nhánh từ lá gai giã nhuyễn dẻo quánh hòa cùng nhân dừa đậu xanh ngọt bùi ấm thơm gừng." },
-            { id: 54, name: "Thanh Long Ruột Đỏ Bình Thuận Ngọt Thanh", region: "Bình Thuận", category: "food", stars: 5, price: 95000, origPrice: 120000, rating: 4.9, reviews: 210, tag: "Nắng Gió Bình Thuận", img: "images/p54.jpg", desc: "Thanh long ruột đỏ mọng nước giàu vitamin C và chất chống oxy hóa, quả ngọt đậm đà từ thủ phủ thanh long Bình Thuận." },
-            { id: 55, name: "Bánh Tét Lá Cẩm Cần Thơ Hột Vịt Muối", region: "Cần Thơ", category: "food", stars: 5, price: 130000, origPrice: 160000, rating: 5.0, reviews: 340, tag: "Gạo Trắng Nước Trong", img: "images/p55.jpg", desc: "Nếp nương xào nước cốt dừa và lá cẩm tím biếc, cuộn nhân đậu xanh, thịt ba rọi và lòng đỏ trứng muối béo ngậy thơm lừng." },
-            { id: 56, name: "Hạt Dẻ Trùng Khánh Cao Bằng Nướng Bùi Béo", region: "Cao Bằng", category: "snack", stars: 5, price: 145000, origPrice: 175000, rating: 4.9, reviews: 265, tag: "Cao Bằng Đệ Nhất Hạt", img: "images/p56.jpg", desc: "Hạt dẻ to tròn cùi vàng óng chỉ có ở vùng khí hậu Trùng Khánh Cao Bằng, rang chín bùi béo ngọt đậm tự nhiên khó quên." },
-            { id: 57, name: "Mì Quảng Đà Nẵng Tôm Thịt Đậm Đà Phố Biển", region: "Đà Nẵng", category: "food", stars: 5, price: 85000, origPrice: 100000, rating: 5.0, reviews: 410, tag: "Mỹ Vị Đà Thành", img: "images/p57.jpg", desc: "Sợi mì gạo mềm mượt chan nước nhưỡng sánh đậm đà nấu từ tôm thịt tươi, ăn kèm bánh tráng mè nướng giòn và rau sống bắp chuối." },
-            { id: 58, name: "Xôi Nếp Nương Điện Biên Ngũ Sắc Dẻo Thơm", region: "Điện Biên", category: "food", stars: 5, price: 110000, origPrice: 135000, rating: 5.0, reviews: 290, tag: "Tinh Hoa Mường Thanh", img: "images/p58.jpg", desc: "Đồ từ gạo nếp nương Mường Thanh hạt mẩy tròn, nhuộm 5 sắc màu tự nhiên từ lá rừng Tây Bắc, để nguội vẫn dẻo quánh thơm nức." },
-            { id: 59, name: "Cá Kho Làng Vũ Đại Hà Nam Cổ Truyền Niêu Đất", region: "Hà Nam", category: "food", stars: 5, price: 480000, origPrice: 550000, rating: 5.0, reviews: 520, tag: "Món Ngon Tiến Vua", img: "images/p59.jpg", desc: "Cá trắm đen kho niêu đất 16 tiếng bằng củi nhãn cùng nước cốt cua đồng, riềng ớt, xương nhừ tan thịt chắc bùi thơm ngậy." },
-            { id: 60, name: "Kẹo Cu Đơ Hà Tĩnh Bánh Đa Giòn Rụm Mật Mía", region: "Hà Tĩnh", category: "snack", stars: 4, price: 55000, origPrice: 70000, rating: 4.8, reviews: 320, tag: "Hương Vị Xứ Nghệ - Tĩnh", img: "images/p60.jpg", desc: "Đậu phộng bùi hòa quyện mạch nha cùng mật mía đậm đặc và gừng cay nồng, kẹp giữa hai lớp bánh đa vừng nướng giòn tan." },
-            { id: 61, name: "Bánh Đậu Xanh Rồng Vàng Hải Dương Cổ Truyền", region: "Hải Dương", category: "snack", stars: 5, price: 75000, origPrice: 90000, rating: 5.0, reviews: 460, tag: "Đặc Sản Xứ Đông", img: "images/p61.jpg", desc: "Bột đậu xanh nguyên chất tán mịn kết hợp đường kính và mỡ lợn sạch thoang thoảng hương hoa bưởi, tan ngay nơi đầu lưỡi khi uống trà." },
-            { id: 62, name: "Bánh Đa Cua Hải Phòng Nước Dùng Cua Đồng Đậm Đà", region: "Hải Phòng", category: "food", stars: 5, price: 85000, origPrice: 105000, rating: 5.0, reviews: 380, tag: "Hương Vị Đất Cảng", img: "images/p62.jpg", desc: "Sợi bánh đa đỏ dẻo dai hòa trong nước dùng riêu cua đồng ngọt lịm, chả lá lốt thơm lừng cùng rau muống giòn chuẩn vị Hải Phòng." },
-            { id: 63, name: "Cơm Tấm Sài Gòn Sườn Bì Chả Trứng Ốp La", region: "Hồ Chí Minh", category: "food", stars: 5, price: 95000, origPrice: 115000, rating: 5.0, reviews: 650, tag: "Biểu Tượng Ẩm Thực Sài Gòn", img: "images/p63.jpg", desc: "Hạt tấm dẻo rưới mỡ hành óng ả, sườn non nướng mật ong thơm lừng kết hợp chả trứng hấp, bì heo giòn và nước mắm kẹo trứ danh." },
-            { id: 64, name: "Cơm Lam Mường Động Hòa Bình Nướng Nứa Thơm", region: "Hòa Bình", category: "food", stars: 4, price: 65000, origPrice: 80000, rating: 4.8, reviews: 210, tag: "Bản Làng Tây Bắc", img: "images/p64.jpg", desc: "Gạo nếp nương ngâm nước suối trong đựng trong ống nứa non nướng than hồng, thoảng nhẹ hương màng nứa bùi dẻo chấm muối vừng." },
-            { id: 65, name: "Sâm Ngọc Linh Kon Tum Thượng Hạng Củ Tươi", region: "Kon Tum", category: "gift", stars: 5, price: 2800000, origPrice: 3200000, rating: 5.0, reviews: 92, tag: "Quốc Bảo Đỉnh Ngọc Linh", img: "images/p65.jpg", desc: "Sâm Ngọc Linh mọc tự nhiên trên dãy núi Măng Ri Kon Tum trên độ cao 2.000m, hàm lượng MR2 saponin dồi dào tăng cường sinh lực." },
-            { id: 66, name: "Thịt Trâu Gác Bếp Mắc Khén Lai Châu Hun Khói Tự Nhiên", region: "Lai Châu", category: "food", stars: 5, price: 750000, origPrice: 850000, rating: 5.0, reviews: 310, tag: "Đại Ngàn Tây Bắc", img: "images/p66.jpg", desc: "Thịt bắp trâu núi tẩm ướp hạt dổi, mắc khén rừng hun khói củi nhãn lâu ngày, ngọt đậm từng thớ thịt xé sợi cay thơm nồng nàn." },
-            { id: 67, name: "Vịt Quay Lạng Sơn Nhồi Lá Mắc Mật Da Giòn Rụm", region: "Lạng Sơn", category: "food", stars: 5, price: 320000, origPrice: 380000, rating: 5.0, reviews: 370, tag: "Đặc Sản Xứ Lạng", img: "images/p67.jpg", desc: "Vịt bầu Thất Khê béo tròn ướp thảo mộc nhồi lá quả mắc mật tươi, quay trên than hồng da vàng bóng giòn rụm thịt ngọt lịm." },
-            { id: 68, name: "Cam Vinh Xã Đoài Nghệ An Mọng Nước Ngọt Thanh", region: "Nghệ An", category: "food", stars: 5, price: 85000, origPrice: 105000, rating: 5.0, reviews: 275, tag: "Đặc Sản Xứ Nghệ", img: "images/p68.jpg", desc: "Cam Xã Đoài trứ danh Nghệ An vỏ mỏng vàng óng, tép cam mọng nước vị ngọt thanh đậm lưu luyến ngát hương thơm tự nhiên." },
-            { id: 69, name: "Cơm Cháy Ninh Bình Chà Bông Kho Quẹt Giòn Tan", region: "Ninh Bình", category: "snack", stars: 5, price: 95000, origPrice: 115000, rating: 5.0, reviews: 430, tag: "Mỹ Vị Cố Đô Hoa Lư", img: "images/p69.jpg", desc: "Cơm nếp chiên giòn rụm rắc ruốc thịt heo xao mặn ngọt, chấm kèm sốt dê kho quẹt sánh đậm đà nức danh ẩm thực Ninh Bình." },
-            { id: 70, name: "Thịt Chua Thanh Sơn Phú Thọ Lên Men Ống Nứa", region: "Phú Thọ", category: "food", stars: 4, price: 115000, origPrice: 140000, rating: 4.8, reviews: 185, tag: "Ẩm Thực Đất Tổ", img: "images/p70.jpg", desc: "Thịt lợn mán tươi ngon ướp thính ngô rang giã mịn, ủ lên men tự nhiên trong ống nứa cuốn cùng lá sung lá mơ chấm tương ớt cay." },
-            { id: 71, name: "Bánh Hỏi Lòng Heo Phú Yên Mềm Mịn Thơm Mỡ Hành", region: "Phú Yên", category: "food", stars: 5, price: 85000, origPrice: 100000, rating: 4.9, reviews: 290, tag: "Đất Phú Trời Yên", img: "images/p71.jpg", desc: "Từng miếng bánh hỏi mỏng mịn thoa mỡ hành bóng bẩy, ăn kèm lòng heo luộc giòn sần sật và chén nước mắm nhĩ pha tiêu ớt thơm lừng." },
-            { id: 72, name: "Bánh Bột Lọc Tôm Nhảy Quảng Bình Dẻo Dai Trong Suốt", region: "Quảng Bình", category: "food", stars: 4, price: 75000, origPrice: 90000, rating: 4.8, reviews: 210, tag: "Hương Vị Quảng Bình", img: "images/p72.jpg", desc: "Vỏ bánh lọc trong veo thấy rõ nhân tôm sông và thịt mộc nhĩ rim đậm, gói lá chuối hấp nóng chấm nước mắm ớt nguyên chất cay nồng." },
-            { id: 73, name: "Bánh Cáy Làng Nguyễn Thái Bình Dẻo Bùi Ngọt Ấm", region: "Thái Bình", category: "snack", stars: 4, price: 65000, origPrice: 80000, rating: 4.8, reviews: 220, tag: "Quê Hương Chị Hai Năm Tấn", img: "images/p73.jpg", desc: "Làm từ nếp cái hoa vàng, mỡ phần, hạt dành dành, quả gấc và gừng tươi, bánh dẻo bùi cay cay ấm nồng mang đậm nghĩa tình quê lúa." },
-            { id: 74, name: "Nem Chua Thanh Hóa Cây Dài Gia Truyền Chua Cay Giòn", region: "Thanh Hóa", category: "snack", stars: 5, price: 60000, origPrice: 75000, rating: 5.0, reviews: 560, tag: "Đặc Sản Xứ Thanh", img: "images/p74.jpg", desc: "Thịt heo nạc xay tươi ủ thính và bì thái chỉ giòn sần sật, điểm xuyết lát tỏi ớt tươi và lá đinh lăng thơm lừng vị chua thanh cuốn hút." },
-            { id: 75, name: "Hủ Tiếu Mỹ Tho Tiền Giang Sợi Dai Nước Dùng Ngọt Thanh", region: "Tiền Giang", category: "food", stars: 5, price: 75000, origPrice: 95000, rating: 5.0, reviews: 380, tag: "Hương Vị Sông Tiền", img: "images/p75.jpg", desc: "Sợi bánh hủ tiếu gò cát dai giòn đặc trưng hòa cùng nước lèo hầm xương ống, mực khô thơm lừng kèm tôm thịt tươi ngon đậm vị Nam Bộ." },
-            { id: 76, name: "Dừa Sáp Cầu Kè Trà Vinh Cơm Dày Béo Dẻo Độc Nhất", region: "Trà Vinh", category: "food", stars: 5, price: 195000, origPrice: 240000, rating: 5.0, reviews: 320, tag: "Đặc Sản Quý Hiếm Cầu Kè", img: "images/p76.jpg", desc: "Cơm dừa sáp dày đặc dẻo quẹo như kem, nước dừa sền sệt ngọt thanh ngậy béo, đặc sản trứ danh hiếm có của vùng đất Cầu Kè Trà Vinh." },
-            { id: 77, name: "Bưởi Năm Roi Bình Minh Vĩnh Long Múi Mọng Tép Giòn", region: "Vĩnh Long", category: "food", stars: 5, price: 85000, origPrice: 105000, rating: 5.0, reviews: 310, tag: "Vương Quốc Trái Cây Miền Tây", img: "images/p77.jpg", desc: "Bưởi Năm Roi róc vỏ tép vàng mọng nước giòn ngọt rôn rốt không hạt, thu hoạch từ các miệt vườn phù sa trù phú ven sông Bình Minh." }
-        ];
+        const products = window.PRODUCTS;
 
         // Biến trạng thái toàn cục
         let cart = [];
@@ -3081,13 +3004,13 @@
                 <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md flex flex-col justify-between group relative" data-product-id="${p.id}">
                     <div>
                         <div class="relative h-48 sm:h-52 overflow-hidden bg-amber-100/50">
-                            <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full object-cover">
+                            <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full ${p.catalogImport ? 'object-contain p-2' : 'object-cover'}">
                             <div class="absolute top-3 left-3 flex flex-col space-y-1">
                                 <span class="bg-ocopGreen text-ocopGold text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md border border-ocopGold/30">
                                     ${p.region}
                                 </span>
                                 <span class="bg-amber-500 text-ocopGreen font-black text-[9px] px-2 py-0.5 rounded-full uppercase shadow">
-                                    ${p.stars} ${currentLanguage === 'en' ? 'STAR' : 'SAO QUỐC GIA'}
+                                    OCOP ${p.stars} ${currentLanguage === 'en' ? 'STARS' : 'SAO'}
                                 </span>
                             </div>
                             <button onclick="toggleWishlist(${p.id})" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md text-red-500 flex items-center justify-center hover:scale-110 transition shadow cursor-pointer">
@@ -3100,7 +3023,7 @@
                         </div>
                         <div class="p-4 space-y-2">
                             <div class="flex items-center justify-between text-[11px] text-amber-800 font-bold">
-                                <span><i class="fa-solid fa-star text-yellow-500 mr-1"></i>${p.rating} (${p.reviews} ${currentLanguage === 'en' ? 'reviews' : 'đánh giá'})</span>
+                                <span><i class="fa-solid fa-star text-yellow-500 mr-1"></i>${getProductReviewLabel(p)}</span>
                                 <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md text-[10px]">${currentLanguage === 'en' ? (p.tagEn || 'OCOP specialty') : p.tag}</span>
                             </div>
                             <h3 class="font-extrabold text-sm text-gray-900 group-hover:text-ocopGreen transition line-clamp-2 leading-snug">${productName}</h3>
@@ -3109,7 +3032,7 @@
                     </div>
                     <div class="p-4 pt-0 border-t border-amber-100/60 mt-2 flex items-center justify-between">
                         <div>
-                            <span class="block text-xs text-gray-400 line-through">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
+                            <span class="block text-xs text-gray-400 line-through">${p.origPrice > p.price ? p.origPrice.toLocaleString('vi-VN') + ' ₫' : ''}</span>
                             <span class="font-black text-red-600 text-base sm:text-lg">${p.price.toLocaleString('vi-VN')} ₫</span>
                         </div>
                         <button onclick="addToCart(${p.id})" class="bg-ocopGreen text-white hover:bg-ocopGreenLight p-2.5 rounded-xl font-bold transition flex items-center space-x-1.5 shadow hover:scale-105 active:scale-95 cursor-pointer">
@@ -5088,7 +5011,7 @@ async function sendAIMessage() {
                     <div class="flex items-start justify-between gap-2">
                         <div class="min-w-0">
                             <p class="font-bold text-gray-800">${escapeAIHtml(getProductName(product))}</p>
-                                        <p class="mt-0.5 text-[10px] text-gray-500">${escapeAIHtml(product.region)} · OCOP ${product.stars} ${currentLanguage === 'en' ? 'stars' : 'sao'} · ${product.rating.toFixed(1)}/5</p>
+                                        <p class="mt-0.5 text-[10px] text-gray-500">${escapeAIHtml(product.region)} · OCOP ${product.stars} ${currentLanguage === 'en' ? 'stars' : 'sao'} · ${getProductReviewLabel(product)}</p>
                         </div>
                         <span class="whitespace-nowrap font-extrabold text-ocopGreen">${product.price.toLocaleString('vi-VN')} ₫</span>
                     </div>
@@ -5399,7 +5322,7 @@ async function sendAIMessage() {
             const container = document.getElementById('quickview-content');
             container.innerHTML = `
                 <div class="h-64 md:h-full bg-amber-100 relative">
-                    <img src="${p.img}" class="w-full h-full object-cover">
+                    <img src="${p.img}" alt="${getProductName(p)}" decoding="async" class="w-full h-full ${p.catalogImport ? 'object-contain p-3' : 'object-cover'}">
                     <span class="absolute top-3 left-3 bg-ocopGreen text-ocopGold font-black text-xs px-3 py-1 rounded-full uppercase shadow">
                         OCOP ${p.stars} ${currentLanguage === 'en' ? 'STARS' : 'SAO'}
                     </span>
@@ -5410,14 +5333,15 @@ async function sendAIMessage() {
                         <h3 class="text-lg font-black text-gray-900 leading-tight">${getProductName(p)}</h3>
                         <div class="flex items-center space-x-2 text-xs text-amber-600 font-bold">
                             <i class="fa-solid fa-star text-yellow-500"></i>
-                            <span>${p.rating} (${p.reviews} ${currentLanguage === 'en' ? 'reviews' : 'Đánh giá'})</span>
+                            <span>${getProductReviewLabel(p)}</span>
                         </div>
                         <p class="text-xs text-gray-600 leading-relaxed pt-2 border-t border-gray-100">${getProductDescription(p)}</p>
+                        ${p.imageIsSample ? `<p class="text-[11px] text-gray-500">${currentLanguage === 'en' ? 'Sample product image; sold pack size is specified above.' : 'Ảnh mẫu sản phẩm; quy cách bán theo mô tả ở trên.'}</p>` : ''}
                     </div>
                     <div class="space-y-3 pt-3 border-t border-gray-100">
                         <div class="flex items-baseline space-x-2">
                             <span class="text-2xl font-black text-red-600">${p.price.toLocaleString('vi-VN')} ₫</span>
-                            <span class="text-xs text-gray-400 line-through">${p.origPrice.toLocaleString('vi-VN')} ₫</span>
+                            <span class="text-xs text-gray-400 line-through">${p.origPrice > p.price ? p.origPrice.toLocaleString('vi-VN') + ' ₫' : ''}</span>
                         </div>
                         <div class="flex items-stretch gap-2">
                             <button id="quickview-wishlist-toggle" type="button" onclick="toggleWishlist(${p.id})" class="flex min-h-12 w-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200 bg-white text-gray-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 cursor-pointer" aria-label="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}" aria-pressed="false" title="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}">
@@ -5740,6 +5664,13 @@ async function sendAIMessage() {
             return currentLanguage === 'en'
                 ? (product.nameEn || productNamesEn[product.id - 1] || product.name)
                 : product.name;
+        }
+
+        function getProductReviewLabel(product) {
+            if (!Number.isFinite(product.rating) || !product.reviews) {
+                return currentLanguage === 'en' ? 'No customer reviews yet' : 'Chưa có đánh giá';
+            }
+            return product.rating.toFixed(1) + ' (' + product.reviews + ' ' + (currentLanguage === 'en' ? 'reviews' : 'đánh giá') + ')';
         }
 
         function getProductDescription(product) {
@@ -6532,7 +6463,6 @@ async function sendAIMessage() {
 </script>
 
 <!-- External Client Scripts -->
-<script src="data.js"></script>
 <script src="giohang.js"></script>
 <script src="toiuu.js"></script>
 <script src="script.js"></script>
