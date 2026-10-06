@@ -1,5 +1,6 @@
 // js/ai-engine.js
-import { PRODUCTS } from './data.js';
+import pkg from './data.js';
+const { PRODUCTS } = pkg;
 
 export class AIEngine {
     constructor(apiKey) {
