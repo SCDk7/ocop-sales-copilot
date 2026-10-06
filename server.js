@@ -640,11 +640,44 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     "   • Tây Nguyên (Gia Lai, Đắk Lắk): Đất đỏ bazan màu mỡ triệu năm nuôi dưỡng Cà phê Robusta Buôn Ma Thuột đậm đà nồng nàn, Mật Ong Hoa Cà Phê vàng óng tinh khiết và Tiêu đen Chư Sê cay thơm nồng đượm.",
     "   • Nam Bộ & Đồng bằng sông Cửu Long (Bến Tre, Kiên Giang, Sóc Trăng): Phù sa màu mỡ sông Tiền sông Hậu tạo nên Kẹo dừa Bến Tre dẻo béo, Nước mắm Phú Quốc truyền thống cá cơm than ủ chượp thùng gỗ bời lời 43 độ đạm, Gạo ST25 đoạt giải ngon nhất thế giới.",
 
-    "2. NGHỆ THUẬT TƯ VẤN THEO MỤC ĐÍCH & NGÂN SÁCH (OCCASION & BUDGET MATCHING):",
-    "   • Quà biếu Sếp, Đối tác ngoại giao: Ưu tiên dòng 5 sao Quốc gia sang trọng như Yến Sào Khánh Hòa, Trà Sen Tây Hồ, Sâm Ngọc Linh, Trà Đinh Nõn Tân Cương (thể hiện sự trọng vọng, tri ân và đẳng cấp).",
-    "   • Quà tặng sức khỏe Cha Mẹ, Người lớn tuổi: Gợi ý Yến sào, Sâm Ngọc Linh, Tỏi đen Lý Sơn, Mật ong hoa cà phê.",
-    "   • Tiệc trà đạo & Thưởng ngoạn: Phối hợp Trà Shan Tuyết / Trà Tân Cương cùng Bánh cốm Làng Vòng Hà Nội.",
-    "   • Ngân sách tiết kiệm dưới 200k: Tự hào giới thiệu các thức quà bình dân chuẩn OCOP 4 sao như Kẹo dừa Bến Tre (65.000đ), Bánh cốm Làng Vòng (85.000đ), Bơ sáp Đắk Lắk (120.000đ), Quế ống Trà Bồng (145.000đ), Mật ong hoa cà phê (180.000đ).",
+    "2. NGHỆ THUẬT TƯ VẤN THIẾT KẾ COMBO & HỘP QUÀ ĐẶC SẢN TOÀN DIỆN (OMNI COMBO & GIFT SET MASTERY):",
+    "   • KHI KHÁCH HỎI COMBO HOẶC SET QUÀ (Bao gồm mọi mức ngân sách, mọi tỉnh thành, mọi dịp lễ):",
+    "   • BẮT BUỘC TRẢ LỜI ĐẦY ĐỦ CÁC MỤC:",
+    "     1. Tên combo sang trọng, mang đậm bản sắc văn hóa vùng miền (VD: 'Set Hoàng Gia 5 Sao', 'Combo Tinh Hoa Đất Hà Giang', 'Bộ Quà Doanh Nhân Thịnh Vượng VIP').",
+    "     2. Bảng kê từng món: Tên sản phẩm, Hạng sao OCOP, Tỉnh thành, Đơn giá x Số lượng = Thành tiền.",
+    "     3. Tổng giá trị combo chính xác (không tính sai lệch con số).",
+    "     4. Ý nghĩa quà tặng: Giá trị sức khỏe, văn hóa nông sản, phong thủy chúc phúc tài lộc.",
+    "     5. Hậu mãi đi kèm: Đóng gói hộp quà cao cấp/rương gỗ sơn mài, túi xách đồng bộ, thiệp chúc riêng, miễn phí ship COD toàn quốc.",
+    "     6. TRẢ VỀ productIds: Luôn trả về 2–3 ID của các sản phẩm chủ đạo trong combo để UI render thẻ sản phẩm cho khách bấm mua.",
+    "",
+    "   • TƯ VẤN THEO CÁC MỐC NGÂN SÁCH CỤ THỂ:",
+    "     - Dưới 500k (Tiết kiệm, học sinh, ăn vặt): Phối các thức quà 4 sao thơm ngon giá mềm (Kẹo dừa Bến Tre 65k + Bánh cốm Làng Vòng 85k + Cơm cháy Ninh Bình 95k + Mật ong hoa cà phê 180k => Tổng ~425.000₫).",
+    "     - Dưới 1 - 2 triệu (Quà gia đình, người thân, đồng nghiệp): Phối 1 danh trà hoặc mật ong rừng + 1-2 đặc sản bổ dưỡng (Trà Shan Tuyết Cổ Thụ Hà Giang 680k + Mật ong bạc hà Mèo Vạc 450k => Tổng 1.130.000₫; hoặc Trà Đinh Nõn Tân Cương 850k + Hạt điều rang củi Bình Phước 240k => Tổng 1.090.000₫).",
+    "     - Dưới 5 triệu (Quà biếu cao cấp, ra mắt gia đình, tri ân đối tác/thầy cô): Tâm điểm là 1 sản phẩm 5 sao thượng hạng (Yến Sào Khánh Hòa 2.450k HOẶC Sâm Ngọc Linh Quảng Nam 3.200k) + Trà Đinh Nõn Tân Cương (850k) hoặc Trà Sen Tây Hồ (680k) => Tổng ~3.300.000₫ – 4.050.000₫ (hoàn toàn dưới 5 triệu).",
+    "     - Từ 5 đến 10 triệu (Biếu Sếp, Lãnh đạo cấp cao, Đối tác ngoại giao): Kết hợp cả Yến Sào Khánh Hòa 5 sao (2.450k) + Sâm Ngọc Linh Quảng Nam (3.200k) + Trà Sen Tây Hồ (680k x 2 hộp = 1.360k) => Tổng 7.010.000₫ (Đẳng cấp hoàng gia).",
+    "     - TRÊN 10 TRIỆU (Set VIP Doanh Nghiệp, Quà Tết Thượng Lưu, Khách VIP Doanh Nhân): BẮT BUỘC thiết kế set quà số lượng lớn (Multi-pack VIP) để đạt trên 10 triệu đồng:",
+    "       Ví dụ: 'Set Quà Doanh Nhân Hoàng Gia VIP' (Tổng: 15.110.000₫):",
+    "       * 3 Hộp Yến Sào Khánh Hòa Thượng Hạng 5★ (2.450.000₫ x 3 = 7.350.000₫)",
+    "       * 2 Hũ Sâm Ngọc Linh Ngâm Mật Ong Rừng Quảng Nam 5★ (3.200.000₫ x 2 = 6.400.000₫)",
+    "       * 2 Hộp Trà Shan Tuyết Cổ Thụ Hà Giang (680.000₫ x 2 = 1.360.000₫)",
+    "       => Tổng cộng: 15.110.000₫ (Đóng rương gỗ bọc da/sơn mài mạ vàng sang trọng, khắc laser logo doanh nghiệp).",
+    "       Hoặc báo giá set quà Tết doanh nghiệp số lượng 10-20 hộp với chiết khấu và hóa đơn VAT.",
+    "",
+    "   • TƯ VẤN THEO TỪNG TỈNH THÀNH (63 TỈNH):",
+    "     - Bất kể khách hỏi tỉnh nào (Hà Giang, Quảng Nam, Bến Tre, Ninh Bình, Cà Mau, Thái Nguyên, Lâm Đồng, Khánh Hòa, Gia Lai...):",
+    "     - Tìm và chọn đúng các sản phẩm của tỉnh đó trong danh mục.",
+    "     - Nếu tỉnh có 2 món: ghép thành combo trọn vẹn của tỉnh (Hà Giang: Trà Shan Tuyết + Mật ong bạc hà Mèo Vạc; Bến Tre: Kẹo dừa sáp + Mật hoa dừa; Cà Mau: Tôm khô + Cua biển; Ninh Bình: Cơm cháy chà bông + Sốt dê kho quẹt...).",
+    "     - Nếu khách đặt ngân sách cao (như combo Hà Giang 5 triệu hay 10 triệu) mà tỉnh chỉ có 1-2 món: Tính theo số lượng hộp (VD: 8 hộp Trà Shan Tuyết Hà Giang 680k + 12 hũ Mật ong Bạc Hà 450k = 10.840.000₫).",
+    "     - Nếu cần mở rộng, giải thích khéo léo việc kết hợp thêm sản phẩm của các tỉnh lân cận cùng tiểu vùng địa lý.",
+    "",
+    "   • TƯ VẤN THEO VÙNG MIỀN & DỊP SỰ KIỆN:",
+    "     - Tây Bắc: Trà Shan Tuyết Hà Giang + Mật ong bạc hà Mèo Vạc + Thịt trâu gác bếp Sơn La + Mắc khén Điện Biên.",
+    "     - Miền Trung: Yến Sào Khánh Hòa + Sâm Ngọc Linh Quảng Nam + Tỏi Đen Lý Sơn + Quế Trà Bồng Quảng Ngãi.",
+    "     - Tây Nguyên: Cà phê Robusta Buôn Ma Thuột + Tiêu đen Chư Sê Gia Lai + Mật ong hoa cà phê + Hạt Mắc ca.",
+    "     - Miền Tây: Gạo ST25 Sóc Trăng + Nước mắm Phú Quốc + Kẹo dừa Bến Tre + Bánh pía Sóc Trăng + Tôm khô Cà Mau.",
+    "     - Dịp Tết/Sum Vầy: Bộ quà bánh mứt truyền thống, danh trà và hạt dinh dưỡng sum họp.",
+    "     - Dịp Sức Khỏe/Cha Mẹ: Yến sào, sâm Ngọc Linh, tỏi đen bồi bổ khí huyết, tăng thọ an khang.",
+    "     - Dịp Bếp Gia Vị: Nước mắm nhỉ Phú Quốc, tiêu Chư Sê, quế Trà Bồng, gạo ST25 chuẩn cơm mẹ nấu.",
 
     "3. NGUYÊN TẮC BÁN HÀNG & CHÍNH XÁC:",
     "   • Luôn trích dẫn chính xác Tên sản phẩm, Giá niêm yết, Số sao OCOP và Tỉnh thành từ danh mục bên dưới. Tuyệt đối không tự bịa đặt giá hoặc tên gọi.",
@@ -762,7 +795,7 @@ function findDirectCatalogMatches(query, products = [], limit = 3) {
   return products.map(product => {
     const name = normalizeCatalogTerm(product.name);
     const searchable = normalizeCatalogTerm([
-      product.name, product.nameEn, product.region, product.category, product.tag, product.description
+      product.name, product.nameEn, product.region, product.category, product.tag, product.desc, product.description
     ].filter(Boolean).join(' '));
     let score = 0;
     for (const term of terms) {
@@ -795,16 +828,45 @@ function extractSearchIntents(queryText, products = []) {
 
   const isHealth = /(suc khoe|duong sinh|nguoi gia|nguoi lon tuoi|cha me|bo me|tre em|ba bau|mat ngu|tieu duong|giai ruou|da day|de khang|bo than|huyet ap)/.test(normalized);
 
-  let maxPrice = null;
-  const underMatch = normalized.match(/(?:duoi|tam|khoang|duoi muc|gia re hon|it hon)\s+(\d+)\s*(k|nghin|ngan|trieu|tr)?/);
-  if (underMatch) {
-    let num = parseInt(underMatch[1], 10);
-    const unit = underMatch[2];
-    if (unit === "trieu" || unit === "tr") num *= 1000000;
+  const isCombo = /(combo|set qua|bo qua|gio qua|hop qua|goi qua|set dac san|gift set|bundle|tron goi|phoi qua|phoi giup|thiet ke qua)/.test(normalized);
+
+  let minPrice = null;
+  const overMatch = normalized.match(/(?:tren|hon|tu|toi thieu|lon hon|cao hon|over|above|from)\s+(\d+(?:[.,]\d+)?)\s*(k|nghin|ngan|trieu|tr|m)?/);
+  if (overMatch) {
+    let num = parseFloat(overMatch[1].replace(',', '.'));
+    const unit = overMatch[2];
+    if (unit === "trieu" || unit === "tr" || unit === "m") num *= 1000000;
     else if (unit === "k" || unit === "nghin" || unit === "ngan" || num < 1000) num *= 1000;
-    maxPrice = num;
-  } else if (/gia re|tiet kiem|binh dan|hoc sinh|sinh vien/.test(normalized)) {
-    maxPrice = 200000;
+    minPrice = Math.round(num);
+  }
+
+  let maxPrice = null;
+  if (!/(?:tren|hon|tu|toi thieu|lon hon|cao hon|over|above)\s*(\d+)\s*(trieu|tr|m|k|nghin|ngan)\b/.test(normalized)) {
+    const underMatch = normalized.match(/(?:duoi|tam|khoang|duoi muc|gia re hon|it hon|under|below|up to|max)\s+(\d+(?:[.,]\d+)?)\s*(k|nghin|ngan|trieu|tr|m)?/) ||
+                       normalized.match(/(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)\b/);
+    if (underMatch) {
+      let num = parseFloat(underMatch[1].replace(',', '.'));
+      const unit = underMatch[2];
+      if (unit === "trieu" || unit === "tr" || unit === "m") num *= 1000000;
+      else if (unit === "k" || unit === "nghin" || unit === "ngan" || num < 1000) num *= 1000;
+      maxPrice = Math.round(num);
+    } else if (/gia re|tiet kiem|binh dan|hoc sinh|sinh vien/.test(normalized)) {
+      maxPrice = 200000;
+    }
+  }
+
+  const rangeMatch = normalized.match(/(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)?\s*(?:-|den|to|va)\s*(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)?/);
+  if (rangeMatch && (rangeMatch[2] || rangeMatch[4])) {
+    const unit1 = rangeMatch[2] || rangeMatch[4];
+    const unit2 = rangeMatch[4] || rangeMatch[2];
+    let p1 = parseFloat(rangeMatch[1].replace(',', '.'));
+    let p2 = parseFloat(rangeMatch[3].replace(',', '.'));
+    if (unit1 === "trieu" || unit1 === "tr" || unit1 === "m") p1 *= 1000000;
+    else if (unit1 === "k" || unit1 === "nghin" || unit1 === "ngan" || p1 < 1000) p1 *= 1000;
+    if (unit2 === "trieu" || unit2 === "tr" || unit2 === "m") p2 *= 1000000;
+    else if (unit2 === "k" || unit2 === "nghin" || unit2 === "ngan" || p2 < 1000) p2 *= 1000;
+    minPrice = Math.min(Math.round(p1), Math.round(p2));
+    maxPrice = Math.max(Math.round(p1), Math.round(p2));
   }
 
   let minStars = null;
@@ -829,19 +891,28 @@ function extractSearchIntents(queryText, products = []) {
   else if (/\b(thit|trau|kho ca|cha muc|bo|lon)\b/.test(normalized)) categoryOrKeyword = "đặc sản mặn";
 
   let regionKeyword = null;
-  const exactRegion = [...new Set(products.map(product => product.region).filter(Boolean))]
-    .find(region => {
-      const normalizedRegion = normalizeCatalogTerm(region);
-      return normalizedRegion.length >= 3 && normalized.includes(normalizedRegion);
-    }) || null;
+  const allProvinces = [...new Set(products.map(product => product.region).filter(Boolean))]
+    .sort((a, b) => b.length - a.length);
+  const exactRegion = allProvinces.find(region => {
+    const normalizedRegion = normalizeCatalogTerm(region);
+    return normalizedRegion.length >= 3 && normalized.includes(normalizedRegion);
+  }) || null;
   if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
   else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
   else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
   else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
   else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
 
-  return { isComplaint, isCSKH, isShipping, isOcopKnowledge, isUsage, isHealth, maxPrice, minStars, categoryOrKeyword, regionKeyword, exactRegion, isGift, rawText: queryText };
+  return { isComplaint, isCSKH, isShipping, isOcopKnowledge, isUsage, isHealth, isCombo, minPrice, maxPrice, minStars, categoryOrKeyword, regionKeyword, exactRegion, isGift, rawText: queryText };
 }
+
+const REGION_PROVINCES = {
+  "Tây Bắc": ["ha giang", "lao cai", "son la", "dien bien", "lai chau", "yen bai", "hoa binh"],
+  "Tây Nguyên": ["gia lai", "dak lak", "dak nong", "lam dong", "kon tum"],
+  "Miền Trung": ["quang nam", "quang ngai", "thua thien hue", "hue", "quang tri", "da nang", "binh dinh", "phu yen", "khanh hoa", "ninh thuan", "nghe an", "ha tinh", "quang binh", "thanh hoa"],
+  "Miền Tây": ["kien giang", "phu quoc", "ben tre", "ca mau", "an giang", "long an", "soc trang", "hau giang", "can tho", "dong thap", "bac lieu", "tra vinh", "vinh long", "tien giang"],
+  "Miền Bắc": ["ha noi", "ha giang", "thai nguyen", "quang ninh", "lao cai", "nam dinh", "bac giang", "hung yen", "yen bai", "tuyen quang", "vinh phuc", "ninh binh", "bac kan", "cao bang", "lang son", "phu tho", "son la", "dien bien", "lai chau", "hoa binh", "ha nam", "hai duong", "hai phong", "thai binh"]
+};
 
 function filterProductsByIntent(products = [], intent = {}) {
   let matched = [...products];
@@ -869,23 +940,180 @@ function filterProductsByIntent(products = [], intent = {}) {
     const byCategory = matched.filter(p =>
       (p.name && p.name.toLowerCase().includes(kw)) ||
       (p.category && p.category.toLowerCase().includes(kw)) ||
+      (p.desc && p.desc.toLowerCase().includes(kw)) ||
       (p.description && p.description.toLowerCase().includes(kw))
     );
     if (byCategory.length > 0) matched = byCategory;
   }
   if (intent.regionKeyword) {
+    const provs = REGION_PROVINCES[intent.regionKeyword] || [];
     const rk = intent.regionKeyword.toLowerCase();
-    const byRegion = matched.filter(p =>
-      (p.region && p.region.toLowerCase().includes(rk)) ||
-      (p.description && p.description.toLowerCase().includes(rk))
-    );
+    const byRegion = matched.filter(p => {
+      const normReg = normalizeCatalogTerm(p.region || "");
+      const normDesc = normalizeCatalogTerm(p.desc || p.description || "");
+      return provs.some(pr => normReg.includes(pr)) || normReg.includes(rk) || normDesc.includes(rk);
+    });
     if (byRegion.length > 0) matched = byRegion;
   }
 
-  const directMatches = findDirectCatalogMatches(intent.rawText, matched);
-  if (directMatches.length > 0) return directMatches;
+  if (!intent.isCombo) {
+    const directMatches = findDirectCatalogMatches(intent.rawText, matched);
+    if (directMatches.length > 0) return directMatches;
+  }
 
   return matched.length > 0 ? matched : products.slice(0, 3);
+}
+
+function generateLocalComboReply(intent, products = [], language = "vi") {
+  const english = language === "en";
+  const { minPrice, maxPrice, exactRegion, regionKeyword } = intent;
+  const rawLower = (intent.rawText || "").toLowerCase();
+
+  let candidates = [];
+  let scopeLabel = "";
+
+  if (exactRegion) {
+    const normExact = normalizeCatalogTerm(exactRegion);
+    candidates = products.filter(p => normalizeCatalogTerm(p.region || "").includes(normExact));
+    scopeLabel = english ? `Specialties of ${exactRegion}` : `Đặc sản tinh hoa ${exactRegion}`;
+  } else if (regionKeyword) {
+    const provs = REGION_PROVINCES[regionKeyword] || [];
+    candidates = products.filter(p => {
+      const normReg = normalizeCatalogTerm(p.region || "");
+      const normDesc = normalizeCatalogTerm(p.desc || p.description || "");
+      return provs.some(pr => normReg.includes(pr)) || normDesc.includes(normalizeCatalogTerm(regionKeyword));
+    });
+    scopeLabel = english ? `${regionKeyword} Regional Set` : `Đặc sản vùng ${regionKeyword}`;
+  }
+
+  const isTet = /(tet|xuan|sum hop|sum vay|dau nam|chuc tet)/.test(rawLower);
+  const isSep = /(sep|lanh dao|doi tac|vip|doanh nghiep|sang trong|cao cap|ngoai giao)/.test(rawLower);
+  const isHealth = intent.isHealth || /(suc khoe|duong sinh|cha me|bo me|nguoi gia|nguoi lon|boi bo|de khang)/.test(rawLower);
+  const isTea = /(tra|che|dam dao|thuong tra)/.test(rawLower);
+  const isKitchen = /(gia vi|bep|nau an|mam|muoi|tieu|gao)/.test(rawLower);
+  const isSnack = /(an vat|nham nhi|banh|keo|snack)/.test(rawLower);
+
+  let comboTitle = "";
+  if (scopeLabel) {
+    comboTitle = isSep || (minPrice && minPrice >= 5000000)
+      ? (english ? `VIP Luxury ${scopeLabel} Set` : `Bộ Quà VIP Thượng Hạng ${scopeLabel}`)
+      : (english ? `Signature ${scopeLabel} Combo` : `Combo Tinh Hoa ${scopeLabel}`);
+  } else if (isHealth) {
+    comboTitle = english ? "Longevity & Health Gift Set" : "Bộ Quà Dưỡng Sinh & Sức Khỏe Trường Thọ";
+  } else if (isSep || (minPrice && minPrice >= 5000000)) {
+    comboTitle = english ? "VIP Corporate & Executive Masterpiece Set" : "Bộ Quà VIP Doanh Nghiệp & Ngoại Giao";
+  } else if (isTea) {
+    comboTitle = english ? "Master Tea Connoisseur Set" : "Bộ Quà Thưởng Trà Đàm Đạo";
+  } else if (isKitchen) {
+    comboTitle = english ? "Authentic Vietnamese Kitchen Spice Set" : "Bộ Gia Vị Bếp Việt Đậm Đà Hương Quê";
+  } else if (isSnack) {
+    comboTitle = english ? "Vietnamese Heritage Snack Box" : "Hộp Bánh Mứt Ăn Vặt Nông Sản Việt";
+  } else if (isTet) {
+    comboTitle = english ? "Lunar New Year Reunion Gift Set" : "Bộ Quà Tết Đoàn Viên Như Ý";
+  } else if (maxPrice && maxPrice <= 500000) {
+    comboTitle = english ? "Pocket-Friendly Specialty Combo" : "Combo Đặc Sản Tiết Kiệm & Ý Nghĩa";
+  } else if (maxPrice && maxPrice <= 2000000) {
+    comboTitle = english ? "Family & Friends Specialty Gift Set" : "Bộ Quà Gia Đình & Thân Hữu Thắm Tình";
+  } else {
+    comboTitle = english ? "National OCOP 5-Star Specialty Combo" : "Combo Tinh Hoa Quốc Bảo OCOP 5 Sao";
+  }
+
+  if (candidates.length === 0) {
+    if (isHealth || isSep || (minPrice && minPrice >= 5000000)) {
+      candidates = products.filter(p => [1, 4, 12, 18, 25, 47].includes(p.id) || p.stars === 5 || p.price >= 600000);
+    } else if (isTea) {
+      candidates = products.filter(p => [2, 3, 47].includes(p.id) || (p.category && p.category.toLowerCase().includes("trà")));
+    } else if (isKitchen) {
+      candidates = products.filter(p => [5, 6, 8, 14, 21].includes(p.id) || (p.category && p.category.toLowerCase().includes("gia vị")));
+    } else if (isSnack) {
+      candidates = products.filter(p => [7, 9, 10, 11, 16, 20].includes(p.id) || (p.category && p.category.toLowerCase().includes("bánh")));
+    } else if (maxPrice && maxPrice <= 500000) {
+      candidates = products.filter(p => p.price <= 250000);
+    } else {
+      candidates = products.filter(p => p.stars === 5 || [1, 2, 4, 5, 10, 11, 12].includes(p.id));
+    }
+  }
+
+  if (candidates.length === 0) candidates = products.slice(0, 4);
+
+  candidates.sort((a, b) => (b.price || 0) - (a.price || 0));
+
+  let selected = candidates.slice(0, Math.min(candidates.length, 4));
+  let comboItems = selected.map(p => ({ product: p, quantity: 1 }));
+  let currentTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  if (maxPrice && currentTotal > maxPrice) {
+    let subset = [];
+    let runningSum = 0;
+    for (const p of candidates) {
+      if (runningSum + (p.price || 0) <= maxPrice && !subset.some(s => s.id === p.id)) {
+        subset.push(p);
+        runningSum += (p.price || 0);
+        if (subset.length >= 3) break;
+      }
+    }
+    if (subset.length > 0) {
+      comboItems = subset.map(p => ({ product: p, quantity: 1 }));
+      currentTotal = runningSum;
+    }
+  }
+
+  if (minPrice && currentTotal < minPrice) {
+    let loops = 0;
+    while (currentTotal < minPrice && loops < 100) {
+      const idx = loops % comboItems.length;
+      comboItems[idx].quantity += 1;
+      currentTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+      if (maxPrice && currentTotal > maxPrice) {
+        comboItems[idx].quantity -= 1;
+        break;
+      }
+      loops++;
+    }
+  }
+
+  const finalTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const productIds = comboItems.map(item => item.product.id);
+
+  const itemsText = comboItems.map((item, idx) => {
+    const p = item.product;
+    const itemTotal = (p.price * item.quantity).toLocaleString("vi-VN");
+    const qtyStr = item.quantity > 1 ? ` (x${item.quantity})` : "";
+    const pDesc = p.desc || p.description;
+    return `${idx + 1}. **${p.name}**${qtyStr} — ${itemTotal}₫\n   • Chuẩn OCOP: ${p.stars}⭐ (${p.region})\n   • Đơn giá: ${p.price.toLocaleString("vi-VN")}₫/hộp\n   • Đặc trưng: ${pDesc ? pDesc.slice(0, 95) + "..." : "Đặc sản chính gốc sản xuất hữu cơ đạt chuẩn OCOP quốc gia."}`;
+  }).join("\n\n");
+
+  let intro = english
+    ? `🎁 Here is our curated combo **${comboTitle}** tailored to your request:`
+    : `🎁 Dạ, OCOP Copilot trân trọng thiết kế **${comboTitle}** theo đúng yêu cầu và ngân sách của Anh/Chị:`;
+
+  let totalText = english
+    ? `💰 **Total Combo Value**: **${finalTotal.toLocaleString("vi-VN")}₫**`
+    : `💰 **Tổng giá trị combo**: **${finalTotal.toLocaleString("vi-VN")}₫**`;
+
+  let packagingNote = english
+    ? `✨ **Gift Presentation & Services Included**:\n• Packaged in a premium lacquer/hard wooden gift box with elegant ribbons & personalized greeting card.\n• 100% genuine cooperative products with origin traceability QR code.\n• Free nationwide express shipping with shockproof fragile packaging.\n• Corporate VAT invoices available upon request.`
+    : `✨ **Quy cách đóng gói & Dịch vụ đi kèm**:\n• Đóng hộp quà sang trọng (hộp rương gỗ/sơn mài nẹp nhung cao cấp), thắt nơ lụa & thiệp viết tay theo yêu cầu.\n• 100% sản phẩm đạt chứng nhận OCOP chuẩn sao, có tem QR Code truy xuất nguồn gốc tận nơi sản xuất.\n• Miễn phí vận chuyển hỏa tốc toàn quốc, đóng thùng xốp chống va đập tiêu chuẩn.\n• Hỗ trợ xuất hóa đơn VAT và in/khắc laser logo doanh nghiệp cho đơn quà tặng.`;
+
+  let cta = english
+    ? `👉 You can click the product cards below to add the combo directly to your cart, or message our Admin for custom corporate gift sets!`
+    : `👉 Anh/Chị có thể bấm trực tiếp các thẻ sản phẩm bên dưới để thêm ngay vào giỏ hàng hoặc inbox Admin để tùy chỉnh số lượng nhé!`;
+
+  const fullMessage = `${intro}\n\n${itemsText}\n\n${totalText}\n\n${packagingNote}\n\n${cta}`;
+
+  const chips = english
+    ? ["Add combo to cart", "Adjust budget", "Corporate gift inquiry", "Hotline: 0987.654.321"]
+    : ["Thêm combo vào giỏ", "Tùy chỉnh ngân sách", "Inbox Admin 3 (Quà Tết/Doanh nghiệp)", "Hotline: 0987.654.321"];
+
+  return {
+    text_response: fullMessage,
+    message: fullMessage,
+    suggested_products: productIds,
+    productIds: productIds,
+    dynamic_chips: chips,
+    handoffAdmin: false,
+    fallback: true
+  };
 }
 
 // ── BULLETPROOF LOCAL FALLBACK RESPONSE ────────────────────────
@@ -925,6 +1153,11 @@ function buildLocalFallbackReply(query, products = [], language = "vi") {
       handoffAdmin: true,
       fallback: true
     };
+  }
+
+  // 1.2 Combo & Gift Set Inquiry
+  if (intent.isCombo) {
+    return generateLocalComboReply(intent, products, language);
   }
 
   // 2. Shipping & Delivery
@@ -1323,9 +1556,11 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
   let configuration;
   const lastUserMessage = validation.messages[validation.messages.length - 1].text;
   const hasImages = attachedImages.length > 0 || Boolean(imageData);
-  const targetProducts = (Array.isArray(filteredProducts) && filteredProducts.length > 0)
-    ? filteredProducts
-    : validation.products;
+  const targetProducts = userIntent.isCombo
+    ? validation.products
+    : ((Array.isArray(filteredProducts) && filteredProducts.length > 0)
+        ? filteredProducts
+        : validation.products);
 
   try {
     configuration = getAIModelConfiguration();
