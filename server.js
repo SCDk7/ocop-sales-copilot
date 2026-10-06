@@ -517,6 +517,15 @@ async function uploadImageToGeminiFilesApi(image, configuration, signal) {
   return result.file.uri;
 }
 
+function getRestrictedTopicReply(message, language = 'vi') {
+  const normalized = normalizeCatalogTerm(message).replace(/[.!?,]+/g, '').trim();
+  if (!/^(?:ngu|do ngu|may ngu|ban ngu|stupid|idiot)$|\b(?:chan nhau|yeu nhau|hen ho|lam nguoi yeu|be my girlfriend|be my boyfriend|date me)\b/.test(normalized)) return null;
+  return {
+    message: language === 'en' ? 'I currently do not have authority to respond to this matter.' : 'Hiện tại tôi không có quyền hạn để trả lời vấn đề này.',
+    productIds: [], suggested_products: [], dynamic_chips: [], handoffAdmin: false
+  };
+}
+
 function getGeneralComplaintClarification(message, language) {
   const normalizedMessage = String(message || '')
     .normalize('NFD')
@@ -879,6 +888,8 @@ function filterProductsByIntent(products = [], intent = {}) {
 
 // ── BULLETPROOF LOCAL FALLBACK RESPONSE ────────────────────────
 function buildLocalFallbackReply(query, products = [], language = "vi") {
+  const restrictedReply = getRestrictedTopicReply(query, language);
+  if (restrictedReply) return { ...restrictedReply, fallback: true };
   const intent = extractSearchIntents(query, products);
   const english = language === "en";
 
@@ -1181,6 +1192,8 @@ async function handleAIChatRequest(req, res) {
     : aiWebsiteCatalog.products;
   const validation = validateAIRequest({ ...requestBody, products: requestProducts });
   if (validation.error) return res.status(400).json({ error: validation.error });
+  const restrictedReply = getRestrictedTopicReply(validation.messages[validation.messages.length - 1].text, validation.language);
+  if (restrictedReply) return res.json(restrictedReply);
   const imageIds = requestBody.imageIds === undefined ? [] : requestBody.imageIds;
   if (!Array.isArray(imageIds) || imageIds.length > MAX_CHAT_IMAGES_PER_MESSAGE ||
       imageIds.some(id => typeof id !== 'string' || !/^[0-9a-f-]{36}$/i.test(id)) ||

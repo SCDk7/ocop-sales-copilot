@@ -134,16 +134,24 @@
             100% { width: 210%; height: 210%; opacity: 0; }
         }
         @keyframes drumRotate {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         @keyframes drumRotateReverse {
-            0% { transform: translate(-50%, -50%) rotate(360deg); }
-            100% { transform: translate(-50%, -50%) rotate(0deg); }
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
         }
         @keyframes sunPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 20px rgba(212,175,55,0.6)); opacity: 0.85; }
-            50% { transform: translate(-50%, -50%) scale(1.12); filter: drop-shadow(0 0 50px rgba(212,175,55,1)); opacity: 1; }
+            0%, 100% {
+                transform: scale(0.94);
+                filter: drop-shadow(0 0 25px rgba(255, 223, 0, 0.75));
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.18);
+                filter: drop-shadow(0 0 65px rgba(255, 223, 0, 1)) drop-shadow(0 0 110px rgba(212, 175, 55, 0.85));
+                opacity: 1;
+            }
         }
         @keyframes goldShine {
             0% { background-position: -200% 0; }
@@ -157,9 +165,17 @@
             0% { opacity: 1; transform: translateY(0); }
             100% { opacity: 0; transform: translateY(-10px); pointer-events: none; }
         }
-        .drum-rotate { animation: drumRotate 110s linear infinite; }
-        .drum-rotate-reverse { animation: drumRotateReverse 85s linear infinite; }
-        .sun-pulse { animation: sunPulse 4s ease-in-out infinite; }
+        .drum-rotate,
+        .drum-rotate-reverse,
+        .sun-pulse {
+            transform-origin: center !important;
+            transform-box: fill-box !important;
+            will-change: transform !important;
+            display: block !important;
+        }
+        .drum-rotate { animation: drumRotate 18s linear infinite !important; }
+        .drum-rotate-reverse { animation: drumRotateReverse 22s linear infinite !important; }
+        .sun-pulse { animation: sunPulse 2.8s ease-in-out infinite !important; }
         .curtain-closing { animation: curtainExit 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         .gold-gradient-text {
             background: linear-gradient(135deg, #FFF9D2 0%, #D4AF37 35%, #FFF0B3 60%, #B89528 85%, #FFEAA7 100%);
@@ -968,18 +984,7 @@
             background: #fff;
             border-color: rgba(15, 56, 44, 0.2);
         }
-        @media (prefers-reduced-motion: reduce) {
-            #ocop-intro-overlay,
-            #ocop-intro-overlay::before,
-            #ocop-intro-overlay::after,
-            #ocop-intro-overlay *,
-            #ocop-intro-overlay *::before,
-            #ocop-intro-overlay *::after {
-                animation: none !important;
-                scroll-behavior: auto !important;
-                transition: none !important;
-            }
-        }
+
         @media (max-width: 640px) {
             #ocop-intro-overlay > .relative.z-20.max-w-4xl {
                 padding-top: 1rem;
@@ -1364,9 +1369,7 @@
         @media (prefers-reduced-motion: reduce) {
             .product-card,
             .product-card-image,
-            #shop-hero *,
-            #ocop-intro-overlay::before,
-            #ocop-intro-overlay::after {
+            #shop-hero * {
                 animation: none !important;
                 transition: none !important;
                 scroll-behavior: auto !important;
@@ -1450,7 +1453,10 @@
     <!-- ============================================================== -->
     <div id="ocop-intro-overlay" class="fixed inset-0 z-[100] flex flex-col justify-between overflow-y-auto overflow-x-hidden text-white p-3 sm:p-6 transition-all duration-700 select-none">
         <!-- BACKGROUND DYNAMIC LAYERS -->
-        <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div id="intro-bg-parallax-layer" class="fixed inset-0 pointer-events-none overflow-hidden will-change-transform">
+            <!-- Canvas hạt bụi sao vàng kim & đom đóm sống động (Living Stardust Engine) -->
+            <canvas id="ambient-stardust-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
+
             <!-- Canvas confetti pháo hoa vàng kim khi bốc quà -->
             <canvas id="intro-confetti-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-30"></canvas>
 
@@ -1460,28 +1466,37 @@
             <div class="intro-ambient-orb intro-ambient-orb--cyan absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55rem] h-[55rem] rounded-full pointer-events-none"></div>
             <div class="intro-waterlight" aria-hidden="true"></div>
 
+            <!-- Vòng Tinh Vân Sao Vàng Hoàng Kim (Golden Celestial Starburst Ring) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[980px] h-[980px] sm:w-[1300px] sm:h-[1300px] opacity-45 pointer-events-none flex items-center justify-center">
+                <svg id="dongson-starburst-svg" viewBox="0 0 1000 1000" fill="none" stroke="#FFE082" class="w-full h-full drum-rotate drop-shadow-[0_0_25px_rgba(255,224,130,0.7)]">
+                    <circle cx="500" cy="500" r="485" stroke-width="1.8" stroke-dasharray="10 22"/>
+                    <circle cx="500" cy="500" r="460" stroke-width="1.2" stroke-dasharray="4 14"/>
+                    <circle cx="500" cy="500" r="435" stroke-width="1.5" stroke-dasharray="18 10"/>
+                </svg>
+            </div>
+
             <!-- Trống đồng Đông Sơn AI Hologram 3D (Vòng ngoài Vàng Hoàng Gia) -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[820px] h-[820px] sm:w-[1100px] sm:h-[1100px] opacity-25 pointer-events-none drum-rotate-reverse">
-                <svg viewBox="0 0 800 800" fill="none" stroke="#F5D061" class="w-full h-full drop-shadow-[0_0_25px_rgba(212,175,55,0.9)]">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[820px] h-[820px] sm:w-[1100px] sm:h-[1100px] opacity-65 pointer-events-none flex items-center justify-center">
+                <svg id="dongson-drum-svg" viewBox="0 0 800 800" fill="none" stroke="#F5D061" class="w-full h-full drum-rotate-reverse drop-shadow-[0_0_35px_rgba(212,175,55,0.95)]">
                     <circle cx="400" cy="400" r="392" stroke-width="2.5" stroke-dasharray="14 10"/>
                     <circle cx="400" cy="400" r="372" stroke-width="1.8"/>
                     <circle cx="400" cy="400" r="348" stroke-width="3" stroke-dasharray="24 14"/>
                     <circle cx="400" cy="400" r="318" stroke-width="2"/>
                     <!-- Đàn chim Lạc thiêng liêng bay lượn ngàn năm -->
-                    <g transform="rotate(0 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
-                    <g transform="rotate(45 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
-                    <g transform="rotate(90 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
-                    <g transform="rotate(135 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
-                    <g transform="rotate(180 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
-                    <g transform="rotate(225 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
-                    <g transform="rotate(270 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
-                    <g transform="rotate(315 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.55"/></g>
+                    <g transform="rotate(0 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.65"/></g>
+                    <g transform="rotate(45 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.65"/></g>
+                    <g transform="rotate(90 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.65"/></g>
+                    <g transform="rotate(135 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.65"/></g>
+                    <g transform="rotate(180 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.65"/></g>
+                    <g transform="rotate(225 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.65"/></g>
+                    <g transform="rotate(270 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.65"/></g>
+                    <g transform="rotate(315 400 400)"><path d="M400,38 Q445,50 465,72 Q432,68 412,82 Z" fill="#F5D061" fill-opacity="0.65"/></g>
                 </svg>
             </div>
 
             <!-- Vòng Trong Cyber Laser Cyan -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] sm:w-[780px] sm:h-[780px] opacity-30 pointer-events-none drum-rotate">
-                <svg viewBox="0 0 600 600" fill="none" stroke="#00F0FF" class="w-full h-full drop-shadow-[0_0_20px_rgba(0,240,255,0.7)]">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] sm:w-[780px] sm:h-[780px] opacity-55 pointer-events-none flex items-center justify-center">
+                <svg id="dongson-laser-svg" viewBox="0 0 600 600" fill="none" stroke="#00F0FF" class="w-full h-full drum-rotate drop-shadow-[0_0_25px_rgba(0,240,255,0.85)]">
                     <circle cx="300" cy="300" r="285" stroke-width="2.5" stroke-dasharray="10 8"/>
                     <circle cx="300" cy="300" r="255" stroke-width="1.8"/>
                     <circle cx="300" cy="300" r="225" stroke-width="2.5" stroke-dasharray="14 10"/>
@@ -1492,10 +1507,10 @@
             </div>
 
             <!-- Mặt Trời Đông Sơn 14 Tia Phát Sáng Hoàng Kim -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] opacity-60 pointer-events-none sun-pulse">
-                <svg viewBox="0 0 400 400" fill="none" stroke="#FFDF00" class="w-full h-full drop-shadow-[0_0_35px_rgba(255,223,0,0.85)]">
-                    <circle cx="200" cy="200" r="48" fill="#FFDF00" fill-opacity="0.5" stroke-width="3"/>
-                    <polygon points="200,55 218,145 288,100 238,168 322,172 245,206 308,266 232,240 254,320 200,255 146,320 168,240 92,266 155,206 78,172 162,168 112,100 182,145" fill="#FFDF00" fill-opacity="0.55" stroke-width="2.5"/>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] opacity-90 pointer-events-none flex items-center justify-center">
+                <svg id="dongson-sun-svg" viewBox="0 0 400 400" fill="none" stroke="#FFDF00" class="w-full h-full sun-pulse drop-shadow-[0_0_45px_rgba(255,223,0,0.95)]">
+                    <circle cx="200" cy="200" r="48" fill="#FFDF00" fill-opacity="0.6" stroke-width="3"/>
+                    <polygon points="200,55 218,145 288,100 238,168 322,172 245,206 308,266 232,240 254,320 200,255 146,320 168,240 92,266 155,206 78,172 162,168 112,100 182,145" fill="#FFDF00" fill-opacity="0.65" stroke-width="2.5"/>
                 </svg>
             </div>
         </div>
@@ -2555,6 +2570,8 @@
             updateIntroMusicButton();
             updateCartBadge();
             updateWishlistBadge();
+            initAmbientStardustCanvas();
+            initIntroBackgroundParallax();
 
             // Lắng nghe phím Esc để thoát intro nhanh
             window.addEventListener('keydown', (e) => {
@@ -2686,6 +2703,172 @@
                 }
             }
             renderConfetti();
+        }
+
+        // -------------------------------------------------------------
+        // ĐỘNG CƠ HẠT BỤI SAO VÀNG KIM & ĐOM ĐÓM HOÀNG GIA SỐNG ĐỘNG (LIVING STARDUST)
+        // -------------------------------------------------------------
+        let stardustAnimationId = null;
+        function initAmbientStardustCanvas() {
+            const canvas = document.getElementById('ambient-stardust-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            let width = (canvas.width = window.innerWidth);
+            let height = (canvas.height = window.innerHeight);
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }, { passive: true });
+
+            let mouse = { x: -1000, y: -1000, active: false };
+            const onPointerMove = (e) => {
+                const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : null);
+                const clientY = e.clientY ?? (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+                if (clientX !== null && clientY !== null) {
+                    mouse.x = clientX;
+                    mouse.y = clientY;
+                    mouse.active = true;
+                }
+            };
+            window.addEventListener('mousemove', onPointerMove, { passive: true });
+            window.addEventListener('touchmove', onPointerMove, { passive: true });
+
+            const colors = [
+                { r: 255, g: 223, b: 0 },    // Imperial Gold
+                { r: 253, g: 230, b: 138 },  // Amber Yellow
+                { r: 52,  g: 211, b: 153 },  // Emerald Jade
+                { r: 255, g: 255, b: 255 },  // Diamond Star
+                { r: 245, g: 158, b: 11 }    // Solar Orange
+            ];
+
+            const PARTICLE_COUNT = Math.min(85, Math.floor((window.innerWidth * window.innerHeight) / 14000) + 38);
+            const particles = [];
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                const colorObj = colors[Math.floor(Math.random() * colors.length)];
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 2.8 + 1.2,
+                    color: colorObj,
+                    vy: Math.random() * 0.48 + 0.18,
+                    vx: (Math.random() - 0.5) * 0.28,
+                    swayAngle: Math.random() * Math.PI * 2,
+                    swaySpeed: Math.random() * 0.02 + 0.008,
+                    swayAmp: Math.random() * 0.65 + 0.25,
+                    alpha: Math.random() * 0.65 + 0.25,
+                    baseAlpha: Math.random() * 0.55 + 0.3,
+                    pulseSpeed: Math.random() * 0.03 + 0.012,
+                    pulseAngle: Math.random() * Math.PI * 2
+                });
+            }
+
+            function renderStardust() {
+                const overlay = document.getElementById('ocop-intro-overlay');
+                if (overlay && overlay.classList.contains('hidden')) {
+                    stardustAnimationId = requestAnimationFrame(renderStardust);
+                    return;
+                }
+
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+
+                    p.y -= p.vy;
+                    p.swayAngle += p.swaySpeed;
+                    p.x += Math.sin(p.swayAngle) * p.swayAmp + p.vx;
+
+                    p.pulseAngle += p.pulseSpeed;
+                    p.alpha = p.baseAlpha + Math.sin(p.pulseAngle) * 0.28;
+                    const finalAlpha = Math.max(0.08, Math.min(0.95, p.alpha));
+
+                    if (mouse.active) {
+                        const dx = p.x - mouse.x;
+                        const dy = p.y - mouse.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 130 && dist > 0) {
+                            const force = (130 - dist) / 130;
+                            p.x += (dx / dist) * force * 2.5;
+                            p.y += (dy / dist) * force * 2.5;
+                        }
+                    }
+
+                    if (p.y < -15) {
+                        p.y = height + 15;
+                        p.x = Math.random() * width;
+                    }
+                    if (p.x < -15) p.x = width + 15;
+                    if (p.x > width + 15) p.x = -15;
+
+                    const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3.2);
+                    grad.addColorStop(0, `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${finalAlpha})`);
+                    grad.addColorStop(0.4, `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${finalAlpha * 0.38})`);
+                    grad.addColorStop(1, `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, 0)`);
+
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * 3.2, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, finalAlpha * 1.3)})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * 0.65, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                stardustAnimationId = requestAnimationFrame(renderStardust);
+            }
+
+            stardustAnimationId = requestAnimationFrame(renderStardust);
+        }
+
+        // -------------------------------------------------------------
+        // HIỆU ỨNG TƯƠNG TÁC 3D PARALLAX & QUAY TRÒN TRỐNG ĐỒNG LIÊN TỤC
+        // -------------------------------------------------------------
+        function initIntroBackgroundParallax() {
+            const bgContainer = document.getElementById('intro-bg-parallax-layer');
+            const drumSvg = document.getElementById('dongson-drum-svg');
+            const laserSvg = document.getElementById('dongson-laser-svg');
+            const starburstSvg = document.getElementById('dongson-starburst-svg');
+
+            let targetX = 0;
+            let targetY = 0;
+            let currentX = 0;
+            let currentY = 0;
+
+            let drumAngleOuter = 0;
+            let drumAngleInner = 0;
+            let drumAngleStarburst = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                targetX = (e.clientX / window.innerWidth - 0.5) * 28;
+                targetY = (e.clientY / window.innerHeight - 0.5) * 28;
+            }, { passive: true });
+
+            function animateBackground() {
+                // 1. Parallax mượt mà
+                if (bgContainer) {
+                    currentX += (targetX - currentX) * 0.05;
+                    currentY += (targetY - currentY) * 0.05;
+                    bgContainer.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
+                }
+
+                // 2. Quay tròn trống đồng Đông Sơn liên tục (Chắc chắn 100% xoay tròn mượt mà)
+                drumAngleOuter = (drumAngleOuter - 0.32) % 360;
+                drumAngleInner = (drumAngleInner + 0.48) % 360;
+                drumAngleStarburst = (drumAngleStarburst + 0.22) % 360;
+
+                if (drumSvg) drumSvg.style.transform = `rotate(${drumAngleOuter.toFixed(2)}deg)`;
+                if (laserSvg) laserSvg.style.transform = `rotate(${drumAngleInner.toFixed(2)}deg)`;
+                if (starburstSvg) starburstSvg.style.transform = `rotate(${drumAngleStarburst.toFixed(2)}deg)`;
+
+                requestAnimationFrame(animateBackground);
+            }
+            animateBackground();
         }
 
         // -------------------------------------------------------------
@@ -3891,6 +4074,13 @@
         }
 
         function createLocalCatalogReply(query, hasImages = false) {
+            const topicText = normalizeSearchText(String(query || '')).replace(/[.!?,]+/g, '').trim();
+            if (/^(?:ngu|do ngu|may ngu|ban ngu|stupid|idiot)$|\b(?:chan nhau|yeu nhau|hen ho|lam nguoi yeu|be my girlfriend|be my boyfriend|date me)\b/.test(topicText)) {
+                return {
+                    message: currentLanguage === 'en' ? 'I currently do not have authority to respond to this matter.' : 'Hiện tại tôi không có quyền hạn để trả lời vấn đề này.',
+                    productIds: [], dynamic_chips: [], handoffAdmin: false, localFallback: true
+                };
+            }
             lastAIRecommendedProductIds = [];
             lastAIRecommendationCriteria = null;
             lastAIComboMarkup = null;
