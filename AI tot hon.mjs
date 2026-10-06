@@ -1,5 +1,5 @@
 // js/ai-engine.js
-import pkg from './data.js';
+import pkg from './data.mjs';
 const { PRODUCTS } = pkg;
 
 export class AIEngine {
