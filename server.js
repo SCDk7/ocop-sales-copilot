@@ -587,6 +587,8 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
   const intentContext = `\n[Tín hiệu đã nhận diện từ câu hỏi hiện tại]: ${JSON.stringify({
     category: customerIntent.categoryOrKeyword || null,
     province: customerIntent.exactRegion || null,
+    provinces: customerIntent.exactRegions || null,
+    allProvinces: Boolean(customerIntent.isAllProvinces),
     region: customerIntent.regionKeyword || null,
     maxPrice: customerIntent.maxPrice || null,
     minItems: customerIntent.minItems ?? null,
@@ -611,8 +613,8 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     : `Trong dynamic_chips, trả về 2–4 nhãn nút gợi ý ngắn thông minh (tối đa 20 ký tự mỗi nhãn) bám sát ngữ cảnh câu trả lời (ví dụ: ["Quà biếu", "Dưới 200k", "5 sao", "Trà đặc sản", "Miền Tây", "Combo tiết kiệm"]).`;
 
   const schemaInstruction = includeTranscription
-    ? "Chỉ trả về JSON đúng schema: transcription (string), message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), handoffAdmin (boolean), dynamic_chips (mảng string)."
-    : "Chỉ trả về JSON đúng schema: message (string), productIds (mảng tối đa 3 ID số nguyên từ danh mục), imageMatchStatus (exact|similar|unknown|not_applicable), handoffAdmin (boolean), dynamic_chips (mảng string).";
+    ? "Chỉ trả về JSON đúng schema: transcription (string), message (string), productIds (mảng ID số nguyên từ danh mục, tối đa 3-6 ID khi tư vấn combo), handoffAdmin (boolean), dynamic_chips (mảng string)."
+    : "Chỉ trả về JSON đúng schema: message (string), productIds (mảng ID số nguyên từ danh mục, tối đa 3-6 ID khi tư vấn combo), imageMatchStatus (exact|similar|unknown|not_applicable), handoffAdmin (boolean), dynamic_chips (mảng string).";
 
   const imageSearchInstruction = hasImages
     ? language === 'en'
@@ -631,7 +633,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     "1. Answer the customer's latest message first. Use earlier messages only to resolve references such as 'this product', 'that one', or a correction.",
     "Before replying, read the complete conversation, identify the customer's actual concern, and check supplied catalogue and Wikipedia evidence. A complaint can concern service, delivery, payment or products: never assume damage. Acknowledge stated facts, ask one focused clarification when details are missing, and do not repeat questions already answered. Never claim an order, refund or damage was verified without evidence. For support requests do not recommend unrelated products.",
     "2. Identify whether the customer asks about a product, price, province, comparison, gift, use, shipping, voucher, or support. Answer that question directly before suggesting a purchase.",
-    "3. A named province is strict: only recommend products from that exact province. Never substitute a different province or silently broaden it to a region.",
+    "3. If one or more specific provinces are requested, STRICTLY include products representing ALL named provinces (e.g. if the user asks for 'Đồng Nai với Cà Mau', you must include products from BOTH Đồng Nai AND Cà Mau). If the user asks to combine all provinces / 63 provinces / nationwide, recommend representative 5-star specialties across Vietnam's regions. Never omit any requested province.",
     "4. Only return productIds for products that answer the question. Do not show unrelated popular products. For FAQ, shipping, voucher, or support questions, return productIds: [].",
     "5. If the request is ambiguous or the catalogue does not contain the requested item, say so clearly and ask one short, useful follow-up question. Never guess a product, price, availability, or policy.",
     "6. If the customer corrects a previous answer, acknowledge the correction and use the new information. When there is no attached image, set imageMatchStatus to not_applicable.",
@@ -673,6 +675,17 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     "     - Nếu tỉnh có 2 món: ghép thành combo trọn vẹn của tỉnh (Hà Giang: Trà Shan Tuyết + Mật ong bạc hà Mèo Vạc; Bến Tre: Kẹo dừa sáp + Mật hoa dừa; Cà Mau: Tôm khô + Cua biển; Ninh Bình: Cơm cháy chà bông + Sốt dê kho quẹt...).",
     "     - Nếu khách đặt ngân sách cao (như combo Hà Giang 5 triệu hay 10 triệu) mà tỉnh chỉ có 1-2 món: Tính theo số lượng hộp (VD: 8 hộp Trà Shan Tuyết Hà Giang 680k + 12 hũ Mật ong Bạc Hà 450k = 10.840.000₫).",
     "     - Nếu cần mở rộng, giải thích khéo léo việc kết hợp thêm sản phẩm của các tỉnh lân cận cùng tiểu vùng địa lý.",
+    "",
+    "   • TƯ VẤN COMBO GOM NHIỀU TỈNH THÀNH HOẶC TẤT CẢ 63 TỈNH (MULTI-PROVINCE & ALL PROVINCES):",
+    "     - KHI KHÁCH HỎI KẾT HỢP NHIỀU TỈNH (VD: 'Cho combo đồng nai với cà mau', 'combo hà giang và quảng nam'):",
+    "       * BẮT BUỘC chọn sản phẩm đại diện từ TẤT CẢ các tỉnh thành khách yêu cầu, KHÔNG ĐƯỢC bỏ sót bất kỳ tỉnh nào!",
+    "       * Ví dụ 'Đồng Nai với Cà Mau': Phải có sản phẩm Đồng Nai (Rượu bưởi Tân Triều, Chuối sấy dẻo Đồng Nai) VÀ sản phẩm Cà Mau (Cua biển Cà Mau, Tôm khô Đất Mũi, Mật ong rừng U Minh).",
+    "       * Đặt tên combo giao thoa ý nghĩa (VD: 'Combo Giao Thoa Đặc Sản Đồng Nai & Cà Mau').",
+    "       * Trả về các mã productIds đại diện cho các tỉnh được yêu cầu trong danh sách productIds.",
+    "     - KHI KHÁCH HỎI GOM TẤT CẢ TỈNH THÀNH / 63 TỈNH / TOÀN QUỐC / 3 MIỀN / XUYÊN VIỆT (VD: 'gom tất cả tỉnh thành', 'combo 63 tỉnh', 'combo xuyên việt'):",
+    "       * Tôn vinh tinh hoa hội tụ của 63 tỉnh thành Việt Nam trong một rương quà quốc gia: 'Rương Quà Quốc Bảo - Tinh Hoa 63 Tỉnh Thành' hoặc 'Bộ Quà Tinh Hoa Xuyên Việt 63 Tỉnh'.",
+    "       * Tuyển chọn các đặc sản 5 sao biểu tượng trải dài các vùng miền đất nước: Yến sào Khánh Hòa, Sâm Ngọc Linh Quảng Nam, Trà Shan Tuyết Hà Giang, Trà Đinh Nõn Thái Nguyên, Cà phê Buôn Ma Thuột Đắk Lắk, Gạo ST25 Sóc Trăng, Kẹo dừa Bến Tre, Tôm khô Cà Mau...",
+    "       * Nếu khách có ngân sách cụ thể (VD: dưới 5 triệu, trên 10 triệu), cân đối số lượng và cơ cấu món theo đúng ngân sách.",
     "",
     "   • TƯ VẤN THEO VÙNG MIỀN & DỊP SỰ KIỆN:",
     "     - Tây Bắc: Trà Shan Tuyết Hà Giang + Mật ong bạc hà Mèo Vạc + Thịt trâu gác bếp Sơn La + Mắc khén Điện Biên.",
@@ -779,10 +792,10 @@ async function searchWikipedia(query, language = 'vi') {
 // ── EXTRACT SEARCH INTENT & LOCAL FILTERING ────────────────────────
 function normalizeCatalogTerm(value) {
   return expandChatShorthand(value)
+    .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
-    .toLowerCase()
+    .replace(/[đĐ]/g, 'd')
     .trim();
 }
 
@@ -817,10 +830,11 @@ function findDirectCatalogMatches(query, products = [], limit = 3) {
 
 function extractSearchIntents(queryText, products = []) {
   const normalized = expandChatShorthand(queryText)
+    .toLowerCase()
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/đ/g, "d")
-    .toLowerCase();
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[đĐ]/g, "d")
+    .trim();
 
   const isComplaint = /\b(hang loi|hang bi loi|san pham bi loi|san pham loi|bi loi|bi hong|hu hong|vo nat|bi vo|bi be|mop meo|bi mop|bi dap|chay khet|het han|qua han|bi moc|am moc|doi mau|kem chat luong|thieu hang|giao thieu|giao nham|giao sai|sai hang|doi tra|tra hang|hoan tien|chua nhan duoc hang|chua nhan hang|mat tien|khieu nai|phan nan)\b|\b(loi|hong)\s+(hang|san pham|dong goi|nap|hop|chai|lo)\b|^(hang loi|loi|hong|doi tra|tra hang)$/.test(normalized);
 
@@ -897,19 +911,24 @@ function extractSearchIntents(queryText, products = []) {
   else if (/\b(thit|trau|kho ca|cha muc|thit bo|thit lon)\b/.test(normalized)) categoryOrKeyword = "đặc sản mặn";
 
   let regionKeyword = null;
+  const isAllProvinces = /(tat ca|tat ca cac tinh|tat ca tinh|toan quoc|63 tinh|xuyen viet|bac trung nam|3 mien|ba mien|lien tinh|nhieu tinh|cac tinh thanh|gom tinh|gom cac tinh|gom het)/.test(normalized);
   const allProvinces = [...new Set(products.map(product => product.region).filter(Boolean))]
     .sort((a, b) => b.length - a.length);
-  const exactRegion = allProvinces.find(region => {
+  const exactRegions = allProvinces.filter(region => {
     const normalizedRegion = normalizeCatalogTerm(region);
     return normalizedRegion.length >= 3 && normalized.includes(normalizedRegion);
-  }) || null;
-  if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
-  else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
-  else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
-  else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
-  else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
+  });
+  const exactRegion = exactRegions[0] || null;
 
-  return { isComplaint, isCSKH, isShipping, isOcopKnowledge, isUsage, isHealth, isCombo, minPrice, maxPrice, minStars, categoryOrKeyword, regionKeyword, exactRegion, isGift, rawText: queryText };
+  if (!isAllProvinces && exactRegions.length === 0) {
+    if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
+    else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
+    else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
+    else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
+    else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
+  }
+
+  return { isComplaint, isCSKH, isShipping, isOcopKnowledge, isUsage, isHealth, isCombo, minPrice, maxPrice, minStars, categoryOrKeyword, regionKeyword, exactRegion, exactRegions, isAllProvinces, isGift, rawText: queryText };
 }
 
 const REGION_PROVINCES = {
@@ -923,10 +942,22 @@ const REGION_PROVINCES = {
 function filterProductsByIntent(products = [], intent = {}) {
   let matched = [...products];
 
-  if (intent.exactRegion) {
+  if (intent.isAllProvinces) {
+    matched = [...products];
+  } else if (intent.exactRegions && intent.exactRegions.length > 0) {
+    const normRegions = intent.exactRegions.map(normalizeCatalogTerm);
+    const byExactRegions = matched.filter(product => {
+      const pRegion = normalizeCatalogTerm(product.region);
+      return normRegions.some(reg => pRegion.includes(reg) || reg.includes(pRegion));
+    });
+    if (byExactRegions.length > 0) matched = byExactRegions;
+  } else if (intent.exactRegion) {
     const exactRegion = normalizeCatalogTerm(intent.exactRegion);
-    const byExactRegion = matched.filter(product => normalizeCatalogTerm(product.region) === exactRegion);
-    matched = byExactRegion;
+    const byExactRegion = matched.filter(product => {
+      const pRegion = normalizeCatalogTerm(product.region);
+      return pRegion.includes(exactRegion) || exactRegion.includes(pRegion);
+    });
+    if (byExactRegion.length > 0) matched = byExactRegion;
   }
 
   if (intent.maxPrice !== null) {
@@ -968,16 +999,23 @@ function filterProductsByIntent(products = [], intent = {}) {
 
 function generateLocalComboReply(intent, products = [], language = "vi") {
   const english = language === "en";
-  const { minPrice, maxPrice, exactRegion, regionKeyword } = intent;
+  const { minPrice, maxPrice, exactRegion, exactRegions = [], isAllProvinces, regionKeyword } = intent;
   const rawLower = (intent.rawText || "").toLowerCase();
 
   let candidates = [];
   let scopeLabel = "";
+  let isMultiProvince = false;
 
-  if (exactRegion) {
-    const normExact = normalizeCatalogTerm(exactRegion);
+  if (isAllProvinces) {
+    scopeLabel = english ? "63 Provinces National Treasures" : "Tinh Hoa 63 Tỉnh Thành";
+  } else if (exactRegions && exactRegions.length >= 2) {
+    isMultiProvince = true;
+    scopeLabel = english ? `${exactRegions.join(" & ")} Cross-Regional Set` : `Giao Thoa Đặc Sản ${exactRegions.join(" & ")}`;
+  } else if (exactRegion || (exactRegions && exactRegions.length === 1)) {
+    const singleRegion = exactRegion || exactRegions[0];
+    const normExact = normalizeCatalogTerm(singleRegion);
     candidates = products.filter(p => normalizeCatalogTerm(p.region || "").includes(normExact));
-    scopeLabel = english ? `Specialties of ${exactRegion}` : `Đặc sản tinh hoa ${exactRegion}`;
+    scopeLabel = english ? `Specialties of ${singleRegion}` : `Đặc sản tinh hoa ${singleRegion}`;
   } else if (regionKeyword) {
     const provs = REGION_PROVINCES[regionKeyword] || [];
     candidates = products.filter(p => {
@@ -996,7 +1034,11 @@ function generateLocalComboReply(intent, products = [], language = "vi") {
   const isSnack = /(an vat|nham nhi|banh|keo|snack)/.test(rawLower);
 
   let comboTitle = "";
-  if (scopeLabel) {
+  if (isAllProvinces) {
+    comboTitle = english ? "Grand National Treasures Set - 63 Provinces Essence" : "Rương Quà Quốc Bảo - Tinh Hoa 63 Tỉnh Thành";
+  } else if (isMultiProvince) {
+    comboTitle = english ? `Signature Cross-Regional Set (${exactRegions.join(" & ")})` : `Combo Giao Thoa Đặc Sản ${exactRegions.join(" & ")}`;
+  } else if (scopeLabel) {
     comboTitle = isSep || (minPrice && minPrice >= 5000000)
       ? (english ? `VIP Luxury ${scopeLabel} Set` : `Bộ Quà VIP Thượng Hạng ${scopeLabel}`)
       : (english ? `Signature ${scopeLabel} Combo` : `Combo Tinh Hoa ${scopeLabel}`);
@@ -1020,38 +1062,74 @@ function generateLocalComboReply(intent, products = [], language = "vi") {
     comboTitle = english ? "National OCOP 5-Star Specialty Combo" : "Combo Tinh Hoa Quốc Bảo OCOP 5 Sao";
   }
 
-  if (candidates.length === 0) {
-    if (isHealth || isSep || (minPrice && minPrice >= 5000000)) {
-      candidates = products.filter(p => [1, 4, 12, 18, 25, 47].includes(p.id) || p.stars === 5 || p.price >= 600000);
-    } else if (isTea) {
-      candidates = products.filter(p => [2, 3, 47].includes(p.id) || (p.category && p.category.toLowerCase().includes("trà")));
-    } else if (isKitchen) {
-      candidates = products.filter(p => [5, 6, 8, 14, 21].includes(p.id) || (p.category && p.category.toLowerCase().includes("gia vị")));
-    } else if (isSnack) {
-      candidates = products.filter(p => [7, 9, 10, 11, 16, 20].includes(p.id) || (p.category && p.category.toLowerCase().includes("bánh")));
-    } else if (maxPrice && maxPrice <= 500000) {
-      candidates = products.filter(p => p.price <= 250000);
-    } else {
-      candidates = products.filter(p => p.stars === 5 || [1, 2, 4, 5, 10, 11, 12].includes(p.id));
+  let selected = [];
+  if (isAllProvinces) {
+    const nationalIcons = [
+      products.find(p => p.id === 1),
+      products.find(p => p.id === 4),
+      products.find(p => p.id === 2),
+      products.find(p => p.id === 3),
+      products.find(p => p.id === 11),
+      products.find(p => p.id === 18)
+    ].filter(Boolean);
+    selected = nationalIcons.slice(0, 5);
+  } else if (isMultiProvince) {
+    const itemsPerProvince = exactRegions.length === 2 ? 2 : 1;
+    for (const reg of exactRegions) {
+      const normReg = normalizeCatalogTerm(reg);
+      const provCandidates = products.filter(p => normalizeCatalogTerm(p.region || "").includes(normReg))
+        .sort((a, b) => (b.stars || 0) - (a.stars || 0) || (b.rating || 0) - (a.rating || 0) || (b.price || 0) - (a.price || 0));
+      const picked = provCandidates.slice(0, itemsPerProvince);
+      selected.push(...picked);
     }
+  } else {
+    if (candidates.length === 0) {
+      if (isHealth || isSep || (minPrice && minPrice >= 5000000)) {
+        candidates = products.filter(p => [1, 4, 12, 18, 25, 47].includes(p.id) || p.stars === 5 || p.price >= 600000);
+      } else if (isTea) {
+        candidates = products.filter(p => [2, 3, 47].includes(p.id) || (p.category && p.category.toLowerCase().includes("trà")));
+      } else if (isKitchen) {
+        candidates = products.filter(p => [5, 6, 8, 14, 21].includes(p.id) || (p.category && p.category.toLowerCase().includes("gia vị")));
+      } else if (isSnack) {
+        candidates = products.filter(p => [7, 9, 10, 11, 16, 20].includes(p.id) || (p.category && p.category.toLowerCase().includes("bánh")));
+      } else if (maxPrice && maxPrice <= 500000) {
+        candidates = products.filter(p => p.price <= 250000);
+      } else {
+        candidates = products.filter(p => p.stars === 5 || [1, 2, 4, 5, 10, 11, 12].includes(p.id));
+      }
+    }
+    if (candidates.length === 0) candidates = products.slice(0, 4);
+    candidates.sort((a, b) => (b.price || 0) - (a.price || 0));
+    selected = candidates.slice(0, Math.min(candidates.length, 4));
   }
 
-  if (candidates.length === 0) candidates = products.slice(0, 4);
+  if (selected.length === 0) selected = products.slice(0, 4);
 
-  candidates.sort((a, b) => (b.price || 0) - (a.price || 0));
-
-  let selected = candidates.slice(0, Math.min(candidates.length, 4));
   let comboItems = selected.map(p => ({ product: p, quantity: 1 }));
   let currentTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   if (maxPrice && currentTotal > maxPrice) {
     let subset = [];
     let runningSum = 0;
-    for (const p of candidates) {
+    if (isMultiProvince) {
+      for (const reg of exactRegions) {
+        const normReg = normalizeCatalogTerm(reg);
+        const provItem = candidates.find(p =>
+          normalizeCatalogTerm(p.region || "").includes(normReg) &&
+          (runningSum + p.price <= maxPrice) &&
+          !subset.some(s => s.id === p.id)
+        );
+        if (provItem) {
+          subset.push(provItem);
+          runningSum += provItem.price;
+        }
+      }
+    }
+    for (const p of candidates.length ? candidates : selected) {
       if (runningSum + (p.price || 0) <= maxPrice && !subset.some(s => s.id === p.id)) {
         subset.push(p);
         runningSum += (p.price || 0);
-        if (subset.length >= 3) break;
+        if (subset.length >= 4) break;
       }
     }
     if (subset.length > 0) {
@@ -1687,15 +1765,22 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       return { status: 200, body: fallbackData };
     }
 
-    const responseProducts = userIntent.exactRegion
-      ? validation.products.filter(product =>
-          normalizeCatalogTerm(product.region) === normalizeCatalogTerm(userIntent.exactRegion)
-        )
-      : validation.products;
+    const responseProducts = userIntent.isAllProvinces
+      ? validation.products
+      : (userIntent.exactRegions && userIntent.exactRegions.length > 0)
+        ? validation.products.filter(product =>
+            userIntent.exactRegions.some(reg => normalizeCatalogTerm(product.region) === normalizeCatalogTerm(reg))
+          )
+        : (userIntent.exactRegion
+            ? validation.products.filter(product =>
+                normalizeCatalogTerm(product.region) === normalizeCatalogTerm(userIntent.exactRegion)
+              )
+            : validation.products);
     const validProductIds = new Set(responseProducts.map(product => product.id));
+    const maxSuggested = userIntent.isCombo ? 6 : 3;
     let productIds = [...new Set(answer.productIds.filter(id =>
       Number.isInteger(id) && validProductIds.has(id)
-    ))].slice(0, 3);
+    ))].slice(0, maxSuggested);
     if (answer.understandingStatus === 'needs_clarification') productIds = [];
     const lastMessage = validation.messages[validation.messages.length - 1];
     let message = answer.message.trim().slice(0, MAX_AI_MESSAGE_LENGTH);

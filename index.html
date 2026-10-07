@@ -4817,22 +4817,29 @@
 
         function generateClientLocalComboReply(intent, products = [], language = "vi") {
             const english = language === "en";
-            const { minPrice, maxPrice, exactRegion, regionKeyword } = intent;
+            const { minPrice, maxPrice, exactRegion, exactRegions = [], isAllProvinces, regionKeyword } = intent;
             const rawLower = (intent.rawText || "").toLowerCase();
 
             let candidates = [];
             let scopeLabel = "";
+            let isMultiProvince = false;
 
-            if (exactRegion) {
-                const normExact = exactRegion.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().trim();
-                candidates = products.filter(p => (p.region || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().includes(normExact));
-                scopeLabel = english ? `Specialties of ${exactRegion}` : `Đặc sản tinh hoa ${exactRegion}`;
+            if (isAllProvinces) {
+                scopeLabel = english ? "63 Provinces National Treasures" : "Tinh Hoa 63 Tỉnh Thành";
+            } else if (exactRegions && exactRegions.length >= 2) {
+                isMultiProvince = true;
+                scopeLabel = english ? `${exactRegions.join(" & ")} Cross-Regional Set` : `Giao Thoa Đặc Sản ${exactRegions.join(" & ")}`;
+            } else if (exactRegion || (exactRegions && exactRegions.length === 1)) {
+                const singleRegion = exactRegion || exactRegions[0];
+                const normExact = singleRegion.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").trim();
+                candidates = products.filter(p => (p.region || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").includes(normExact));
+                scopeLabel = english ? `Specialties of ${singleRegion}` : `Đặc sản tinh hoa ${singleRegion}`;
             } else if (regionKeyword) {
                 const provs = REGION_PROVINCES[regionKeyword] || [];
                 candidates = products.filter(p => {
-                    const normReg = (p.region || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase();
-                    const normDesc = (p.desc || p.description || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase();
-                    return provs.some(pr => normReg.includes(pr)) || normDesc.includes(regionKeyword.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase());
+                    const normReg = (p.region || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d");
+                    const normDesc = (p.desc || p.description || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d");
+                    return provs.some(pr => normReg.includes(pr)) || normDesc.includes(regionKeyword.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d"));
                 });
                 scopeLabel = english ? `${regionKeyword} Regional Set` : `Đặc sản vùng ${regionKeyword}`;
             }
@@ -4845,7 +4852,11 @@
             const isSnack = /(an vat|nham nhi|banh|keo|snack)/.test(rawLower);
 
             let comboTitle = "";
-            if (scopeLabel) {
+            if (isAllProvinces) {
+                comboTitle = english ? "Grand National Treasures Set - 63 Provinces Essence" : "Rương Quà Quốc Bảo - Tinh Hoa 63 Tỉnh Thành";
+            } else if (isMultiProvince) {
+                comboTitle = english ? `Signature Cross-Regional Set (${exactRegions.join(" & ")})` : `Combo Giao Thoa Đặc Sản ${exactRegions.join(" & ")}`;
+            } else if (scopeLabel) {
                 comboTitle = isSep || (minPrice && minPrice >= 5000000)
                     ? (english ? `VIP Luxury ${scopeLabel} Set` : `Bộ Quà VIP Thượng Hạng ${scopeLabel}`)
                     : (english ? `Signature ${scopeLabel} Combo` : `Combo Tinh Hoa ${scopeLabel}`);
@@ -4869,37 +4880,74 @@
                 comboTitle = english ? "National OCOP 5-Star Specialty Combo" : "Combo Tinh Hoa Quốc Bảo OCOP 5 Sao";
             }
 
-            if (candidates.length === 0) {
-                if (isHealth || isSep || (minPrice && minPrice >= 5000000)) {
-                    candidates = products.filter(p => [1, 4, 12, 18, 25, 47].includes(p.id) || p.stars === 5 || p.price >= 600000);
-                } else if (isTea) {
-                    candidates = products.filter(p => [2, 3, 47].includes(p.id) || (p.category && p.category.toLowerCase().includes("trà")));
-                } else if (isKitchen) {
-                    candidates = products.filter(p => [5, 6, 8, 14, 21].includes(p.id) || (p.category && p.category.toLowerCase().includes("gia vị")));
-                } else if (isSnack) {
-                    candidates = products.filter(p => [7, 9, 10, 11, 16, 20].includes(p.id) || (p.category && p.category.toLowerCase().includes("bánh")));
-                } else if (maxPrice && maxPrice <= 500000) {
-                    candidates = products.filter(p => p.price <= 250000);
-                } else {
-                    candidates = products.filter(p => p.stars === 5 || [1, 2, 4, 5, 10, 11, 12].includes(p.id));
+            let selected = [];
+            if (isAllProvinces) {
+                const nationalIcons = [
+                    products.find(p => p.id === 1),
+                    products.find(p => p.id === 4),
+                    products.find(p => p.id === 2),
+                    products.find(p => p.id === 3),
+                    products.find(p => p.id === 11),
+                    products.find(p => p.id === 18)
+                ].filter(Boolean);
+                selected = nationalIcons.slice(0, 5);
+            } else if (isMultiProvince) {
+                const itemsPerProvince = exactRegions.length === 2 ? 2 : 1;
+                for (const reg of exactRegions) {
+                    const normReg = reg.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").trim();
+                    const provCandidates = products.filter(p => (p.region || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").includes(normReg))
+                        .sort((a, b) => (b.stars || 0) - (a.stars || 0) || (b.rating || 0) - (a.rating || 0) || (b.price || 0) - (a.price || 0));
+                    const picked = provCandidates.slice(0, itemsPerProvince);
+                    selected.push(...picked);
                 }
+            } else {
+                if (candidates.length === 0) {
+                    if (isHealth || isSep || (minPrice && minPrice >= 5000000)) {
+                        candidates = products.filter(p => [1, 4, 12, 18, 25, 47].includes(p.id) || p.stars === 5 || p.price >= 600000);
+                    } else if (isTea) {
+                        candidates = products.filter(p => [2, 3, 47].includes(p.id) || (p.category && p.category.toLowerCase().includes("trà")));
+                    } else if (isKitchen) {
+                        candidates = products.filter(p => [5, 6, 8, 14, 21].includes(p.id) || (p.category && p.category.toLowerCase().includes("gia vị")));
+                    } else if (isSnack) {
+                        candidates = products.filter(p => [7, 9, 10, 11, 16, 20].includes(p.id) || (p.category && p.category.toLowerCase().includes("bánh")));
+                    } else if (maxPrice && maxPrice <= 500000) {
+                        candidates = products.filter(p => p.price <= 250000);
+                    } else {
+                        candidates = products.filter(p => p.stars === 5 || [1, 2, 4, 5, 10, 11, 12].includes(p.id));
+                    }
+                }
+                if (candidates.length === 0) candidates = products.slice(0, 4);
+                candidates.sort((a, b) => (b.price || 0) - (a.price || 0));
+                selected = candidates.slice(0, Math.min(candidates.length, 4));
             }
 
-            if (candidates.length === 0) candidates = products.slice(0, 4);
-            candidates.sort((a, b) => (b.price || 0) - (a.price || 0));
+            if (selected.length === 0) selected = products.slice(0, 4);
 
-            let selected = candidates.slice(0, Math.min(candidates.length, 4));
             let comboItems = selected.map(p => ({ product: p, quantity: 1 }));
             let currentTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
             if (maxPrice && currentTotal > maxPrice) {
                 let subset = [];
                 let runningSum = 0;
-                for (const p of candidates) {
+                if (isMultiProvince) {
+                    for (const reg of exactRegions) {
+                        const normReg = reg.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").trim();
+                        const provItem = candidates.find(p =>
+                            (p.region || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").includes(normReg) &&
+                            (runningSum + p.price <= maxPrice) &&
+                            !subset.some(s => s.id === p.id)
+                        );
+                        if (provItem) {
+                            subset.push(provItem);
+                            runningSum += provItem.price;
+                        }
+                    }
+                }
+                for (const p of candidates.length ? candidates : selected) {
                     if (runningSum + (p.price || 0) <= maxPrice && !subset.some(s => s.id === p.id)) {
                         subset.push(p);
                         runningSum += (p.price || 0);
-                        if (subset.length >= 3) break;
+                        if (subset.length >= 4) break;
                     }
                 }
                 if (subset.length > 0) {
@@ -4986,7 +5034,7 @@
             }
 
             const rawQuery = String(query || "").trim();
-            const normalized = rawQuery.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").toLowerCase();
+            const normalized = rawQuery.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").trim();
 
             // 1. CHUYÊN ĐỀ HỖ TRỢ KHÁCH HÀNG & KHIẾU NẠI (CS & COMPLAINTS)
             const isComplaint = /\b(hang loi|hang bi loi|san pham bi loi|san pham loi|bi loi|bi hong|hu hong|vo nat|bi vo|bi be|mop meo|bi mop|bi dap|chay khet|het han|qua han|bi moc|am moc|doi mau|kem chat luong|thieu hang|giao thieu|giao nham|giao sai|sai hang|doi tra|tra hang|hoan tien|chua nhan duoc hang|chua nhan hang|mat tien|khieu nai|phan nan)\b|\b(loi|hong)\s+(hang|san pham|dong goi|nap|hop|chai|lo)\b|^(hang loi|loi|hong|doi tra|tra hang)$/.test(normalized);
@@ -5044,22 +5092,26 @@
                     }
                 }
 
+                const isAllProvinces = /(tat ca|tat ca cac tinh|tat ca tinh|toan quoc|63 tinh|xuyen viet|bac trung nam|3 mien|ba mien|lien tinh|nhieu tinh|cac tinh thanh|gom tinh|gom cac tinh|gom het)/.test(normalized);
                 const allProvinces = [...new Set(products.map(p => p.region).filter(Boolean))].sort((a, b) => b.length - a.length);
-                const exactRegion = allProvinces.find(r => {
-                    const nr = r.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().trim();
+                const exactRegions = allProvinces.filter(r => {
+                    const nr = r.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").trim();
                     return nr.length >= 3 && normalized.includes(nr);
-                }) || null;
+                });
+                const exactRegion = exactRegions[0] || null;
 
                 let regionKeyword = null;
-                if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
-                else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
-                else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
-                else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
-                else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
+                if (!isAllProvinces && exactRegions.length === 0) {
+                    if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
+                    else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
+                    else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
+                    else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
+                    else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
+                }
 
                 const isHealthIntent = /(suc khoe|duong sinh|nguoi gia|nguoi lon tuoi|cha me|bo me|tre em|ba bau|mat ngu|tieu duong|giai ruou|da day|de khang|bo than|huyet ap)/.test(normalized);
 
-                const intent = { isCombo: true, minPrice, maxPrice, exactRegion, regionKeyword, isHealth: isHealthIntent, rawText: rawQuery };
+                const intent = { isCombo: true, minPrice, maxPrice, exactRegion, exactRegions, isAllProvinces, regionKeyword, isHealth: isHealthIntent, rawText: rawQuery };
                 return generateClientLocalComboReply(intent, products, english ? "en" : "vi");
             }
 
@@ -5359,7 +5411,8 @@ async function sendAIMessage() {
                 if (!messageImages.length && result.understandingStatus !== 'needs_clarification' && !shoppingIntent.isComplaint && !shoppingIntent.isCSKH && !shoppingIntent.isShipping && !shoppingIntent.isUsage && !shoppingIntent.isOcopKnowledge && shoppingIntent.maxPrice && (shoppingIntent.isCombo || shoppingIntent.isGift || /toi co|minh co|ngan sach|tai chinh|budget/.test(shoppingQuery))) {
                     if (!('combo' in result)) {
                         const eligible = products.filter(product =>
-                            (!shoppingIntent.exactRegion || product.region === shoppingIntent.exactRegion) &&
+                            (shoppingIntent.isAllProvinces ||
+                             (shoppingIntent.exactRegions && shoppingIntent.exactRegions.length ? shoppingIntent.exactRegions.includes(product.region) : (!shoppingIntent.exactRegion || product.region === shoppingIntent.exactRegion))) &&
                             (!shoppingIntent.minStars || product.stars >= shoppingIntent.minStars) &&
                             (!shoppingIntent.categoryOrKeyword || AIShopping.normalize([product.name, product.category, product.desc, product.description].join(' ')).includes(AIShopping.normalize(shoppingIntent.categoryOrKeyword)))
                         );

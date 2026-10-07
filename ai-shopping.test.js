@@ -177,3 +177,30 @@ test('server reads corrections as instructions rather than product names', () =>
   assert.equal(intent.categoryOrKeyword, null);
   assert.deepEqual(intent.excludedTerms, ['ruou']);
 });
+
+test('multi-province and nationwide 63-province intent extraction and combo bundling', () => {
+  const data = require('./data.js');
+  const products = Array.isArray(data) ? data : data.PRODUCTS || data.products;
+
+  // 1. Multi-province extraction
+  const multiIntent = shopping.resolve([{ role: 'user', text: 'Cho combo đồng nai với cà mau' }], products);
+  assert.equal(multiIntent.isCombo, true);
+  assert.deepEqual(multiIntent.exactRegions, ['Đồng Nai', 'Cà Mau']);
+  assert.equal(multiIntent.isAllProvinces, false);
+
+  // 2. Nationwide / all provinces extraction
+  const allIntent = shopping.resolve([{ role: 'user', text: 'combo gom tất cả tỉnh thành 63 tỉnh' }], products);
+  assert.equal(allIntent.isCombo, true);
+  assert.equal(allIntent.isAllProvinces, true);
+
+  // 3. Multi-province combo selection with budget covers both provinces
+  const multiBudget = shopping.resolve([{ role: 'user', text: 'Cho combo đồng nai với cà mau 2 triệu' }], products);
+  const eligible = products.filter(p => multiBudget.exactRegions.includes(p.region));
+  const plan = shopping.closest(eligible, multiBudget);
+  assert.ok(plan);
+  assert.ok(plan.total <= 2000000);
+  const pickedRegions = new Set(plan.items.map(p => p.region));
+  assert.ok(pickedRegions.has('Đồng Nai'), 'Plan must contain product from Đồng Nai');
+  assert.ok(pickedRegions.has('Cà Mau'), 'Plan must contain product from Cà Mau');
+  assert.match(shopping.reply(plan, multiBudget, 'vi').message, /Đồng Nai & Cà Mau/);
+});
