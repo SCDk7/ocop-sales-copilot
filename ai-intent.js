@@ -38,11 +38,13 @@ function merge(local, semantic, messages, products) {
     if (mentioned) {result.minItems=local.minItems ?? (semantic.minItems||null);result.maxItems=local.maxItems ?? (semantic.maxItems||null);}
   }
   Object.assign(result,explicitCount);
-  if (semantic.exactRegion) {
+  if (local.isAllProvinces || local.exactRegions?.length > 1) {
+    result.regionKeyword = null;
+  } else if (semantic.exactRegion) {
     const region=products.find(p=>shopping.normalize(p.region)===shopping.normalize(semantic.exactRegion))?.region;
-    if (region) {result.exactRegion=region;result.regionKeyword=null;}
+    if (region) {result.exactRegion=region;result.exactRegions=[region];result.regionKeyword=null;}
   } else if (semantic.regionKeyword && ['Miền Bắc','Miền Trung','Miền Nam','Miền Tây','Tây Bắc','Tây Nguyên'].includes(semantic.regionKeyword)) {
-    result.regionKeyword=semantic.regionKeyword;result.exactRegion=null;
+    result.regionKeyword=semantic.regionKeyword;result.exactRegion=null;result.exactRegions=[];
   }
   let category=semantic.categoryOrKeyword.trim();
   for (const region of [semantic.regionKeyword,semantic.exactRegion].filter(Boolean)) category=category.replace(new RegExp(region.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),'').trim();

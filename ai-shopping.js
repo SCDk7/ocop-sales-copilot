@@ -1,6 +1,6 @@
 (function (root) {
   'use strict';
-  const normalize = text => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').toLowerCase();
+  const normalize = text => String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').trim();
   function money(value, unit) {
     const number = Number(value.replace(/[.,](?=\d{3}(?:\D|$))/g, '').replace(',', '.'));
     return Math.round(number * (/^(trieu|tr|m)$/.test(unit) ? 1000000 : /^(k|nghin|ngan)$/.test(unit) ? 1000 : 1));
@@ -35,12 +35,23 @@
   }
   function excludedTerms(text) {
     const q = normalize(text);
-    const matches = [...q.matchAll(/(?:khong|dung)\s+(?:(?:lay|chon|them|can|thich|dung)\s+)?(ruou|gom|tra|ca phe|mat ong|banh|keo|yen|gao|sam|hai san)\b/g)];
-    return matches.map(match => match[1]);
+    const exclusions = [];
+    if (/\b(?:an chay|do chay|thuan chay|chay|vegan|vegetarian)\b/.test(q)) {
+      exclusions.push('thit', 'trau', 'hai san', 'cua', 'tom', 'cha muc', 'nuoc mam');
+    }
+    const matches = [...q.matchAll(/\b(?:khong|dung|bo|tru)\s+(?:(?:lay|chon|them|can|thich|dung|mon)\s+)?(ruou|gom|tra|ca phe|mat ong|banh|keo|yen|gao|sam|hai san|thit|cua|tom)\b/g)];
+    for (const match of matches) exclusions.push(match[1]);
+    return [...new Set(exclusions)];
   }
   function allowed(product, intent) {
-    const name = normalize([product.name, product.nameEn, product.category].join(' '));
-    return !(intent.excludedTerms || []).some(term => name.includes(term));
+    const name = normalize([product.name, product.nameEn, product.category, product.desc, product.description, product.tag].join(' '));
+    const excluded = intent.excludedTerms || [];
+    if (!excluded.length) return true;
+    const padded = ' ' + name + ' ';
+    return !excluded.some(term => {
+      const rx = new RegExp('(?:^|[^a-z0-9])' + term + '(?:[^a-z0-9]|$)', 'i');
+      return rx.test(padded);
+    });
   }
   const regions = {
     'Tây Nguyên': ['gia lai', 'dak lak', 'dak nong', 'lam dong', 'kon tum'],
@@ -55,6 +66,8 @@
   function regionMatches(product, intent) {
     const key = value => normalize(value).replace(/[^a-z0-9]/g, '').replace(/^(thanhpho|tp)/, '');
     const province = key(product.region);
+    if (intent.isAllProvinces) return true;
+    if (intent.exactRegions?.length) return intent.exactRegions.some(region => province === key(region));
     if (intent.exactRegion) return province === key(intent.exactRegion);
     if (intent.regionKeyword === 'Miền Nam' && product.macroRegion) return product.macroRegion === 'nam';
     return !intent.regionKeyword || (regions[intent.regionKeyword] || []).some(value => key(value) === province);
@@ -62,6 +75,13 @@
   function analyze(text, products) {
     const q = normalize(text);
     const categories = [['trà', /\b(tra|che|tea)\b/], ['cà phê', /ca phe|coffee/], ['mật ong', /mat ong|honey/], ['bánh', /banh|keo|snack/], ['yến', /yen sao|to yen/], ['gạo', /gao|rice/]];
+    const isAllProvinces = /(tat ca|tat ca cac tinh|tat ca tinh|toan quoc|63 tinh|xuyen viet|bac trung nam|3 mien|ba mien|lien tinh|nhieu tinh|cac tinh thanh|gom tinh|gom cac tinh|gom het)/.test(q);
+    const allProvinces = [...new Set(products.map(p => p.region).filter(Boolean))].sort((a, b) => b.length - a.length);
+    const exactRegions = allProvinces.filter(r => {
+      const nr = normalize(r);
+      return nr.length >= 3 && q.includes(nr);
+    });
+    const exactRegion = exactRegions[0] || null;
     return { ...budget(text), rawText: text,
       isCombo: /combo|bo qua|gio qua|set qua|gift set|bundle/.test(q),
       isGift: /qua|bieu|tang|gift/.test(q),
@@ -70,9 +90,11 @@
       isShipping: /phi ship|giao hang|van chuyen/.test(q),
       isUsage: /cach pha|cach dung|bao quan/.test(q),
       isOcopKnowledge: /la gi|nguon goc|tieu chuan|cach |bao nhieu ngay|thoi tiet/.test(q),
+      isAllProvinces,
+      exactRegions,
+      exactRegion,
       categoryOrKeyword: categories.find(([, pattern]) => pattern.test(q))?.[0] || null,
       regionKeyword: Object.keys(regions).find(region => q.includes(normalize(region))) || null,
-      exactRegion: products.find(p => q.includes(normalize(p.region)) && p.region)?.region || null,
       minStars: /5\s*sao|5\s*star/.test(q) ? 5 : /4\s*sao|4\s*star/.test(q) ? 4 : null };
   }
   function resolve(messages, products, extract = analyze) {
@@ -85,12 +107,27 @@
       if (!Object.keys(budget(message.text)).length && preferences(message.text).perItemMax) { current.minPrice = null; current.maxPrice = null; }
       current.categoryOrKeyword ||= analyze(message.text, products).categoryOrKeyword;
       const q = normalize(message.text);
-      const followup = /^(?:\d|toi co|minh co|ngan sach|tai chinh|budget|duoi|tam|khoang|doi|con|chi|them|combo|bo qua|gio qua|set qua|gift set|bundle|moi mon|tung mon|gia tri|cao cap|khong chon|dung chon)/.test(q) || (!current.categoryOrKeyword && !current.exactRegion && q.length < 45) || Object.keys(budget(message.text)).length > 0 || Object.keys(itemCount(message.text)).length > 0;
+      const followup = /^(?:\d|toi co|minh co|ngan sach|tai chinh|budget|duoi|tam|khoang|doi|con|chi|them|combo|bo qua|gio qua|set qua|gift set|bundle|moi mon|tung mon|gia tri|cao cap|khong chon|dung chon)/.test(q) || (!current.categoryOrKeyword && !current.exactRegion && !(current.exactRegions && current.exactRegions.length) && !current.isAllProvinces && q.length < 45) || Object.keys(budget(message.text)).length > 0 || Object.keys(itemCount(message.text)).length > 0;
       if ((!followup && !excludedTerms(message.text).length) || /bat dau lai|yeu cau moi|start over/.test(q)) saved = {};
-      if (current.exactRegion || current.regionKeyword) {
+      if (current.isAllProvinces) {
+        saved.isAllProvinces = true;
         delete saved.exactRegion;
+        delete saved.exactRegions;
         delete saved.regionKeyword;
-        if (current.exactRegion) saved.exactRegion = current.exactRegion;
+      } else if (current.exactRegions && current.exactRegions.length > 0) {
+        saved.exactRegions = current.exactRegions;
+        saved.exactRegion = current.exactRegion;
+        delete saved.regionKeyword;
+        delete saved.isAllProvinces;
+      } else if (current.exactRegion || current.regionKeyword) {
+        delete saved.exactRegion;
+        delete saved.exactRegions;
+        delete saved.regionKeyword;
+        delete saved.isAllProvinces;
+        if (current.exactRegion) {
+          saved.exactRegion = current.exactRegion;
+          saved.exactRegions = [current.exactRegion];
+        }
         if (current.regionKeyword) saved.regionKeyword = current.regionKeyword;
       }
       for (const key of ['categoryOrKeyword', 'minStars']) {
@@ -109,7 +146,16 @@
         if (exclusions.includes(normalize(current.categoryOrKeyword))) { current.categoryOrKeyword = null; delete saved.categoryOrKeyword; }
       }
       if (/bo (?:gioi han|dieu kien) loai tru|khong loai tru|include everything/.test(q)) saved.excludedTerms = [];
-      if (/khong (?:gioi han|can).*?(?:tinh|vung)|bat ky tinh|all regions/.test(q)) { delete saved.exactRegion; delete saved.regionKeyword; current.exactRegion = null; current.regionKeyword = null; }
+      if (/khong (?:gioi han|can).*?(?:tinh|vung)|bat ky tinh|all regions/.test(q)) {
+        delete saved.exactRegion;
+        delete saved.exactRegions;
+        delete saved.isAllProvinces;
+        delete saved.regionKeyword;
+        current.exactRegion = null;
+        current.exactRegions = [];
+        current.isAllProvinces = false;
+        current.regionKeyword = null;
+      }
       if (/khong (?:gioi han|can).*?(?:loai|nhom)|loai nao cung|any category/.test(q)) { delete saved.categoryOrKeyword; current.categoryOrKeyword = null; }
     }
     return { ...current, ...saved, rawText: messages.filter(m => m.role === 'user').at(-1)?.text || '' };
@@ -127,7 +173,7 @@
     // Aim for substantial items at this budget; adapt for a narrowly filtered catalogue.
     const itemFloor = intent.smallItems || intent.relaxItemFloor ? 0 : Math.min(Math.ceil(ceiling / Math.max(8, minItems * 2)), affordable.at(-minItems).price);
     const candidates = affordable.filter(p => p.price >= itemFloor);
-    const states = new Map([[0, { empty: { count: 0, quality: 0, previous: null } }]]);
+    const states = new Map([[0, { empty: { count: 0, quality: 0, previous: null, regions: new Set() } }]]);
     for (const product of candidates) {
       // Snapshot prevents buying the same item again in this iteration.
       const snapshot = [...states].flatMap(([total, choices]) => Object.values(choices).map(previous => [total, previous]));
@@ -136,13 +182,16 @@
         if (nextTotal > ceiling) continue;
         const count = previous.count + 1;
         if (count > maxItems) continue;
-        const quality = previous.quality + (Number.isFinite(product.rating) ? product.rating : 0);
+        const prevRegions = previous.regions || new Set();
+        const regionBonus = intent.exactRegions && intent.exactRegions.length > 1 && product.region && !prevRegions.has(product.region) ? 200 : 0;
+        const quality = previous.quality + (Number.isFinite(product.rating) ? product.rating : 0) + regionBonus;
+        const regions = new Set([...prevRegions, product.region]);
         const key = intent.minItems != null || intent.maxItems != null ? String(count) : count === 1 ? 'single' : 'combo';
         const choices = states.get(nextTotal) || {};
         const existing = choices[key];
         const preferredCount = existing && (intent.smallItems || intent.preferVariety ? count > existing.count : count < existing.count);
         if (!existing || preferredCount || (count === existing.count && quality > existing.quality)) {
-          states.set(nextTotal, { ...choices, [key]: { product, previous, count, quality } });
+          states.set(nextTotal, { ...choices, [key]: { product, previous, count, quality, regions } });
         }
       }
     }
@@ -172,8 +221,13 @@
     const en = language === 'en';
     const format = value => value.toLocaleString('vi-VN') + ' ₫';
     const requestedCount = intent.minItems === intent.maxItems && intent.minItems ? ` ${intent.minItems}` : intent.minItems ? ` ${intent.minItems}–${intent.maxItems || '+'}` : '';
+    const regionLabel = intent.isAllProvinces
+      ? (en ? ', nationwide 63 provinces' : ', tinh hoa 63 tỉnh thành')
+      : (intent.exactRegions && intent.exactRegions.length > 1
+          ? (en ? `, specialties of ${intent.exactRegions.join(' & ')}` : `, đặc sản liên tỉnh ${intent.exactRegions.join(' & ')}`)
+          : (intent.exactRegion || intent.regionKeyword ? `, đặc sản ${intent.exactRegion || intent.regionKeyword}` : ''));
     const message = !plan ? (en ? `I could not find a${requestedCount}-item set meeting your budget and preferences. Would you like to adjust the item count, budget, or category?` : `Mình chưa tìm được combo${requestedCount} món đáp ứng đồng thời ngân sách và yêu cầu hiện tại. Anh/chị muốn điều chỉnh số món, ngân sách hoặc nhóm hàng?`) : [
-      en ? `For your ${format(plan.budget)} budget${intent.exactRegion || intent.regionKeyword ? ', ' + (intent.exactRegion || intent.regionKeyword) : ''}, here is a matching set of ${plan.items.length} different products:` : `Với ngân sách ${format(plan.budget)}${intent.exactRegion || intent.regionKeyword ? ', đặc sản ' + (intent.exactRegion || intent.regionKeyword) : ''}${intent.categoryOrKeyword ? ', nhóm ' + intent.categoryOrKeyword : ''}, mình gợi ý combo ${plan.items.length} món phù hợp:`,
+      en ? `For your ${format(plan.budget)} budget${regionLabel}, here is a matching set of ${plan.items.length} different products:` : `Với ngân sách ${format(plan.budget)}${regionLabel}${intent.categoryOrKeyword ? ', nhóm ' + intent.categoryOrKeyword : ''}, mình gợi ý combo ${plan.items.length} món phù hợp:`,
       ...plan.items.map(p => `• ${en ? p.nameEn || p.name : p.name} × 1${p.packaging ? ' (' + (en ? p.packagingEn || p.packaging : p.packaging) + ')' : ''}: ${format(p.price)}`),
       `${en ? 'Total' : 'Tổng combo'}: ${format(plan.total)}. ${en ? 'Remaining' : 'Còn lại'}: ${format(plan.remaining)}.`,
       `${en ? 'Average price per item' : 'Giá trung bình mỗi món'}: ${format(plan.averagePrice)}.`,

@@ -215,3 +215,82 @@ test('server reads corrections as instructions rather than product names', () =>
   assert.equal(intent.categoryOrKeyword, null);
   assert.deepEqual(intent.excludedTerms, ['ruou']);
 });
+
+test('multi-province and nationwide 63-province intent extraction and combo bundling', () => {
+  const data = require('./data.js');
+  const products = Array.isArray(data) ? data : data.PRODUCTS || data.products;
+
+  // 1. Multi-province extraction
+  const multiIntent = shopping.resolve([{ role: 'user', text: 'Cho combo đồng nai với cà mau' }], products);
+  assert.equal(multiIntent.isCombo, true);
+  assert.deepEqual(multiIntent.exactRegions, ['Đồng Nai', 'Cà Mau']);
+  assert.equal(multiIntent.isAllProvinces, false);
+
+  // 2. Nationwide / all provinces extraction
+  const allIntent = shopping.resolve([{ role: 'user', text: 'combo gom tất cả tỉnh thành 63 tỉnh' }], products);
+  assert.equal(allIntent.isCombo, true);
+  assert.equal(allIntent.isAllProvinces, true);
+
+  // 3. Multi-province combo selection with budget covers both provinces
+  const multiBudget = shopping.resolve([{ role: 'user', text: 'Cho combo đồng nai với cà mau 2 triệu' }], products);
+  const eligible = products.filter(p => multiBudget.exactRegions.includes(p.region));
+  const plan = shopping.closest(eligible, multiBudget);
+  assert.ok(plan);
+  assert.ok(plan.total <= 2000000);
+  const pickedRegions = new Set(plan.items.map(p => p.region));
+  assert.ok(pickedRegions.has('Đồng Nai'), 'Plan must contain product from Đồng Nai');
+  assert.ok(pickedRegions.has('Cà Mau'), 'Plan must contain product from Cà Mau');
+  assert.match(shopping.reply(plan, multiBudget, 'vi').message, /Đồng Nai & Cà Mau/);
+});
+
+test('vegetarian combo automatically excludes meat and seafood items', () => {
+  const data = require('./data.js');
+  const products = Array.isArray(data) ? data : data.PRODUCTS || data.products;
+  const vegIntent = shopping.resolve([{ role: 'user', text: 'combo ăn chay 1 triệu' }], products);
+  assert.ok(vegIntent.excludedTerms.includes('thit'));
+  assert.ok(vegIntent.excludedTerms.includes('cua'));
+  assert.ok(vegIntent.excludedTerms.includes('nuoc mam'));
+  const eligible = products.filter(p => shopping.allowed(p, vegIntent));
+  const plan = shopping.closest(eligible, vegIntent);
+  assert.ok(plan);
+  assert.ok(plan.items.every(p => shopping.allowed(p, vegIntent)));
+  assert.ok(!plan.items.some(p => /cua|thịt|trâu|tôm|chả mực|mắm/i.test(p.name)));
+});
+
+test('sommelier comparative analysis and occasion gift intent extraction from server', () => {
+  const source = fs.readFileSync('server.js', 'utf8');
+  const context = { normalizeCatalogTerm: shopping.normalize, expandChatShorthand: text => text };
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('function extractSearchIntents('), source.indexOf('const REGION_PROVINCES =')), context);
+
+  // 1. Comparison intent
+  const teaComp = context.extractSearchIntents('Trà Shan Tuyết khác gì trà Tân Cương?', []);
+  assert.equal(teaComp.isComparison, true);
+  assert.equal(teaComp.categoryOrKeyword, 'trà');
+
+  const samComp = context.extractSearchIntents('So sánh sâm Ngọc Linh với nhân sâm Hàn Quốc', []);
+  assert.equal(samComp.isComparison, true);
+  assert.equal(samComp.categoryOrKeyword, 'sâm');
+
+  const mamComp = context.extractSearchIntents('Nước mắm truyền thống khác gì nước mắm công nghiệp?', []);
+  assert.equal(mamComp.isComparison, true);
+  assert.equal(mamComp.categoryOrKeyword, 'nước mắm');
+
+  // 2. Occasion gift intent
+  const inLaws = context.extractSearchIntents('Tư vấn quà ra mắt nhà bạn gái', []);
+  assert.equal(inLaws.isOccasionGift, true);
+  assert.equal(inLaws.isGift, true);
+
+  const expat = context.extractSearchIntents('Quà biếu kiều bào mang đi nước ngoài', []);
+  assert.equal(expat.isOccasionGift, true);
+  assert.equal(expat.isGift, true);
+
+  const housewarming = context.extractSearchIntents('Quà mừng tân gia nhà mới', []);
+  assert.equal(housewarming.isOccasionGift, true);
+  assert.equal(housewarming.isGift, true);
+
+  // 3. Vegetarian intent
+  const veg = context.extractSearchIntents('Có đồ ăn thuần chay không?', []);
+  assert.equal(veg.isVegetarian, true);
+});
+
