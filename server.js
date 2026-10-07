@@ -532,7 +532,7 @@ function getGeneralComplaintClarification(message, language) {
   const normalizedMessage = String(message || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
+    .replace(/đ/gi, 'd')
     .toLowerCase();
   const complaintTerms = ['khieu nai', 'phan nan', 'complaint', 'complain', 'complaining'];
   const defectReportTerms = [
@@ -781,7 +781,7 @@ function normalizeCatalogTerm(value) {
   return expandChatShorthand(value)
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
+    .replace(/đ/gi, 'd')
     .toLowerCase()
     .trim();
 }
@@ -819,8 +819,11 @@ function extractSearchIntents(queryText, products = []) {
   const normalized = expandChatShorthand(queryText)
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
-    .replace(/đ/g, "d")
+    .replace(/đ/gi, "d")
     .toLowerCase();
+  // Personal pronoun "tôi" loses its accent to "toi" too. Preserve meaning
+  // before searching product keywords such as garlic ("tỏi").
+  const productQuery = normalized.replace(/\btoi\s+(?=muon|can|co|tim|mua|chon|thich|dang|se|duoc|xin|hoi|lay)/g, ' ');
 
   const isComplaint = /\b(hang loi|hang bi loi|san pham bi loi|san pham loi|bi loi|bi hong|hu hong|vo nat|bi vo|bi be|mop meo|bi mop|bi dap|chay khet|het han|qua han|bi moc|am moc|doi mau|kem chat luong|thieu hang|giao thieu|giao nham|giao sai|sai hang|doi tra|tra hang|hoan tien|chua nhan duoc hang|chua nhan hang|mat tien|khieu nai|phan nan)\b|\b(loi|hong)\s+(hang|san pham|dong goi|nap|hop|chai|lo)\b|^(hang loi|loi|hong|doi tra|tra hang)$/.test(normalized);
 
@@ -888,7 +891,7 @@ function extractSearchIntents(queryText, products = []) {
   else if (/\b(mat ong|ong bac ha|ong hoa ca phe)\b/.test(normalized)) categoryOrKeyword = "mật ong";
   else if (/\b(ca phe|coffee|robusta|arabica|buon ma thuot)\b/.test(normalized)) categoryOrKeyword = "cà phê";
   else if (/\b(gao|st25|nep cai|seng cu)\b/.test(normalized)) categoryOrKeyword = "gạo";
-  else if (/\b(toi|toi den|toi ly son)\b/.test(normalized)) categoryOrKeyword = "tỏi";
+  else if (/\b(toi|toi den|toi ly son)\b/.test(productQuery)) categoryOrKeyword = "tỏi";
   else if (/\b(nuoc mam|ca com|phu quoc)\b/.test(normalized)) categoryOrKeyword = "nước mắm";
   else if (/\b(ruou|dong trung|ba kich|ruou mo|yen tu)\b/.test(normalized)) categoryOrKeyword = "rượu";
   else if (/\b(hat|dieu|mac ca|hat sen)\b/.test(normalized)) categoryOrKeyword = "hạt";
@@ -953,7 +956,7 @@ function filterProductsByIntent(products = [], intent = {}) {
     const byRegion = matched.filter(p => {
       const normReg = normalizeCatalogTerm(p.region || "");
       const normDesc = normalizeCatalogTerm(p.desc || p.description || "");
-      return provs.some(pr => normReg.includes(pr)) || normReg.includes(rk) || normDesc.includes(rk);
+      return provs.includes(normReg) || normReg === normalizeCatalogTerm(intent.regionKeyword);
     });
     matched = byRegion;
   }
@@ -1484,7 +1487,7 @@ async function handleAIChatRequest(req, res) {
   const isPureAdministrativeIssue = /\b(khieu nai|doi tra|tra hang|hoan tien|chuyen khoan|mat tien|chua nhan hang)\b/.test(normalizedQuery);
 
   let wikiSources = [];
-  if (!attachedImages.length && !includesPrivateDetails && !isPureAdministrativeIssue && (hasCulturalOrProductEntity || userIntent.exactRegion || userIntent.categoryOrKeyword || userIntent.isOcopKnowledge)) {
+  if (!userIntent.hasVerifiedCombo && !attachedImages.length && !includesPrivateDetails && !isPureAdministrativeIssue && (hasCulturalOrProductEntity || userIntent.exactRegion || userIntent.categoryOrKeyword || userIntent.isOcopKnowledge)) {
     try {
       wikiSources = await searchWikipedia([userIntent.categoryOrKeyword, userIntent.exactRegion || userIntent.regionKeyword].filter(Boolean).join(' ') || expandChatShorthand(lastUserMessage), validation.language);
       if (!wikiSources.length) {
@@ -1500,7 +1503,7 @@ async function handleAIChatRequest(req, res) {
   const result = await generateAIResponse(validation, { attachedImages, wikiSources, filteredProducts, userIntent });
   if (userIntent.hasVerifiedCombo && !attachedImages.length && result.body.understandingStatus !== 'needs_clarification') {
     const verified = AIShopping.reply(userIntent.comboPlan, userIntent, validation.language);
-    result.body = { ...result.body, ...verified, text_response: verified.message, suggested_products: verified.productIds };
+    result.body = { ...result.body, ...verified, text_response: verified.message, suggested_products: verified.productIds, wikipediaSources: [] };
   }
   return res.status(result.status || 200).json({ ...result.body, imageIds });
 }

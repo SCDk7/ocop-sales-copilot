@@ -4,6 +4,44 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const shopping = require('./ai-shopping');
 
+test('Tây Nguyên screenshot works on both server and browser and respects follow-ups', () => {
+  const products = require('./data.js').PRODUCTS;
+  const source = fs.readFileSync('server.js', 'utf8');
+  const context = { normalizeCatalogTerm: shopping.normalize, expandChatShorthand: text => text };
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('function extractSearchIntents('), source.indexOf('const REGION_PROVINCES =')), context);
+  vm.runInContext(source.slice(source.indexOf('const REGION_PROVINCES ='), source.indexOf('function generateLocalComboReply')), context);
+  for (const extract of [shopping.analyze, context.extractSearchIntents]) {
+    const history = [{ role: 'user', text: 'tôi muốn tìm kiếm combo ở tây nguyên tài chính 4tr' }];
+    let intent = shopping.resolve(history, products, extract);
+    assert.equal(intent.maxPrice, 4000000);
+    assert.equal(intent.categoryOrKeyword, null);
+    assert.equal(intent.regionKeyword, 'Tây Nguyên');
+    assert(shopping.regionMatches({ region: 'Đắk Lắk' }, intent));
+    assert(shopping.regionMatches({ region: 'Lâm Đồng' }, intent));
+    let plan = shopping.closest(products, intent);
+    assert(plan);
+    assert.equal(plan.total, 4000000);
+    assert(plan.items.every(p => shopping.regionMatches(p, intent)));
+    const filtered = context.filterProductsByIntent(products, { ...intent, minStars: null });
+    assert(filtered.length > 0);
+    assert(shopping.closest(filtered, intent));
+    history.push({ role: 'user', text: 'đổi thành 5 món ngân sách 2tr' });
+    intent = shopping.resolve(history, products, extract);
+    plan = shopping.closest(products, intent);
+    assert.equal(intent.regionKeyword, 'Tây Nguyên');
+    assert.equal(plan.items.length, 5);
+    assert(plan.total <= 2000000);
+    assert(plan.items.every(p => shopping.regionMatches(p, intent)));
+    history.push({ role: 'user', text: 'chuyển sang miền Tây' });
+    intent = shopping.resolve(history, products, extract);
+    assert.equal(intent.regionKeyword, 'Miền Tây');
+    assert.equal(intent.maxPrice, 2000000);
+  }
+  assert.equal(context.extractSearchIntents('tôi muốn mua tỏi đen', products).categoryOrKeyword, 'tỏi');
+  assert.equal(context.extractSearchIntents('toi muon mua toi den', products).categoryOrKeyword, 'tỏi');
+});
+
 test('Vietnamese budgets, grouped amounts and ranges', () => {
   for (const text of ['500k', '500.000đ', '500,000 VND', 'ngân sách 500000', 'tôi có 500000₫']) {
     assert.equal(shopping.budget(text).maxPrice, 500000, text);
