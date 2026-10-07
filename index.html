@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>OCOP Sales Copilot - Đặc Sản Tuyển Chọn 63 Tỉnh Thành Việt Nam</title>
     
-    <script src="ai-shopping.js?v=20261007_2"></script>
+    <script src="ai-shopping.js?v=20261007_combos3"></script>
     <script src="chat-language.js?v=20261006_3"></script>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -91,6 +91,7 @@
     <link rel="stylesheet" href="SuaLoiKoClick.css">
 
     <style>
+        [data-review-summary][hidden] { display: none !important; }
         html {
             overflow-x: clip;
         }
@@ -2062,10 +2063,10 @@
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-xs text-gray-900" id="i18n-hero-prodname">Yến Sào Khánh Hòa Thượng Hạng</h4>
-                                    <p class="text-[11px] text-amber-800 font-medium">OCOP 5 Sao Quốc Gia</p>
+                                    <p id="hero-product-stars" class="text-[11px] text-amber-800 font-medium"></p>
                                 </div>
                             </div>
-                            <span class="font-extrabold text-red-600 text-sm">2.450.000 ₫</span>
+                            <span id="hero-product-price" class="font-extrabold text-red-600 text-xs max-w-[45%] break-words"></span>
                         </div>
                     </div>
                 </div>
@@ -2610,6 +2611,7 @@
                         </div>
                     </div>
                     <p id="image-search-status" class="hidden mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-900" role="status"></p>
+                    <p id="catalog-price-note" class="mb-4 rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900"></p>
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                         <!-- Render danh mục sản phẩm từ dữ liệu -->
                     </div>
@@ -2815,7 +2817,7 @@
     <!-- 8. POPUP QUICK VIEW CHI TIẾT SẢN PHẨM -->
     <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
-        <div class="relative bg-white rounded-3xl max-w-2xl w-full shadow-2xl z-10 overflow-hidden border border-amber-200 animate-pop-in">
+        <div class="relative bg-white rounded-3xl max-w-2xl w-full shadow-2xl z-10 border border-amber-200 animate-pop-in" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
             <button onclick="closeQuickView()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-8 h-8 flex items-center justify-center text-sm z-20 transition cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             <div class="grid grid-cols-1 md:grid-cols-2" id="quickview-content"></div>
         </div>
@@ -2896,7 +2898,7 @@
             <div class="text-left bg-gray-50 p-3.5 rounded-2xl text-xs space-y-2 border border-gray-100">
                 <div class="flex justify-between items-center">
                     <span class="text-gray-500">Mã đơn hàng:</span>
-                    <span id="qr-order-code" class="font-extrabold text-ocopGreen">#OCOP-123456</span>
+                    <span id="qr-order-code" class="font-extrabold text-ocopGreen break-all min-w-0">#OCOP-123456</span>
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="text-gray-500">Ngân hàng:</span>
@@ -2920,7 +2922,7 @@
                 <div class="flex justify-between items-center">
                     <span class="text-gray-500">Nội dung CK:</span>
                     <div class="flex items-center space-x-1">
-                        <span id="qr-memo" class="bg-amber-100 px-2 py-0.5 rounded font-bold text-amber-900 text-[11px]">THANH TOAN</span>
+                        <span id="qr-memo" class="bg-amber-100 px-2 py-0.5 rounded font-bold text-amber-900 text-[11px] break-all min-w-0">THANH TOAN</span>
                         <button onclick="copyToClipboard(document.getElementById('qr-memo').innerText, 'Nội dung chuyển khoản')" class="text-gray-400 hover:text-ocopGreen p-1 cursor-pointer"><i class="fa-regular fa-copy"></i></button>
                     </div>
                 </div>
@@ -3002,7 +3004,7 @@
     <!-- ============================================================== -->
     <!-- JAVASCRIPT XỬ LÝ HOÀN CHỈNH TOÀN BỘ CHỨC NĂNG WEBSITE -->
     <!-- ============================================================== -->
-    <script src="data.js?v=20261007_1"></script>
+    <script src="data.js?v=20261007_63"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // -------------------------------------------------------------
@@ -3018,98 +3020,10 @@
         };
 
         // -------------------------------------------------------------
-        // DỮ LIỆU DANH SÁCH 77 ĐẶC SẢN OCOP CHUẨN 4 - 5 SAO TOÀN QUỐC
-        // (Nhúng trực tiếp trong index.html - Dễ xem và chỉnh sửa ngay tại đây)
+        // Danh mục chung từ data.js: danh sách mới do chủ shop cung cấp.
         // -------------------------------------------------------------
-        const CORE_OCOP_PRODUCTS = [
-            { id: 1, name: "Yến Sào Khánh Hòa Thượng Hạng", region: "Khánh Hòa", category: "gift", stars: 5, price: 2450000, origPrice: 2800000, rating: 5, reviews: 142, tag: "Quà Biếu 5★", img: "images/p1.jpg", desc: "Tổ yến đảo thiên nhiên nguyên chất 100%, bồi bổ cơ thể tăng đề kháng, quà biếu ngoại giao cao cấp." },
-            { id: 2, name: "Trà Shan Tuyết Cổ Thụ Hà Giang", region: "Hà Giang", category: "tea", stars: 5, price: 680000, origPrice: 750000, rating: 4.9, reviews: 88, tag: "Đặc Sản Hà Giang", img: "images/p2.jpg", desc: "Búp trà cổ thụ trăm năm trên đỉnh cao nguyên đá Hà Giang, hương thơm thanh khiết ngọt hậu đượm đà." },
-            { id: 3, name: "Trà Đinh Nõn Tân Cương Thái Nguyên", region: "Thái Nguyên", category: "tea", stars: 5, price: 850000, origPrice: 950000, rating: 5, reviews: 210, tag: "Đệ Nhất Danh Trà", img: "images/p3.jpg", desc: "Tuyển chọn từng đọt trà non 1 tôm 2 lá, vị chát dịu nhẹ, hậu ngọt sâu kéo dài chuẩn đệ nhất trà." },
-            { id: 4, name: "Sâm Ngọc Linh Ngâm Mật Ong Rừng Quảng Nam", region: "Quảng Nam", category: "gift", stars: 5, price: 3200000, origPrice: 3600000, rating: 5, reviews: 75, tag: "Quốc Bảo Việt Nam", img: "images/p4.jpg", desc: "Sâm Ngọc Linh chứa 52 hợp chất saponin ngâm mật ong rừng tự nhiên, phục hồi thể lực toàn diện." },
-            { id: 5, name: "Nước Mắm Phú Quốc 43° Đạm Ủ Thùng Gỗ", region: "Kiên Giang", category: "spice", stars: 5, price: 220000, origPrice: 250000, rating: 4.9, reviews: 320, tag: "Mắm Truyền Thống", img: "images/p5.jpg", desc: "Ủ chượp thùng gỗ bời lời 12 tháng từ cá cơm than tươi, chuẩn vị đậm đà nguyên bản Phú Quốc." },
-            { id: 6, name: "Chả Mực Giã Tay Hạ Long", region: "Quảng Ninh", category: "food", stars: 5, price: 490000, origPrice: 550000, rating: 4.9, reviews: 180, tag: "Ẩm Thực Biển", img: "images/p6.jpg", desc: "Mực mai tươi sống giã tay truyền thống Hạ Long, miếng chả sần sật chiên vàng thơm nức mũi." },
-            { id: 7, name: "Tỏi Đen Lý Sơn Lên Men 60 Ngày", region: "Quảng Ngãi", category: "gift", stars: 5, price: 550000, origPrice: 620000, rating: 4.8, reviews: 95, tag: "Bổ Sức Khỏe", img: "images/p7.jpg", desc: "Lên men tự nhiên 60 ngày từ tỏi một củ đảo Lý Sơn, giàu chống oxy hóa hỗ trợ tim mạch." },
-            { id: 8, name: "Mật Ong Hoa Cà Phê Tây Nguyên", region: "Gia Lai", category: "food", stars: 4, price: 180000, origPrice: 220000, rating: 4.8, reviews: 260, tag: "Tây Nguyên Tinh Hoa", img: "images/p8.jpg", desc: "Mật ong nguyên chất sánh mịn thơm dịu hương hoa cà phê mùa xuân Tây Nguyên, không pha trộn." },
-            { id: 9, name: "Kẹo Dừa Bến Tre Nhân Sầu Riêng", region: "Bến Tre", category: "snack", stars: 4, price: 65000, origPrice: 80000, rating: 4.7, reviews: 410, tag: "Đặc Sản Bến Tre", img: "images/p9.jpg", desc: "Nước cốt dừa nguyên chất kết hợp mạch nha và sầu riêng tươi, dẻo thơm ngậy béo không dính răng." },
-            { id: 10, name: "Bánh Cốm Làng Vòng Hà Nội", region: "Hà Nội", category: "snack", stars: 4, price: 85000, origPrice: 100000, rating: 4.8, reviews: 150, tag: "Hà Thành Quà Quý", img: "images/p10.jpg", desc: "Vỏ cốm xanh dẻo thơm nhân đậu xanh dừa nạo ngào ngạt, chuẩn vị mùa thu Hà Nội làng Vòng." },
-            { id: 11, name: "Cua Biển Gạch Son Cà Mau", region: "Cà Mau", category: "food", stars: 5, price: 580000, origPrice: 650000, rating: 5, reviews: 195, tag: "Cực Nam Tổ Quốc", img: "images/p11.jpg", desc: "Cua gạch son thịt chắc nịch ngọt đậm đà từ vùng sinh thái rừng ngập mặn Cà Mau thuần túy." },
-            { id: 12, name: "Trà Hoa Vàng Tam Đảo Vĩnh Phúc", region: "Vĩnh Phúc", category: "tea", stars: 5, price: 1150000, origPrice: 1300000, rating: 4.9, reviews: 64, tag: "Nữ Hoàng Các Loại Trà", img: "images/p12.jpg", desc: "Bông trà hoa vàng sấy lạnh giữ nguyên hoạt chất quý, hạ huyết áp và mát gan thanh lọc hiệu quả." },
-            { id: 13, name: "Gạo Tám Xoan Hải Hậu Nam Định", region: "Nam Định", category: "food", stars: 4, price: 160000, origPrice: 190000, rating: 4.8, reviews: 110, tag: "Hạt Ngọc Việt", img: "images/p13.jpg", desc: "Hạt gạo thon nhỏ khi nấu chín tỏa hương thơm ngát tự nhiên, cơm dẻo mềm đậm đà tiến vua." },
-            { id: 14, name: "Hạt Điều Rang Muối Bình Phước Nguyên Vỏ Lụa", region: "Bình Phước", category: "snack", stars: 5, price: 280000, origPrice: 320000, rating: 4.9, reviews: 340, tag: "Nông Sản Xuất Khẩu", img: "images/p14.jpg", desc: "Hạt điều mẩy tròn rang củi nguyên vỏ lụa đỏ, giòn rụm béo bùi vị đậm đà từ vùng đất đỏ Bình Phước." },
-            { id: 15, name: "Thịt Trâu Gác Bếp Mắc Khén Tây Bắc", region: "Lào Cai", category: "snack", stars: 5, price: 790000, origPrice: 890000, rating: 5, reviews: 270, tag: "Món Ngon Núi Rừng", img: "images/p15.jpg", desc: "Thịt bắp trâu tươi ướp mắc khén hạt dổi hun khói củi bắp, giòn thơm dai xé sợi đậm bản sắc Tây Bắc." },
-            { id: 16, name: "Đông Trùng Hạ Thảo Đà Lạt Sấy Thăng Hoa", region: "Lâm Đồng", category: "gift", stars: 5, price: 1850000, origPrice: 2100000, rating: 4.9, reviews: 82, tag: "Dược Liệu Cao Cấp", img: "images/p16.jpg", desc: "Nuôi trồng sinh học tại Đà Lạt sấy thăng hoa bảo toàn hàm lượng Cordycepin và adenosine cao." },
-            { id: 17, name: "Bơ Sáp Đắk Lắk", region: "Đắk Lắk", category: "food", stars: 4, price: 120000, origPrice: 150000, rating: 4.7, reviews: 90, tag: "Trái Cây Tây Nguyên", img: "images/p17.jpg", desc: "Bơ sáp Đắk Lắk chín dẻo quánh vỏ mỏng ruột vàng ươm ngậy béo tự nhiên, không dùng chất bảo quản." },
-            { id: 18, name: "Mắm Cá Lăng An Giang", region: "An Giang", category: "spice", stars: 4, price: 140000, origPrice: 170000, rating: 4.8, reviews: 130, tag: "Đặc Sản Miền Tây", img: "images/p18.jpg", desc: "Cá lăng ủ thính gạo thơm phức đặc trưng An Giang, chưng thịt và hột vịt ăn với bún rất đậm đà." },
-            { id: 19, name: "Lạp Xưởng Tôm Cần Đước Long An", region: "Long An", category: "snack", stars: 4, price: 210000, origPrice: 250000, rating: 4.8, reviews: 205, tag: "Truyền Thống Nam Bộ", img: "images/p19.jpg", desc: "Lạp xưởng tươi tôm đất Cần Đước ngọt lịm kết hợp rượu mai quế lộ thơm, đặc sản Nam Bộ chính gốc." },
-            { id: 20, name: "Vải Thiều Lục Ngạn Bắc Giang Sấy Dẻo", region: "Bắc Giang", category: "snack", stars: 4, price: 130000, origPrice: 160000, rating: 4.9, reviews: 175, tag: "Nông Sản Bắc Giang", img: "images/p20.jpg", desc: "Vải thiều sấy nguyên quả cùi dày ngọt sắc, mùi thơm đặc trưng mùa vải Lục Ngạn chín." },
-            { id: 21, name: "Cao Chè Vằng Quảng Trị", region: "Quảng Trị", category: "tea", stars: 4, price: 190000, origPrice: 230000, rating: 4.8, reviews: 140, tag: "Sức Khỏe Mẹ & Bé", img: "images/p21.jpg", desc: "Chiết xuất từ lá chè vằng sẻ tự nhiên vùng Quảng Trị, giúp tiêu mỡ, đẹp da và mát gan tiêu độc." },
-            { id: 22, name: "Tiêu Đen Hữu Cơ Chư Sê Gia Lai", region: "Gia Lai", category: "spice", stars: 4, price: 150000, origPrice: 180000, rating: 4.9, reviews: 115, tag: "Gia Vị Đậm Đà", img: "images/p22.jpg", desc: "Hạt tiêu mẩy mập cay nồng dịu, hương thơm quyến rũ, trồng hữu cơ Chư Sê không thuốc hóa học." },
-            { id: 23, name: "Nhãn Lồng Hưng Yên", region: "Hưng Yên", category: "food", stars: 4, price: 175000, origPrice: 210000, rating: 4.9, reviews: 230, tag: "Nông Sản Phố Hiến", img: "images/p23.jpg", desc: "Nhãn lồng Hưng Yên chọn khi vừa độ chín, cùi dày vị ngọt thơm tự nhiên, hạt nhỏ đặc sản tiến vua." },
-            { id: 24, name: "Rượu Cần Men Lá Rừng Tây Nguyên", region: "Đắk Nông", category: "gift", stars: 4, price: 350000, origPrice: 400000, rating: 4.8, reviews: 78, tag: "Văn Hóa Tây Nguyên", img: "images/p24.jpg", desc: "Nếp nương ủ cùng 20 loại lá thuốc rừng Tây Nguyên, vị nồng ấm hài hòa đậm bản sắc văn hóa." },
-            { id: 25, name: "Bột Rau Má Sấy Lạnh Bình Dương", region: "Bình Dương", category: "tea", stars: 4, price: 230000, origPrice: 270000, rating: 4.7, reviews: 165, tag: "Healthy Life", img: "images/p25.jpg", desc: "Sấy lạnh giữ trọn diệp lục và chất xơ, hỗ trợ giải nhiệt mát gan, giữ dáng khỏe mạnh tự nhiên." },
-            { id: 26, name: "Mật Táo Đỏ Ninh Thuận", region: "Ninh Thuận", category: "food", stars: 4, price: 210000, origPrice: 250000, rating: 4.8, reviews: 88, tag: "Nắng Gió Ninh Thuận", img: "images/p26.jpg", desc: "Nấu từ táo đỏ Ninh Thuận chín mọng nguyên chất, bổ máu hạ đường huyết giúp ngủ ngon đẹp da." },
-            { id: 27, name: "Chả Cá Thát Lát Rút Xương Hậu Giang", region: "Hậu Giang", category: "food", stars: 5, price: 310000, origPrice: 360000, rating: 5, reviews: 145, tag: "Đặc Sản Miền Tây", img: "images/p27.jpg", desc: "Cá thát lát tươi rút xương tẩm ướp tiêu gia vị đồng quê, thịt dai giòn sần sật chiên vàng bắt cơm." },
-            { id: 28, name: "Bánh Pía Sóc Trăng Nhân Sầu Riêng Trứng Muối", region: "Sóc Trăng", category: "snack", stars: 4, price: 115000, origPrice: 140000, rating: 4.8, reviews: 380, tag: "Hương Vị Sóc Trăng", img: "images/p28.jpg", desc: "Vỏ bánh ngàn lớp xốp mịn ôm trọn nhân sầu riêng tươi quyện trứng muối đỏ au béo ngậy." },
-            { id: 29, name: "Chuối Sấy Dẻo Đồng Nai", region: "Đồng Nai", category: "snack", stars: 4, price: 80000, origPrice: 100000, rating: 4.7, reviews: 120, tag: "Nông Sản Đồng Nai", img: "images/p29.jpg", desc: "Chuối sứ chín cây sấy nhiệt nhẹ dẻo ngọt tự nhiên, không thêm đường không chất bảo quản." },
-            { id: 30, name: "Dầu Mè Đen Ép Lạnh Thừa Thiên Huế", region: "Thừa Thiên Huế", category: "spice", stars: 4, price: 165000, origPrice: 200000, rating: 4.9, reviews: 92, tag: "Cố Đô Tinh Hoa", img: "images/p30.jpg", desc: "Ép lạnh thủ công từ hạt mè đen thuần chủng Huế, giàu Omega-3 và vitamin E tốt cho tim mạch." },
-            { id: 31, name: "Nấm Hương Rừng Sa Pa Sấy Khô", region: "Lào Cai", category: "food", stars: 4, price: 240000, origPrice: 280000, rating: 4.8, reviews: 105, tag: "Sương Mù Sa Pa", img: "images/p31.jpg", desc: "Nấm hương rừng Sa Pa chân dài thơm lừng hái tự nhiên, xào nấu hay hầm canh đều ngon đậm đà." },
-            { id: 32, name: "Trà Shan Tuyết Cổ Thụ Suối Giàng Yên Bái", region: "Yên Bái", category: "tea", stars: 5, price: 920000, origPrice: 1050000, rating: 5, reviews: 160, tag: "Bách Niên Trà", img: "images/p32.jpg", desc: "Búp trà phủ lông tuyết trắng như sương trên cây cổ thụ 100 năm Suối Giàng, nước vàng vị chát dịu." },
-            { id: 33, name: "Tinh Dầu Sả Chanh Chưng Cất Tuyên Quang", region: "Tuyên Quang", category: "gift", stars: 4, price: 185000, origPrice: 220000, rating: 4.8, reviews: 85, tag: "Thảo Dược Thiên Nhiên", img: "images/p33.jpg", desc: "Chưng cất hơi nước 100% nguyên chất từ sả chanh tươi, khử khuẩn xua muỗi làm ấm phòng hiệu quả." },
-            { id: 34, name: "Đường Thốt Nốt Bảy Núi An Giang", region: "An Giang", category: "spice", stars: 4, price: 95000, origPrice: 120000, rating: 4.9, reviews: 310, tag: "Đặc Sản Bảy Núi", img: "images/p34.jpg", desc: "Đường tán thủ công từ nhị hoa thốt nốt vùng Bảy Núi, ngọt thanh dịu mát nấu chè kho cá cực ngon." },
-            { id: 35, name: "Mứt Dâu Tây Đà Lạt Rim Đường Nhẹ", region: "Lâm Đồng", category: "snack", stars: 4, price: 135000, origPrice: 160000, rating: 4.8, reviews: 240, tag: "Phố Hoa Đà Lạt", img: "images/p35.jpg", desc: "Dâu tây thủy canh Đà Lạt rim đường nhẹ giữ trọn vị chua ngọt và màu đỏ tươi tự nhiên." },
-            { id: 36, name: "Trà Oolong Mộc Châu Sơn La", region: "Sơn La", category: "tea", stars: 5, price: 450000, origPrice: 520000, rating: 4.9, reviews: 130, tag: "Cao Nguyên Mộc Châu", img: "images/p36.jpg", desc: "Viên trà tròn chặt lên men 30% trên cao nguyên Mộc Châu, nước xanh ngọc thơm hương hoa núi mây." },
-            { id: 37, name: "Khô Cá Lóc Đồng Tháp Mười", region: "Đồng Tháp", category: "food", stars: 4, price: 260000, origPrice: 300000, rating: 4.8, reviews: 190, tag: "Đất Sen Hồng", img: "images/p37.jpg", desc: "Cá lóc đồng ướp ớt tiêu phơi 3 nắng chuẩn vị miền Tây, nướng xé ăn kèm gỏi xoài cực hấp dẫn." },
-            { id: 38, name: "Rượu Sim Rừng Phú Quốc", region: "Kiên Giang", category: "gift", stars: 4, price: 290000, origPrice: 340000, rating: 4.8, reviews: 110, tag: "Đảo Ngọc Phú Quốc", img: "images/p38.jpg", desc: "Lên men từ quả sim rừng chín mọng đảo Phú Quốc, vị ngọt chát hài hòa trợ tiêu hóa tốt." },
-            { id: 39, name: "Hạt Mắc Ca Đắk Nông", region: "Đắk Nông", category: "snack", stars: 5, price: 310000, origPrice: 360000, rating: 5, reviews: 290, tag: "Nữ Hoàng Hạt Khô", img: "images/p39.jpg", desc: "Hạt mắc ca nứt vỏ tự nhiên vùng Đắk Nông, nhân trắng ngần béo ngậy, giàu dinh dưỡng tốt cho não." },
-            { id: 40, name: "Nước Cốt Dừa Ép Lạnh Bến Tre", region: "Bến Tre", category: "food", stars: 4, price: 105000, origPrice: 130000, rating: 4.9, reviews: 350, tag: "Xứ Dừa Tinh Hoa", img: "images/p40.jpg", desc: "Ép lạnh công nghệ hiện đại giữ trọn độ béo ngậy thanh tự nhiên, dùng nấu chè, kho và làm bánh." },
-            { id: 41, name: "Cà Phê Arabica Cầu Đất Đà Lạt Rang Mộc", region: "Lâm Đồng", category: "food", stars: 4, price: 185000, origPrice: 220000, rating: 4.9, reviews: 178, tag: "Hương Vị Cao Nguyên", img: "images/p41.jpg", desc: "Hạt Arabica tuyển chọn vùng Cầu Đất 1.500m, rang mộc giữ hương thơm dịu và vị chua thanh đặc trưng." },
-            { id: 42, name: "Chanh Leo Ruột Vàng Đà Lạt", region: "Lâm Đồng", category: "food", stars: 4, price: 120000, origPrice: 145000, rating: 4.8, reviews: 156, tag: "Đặc Sản Đà Lạt", img: "images/p42.jpg", desc: "Chanh leo chín mọng ruột vàng thơm Đà Lạt, vị chua ngọt tự nhiên, pha nước giải khát mát lạnh." },
-            { id: 43, name: "Tôm Khô Đất Mũi Cà Mau", region: "Cà Mau", category: "food", stars: 4, price: 390000, origPrice: 450000, rating: 4.9, reviews: 112, tag: "Đặc Sản Đất Mũi", img: "images/p43.jpg", desc: "Tôm đất chọn lọc phơi khô truyền thống vùng Đất Mũi, dùng nấu canh kho quẹt và làm mắm ngon." },
-            { id: 44, name: "Muối Tôm Tây Ninh", region: "Tây Ninh", category: "spice", stars: 4, price: 58000, origPrice: 70000, rating: 4.8, reviews: 205, tag: "Gia Vị Tây Ninh", img: "images/p44.jpg", desc: "Muối rang cùng tôm khô và ớt tươi theo công thức địa phương Tây Ninh, chấm trái cây rất đậm đà." },
-            { id: 45, name: "Tiêu Đen Phú Quốc", region: "Kiên Giang", category: "spice", stars: 4, price: 125000, origPrice: 150000, rating: 4.9, reviews: 142, tag: "Gia Vị Đảo Ngọc", img: "images/p45.jpg", desc: "Tiêu đen phơi khô tự nhiên trên đảo Phú Quốc, hạt chắc mẩy thơm nồng, xay tươi dùng hằng ngày." },
-            { id: 46, name: "Bánh Tráng Phơi Sương Tây Ninh", region: "Tây Ninh", category: "snack", stars: 4, price: 68000, origPrice: 82000, rating: 4.8, reviews: 188, tag: "Ẩm Thực Tây Ninh", img: "images/p46.jpg", desc: "Bánh tráng gạo phơi sương đêm mềm dẻo dai, cuốn rau rừng thịt luộc chấm mắm nem rất đặc trưng." },
-            { id: 47, name: "Trà Sen Hồ Tây Hà Nội", region: "Hà Nội", category: "tea", stars: 5, price: 720000, origPrice: 820000, rating: 5, reviews: 96, tag: "Nghệ Thuật Trà Hà Thành", img: "images/p47.jpg", desc: "Trà xanh Tân Cương ướp gạo sen Hồ Tây thủ công, hương sen thanh tao quyến rũ lưu hương rất lâu." },
-            { id: 48, name: "Quế Ống Trà Bồng Quảng Ngãi", region: "Quảng Ngãi", category: "spice", stars: 4, price: 145000, origPrice: 175000, rating: 4.8, reviews: 104, tag: "Hương Quế Miền Trung", img: "images/p48.jpg", desc: "Quế Trà Bồng thơm ấm nồng nàn, dùng pha trà, nấu phở, kho thịt hoặc làm quà tặng đặc sản Trung." },
-            { id: 49, name: "Bánh Khọt Vũng Tàu Tôm Tươi Giòn Rụm", region: "Bà Rịa–Vũng Tàu", category: "food", stars: 5, price: 75000, origPrice: 90000, rating: 5, reviews: 230, tag: "Đặc Sản Vũng Tàu", img: "images/p49.jpg", desc: "Bánh khọt vàng giòn rụm bên ngoài, nhân tôm biển tươi ngọt ăn kèm đu đủ bào và nước mắm chua ngọt chuẩn vị Vũng Tàu." },
-            { id: 50, name: "Miến Dong Na Rì Bắc Kạn Sợi Trong Dai Tự Nhiên", region: "Bắc Kạn", category: "food", stars: 4, price: 95000, origPrice: 115000, rating: 4.8, reviews: 115, tag: "Nông Sản Bắc Kạn", img: "images/p50.jpg", desc: "Làm từ 100% tinh bột dong riềng đỏ vùng núi Na Rì, sợi miến trong dai tự nhiên, nấu lâu không bị nát hay trương bở." },
-            { id: 51, name: "Mắm Ba Khía Muối Bạc Liêu Cay Nồng Đậm Vị", region: "Bạc Liêu", category: "food", stars: 4, price: 140000, origPrice: 165000, rating: 4.8, reviews: 168, tag: "Hương Vị Bạc Liêu", img: "images/p51.jpg", desc: "Ba khía tươi sống vùng rừng ngập mặn Bạc Liêu ủ muối đậm đà, trộn tỏi ớt chanh đường thơm nức mũi ăn cùng cơm nóng." },
-            { id: 52, name: "Bánh Phu Thê Đình Bảng Bắc Ninh Truyền Thống", region: "Bắc Ninh", category: "snack", stars: 5, price: 85000, origPrice: 105000, rating: 5, reviews: 280, tag: "Tinh Hoa Kinh Bắc", img: "images/p52.jpg", desc: "Vỏ bánh vàng dẻo trong suốt quyện cùi dừa nạo giòn sần sật ôm lấy nhân đậu xanh hạt sen ngọt dịu, biểu trưng gắn kết phu thê." },
-            { id: 53, name: "Bánh Ít Lá Gai Bình Định Dẻo Thơm Đậm Đà", region: "Bình Định", category: "snack", stars: 5, price: 65000, origPrice: 80000, rating: 4.9, reviews: 195, tag: "Đặc Sản Đất Võ", img: "images/p53.jpg", desc: "Bánh gói lá chuối hình tháp, vỏ đen nhánh từ lá gai giã nhuyễn dẻo quánh hòa cùng nhân dừa đậu xanh ngọt bùi ấm thơm gừng." },
-            { id: 54, name: "Thanh Long Ruột Đỏ Bình Thuận Ngọt Thanh", region: "Bình Thuận", category: "food", stars: 5, price: 95000, origPrice: 120000, rating: 4.9, reviews: 210, tag: "Nắng Gió Bình Thuận", img: "images/p54.jpg", desc: "Thanh long ruột đỏ mọng nước giàu vitamin C và chất chống oxy hóa, quả ngọt đậm đà từ thủ phủ thanh long Bình Thuận." },
-            { id: 55, name: "Bánh Tét Lá Cẩm Cần Thơ Hột Vịt Muối", region: "Cần Thơ", category: "food", stars: 5, price: 130000, origPrice: 160000, rating: 5, reviews: 340, tag: "Gạo Trắng Nước Trong", img: "images/p55.jpg", desc: "Nếp nương xào nước cốt dừa và lá cẩm tím biếc, cuộn nhân đậu xanh, thịt ba rọi và lòng đỏ trứng muối béo ngậy thơm lừng." },
-            { id: 56, name: "Hạt Dẻ Trùng Khánh Cao Bằng Nướng Bùi Béo", region: "Cao Bằng", category: "snack", stars: 5, price: 145000, origPrice: 175000, rating: 4.9, reviews: 265, tag: "Cao Bằng Đệ Nhất Hạt", img: "images/p56.jpg", desc: "Hạt dẻ to tròn cùi vàng óng chỉ có ở vùng khí hậu Trùng Khánh Cao Bằng, rang chín bùi béo ngọt đậm tự nhiên khó quên." },
-            { id: 57, name: "Mì Quảng Đà Nẵng Tôm Thịt Đậm Đà Phố Biển", region: "Đà Nẵng", category: "food", stars: 5, price: 85000, origPrice: 100000, rating: 5, reviews: 410, tag: "Mỹ Vị Đà Thành", img: "images/p57.jpg", desc: "Sợi mì gạo mềm mượt chan nước nhưỡng sánh đậm đà nấu từ tôm thịt tươi, ăn kèm bánh tráng mè nướng giòn và rau sống bắp chuối." },
-            { id: 58, name: "Xôi Nếp Nương Điện Biên Ngũ Sắc Dẻo Thơm", region: "Điện Biên", category: "food", stars: 5, price: 110000, origPrice: 135000, rating: 5, reviews: 290, tag: "Tinh Hoa Mường Thanh", img: "images/p58.jpg", desc: "Đồ từ gạo nếp nương Mường Thanh hạt mẩy tròn, nhuộm 5 sắc màu tự nhiên từ lá rừng Tây Bắc, để nguội vẫn dẻo quánh thơm nức." },
-            { id: 59, name: "Cá Kho Làng Vũ Đại Hà Nam Cổ Truyền Niêu Đất", region: "Hà Nam", category: "food", stars: 5, price: 480000, origPrice: 550000, rating: 5, reviews: 520, tag: "Món Ngon Tiến Vua", img: "images/p59.jpg", desc: "Cá trắm đen kho niêu đất 16 tiếng bằng củi nhãn cùng nước cốt cua đồng, riềng ớt, xương nhừ tan thịt chắc bùi thơm ngậy." },
-            { id: 60, name: "Kẹo Cu Đơ Hà Tĩnh Bánh Đa Giòn Rụm Mật Mía", region: "Hà Tĩnh", category: "snack", stars: 4, price: 55000, origPrice: 70000, rating: 4.8, reviews: 320, tag: "Hương Vị Xứ Nghệ - Tĩnh", img: "images/p60.jpg", desc: "Đậu phộng bùi hòa quyện mạch nha cùng mật mía đậm đặc và gừng cay nồng, kẹp giữa hai lớp bánh đa vừng nướng giòn tan." },
-            { id: 61, name: "Bánh Đậu Xanh Rồng Vàng Hải Dương Cổ Truyền", region: "Hải Dương", category: "snack", stars: 5, price: 75000, origPrice: 90000, rating: 5, reviews: 460, tag: "Đặc Sản Xứ Đông", img: "images/p61.jpg", desc: "Bột đậu xanh nguyên chất tán mịn kết hợp đường kính và mỡ lợn sạch thoang thoảng hương hoa bưởi, tan ngay nơi đầu lưỡi khi uống trà." },
-            { id: 62, name: "Bánh Đa Cua Hải Phòng Nước Dùng Cua Đồng Đậm Đà", region: "Hải Phòng", category: "food", stars: 5, price: 85000, origPrice: 105000, rating: 5, reviews: 380, tag: "Hương Vị Đất Cảng", img: "images/p62.jpg", desc: "Sợi bánh đa đỏ dẻo dai hòa trong nước dùng riêu cua đồng ngọt lịm, chả lá lốt thơm lừng cùng rau muống giòn chuẩn vị Hải Phòng." },
-            { id: 63, name: "Cơm Tấm Sài Gòn Sườn Bì Chả Trứng Ốp La", region: "Hồ Chí Minh", category: "food", stars: 5, price: 95000, origPrice: 115000, rating: 5, reviews: 650, tag: "Biểu Tượng Ẩm Thực Sài Gòn", img: "images/p63.jpg", desc: "Hạt tấm dẻo rưới mỡ hành óng ả, sườn non nướng mật ong thơm lừng kết hợp chả trứng hấp, bì heo giòn và nước mắm kẹo trứ danh." },
-            { id: 64, name: "Cơm Lam Mường Động Hòa Bình Nướng Nứa Thơm", region: "Hòa Bình", category: "food", stars: 4, price: 65000, origPrice: 80000, rating: 4.8, reviews: 210, tag: "Bản Làng Tây Bắc", img: "images/p64.jpg", desc: "Gạo nếp nương ngâm nước suối trong đựng trong ống nứa non nướng than hồng, thoảng nhẹ hương màng nứa bùi dẻo chấm muối vừng." },
-            { id: 65, name: "Sâm Ngọc Linh Kon Tum Thượng Hạng Củ Tươi", region: "Kon Tum", category: "gift", stars: 5, price: 2800000, origPrice: 3200000, rating: 5, reviews: 92, tag: "Quốc Bảo Đỉnh Ngọc Linh", img: "images/p65.jpg", desc: "Sâm Ngọc Linh mọc tự nhiên trên dãy núi Măng Ri Kon Tum trên độ cao 2.000m, hàm lượng MR2 saponin dồi dào tăng cường sinh lực." },
-            { id: 66, name: "Thịt Trâu Gác Bếp Mắc Khén Lai Châu Hun Khói Tự Nhiên", region: "Lai Châu", category: "food", stars: 5, price: 750000, origPrice: 850000, rating: 5, reviews: 310, tag: "Đại Ngàn Tây Bắc", img: "images/p66.jpg", desc: "Thịt bắp trâu núi tẩm ướp hạt dổi, mắc khén rừng hun khói củi nhãn lâu ngày, ngọt đậm từng thớ thịt xé sợi cay thơm nồng nàn." },
-            { id: 67, name: "Vịt Quay Lạng Sơn Nhồi Lá Mắc Mật Da Giòn Rụm", region: "Lạng Sơn", category: "food", stars: 5, price: 320000, origPrice: 380000, rating: 5, reviews: 370, tag: "Đặc Sản Xứ Lạng", img: "images/p67.jpg", desc: "Vịt bầu Thất Khê béo tròn ướp thảo mộc nhồi lá quả mắc mật tươi, quay trên than hồng da vàng bóng giòn rụm thịt ngọt lịm." },
-            { id: 68, name: "Cam Vinh Xã Đoài Nghệ An Mọng Nước Ngọt Thanh", region: "Nghệ An", category: "food", stars: 5, price: 85000, origPrice: 105000, rating: 5, reviews: 275, tag: "Đặc Sản Xứ Nghệ", img: "images/p68.jpg", desc: "Cam Xã Đoài trứ danh Nghệ An vỏ mỏng vàng óng, tép cam mọng nước vị ngọt thanh đậm lưu luyến ngát hương thơm tự nhiên." },
-            { id: 69, name: "Cơm Cháy Ninh Bình Chà Bông Kho Quẹt Giòn Tan", region: "Ninh Bình", category: "snack", stars: 5, price: 95000, origPrice: 115000, rating: 5, reviews: 430, tag: "Mỹ Vị Cố Đô Hoa Lư", img: "images/p69.jpg", desc: "Cơm nếp chiên giòn rụm rắc ruốc thịt heo xao mặn ngọt, chấm kèm sốt dê kho quẹt sánh đậm đà nức danh ẩm thực Ninh Bình." },
-            { id: 70, name: "Thịt Chua Thanh Sơn Phú Thọ Lên Men Ống Nứa", region: "Phú Thọ", category: "food", stars: 4, price: 115000, origPrice: 140000, rating: 4.8, reviews: 185, tag: "Ẩm Thực Đất Tổ", img: "images/p70.jpg", desc: "Thịt lợn mán tươi ngon ướp thính ngô rang giã mịn, ủ lên men tự nhiên trong ống nứa cuốn cùng lá sung lá mơ chấm tương ớt cay." },
-            { id: 71, name: "Bánh Hỏi Lòng Heo Phú Yên Mềm Mịn Thơm Mỡ Hành", region: "Phú Yên", category: "food", stars: 5, price: 85000, origPrice: 100000, rating: 4.9, reviews: 290, tag: "Đất Phú Trời Yên", img: "images/p71.jpg", desc: "Từng miếng bánh hỏi mỏng mịn thoa mỡ hành bóng bẩy, ăn kèm lòng heo luộc giòn sần sật và chén nước mắm nhĩ pha tiêu ớt thơm lừng." },
-            { id: 72, name: "Bánh Bột Lọc Tôm Nhảy Quảng Bình Dẻo Dai Trong Suốt", region: "Quảng Bình", category: "food", stars: 4, price: 75000, origPrice: 90000, rating: 4.8, reviews: 210, tag: "Hương Vị Quảng Bình", img: "images/p72.jpg", desc: "Vỏ bánh lọc trong veo thấy rõ nhân tôm sông và thịt mộc nhĩ rim đậm, gói lá chuối hấp nóng chấm nước mắm ớt nguyên chất cay nồng." },
-            { id: 73, name: "Bánh Cáy Làng Nguyễn Thái Bình Dẻo Bùi Ngọt Ấm", region: "Thái Bình", category: "snack", stars: 4, price: 65000, origPrice: 80000, rating: 4.8, reviews: 220, tag: "Quê Hương Chị Hai Năm Tấn", img: "images/p73.jpg", desc: "Làm từ nếp cái hoa vàng, mỡ phần, hạt dành dành, quả gấc và gừng tươi, bánh dẻo bùi cay cay ấm nồng mang đậm nghĩa tình quê lúa." },
-            { id: 74, name: "Nem Chua Thanh Hóa Cây Dài Gia Truyền Chua Cay Giòn", region: "Thanh Hóa", category: "snack", stars: 5, price: 60000, origPrice: 75000, rating: 5, reviews: 560, tag: "Đặc Sản Xứ Thanh", img: "images/p74.jpg", desc: "Thịt heo nạc xay tươi ủ thính và bì thái chỉ giòn sần sật, điểm xuyết lát tỏi ớt tươi và lá đinh lăng thơm lừng vị chua thanh cuốn hút." },
-            { id: 75, name: "Hủ Tiếu Mỹ Tho Tiền Giang Sợi Dai Nước Dùng Ngọt Thanh", region: "Tiền Giang", category: "food", stars: 5, price: 75000, origPrice: 95000, rating: 5, reviews: 380, tag: "Hương Vị Sông Tiền", img: "images/p75.jpg", desc: "Sợi bánh hủ tiếu gò cát dai giòn đặc trưng hòa cùng nước lèo hầm xương ống, mực khô thơm lừng kèm tôm thịt tươi ngon đậm vị Nam Bộ." },
-            { id: 76, name: "Dừa Sáp Cầu Kè Trà Vinh Cơm Dày Béo Dẻo Độc Nhất", region: "Trà Vinh", category: "food", stars: 5, price: 195000, origPrice: 240000, rating: 5, reviews: 320, tag: "Đặc Sản Quý Hiếm Cầu Kè", img: "images/p76.jpg", desc: "Cơm dừa sáp dày đặc dẻo quẹo như kem, nước dừa sền sệt ngọt thanh ngậy béo, đặc sản trứ danh hiếm có của vùng đất Cầu Kè Trà Vinh." },
-            { id: 77, name: "Bưởi Năm Roi Bình Minh Vĩnh Long Múi Mọng Tép Giòn", region: "Vĩnh Long", category: "food", stars: 5, price: 85000, origPrice: 105000, rating: 5, reviews: 310, tag: "Vương Quốc Trái Cây Miền Tây", img: "images/p77.jpg", desc: "Bưởi Năm Roi róc vỏ tép vàng mọng nước giòn ngọt rôn rốt không hạt, thu hoạch từ các miệt vườn phù sa trù phú ven sông Bình Minh." }
-        ];
-
-        // Ưu tiên nạp danh mục đầy đủ từ data.js nếu có, hoặc dùng danh mục chuẩn CORE_OCOP_PRODUCTS nhúng trực tiếp
-        const products = (typeof window !== 'undefined' && Array.isArray(window.PRODUCTS) && window.PRODUCTS.length > 0)
-            ? window.PRODUCTS
-            : CORE_OCOP_PRODUCTS;
-
-        // Đồng bộ toàn cục để các script khác và chatbot AI luôn sẵn sàng dữ liệu
-        if (typeof window !== 'undefined') {
-            window.PRODUCTS = products;
-        }
+        const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
+        window.PRODUCTS = products;
 
         // Biến trạng thái toàn cục
         let cart = [];
@@ -3154,12 +3068,7 @@
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
         let lastAIComboMarkup = null;
-        let ordersHistory = [
-            { id: 'OCOP-98231', date: '02/10/2026', total: 1530000, status: 'Đã giao hàng', items: ['Trà Đinh Nõn Tân Cương Thái Nguyên', 'Thịt Trâu Gác Bếp Mắc Khén Tây Bắc'] },
-            { id: 'OCOP-77120', date: '25/09/2026', total: 2450000, status: 'Đang vận chuyển', items: ['Yến Sào Khánh Hòa Thượng Hạng'] },
-            { id: 'OCOP-65392', date: '18/09/2026', total: 3420000, status: 'Đã giao hàng', items: ['Sâm Ngọc Linh Ngâm Mật Ong Rừng Quảng Nam', 'Tỏi Đen Lý Sơn Lên Men 60 Ngày'] },
-            { id: 'OCOP-54219', date: '12/09/2026', total: 860000, status: 'Đã giao hàng', items: ['Cua Biển Gạch Son Cà Mau', 'Hạt Điều Rang Muối Bình Phước Nguyên Vỏ Lụa'] }
-        ];
+        let ordersHistory = [];
 
         function restorePageScrollState() {
             document.body.style.overflow = '';
@@ -3665,6 +3574,7 @@
         let currentMacroRegion = null;
 
         function productMatchesMacroRegion(product, macro) {
+            if (product.macroRegion) return product.macroRegion === macro;
             const province = normalizeProvinceName(product.region);
             return (MACRO_REGIONS[macro] || []).some(name => normalizeProvinceName(name) === province);
         }
@@ -3703,7 +3613,35 @@
         // -------------------------------------------------------------
         // RENDER VÀ LỌC LƯỚI SẢN PHẨM
         // -------------------------------------------------------------
+        function getProductPromoSeed(product) {
+            let seed = Math.imul(Number(product.id) || 1, 2654435761) >>> 0;
+            return Math.imul(seed ^ (seed >>> 16), 2246822507) >>> 0;
+        }
+        const productPromoIds = new Set([...products]
+            .sort((a,b)=>getProductPromoSeed(a)-getProductPromoSeed(b)||a.id-b.id)
+            .slice(0,Math.round(products.length*0.3)).map(product=>product.id));
+        function getProductPromoPercent(product) {
+            if (!productPromoIds.has(product.id)) return 0;
+            const percentages = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+            return percentages[getProductPromoSeed(product) % percentages.length];
+        }
+
+        function getProductPromoReferenceLabel(product) {
+            const salePrice = Number(product.priceMax) || Number(product.price) || 0;
+            const referencePrice = Math.round(salePrice / (1 - getProductPromoPercent(product) / 100));
+            return getProductPriceLabel({ ...product, price: referencePrice, priceMax: referencePrice });
+        }
+
         function renderProducts(items) {
+            document.getElementById('catalog-price-note').textContent = currentLanguage === 'en'
+                ? '252 entries supplied by the shop. Each product uses the highest supplied reference price per listed unit, consistently across products, cart and sets. Confirm price and packaging before ordering. Photos are illustrative; pending photos are marked.'
+                : '252 mục theo danh sách chủ shop. Mỗi sản phẩm áp dụng một mức giá tham khảo cao nhất theo quy cách, thống nhất trên sản phẩm, giỏ hàng và combo. Xác nhận giá và quy cách khi đặt hàng. Ảnh tham khảo; món chưa có ảnh đúng được đánh dấu.';
+            const heroProduct = products.find(p => p.region === 'Khánh Hòa' && p.name.includes('Yến')) || products[0];
+            if (heroProduct) {
+                document.getElementById('i18n-hero-prodname').textContent = getProductName(heroProduct);
+                document.getElementById('hero-product-price').textContent = getProductPriceLabel(heroProduct);
+                document.getElementById('hero-product-stars').textContent = 'OCOP ' + getProductStarLabel(heroProduct) + (currentLanguage === 'en' ? ' stars · Shop catalogue' : ' sao · Theo danh mục');
+            }
             const grid = document.getElementById('product-grid');
             const noMsg = document.getElementById('no-products-msg');
             const countBadge = document.getElementById('product-count-badge');
@@ -3722,8 +3660,8 @@
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
-                const discountPercent = (p.origPrice && p.origPrice > p.price) ? Math.round(((p.origPrice - p.price) / p.origPrice) * 100) : 0;
-                const isHotSeller = (p.stars === 5 && (p.reviews >= 150 || p.rating >= 4.9)) || p.id <= 3;
+                const discountPercent = getProductPromoPercent(p);
+                const isHotSeller = p.isBestSeller === true;
                 
                 let cardHtml = `
                 <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md hover:shadow-2xl flex flex-col justify-between group relative transition-all duration-300" data-product-id="${p.id}">
@@ -3732,36 +3670,38 @@
                             <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full ${(p.catalogImport || p.imageIsSample) ? 'object-contain p-2' : 'object-cover'}">
                             
                             <!-- Nhãn Vùng Miền & Đạt Chuẩn OCOP -->
-                            <div class="absolute top-3 left-3 flex flex-col space-y-1.5 z-10 pointer-events-none">
+                            <div class="absolute top-3 left-3 flex flex-col space-y-1.5 z-10 pointer-events-none" style="max-width:calc(100% - 110px)">
                                 <span class="bg-slate-900/85 text-amber-200 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md backdrop-blur-md border border-amber-400/40 flex items-center gap-1 w-fit">
                                     <i class="fa-solid fa-location-dot text-amber-400 text-[9px]"></i>
-                                    <span>${p.region}</span>
+                                    <span class="truncate">${p.region}</span>
                                 </span>
                                 <span class="bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full uppercase shadow flex items-center gap-1 border border-yellow-200 w-fit">
                                     <i class="fa-solid fa-star text-amber-950 text-[8px]"></i>
-                                    <span>${p.stars} ${currentLanguage === 'en' ? 'STARS' : 'SAO QUỐC GIA'}</span>
+                                    <span>${getProductStarLabel(p)} ${currentLanguage === 'en' ? 'STARS' : 'SAO OCOP'}</span>
                                 </span>
                             </div>
 
                             <!-- Huy Hiệu Giảm Giá & Nút Yêu Thích -->
-                            <div class="absolute top-3 right-3 flex items-center space-x-1.5 z-10">
-                                ${isHotSeller ? `
-                                <span class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-black text-[9px] px-2 py-0.5 rounded-full shadow-md border border-yellow-300/50 flex items-center gap-1 animate-pulse">
-                                    <i class="fa-solid fa-fire text-yellow-300"></i> BÁN CHẠY
-                                </span>` : ''}
+                            <div class="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-10">
+                                <div class="flex items-center gap-1.5">
                                 ${discountPercent > 0 ? `
-                                <span class="bg-gradient-to-r from-rose-600 to-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md border border-rose-300/40">
+                                <span data-promo-percent="${discountPercent}" class="bg-gradient-to-r from-rose-600 to-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md border border-rose-300/40">
                                     -${discountPercent}%
                                 </span>` : ''}
                                 <button onclick="toggleWishlist(${p.id})" aria-label="Yêu thích" class="w-8 h-8 rounded-full bg-white/90 backdrop-blur-md text-red-500 flex items-center justify-center hover:scale-110 active:scale-95 transition shadow-md cursor-pointer border border-rose-100 group/heart">
                                     <i class="${isFav ? 'fa-solid text-red-600 scale-110' : 'fa-regular group-hover/heart:scale-110'} fa-heart text-xs transition-transform"></i>
                                 </button>
+                                </div>
+                                ${isHotSeller ? `
+                                <span class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-black text-[9px] px-2 py-0.5 rounded-full shadow-md border border-yellow-300/50 flex items-center gap-1 animate-pulse">
+                                    <i class="fa-solid fa-fire text-yellow-300"></i> ${currentLanguage === 'en' ? 'BESTSELLER' : 'BÁN CHẠY'}
+                                </span>` : ''}
                             </div>
 
                             <!-- Tem Nguồn Gốc & Nút Xem Nhanh -->
                             <div class="absolute bottom-3 left-3 bg-emerald-950/75 backdrop-blur-md text-emerald-200 text-[9px] font-bold px-2 py-0.5 rounded-lg border border-emerald-500/40 flex items-center gap-1 z-10 pointer-events-none">
                                 <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                                <span>100% Chính gốc</span>
+                                <span title="${currentLanguage === 'en' ? 'Shop commitment' : 'Cam kết của shop'}">${currentLanguage === 'en' ? '100% Authentic' : '100% Chính gốc'}</span>
                             </div>
                             <button onclick="openQuickView(${p.id})" class="absolute bottom-3 right-3 bg-slate-900/80 hover:bg-slate-950 text-white text-[10px] font-extrabold px-3 py-1.5 rounded-xl backdrop-blur-md transition-all flex items-center space-x-1.5 shadow-lg border border-white/20 hover:scale-105 active:scale-95 cursor-pointer z-10">
                                 <i class="fa-solid fa-eye text-amber-300"></i>
@@ -3772,9 +3712,9 @@
                         <!-- Thông Tin Chi Tiết Thẻ -->
                         <div class="p-4 space-y-2">
                             <div class="flex items-center justify-between text-[11px] font-bold">
-                                <span class="text-amber-800 flex items-center gap-1">
+                                <span data-review-summary ${getProductReviewLabel(p) ? '' : 'hidden'} class="text-amber-800 flex items-center gap-1">
                                     <i class="fa-solid fa-star text-yellow-500"></i>
-                                    <span>${getProductReviewLabel(p)}</span>
+                                    <button type="button" data-review-product-id="${p.id}" onclick="openQuickView(${p.id})" class="text-left hover:underline cursor-pointer">${getProductReviewLabel(p)}</button>
                                 </span>
                                 <span class="bg-amber-100/80 text-amber-900 font-extrabold px-2 py-0.5 rounded-lg text-[10px] border border-amber-200">
                                     ${currentLanguage === 'en' ? (p.tagEn || 'OCOP specialty') : p.tag}
@@ -3786,10 +3726,10 @@
                     </div>
 
                     <!-- Footer Thẻ: Giá & Nút Thêm Giỏ -->
-                    <div class="p-4 pt-3 border-t border-amber-100/70 mt-1 flex items-center justify-between bg-amber-50/20">
-                        <div>
-                            <span class="block text-xs text-gray-400 line-through leading-none mb-1">${(p.origPrice && p.origPrice > p.price) ? p.origPrice.toLocaleString('vi-VN') + ' ₫' : '&nbsp;'}</span>
-                            <span class="font-black text-red-600 text-base sm:text-lg tracking-tight">${p.price.toLocaleString('vi-VN')} ₫</span>
+                    <div class="p-4 pt-3 border-t border-amber-100/70 mt-1 flex flex-wrap gap-3 items-center justify-between bg-amber-50/20">
+                        <div class="min-w-0 break-words w-full">
+                            ${discountPercent > 0 ? `<span data-promo-reference="${p.id}" class="block text-xs text-gray-400 leading-snug mb-1" title="${currentLanguage === 'en' ? 'Reference price calculated from the displayed promotion percentage.' : 'Giá tham khảo tính theo phần trăm ưu đãi hiển thị.'}"><s>${getProductPromoReferenceLabel(p)}</s></span>` : ''}
+                            <span class="font-black text-red-600 text-base sm:text-lg tracking-tight">${getProductPriceLabel(p)}</span>
                         </div>
                         <button onclick="addToCart(${p.id})" class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 hover:from-emerald-700 hover:to-amber-700 text-white px-3.5 py-2.5 rounded-xl font-bold transition-all flex items-center space-x-1.5 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 cursor-pointer border border-emerald-600/30 group/btn">
                             <i class="fa-solid fa-cart-plus text-amber-300 text-xs group-hover/btn:rotate-12 transition-transform"></i>
@@ -3927,8 +3867,8 @@
 
         function normalizeProvinceName(value) {
             return normalizeSearchText(value)
-                .replace(/^(tp|thanhpho)/, '')
-                .replace(/[^a-z0-9]/g, '');
+                .replace(/[^a-z0-9]/g, '')
+                .replace(/^(tp|thanhpho)/, '');
         }
 
         function getProvinceStyle(feature) {
@@ -4037,7 +3977,7 @@
                 name.textContent = getProductName(product);
                 const details = document.createElement('p');
                 details.className = 'm-0 mt-1 text-[10px] font-semibold text-[#718075]';
-                details.textContent = `OCOP ${product.stars}★ · ${product.price.toLocaleString('vi-VN')} ₫`;
+                details.textContent = `OCOP ${getProductStarLabel(product)}★ · ${getProductPriceLabel(product)}`;
                 info.append(name, details);
                 detailsButton.append(image, info);
 
@@ -4411,7 +4351,9 @@
                 price: product.price,
                 rating: product.rating,
                 tag: product.tag,
-                description: product.desc
+                description: getProductDescription(product),
+                priceMin: product.priceMin, priceMax: product.priceMax, priceIsReference: product.priceIsReference,
+                packaging: product.packaging, packagingEn: product.packagingEn, starsMin: product.starsMin, starsMax: product.starsMax, macroRegion: product.macroRegion
             }));
         }
 
@@ -4724,7 +4666,9 @@
                 price: product.price,
                 rating: product.rating,
                 tag: product.tag,
-                description: product.desc
+                description: getProductDescription(product),
+                priceMin: product.priceMin, priceMax: product.priceMax, priceIsReference: product.priceIsReference,
+                packaging: product.packaging, packagingEn: product.packagingEn, starsMin: product.starsMin, starsMax: product.starsMax, macroRegion: product.macroRegion
             }));
         }
 
@@ -4808,11 +4752,12 @@
         }
 
         const REGION_PROVINCES = {
-            "Tây Bắc": ["ha giang", "lao cai", "son la", "dien bien", "lai chau", "yen bai", "hoa binh"],
+            "Miền Nam": ["binh phuoc","binh duong","dong nai","tay ninh","ba ria vung tau","thanh pho ho chi minh","long an","dong thap","tien giang","an giang","ben tre","vinh long","tra vinh","hau giang","kien giang","soc trang","bac lieu","ca mau","can tho"],
+"Tây Bắc": ["ha giang", "lao cai", "son la", "dien bien", "lai chau", "yen bai", "hoa binh"],
             "Tây Nguyên": ["gia lai", "dak lak", "dak nong", "lam dong", "kon tum"],
-            "Miền Trung": ["quang nam", "quang ngai", "thua thien hue", "hue", "quang tri", "da nang", "binh dinh", "phu yen", "khanh hoa", "ninh thuan", "nghe an", "ha tinh", "quang binh", "thanh hoa"],
+            "Miền Trung": ["quang nam", "quang ngai", "thua thien hue", "hue", "quang tri", "da nang", "binh dinh", "phu yen", "khanh hoa", "ninh thuan", "nghe an", "ha tinh", "quang binh", "thanh hoa", "binh thuan"],
             "Miền Tây": ["kien giang", "phu quoc", "ben tre", "ca mau", "an giang", "long an", "soc trang", "hau giang", "can tho", "dong thap", "bac lieu", "tra vinh", "vinh long", "tien giang"],
-            "Miền Bắc": ["ha noi", "ha giang", "thai nguyen", "quang ninh", "lao cai", "nam dinh", "bac giang", "hung yen", "yen bai", "tuyen quang", "vinh phuc", "ninh binh", "bac kan", "cao bang", "lang son", "phu tho", "son la", "dien bien", "lai chau", "hoa binh", "ha nam", "hai duong", "hai phong", "thai binh"]
+            "Miền Bắc": ["ha noi", "ha giang", "thai nguyen", "quang ninh", "lao cai", "nam dinh", "bac giang", "hung yen", "yen bai", "tuyen quang", "vinh phuc", "ninh binh", "bac kan", "cao bang", "lang son", "phu tho", "son la", "dien bien", "lai chau", "hoa binh", "ha nam", "hai duong", "hai phong", "thai binh", "bac ninh"]
         };
 
         function generateClientLocalComboReply(intent, products = [], language = "vi") {
@@ -4871,7 +4816,7 @@
 
             if (candidates.length === 0) {
                 if (isHealth || isSep || (minPrice && minPrice >= 5000000)) {
-                    candidates = products.filter(p => [1, 4, 12, 18, 25, 47].includes(p.id) || p.stars === 5 || p.price >= 600000);
+                    candidates = products.filter(p => p.stars === 5 || p.price >= 600000);
                 } else if (isTea) {
                     candidates = products.filter(p => [2, 3, 47].includes(p.id) || (p.category && p.category.toLowerCase().includes("trà")));
                 } else if (isKitchen) {
@@ -4931,7 +4876,7 @@
                 const itemTotal = (p.price * item.quantity).toLocaleString("vi-VN");
                 const qtyStr = item.quantity > 1 ? ` (x${item.quantity})` : "";
                 const pDesc = p.desc || p.description;
-                return `${idx + 1}. **${p.name}**${qtyStr} — ${itemTotal}₫\n   • Chuẩn OCOP: ${p.stars}⭐ (${p.region})\n   • Đơn giá: ${p.price.toLocaleString("vi-VN")}₫/hộp\n   • Đặc trưng: ${pDesc ? pDesc.slice(0, 95) + "..." : "Đặc sản chính gốc sản xuất hữu cơ đạt chuẩn OCOP quốc gia."}`;
+                return `${idx + 1}. **${p.name}**${qtyStr} — ${itemTotal}₫\n   • Chuẩn OCOP: ${p.stars}⭐ (${p.region})\n   • Đơn giá: ${p.price.toLocaleString("vi-VN")}₫/${p.packaging || (english ? 'unit' : 'đơn vị')}\n   • Đặc trưng: ${pDesc ? pDesc.slice(0, 95) + "..." : "Đặc sản chính gốc sản xuất hữu cơ đạt chuẩn OCOP quốc gia."}`;
             }).join("\n\n");
 
             let intro = english
@@ -5054,7 +4999,8 @@
                 if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
                 else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
                 else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
-                else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
+                else if (/mien nam|dong nam bo/.test(normalized)) regionKeyword = "Miền Nam";
+  else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
                 else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
 
                 const isHealthIntent = /(suc khoe|duong sinh|nguoi gia|nguoi lon tuoi|cha me|bo me|tre em|ba bau|mat ngu|tieu duong|giai ruou|da day|de khang|bo than|huyet ap)/.test(normalized);
@@ -5121,7 +5067,7 @@
             // 5. CHUYÊN ĐỀ SỨC KHỎE, DƯỠNG SINH & ĐỀ KHÁNG (HEALTH & WELLNESS)
             const isHealth = /(suc khoe|duong sinh|nguoi gia|nguoi lon tuoi|cha me|bo me|tre em|ba bau|mat ngu|tieu duong|giai ruou|da day|de khang|bo than|huyet ap)/.test(normalized);
             if (isHealth) {
-                const healthItems = products.filter(p => [1, 4, 12, 18, 25].includes(p.id) || p.stars === 5);
+                const healthItems = products.filter(p => p.stars === 5);
                 return {
                     message: english
                         ? "For vitality, immune defense, and restorative longevity, here are Vietnam's most treasured natural elixirs:"
@@ -5363,7 +5309,7 @@ async function sendAIMessage() {
                             (!shoppingIntent.minStars || product.stars >= shoppingIntent.minStars) &&
                             (!shoppingIntent.categoryOrKeyword || AIShopping.normalize([product.name, product.category, product.desc, product.description].join(' ')).includes(AIShopping.normalize(shoppingIntent.categoryOrKeyword)))
                         );
-                        result = { ...result, ...AIShopping.reply(AIShopping.closest(eligible, shoppingIntent), shoppingIntent, requestLanguage), wikipediaSources: [], localMarkup: '' };
+                        result = { ...result, ...AIShopping.replyOptions(AIShopping.variants(eligible, shoppingIntent), shoppingIntent, requestLanguage), localMarkup: '' };
                     }
                 }
                 if (!Array.isArray(result.productIds)) {
@@ -5393,7 +5339,7 @@ async function sendAIMessage() {
                     recommendationsEl.innerHTML = result.localMarkup;
                 } else if (recommendedProducts.length && (result.combo || isAIComboRequest(text))) {
                     recommendationsEl.innerHTML = renderAIComboRecommendations(
-                        [recommendedProducts],
+                        Array.isArray(result.combos) ? result.combos.map(plan => plan.items.map(item => products.find(p => p.id === item.id)).filter(Boolean)) : [recommendedProducts],
                         currentLanguage === 'en' ? 'Combo ideas' : 'Gợi ý combo đặc sản',
                         currentLanguage === 'en'
                             ? 'The total uses current catalogue prices; review the items before adding them to your cart.'
@@ -5451,6 +5397,27 @@ async function sendAIMessage() {
                     });
                     reply.querySelector('div.bg-white').append(sourceBox);
                 }
+                if (Array.isArray(result.googleSources) && result.googleSources.length) {
+                    const box = document.createElement('div');
+                    box.className = 'text-[10px] text-gray-500 border-t pt-2 space-y-1';
+                    box.textContent = requestLanguage === 'en' ? 'Google Search references:' : 'Nguồn tham khảo Google Search:';
+                    result.googleSources.forEach(source => {
+                        try {
+                            const url = new URL(source.url);
+                            if (url.protocol !== 'https:' || url.username || url.password) return;
+                            const a = document.createElement('a'); a.href = url.href; a.textContent = source.title || url.hostname;
+                            a.target = '_blank'; a.rel = 'noopener noreferrer'; a.className = 'block text-emerald-700 underline break-words'; box.append(a);
+                        } catch (_) {}
+                    });
+                    if (result.googleSearchSuggestions) {
+                        const frame = document.createElement('iframe'); frame.title = 'Google Search suggestions';
+                        frame.setAttribute('sandbox', 'allow-popups allow-popups-to-escape-sandbox');
+                        frame.style.cssText = 'width:100%;height:180px;border:0';
+                        frame.srcdoc = '<meta http-equiv="Content-Security-Policy" content="default-src &apos;none&apos;; style-src &apos;unsafe-inline&apos;; img-src https: data:; font-src https:">' + result.googleSearchSuggestions;
+                        box.append(frame);
+                    }
+                    reply.querySelector('div.bg-white').append(box);
+                }
                 reply.dataset.chatReplyLanguage = requestLanguage;
                 messagesEl.append(reply);
                 if (requestLanguage !== currentLanguage) syncChatLanguage();
@@ -5477,12 +5444,6 @@ async function sendAIMessage() {
                 }
 
 
-                if (result.handoffAdmin) {
-                    window.setTimeout(() => {
-                        const adminMenu = document.getElementById('admin-support-menu');
-                        if (adminMenu.classList.contains('hidden')) toggleAdminSupport();
-                    }, 1200);
-                }
             } catch (error) {
                 if (!inputEl.value.trim()) inputEl.value = text;
                 const loadingNode = document.getElementById(loadingId);
@@ -6064,9 +6025,9 @@ async function sendAIMessage() {
                     <div class="flex items-start justify-between gap-2">
                         <div class="min-w-0">
                             <p class="font-bold text-gray-800">${escapeAIHtml(getProductName(product))}</p>
-                                        <p class="mt-0.5 text-[10px] text-gray-500">${escapeAIHtml(product.region)} · OCOP ${product.stars} ${currentLanguage === 'en' ? 'stars' : 'sao'} · ${getProductReviewLabel(product)}</p>
+                                        <p class="mt-0.5 text-[10px] text-gray-500">${escapeAIHtml(product.region)} · OCOP ${product.stars} ${currentLanguage === 'en' ? 'stars' : 'sao'}${getProductReviewLabel(product) ? ' · '+getProductReviewLabel(product) : ''}</p>
                         </div>
-                        <span class="whitespace-nowrap font-extrabold text-ocopGreen">${product.price.toLocaleString('vi-VN')} ₫</span>
+                        <span class="break-words font-extrabold text-ocopGreen">${getProductPriceLabel(product)}</span>
                     </div>
                     <p class="mt-1.5 text-[10px] text-gray-600">${escapeAIHtml(getProductDescription(product))}</p>
                     <div class="mt-2 flex gap-2">
@@ -6079,17 +6040,18 @@ async function sendAIMessage() {
         }
 
         function renderAIComboRecommendations(combos, title, note) {
-            const bundleCards = combos.map(combo => {
+            const bundleCards = combos.map((combo,index) => {
                 const total = combo.reduce((sum, product) => sum + product.price, 0);
                 const productIds = combo.map(product => product.id).join(',');
                 const items = combo.map(product => `
                     <li class="flex items-start justify-between gap-2">
                         <span>${escapeAIHtml(getProductName(product))}</span>
-                        <span class="whitespace-nowrap font-semibold">${product.price.toLocaleString('vi-VN')} ₫</span>
+                        <span class="break-words font-semibold">${getProductPriceLabel(product)}</span>
                     </li>
                 `).join('');
                 return `
                     <article class="rounded-xl border border-emerald-100 bg-emerald-50/50 p-2.5">
+                        <h5 class="font-bold text-ocopGreen text-xs mb-2">${currentLanguage === 'en' ? 'Option' : 'Combo'} ${index+1} · ${combo.length} ${currentLanguage === 'en' ? 'items' : 'món'}</h5>
                         <ul class="space-y-1 text-[11px] text-gray-700">${items}</ul>
                         <p class="mt-2 border-t border-emerald-100 pt-2 text-right text-xs font-extrabold text-ocopGreen">${currentLanguage === 'en' ? 'Combo total' : 'Tổng combo'}: ${total.toLocaleString('vi-VN')} ₫</p>
                         <button type="button" onclick="addProductsToCart([${productIds}])" class="mt-2 w-full rounded-lg bg-ocopGreen px-2.5 py-2 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${currentLanguage === 'en' ? 'Add this combo to cart' : 'Thêm combo này vào giỏ'}</button>
@@ -6290,14 +6252,18 @@ async function sendAIMessage() {
             showToast(currentLanguage === 'en' ? `Removed voucher ${code}.` : `Đã gỡ mã ưu đãi ${code}.`, "info");
         }
 
-        function checkout() {
+        async function checkout() {
+            if (!window.requireAccountCheckout || !await window.requireAccountCheckout()) return;
             if (cart.length === 0) {
                 showToast("Giỏ hàng đang trống! Vui lòng chọn đặc sản trước khi thanh toán.", "warning");
                 return;
             }
 
-            const totalAmount = getCartSubtotal() - getVoucherDiscount();
-            currentOrderCode = `OCOP-${Math.floor(100000 + Math.random() * 900000)}`;
+            let savedOrder;
+            try { savedOrder = await window.createAccountOrder(); }
+            catch (error) { showToast(error.message, 'error'); return; }
+            const totalAmount = savedOrder.total;
+            currentOrderCode = savedOrder.id;
             const memo = `THANH TOAN ${currentOrderCode}`;
 
             document.getElementById('qr-order-code').innerText = `#${currentOrderCode}`;
@@ -6318,7 +6284,7 @@ async function sendAIMessage() {
             const qrUrl = `https://img.vietqr.io/image/${bankBin}-${accNum}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(accName)}`;
             document.getElementById('bidv-qr').src = qrUrl;
 
-            toggleCart();
+            document.getElementById('cart-drawer').classList.add('hidden');
             document.getElementById('qr-modal').classList.remove('hidden');
         }
 
@@ -6326,27 +6292,17 @@ async function sendAIMessage() {
             document.getElementById('qr-modal').classList.add('hidden');
         }
 
-        function confirmOrderPayment() {
+        async function confirmOrderPayment() {
+            if (!window.requireAccountCheckout || !await window.requireAccountCheckout()) return;
             if (!currentOrderCode || cart.length === 0) {
                 showToast("Không tìm thấy đơn hàng đang chờ xác nhận.", "warning");
                 closeQRModal();
                 return;
             }
 
+            try { await window.reportAccountPayment(currentOrderCode); }
+            catch (error) { showToast(error.message, 'error'); return; }
             closeQRModal();
-            const totalAmount = getCartSubtotal() - getVoucherDiscount();
-            const itemNames = cart.map(i => i.name);
-
-            // Lưu lịch sử đơn hàng
-            ordersHistory.unshift({
-                id: currentOrderCode,
-                date: new Date().toLocaleDateString('vi-VN'),
-                total: totalAmount,
-                status: 'Chờ xác nhận BIDV',
-                items: itemNames
-            });
-
-            cart = [];
             activeVoucher = null;
             currentOrderCode = null;
             updateCartBadge();
@@ -6398,7 +6354,7 @@ async function sendAIMessage() {
                     <div class="flex-1 min-w-0">
                         <h4 class="font-bold text-xs text-gray-900 truncate">${getProductName(p)}</h4>
                         <span class="text-[10px] text-amber-800">${p.region} • ${p.stars}★</span>
-                        <div class="text-red-600 font-extrabold text-xs mt-0.5">${p.price.toLocaleString('vi-VN')} ₫</div>
+                        <div class="text-red-600 font-extrabold text-xs mt-0.5">${getProductPriceLabel(p)}</div>
                     </div>
                     <div class="flex shrink-0 items-center gap-2">
                         <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${currentLanguage === 'en' ? `Remove ${getProductName(p)} from favorites` : `Bỏ ${getProductName(p)} khỏi yêu thích`}" title="${currentLanguage === 'en' ? 'Remove from favorites' : 'Bỏ yêu thích'}" class="flex h-10 w-10 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100 cursor-pointer">
@@ -6424,24 +6380,24 @@ async function sendAIMessage() {
                 <div class="h-64 md:h-full bg-amber-100 relative">
                     <img src="${p.img}" alt="${getProductName(p)}" decoding="async" class="w-full h-full ${(p.catalogImport || p.imageIsSample) ? 'object-contain p-3' : 'object-cover'}">
                     <span class="absolute top-3 left-3 bg-ocopGreen text-ocopGold font-black text-xs px-3 py-1 rounded-full uppercase shadow">
-                        OCOP ${p.stars} ${currentLanguage === 'en' ? 'STARS' : 'SAO'}
+                        OCOP ${getProductStarLabel(p)} ${currentLanguage === 'en' ? 'STARS' : 'SAO'}
                     </span>
                 </div>
                 <div class="p-6 space-y-4 flex flex-col justify-between">
                     <div class="space-y-2">
                         <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">${p.region}</span>
                         <h3 class="text-lg font-black text-gray-900 leading-tight">${getProductName(p)}</h3>
-                        <div class="flex items-center space-x-2 text-xs text-amber-600 font-bold">
+                        <div data-review-summary ${getProductReviewLabel(p) ? '' : 'hidden'} class="flex items-center space-x-2 text-xs text-amber-600 font-bold">
                             <i class="fa-solid fa-star text-yellow-500"></i>
-                            <span>${getProductReviewLabel(p)}</span>
+                            <span data-review-product-id="${p.id}">${getProductReviewLabel(p)}</span>
                         </div>
                         <p class="text-xs text-gray-600 leading-relaxed pt-2 border-t border-gray-100">${getProductDescription(p)}</p>
-                        ${p.imageIsSample ? `<p class="text-[11px] text-gray-500">${currentLanguage === 'en' ? 'Sample product image; sold pack size is specified above.' : 'Ảnh mẫu sản phẩm; quy cách bán theo mô tả ở trên.'}</p>` : ''}
+                        ${p.imageIsSample ? `<p class="text-[11px] text-gray-500">${p.imageIllustrative ? (currentLanguage === 'en' ? 'Illustrative photo selected by product name; actual brand, packaging and appearance may differ.' : 'Ảnh minh họa theo tên món; thương hiệu, bao bì và hình thức thực tế có thể khác.') : (currentLanguage === 'en' ? 'Sample product image; sold pack size is specified above.' : 'Ảnh mẫu sản phẩm; quy cách bán theo mô tả ở trên.')}</p>` : ''}
                     </div>
                     <div class="space-y-3 pt-3 border-t border-gray-100">
-                        <div class="flex items-baseline space-x-2">
-                            <span class="text-2xl font-black text-red-600">${p.price.toLocaleString('vi-VN')} ₫</span>
-                            <span class="text-xs text-gray-400 line-through">${p.origPrice > p.price ? p.origPrice.toLocaleString('vi-VN') + ' ₫' : ''}</span>
+                        <div class="flex flex-col gap-1">
+                            ${getProductPromoPercent(p) > 0 ? `<span data-promo-reference="${p.id}" class="text-xs text-gray-400"><s>${getProductPromoReferenceLabel(p)}</s></span>` : ''}
+                            <span class="text-lg break-words font-black text-red-600">${getProductPriceLabel(p)}</span>
                         </div>
                         <div class="flex items-stretch gap-2">
                             <button id="quickview-wishlist-toggle" type="button" onclick="toggleWishlist(${p.id})" class="flex min-h-12 w-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200 bg-white text-gray-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 cursor-pointer" aria-label="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}" aria-pressed="false" title="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}">
@@ -6458,6 +6414,7 @@ async function sendAIMessage() {
 
             updateQuickViewWishlistButton(productId);
             document.getElementById('quickview-modal').classList.remove('hidden');
+            if (window.mountProductReviews) window.mountProductReviews(productId);
         }
 
         function updateQuickViewWishlistButton(productId) {
@@ -6535,7 +6492,7 @@ async function sendAIMessage() {
         }
 
         async function requestAuth(endpoint, payload) {
-            const response = await fetch(endpoint, {
+            const response = await fetch(getAIEndpoint(endpoint), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -6559,6 +6516,7 @@ async function sendAIMessage() {
                         password: document.getElementById('auth-password').value
                     });
                     currentUser = result.user;
+                    await window.acceptAccountLogin(result);
                     document.getElementById('auth-modal').classList.add('hidden');
                     showToast(`Xin chào ${currentUser.name}! Bạn đã đăng nhập thành công.`, "success");
                 } else if (authStep === 'otp') {
@@ -6567,6 +6525,7 @@ async function sendAIMessage() {
                         otp: document.getElementById('auth-otp').value.trim()
                     });
                     currentUser = result.user;
+                    await window.acceptAccountLogin(result);
                     pendingRegistration = null;
                     document.getElementById('auth-modal').classList.add('hidden');
                     showToast(`Xin chào ${currentUser.name}! Tài khoản đã được xác minh và tạo thành công.`, "success");
@@ -6636,22 +6595,22 @@ async function sendAIMessage() {
         function renderOrdersHistory() {
             const container = document.getElementById('orders-container');
             if (ordersHistory.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">Bạn chưa có đơn hàng nào.</p>`;
+                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${currentLanguage === 'en' ? 'You have no orders yet.' : 'Bạn chưa có đơn hàng nào.'}</p>`;
                 return;
             }
 
             container.innerHTML = ordersHistory.map(o => `
                 <div class="bg-white p-3.5 rounded-2xl border border-amber-200 space-y-2 shadow-xs">
-                    <div class="flex justify-between items-center text-xs font-extrabold text-ocopGreen border-b border-gray-100 pb-2">
-                        <span>Mã đơn: #${o.id}</span>
-                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px]">${o.status}</span>
+                    <div class="flex flex-wrap gap-2 justify-between items-center text-xs font-extrabold text-ocopGreen border-b border-gray-100 pb-2">
+                        <span class="break-all">${currentLanguage === 'en' ? 'Order' : 'Mã đơn'}: #${o.id}</span>
+                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px]">${currentLanguage === 'en' ? ({'Chờ thanh toán':'Awaiting payment','Chờ xác nhận BIDV':'Awaiting BIDV confirmation'}[o.status] || o.status) : o.status}</span>
                     </div>
                     <div class="text-xs text-gray-600 space-y-1">
-                        <p><b>Ngày đặt:</b> ${o.date}</p>
-                        <p><b>Sản phẩm:</b> ${o.items.join(', ')}</p>
+                        <p><b>${currentLanguage === 'en' ? 'Order date:' : 'Ngày đặt:'}</b> ${o.date}</p>
+                        <p><b>${currentLanguage === 'en' ? 'Products:' : 'Sản phẩm:'}</b> ${o.items.join(', ')}</p>
                     </div>
                     <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-xs">
-                        <span class="text-gray-500 font-bold">Tổng tiền:</span>
+                        <span class="text-gray-500 font-bold">${currentLanguage === 'en' ? 'Total:' : 'Tổng tiền:'}</span>
                         <span class="text-red-600 font-black text-sm">${o.total.toLocaleString('vi-VN')} ₫</span>
                     </div>
                 </div>
@@ -6742,23 +6701,16 @@ async function sendAIMessage() {
             }, 3000);
         }
 
-        const productNamesEn = [
-            'Premium Khanh Hoa Bird’s Nest', 'Ha Giang Ancient Tree Tea', 'Tan Cuong Premium Bud Tea',
-            'Ngoc Linh Ginseng with Wildflower Honey', 'Khai Hoan Phu Quoc Fish Sauce 43°N',
-            'Hand-pounded Ha Long Squid Cake', 'Premium Ly Son Black Garlic', 'Gia Lai Coffee Blossom Honey',
-            'Ben Tre Coconut Candy', 'Hanoi Green Rice Cake', 'Ca Mau Salt-Steamed Crab',
-            'Tam Dao Golden Flower Tea', 'Hai Hau Tam Xoan Rice', 'Binh Phuoc Skin-on Roasted Cashews',
-            'Northwest Smoked Buffalo', 'Freeze-Dried Da Lat Cordyceps', 'Dak Lak Butter Avocado',
-            'An Giang Fermented Fish', 'Can Duoc Shrimp Sausage', 'Luc Ngan Dried Lychee',
-            'Quang Tri Vang Herbal Tea Concentrate', 'Chu Se Organic Black Pepper', 'Hung Yen Longan with Mung Bean',
-            'Central Highlands Leaf-Fermented Rice Wine', 'Cold-Dried Celery Powder', 'Ninh Thuan Jujube Honey',
-            'Hau Giang Boneless Featherback Fish Cake', 'Soc Trang Pia Pastry with Salted Egg',
-            'Dong Nai Naturally Dried Banana', 'Hue Pure Black Sesame Oil', 'Sa Pa Dried Shiitake Mushrooms',
-            'Suoi Giang Shan Tuyet Tea', 'Tuyen Quang Lemongrass Essential Oil',
-            'An Giang Palm Sugar', 'Dalat Whole Strawberry Preserve', 'Moc Chau Oolong Tea',
-            'Dong Thap Dried Snakehead Fish', 'Phu Quoc Sim Berry Wine', 'Dak Nong Macadamia Nuts',
-            'Ben Tre Cold-Pressed Coconut Milk'
-        ];
+        const productNamesEn = [];
+
+        function getProductStarLabel(product) {
+            return product.starsMax > product.starsMin ? product.starsMin + '–' + product.starsMax : String(product.stars);
+        }
+        function getProductPriceLabel(product) {
+            const money = value => Number(value).toLocaleString('vi-VN');
+            const price = Number(product.priceMax) || Number(product.price) || 0;
+            return money(price) + ' ₫' + (product.packaging ? ' / ' + (currentLanguage === 'en' ? product.packagingEn || product.packaging : product.packaging) : '');
+        }
 
         function getProductName(product) {
             return currentLanguage === 'en'
@@ -6768,7 +6720,7 @@ async function sendAIMessage() {
 
         function getProductReviewLabel(product) {
             if (!Number.isFinite(product.rating) || !product.reviews) {
-                return currentLanguage === 'en' ? 'No customer reviews yet' : 'Chưa có đánh giá';
+                return '';
             }
             return product.rating.toFixed(1) + ' (' + product.reviews + ' ' + (currentLanguage === 'en' ? 'reviews' : 'đánh giá') + ')';
         }
@@ -7109,6 +7061,7 @@ async function sendAIMessage() {
             updateVoucherLanguage();
             setAIChatWidgetVisibility(document.getElementById('ocop-intro-overlay').classList.contains('hidden'));
             renderWishlistItems();
+            if (window.refreshProductReviewLanguage) window.refreshProductReviewLanguage();
             try {
                 localStorage.setItem('ocop-language', currentLanguage);
             } catch (error) {
@@ -7572,5 +7525,7 @@ async function sendAIMessage() {
 <script src="giohang.js?v=20261006_3"></script>
 <script src="toiuu.js?v=20261006_3"></script>
 <script src="script.js?v=20261006_3"></script>
+<script src="product-reviews-ui.js?v=20261007_3"></script>
+<script src="account-client.js?v=20261007_1"></script>
 </body>
 </html>

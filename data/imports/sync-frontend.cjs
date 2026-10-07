@@ -1,3 +1,4 @@
+if (require('../../data.js').PRODUCTS.some(p => p.catalogVersion?.startsWith('20261007-63'))) throw new Error('Legacy import disabled: use data/imports/replace-catalog-latest.cjs for the 252-item catalogue.');
 const fs = require('node:fs');
 const path = require('node:path');
 const file = path.join(__dirname,'../../index.html');

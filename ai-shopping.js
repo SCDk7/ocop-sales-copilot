@@ -8,7 +8,7 @@
   function budget(text) {
     const query = normalize(text).replace(/(?:moi|tung)\s+(?:mon|san pham|mat hang)[^,;\n]*?(\d+(?:[.,]\d+)*)\s*(?:trieu|tr|m|k|nghin|ngan|vnd|dong|d|₫)(?!\w)/g, ' ');
     const amounts = [...query.matchAll(/(\d+(?:[.,]\d+)*)\s*(trieu|tr|m|k|nghin|ngan|vnd|dong|d|₫)(?!\w)/g)];
-    const range = query.match(/(\d+(?:[.,]\d+)*)\s*(trieu|tr|m|k|nghin|ngan)?\s*(?:-|–|den|to)\s*(\d+(?:[.,]\d+)*)\s*(trieu|tr|m|k|nghin|ngan)/);
+    const range = query.match(/(\d+(?:[.,]\d+)*)\s*(trieu|tr|m|k|nghin|ngan)?\s*(?:-|–|den|to)\s*(\d+(?:[.,]\d+)*)\s*(trieu|tr|m|k|nghin|ngan)(?!\w)/);
     if (range) return { minPrice: money(range[1], range[2] || range[4]), maxPrice: money(range[3], range[4]) };
     const amount = amounts[0] || query.match(/(?:ngan sach|toi co|minh co|tai chinh|budget|duoi|toi da|khoang|tam)\s*(\d+(?:[.,]\d+)*)/);
     if (!amount) return {};
@@ -49,10 +49,15 @@
     'Miền Trung': ['quang nam', 'quang ngai', 'thua thien hue', 'hue', 'quang tri', 'da nang', 'binh dinh', 'phu yen', 'khanh hoa', 'ninh thuan', 'nghe an', 'ha tinh', 'quang binh', 'thanh hoa'],
     'Miền Bắc': ['ha noi', 'ha giang', 'thai nguyen', 'quang ninh', 'lao cai', 'nam dinh', 'bac giang', 'hung yen', 'yen bai', 'tuyen quang', 'vinh phuc', 'ninh binh', 'bac kan', 'cao bang', 'lang son', 'phu tho', 'son la', 'dien bien', 'lai chau', 'hoa binh', 'ha nam', 'hai duong', 'hai phong', 'thai binh']
   };
+  regions['Miền Nam'] = ['binh phuoc','binh duong','dong nai','tay ninh','ba ria vung tau','ho chi minh',...regions['Miền Tây']];
+  regions['Miền Bắc'].push('bac ninh');
+  regions['Miền Trung'].push('binh thuan');
   function regionMatches(product, intent) {
-    const province = normalize(product.region || '');
-    if (intent.exactRegion) return province === normalize(intent.exactRegion);
-    return !intent.regionKeyword || (regions[intent.regionKeyword] || []).includes(province);
+    const key = value => normalize(value).replace(/[^a-z0-9]/g, '').replace(/^(thanhpho|tp)/, '');
+    const province = key(product.region);
+    if (intent.exactRegion) return province === key(intent.exactRegion);
+    if (intent.regionKeyword === 'Miền Nam' && product.macroRegion) return product.macroRegion === 'nam';
+    return !intent.regionKeyword || (regions[intent.regionKeyword] || []).some(value => key(value) === province);
   }
   function analyze(text, products) {
     const q = normalize(text);
@@ -135,7 +140,7 @@
         const key = intent.minItems != null || intent.maxItems != null ? String(count) : count === 1 ? 'single' : 'combo';
         const choices = states.get(nextTotal) || {};
         const existing = choices[key];
-        const preferredCount = existing && (intent.smallItems ? count > existing.count : count < existing.count);
+        const preferredCount = existing && (intent.smallItems || intent.preferVariety ? count > existing.count : count < existing.count);
         if (!existing || preferredCount || (count === existing.count && quality > existing.quality)) {
           states.set(nextTotal, { ...choices, [key]: { product, previous, count, quality } });
         }
@@ -146,7 +151,7 @@
     for (const [sum, choices] of states) {
       for (const state of Object.values(choices)) {
         if (state.count < minItems || state.count > maxItems || sum < (intent.minPrice || 0)) continue;
-        const preferredCount = best && (intent.smallItems ? state.count > best.count : state.count < best.count);
+        const preferredCount = best && (intent.smallItems || intent.preferVariety ? state.count > best.count : state.count < best.count);
         if (sum > total || (sum === total && (!best || preferredCount || (state.count === best.count && state.quality > best.quality)))) { total = sum; best = state; }
       }
     }
@@ -156,10 +161,9 @@
     for (let state = best; state.product; state = state.previous) items.push(state.product);
     items.reverse();
     // A supporting lower-priced item can complete a valuable regional set.
-    // Keep its average price substantial and cap additions instead of filling
-    // the budget with dozens of cheap products.
+    // Keep its average price substantial without imposing an item-count cap.
     if (itemFloor > 0 && total < ceiling) {
-      const alternative = closest(products, { ...intent, relaxItemFloor: true, maxItems: intent.maxItems ?? Math.max(8, minItems) });
+      const alternative = closest(products, { ...intent, relaxItemFloor: true });
       if (alternative && alternative.total > total && alternative.averagePrice >= itemFloor) return alternative;
     }
     return { items, total, budget: ceiling, remaining: ceiling - total, averagePrice: Math.round(total / items.length), itemFloor, smallItems: Boolean(intent.smallItems) };
@@ -170,15 +174,43 @@
     const requestedCount = intent.minItems === intent.maxItems && intent.minItems ? ` ${intent.minItems}` : intent.minItems ? ` ${intent.minItems}–${intent.maxItems || '+'}` : '';
     const message = !plan ? (en ? `I could not find a${requestedCount}-item set meeting your budget and preferences. Would you like to adjust the item count, budget, or category?` : `Mình chưa tìm được combo${requestedCount} món đáp ứng đồng thời ngân sách và yêu cầu hiện tại. Anh/chị muốn điều chỉnh số món, ngân sách hoặc nhóm hàng?`) : [
       en ? `For your ${format(plan.budget)} budget${intent.exactRegion || intent.regionKeyword ? ', ' + (intent.exactRegion || intent.regionKeyword) : ''}, here is a matching set of ${plan.items.length} different products:` : `Với ngân sách ${format(plan.budget)}${intent.exactRegion || intent.regionKeyword ? ', đặc sản ' + (intent.exactRegion || intent.regionKeyword) : ''}${intent.categoryOrKeyword ? ', nhóm ' + intent.categoryOrKeyword : ''}, mình gợi ý combo ${plan.items.length} món phù hợp:`,
-      ...plan.items.map(p => `• ${en ? p.nameEn || p.name : p.name} × 1: ${format(p.price)}`),
+      ...plan.items.map(p => `• ${en ? p.nameEn || p.name : p.name} × 1${p.packaging ? ' (' + (en ? p.packagingEn || p.packaging : p.packaging) + ')' : ''}: ${format(p.price)}`),
       `${en ? 'Total' : 'Tổng combo'}: ${format(plan.total)}. ${en ? 'Remaining' : 'Còn lại'}: ${format(plan.remaining)}.`,
       `${en ? 'Average price per item' : 'Giá trung bình mỗi món'}: ${format(plan.averagePrice)}.`,
       plan.smallItems ? (en ? 'Lower-priced items selected as requested.' : 'Ưu tiên món giá nhỏ theo yêu cầu của anh/chị.') : (en ? 'Selected to match your preferences and budget.' : 'Các món được chọn theo nhu cầu và ngân sách của anh/chị.'),
-      en ? 'Catalogue prices; shipping and gift packaging are not included.' : 'Giá theo danh mục; chưa gồm phí vận chuyển và hộp quà.'
+      plan.items.some(p => p.priceIsReference) ? (en ? 'Reference total uses the listed product prices; confirm the actual price and packaging before ordering. Shipping and gift boxes are extra.' : 'Tổng tham khảo tính theo giá niêm yết của từng sản phẩm; cần xác nhận giá và quy cách khi đặt hàng. Chưa gồm vận chuyển và hộp quà.') : (en ? 'Catalogue prices; shipping and gift packaging are not included.' : 'Giá theo danh mục; chưa gồm phí vận chuyển và hộp quà.')
     ].join('\n');
     return { message, productIds: plan ? plan.items.map(p => p.id) : [], combo: plan, dynamic_chips: en ? ['Adjust budget', 'Other category'] : ['Đổi ngân sách', 'Nhóm hàng khác'] };
   }
-  const api = { normalize, budget, analyze, resolve, closest, reply, itemCount, allowed, regionMatches };
+  function variants(products, intent, count = 3, random = Math.random) {
+    const plans = [], seen = new Set();
+    for (let attempt = 0; attempt < 12 && plans.length < count; attempt++) {
+      const previous = plans.length ? plans[Math.floor(random() * plans.length)] : null;
+      const blocked = previous ? previous.items[Math.floor(random() * previous.items.length)].id : null;
+      // Shuffle before remapping IDs to break equal-price ties without changing catalogue IDs.
+      const shuffled = products.filter(p => p.id !== blocked).map(p => ({p, rank:random()})).sort((a,b)=>a.rank-b.rank);
+      const lookup = new Map(shuffled.map(({p},index)=>[index+1,p]));
+      const plan = closest(shuffled.map(({p},index)=>({...p,id:index+1})),{...intent,preferVariety:true});
+      if (!plan) continue;
+      plan.items = plan.items.map(p=>lookup.get(p.id));
+      const key = plan.items.map(p=>p.id).sort((a,b)=>a-b).join(',');
+      if (seen.has(key)) continue;
+      seen.add(key);
+      plans.push(plan);
+    }
+    return plans;
+  }
+  function replyOptions(plans, intent, language) {
+    if (!plans.length) return {...reply(null,intent,language),combos:[]};
+    const en = language === 'en', money = n=>n.toLocaleString('vi-VN')+' ₫';
+    const message = [
+      en ? `Here are ${plans.length} different combinations within your ${money(intent.maxPrice)} budget:` : `Mình gợi ý ${plans.length} combo khác nhau, mỗi combo không vượt ngân sách ${money(intent.maxPrice)}:`,
+      ...plans.map((plan,index)=>`${en?'Option':'Combo'} ${index+1}: ${plan.items.length} ${en?'items':'món'} · ${money(plan.total)} · ${en?'Remaining':'Còn lại'} ${money(plan.remaining)}.`),
+      en ? 'Choose one option below. Catalogue prices exclude shipping and gift packaging.' : 'Anh/chị chọn một combo bên dưới nhé. Giá danh mục chưa gồm vận chuyển và hộp quà.'
+    ].join('\n');
+    return {message,combos:plans,combo:plans[0],productIds:[...new Set(plans.flatMap(plan=>plan.items.map(p=>p.id)))],dynamic_chips:en?['Other combinations','Adjust budget']:['Combo khác','Đổi ngân sách']};
+  }
+  const api = { normalize, budget, analyze, resolve, closest, reply, variants, replyOptions, itemCount, allowed, regionMatches };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.AIShopping = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

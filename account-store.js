@@ -1,0 +1,21 @@
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const vouchers=[['OCOP-CHAOHAP2026',20000,300000],['OCOP-QUA30',30000,500000],['OCOP-FREESHIP',40000,800000],['OCOP-COMBO60',60000,1200000],['OCOP-TINHHOA100',100000,2000000],['OCOP-VIP200',200000,3500000]];
+function createAccountStore(file,products){
+  let db={accounts:{},sessions:{}};try{db=JSON.parse(fs.readFileSync(file,'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
+  const catalog=new Map(products.map(p=>[p.id,p]));
+  const fail=(message,status=400)=>{throw Object.assign(new Error(message),{status});};
+  const save=next=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file+'.tmp',JSON.stringify(next,null,2),{mode:0o600});fs.renameSync(file+'.tmp',file);db=next;};
+  const empty=()=>({cart:[],wishlist:[],language:'vi',chatHistory:[],orders:[]});
+  const state=id=>structuredClone(db.accounts[id]||empty());
+  function cartRows(rows){if(!Array.isArray(rows)||rows.length>252)fail('Giỏ hàng không hợp lệ.');const seen=new Set();return rows.map(r=>{if(!r||!catalog.has(r.id)||seen.has(r.id)||!Number.isInteger(r.qty)||r.qty<1||r.qty>99)fail('Sản phẩm hoặc số lượng không hợp lệ.');seen.add(r.id);return{id:r.id,qty:r.qty};});}
+  function session(token){if(typeof token!=='string'||!/^[0-9a-f]{64}$/.test(token))return null;const s=db.sessions[crypto.createHash('sha256').update(token).digest('hex')];return s&&s.expiresAt>Date.now()?s.customerId:null;}
+  function login(id){const token=crypto.randomBytes(32).toString('hex'),next=structuredClone(db);for(const [key,s]of Object.entries(next.sessions))if(s.expiresAt<=Date.now())delete next.sessions[key];next.sessions[crypto.createHash('sha256').update(token).digest('hex')]={customerId:id,expiresAt:Date.now()+30*86400000};next.accounts[id]??=empty();save(next);return{token,state:state(id)};}
+  function logout(token){const next=structuredClone(db);delete next.sessions[crypto.createHash('sha256').update(token||'').digest('hex')];save(next);}
+  function update(id,body){const current=state(id),cart=cartRows(body.cart);if(!Array.isArray(body.wishlist)||body.wishlist.length>252||body.wishlist.some(p=>!catalog.has(p))||!['vi','en'].includes(body.language)||!Array.isArray(body.chatHistory)||body.chatHistory.length>100||body.chatHistory.some(m=>!m||!['user','assistant'].includes(m.role)||typeof m.text!=='string'||m.text.length>10000))fail('Dữ liệu tài khoản không hợp lệ.');const next=structuredClone(db);next.accounts[id]={...current,cart,wishlist:[...new Set(body.wishlist)],language:body.language,chatHistory:body.chatHistory.map(m=>({role:m.role,text:m.text})),updatedAt:new Date().toISOString()};save(next);return state(id);}
+  function order(id,body){const cart=cartRows(body.items);if(!cart.length)fail('Giỏ hàng đang trống.');const subtotal=cart.reduce((n,r)=>n+catalog.get(r.id).price*r.qty,0);const voucher=vouchers.find(v=>v[0]===body.voucherCode);if(body.voucherCode&&(!voucher||subtotal<voucher[2]))fail('Mã ưu đãi không hợp lệ hoặc đơn chưa đủ điều kiện.');const discount=voucher?Math.min(voucher[1],subtotal):0;const current=state(id);const fingerprint=JSON.stringify([cart,body.voucherCode||null]);const existing=current.orders.find(o=>o.status==='Chờ thanh toán'&&o.fingerprint===fingerprint);if(existing)return existing;
+    const result={id:'OCOP-'+crypto.randomUUID(),date:new Date().toLocaleDateString('vi-VN'),createdAt:new Date().toISOString(),total:subtotal-discount,subtotal,discount,voucherCode:body.voucherCode||null,status:'Chờ thanh toán',items:cart.map(r=>catalog.get(r.id).name),lines:cart.map(r=>({...r,price:catalog.get(r.id).price})),fingerprint};const next=structuredClone(db);next.accounts[id]={...current,cart,orders:[result,...current.orders]};save(next);return result;
+  }
+  function confirm(id,orderId){const current=state(id),found=current.orders.find(o=>o.id===orderId);if(!found)fail('Không tìm thấy đơn của tài khoản này.',404);if(found.status==='Chờ thanh toán'){found.status='Chờ xác nhận BIDV';found.customerReportedPaidAt=new Date().toISOString();if(JSON.stringify(current.cart)===JSON.stringify(found.lines.map(({id,qty})=>({id,qty}))))current.cart=[];const next=structuredClone(db);next.accounts[id]=current;save(next);}return state(id);}
+  return{login,logout,session,state,update,order,confirm};
+}
+module.exports={createAccountStore};
