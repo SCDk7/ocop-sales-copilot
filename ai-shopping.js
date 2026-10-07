@@ -35,12 +35,23 @@
   }
   function excludedTerms(text) {
     const q = normalize(text);
-    const matches = [...q.matchAll(/(?:khong|dung)\s+(?:(?:lay|chon|them|can|thich|dung)\s+)?(ruou|gom|tra|ca phe|mat ong|banh|keo|yen|gao|sam|hai san)\b/g)];
-    return matches.map(match => match[1]);
+    const exclusions = [];
+    if (/\b(?:an chay|do chay|thuan chay|chay|vegan|vegetarian)\b/.test(q)) {
+      exclusions.push('thit', 'trau', 'hai san', 'cua', 'tom', 'cha muc', 'nuoc mam');
+    }
+    const matches = [...q.matchAll(/\b(?:khong|dung|bo|tru)\s+(?:(?:lay|chon|them|can|thich|dung|mon)\s+)?(ruou|gom|tra|ca phe|mat ong|banh|keo|yen|gao|sam|hai san|thit|cua|tom)\b/g)];
+    for (const match of matches) exclusions.push(match[1]);
+    return [...new Set(exclusions)];
   }
   function allowed(product, intent) {
-    const name = normalize([product.name, product.nameEn, product.category].join(' '));
-    return !(intent.excludedTerms || []).some(term => name.includes(term));
+    const name = normalize([product.name, product.nameEn, product.category, product.desc, product.description, product.tag].join(' '));
+    const excluded = intent.excludedTerms || [];
+    if (!excluded.length) return true;
+    const padded = ' ' + name + ' ';
+    return !excluded.some(term => {
+      const rx = new RegExp('(?:^|[^a-z0-9])' + term + '(?:[^a-z0-9]|$)', 'i');
+      return rx.test(padded);
+    });
   }
   function analyze(text, products) {
     const q = normalize(text);

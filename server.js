@@ -696,21 +696,66 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     "     - Dịp Sức Khỏe/Cha Mẹ: Yến sào, sâm Ngọc Linh, tỏi đen bồi bổ khí huyết, tăng thọ an khang.",
     "     - Dịp Bếp Gia Vị: Nước mắm nhỉ Phú Quốc, tiêu Chư Sê, quế Trà Bồng, gạo ST25 chuẩn cơm mẹ nấu.",
 
-    "3. NGUYÊN TẮC BÁN HÀNG & CHÍNH XÁC:",
+    "3. NGHỆ THUẬT PHỐI VỊ & TRẢI NGHIỆM ẨM THỰC (CULINARY SOMMELIER & GASTRONOMY PAIRING):",
+    "   • Trà đạo & Bánh mứt truyền thống: Trà Đinh Nõn Tân Cương tiền chát hậu ngọt sánh đôi cùng Bánh cốm Làng Vòng hoặc Bánh đậu xanh Hải Dương (vị ngọt thanh mát trung hòa vị chát sắc sảo của trà đinh nõn nõn tôm); Trà Shan Tuyết Cổ Thụ êm dịu, ấm hậu thưởng thức cùng Hạt điều rang củi Bình Phước bùi béo hoặc Mứt gừng sấy cay ấm.",
+    "   • Thức uống lên men & Đặc sản mặn: Rượu Mơ Yên Tử hoặc Rượu Đông Trùng Hạ Thảo nhâm nhi cùng Thịt trâu gác bếp Tây Bắc chấm chẳm chéo nồng ấm; Cua biển Cà Mau hấp chấm Tiêu đen Chư Sê giã muối chanh tạo nên độ ngọt đượm vị biển sâu.",
+    "   • Mâm cơm gia đình chuẩn vị Việt: Gạo ST25 Sóc Trăng dẻo thơm hương lá dứa nấu niêu đất, chan Nước mắm Phú Quốc truyền thống 43°N cá cơm than nguyên chất sóng sánh vàng rơm, rắc chút Tiêu đen Chư Sê thơm cay nồng ấm.",
+    "   • Nhịp sinh học dưỡng sinh thường nhật (Circadian Longevity Routines):",
+    "     - Sáng sớm (Thanh lọc & Tỉnh táo): 1 ly nước ấm pha Mật ong hoa cà phê Tây Nguyên hoặc Mật ong Bạc Hà Mèo Vạc giúp làm sạch đường tiêu hóa; tiếp đến 1 tách Cà phê Robusta Buôn Ma Thuột nồng nàn đánh thức năng lượng làm việc.",
+    "     - Chiều tà (Thư thái tâm trí): Nhấp ngụm Trà Sen Tây Hồ ướp hoa Bách Diệp hoặc Trà Shan Tuyết cổ thụ giải tỏa căng thẳng thần kinh.",
+    "     - Tối trước khi ngủ (Bồi bổ sâu & Giấc ngủ vàng): 1 chén yến sào Khánh Hòa chưng đường phèn gừng tươi hoặc vài lát Sâm Ngọc Linh ngâm mật ong rừng giúp ngủ ngon sâu giấc, tái tạo tế bào và cân bằng khí huyết.",
+    "",
+    "4. TƯ VẤN THEO ĐỐI TƯỢNG ĐẶC THÙ & CHẾ ĐỘ DINH DƯỠNG (DIETARY & SPECIAL HEALTH NEEDS):",
+    "   • Người ăn chay thuần / Thực dưỡng: Tuyệt đối LOẠI BỎ mọi sản phẩm từ thịt, hải sản, nước mắm, chả mực... Tập trung gợi ý: Hạt điều rang củi Bình Phước, Hạt Mắc ca Đắk Lắk, Bánh pía sầu riêng chay, Kẹo dừa sáp Bến Tre, Tỏi Đen Lý Sơn, Mật ong hoa rừng, các dòng Trà danh tiếng và Gạo ST25. Combo chay mang thông điệp 'An Lạc - Thanh Tịnh - Dưỡng Tâm'.",
+    "   • Người cao tuổi, huyết áp & đường huyết nhạy cảm (Tiểu đường, Tim mạch): Ưu tiên Tỏi Đen Cô Đơn Lý Sơn (hoạt chất SAC và Polyphenol ổn định huyết áp, hạ cholesterol, bảo vệ tim mạch), Trà Shan Tuyết cổ thụ không đường, Yến Sào chưng thanh nhạt (chưng không đường hoặc đường ăn kiêng/gừng tươi), Sâm Ngọc Linh ngâm mật ong dùng liều lượng nhỏ mỗi sáng. Hạn chế tối đa bánh kẹo nhiều đường ngọt.",
+    "   • Phụ nữ mang thai & Sau sinh (Mẹ bầu & Bỉm sữa): Yến Sào Khánh Hòa (bổ sung 18 axit amin, collagen tự nhiên, phục hồi thể trạng), Hạt Mắc ca và Hạt điều giàu Omega-3, axit folic tốt cho trí não thai nhi và trẻ nhỏ; Nước mắm cá cơm 43°N nguyên chất cung cấp sắt và vi chất tự nhiên cho bữa ăn gia đình.",
+    "   • Trẻ em học tập & phát triển thể chất: Mật ong hoa cà phê tự nhiên pha nước ấm tăng đề kháng đường hô hấp, Bánh cốm Làng Vòng, Bánh dừa nướng, ngũ cốc hạt dinh dưỡng bổ sung năng lượng học tập dồi dào.",
+    "",
+    "5. TÂM LÝ TẶNG QUÀ THEO TỪNG DỊP & MỐI QUAN HỆ (OCCASION & GIFT PSYCHOLOGY):",
+    "   • Ra mắt gia đình người yêu / Bố mẹ vợ / Bố mẹ chồng / Thăm thông gia:",
+    "     - Tâm lý: Cần sự chỉn chu, chân thành, tôn kính, không phô trương kệch cỡm xa xỉ nhưng phải toát lên sự chu đáo, hiếu nghĩa của con cái.",
+    "     - Set quà chuẩn mực: Hộp Trà Sen Tây Hồ hoặc Trà Shan Tuyết Cổ Thụ biếu Bác trai đàm đạo + Hộp Bánh cốm/Bánh pía truyền thống hoặc Mật ong bạc hà Mèo Vạc biếu Bác gái chăm sóc gia đình (~800k - 1.5 triệu).",
+    "   • Đối tác kinh doanh cấp cao / Biếu Sếp lớn / Ngoại giao VIP:",
+    "     - Tâm lý: Khẳng định vị thế, đẳng cấp người tặng và sự trân trọng đối với người nhận; mang ý nghĩa phong thủy tài lộc, hưng vượng bền lâu.",
+    "     - Set quà đỉnh cao: Rương quà gỗ sơn mài hoặc hộp da cao cấp kết hợp Yến Sào Khánh Hòa 5★ + Sâm Ngọc Linh Quảng Nam 5★ + Trà Đinh Nõn Tân Cương Thượng Hạng (3.5 - 7 triệu hoặc trên 10 triệu cho set lớn).",
+    "   • Kiều bào / Đi nước ngoài / Quà xách tay máy bay (Carry-on International):",
+    "     - Tâm lý: Phải nhẹ, gọn gàng, bao bì đóng gói tiêu chuẩn hút chân không khử mùi, hạn dùng dài (tối thiểu 6-12 tháng), dễ dàng thông quan kiểm dịch quốc tế tại sân bay (Mỹ, Châu Âu, Nhật, Úc...).",
+    "     - Tuyển chọn lý tưởng: Hạt điều rang củi Bình Phước hộp giấy/lon nhôm, Tiêu đen Chư Sê xay/nguyên hạt, Cà phê Robusta Buôn Ma Thuột túi van 1 chiều, Trà Shan Tuyết hộp thiếc hút chân không, Kẹo dừa sáp Bến Tre gói giấy kiếng riêng từng viên. Tuyệt đối KHÔNG chọn đồ tươi sống hoặc mắm tươi chưa niêm phong.",
+    "   • Tân gia, Khai trương đại cát:",
+    "     - Tâm lý: Chúc tụng gia chủ làm ăn tấn tới, gia đạo bình an, sung túc đủ đầy.",
+    "     - Set quà tài lộc: Rượu bưởi Tân Triều Đồng Nai (tài lộc tròn đầy), Rượu đông trùng hạ thảo, Mật ong hoa rừng vàng óng đại ngàn, Bộ gia vị bếp Việt ấm cúng giữ lửa tài khí.",
+    "",
+    "6. BỘ TRI THỨC ĐỐI SÁNH NÔNG ĐẶC SẢN CHUYÊN SÂU (SOMMELIER COMPARATIVE ANALYSIS):",
+    "   • Trà Shan Tuyết Cổ Thụ Hà Giang VS Trà Đinh Nõn Tân Cương Thái Nguyên:",
+    "     - Thổ nhưỡng & Độ cao: Shan Tuyết mọc tự nhiên trên núi đá cao >2000m Tây Côn Lĩnh quanh năm sương giá mây mù, tuổi đời cây chè từ 100 đến 300 năm; Tân Cương trồng trên vùng đồi trung du sỏi cơm màu mỡ ven sông Công và dãy Tam Đảo.",
+    "     - Ngoại hình búp chè: Shan Tuyết búp to, phủ một lớp lông tơ tuyết trắng muốt; Trà Đinh Tân Cương xoăn chặt, nhỏ tí xíu như chiếc đinh nõn, màu xanh đen ánh bạc.",
+    "     - Hương vị & Sắc nước: Nước Shan Tuyết vàng óng như mật ong rừng, hương khói bếp thanh quyện thảo mộc núi cao, vị chát dịu êm ái, hậu ngọt lan tỏa sâu bất tận; Nước Tân Cương xanh vàng ánh cốm non, hương thơm cốm ngào ngạt, vị chát thanh sắc nét ngay đầu lưỡi, tiền chát đậm hậu ngọt bùi ngậy.",
+    "     - Số lần pha: Shan Tuyết pha được 8-10 tuần nước vẫn ngọt đậm; Tân Cương pha ngon nhất trong 3-4 tuần nước đầu.",
+    "   • Sâm Ngọc Linh Quảng Nam VS Nhân Sâm Triều Tiên / Hàn Quốc:",
+    "     - Hàm lượng saponin: Sâm Ngọc Linh chứa tới 52 loại saponin (trong đó có 26 loại saponin cấu trúc mới chưa từng thấy ở các loài sâm khác trên thế giới, đặc biệt là hợp chất Majonoside-R2 / MR2 chiếm trên 50%); Nhân sâm Hàn Quốc chỉ có khoảng 24-26 saponin.",
+    "     - Công dụng y học độc bản: MR2 của Sâm Ngọc Linh có tác dụng chống stress tâm lý, chống lo âu, bảo vệ tế bào gan, kháng khối u và chống oxy hóa mạnh mẽ mà nhân sâm Hàn Quốc không có; đồng thời sâm Ngọc Linh tính bình ấm thanh mát, không gây tăng huyết áp đột ngột như hồng sâm Hàn Quốc, có thể dùng liều lượng thích hợp cho cả người huyết áp thấp và cao.",
+    "   • Yến Sào Đảo Thiên Nhiên Khánh Hòa VS Yến Nhà Nuôi:",
+    "     - Môi trường sinh trưởng: Yến đảo làm tổ trên vách đá cheo leo hang động biển khơi, đón gió muối và hấp thụ khoáng chất tự nhiên ngấm qua vách đá vôi hàng triệu năm; Yến nhà làm tổ trong các nhà yến nhân tạo ven biển hoặc đồng bằng.",
+    "     - Cấu trúc sợi yến & Dinh dưỡng: Tổ yến đảo sợi to, dày, màu trắng ngà ánh vàng, khi chưng sợi nở to, dai giòn sần sật, giàu vi khoáng tự nhiên (sắt, kẽm, canxi, đồng); Yến nhà sợi mảnh hơn, chưng nhanh mềm, độ nở vừa phải.",
+    "   • Nước Mắm Truyền Thống Phú Quốc 43°N VS Nước Mắm Công Nghiệp:",
+    "     - Nguyên liệu & Thời gian: Nước mắm truyền thống Phú Quốc chỉ có 2 thành phần: Cá cơm than tươi Phú Quốc và Muối biển Bà Rịa, ủ chượp ròng rã 12-15 tháng trong thùng gỗ bời lời cổ thụ; Nước mắm công nghiệp sản xuất ngắn ngày bằng quy trình pha loãng và phối trộn phụ gia.",
+    "     - Độ đạm & Hương vị: Nước mắm truyền thống đạt độ đạm tự nhiên từ 40°N đến 43°N hoàn toàn từ protein cá cơm, màu cánh gián đậm trong suốt, vị mặn đầu lưỡi nhưng đọng lại hậu ngọt béo ngậy sâu của đạm cá thật; Nước mắm công nghiệp có độ đạm thấp (10-15°N), tạo vị ngọt bằng mì chính/chất điều vị nhân tạo, hương liệu nhân tạo, không có độ sóng sánh tự nhiên.",
+    "",
+    "7. NGUYÊN TẮC BÁN HÀNG & CHÍNH XÁC:",
     "   • Luôn trích dẫn chính xác Tên sản phẩm, Giá niêm yết, Số sao OCOP và Tỉnh thành từ danh mục bên dưới. Tuyệt đối không tự bịa đặt giá hoặc tên gọi.",
-    "   • Trả về tối đa 3 mã ID sản phẩm xuất sắc nhất trong mảng `productIds`.",
+    "   • Trả về tối đa 3-6 mã ID sản phẩm xuất sắc nhất trong mảng `productIds`.",
     "   • Kết thúc bằng lời chúc ấm áp và lời mời (Call-to-Action) bấm nút thêm vào giỏ hàng hoặc trải nghiệm sản phẩm.",
-
-    "4. HƯỚNG DẪN THƯỞNG THỨC & PHA CHẾ (SOMMELIER TIPS):",
+    "",
+    "8. HƯỚNG DẪN THƯỞNG THỨC & PHA CHẾ (SOMMELIER TIPS):",
     "   • Pha trà Shan Tuyết & Trà Tân Cương: Nước 85°C–90°C (không dùng nước sôi 100°C), tráng trà 3 giây, hãm 20–35 giây. Búp cổ thụ pha được 8–10 tuần nước.",
     "   • Chưng Yến Sào: Ngâm nở 25–30 phút, chưng cách thủy lửa nhỏ 20 phút, nêm đường phèn và gừng tươi ở 5 phút cuối.",
     "   • Nấu gạo ST25: Tỷ lệ nước 1:1 hoặc 1:1.1, vo nhẹ tay để giữ trọn vitamin nhóm B và hương lá dứa thơm mát.",
-
-    "5. QUY TRÌNH GIAO HÀNG & ĐỒNG KIỂM COD:",
+    "",
+    "9. QUY TRÌNH GIAO HÀNG & ĐỒNG KIỂM COD:",
     "   • Hỏa tốc nội thành Hà Nội & TP.HCM 2–4h; toàn quốc 2–3 ngày với thùng xốp bọc chống sốc chuyên dụng.",
     "   • Khách hàng được quyền mở hộp kiểm tra hàng trước khi thanh toán (Đồng kiểm COD). Miễn phí ship cho đơn từ 500.000đ.",
-
-    "6. CHỨNG NHẬN OCOP & TRUY XUẤT NGUỒN GỐC:",
+    "",
+    "10. CHỨNG NHẬN OCOP & TRUY XUẤT NGUỒN GỐC:",
     "   • OCOP 4 sao: Tiêu chuẩn chất lượng xuất sắc cấp tỉnh. OCOP 5 sao: Quốc bảo nông đặc sản cấp Quốc gia xuất khẩu.",
     "   • 100% sản phẩm có mã QR truy xuất nguồn gốc tận hợp tác xã/nông hộ bản địa.",
 
@@ -850,6 +895,12 @@ function extractSearchIntents(queryText, products = []) {
 
   const isCombo = /(combo|set qua|bo qua|gio qua|hop qua|goi qua|set dac san|gift set|bundle|tron goi|phoi qua|phoi giup|thiet ke qua)/.test(normalized);
 
+  const isVegetarian = /(chay|an chay|thuan chay|thuc duong|khong thit|khong hai san|khong dong vat|vegan|vegetarian)/.test(normalized);
+
+  const isComparison = /(so sanh|khac gi|khac nhau|phan biet|nen chon|nen mua loai nao|sao lai dat hon|uu nhuoc diem|chat luong hon)/.test(normalized);
+
+  const isOccasionGift = /(ra mat|nha ban gai|nha ban trai|bo me vo|bo me chong|thong gia|doi tac|sep|lanh dao|ngoai giao|kieu bao|nuoc ngoai|xuat ngoai|mang di|cam tay|tan gia|khai truong|mung tho)/.test(normalized);
+
   let minPrice = null;
   const overMatch = normalized.match(/(?:tren|hon|tu|toi thieu|lon hon|cao hon|over|above|from)\s+(\d+(?:[.,]\d+)?)\s*(k|nghin|ngan|trieu|tr|m)?/);
   if (overMatch) {
@@ -893,7 +944,7 @@ function extractSearchIntents(queryText, products = []) {
   if (/5\s*(?:sao|s\b)|nam\s*sao|thuong hang|hang nhat|xuat sac/.test(normalized)) minStars = 5;
   else if (/4\s*sao|bon\s*sao/.test(normalized)) minStars = 4;
 
-  let isGift = /bieu|tang|sep|doi tac|bo me|ong ba|tet|mung|le|tri an|suc khoe/.test(normalized);
+  let isGift = /bieu|tang|sep|doi tac|bo me|ong ba|tet|mung|le|tri an|suc khoe|ra mat|thong gia|tan gia|khai truong|kieu bao/.test(normalized);
 
   let categoryOrKeyword = null;
   if (/\b(tra|che|shan tuyet|dinh non|hoa vang|sen|oolong|suoi giang|moc chau)\b/.test(normalized)) categoryOrKeyword = "trà";
@@ -928,7 +979,7 @@ function extractSearchIntents(queryText, products = []) {
     else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
   }
 
-  return { isComplaint, isCSKH, isShipping, isOcopKnowledge, isUsage, isHealth, isCombo, minPrice, maxPrice, minStars, categoryOrKeyword, regionKeyword, exactRegion, exactRegions, isAllProvinces, isGift, rawText: queryText };
+  return { isComplaint, isCSKH, isShipping, isOcopKnowledge, isUsage, isHealth, isCombo, isVegetarian, isComparison, isOccasionGift, minPrice, maxPrice, minStars, categoryOrKeyword, regionKeyword, exactRegion, exactRegions, isAllProvinces, isGift, rawText: queryText };
 }
 
 const REGION_PROVINCES = {
@@ -1032,12 +1083,24 @@ function generateLocalComboReply(intent, products = [], language = "vi") {
   const isTea = /(tra|che|dam dao|thuong tra)/.test(rawLower);
   const isKitchen = /(gia vi|bep|nau an|mam|muoi|tieu|gao)/.test(rawLower);
   const isSnack = /(an vat|nham nhi|banh|keo|snack)/.test(rawLower);
+  const isVegetarian = intent.isVegetarian || /(chay|an chay|thuan chay|thuc duong|vegan)/.test(rawLower);
+  const isMeetParents = /(ra mat|nha ban gai|nha ban trai|bo me vo|bo me chong|thong gia)/.test(rawLower);
+  const isExpat = /(kieu bao|nuoc ngoai|xuat ngoai|mang di|cam tay|may bay|xach tay)/.test(rawLower);
+  const isHousewarming = /(tan gia|khai truong|mung nha moi)/.test(rawLower);
 
   let comboTitle = "";
   if (isAllProvinces) {
     comboTitle = english ? "Grand National Treasures Set - 63 Provinces Essence" : "Rương Quà Quốc Bảo - Tinh Hoa 63 Tỉnh Thành";
   } else if (isMultiProvince) {
     comboTitle = english ? `Signature Cross-Regional Set (${exactRegions.join(" & ")})` : `Combo Giao Thoa Đặc Sản ${exactRegions.join(" & ")}`;
+  } else if (isVegetarian) {
+    comboTitle = english ? "Peace & Harmony Pure Vegan Specialty Set" : "Bộ Quà Nông Sản Thuần Chay An Lạc";
+  } else if (isMeetParents) {
+    comboTitle = english ? "Family Introduction & Heartfelt Gift Set" : "Bộ Quà Ra Mắt Thắm Tình Hiếu Nghĩa";
+  } else if (isExpat) {
+    comboTitle = english ? "Vietnamese Heritage Carry-On Gift Set" : "Bộ Quà Tinh Hoa Hương Quê Xách Tay";
+  } else if (isHousewarming) {
+    comboTitle = english ? "Prosperity Housewarming & Grand Opening Set" : "Bộ Quà Tân Gia & Khai Trương Đại Cát";
   } else if (scopeLabel) {
     comboTitle = isSep || (minPrice && minPrice >= 5000000)
       ? (english ? `VIP Luxury ${scopeLabel} Set` : `Bộ Quà VIP Thượng Hạng ${scopeLabel}`)
@@ -1083,7 +1146,21 @@ function generateLocalComboReply(intent, products = [], language = "vi") {
       selected.push(...picked);
     }
   } else {
-    if (candidates.length === 0) {
+    if (isVegetarian) {
+      const isNonVeg = p => /(thit|trau|hai san|cua|tom|cha muc|nuoc mam)/i.test((p.name || '') + ' ' + (p.category || ''));
+      if (candidates.length > 0) candidates = candidates.filter(p => !isNonVeg(p));
+      if (candidates.length === 0) {
+        candidates = products.filter(p => !isNonVeg(p) && ([2, 3, 10, 11, 16, 18, 25, 47].includes(p.id) || p.stars === 5 || p.category === 'trà' || p.category === 'bánh'));
+      }
+    } else if (isExpat) {
+      if (candidates.length === 0) {
+        candidates = products.filter(p => [2, 3, 7, 8, 9, 10, 16, 20].includes(p.id) || /hat|tieu|ca phe|tra|keo/i.test((p.name || '') + ' ' + (p.category || '')));
+      }
+    } else if (isMeetParents) {
+      if (candidates.length === 0) {
+        candidates = products.filter(p => [2, 3, 11, 12, 16, 18].includes(p.id) || p.stars === 5 || /tra|mat ong|banh/i.test((p.name || '') + ' ' + (p.category || '')));
+      }
+    } else if (candidates.length === 0) {
       if (isHealth || isSep || (minPrice && minPrice >= 5000000)) {
         candidates = products.filter(p => [1, 4, 12, 18, 25, 47].includes(p.id) || p.stars === 5 || p.price >= 600000);
       } else if (isTea) {
@@ -1200,7 +1277,8 @@ function generateLocalComboReply(intent, products = [], language = "vi") {
 function buildLocalFallbackReply(query, products = [], language = "vi") {
   const restrictedReply = getRestrictedTopicReply(query, language);
   if (restrictedReply) return { ...restrictedReply, fallback: true };
-  const intent = extractSearchIntents(query, products);
+  const catalog = (Array.isArray(products) && products.length > 20) ? products : (aiWebsiteCatalog && Array.isArray(aiWebsiteCatalog.products) && aiWebsiteCatalog.products.length ? aiWebsiteCatalog.products : products);
+  const intent = extractSearchIntents(query, catalog);
   const english = language === "en";
 
   // 1. Complaint & Returns
@@ -1304,6 +1382,156 @@ function buildLocalFallbackReply(query, products = [], language = "vi") {
         fallback: true
       };
     }
+  }
+
+  // 4.1 Sommelier Comparative Analysis
+  if (intent.isComparison) {
+    const rawLower = (query || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").toLowerCase();
+    if (/(shan tuyet|tan cuong|che|tra)/i.test(rawLower)) {
+      const msg = english
+        ? "🍵 Sommelier Comparative Analysis: **Shan Tuyet Ancient Tea** vs. **Tan Cuong Dinh Non Tea**:\n\n• **Terroir & Origin**: Shan Tuyet grows wild on rugged peaks (>2,000m) of Ha Giang with century-old trees wrapped in mist. Tan Cuong flourishes in the sunlit fertile hills of Thai Nguyen beside Cong River.\n• **Leaf Appearance**: Shan Tuyet features plump tips enveloped in pure white downy fur. Tan Cuong has tightly twisted, needle-slender dark green leaves.\n• **Aroma & Liquor**: Shan Tuyet yields honey-amber liquor with gentle smokiness and profound lingering sweet finish (infuses 8–10 times). Tan Cuong produces vibrant young-rice green liquor with pronounced initial briskness and buttery richness.\n• **Best for**: Shan Tuyet suits contemplative evenings and longevity gifts; Tan Cuong excels in morning focus and prestigious diplomatic welcomes."
+        : "🍵 Chuyên gia Sommelier đối sánh: **Trà Shan Tuyết Cổ Thụ Hà Giang** và **Trà Đinh Nõn Tân Cương Thái Nguyên**:\n\n1. **Thổ nhưỡng & Xuất xứ**:\n   • _Shan Tuyết Cổ Thụ_: Thu hái từ những cây chè cổ thụ 100–300 năm tuổi trên đỉnh Tây Côn Lĩnh (>2.000m quanh năm mây mù tuyết phủ).\n   • _Trà Đinh Nõn Tân Cương_: Trồng tại vùng đồi sỏi đỏ trung du sông Công – Tam Đảo, tuyển chọn nghiêm ngặt 1 tôm 1 lá nõn.\n\n2. **Búp chè & Sắc nước**:\n   • _Shan Tuyết_: Búp to mập phủ lớp lông tơ tuyết trắng mịn. Nước trà vàng óng ánh mật ong rừng.\n   • _Tân Cương_: Cánh trà xoăn nhỏ tí xíu như chiếc đinh nõn. Nước trà xanh vàng trong vắt ánh cốm non.\n\n3. **Hương vị & Độ bền nước**:\n   • _Shan Tuyết_: Thoảng hương khói bếp thảo mộc, vị chát dịu êm ái, hậu ngọt sâu lan tỏa bền bỉ (pha được 8–10 tuần nước).\n   • _Tân Cương_: Hương cốm non nồng nàn, vị chát thanh sắc sảo ngay đầu lưỡi, tiền chát hậu bùi ngậy.\n\n👉 **Gợi ý chọn lựa**: Anh/Chị chọn Trà Shan Tuyết nếu thích vị êm đượm dưỡng sinh; chọn Trà Tân Cương nếu thích hương cốm rạng rỡ và vị trà đậm đà truyền thống!";
+      const pIds = catalog.filter(p => [2, 3].includes(p.id)).map(p => p.id);
+      return {
+        text_response: msg,
+        message: msg,
+        suggested_products: pIds,
+        productIds: pIds,
+        dynamic_chips: ["Trà Shan Tuyết Hà Giang", "Trà Đinh Nõn Tân Cương", "Nghệ thuật pha trà", "Combo trà biếu"],
+        handoffAdmin: false,
+        fallback: true
+      };
+    }
+
+    if (/(sam|ngoc linh|han quoc|trieu tien)/i.test(rawLower)) {
+      const msg = english
+        ? "🌿 Sommelier Comparative Analysis: **Ngoc Linh Ginseng (Vietnam)** vs. **Korean Ginseng**:\n\n• **Saponin Content**: Ngoc Linh Ginseng contains 52 saponins (over 50% Majonoside-R2 / MR2) – more than double Korean Ginseng (~26 saponins).\n• **Unique Medical Benefits**: MR2 provides unmatched psychological anti-stress, anti-anxiety, and liver-protecting properties found in no other ginseng worldwide.\n• **Body Constitution Suitability**: Ngoc Linh has a gentle, harmonizing nature suitable for both high and low blood pressure when used appropriately, unlike Korean Red Ginseng which can elevate blood pressure sharply."
+        : "🌿 Chuyên gia Sommelier đối sánh: **Sâm Ngọc Linh Quảng Nam (Quốc bảo Việt Nam)** và **Nhân sâm Hàn Quốc / Triều Tiên**:\n\n1. **Hàm lượng dược chất Saponin**:\n   • _Sâm Ngọc Linh_: Chứa tới **52 hợp chất Saponin** (trong đó có 26 saponin cấu trúc mới chưa từng thấy ở các loài sâm khác trên thế giới). Đặc biệt hợp chất quý **Majonoside-R2 (MR2)** chiếm trên 50% tổng lượng saponin.\n   • _Nhân sâm Hàn Quốc_: Chứa khoảng **24 – 26 loại Saponin**.\n\n2. **Tác dụng y học độc bản của MR2**:\n   • Hợp chất MR2 trong Sâm Ngọc Linh có tác dụng giải tỏa stress tâm lý, chống trầm cảm lo âu, tăng cường miễn dịch, tái tạo tế bào gan và ức chế khối u mà nhân sâm Hàn Quốc không có.\n\n3. **Tính vị & Độ an toàn**:\n   • _Sâm Ngọc Linh_ có tính bình ấm thanh mát, dùng liều lượng điều độ thích hợp cho cả người huyết áp thấp lẫn huyết áp cao.\n   • _Hồng sâm Hàn Quốc_ có tính nhiệt ôn mạnh, người huyết áp cao cần rất cẩn trọng khi dùng.\n\n👉 **Kết luận**: Sâm Ngọc Linh xứng danh là Quốc bảo dược thảo quý giá bậc nhất thế giới, là món quà bồi bổ thượng hạng không gì sánh bằng.";
+      const pIds = catalog.filter(p => [4, 1].includes(p.id)).map(p => p.id);
+      return {
+        text_response: msg,
+        message: msg,
+        suggested_products: pIds,
+        productIds: pIds,
+        dynamic_chips: ["Sâm Ngọc Linh 5★", "Yến Sào Khánh Hòa", "Bồi bổ sức khỏe", "Biếu Sếp lớn"],
+        handoffAdmin: false,
+        fallback: true
+      };
+    }
+
+    if (/(yen|to yen|dao|nha)/i.test(rawLower)) {
+      const msg = english
+        ? "🕊️ Sommelier Comparative Analysis: **Natural Island Bird's Nest** vs. **Farm-raised Bird's Nest**:\n\n• **Habitat**: Island nests cling to steep cliffs in deep oceanic caves, absorbing sea minerals and marine elements for months.\n• **Texture & Aroma**: Island nests feature thicker, golden-ivory strands that remain crunchy, resilient, and distinctively fragrant after steaming.\n• **Micronutrients**: Higher mineral density (iron, calcium, zinc) from pristine limestone formations."
+        : "🕊️ Chuyên gia Sommelier đối sánh: **Yến Sào đảo thiên nhiên Khánh Hòa** và **Yến nhà nuôi**:\n\n1. **Môi trường khai thác**:\n   • _Yến đảo thiên nhiên_: Chim yến làm tổ trên các vách đá cheo leo hang đảo biển sâu, đón gió muối và hấp thụ vi khoáng ngấm từ vách đá vôi tự nhiên.\n   • _Yến nhà nuôi_: Làm tổ trong các nhà nuôi gỗ nhân tạo, chu kỳ thu hoạch ngắn hơn.\n\n2. **Cấu trúc sợi & Hương vị khi chưng**:\n   • _Yến đảo_: Sợi to dày, màu trắng ngà ánh vàng, khi chưng nở to, sợi dai giòn sần sật và thơm ngậy đặc trưng mùi biển khơi.\n   • _Yến nhà_: Sợi mảnh, mềm xốp hơn, nhanh tan khi chưng nhiệt độ cao.\n\n3. **Dinh dưỡng vi lượng**:\n   • Yến đảo thiên nhiên chứa hàm lượng sắt, canxi, đồng, kẽm phong phú hơn từ vách đá địa chất tự nhiên.\n\n👉 **Gợi ý**: Yến Sào đảo thiên nhiên Khánh Hòa 5 sao là lựa chọn đỉnh cao để biếu tặng người lớn tuổi phục hồi sinh lực hoặc tri ân đối tác.";
+      const pIds = catalog.filter(p => [1].includes(p.id)).map(p => p.id);
+      return {
+        text_response: msg,
+        message: msg,
+        suggested_products: pIds,
+        productIds: pIds,
+        dynamic_chips: ["Yến Sào Khánh Hòa 5★", "Cách chưng yến", "Sâm Ngọc Linh", "Bồi bổ sức khỏe"],
+        handoffAdmin: false,
+        fallback: true
+      };
+    }
+
+    if (/(nuoc mam|mam|truyen thong|cong nghiep)/i.test(rawLower)) {
+      const msg = english
+        ? "🐟 Sommelier Comparative Analysis: **Phu Quoc 43°N Traditional Fish Sauce** vs. **Industrial Sauce**:\n\n• **Ingredients**: Traditional sauce uses strictly 2 natural ingredients: fresh black anchovies & sea salt, aged 12–15 months in Boi Loi wood vats.\n• **Nitrogen Protein**: Reaches pure natural 43°N protein without artificial chemical enhancers, delivering deep savory umami and shimmering amber clarity."
+        : "🐟 Chuyên gia Sommelier đối sánh: **Nước mắm truyền thống Phú Quốc 43°N** và **Nước mắm công nghiệp**:\n\n1. **Thành phần & Quy trình ủ chượp**:\n   • _Truyền thống Phú Quốc_: Chỉ 2 nguyên liệu duy nhất: Cá cơm than tươi rói và muối biển Bà Rịa, ủ chượp tự nhiên 12–15 tháng trong thùng gỗ bời lời cổ thụ.\n   • _Nước mắm công nghiệp_: Sản xuất ngắn ngày bằng cách pha loãng nước mắm cốt với nước muối, chất điều vị, phẩm màu và hương liệu nhân tạo.\n\n2. **Độ đạm & Màu sắc**:\n   • _Truyền thống_: Đạt độ đạm tự nhiên 40°N – 43°N hoàn toàn từ protein cá cơm, màu cánh gián đậm trong suốt và sóng sánh như mật.\n   • _Công nghiệp_: Độ đạm thấp (thường chỉ 10°N – 15°N).\n\n3. **Vị giác & Hậu vị**:\n   • _Truyền thống_: Vị mặn đượm ban đầu nơi đầu lưỡi nhưng ngay sau đó bùng nổ hậu vị ngọt béo ngậy sâu của đạm cá thật.\n   • _Công nghiệp_: Vị ngọt gắt nhân tạo của mì chính và chất tạo ngọt, không có hậu vị đầm ấm tự nhiên.\n\n👉 **Khuyên dùng**: Nước mắm truyền thống 43°N là tinh túy giữ gìn mâm cơm Việt đậm đà và an lành sức khỏe.";
+      const pIds = catalog.filter(p => [5].includes(p.id)).map(p => p.id);
+      return {
+        text_response: msg,
+        message: msg,
+        suggested_products: pIds,
+        productIds: pIds,
+        dynamic_chips: ["Nước Mắm Phú Quốc 43°N", "Gạo ST25 Sóc Trăng", "Tiêu đen Chư Sê", "Bếp gia vị Việt"],
+        handoffAdmin: false,
+        fallback: true
+      };
+    }
+
+    const msg = english
+      ? "⭐ Sommelier Quality Standards: 4-Star vs. 5-Star OCOP Products:\n\n• **OCOP 4-Star**: Outstanding provincial specialties certified for high hygiene, cultural identity, and sustainable regional craftsmanship.\n• **OCOP 5-Star**: National Masterpieces representing Vietnam in global gastronomy, passing strict state evaluations for export quality and origin authenticity."
+      : "⭐ Chuyên gia Sommelier đối sánh: **Tiêu chuẩn OCOP 4 sao và 5 sao Quốc gia**:\n\n• **OCOP 4 sao**: Đạt tiêu chuẩn chất lượng xuất sắc cấp tỉnh, có quy trình đóng gói quy chuẩn, chỉ dẫn địa lý rõ ràng và an toàn tuyệt đối.\n• **OCOP 5 sao**: Danh hiệu 'Quốc bảo nông đặc sản' cấp Quốc gia do Thủ tướng và Hội đồng Trung ương phê duyệt, đáp ứng đầy đủ tiêu chuẩn xuất khẩu thế giới và là niềm tự hào của văn hóa ẩm thực Việt Nam.\n\n100% sản phẩm tại OCOP Copilot đều có mã QR Code truy xuất nguồn gốc tận nơi sản xuất!";
+    return {
+      text_response: msg,
+      message: msg,
+      suggested_products: [1, 2, 4],
+      productIds: [1, 2, 4],
+      dynamic_chips: ["⭐ Đặc sản 5 sao", "Trà Shan Tuyết", "Sâm Ngọc Linh", "Yến Sào Khánh Hòa"],
+      handoffAdmin: false,
+      fallback: true
+    };
+  }
+
+  // 4.2 Special Occasion & Psychology of Gifting
+  if (intent.isOccasionGift) {
+    const rawLower = (query || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").toLowerCase();
+    if (/(ra mat|ban gai|ban trai|bo me vo|bo me chong|thong gia)/i.test(rawLower)) {
+      const msg = english
+        ? "🎁 Gift Etiquette: Meeting In-Laws & Partner's Parents:\n\n• For Father: Premium Lotus Tea or Ha Giang Shan Tuyet Ancient Tea 5★ for thoughtful conversation.\n• For Mother: Meo Vac Mint Honey or crunchy Binh Phuoc wood-roasted cashews for family wellbeing.\n• Traditional touch: Lang Vong green rice cakes or Soc Trang Pia cakes to sweeten the family gathering.\n\nAll items are packaged in elegant, respectful gift boxes expressing gratitude and sincerity."
+        : "🎁 Nghệ thuật chọn quà: **Ra mắt gia đình người yêu / Kính thăm Thông gia**:\n\nRa mắt nhà người yêu hay kính thăm thông gia là dịp đặc biệt quan trọng cần sự tinh tế, trang nhã và chân thành, không phô trương kệch cỡm nhưng phải toát lên lòng hiếu kính:\n\n• 👨‍🦳 **Kính tặng Bác trai đàm đạo**: Hộp Trà Sen Tây Hồ thanh tao hoặc Trà Shan Tuyết Cổ Thụ Hà Giang 5 sao nước vàng óng mật ong, hậu ngọt sâu bất tận.\n• 👩‍🦳 **Kính tặng Bác gái chăm sóc gia đình**: Hũ Mật ong Bạc Hà Mèo Vạc hoa cúc tím đá vôi hoặc Hạt điều rang củi Bình Phước bùi béo bổ dưỡng.\n• 🥮 **Thức quà sum vầy ngọt giọng**: Bánh cốm Làng Vòng Hà Nội hoặc Bánh pía Sóc Trăng để cả gia đình cùng thưởng trà rôm rả.\n\n✨ Toàn bộ sản phẩm đều được đóng hộp quà trang nhã, thắt nơ lụa và kèm thiệp chúc chân tình.";
+      const pIds = [2, 47, 10, 78, 14].filter(id => catalog.some(p => p.id === id)).slice(0, 4);
+      return {
+        text_response: msg,
+        message: msg,
+        suggested_products: pIds,
+        productIds: pIds,
+        dynamic_chips: ["Trà Shan Tuyết Hà Giang", "Mật ong Bạc Hà Mèo Vạc", "Bánh cốm Làng Vòng", "Combo ra mắt gia đình"],
+        handoffAdmin: false,
+        fallback: true
+      };
+    }
+
+    if (/(kieu bao|nuoc ngoai|xuat ngoai|mang di|cam tay|may bay|xach tay)/i.test(rawLower)) {
+      const msg = english
+        ? "✈️ Travel & Expatriate Gift Selection: Airport & Flight-Friendly Delicacies:\n\n• **Binh Phuoc Wood-Roasted Cashews**: Crispy, aromatic, vacuum-sealed tins.\n• **Chu Se Black Pepper**: Distinctive pungent aroma of Central Highlands red basalt soil.\n• **Buon Ma Thuot Robusta Coffee**: One-way valve air-tight bags preserving fresh roasted aroma.\n• **Ha Giang Shan Tuyet Tea**: High-altitude tea in premium sealed tin boxes.\n\nStrictly complies with international airline customs regulations with dry, odorless vacuum sealing!"
+        : "✈️ Tuyển chọn quà biếu: **Kiều bào & Mang đi nước ngoài (Xách tay máy bay)**:\n\nTiêu chuẩn số 1 khi mang đặc sản ra nước ngoài (Mỹ, Nhật, Úc, Châu Âu) là: Gọn nhẹ, hút chân không kín mùi, hạn dùng dài (6–12 tháng) và dễ dàng thông quan hải quan quốc tế:\n\n• 🥜 **Hạt điều rang củi Bình Phước**: Giòn rụm bùi béo, đóng hộp lon thiếc hoặc túi hút chân không sang trọng.\n• 🌶️ **Tiêu đen Chư Sê Gia Lai**: Đậm đà cay thơm nồng nàn đất đỏ bazan, gia vị trứ danh kiều bào luôn mong nhớ.\n• ☕ **Cà phê Robusta Buôn Ma Thuột**: Đóng gói túi van 1 chiều cao cấp, lưu giữ trọn hương thơm nồng nàn nguyên bản.\n• 🍵 **Trà Shan Tuyết Cổ Thụ Hà Giang**: Đóng hộp thiếc nắp kín, giữ hương trà tuyết núi cao vẹn nguyên.\n\n⚠️ Lưu ý: Không nên chọn các loại thực phẩm tươi sống hoặc có mùi nồng chưa hút chân không để đảm bảo quá trình kiểm dịch sân bay thuận lợi nhất ạ!";
+      const pIds = [14, 2, 7, 8, 9].filter(id => catalog.some(p => p.id === id)).slice(0, 4);
+      return {
+        text_response: msg,
+        message: msg,
+        suggested_products: pIds,
+        productIds: pIds,
+        dynamic_chips: ["Hạt điều Bình Phước", "Tiêu đen Chư Sê", "Cà phê Buôn Ma Thuột", "Trà Shan Tuyết"],
+        handoffAdmin: false,
+        fallback: true
+      };
+    }
+
+    if (/(tan gia|khai truong|mung nha moi)/i.test(rawLower)) {
+      const msg = english
+        ? "🏡 Housewarming & Grand Opening Blessings:\n\n• **Tan Trieu Pomelo Wine**: Round, sweet citrus flavor symbolizing fulsome fortune and family harmony.\n• **Wild Highland Honey**: Golden amber richness representing sweet prosperity.\n• **Vietnamese Kitchen Trio**: ST25 Rice, Phu Quoc 43°N Fish Sauce, and Chu Se Pepper to keep the family hearth warm and prosperous."
+        : "🏡 Quà tặng phong thủy: **Mừng Tân Gia & Khai Trương Đại Cát**:\n\nMón quà mừng nhà mới hay khai trương mang biểu tượng của sung túc, tài lộc dồi dào và ngọn lửa gia đình luôn ấm áp:\n\n• 🍾 **Rượu bưởi Tân Triều Đồng Nai**: Hương bưởi thanh khiết dịu dàng, dáng bình hồ lô tượng trưng cho tài lộc viên mãn sum vầy.\n• 🍯 **Mật ong hoa rừng đại ngàn**: Vàng óng sánh mịn, biểu trưng cho cuộc sống ngọt ngào, hưng vượng bền lâu.\n• 🌾 **Bộ Gia vị Bếp Việt (Gạo ST25, Nước mắm Phú Quốc, Tiêu Chư Sê)**: Thắp sáng ngọn lửa ấm no cho gian bếp của gia chủ.\n\n✨ Đi kèm hộp quà phủ gấm hoặc rương gỗ khắc chữ thư pháp chúc mừng Phúc Lộc Thọ!";
+      const pIds = [8, 5, 10, 16].filter(id => catalog.some(p => p.id === id)).slice(0, 4);
+      return {
+        text_response: msg,
+        message: msg,
+        suggested_products: pIds,
+        productIds: pIds,
+        dynamic_chips: ["Rượu bưởi Tân Triều", "Mật ong hoa rừng", "Gạo ST25 Sóc Trăng", "Combo Tân Gia Tài Lộc"],
+        handoffAdmin: false,
+        fallback: true
+      };
+    }
+  }
+
+  // 4.3 Pure Vegetarian & Plant-Based Specialties
+  if (intent.isVegetarian) {
+    const msg = english
+      ? "🌱 Pure Vegetarian & Plant-Based OCOP Specialties:\n\n• **Nourishing Nuts**: Binh Phuoc wood-roasted cashews, Dak Lak macadamia nuts rich in plant Omega-3.\n• **Artisanal Teas**: Ha Giang Shan Tuyet ancient tea, Tan Cuong Dinh Non tea, Tay Ho lotus tea.\n• **Wellness & Sweet Treats**: Ly Son single-clove black garlic (lowers cholesterol), ST25 fragrant rice, Ben Tre coconut candies, Soc Trang vegan pia cakes.\n\n100% plant-based, natural, and certified with strict OCOP standards!"
+      : "🌱 Bộ sưu tập đặc sản OCOP: **Thuần Chay - Thực Dưỡng - Thanh Tịnh**:\n\nDạ, OCOP Copilot có bộ sưu tập đặc sản thuần chay đạt chuẩn 4 sao và 5 sao từ thiên nhiên non nước Việt Nam, 100% nguồn gốc thực vật thanh tịnh và giàu dinh dưỡng:\n\n• 🥜 **Hạt dinh dưỡng bồi bổ**: Hạt điều rang củi Bình Phước giòn rụm, Hạt Mắc ca Đắk Lắk bùi ngậy tự nhiên giàu Omega-3 và chất xơ thực vật.\n• 🍵 **Danh trà thanh lọc tâm trí**: Trà Shan Tuyết Cổ Thụ Hà Giang, Trà Đinh Nõn Tân Cương, Trà Sen Tây Hồ thanh tao thoát tục.\n• 🧄 **Thảo dược dưỡng sinh**: Tỏi Đen Cô Đơn Lý Sơn lên men tự nhiên dẻo ngọt bùi như ô mai, giúp ổn định huyết áp và bảo vệ tim mạch.\n• 🌾 **Lương thực & Bánh ngọt truyền thống**: Gạo ST25 Sóc Trăng dẻo thơm hương dứa, Kẹo dừa sáp Bến Tre, Bánh pía sầu riêng chay thơm nức.\n\n✨ Cam kết tuyệt đối không sử dụng thành phần động vật hay chất bảo quản nhân tạo!";
+    const pIds = [2, 10, 14, 7].filter(id => catalog.some(p => p.id === id)).slice(0, 4);
+    return {
+      text_response: msg,
+      message: msg,
+      suggested_products: pIds,
+      productIds: pIds,
+      dynamic_chips: ["Hạt điều Bình Phước", "Trà Shan Tuyết Hà Giang", "Tỏi Đen Lý Sơn", "Combo Thuần Chay"],
+      handoffAdmin: false,
+      fallback: true
+    };
   }
 
   // 5. Health & Wellness
