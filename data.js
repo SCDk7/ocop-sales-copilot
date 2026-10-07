@@ -67,8 +67,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 320,
     "tag": "Mắm Truyền Thống",
-    "img": "images/p5.jpg",
-    "desc": "Ủ chượp thùng gỗ bời lời 12 tháng từ cá cơm than tươi, chuẩn vị đậm đà nguyên bản Phú Quốc."
+    "img": "images/catalog/corrected-5.jpg",
+    "desc": "Ủ chượp thùng gỗ bời lời 12 tháng từ cá cơm than tươi, chuẩn vị đậm đà nguyên bản Phú Quốc.",
+    "imageSource": "https://nuocmamthanhquoc.com.vn/products/nuoc-mam-chi-dan-dia-ly-phu-quoc-thanh-quoc-43n-180ml",
+    "imagePhotoSource": "https://product.hstatic.net/200000244001/product/29_3af3ab1e3e43439bae9558b50394b43c_master.jpg",
+    "imageIsSample": true
   },
   {
     "id": 6,
@@ -123,8 +126,11 @@ const PRODUCTS = [
     "rating": 4.7,
     "reviews": 410,
     "tag": "Đặc Sản Bến Tre",
-    "img": "images/p9.jpg",
-    "desc": "Nước cốt dừa nguyên chất kết hợp mạch nha và sầu riêng tươi, dẻo thơm ngậy béo không dính răng."
+    "img": "images/catalog/corrected-9.jpg",
+    "desc": "Nước cốt dừa nguyên chất kết hợp mạch nha và sầu riêng tươi, dẻo thơm ngậy béo không dính răng.",
+    "imageSource": "https://vinwonders.com/vi/wonderpedia/news/dac-san-sai-gon-lam-qua/",
+    "imagePhotoSource": "https://static.vinwonders.com/production/dac-san-sai-gon-lam-qua-12.jpg",
+    "imageIsSample": true
   },
   {
     "id": 10,
@@ -137,8 +143,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 150,
     "tag": "Hà Thành Quà Quý",
-    "img": "images/p10.jpg",
-    "desc": "Vỏ cốm xanh dẻo thơm nhân đậu xanh dừa nạo ngào ngạt, chuẩn vị mùa thu Hà Nội làng Vòng."
+    "img": "images/catalog/corrected-10.jpg",
+    "desc": "Vỏ cốm xanh dẻo thơm nhân đậu xanh dừa nạo ngào ngạt, chuẩn vị mùa thu Hà Nội làng Vòng.",
+    "imageSource": "https://dacsancomvong.com/san-pham/banh-com-lang-vong-loai-dac-biet/?srsltid=AfmBOopM7xe70pOOm84TZgLEvOvmH8CWQ8sAY1v7HfRwGue7Lmv4aYUp",
+    "imagePhotoSource": "https://dacsancomvong.com/wp-content/uploads/2020/06/z2230631636287_c7f135279788f41017535c5b3637b66f.jpg",
+    "imageIsSample": true
   },
   {
     "id": 11,
@@ -165,8 +174,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 64,
     "tag": "Nữ Hoàng Các Loại Trà",
-    "img": "images/p12.jpg",
-    "desc": "Bông trà hoa vàng sấy lạnh giữ nguyên hoạt chất quý, hạ huyết áp và mát gan thanh lọc hiệu quả."
+    "img": "images/catalog/corrected-12.jpg",
+    "desc": "Bông trà hoa vàng sấy lạnh giữ nguyên hoạt chất quý, hạ huyết áp và mát gan thanh lọc hiệu quả.",
+    "imageSource": "https://namanmarket.com/products/hoa-tra-hoa-vang-say-lanh-tam-dao-50g-75",
+    "imagePhotoSource": "https://product.hstatic.net/1000282430/product/290015938000-hoa-tra-hoa-vang-say-lanh-tam-dao-50g_df05e9aa2b094ad4adef34efc16d757b_master.jpg",
+    "imageIsSample": true
   },
   {
     "id": 13,
@@ -179,8 +191,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 110,
     "tag": "Hạt Ngọc Việt",
-    "img": "images/p13.jpg",
-    "desc": "Hạt gạo thon nhỏ khi nấu chín tỏa hương thơm ngát tự nhiên, cơm dẻo mềm đậm đà tiến vua."
+    "img": "images/catalog/corrected-13.jpg",
+    "desc": "Hạt gạo thon nhỏ khi nấu chín tỏa hương thơm ngát tự nhiên, cơm dẻo mềm đậm đà tiến vua.",
+    "imageSource": "https://www.gaothaiduong.com/san_pham/productid/300294/moduleid/522613/gao-tam-xoan-hai-hau-2kg",
+    "imagePhotoSource": "https://www.gaothaiduong.com/Portals/27044/trang%20chu/trang%20nang%20cap/2610/gao%20tam%20xoan%20hai%20hau%202kg.JPG",
+    "imageIsSample": true
   },
   {
     "id": 14,
@@ -193,8 +208,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 340,
     "tag": "Nông Sản Xuất Khẩu",
-    "img": "images/p14.jpg",
-    "desc": "Hạt điều mẩy tròn rang củi nguyên vỏ lụa đỏ, giòn rụm béo bùi vị đậm đà từ vùng đất đỏ Bình Phước."
+    "img": "images/catalog/corrected-14.jpg",
+    "desc": "Hạt điều mẩy tròn rang củi nguyên vỏ lụa đỏ, giòn rụm béo bùi vị đậm đà từ vùng đất đỏ Bình Phước.",
+    "imageSource": "https://farmersvietnam.vn/blogs/nong-san-viet/nhung-dac-san-binh-phuoc-cac-tin-do-am-thuc-khong-nen-bo-lo",
+    "imagePhotoSource": "https://file.hstatic.net/200000689759/file/farmersvietnam-__74__728b156ee5a94fc48955e0f8c6856d51.jpg",
+    "imageIsSample": true
   },
   {
     "id": 15,
@@ -207,8 +225,11 @@ const PRODUCTS = [
     "rating": 5,
     "reviews": 270,
     "tag": "Món Ngon Núi Rừng",
-    "img": "images/p15.jpg",
-    "desc": "Thịt bắp trâu tươi ướp mắc khén hạt dổi hun khói củi bắp, giòn thơm dai xé sợi đậm bản sắc Tây Bắc."
+    "img": "images/catalog/corrected-15.jpg",
+    "desc": "Thịt bắp trâu tươi ướp mắc khén hạt dổi hun khói củi bắp, giòn thơm dai xé sợi đậm bản sắc Tây Bắc.",
+    "imageSource": "https://thanhnien.vn/thoi-trang-tre/thuong-thuc-mon-ngon-dac-san-tay-bac-mang-dam-huong-vi-nui-rung-185240221150310768.htm",
+    "imagePhotoSource": "https://images2.thanhnien.vn/528068263637045248/2024/2/21/h4-1708502426353923015116.jpg",
+    "imageIsSample": true
   },
   {
     "id": 16,
@@ -221,8 +242,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 82,
     "tag": "Dược Liệu Cao Cấp",
-    "img": "images/p16.jpg",
-    "desc": "Nuôi trồng sinh học tại Đà Lạt sấy thăng hoa bảo toàn hàm lượng Cordycepin và adenosine cao."
+    "img": "images/catalog/corrected-16.jpg",
+    "desc": "Nuôi trồng sinh học tại Đà Lạt sấy thăng hoa bảo toàn hàm lượng Cordycepin và adenosine cao.",
+    "imageSource": "https://dalatcordyceps.com/products/nam-dong-trung-ha-thao-da-lat-kho-say-thang-hoa-20gr",
+    "imagePhotoSource": "https://cdn.hstatic.net/products/200001132587/95c1e6fed6ea14b44dfb_026d683753c9410ca578cb71ba60f41e_ef045308d46b4a2ba26a1c440762f73a_master.jpg",
+    "imageIsSample": true
   },
   {
     "id": 17,
@@ -277,8 +301,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 175,
     "tag": "Nông Sản Bắc Giang",
-    "img": "images/p20.jpg",
-    "desc": "Vải thiều sấy nguyên quả cùi dày ngọt sắc, mùi thơm đặc trưng mùa vải Lục Ngạn chín."
+    "img": "images/catalog/corrected-20.jpg",
+    "desc": "Vải thiều sấy nguyên quả cùi dày ngọt sắc, mùi thơm đặc trưng mùa vải Lục Ngạn chín.",
+    "imageSource": "https://nhandan.vn/ocop/vai-thieu-say-kho-hang-hieu-prod166.html",
+    "imagePhotoSource": "https://cdn.nhandan.vn/images/a48e0596059359812a5b08ccf3f1da0ea490280670070b1b8497dec27d22fb1580c2bf7f58148bff84d229847b4a9d935cfacd5ee898d181029010948d9846a0/vt-3165.jpg",
+    "imageIsSample": true
   },
   {
     "id": 21,
@@ -291,8 +318,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 140,
     "tag": "Sức Khỏe Mẹ & Bé",
-    "img": "images/p21.jpg",
-    "desc": "Chiết xuất từ lá chè vằng sẻ tự nhiên vùng Quảng Trị, giúp tiêu mỡ, đẹp da và mát gan tiêu độc."
+    "img": "images/catalog/corrected-21.jpg",
+    "desc": "Chiết xuất từ lá chè vằng sẻ tự nhiên vùng Quảng Trị, giúp tiêu mỡ, đẹp da và mát gan tiêu độc.",
+    "imageSource": "https://tamduoc.com/cao-che-vang-la-vang-quang-tri",
+    "imagePhotoSource": "https://tamduoc.com/image/cache/catalog/sp/cao-che-vang-quang-tri-tam-duoc-chinh-goc-400x500.jpg",
+    "imageIsSample": true
   },
   {
     "id": 22,
@@ -305,8 +335,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 115,
     "tag": "Gia Vị Đậm Đà",
-    "img": "images/p22.jpg",
-    "desc": "Hạt tiêu mẩy mập cay nồng dịu, hương thơm quyến rũ, trồng hữu cơ Chư Sê không thuốc hóa học."
+    "img": "images/catalog/corrected-22.png",
+    "desc": "Hạt tiêu mẩy mập cay nồng dịu, hương thơm quyến rũ, trồng hữu cơ Chư Sê không thuốc hóa học.",
+    "imageSource": "https://songuyentaynguyen.com/blogs/news/dac-diem-vung-nguyen-lieu-tieu-den-hat-gia-lai",
+    "imagePhotoSource": "https://cdn.hstatic.net/files/200000917245/article/tieu_den_gia_lai__5__f1d93d404d2c4c4d95f0532277e796bd.png",
+    "imageIsSample": true
   },
   {
     "id": 23,
@@ -347,8 +380,11 @@ const PRODUCTS = [
     "rating": 4.7,
     "reviews": 165,
     "tag": "Healthy Life",
-    "img": "images/p25.jpg",
-    "desc": "Sấy lạnh giữ trọn diệp lục và chất xơ, hỗ trợ giải nhiệt mát gan, giữ dáng khỏe mạnh tự nhiên."
+    "img": "images/catalog/corrected-25.jpg",
+    "desc": "Sấy lạnh giữ trọn diệp lục và chất xơ, hỗ trợ giải nhiệt mát gan, giữ dáng khỏe mạnh tự nhiên.",
+    "imageSource": "https://www.goodprice.vn/vi/tin-tuc/bot-rau-ma-la-gi-tong-hop-cong-dung-bot-rau-ma-490",
+    "imagePhotoSource": "https://goodprice.vn/files/common/bot-rau-ma-la-gi-tong-hop-cong-dung-bot-rau-ma-fugji.jpg",
+    "imageIsSample": true
   },
   {
     "id": 26,
@@ -375,8 +411,11 @@ const PRODUCTS = [
     "rating": 5,
     "reviews": 145,
     "tag": "Đặc Sản Miền Tây",
-    "img": "images/p27.jpg",
-    "desc": "Cá thát lát tươi rút xương tẩm ướp tiêu gia vị đồng quê, thịt dai giòn sần sật chiên vàng bắt cơm."
+    "img": "images/catalog/corrected-27.jpg",
+    "desc": "Cá thát lát tươi rút xương tẩm ướp tiêu gia vị đồng quê, thịt dai giòn sần sật chiên vàng bắt cơm.",
+    "imageSource": "https://vietnamofsa.vn/428dCb1hEa9d2b5",
+    "imagePhotoSource": "https://vietnamofsa.vn/datafiles/197/2025-05/90178551-250511-CCT-3.jpg",
+    "imageIsSample": true
   },
   {
     "id": 28,
@@ -403,8 +442,11 @@ const PRODUCTS = [
     "rating": 4.7,
     "reviews": 120,
     "tag": "Nông Sản Đồng Nai",
-    "img": "images/p29.jpg",
-    "desc": "Chuối sứ chín cây sấy nhiệt nhẹ dẻo ngọt tự nhiên, không thêm đường không chất bảo quản."
+    "img": "images/catalog/corrected-29.jpg",
+    "desc": "Chuối sứ chín cây sấy nhiệt nhẹ dẻo ngọt tự nhiên, không thêm đường không chất bảo quản.",
+    "imageSource": "https://thitruongsi.com/chuoi-say-deo-125-dac-san-dong-nai-gia-si-gia-ban-buon-1506564.html",
+    "imagePhotoSource": "https://imgcdn.thitruongsi.com/tts/rs%3Afill%3A1200%3A0%3A1%3A1/g%3Asm/plain/file%3A/product/2020/01/11/07faad60-3448-11ea-8d34-193c97feb246.jpg",
+    "imageIsSample": true
   },
   {
     "id": 30,
@@ -431,8 +473,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 105,
     "tag": "Sương Mù Sa Pa",
-    "img": "images/p31.jpg",
-    "desc": "Nấm hương rừng Sa Pa chân dài thơm lừng hái tự nhiên, xào nấu hay hầm canh đều ngon đậm đà."
+    "img": "images/catalog/corrected-31.jpg",
+    "desc": "Nấm hương rừng Sa Pa chân dài thơm lừng hái tự nhiên, xào nấu hay hầm canh đều ngon đậm đà.",
+    "imageSource": "https://www.vuadacsan.com.vn/nam-huong-sapa-tui-100gr",
+    "imagePhotoSource": "https://www.vuadacsan.com.vn/image/catalog/sp%20c%E1%BB%ADa%20h%C3%A0ng%20v%C4%91s/n%E1%BA%A5m%20h%C6%B0%C6%A1ng%20sp/2b8ef0563cc99497cdd8.jpg",
+    "imageIsSample": true
   },
   {
     "id": 32,
@@ -473,8 +518,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 310,
     "tag": "Đặc Sản Bảy Núi",
-    "img": "images/p34.jpg",
-    "desc": "Đường tán thủ công từ nhị hoa thốt nốt vùng Bảy Núi, ngọt thanh dịu mát nấu chè kho cá cực ngon."
+    "img": "images/catalog/corrected-34.png",
+    "desc": "Đường tán thủ công từ nhị hoa thốt nốt vùng Bảy Núi, ngọt thanh dịu mát nấu chè kho cá cực ngon.",
+    "imageSource": "https://thnotstore.com/blogs/news/cong-dung-duong-thot-not-an-giang",
+    "imagePhotoSource": "https://file.hstatic.net/1000378166/file/1_9f25937640874778ae03779be4f5890f_grande.png",
+    "imageIsSample": true
   },
   {
     "id": 35,
@@ -487,8 +535,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 240,
     "tag": "Phố Hoa Đà Lạt",
-    "img": "images/p35.jpg",
-    "desc": "Dâu tây thủy canh Đà Lạt rim đường nhẹ giữ trọn vị chua ngọt và màu đỏ tươi tự nhiên."
+    "img": "images/catalog/corrected-35.jpg",
+    "desc": "Dâu tây thủy canh Đà Lạt rim đường nhẹ giữ trọn vị chua ngọt và màu đỏ tươi tự nhiên.",
+    "imageSource": "https://tuannguyencorp.com/mut-dau-tay",
+    "imagePhotoSource": "https://bizweb.dktcdn.net/100/083/067/files/mut-dau-1-copy-cc900dc0-ff5f-48ea-ba5e-b8a3ef4881f7.jpg?v=1574647123734",
+    "imageIsSample": true
   },
   {
     "id": 36,
@@ -501,8 +552,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 130,
     "tag": "Cao Nguyên Mộc Châu",
-    "img": "images/p36.jpg",
-    "desc": "Viên trà tròn chặt lên men 30% trên cao nguyên Mộc Châu, nước xanh ngọc thơm hương hoa núi mây."
+    "img": "images/catalog/corrected-36.png",
+    "desc": "Viên trà tròn chặt lên men 30% trên cao nguyên Mộc Châu, nước xanh ngọc thơm hương hoa núi mây.",
+    "imageSource": "https://enjoy.vn/products/tra-o-long-moc-chau-maloca-100gr",
+    "imagePhotoSource": "https://product.hstatic.net/200000055918/product/thiet_ke_chua_co_ten__1__70b122c28a13470191f9ccbdf096c6de_master.png",
+    "imageIsSample": true
   },
   {
     "id": 37,
@@ -529,8 +583,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 110,
     "tag": "Đảo Ngọc Phú Quốc",
-    "img": "images/p38.jpg",
-    "desc": "Lên men từ quả sim rừng chín mọng đảo Phú Quốc, vị ngọt chát hài hòa trợ tiêu hóa tốt."
+    "img": "images/catalog/corrected-38.png",
+    "desc": "Lên men từ quả sim rừng chín mọng đảo Phú Quốc, vị ngọt chát hài hòa trợ tiêu hóa tốt.",
+    "imageSource": "https://dacsanviet98.com/products/ruou-sim-phu-quoc-14-do",
+    "imagePhotoSource": "https://product.hstatic.net/200000260805/product/ruou-sim-bay-gao-14-do_bed0bec8de41492c81d097a9caa61fb2.png",
+    "imageIsSample": true
   },
   {
     "id": 39,
@@ -543,8 +600,11 @@ const PRODUCTS = [
     "rating": 5,
     "reviews": 290,
     "tag": "Nữ Hoàng Hạt Khô",
-    "img": "images/p39.jpg",
-    "desc": "Hạt mắc ca nứt vỏ tự nhiên vùng Đắk Nông, nhân trắng ngần béo ngậy, giàu dinh dưỡng tốt cho não."
+    "img": "images/catalog/corrected-39.jpg",
+    "desc": "Hạt mắc ca nứt vỏ tự nhiên vùng Đắk Nông, nhân trắng ngần béo ngậy, giàu dinh dưỡng tốt cho não.",
+    "imageSource": "https://dulich.daknong.gov.vn/vi/blog/details/mac-ca-say-21",
+    "imagePhotoSource": "https://dulich.daknong.gov.vn/DataFiles/2022/03/Nodes/20220316-102209-WzuuAJ2D.jpg",
+    "imageIsSample": true
   },
   {
     "id": 40,
@@ -571,8 +631,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 178,
     "tag": "Hương Vị Cao Nguyên",
-    "img": "images/p41.jpg",
-    "desc": "Hạt Arabica tuyển chọn vùng Cầu Đất 1.500m, rang mộc giữ hương thơm dịu và vị chua thanh đặc trưng."
+    "img": "images/catalog/corrected-41.jpg",
+    "desc": "Hạt Arabica tuyển chọn vùng Cầu Đất 1.500m, rang mộc giữ hương thơm dịu và vị chua thanh đặc trưng.",
+    "imageSource": "https://latacita.vn/en/arabica-cau-dat.html",
+    "imagePhotoSource": "https://latacita.vn/assets/products/2021_08/caphearcaudat.laduyen.500g-copy.jpg",
+    "imageIsSample": true
   },
   {
     "id": 42,
@@ -585,8 +648,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 156,
     "tag": "Đặc Sản Đà Lạt",
-    "img": "images/p42.jpg",
-    "desc": "Chanh leo chín mọng ruột vàng thơm Đà Lạt, vị chua ngọt tự nhiên, pha nước giải khát mát lạnh."
+    "img": "images/catalog/corrected-42.jpg",
+    "desc": "Chanh leo chín mọng ruột vàng thơm Đà Lạt, vị chua ngọt tự nhiên, pha nước giải khát mát lạnh.",
+    "imageSource": "https://k-gardennongsandalat.com/product/chanh-leo-vang-chanh-day-vang-huong-oi-da-lat/",
+    "imagePhotoSource": "https://k-gardennongsandalat.com/wp-content/uploads/2024/04/362636464_656078276541665_1114202781888820941_n.jpg",
+    "imageIsSample": true
   },
   {
     "id": 43,
@@ -599,8 +665,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 112,
     "tag": "Đặc Sản Đất Mũi",
-    "img": "images/p43.jpg",
-    "desc": "Tôm đất chọn lọc phơi khô truyền thống vùng Đất Mũi, dùng nấu canh kho quẹt và làm mắm ngon."
+    "img": "images/catalog/corrected-43.jpg",
+    "desc": "Tôm đất chọn lọc phơi khô truyền thống vùng Đất Mũi, dùng nấu canh kho quẹt và làm mắm ngon.",
+    "imageSource": "https://thanhnien.vn/gia-tom-kho-ca-mau-tang-ky-luc-185250114134003505.htm",
+    "imagePhotoSource": "https://images2.thanhnien.vn/528068263637045248/2025/1/14/tom-kho-ca-mau-4-17368358976551824360510.jpg",
+    "imageIsSample": true
   },
   {
     "id": 44,
@@ -613,8 +682,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 205,
     "tag": "Gia Vị Tây Ninh",
-    "img": "images/p44.jpg",
-    "desc": "Muối rang cùng tôm khô và ớt tươi theo công thức địa phương Tây Ninh, chấm trái cây rất đậm đà."
+    "img": "images/catalog/corrected-44.png",
+    "desc": "Muối rang cùng tôm khô và ớt tươi theo công thức địa phương Tây Ninh, chấm trái cây rất đậm đà.",
+    "imageSource": "https://longdan.co.uk/products/tofuhat-tay-ninh-shrimp-salt-110g",
+    "imagePhotoSource": "https://longdan.co.uk/cdn/shop/files/4510745_98519baa-5a05-44c8-976b-e849d5d14b7a_800x.png?v=1728652328",
+    "imageIsSample": true
   },
   {
     "id": 45,
@@ -627,8 +699,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 142,
     "tag": "Gia Vị Đảo Ngọc",
-    "img": "images/p45.jpg",
-    "desc": "Tiêu đen phơi khô tự nhiên trên đảo Phú Quốc, hạt chắc mẩy thơm nồng, xay tươi dùng hằng ngày."
+    "img": "images/catalog/corrected-45.jpg",
+    "desc": "Tiêu đen phơi khô tự nhiên trên đảo Phú Quốc, hạt chắc mẩy thơm nồng, xay tươi dùng hằng ngày.",
+    "imageSource": "https://www.vietsway.com/products/minh-ha-foods-phu-quoc-black-pepper-powder-vietnamese-traditional-spices",
+    "imagePhotoSource": "https://www.vietsway.com/cdn/shop/files/denh_t100._1445x.jpg?v=1697425355",
+    "imageIsSample": true
   },
   {
     "id": 46,
@@ -655,8 +730,11 @@ const PRODUCTS = [
     "rating": 5,
     "reviews": 96,
     "tag": "Nghệ Thuật Trà Hà Thành",
-    "img": "images/p47.jpg",
-    "desc": "Trà xanh Tân Cương ướp gạo sen Hồ Tây thủ công, hương sen thanh tao quyến rũ lưu hương rất lâu."
+    "img": "images/catalog/corrected-47.jpg",
+    "desc": "Trà xanh Tân Cương ướp gạo sen Hồ Tây thủ công, hương sen thanh tao quyến rũ lưu hương rất lâu.",
+    "imageSource": "https://thuantrathainguyen.com/products/tra-sen-tay-ho",
+    "imagePhotoSource": "https://cdn.hstatic.net/products/200000426635/travina__nh_s_n_ph_m_2025__1__f8acca69c1e34225935028871aeeef63_master.jpg",
+    "imageIsSample": true
   },
   {
     "id": 48,
@@ -739,8 +817,11 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 195,
     "tag": "Đặc Sản Đất Võ",
-    "img": "images/p53.jpg",
-    "desc": "Bánh gói lá chuối hình tháp, vỏ đen nhánh từ lá gai giã nhuyễn dẻo quánh hòa cùng nhân dừa đậu xanh ngọt bùi ấm thơm gừng."
+    "img": "images/catalog/corrected-53.jpg",
+    "desc": "Bánh gói lá chuối hình tháp, vỏ đen nhánh từ lá gai giã nhuyễn dẻo quánh hòa cùng nhân dừa đậu xanh ngọt bùi ấm thơm gừng.",
+    "imageSource": "https://monngonquynhon.com/banh-it-la-gai/",
+    "imagePhotoSource": "https://monngonquynhon.com/wp-content/uploads/2024/02/banh-it-la-gai-1.jpg",
+    "imageIsSample": true
   },
   {
     "id": 54,
@@ -865,8 +946,11 @@ const PRODUCTS = [
     "rating": 5,
     "reviews": 380,
     "tag": "Hương Vị Đất Cảng",
-    "img": "images/p62.jpg",
-    "desc": "Sợi bánh đa đỏ dẻo dai hòa trong nước dùng riêu cua đồng ngọt lịm, chả lá lốt thơm lừng cùng rau muống giòn chuẩn vị Hải Phòng."
+    "img": "images/catalog/corrected-62.jpg",
+    "desc": "Sợi bánh đa đỏ dẻo dai hòa trong nước dùng riêu cua đồng ngọt lịm, chả lá lốt thơm lừng cùng rau muống giòn chuẩn vị Hải Phòng.",
+    "imageSource": "https://vinwonders.com/vi/wonderpedia/news/banh-da-cua-hai-phong-cach-nau-va-17-quan-ngon/",
+    "imagePhotoSource": "https://static.vinwonders.com/production/banh-da-cua-hai-phong-9.jpg",
+    "imageIsSample": true
   },
   {
     "id": 63,
@@ -907,8 +991,11 @@ const PRODUCTS = [
     "rating": 5,
     "reviews": 92,
     "tag": "Quốc Bảo Đỉnh Ngọc Linh",
-    "img": "images/p65.jpg",
-    "desc": "Sâm Ngọc Linh mọc tự nhiên trên dãy núi Măng Ri Kon Tum trên độ cao 2.000m, hàm lượng MR2 saponin dồi dào tăng cường sinh lực."
+    "img": "images/catalog/corrected-65.jpg",
+    "desc": "Sâm Ngọc Linh mọc tự nhiên trên dãy núi Măng Ri Kon Tum trên độ cao 2.000m, hàm lượng MR2 saponin dồi dào tăng cường sinh lực.",
+    "imageSource": "https://tumorong.com/blogs/news/sam-ngoc-linh-tu-mo-rong-tiep-suc-ban-linh-lan-toa-tinh-than-the-th",
+    "imagePhotoSource": "https://media.tieudungvietnam.vn/thumb_x800x/2025/08/25/9968/1756102230-sam-ngoc-linh-tu-mo-rong-13.jpg",
+    "imageIsSample": true
   },
   {
     "id": 66,
@@ -963,8 +1050,11 @@ const PRODUCTS = [
     "rating": 5,
     "reviews": 430,
     "tag": "Mỹ Vị Cố Đô Hoa Lư",
-    "img": "images/p69.jpg",
-    "desc": "Cơm nếp chiên giòn rụm rắc ruốc thịt heo xao mặn ngọt, chấm kèm sốt dê kho quẹt sánh đậm đà nức danh ẩm thực Ninh Bình."
+    "img": "images/catalog/corrected-69.jpg",
+    "desc": "Cơm nếp chiên giòn rụm rắc ruốc thịt heo xao mặn ngọt, chấm kèm sốt dê kho quẹt sánh đậm đà nức danh ẩm thực Ninh Bình.",
+    "imageSource": "https://eva.vn/di-dau-xem-gi/den-ninh-binh-thuong-thuc-com-chay-co-do-an-mot-lan-nho-ca-doi-c40a602367.html",
+    "imagePhotoSource": "https://cdn.eva.vn/upload/3-2024/images/2024-07-17/1721205158-com-chay-7--width1080height810.jpg",
+    "imageIsSample": true
   },
   {
     "id": 70,
@@ -977,8 +1067,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 185,
     "tag": "Ẩm Thực Đất Tổ",
-    "img": "images/p70.jpg",
-    "desc": "Thịt lợn mán tươi ngon ướp thính ngô rang giã mịn, ủ lên men tự nhiên trong ống nứa cuốn cùng lá sung lá mơ chấm tương ớt cay."
+    "img": "images/catalog/corrected-70.jpg",
+    "desc": "Thịt lợn mán tươi ngon ướp thính ngô rang giã mịn, ủ lên men tự nhiên trong ống nứa cuốn cùng lá sung lá mơ chấm tương ớt cay.",
+    "imageSource": "https://dantocphattrien.vietnamnet.vn/phu-tho-khai-thac-quang-ba-cac-san-pham-ocop-gan-voi-phat-trien-du-lich-61818.html",
+    "imagePhotoSource": "https://vnn.1cdn.vn/2024/12/12/uploads-2024-thang-12-ngay-12-anh-46897490215515931654658331665384043680381980n.jpg",
+    "imageIsSample": true
   },
   {
     "id": 71,
@@ -1005,8 +1098,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 210,
     "tag": "Hương Vị Quảng Bình",
-    "img": "images/p72.jpg",
-    "desc": "Vỏ bánh lọc trong veo thấy rõ nhân tôm sông và thịt mộc nhĩ rim đậm, gói lá chuối hấp nóng chấm nước mắm ớt nguyên chất cay nồng."
+    "img": "images/catalog/corrected-72.jpg",
+    "desc": "Vỏ bánh lọc trong veo thấy rõ nhân tôm sông và thịt mộc nhĩ rim đậm, gói lá chuối hấp nóng chấm nước mắm ớt nguyên chất cay nồng.",
+    "imageSource": "https://jp.gurutto-vietnam.com/report/169/",
+    "imagePhotoSource": "https://jp.gurutto-vietnam.com/db_img/site_img/images/9709784625e3f6482e8701b639a890a4.jpg",
+    "imageIsSample": true
   },
   {
     "id": 73,
@@ -1019,8 +1115,11 @@ const PRODUCTS = [
     "rating": 4.8,
     "reviews": 220,
     "tag": "Quê Hương Chị Hai Năm Tấn",
-    "img": "images/p73.jpg",
-    "desc": "Làm từ nếp cái hoa vàng, mỡ phần, hạt dành dành, quả gấc và gừng tươi, bánh dẻo bùi cay cay ấm nồng mang đậm nghĩa tình quê lúa."
+    "img": "images/catalog/corrected-73.jpg",
+    "desc": "Làm từ nếp cái hoa vàng, mỡ phần, hạt dành dành, quả gấc và gừng tươi, bánh dẻo bùi cay cay ấm nồng mang đậm nghĩa tình quê lúa.",
+    "imageSource": "https://azolaco.com/banh-cay-lang-nguyen-chuan-vi-dac-san-thai-binh-ma-ds02.html",
+    "imagePhotoSource": "https://azolaco.com/vnt_upload/product/08_2020/b5.jpg",
+    "imageIsSample": true
   },
   {
     "id": 74,
