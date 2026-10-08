@@ -5114,7 +5114,8 @@
             }
 
             // 3. CHUYÊN ĐỀ KIẾN THỨC CHỨNG NHẬN OCOP & TRUY XUẤT NGUỒN GỐC (OCOP STANDARDS)
-            const isOcopKnowledge = /(ocop la gi|y nghia ocop|tieu chuan ocop|4 sao|5 sao|sao ocop|truy xuat|chinh hang|nguon goc)/.test(normalized);
+            const isOcopKnowledge = !/(goi y|tim|mua|xem|top|danh sach|co nhung|cac loai|san pham|dac san)/.test(normalized) &&
+                /(ocop la gi|y nghia.*ocop|tieu chuan.*ocop|y nghia.*sao|sao ocop la gi|the nao la 4 sao|the nao la 5 sao|truy xuat the nao|tem truy xuat|nguon goc xuat xu)/.test(normalized);
             if (isOcopKnowledge) {
                 return {
                     message: english
@@ -5122,6 +5123,90 @@
                         : "Dạ, OCOP (One Province One Product - Mỗi Xã Một Sản Phẩm) là chương trình quốc gia tôn vinh nông đặc sản tinh hoa của 63 tỉnh thành Việt Nam:\n\n⭐ OCOP 4 sao: Tiêu chuẩn chất lượng xuất sắc cấp tỉnh, quy trình khép kín và an toàn tuyệt đối.\n⭐⭐ OCOP 5 sao: \"Quốc bảo ẩm thực\" - tiêu chuẩn Quốc gia đại diện cho văn hóa Việt Nam vươn tầm quốc tế.\n\n100% sản phẩm trên OCOP Copilot đều có tem truy xuất nguồn gốc QR Code tận làng nghề/hợp tác xã bản địa ạ!",
                     productIds: [],
                     dynamic_chips: ["⭐ Đặc sản 5 sao", "Tây Bắc", "Tây Nguyên", "Miền Tây"],
+                    handoffAdmin: false,
+                    localFallback: true
+                };
+            }
+
+            // 3.1 CHUYÊN ĐỀ ĐẶC SẢN OCOP 5 SAO QUỐC GIA (5-STAR NATIONAL MASTERPIECES)
+            const is5StarExplicit = (/(5\s*sao|nam\s*sao|hang nhat|quoc gia|quoc bao|thuong hang)/.test(normalized) &&
+                /(goi y|tim|mua|xem|top|danh sach|co nhung|dac san|san pham|tuyen chon|danh gia|gioi thieu)/.test(normalized)) ||
+                /^(5\s*sao|dac san 5 sao|ocop 5 sao|goi y 5 sao|top 5 sao|san pham 5 sao)$/.test(normalized.trim());
+
+            if (is5StarExplicit) {
+                const fiveStarItems = [492, 480, 348, 336, 392].map(id => products.find(p => p.id === id)).filter(Boolean);
+                const pIds = fiveStarItems.map(p => p.id);
+                lastAIRecommendedProductIds = pIds;
+                return {
+                    message: english
+                        ? "🌟 **Vietnam's 5-Star National OCOP Masterpieces**:\nThese supreme treasures represent the peak of Vietnamese terroir, artisanal heritage, and national pride:\n\n" +
+                          "• 🌿 **Ngoc Linh Ginseng (Kon Tum - 5★)**: 7,000,000 ₫\n  _Vietnam's sovereign botanical treasure with 52 saponins (MR2 >50%) for cellular recovery and vitality._\n\n" +
+                          "• 🕊️ **Khanh Hoa Island Bird's Nest (5★)**: 5,000,000 ₫\n  _100% natural island cave swiftlet nests rich in 18 essential amino acids and sea minerals._\n\n" +
+                          "• 🍵 **Suoi Giang Ancient Shan Tuyet Tea (Yen Bai - 5★)**: 1,800,000 ₫\n  _Harvested from 100-300-year-old wild tea trees wrapped in cloud mist above 1,500m._\n\n" +
+                          "• 🫖 **Phuc Loc Tho Tea Collection (Ha Noi - 5★)**: 2,000,000 ₫\n  _Exquisite imperial gift set encapsulating West Lake Lotus tea and traditional artisan heritage._\n\n" +
+                          "• 🐟 **Cat Hai Traditional Fish Sauce (Hai Phong - 5★)**: 400,000 ₫\n  _Naturally fermented anchovy essence with deep umami clarity and gold-standard purity._\n\n" +
+                          "👉 *Click on any product card below to explore full origin records, lab certifications, or add to cart!*"
+                        : "🌟 **Tuyển tập Quốc bảo Đặc sản OCOP 5 Sao Quốc Gia**:\n\nĐặc sản OCOP 5 sao là danh hiệu vinh danh cao quý nhất của Hội đồng đánh giá Quốc gia, đại diện cho tinh hoa nông sản và văn hóa ẩm thực Việt Nam vươn tầm thế giới:\n\n" +
+                          "• 🌿 **Sâm Ngọc Linh Kon Tum ngâm mật rừng (5 sao)** — **7.000.000 ₫ / Hộp**\n  _Quốc bảo dược liệu Việt Nam chứa 52 hợp chất Saponin quý (đặc biệt MR2 >50%), giúp đại bổ nguyên khí, tái tạo tế bào và tăng cường miễn dịch toàn diện._\n\n" +
+                          "• 🕊️ **Yến Sào Khánh Hòa tinh chế (5 sao)** — **5.000.000 ₫ / Hộp 100g**\n  _Yến đảo thiên nhiên vách đá biển sâu, giàu 18 loại axit amin và khoáng chất quý bồi bổ đường hô hấp và phục hồi sinh lực._\n\n" +
+                          "• 🍵 **Chè Shan Tuyết Suối Giàng thượng hạng (5 sao)** — **1.800.000 ₫ / Hộp**\n  _Búp chè ngậm tuyết từ cây cổ thụ 100–300 năm tuổi trên non cao Yên Bái, nước vàng óng mật ong rừng, hậu ngọt sâu lan tỏa bất tận._\n\n" +
+                          "• 🫖 **Bộ Trà Phúc Lộc Thọ (5 sao)** — **2.000.000 ₫ / Bộ**\n  _Tuyệt phẩm trà tiến vua kết tinh văn hóa ngàn năm Thăng Long Hà Nội, đóng hộp sơn mài sang trọng bậc nhất cho ngoại giao và đại lễ._\n\n" +
+                          "• 🐟 **Nước mắm Cát Hải cốt đặc biệt (5 sao)** — **400.000 ₫ / Hộp**\n  _Ủ chượp cá cơm than tươi ròng rã trên 15 tháng trong chum sành phơi nắng tự nhiên, vị mặn đượm hậu ngọt đạm cá béo ngậy._\n\n" +
+                          "👉 *Anh/Chị có thể bấm trực tiếp vào thẻ sản phẩm bên dưới để xem tem truy xuất nguồn gốc hoặc thêm vào giỏ hàng ngay nhé ạ!*",
+                    productIds: pIds,
+                    dynamic_chips: ["Sâm Ngọc Linh 5★", "Yến Sào Khánh Hòa 5★", "Chè Shan Tuyết 5★", "Bộ Trà Phúc Lộc Thọ 5★"],
+                    handoffAdmin: false,
+                    localFallback: true
+                };
+            }
+
+            // 3.2 CHUYÊN ĐỀ DANH TRÀ VIỆT NAM & THƯỞNG TRÀ THƯỢNG HẠNG (TEA SOMMELIER)
+            const isTeaExplicit = (/(tra|che|shan tuyet|danh tra|thao moc)/.test(normalized) &&
+                /(goi y|tim|mua|tu van|uong|cac loai|thuong hang|ngon|loai nao|tuyen chon)/.test(normalized)) ||
+                /^(tra|che|goi y tra|goi y che|cac loai tra|tra ngon|che ngon)$/.test(normalized.trim());
+
+            if (isTeaExplicit) {
+                const teaItems = [348, 340, 341, 344, 336].map(id => products.find(p => p.id === id)).filter(Boolean);
+                const pIds = teaItems.map(p => p.id);
+                lastAIRecommendedProductIds = pIds;
+                return {
+                    message: english
+                        ? "🍵 **Vietnamese Masterpiece Tea Sommelier Collection**:\nFrom mist-shrouded northern peaks to royal legacy blends, here are Vietnam's finest certified teas:\n\n" +
+                          "• 🏔️ **Suoi Giang Ancient Shan Tuyet Tea (5★ - Yen Bai)**: 1,800,000 ₫\n  _Centuries-old tea trees at 1,500m elevation. Golden liquor, subtle mountain smoke, long-lasting sweet throat finish._\n\n" +
+                          "• 🍃 **Phin Ho Ancient Green Tea (5★ - Ha Giang)**: 600,000 ₫\n  _Tender downy buds plucked by Dao ethnic artisans. Delicate green fragrance with refreshing crispness._\n\n" +
+                          "• 🍂 **Phin Ho Black Tea (5★ - Ha Giang)**: 700,000 ₫\n  _Full enzymatic fermentation producing deep amber tones, wild floral sweetness, and zero astringency._\n\n" +
+                          "• 🌺 **Sa Pa Mist-Sprayed Artichoke Tea (5★ - Lao Cai)**: 150,000 ₫\n  _Purifying herbal wellness infusion for liver detox and deep restful sleep._\n\n" +
+                          "• 🫖 **Phuc Loc Tho Imperial Tea Set (5★ - Ha Noi)**: 2,000,000 ₫\n  _Prestige diplomatic gift set._\n\n" +
+                          "💡 **Sommelier Brewing Secret**: Brew at 85°C–90°C (never boiling 100°C), quick 3s rinse, steep 25–35s. Shan Tuyet ancient tea endures through 8–10 aromatic infusions!"
+                        : "🍵 **Tuyển tập Đệ Nhất Danh Trà OCOP 5 Sao Việt Nam**:\n\nNói đến văn hóa trà Việt, núi cao Tây Bắc quanh năm sương mây cùng nghệ thuật sao chè thủ công bí truyền của đồng bào Dao, Mông tạo nên những tuyệt phẩm trà danh bất hư truyền:\n\n" +
+                          "• 🏔️ **Chè Shan Tuyết Suối Giàng thượng hạng (5 sao - Yên Bái)** — **1.800.000 ₫**\n  _Thu hái từ cây chè cổ thụ 100–300 năm tuổi trên non cao >1.500m. Nước vàng óng ánh mật ong rừng, thoảng hương khói lam chiều thảo mộc, hậu ngọt sâu bất tận._\n\n" +
+                          "• 🍃 **Trà xanh cổ thụ Phìn Hồ (5 sao - Hà Giang)** — **600.000 ₫**\n  _Búp trà non ngậm sương đêm phủ lớp tuyết trắng mịn, sắc nước xanh cốm thanh khiết, vị tiền chát dịu êm, bùi ngậy lắng sâu._\n\n" +
+                          "• 🍂 **Hồng trà Phìn Hồ cổ thụ (5 sao - Hà Giang)** — **700.000 ₫**\n  _Lên men tự nhiên 100%, nước trà đỏ hồng ngọc lấp lánh, hương thơm hoa quả mật ong dịu dàng, hoàn toàn không gây cồn cào ruột._\n\n" +
+                          "• 🌺 **Trà phun sương Actiso Sa Pa (5 sao - Lào Cai)** — **150.000 ₫**\n  _Dược liệu quý mát gan, thanh lọc độc tố cơ thể và mang lại giấc ngủ thư thái an lành._\n\n" +
+                          "• 🫖 **Bộ Trà Phúc Lộc Thọ (5 sao - Hà Nội)** — **2.000.000 ₫**\n  _Tuyệt phẩm trà cung đình hội tụ tinh hoa ngàn năm văn hiến Thăng Long, đóng hộp gấm sơn mài danh giá._\n\n" +
+                          "💡 **Bí quyết pha trà của Chuyên gia Sommelier**: Dùng nước sôi hạ nhiệt độ về **85°C – 90°C**, đánh thức trà nhanh trong 3 giây, hãm từ 25 – 35 giây mỗi tuần trà. Chè Shan Tuyết cổ thụ pha được 8–10 tuần nước vẫn ngọt lành thơm mát!",
+                    productIds: pIds,
+                    dynamic_chips: ["Chè Shan Tuyết Suối Giàng", "Trà Xanh Phìn Hồ", "Hồng Trà Phìn Hồ", "Nghệ thuật pha trà"],
+                    handoffAdmin: false,
+                    localFallback: true
+                };
+            }
+
+            // 3.3 CHUYÊN ĐỀ CÀ PHÊ ĐẶC SẢN NÚI CAO (SPECIALTY COFFEE)
+            const isCoffeeExplicit = (/(ca phe|coffee|robusta|arabica)/.test(normalized) &&
+                /(goi y|tim|mua|tu van|uong|loai nao|ngon|dac san)/.test(normalized)) ||
+                /^(ca phe|coffee|goi y ca phe|ca phe ngon)$/.test(normalized.trim());
+
+            if (isCoffeeExplicit) {
+                const coffeeItems = [353, 360].map(id => products.find(p => p.id === id)).filter(Boolean);
+                const pIds = coffeeItems.map(p => p.id);
+                lastAIRecommendedProductIds = pIds;
+                return {
+                    message: english
+                        ? "☕ **Highland Specialty Coffee Collection (OCOP 5-Star)**:\n\n• **Muong Ang Roasted Coffee (Dien Bien - 5★)**: 450,000 ₫ / 1kg\n  _Arabica Catimor grown at 1,000m altitude. Honey processed for vibrant citrus fruit notes and lingering chocolate sweetness._\n\n• **Bich Thao Specialty Coffee (Son La - 5★)**: 400,000 ₫ / 500g\n  _High-altitude Arabica washed processing with elegant jasmine floral aroma and gentle body._\n\n👉 *Perfect for espresso, pour-over (V60), and traditional Vietnamese Phin brewing!*"
+                        : "☕ **Tuyển tập Cà Phê Đặc Sản Núi Cao OCOP 5 Sao**:\n\nĐược chắt lọc từ những thung lũng sương mù Tây Bắc ở độ cao trên 1.000m với thổ nhưỡng đất đỏ màu mỡ:\n\n• 🏔️ **Cà phê Mường Ảng Điện Biên hạt rang cao cấp (5 sao)** — **450.000 ₫ / 1kg**\n  _Giống Arabica Catimor trứ danh sơ chế mật ong (Honey process), hương thơm nồng nàn quyến rũ, vị chua thanh thoát của trái cây chín mọng và hậu vị ngọt sô-cô-la kéo dài._\n\n• 🌿 **Cà phê Bích Thao Sơn La (5 sao)** — **400.000 ₫ / 500g**\n  _Đạt giải Cà phê đặc sản Việt Nam, hương hoa nhài thanh tao, vị ngọt đượm mật quả, phù hợp pha phin truyền thống hoặc Pour-over / Espresso thượng hạng._\n\n👉 *Anh/Chị có thể bấm vào sản phẩm bên dưới để chọn loại nguyên hạt hoặc xay mịn theo gu pha chế nhé ạ!*",
+                    productIds: pIds,
+                    dynamic_chips: ["Cà phê Mường Ảng 5★", "Cà phê Bích Thao 5★", "Quà Tây Bắc", "Pha phin truyền thống"],
                     handoffAdmin: false,
                     localFallback: true
                 };
@@ -5135,8 +5220,8 @@
                         message: english
                             ? "🍵 Sommelier brewing guide for premium Vietnamese tea:\n• Water temperature: 85°C–90°C (never boiling 100°C to preserve tender tips).\n• Warm teapot, steep for 25–35 seconds.\n• Pour completely; can be brewed 8–10 infusions with enduring lingering sweetness."
                             : "🍵 Nghệ thuật pha trà Shan Tuyết Cổ Thụ & Trà Tân Cương chuẩn danh trà:\n\n1. Nhiệt độ nước: 85°C – 90°C (tránh dùng nước sôi 100°C làm cháy búp non).\n2. Tráng ấm & đánh thức trà: Rót nước ngập lá rồi chắt nhanh trong 3 giây.\n3. Hãm trà: Hãm từ 20 – 35 giây mỗi tuần trà. Chắt kiệt ra chén tống trước khi chia ra chén quân.\n4. Thưởng thức: Trà Shan Tuyết cổ thụ pha được 8–10 tuần nước vẫn giữ nguyên sắc nước vàng óng và hậu ngọt sâu lan tỏa.",
-                        productIds: products.filter(p => [2, 3, 47].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Trà Shan Tuyết 5★", "Trà Đinh Nõn Tân Cương", "Trà Sen Tây Hồ"],
+                        productIds: products.filter(p => [348, 340, 341].includes(p.id)).map(p => p.id),
+                        dynamic_chips: ["Chè Shan Tuyết 5★", "Hồng Trà Phìn Hồ", "Nghệ thuật pha trà"],
                         handoffAdmin: false,
                         localFallback: true
                     };
@@ -5146,7 +5231,7 @@
                         message: english
                             ? "🕊️ Premium Bird's Nest preparation guide:\n• Soak pure bird's nest in cool water for 25–30 minutes.\n• Double boil in a ceramic bowl over low heat for 20 minutes.\n• Add rock sugar and fresh ginger slices during the final 5 minutes for a warming tonic."
                             : "🕊️ Hướng dẫn chưng Yến Sào Khánh Hòa giữ trọn vẹn 18 loại axit amin quý:\n\n1. Ngâm nở: Ngâm tổ yến trong nước tinh khiết 25–30 phút cho sợi tơi mềm.\n2. Chưng cách thủy: Đặt thố sứ vào nồi chưng lửa nhỏ trong 20 phút.\n3. Nêm gia vị: Cho đường phèn và vài lát gừng tươi vào 5 phút cuối để khử tính hàn.\n4. Thời điểm vàng: Dùng lúc bụng đói buổi sáng sớm hoặc 30 phút trước khi ngủ để hấp thu tối đa dinh dưỡng.",
-                        productIds: products.filter(p => p.id === 1).map(p => p.id),
+                        productIds: products.filter(p => p.id === 480).map(p => p.id),
                         dynamic_chips: ["Yến Sào Khánh Hòa", "Sâm Ngọc Linh", "Bồi bổ sức khỏe"],
                         handoffAdmin: false,
                         localFallback: true
@@ -5160,10 +5245,10 @@
                 if (/(shan tuyet|tan cuong|che|tra)/i.test(normalized)) {
                     return {
                         message: english
-                            ? "🍵 Sommelier Comparative Analysis: **Shan Tuyet Ancient Tea** vs. **Tan Cuong Dinh Non Tea**:\n\n• **Terroir & Origin**: Shan Tuyet grows wild on rugged peaks (>2,000m) of Ha Giang with century-old trees wrapped in mist. Tan Cuong flourishes in the sunlit fertile hills of Thai Nguyen beside Cong River.\n• **Leaf Appearance**: Shan Tuyet features plump tips enveloped in pure white downy fur. Tan Cuong has tightly twisted, needle-slender dark green leaves.\n• **Aroma & Liquor**: Shan Tuyet yields honey-amber liquor with gentle smokiness and profound lingering sweet finish (infuses 8–10 times). Tan Cuong produces vibrant young-rice green liquor with pronounced initial briskness and buttery richness.\n• **Best for**: Shan Tuyet suits contemplative evenings and longevity gifts; Tan Cuong excels in morning focus and prestigious diplomatic welcomes."
-                            : "🍵 Chuyên gia Sommelier đối sánh: **Trà Shan Tuyết Cổ Thụ Hà Giang** và **Trà Đinh Nõn Tân Cương Thái Nguyên**:\n\n1. **Thổ nhưỡng & Xuất xứ**:\n   • _Shan Tuyết Cổ Thụ_: Thu hái từ những cây chè cổ thụ 100–300 năm tuổi trên đỉnh Tây Côn Lĩnh (>2.000m quanh năm mây mù tuyết phủ).\n   • _Trà Đinh Nõn Tân Cương_: Trồng tại vùng đồi sỏi đỏ trung du sông Công – Tam Đảo, tuyển chọn nghiêm ngặt 1 tôm 1 lá nõn.\n\n2. **Búp chè & Sắc nước**:\n   • _Shan Tuyết_: Búp to mập phủ lớp lông tơ tuyết trắng mịn. Nước trà vàng óng ánh mật ong rừng.\n   • _Tân Cương_: Cánh trà xoăn nhỏ tí xíu như chiếc đinh nõn. Nước trà xanh vàng trong vắt ánh cốm non.\n\n3. **Hương vị & Độ bền nước**:\n   • _Shan Tuyết_: Thoảng hương khói bếp thảo mộc, vị chát dịu êm ái, hậu ngọt sâu lan tỏa bền bỉ (pha được 8–10 tuần nước).\n   • _Tân Cương_: Hương cốm non nồng nàn, vị chát thanh sắc sảo ngay đầu lưỡi, tiền chát hậu bùi ngậy.\n\n👉 **Gợi ý chọn lựa**: Anh/Chị chọn Trà Shan Tuyết nếu thích vị êm đượm dưỡng sinh; chọn Trà Tân Cương nếu thích hương cốm rạng rỡ và vị trà đậm đà truyền thống!",
-                        productIds: products.filter(p => [2, 3].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Trà Shan Tuyết Hà Giang", "Trà Đinh Nõn Tân Cương", "Nghệ thuật pha trà", "Combo trà biếu"],
+                            ? "🍵 Sommelier Comparative Analysis: **Shan Tuyet Ancient Tea** vs. **Tan Cuong Dinh Non Tea**:\n\n• **Terroir & Origin**: Shan Tuyet grows wild on rugged peaks (>2,000m) of Ha Giang and Yen Bai with century-old trees wrapped in mist. Tan Cuong flourishes in the sunlit fertile hills of Thai Nguyen beside Cong River.\n• **Leaf Appearance**: Shan Tuyet features plump tips enveloped in pure white downy fur. Tan Cuong has tightly twisted, needle-slender dark green leaves.\n• **Aroma & Liquor**: Shan Tuyet yields honey-amber liquor with gentle smokiness and profound lingering sweet finish (infuses 8–10 times). Tan Cuong produces vibrant young-rice green liquor with pronounced initial briskness and buttery richness.\n• **Best for**: Shan Tuyet suits contemplative evenings and longevity gifts; Tan Cuong excels in morning focus and prestigious diplomatic welcomes."
+                            : "🍵 Chuyên gia Sommelier đối sánh: **Trà Shan Tuyết Cổ Thụ Hà Giang / Suối Giàng** và **Trà Đinh Nõn Tân Cương**:\n\n1. **Thổ nhưỡng & Xuất xứ**:\n   • _Shan Tuyết Cổ Thụ_: Thu hái từ những cây chè cổ thụ 100–300 năm tuổi trên đỉnh Tây Côn Lĩnh & Suối Giàng (>1.500m quanh năm mây mù tuyết phủ).\n   • _Trà Đinh Nõn Tân Cương_: Trồng tại vùng đồi sỏi đỏ trung du sông Công – Tam Đảo, tuyển chọn nghiêm ngặt 1 tôm 1 lá nõn.\n\n2. **Búp chè & Sắc nước**:\n   • _Shan Tuyết_: Búp to mập phủ lớp lông tơ tuyết trắng mịn. Nước trà vàng óng ánh mật ong rừng.\n   • _Tân Cương_: Cánh trà xoăn nhỏ tí xíu như chiếc đinh nõn. Nước trà xanh vàng trong vắt ánh cốm non.\n\n3. **Hương vị & Độ bền nước**:\n   • _Shan Tuyết_: Thoảng hương khói bếp thảo mộc, vị chát dịu êm ái, hậu ngọt sâu lan tỏa bền bỉ (pha được 8–10 tuần nước).\n   • _Tân Cương_: Hương cốm non nồng nàn, vị chát thanh sắc sảo ngay đầu lưỡi, tiền chát hậu bùi ngậy.\n\n👉 **Gợi ý chọn lựa**: Anh/Chị chọn Trà Shan Tuyết nếu thích vị êm đượm dưỡng sinh; chọn Trà Tân Cương nếu thích hương cốm rạng rỡ và vị trà đậm đà truyền thống!",
+                        productIds: products.filter(p => [348, 340].includes(p.id)).map(p => p.id),
+                        dynamic_chips: ["Chè Shan Tuyết Suối Giàng", "Trà Xanh Phìn Hồ", "Nghệ thuật pha trà"],
                         handoffAdmin: false,
                         localFallback: true
                     };
@@ -5172,9 +5257,9 @@
                     return {
                         message: english
                             ? "🌿 Sommelier Comparative Analysis: **Ngoc Linh Ginseng (Vietnam)** vs. **Korean Ginseng**:\n\n• **Saponin Content**: Ngoc Linh Ginseng contains 52 saponins (over 50% Majonoside-R2 / MR2) – more than double Korean Ginseng (~26 saponins).\n• **Unique Medical Benefits**: MR2 provides unmatched psychological anti-stress, anti-anxiety, and liver-protecting properties found in no other ginseng worldwide.\n• **Body Constitution Suitability**: Ngoc Linh has a gentle, harmonizing nature suitable for both high and low blood pressure when used appropriately, unlike Korean Red Ginseng which can elevate blood pressure sharply."
-                            : "🌿 Chuyên gia Sommelier đối sánh: **Sâm Ngọc Linh Quảng Nam (Quốc bảo Việt Nam)** và **Nhân sâm Hàn Quốc / Triều Tiên**:\n\n1. **Hàm lượng dược chất Saponin**:\n   • _Sâm Ngọc Linh_: Chứa tới **52 hợp chất Saponin** (trong đó có 26 saponin cấu trúc mới chưa từng thấy ở các loài sâm khác trên thế giới). Đặc biệt hợp chất quý **Majonoside-R2 (MR2)** chiếm trên 50% tổng lượng saponin.\n   • _Nhân sâm Hàn Quốc_: Chứa khoảng **24 – 26 loại Saponin**.\n\n2. **Tác dụng y học độc bản của MR2**:\n   • Hợp chất MR2 trong Sâm Ngọc Linh có tác dụng giải tỏa stress tâm lý, chống trầm cảm lo âu, tăng cường miễn dịch, tái tạo tế bào gan và ức chế khối u mà nhân sâm Hàn Quốc không có.\n\n3. **Tính vị & Độ an toàn**:\n   • _Sâm Ngọc Linh_ có tính bình ấm thanh mát, dùng liều lượng điều độ thích hợp cho cả người huyết áp thấp lẫn huyết áp cao.\n   • _Hồng sâm Hàn Quốc_ có tính nhiệt ôn mạnh, người huyết áp cao cần rất cẩn trọng khi dùng.\n\n👉 **Kết luận**: Sâm Ngọc Linh xứng danh là Quốc bảo dược thảo quý giá bậc nhất thế giới, là món quà bồi bổ thượng hạng không gì sánh bằng.",
-                        productIds: products.filter(p => [4, 1].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Sâm Ngọc Linh 5★", "Yến Sào Khánh Hòa", "Bồi bổ sức khỏe", "Biếu Sếp lớn"],
+                            : "🌿 Chuyên gia Sommelier đối sánh: **Sâm Ngọc Linh Kon Tum (Quốc bảo Việt Nam)** và **Nhân sâm Hàn Quốc / Triều Tiên**:\n\n1. **Hàm lượng dược chất Saponin**:\n   • _Sâm Ngọc Linh_: Chứa tới **52 hợp chất Saponin** (trong đó có 26 saponin cấu trúc mới chưa từng thấy ở các loài sâm khác trên thế giới). Đặc biệt hợp chất quý **Majonoside-R2 (MR2)** chiếm trên 50% tổng lượng saponin.\n   • _Nhân sâm Hàn Quốc_: Chứa khoảng **24 – 26 loại Saponin**.\n\n2. **Tác dụng y học độc bản của MR2**:\n   • Hợp chất MR2 trong Sâm Ngọc Linh có tác dụng giải tỏa stress tâm lý, chống trầm cảm lo âu, tăng cường miễn dịch, tái tạo tế bào gan và ức chế khối u mà nhân sâm Hàn Quốc không có.\n\n3. **Tính vị & Độ an toàn**:\n   • _Sâm Ngọc Linh_ có tính bình ấm thanh mát, dùng liều lượng điều độ thích hợp cho cả người huyết áp thấp lẫn huyết áp cao.\n   • _Hồng sâm Hàn Quốc_ có tính nhiệt ôn mạnh, người huyết áp cao cần rất cẩn trọng khi dùng.\n\n👉 **Kết luận**: Sâm Ngọc Linh xứng danh là Quốc bảo dược thảo quý giá bậc nhất thế giới, là món quà bồi bổ thượng hạng không gì sánh bằng.",
+                        productIds: products.filter(p => [492, 356].includes(p.id)).map(p => p.id),
+                        dynamic_chips: ["Sâm Ngọc Linh 5★", "Sâm Lai Châu 5★", "Bồi bổ sức khỏe", "Biếu Sếp"],
                         handoffAdmin: false,
                         localFallback: true
                     };
@@ -5184,7 +5269,7 @@
                         message: english
                             ? "🕊️ Sommelier Comparative Analysis: **Natural Island Bird's Nest** vs. **Farm-raised Bird's Nest**:\n\n• **Habitat**: Island nests cling to steep cliffs in deep oceanic caves, absorbing sea minerals and marine elements for months.\n• **Texture & Aroma**: Island nests feature thicker, golden-ivory strands that remain crunchy, resilient, and distinctively fragrant after steaming.\n• **Micronutrients**: Higher mineral density (iron, calcium, zinc) from pristine limestone formations."
                             : "🕊️ Chuyên gia Sommelier đối sánh: **Yến Sào đảo thiên nhiên Khánh Hòa** và **Yến nhà nuôi**:\n\n1. **Môi trường khai thác**:\n   • _Yến đảo thiên nhiên_: Chim yến làm tổ trên các vách đá cheo leo hang đảo biển sâu, đón gió muối và hấp thụ vi khoáng ngấm từ vách đá vôi tự nhiên.\n   • _Yến nhà nuôi_: Làm tổ trong các nhà nuôi gỗ nhân tạo, chu kỳ thu hoạch ngắn hơn.\n\n2. **Cấu trúc sợi & Hương vị khi chưng**:\n   • _Yến đảo_: Sợi to dày, màu trắng ngà ánh vàng, khi chưng nở to, sợi dai giòn sần sật và thơm ngậy đặc trưng mùi biển khơi.\n   • _Yến nhà_: Sợi mảnh, mềm xốp hơn, nhanh tan khi chưng nhiệt độ cao.\n\n3. **Dinh dưỡng vi lượng**:\n   • Yến đảo thiên nhiên chứa hàm lượng sắt, canxi, đồng, kẽm phong phú hơn từ vách đá địa chất tự nhiên.\n\n👉 **Gợi ý**: Yến Sào đảo thiên nhiên Khánh Hòa 5 sao là lựa chọn đỉnh cao để biếu tặng người lớn tuổi phục hồi sinh lực hoặc tri ân đối tác.",
-                        productIds: products.filter(p => [1].includes(p.id)).map(p => p.id),
+                        productIds: products.filter(p => p.id === 480).map(p => p.id),
                         dynamic_chips: ["Yến Sào Khánh Hòa 5★", "Cách chưng yến", "Sâm Ngọc Linh", "Bồi bổ sức khỏe"],
                         handoffAdmin: false,
                         localFallback: true
@@ -5193,10 +5278,10 @@
                 if (/(nuoc mam|mam|truyen thong|cong nghiep)/i.test(normalized)) {
                     return {
                         message: english
-                            ? "🐟 Sommelier Comparative Analysis: **Phu Quoc 43°N Traditional Fish Sauce** vs. **Industrial Sauce**:\n\n• **Ingredients**: Traditional sauce uses strictly 2 natural ingredients: fresh black anchovies & sea salt, aged 12–15 months in Boi Loi wood vats.\n• **Nitrogen Protein**: Reaches pure natural 43°N protein without artificial chemical enhancers, delivering deep savory umami and shimmering amber clarity."
-                            : "🐟 Chuyên gia Sommelier đối sánh: **Nước mắm truyền thống Phú Quốc 43°N** và **Nước mắm công nghiệp**:\n\n1. **Thành phần & Quy trình ủ chượp**:\n   • _Truyền thống Phú Quốc_: Chỉ 2 nguyên liệu duy nhất: Cá cơm than tươi rói và muối biển Bà Rịa, ủ chượp tự nhiên 12–15 tháng trong thùng gỗ bời lời cổ thụ.\n   • _Nước mắm công nghiệp_: Sản xuất ngắn ngày bằng cách pha loãng nước mắm cốt với nước muối, chất điều vị, phẩm màu và hương liệu nhân tạo.\n\n2. **Độ đạm & Màu sắc**:\n   • _Truyền thống_: Đạt độ đạm tự nhiên 40°N – 43°N hoàn toàn từ protein cá cơm, màu cánh gián đậm trong suốt và sóng sánh như mật.\n   • _Công nghiệp_: Độ đạm thấp (thường chỉ 10°N – 15°N).\n\n3. **Vị giác & Hậu vị**:\n   • _Truyền thống_: Vị mặn đượm ban đầu nơi đầu lưỡi nhưng ngay sau đó bùng nổ hậu vị ngọt béo ngậy sâu của đạm cá thật.\n   • _Công nghiệp_: Vị ngọt gắt nhân tạo của mì chính và chất tạo ngọt, không có hậu vị đầm ấm tự nhiên.\n\n👉 **Khuyên dùng**: Nước mắm truyền thống 43°N là tinh túy giữ gìn mâm cơm Việt đậm đà và an lành sức khỏe.",
-                        productIds: products.filter(p => [5].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Nước Mắm Phú Quốc 43°N", "Gạo ST25 Sóc Trăng", "Tiêu đen Chư Sê", "Bếp gia vị Việt"],
+                            ? "🐟 Sommelier Comparative Analysis: **Traditional Fish Sauce** vs. **Industrial Sauce**:\n\n• **Ingredients**: Traditional sauce uses strictly 2 natural ingredients: fresh black anchovies & sea salt, aged 12–15 months in Boi Loi wood vats.\n• **Nitrogen Protein**: Reaches pure natural 43°N protein without artificial chemical enhancers, delivering deep savory umami and shimmering amber clarity."
+                            : "🐟 Chuyên gia Sommelier đối sánh: **Nước mắm truyền thống Cát Hải / Lê Gia** và **Nước mắm công nghiệp**:\n\n1. **Thành phần & Quy trình ủ chượp**:\n   • _Truyền thống_: Chỉ 2 nguyên liệu duy nhất: Cá cơm than tươi rói và muối biển tinh khiết, ủ chượp tự nhiên 12–15 tháng trong thùng gỗ hoặc chum sành cổ truyền.\n   • _Nước mắm công nghiệp_: Sản xuất ngắn ngày bằng cách pha loãng nước mắm cốt với nước muối, chất điều vị, phẩm màu và hương liệu nhân tạo.\n\n2. **Độ đạm & Màu sắc**:\n   • _Truyền thống_: Đạt độ đạm tự nhiên cao hoàn toàn từ protein cá cơm, màu cánh gián đậm trong suốt và sóng sánh như mật.\n   • _Công nghiệp_: Độ đạm thấp (thường chỉ 10°N – 15°N).\n\n3. **Vị giác & Hậu vị**:\n   • _Truyền thống_: Vị mặn đượm ban đầu nơi đầu lưỡi nhưng ngay sau đó bùng nổ hậu vị ngọt béo ngậy sâu của đạm cá thật.\n   • _Công nghiệp_: Vị ngọt gắt nhân tạo của mì chính và chất tạo ngọt, không có hậu vị đầm ấm tự nhiên.\n\n👉 **Khuyên dùng**: Nước mắm truyền thống OCOP 5 sao là tinh túy giữ gìn mâm cơm Việt đậm đà và an lành sức khỏe.",
+                        productIds: products.filter(p => [392, 436].includes(p.id)).map(p => p.id),
+                        dynamic_chips: ["Nước Mắm Cát Hải 5★", "Nước Mắm Lê Gia", "Gạo nương Điện Biên", "Bếp gia vị Việt"],
                         handoffAdmin: false,
                         localFallback: true
                     };
@@ -5209,10 +5294,10 @@
                 if (/(ra mat|ban gai|ban trai|bo me vo|bo me chong|thong gia)/.test(normalized)) {
                     return {
                         message: english
-                            ? "🎁 Gift Etiquette: Meeting In-Laws & Partner's Parents:\n\n• For Father: Premium Lotus Tea or Ha Giang Shan Tuyet Ancient Tea 5★ for thoughtful conversation.\n• For Mother: Meo Vac Mint Honey or crunchy Binh Phuoc wood-roasted cashews for family wellbeing.\n• Traditional touch: Lang Vong green rice cakes or Soc Trang Pia cakes to sweeten the family gathering.\n\nAll items are packaged in elegant, respectful gift boxes expressing gratitude and sincerity."
-                            : "🎁 Nghệ thuật chọn quà: **Ra mắt gia đình người yêu / Kính thăm Thông gia**:\n\nRa mắt nhà người yêu hay kính thăm thông gia là dịp đặc biệt quan trọng cần sự tinh tế, trang nhã và chân thành, không phô trương kệch cỡm nhưng phải toát lên lòng hiếu kính:\n\n• 👨‍🦳 **Kính tặng Bác trai đàm đạo**: Hộp Trà Sen Tây Hồ thanh tao hoặc Trà Shan Tuyết Cổ Thụ Hà Giang 5 sao nước vàng óng mật ong, hậu ngọt sâu bất tận.\n• 👩‍🦳 **Kính tặng Bác gái chăm sóc gia đình**: Hũ Mật ong Bạc Hà Mèo Vạc hoa cúc tím đá vôi hoặc Hạt điều rang củi Bình Phước bùi béo bổ dưỡng.\n• 🥮 **Thức quà sum vầy ngọt giọng**: Bánh cốm Làng Vòng Hà Nội hoặc Bánh pía Sóc Trăng để cả gia đình cùng thưởng trà rôm rả.\n\n✨ Toàn bộ sản phẩm đều được đóng hộp quà trang nhã, thắt nơ lụa và kèm thiệp chúc chân tình.",
-                        productIds: products.filter(p => [2, 11, 12].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Trà Shan Tuyết Hà Giang", "Mật ong Bạc Hà Mèo Vạc", "Bánh cốm Làng Vòng", "Combo ra mắt gia đình"],
+                            ? "🎁 Gift Etiquette: Meeting In-Laws & Partner's Parents:\n\n• For Father: Premium Suoi Giang Shan Tuyet Ancient Tea 5★ for thoughtful conversation.\n• For Mother: Meo Vac Mint Honey or crunchy Gia Lai wood-roasted cashews for family wellbeing.\n• Traditional touch: Soc Trang Pia cakes or local specialty cakes to sweeten the family gathering.\n\nAll items are packaged in elegant, respectful gift boxes expressing gratitude and sincerity."
+                            : "🎁 Nghệ thuật chọn quà: **Ra mắt gia đình người yêu / Kính thăm Thông gia**:\n\nRa mắt nhà người yêu hay kính thăm thông gia là dịp đặc biệt quan trọng cần sự tinh tế, trang nhã và chân thành, không phô trương kệch cỡm nhưng phải toát lên lòng hiếu kính:\n\n• 👨‍🦳 **Kính tặng Bác trai đàm đạo**: Hộp Chè Shan Tuyết Suối Giàng thượng hạng 5 sao nước vàng óng mật ong rừng, hậu ngọt sâu bất tận.\n• 👩‍🦳 **Kính tặng Bác gái chăm sóc gia đình**: Hũ Mật ong Bạc Hà Mèo Vạc hoa cúc tím đá vôi hoặc Hạt điều Gia Lai bùi béo bổ dưỡng.\n• 🥮 **Thức quà sum vầy ngọt giọng**: Hộp Bánh pía Sóc Trăng thượng hạng 5 sao để cả gia đình cùng thưởng trà rôm rả.\n\n✨ Toàn bộ sản phẩm đều được đóng hộp quà trang nhã, kèm thiệp chúc chân tình.",
+                        productIds: products.filter(p => [348, 342, 577].includes(p.id)).map(p => p.id),
+                        dynamic_chips: ["Chè Shan Tuyết Suối Giàng", "Mật ong Bạc Hà Mèo Vạc", "Bánh pía Sóc Trăng", "Combo ra mắt gia đình"],
                         handoffAdmin: false,
                         localFallback: true
                     };
@@ -5220,10 +5305,10 @@
                 if (/(kieu bao|nuoc ngoai|xuat ngoai|mang di|cam tay|may bay|xach tay)/.test(normalized)) {
                     return {
                         message: english
-                            ? "✈️ Travel & Expatriate Gift Selection: Airport & Flight-Friendly Delicacies:\n\n• **Binh Phuoc Wood-Roasted Cashews**: Crispy, aromatic, vacuum-sealed tins.\n• **Chu Se Black Pepper**: Distinctive pungent aroma of Central Highlands red basalt soil.\n• **Buon Ma Thuot Robusta Coffee**: One-way valve air-tight bags preserving fresh roasted aroma.\n• **Ha Giang Shan Tuyet Tea**: High-altitude tea in premium sealed tin boxes.\n\nStrictly complies with international airline customs regulations with dry, odorless vacuum sealing!"
-                            : "✈️ Tuyển chọn quà biếu: **Kiều bào & Mang đi nước ngoài (Xách tay máy bay)**:\n\nTiêu chuẩn số 1 khi mang đặc sản ra nước ngoài (Mỹ, Nhật, Úc, Châu Âu) là: Gọn nhẹ, hút chân không kín mùi, hạn dùng dài (6–12 tháng) và dễ dàng thông quan hải quan quốc tế:\n\n• 🥜 **Hạt điều rang củi Bình Phước**: Giòn rụm bùi béo, đóng hộp lon thiếc hoặc túi hút chân không sang trọng.\n• 🌶️ **Tiêu đen Chư Sê Gia Lai**: Đậm đà cay thơm nồng nàn đất đỏ bazan, gia vị trứ danh kiều bào luôn mong nhớ.\n• ☕ **Cà phê Robusta Buôn Ma Thuột**: Đóng gói túi van 1 chiều cao cấp, lưu giữ trọn hương thơm nồng nàn nguyên bản.\n• 🍵 **Trà Shan Tuyết Cổ Thụ Hà Giang**: Đóng hộp thiếc nắp kín, giữ hương trà tuyết núi cao vẹn nguyên.\n\n⚠️ Lưu ý: Không nên chọn các loại thực phẩm tươi sống hoặc có mùi nồng chưa hút chân không để đảm bảo quá trình kiểm dịch sân bay thuận lợi nhất ạ!",
-                        productIds: products.filter(p => [7, 8, 9, 2].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Hạt điều Bình Phước", "Tiêu đen Chư Sê", "Cà phê Buôn Ma Thuột", "Trà Shan Tuyết"],
+                            ? "✈️ Travel & Expatriate Gift Selection: Airport & Flight-Friendly Delicacies:\n\n• **Gia Lai Wood-Roasted Cashews**: Crispy, aromatic, vacuum-sealed.\n• **Muong Ang Roasted Coffee Beans**: One-way valve air-tight bags preserving fresh roasted aroma.\n• **Suoi Giang Shan Tuyet Tea**: High-altitude tea in premium sealed boxes.\n• **Dried Cinnamon Quills**: Highly fragrant export-quality cinnamon.\n\nStrictly complies with international airline customs regulations with dry, odorless vacuum sealing!"
+                            : "✈️ Tuyển chọn quà biếu: **Kiều bào & Mang đi nước ngoài (Xách tay máy bay)**:\n\nTiêu chuẩn số 1 khi mang đặc sản ra nước ngoài (Mỹ, Nhật, Úc, Châu Âu) là: Gọn nhẹ, hút chân không kín mùi, hạn dùng dài (6–12 tháng) và dễ dàng thông quan hải quan quốc tế:\n\n• 🥜 **Hạt điều rang muối Gia Lai**: Giòn rụm bùi béo, đóng hộp hút chân không sang trọng.\n• ☕ **Cà phê Mường Ảng hạt rang cao cấp**: Đóng gói túi van 1 chiều cao cấp, lưu giữ trọn hương thơm nồng nàn nguyên bản.\n• 🍵 **Chè Shan Tuyết Suối Giàng Thượng Hạng**: Đóng hộp nắp kín, giữ hương trà tuyết núi cao vẹn nguyên.\n• 🌿 **Quế ống khô bóc vỏ xuất khẩu**: Gia vị đại ngàn cay ngọt thơm nức lòng người xa xứ.\n\n⚠️ Lưu ý: Tuyệt đối không chọn các loại thực phẩm tươi sống hoặc có mùi nồng để đảm bảo quá trình kiểm dịch sân bay thuận lợi nhất ạ!",
+                        productIds: products.filter(p => [348, 497, 353, 349].includes(p.id)).map(p => p.id),
+                        dynamic_chips: ["Hạt điều Gia Lai", "Cà phê Mường Ảng", "Chè Shan Tuyết", "Quế ống Yên Bái"],
                         handoffAdmin: false,
                         localFallback: true
                     };
@@ -5231,10 +5316,10 @@
                 if (/(tan gia|khai truong|mung nha moi)/.test(normalized)) {
                     return {
                         message: english
-                            ? "🏡 Housewarming & Grand Opening Blessings:\n\n• **Tan Trieu Pomelo Wine**: Round, sweet citrus flavor symbolizing fulsome fortune and family harmony.\n• **Wild Highland Honey**: Golden amber richness representing sweet prosperity.\n• **Vietnamese Kitchen Trio**: ST25 Rice, Phu Quoc 43°N Fish Sauce, and Chu Se Pepper to keep the family hearth warm and prosperous."
-                            : "🏡 Quà tặng phong thủy: **Mừng Tân Gia & Khai Trương Đại Cát**:\n\nMón quà mừng nhà mới hay khai trương mang biểu tượng của sung túc, tài lộc dồi dào và ngọn lửa gia đình luôn ấm áp:\n\n• 🍾 **Rượu bưởi Tân Triều Đồng Nai**: Hương bưởi thanh khiết dịu dàng, dáng bình hồ lô tượng trưng cho tài lộc viên mãn sum vầy.\n• 🍯 **Mật ong hoa rừng đại ngàn**: Vàng óng sánh mịn, biểu trưng cho cuộc sống ngọt ngào, hưng vượng bền lâu.\n• 🌾 **Bộ Gia vị Bếp Việt (Gạo ST25, Nước mắm Phú Quốc, Tiêu Chư Sê)**: Thắp sáng ngọn lửa ấm no cho gian bếp của gia chủ.\n\n✨ Đi kèm hộp quà phủ gấm hoặc rương gỗ khắc chữ thư pháp chúc mừng Phúc Lộc Thọ!",
-                        productIds: products.filter(p => [6, 12, 5].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Rượu bưởi Tân Triều", "Mật ong hoa rừng", "Gạo ST25 Sóc Trăng", "Combo Tân Gia Tài Lộc"],
+                            ? "🏡 Housewarming & Grand Opening Blessings:\n\n• **Wild Highland Honey**: Golden amber richness representing sweet prosperity.\n• **Vietnamese Kitchen Trio**: Dien Bien Rice, Cat Hai Fish Sauce, and Meo Vac Mint Honey to keep the family hearth warm and prosperous."
+                            : "🏡 Quà tặng phong thủy: **Mừng Tân Gia & Khai Trương Đại Cát**:\n\nMón quà mừng nhà mới hay khai trương mang biểu tượng của sung túc, tài lộc dồi dào và ngọn lửa gia đình luôn ấm áp:\n\n• 🍯 **Mật ong Bạc Hà Mèo Vạc**: Vàng óng sánh mịn, biểu trưng cho cuộc sống ngọt ngào, hưng vượng bền lâu.\n• 🌾 **Gạo nương Điện Biên thơm đặc sản**: Biểu tượng của sự ấm no, đủ đầy quanh năm cho gian bếp mới.\n• 🐟 **Nước mắm Cát Hải đặc biệt 5 sao**: Đậm đà bản sắc truyền thống thắp lửa hạnh phúc.\n\n✨ Đi kèm hộp quà phủ gấm hoặc rương gỗ chúc mừng Phúc Lộc Thọ!",
+                        productIds: products.filter(p => [352, 392, 342].includes(p.id)).map(p => p.id),
+                        dynamic_chips: ["Gạo nương Điện Biên", "Nước mắm Cát Hải", "Mật ong Mèo Vạc", "Combo Tân Gia Tài Lộc"],
                         handoffAdmin: false,
                         localFallback: true
                     };
@@ -5246,10 +5331,10 @@
             if (isVegetarianOnly) {
                 return {
                     message: english
-                        ? "🌱 Pure Vegetarian & Plant-Based OCOP Specialties:\n\n• **Nourishing Nuts**: Binh Phuoc wood-roasted cashews, Dak Lak macadamia nuts rich in plant Omega-3.\n• **Artisanal Teas**: Ha Giang Shan Tuyet ancient tea, Tan Cuong Dinh Non tea, Tay Ho lotus tea.\n• **Wellness & Sweet Treats**: Ly Son single-clove black garlic (lowers cholesterol), ST25 fragrant rice, Ben Tre coconut candies, Soc Trang vegan pia cakes.\n\n100% plant-based, natural, and certified with strict OCOP standards!"
-                        : "🌱 Bộ sưu tập đặc sản OCOP: **Thuần Chay - Thực Dưỡng - Thanh Tịnh**:\n\nDạ, OCOP Copilot có bộ sưu tập đặc sản thuần chay đạt chuẩn 4 sao và 5 sao từ thiên nhiên non nước Việt Nam, 100% nguồn gốc thực vật thanh tịnh và giàu dinh dưỡng:\n\n• 🥜 **Hạt dinh dưỡng bồi bổ**: Hạt điều rang củi Bình Phước giòn rụm, Hạt Mắc ca Đắk Lắk bùi ngậy tự nhiên giàu Omega-3 và chất xơ thực vật.\n• 🍵 **Danh trà thanh lọc tâm trí**: Trà Shan Tuyết Cổ Thụ Hà Giang, Trà Đinh Nõn Tân Cương, Trà Sen Tây Hồ thanh tao thoát tục.\n• 🧄 **Thảo dược dưỡng sinh**: Tỏi Đen Cô Đơn Lý Sơn lên men tự nhiên dẻo ngọt bùi như ô mai, giúp ổn định huyết áp và bảo vệ tim mạch.\n• 🌾 **Lương thực & Bánh ngọt truyền thống**: Gạo ST25 Sóc Trăng dẻo thơm hương dứa, Kẹo dừa sáp Bến Tre, Bánh pía sầu riêng chay thơm nức.\n\n✨ Cam kết tuyệt đối không sử dụng thành phần động vật hay chất bảo quản nhân tạo!",
-                    productIds: products.filter(p => [2, 10, 18, 6].includes(p.id)).map(p => p.id),
-                    dynamic_chips: ["Hạt điều Bình Phước", "Trà Shan Tuyết Hà Giang", "Tỏi Đen Lý Sơn", "Combo Thuần Chay"],
+                        ? "🌱 Pure Vegetarian & Plant-Based OCOP Specialties:\n\n• **Nourishing Nuts**: Gia Lai roasted cashews rich in plant Omega-3.\n• **Artisanal Teas**: Suoi Giang ancient Shan Tuyet tea, Phin Ho mountain green tea.\n• **Wellness & Sweet Treats**: Chi Linh single-clove black garlic (lowers cholesterol), Dien Bien mountain fragrant rice, Soc Trang vegan pia cakes.\n\n100% plant-based, natural, and certified with strict OCOP standards!"
+                        : "🌱 Bộ sưu tập đặc sản OCOP: **Thuần Chay - Thực Dưỡng - Thanh Tịnh**:\n\nDạ, OCOP Copilot có bộ sưu tập đặc sản thuần chay đạt chuẩn 4 sao và 5 sao từ thiên nhiên non nước Việt Nam, 100% nguồn gốc thực vật thanh tịnh và giàu dinh dưỡng:\n\n• 🥜 **Hạt dinh dưỡng bồi bổ**: Hạt điều rang muối Gia Lai giòn rụm bùi ngậy tự nhiên giàu Omega-3 và chất xơ thực vật.\n• 🍵 **Danh trà thanh lọc tâm trí**: Chè Shan Tuyết Suối Giàng thượng hạng, Trà Xanh Phìn Hồ cổ thụ Tây Bắc thanh tao thoát tục.\n• 🧄 **Thảo dược dưỡng sinh**: Tỏi Đen Chí Linh lên men tự nhiên dẻo ngọt bùi như ô mai, giúp ổn định huyết áp và bảo vệ tim mạch.\n• 🌾 **Lương thực truyền thống**: Gạo nương Điện Biên thơm đặc sản dẻo ngọt cơm lành.\n\n✨ Cam kết tuyệt đối không sử dụng thành phần động vật hay chất bảo quản nhân tạo!",
+                    productIds: products.filter(p => [348, 497, 399, 352].includes(p.id)).map(p => p.id),
+                    dynamic_chips: ["Hạt điều Gia Lai", "Chè Shan Tuyết", "Tỏi Đen Chí Linh", "Combo Thuần Chay"],
                     handoffAdmin: false,
                     localFallback: true
                 };
@@ -5258,13 +5343,13 @@
             // 5. CHUYÊN ĐỀ SỨC KHỎE, DƯỠNG SINH & ĐỀ KHÁNG (HEALTH & WELLNESS)
             const isHealth = /(suc khoe|duong sinh|nguoi gia|nguoi lon tuoi|cha me|bo me|tre em|ba bau|mat ngu|tieu duong|giai ruou|da day|de khang|bo than|huyet ap)/.test(normalized);
             if (isHealth) {
-                const healthItems = products.filter(p => p.stars === 5);
+                const healthItems = [492, 480, 399, 342].map(id => products.find(p => p.id === id)).filter(Boolean);
                 return {
                     message: english
-                        ? "For vitality, immune defense, and restorative longevity, here are Vietnam's most treasured natural elixirs:"
-                        : "Dạ, để bồi bổ sức khỏe cho đấng sinh thành, người lớn tuổi hay nâng cao đề kháng thể lực, OCOP AI trân trọng giới thiệu những quốc bảo dược liệu thiên nhiên đạt chuẩn 5 sao:",
-                    productIds: healthItems.slice(0, 3).map(p => p.id),
-                    dynamic_chips: ["Yến Sào Khánh Hòa", "Sâm Ngọc Linh", "Tỏi Đen Lý Sơn", "Mật Ong Rừng"],
+                        ? "For vitality, immune defense, and restorative longevity, here are Vietnam's most treasured natural 5-star elixirs:\n• Ngoc Linh Ginseng: 52 saponins for cellular rejuvenation\n• Khanh Hoa Island Bird's Nest: 18 amino acids\n• Chi Linh Black Garlic: Cardiovascular & blood pressure protection"
+                        : "Dạ, để bồi bổ sức khỏe cho đấng sinh thành, người lớn tuổi hay nâng cao đề kháng thể lực, OCOP AI trân trọng giới thiệu những quốc bảo dược liệu thiên nhiên đạt chuẩn 5 sao:\n\n• 🌿 **Sâm Ngọc Linh Kon Tum (5 sao)**: Đại bổ nguyên khí, bảo vệ tế bào gan và giải tỏa stress.\n• 🕊️ **Yến Sào Khánh Hòa Tinh Chế (5 sao)**: Bồi bổ đường hô hấp và tái tạo sinh lực.\n• 🧄 **Tỏi Đen Chí Linh (5 sao)**: Hạ mỡ máu, ổn định huyết áp và phòng ngừa tim mạch.\n• 🍯 **Mật Ong Bạc Hà Mèo Vạc (4 sao)**: Kháng khuẩn tự nhiên, làm dịu dạ dày và thanh giọng.",
+                    productIds: healthItems.map(p => p.id),
+                    dynamic_chips: ["Sâm Ngọc Linh 5★", "Yến Sào Khánh Hòa 5★", "Tỏi Đen Chí Linh", "Mật Ong Mèo Vạc"],
                     handoffAdmin: false,
                     localFallback: true
                 };
@@ -5305,19 +5390,24 @@
             }
 
             // Keyword Categories
+            const productQuery = normalized
+                .replace(/\btoi\s+(?=muon|can|co|tim|mua|chon|thich|dang|se|duoc|xin|hoi|lay|xem|da\b|thieu\b|uu\b)/g, ' ')
+                .replace(/\b(?:cho|giup|voi|cua)\s+toi\b/g, ' ')
+                .replace(/^toi\s+/g, ' ');
+
             let kwCategory = null;
-            if (/\b(tra|che|shan tuyet|dinh non|hoa vang|sen|oolong|suoi giang|moc chau)\b/.test(normalized)) kwCategory = "trà";
-            else if (/\b(yen|yen sao|to yen)\b/.test(normalized)) kwCategory = "yến";
-            else if (/\b(sam|sam ngoc linh)\b/.test(normalized)) kwCategory = "sâm";
-            else if (/\b(mat ong|ong bac ha|ong hoa ca phe)\b/.test(normalized)) kwCategory = "mật ong";
-            else if (/\b(ca phe|robusta|arabica|buon ma thuot)\b/.test(normalized)) kwCategory = "cà phê";
-            else if (/\b(gao|st25|tam xoan|seng cu)\b/.test(normalized)) kwCategory = "gạo";
-            else if (/\b(toi|toi den|toi ly son)\b/.test(normalized)) kwCategory = "tỏi";
-            else if (/\b(nuoc mam|ca com|phu quoc)\b/.test(normalized)) kwCategory = "nước mắm";
-            else if (/\b(banh|keo|com|pia|dua)\b/.test(normalized)) kwCategory = "bánh";
-            else if (/\b(hat|dieu|mac ca)\b/.test(normalized)) kwCategory = "hạt";
-            else if (/\b(thit|trau|kho ca|cha muc)\b/.test(normalized)) kwCategory = "đặc sản mặn";
-            else if (/\b(gia vi|que|tieu|thot not|muoi tom)\b/.test(normalized)) kwCategory = "gia vị";
+            if (/\b(tra|che|shan tuyet|dinh non|hoa vang|sen|oolong|suoi giang|moc chau)\b/.test(productQuery)) kwCategory = "trà";
+            else if (/\b(yen|yen sao|to yen)\b/.test(productQuery)) kwCategory = "yến";
+            else if (/\b(sam|sam ngoc linh)\b/.test(productQuery)) kwCategory = "sâm";
+            else if (/\b(mat ong|ong bac ha|ong hoa ca phe)\b/.test(productQuery)) kwCategory = "mật ong";
+            else if (/\b(ca phe|robusta|arabica|buon ma thuot)\b/.test(productQuery)) kwCategory = "cà phê";
+            else if (/\b(gao|st25|tam xoan|seng cu)\b/.test(productQuery)) kwCategory = "gạo";
+            else if (/\b(toi den|toi ly son|toi co don|cu toi)\b/.test(productQuery) || (/\btoi\b/.test(productQuery) && /tỏi/i.test(rawQuery))) kwCategory = "tỏi";
+            else if (/\b(nuoc mam|ca com|phu quoc|cat hai|le gia)\b/.test(productQuery)) kwCategory = "nước mắm";
+            else if (/\b(banh|keo|com|pia|dua)\b/.test(productQuery)) kwCategory = "bánh";
+            else if (/\b(hat|dieu|mac ca)\b/.test(productQuery)) kwCategory = "hạt";
+            else if (/\b(thit|trau|kho ca|cha muc)\b/.test(productQuery)) kwCategory = "đặc sản mặn";
+            else if (/\b(gia vi|que|tieu|thot not|muoi tom)\b/.test(productQuery)) kwCategory = "gia vị";
 
             if (kwCategory) {
                 const byKw = matched.filter(p =>
@@ -5383,8 +5473,19 @@
                 dynamic_chips = ["Yến Sào Đảo 5 sao", "Sâm Ngọc Linh 5 sao", "Tỏi Đen Lý Sơn", "Đông Trùng Hạ Thảo"];
             }
 
+            const productBullets = topP.map(p => {
+                const priceFormatted = Number.isFinite(p.price) ? `${p.price.toLocaleString("vi-VN")} ₫${p.unit ? ' / ' + p.unit : ''}` : '';
+                const starsFormatted = '⭐'.repeat(p.stars || 4) + ` (${p.stars || 4} sao)`;
+                const descSnippet = p.desc || p.description || '';
+                return `• **${p.name}** — ${starsFormatted}\n  📍 *${p.region || 'Việt Nam'}* | 💰 **${priceFormatted}**\n  _${descSnippet}_`;
+            }).join('\n\n');
+
+            const composedMessage = productBullets
+                ? `${storyIntro}\n\n${productBullets}\n\n👉 *Anh/Chị có thể bấm trực tiếp vào từng thẻ sản phẩm bên dưới để xem tem truy xuất nguồn gốc hoặc thêm vào giỏ hàng ngay nhé ạ!*`
+                : storyIntro;
+
             return {
-                message: storyIntro,
+                message: composedMessage,
                 productIds,
                 dynamic_chips,
                 handoffAdmin: false,
@@ -5460,13 +5561,24 @@ async function sendAIMessage() {
 
             try {
                 await uploadPendingAIChatImages(messageImages);
-                const response = await fetch(getAIEndpoint('/api/ai/chat'), {
-                    method:'POST',headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id)})
-                });
-                let result = await response.json().catch(()=>({}));
-                if (!response.ok || (!result.message && !result.text_response)) {
-                    throw new Error(result.message || (requestLanguage==='en'?'Cannot connect to the AI assistant. Please try again.':'Chưa kết nối được trợ lý AI. Bạn vui lòng thử lại.'));
+                let result = null;
+                try {
+                    const response = await fetch(getAIEndpoint('/api/ai/chat'), {
+                        method:'POST',headers:{'Content-Type':'application/json'},
+                        body:JSON.stringify({language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id)})
+                    });
+                    if (response.ok) {
+                        const json = await response.json().catch(()=>({}));
+                        if (json && (json.message || json.text_response)) {
+                            result = json;
+                        }
+                    }
+                } catch (netErr) {
+                    console.warn('[AI Assistant] Network fetch failed, engaging client-side intelligence fallback:', netErr);
+                }
+
+                if (!result || (!result.message && !result.text_response)) {
+                    result = createLocalCatalogReply(messageText, messageImages.length > 0);
                 }
                 result.message=result.text_response || result.message;
                 result.productIds=result.suggested_products || result.productIds || [];

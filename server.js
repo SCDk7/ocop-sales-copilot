@@ -1084,11 +1084,29 @@ function buildLocalFallbackReply(query, products = [], language = "vi", resolved
       fallback: true
     };
   }
-  const matched = (directMatches.length > 0 ? directMatches : filterProductsByIntent(products, intent)).slice(0, 3);
-  const message = matched.length
-    ? (english ? 'Products matching your request in the current catalogue:\n' : 'Các sản phẩm phù hợp trong danh mục hiện tại:\n') + matched.map(p => '• ' + (english ? (p.nameEn || p.name) : p.name) + ' – ' + p.price.toLocaleString(english ? 'en-US' : 'vi-VN') + ' ₫ / ' + (english ? (p.packagingEn || 'unit') : (p.packaging || 'đơn vị'))).join('\n') + (english ? '\nReference prices use the listed product prices. Please confirm the pack size and selling price.' : '\nGiá tham khảo theo giá niêm yết của sản phẩm. Cần xác nhận quy cách và giá bán.')
-    : (english ? 'No matching product was found. Which product or province would you like to check?' : 'Mình chưa tìm thấy sản phẩm phù hợp. Bạn muốn tìm món nào hoặc ở tỉnh nào?');
-  return {message, text_response: message, productIds: matched.map(p=>p.id), suggested_products: matched.map(p=>p.id), dynamic_chips: [], handoffAdmin: false, fallback: true};
+  const matched = (directMatches.length > 0 ? directMatches : filterProductsByIntent(products, intent)).slice(0, 5);
+  let message;
+  let dynamicChips = [];
+  if (matched.length) {
+    if (intent.minStars === 5 && !intent.categoryOrKeyword) {
+      message = english
+        ? "Here are Vietnam's certified 5-Star OCOP National Masterpieces:\n\n" + matched.map(p => `⭐ **${p.nameEn || p.name}** (${p.region})\n• Reference price: ${p.price.toLocaleString('en-US')} ₫ / ${p.packagingEn || 'unit'}\n• Highlight: ${(p.descEn || p.desc || '').slice(0, 160)}...`).join('\n\n') + "\n\n💡 Reference prices use the listed catalogue prices. Choose an option to view details or add to cart."
+        : "Dạ, OCOP Sales Copilot vinh dự giới thiệu các tuyệt phẩm đạt chuẩn OCOP 5 sao Quốc gia đại diện cho tinh hoa văn hóa và thổ nhưỡng đất Việt:\n\n" + matched.map(p => `⭐ **${p.name}** (${p.region})\n• Giá niêm yết: **${p.price.toLocaleString('vi-VN')} ₫ / ${p.packaging || 'đơn vị'}**\n• Đặc trưng: ${(p.desc || '').slice(0, 160)}...`).join('\n\n') + "\n\n💡 Giá tham khảo theo giá niêm yết chuẩn OCOP. Anh/Chị bấm vào thẻ bên dưới để xem chi tiết hoặc thêm vào giỏ nhé ạ!";
+      dynamicChips = english ? ["Executive Gifts", "Specialty Teas", "Wild Ginseng", "Island Bird's Nest"] : ["Quà biếu 5 sao", "Trà Shan Tuyết", "Sâm Ngọc Linh", "Yến Sào Khánh Hòa"];
+    } else if (intent.categoryOrKeyword === 'trà' || /tra|che|tea/.test(query.toLowerCase())) {
+      message = english
+        ? "🍵 Top certified OCOP specialty teas from Vietnam's high-altitude misty terroirs:\n\n" + matched.map(p => `• **${p.nameEn || p.name}** (${p.region}) – ${p.price.toLocaleString('en-US')} ₫ / ${p.packagingEn || 'unit'}\n  ${(p.descEn || p.desc || '').slice(0, 150)}...`).join('\n\n') + "\n\n💡 Brewing tip: Steep with spring water at 85°C–90°C for 25–35 seconds for enduring lingering sweetness."
+        : "🍵 Dạ, OCOP trân trọng giới thiệu những danh trà thượng hạng từ núi cao Tây Bắc và các vùng chè trứ danh:\n\n" + matched.map(p => `• **${p.name}** (${p.region}) – **${p.price.toLocaleString('vi-VN')} ₫ / ${p.packaging || 'đơn vị'}**\n  ${(p.desc || '').slice(0, 150)}...`).join('\n\n') + "\n\n💡 Nghệ thuật pha trà: Dùng nước 85°C–90°C, tráng trà 3 giây, hãm 25–35 giây để giữ trọn sắc nước vàng óng và hậu ngọt sâu lan tỏa bền bỉ.";
+      dynamicChips = ["Chè Shan Tuyết 5★", "Hồng Trà Phìn Hồ", "Trà Actiso Sa Pa", "Nghệ thuật pha trà"];
+    } else {
+      message = (english ? 'Products matching your request in the current catalogue:\n' : 'Các sản phẩm phù hợp trong danh mục hiện tại:\n') + matched.map(p => '• ' + (english ? (p.nameEn || p.name) : p.name) + ' – ' + p.price.toLocaleString(english ? 'en-US' : 'vi-VN') + ' ₫ / ' + (english ? (p.packagingEn || 'unit') : (p.packaging || 'đơn vị'))).join('\n') + (english ? '\nReference prices use the listed product prices. Please confirm the pack size and selling price.' : '\nGiá tham khảo theo giá niêm yết của sản phẩm. Cần xác nhận quy cách và giá bán.');
+      dynamicChips = english ? ['View Products', 'Gift ideas', 'Delivery help'] : ['Xem chi tiết', 'Tư vấn quà biếu', 'Hỗ trợ giao hàng'];
+    }
+  } else {
+    message = (english ? 'No matching product was found. Which product or province would you like to check?' : 'Mình chưa tìm thấy sản phẩm phù hợp. Bạn muốn tìm món nào hoặc ở tỉnh nào?');
+    dynamicChips = english ? ['5-star', 'Teas', 'Gift ideas'] : ['Đặc sản 5 sao', 'Trà đặc sản', 'Quà biếu'];
+  }
+  return {message, text_response: message, productIds: matched.map(p=>p.id), suggested_products: matched.map(p=>p.id), dynamic_chips: dynamicChips, handoffAdmin: false, fallback: true};
 }
 
 function buildAIUnavailableFallback(query, products, language, hasImages, resolvedIntent = null) {
@@ -1258,9 +1276,22 @@ async function handleAIChatRequest(req, res) {
     semanticIntent = await AIIntent.understand(validation,configuration,fetch,options);
   }
   catch (error) {
-    console.warn('Gemini intent unavailable:',error.message);
-    const unavailable=buildAIServiceUnavailable(validation.language);
-    return res.status(unavailable.status).json(unavailable.body);
+    console.warn('Gemini intent unavailable:', error.message);
+    const fallback = buildAIUnavailableFallback(lastMessage.text, validation.products, validation.language, attachedImages.length > 0, localIntent);
+    return res.status(200).json({
+      ...fallback,
+      integrations: { gemini: false, openai: false, wikipedia: false, googleSearch: false },
+      resolvedRequirements: {
+        maxPrice: localIntent.maxPrice,
+        minPrice: localIntent.minPrice,
+        minItems: localIntent.minItems,
+        maxItems: localIntent.maxItems,
+        province: localIntent.exactRegion,
+        region: localIntent.regionKeyword,
+        category: localIntent.categoryOrKeyword
+      },
+      imageIds
+    });
   }
   const complaintClarification = getGeneralComplaintClarification(
     validation.messages[validation.messages.length - 1].text,
@@ -1327,6 +1358,17 @@ async function handleAIChatRequest(req, res) {
       integrations:{gemini:true,openai:false,wikipedia:wikiSources.length>0,googleSearch:false}}};
   } else {
     result = await generateAIResponse(validation, { attachedImages, wikiSources, googleContext, filteredProducts, userIntent, replyDeadline, replySignal });
+  }
+  if (!result || result.status === 503 || !result.body || (!result.body.message && !result.body.text_response)) {
+    const fallback = buildAIUnavailableFallback(lastUserMessage, validation.products, validation.language, attachedImages.length > 0, userIntent);
+    result = {
+      status: 200,
+      body: {
+        ...fallback,
+        wikipediaSources: wikiSources.map(({title,url})=>({title,url})),
+        integrations: { gemini: false, openai: false, wikipedia: wikiSources.length > 0, googleSearch: false }
+      }
+    };
   }
   if ((result.body.integrations?.gemini || result.body.integrations?.openai) && userIntent.hasVerifiedCombo && !attachedImages.length) {
     const verified = AIShopping.replyOptions(userIntent.comboPlans, userIntent, validation.language);
