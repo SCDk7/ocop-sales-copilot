@@ -421,7 +421,7 @@ function validateRegistration(body) {
 function getTwilioConfiguration() {
   const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER } = process.env;
   if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_FROM_NUMBER) {
-    const error = new Error('Dịch vụ gửi SMS chưa được cấu hình. Vui lòng liên hệ quản trị viên.');
+    const error = new Error('Chưa cấu hình gửi OTP trên máy chủ. Quản trị viên hãy thêm TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN và TWILIO_FROM_NUMBER trong Environment của dịch vụ hosting rồi khởi động lại máy chủ.');
     error.status = 503;
     throw error;
   }
