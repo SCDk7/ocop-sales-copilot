@@ -522,19 +522,19 @@ function validateAIRequest(body) {
 
 function getAIModelConfiguration() {
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey && !process.env.OPENAI_API_KEY) {
+  if (!apiKey) {
     const error = new Error('Trợ lý AI chưa được cấu hình. Vui lòng liên hệ quản trị viên.');
     error.status = 503;
     throw error;
   }
 
-  const model = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
+  const model = process.env.GEMINI_MODEL || 'gemini-flash-latest';
   if (!/^[a-zA-Z0-9._-]+$/.test(model)) {
     const error = new Error('Cấu hình mô hình AI không hợp lệ.');
     error.status = 500;
     throw error;
   }
-  return { apiKey, model, openai:{apiKey:process.env.OPENAI_API_KEY,model:process.env.OPENAI_MODEL||'gpt-4.1-mini'} };
+  return { apiKey, model };
 }
 
 async function uploadImageToGeminiFilesApi(image, configuration, signal) {
@@ -1106,8 +1106,8 @@ function buildAIUnavailableFallback(query, products, language, hasImages, resolv
 
 function buildAIServiceUnavailable(language, wikiSources = []) {
   const message = language === 'en'
-    ? 'The AI services are temporarily unavailable after retries. I cannot provide a model-generated answer with Wikipedia context right now. Please try again shortly.'
-    : 'Trợ lý AI hiện chưa phản hồi sau khi thử lại Gemini và kiểm tra kết nối ChatGPT. Bạn vui lòng thử lại sau ít phút nhé.';
+    ? 'Gemini is temporarily unavailable after retries. Please try again shortly.'
+    : 'Gemini hiện chưa phản hồi sau khi thử lại. Bạn vui lòng thử lại sau ít phút nhé.';
   return {status:503,body:{message,text_response:message,error:'AI_TEMPORARILY_UNAVAILABLE',retryable:true,productIds:[],suggested_products:[],combos:[],understandingStatus:'needs_clarification',handoffAdmin:false,wikipediaSources:wikiSources.map(({title,url})=>({title,url})),integrations:{gemini:false,openai:false,wikipedia:wikiSources.length>0,googleSearch:false}}};
 }
 
@@ -1233,7 +1233,11 @@ async function handleAIChatRequest(req, res) {
   // Reuse it only if the final semantic query agrees; private/image queries are skipped.
   const wikiPrefetch = prefetchPlan.query ? searchWikipedia(prefetchPlan.query, validation.language) : Promise.resolve([]);
   try { semanticIntent = await AIIntent.understand(validation,getAIModelConfiguration()); }
-  catch (error) { console.warn('Gemini intent unavailable:',error.message); }
+  catch (error) {
+    console.warn('Gemini intent unavailable:',error.message);
+    const unavailable=buildAIServiceUnavailable(validation.language);
+    return res.status(unavailable.status).json(unavailable.body);
+  }
   const complaintClarification = getGeneralComplaintClarification(
     validation.messages[validation.messages.length - 1].text,
     validation.language

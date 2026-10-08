@@ -17,7 +17,11 @@ async function generateContent(configuration, payload, options = {}) {
             attempts++;
             const response = await fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
                 method:'POST', headers:{'Content-Type':'application/json','x-goog-api-key':configuration.apiKey},
-                body:JSON.stringify(/^gemini-2\.5-/.test(model) ? {...payload,generationConfig:{...payload.generationConfig,thinkingConfig:{thinkingBudget:0}}} : payload), signal:signal ? AbortSignal.any([signal, attemptSignal]) : attemptSignal
+                body:JSON.stringify(/^gemini-2\.5-/.test(model)
+                    ? {...payload,generationConfig:{...payload.generationConfig,thinkingConfig:{thinkingBudget:0}}}
+                    : model==='gemini-flash-latest' || /^gemini-3[\w.-]*flash/.test(model)
+                        ? {...payload,generationConfig:{...payload.generationConfig,thinkingConfig:payload.generationConfig?.thinkingConfig || {thinkingLevel:model==='gemini-flash-latest'?'low':'minimal'}}}
+                        : payload), signal:signal ? AbortSignal.any([signal, attemptSignal]) : attemptSignal
             });
             // Consume the body under the same deadline, so a hanging stream cannot block retries.
             const data = await response.json().catch(() => ({}));

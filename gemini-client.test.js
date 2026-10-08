@@ -1,6 +1,15 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const {generateContent}=require('./gemini-client');
 const config={apiKey:'test-key',model:'gemini-3.1-flash-lite',fallbackModels:['gemini-2.5-flash']};
+
+test('latest Flash uses compatible low thinking while preserving the requested alias',async()=>{
+ const result=await generateContent({...config,model:'gemini-flash-latest'}, {contents:[{parts:[{text:'Question'}]}]}, {fetcher:async(url,options)=>{
+  assert(url.endsWith('/gemini-flash-latest:generateContent'));
+  assert.deepEqual(JSON.parse(options.body).generationConfig.thinkingConfig,{thinkingLevel:'low'});
+  return new Response(JSON.stringify({candidates:[{content:{parts:[{text:'Answer'}]}}]}));
+ }});
+ assert.equal(result.response.status,200);
+});
 test('Gemini retries overload using only the configured model, ignoring alternatives',async()=>{
  const calls=[],delays=[];
  const result=await generateContent(config,{contents:[{parts:[{text:'Question'}]}],generationConfig:{maxOutputTokens:100}}, {
@@ -13,7 +22,7 @@ test('Gemini retries overload using only the configured model, ignoring alternat
  assert(calls.every(c=>c.url.endsWith('/'+config.model+':generateContent')));
  assert(calls.every(c=>c.url.startsWith('https://generativelanguage.googleapis.com/')&&!c.url.includes('test-key')));
  assert.equal(calls[0].body.contents[0].parts[0].text,'Question');
- assert.equal(calls[2].body.generationConfig.thinkingConfig,undefined);assert.deepEqual(delays,[500,1000]);
+ assert.deepEqual(calls[2].body.generationConfig.thinkingConfig,{thinkingLevel:'minimal'});assert.deepEqual(delays,[500,1000]);
 });
 test('Gemini auth failures stop immediately and all-overload stays a failure',async()=>{
  let calls=0;
