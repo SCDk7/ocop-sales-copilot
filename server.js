@@ -73,6 +73,8 @@ const pendingRegistrations = new Map();
 const otpSentAt = new Map();
 const loginAttempts = new Map();
 const registrationAttempts = new Map();
+const oauthStates = new Map();
+const oauthExchangeCodes = new Map();
 const aiRequestAttempts = new Map();
 const audioAdminLoginAttempts = new Map();
 const audioAdminSessions = new Map();
@@ -2004,6 +2006,290 @@ function publicCustomer(customer) {
   };
 }
 
+function getOAuthConfiguration(provider) {
+  const frontendUrl = process.env.AUTH_FRONTEND_URL;
+  const config = provider === 'google'
+    ? {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        redirectUri: process.env.GOOGLE_REDIRECT_URI
+      }
+    : {
+        clientId: process.env.FACEBOOK_CLIENT_ID,
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+        redirectUri: process.env.FACEBOOK_REDIRECT_URI
+      };
+  if (!config.clientId || !config.clientSecret || !config.redirectUri || !frontendUrl) {
+    const error = new Error('Đăng nhập xã hội chưa được cấu hình đầy đủ trên máy chủ.');
+    error.status = 503;
+    throw error;
+  }
+
+  let callbackUrl;
+  let returnUrl;
+  try {
+    callbackUrl = new URL(config.redirectUri);
+    returnUrl = new URL(frontendUrl);
+  } catch {
+    const error = new Error('Địa chỉ OAuth trên máy chủ không hợp lệ.');
+    error.status = 503;
+    throw error;
+  }
+  if (!['https:', 'http:'].includes(callbackUrl.protocol) ||
+      !['https:', 'http:'].includes(returnUrl.protocol) ||
+      (callbackUrl.protocol === 'http:' && !['localhost', '127.0.0.1'].includes(callbackUrl.hostname)) ||
+      (returnUrl.protocol === 'http:' && !['localhost', '127.0.0.1'].includes(returnUrl.hostname))) {
+    const error = new Error('OAuth cần HTTPS, ngoại trừ môi trường localhost.');
+    error.status = 503;
+    throw error;
+  }
+  return { ...config, frontendUrl: returnUrl };
+}
+
+function readOAuthStateCookie(req) {
+  const cookies = String(req.headers.cookie || '').split(';');
+  const stateCookie = cookies.find(cookie => cookie.trim().startsWith('ocop_oauth_state='));
+  if (!stateCookie) return '';
+  try {
+    return decodeURIComponent(stateCookie.trim().slice('ocop_oauth_state='.length));
+  } catch {
+    return '';
+  }
+}
+
+function setOAuthStateCookie(res, state, secure) {
+  res.setHeader('Set-Cookie', `ocop_oauth_state=${encodeURIComponent(state)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=600${secure ? '; Secure' : ''}`);
+}
+
+function clearOAuthStateCookie(res, secure) {
+  res.setHeader('Set-Cookie', `ocop_oauth_state=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure ? '; Secure' : ''}`);
+}
+
+function redirectOAuthResult(frontendUrl, key, value, res) {
+  frontendUrl.hash = new URLSearchParams({ [key]: value }).toString();
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.redirect(303, frontendUrl.toString());
+}
+
+async function fetchOAuthJson(url, options) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    const payload = await response.json();
+    if (!response.ok) {
+      const error = new Error('Nhà cung cấp OAuth từ chối yêu cầu.');
+      error.status = 502;
+      throw error;
+    }
+    return payload;
+  } catch (error) {
+    if (error.status) throw error;
+    const serviceError = new Error('Không thể kết nối nhà cung cấp OAuth.');
+    serviceError.status = 502;
+    throw serviceError;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function fetchOAuthProfile(provider, config, code) {
+  if (provider === 'google') {
+    const tokenResult = await fetchOAuthJson('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        code,
+        client_id: config.clientId,
+        client_secret: config.clientSecret,
+        redirect_uri: config.redirectUri,
+        grant_type: 'authorization_code'
+      })
+    });
+    if (!tokenResult.access_token) {
+      const error = new Error('Google không cấp access token.');
+      error.status = 502;
+      throw error;
+    }
+    const profile = await fetchOAuthJson('https://openidconnect.googleapis.com/v1/userinfo', {
+      headers: { Authorization: `Bearer ${tokenResult.access_token}` }
+    });
+    if (!profile.sub || profile.email_verified !== true) {
+      const error = new Error('Tài khoản Google chưa xác minh email.');
+      error.status = 403;
+      throw error;
+    }
+    return {
+      subject: String(profile.sub),
+      name: profile.name,
+      email: profile.email
+    };
+  }
+
+  const version = process.env.FACEBOOK_API_VERSION || 'v24.0';
+  const tokenUrl = new URL(`https://graph.facebook.com/${encodeURIComponent(version)}/oauth/access_token`);
+  tokenUrl.search = new URLSearchParams({
+    client_id: config.clientId,
+    client_secret: config.clientSecret,
+    redirect_uri: config.redirectUri,
+    code
+  }).toString();
+  const tokenResult = await fetchOAuthJson(tokenUrl, {});
+  if (!tokenResult.access_token) {
+    const error = new Error('Facebook không cấp access token.');
+    error.status = 502;
+    throw error;
+  }
+  const profileUrl = new URL(`https://graph.facebook.com/${encodeURIComponent(version)}/me`);
+  profileUrl.searchParams.set('fields', 'id,name,email');
+  const profile = await fetchOAuthJson(profileUrl, {
+    headers: { Authorization: `Bearer ${tokenResult.access_token}` }
+  });
+  if (!profile.id) {
+    const error = new Error('Facebook không trả về mã tài khoản.');
+    error.status = 502;
+    throw error;
+  }
+  return {
+    subject: String(profile.id),
+    name: profile.name,
+    email: profile.email
+  };
+}
+
+function findOrCreateOAuthCustomer(provider, profile) {
+  const existing = customers.find(customer => customer.authProviders &&
+    customer.authProviders[provider] === profile.subject);
+  if (existing) return existing;
+
+  const fallbackName = `${provider === 'google' ? 'Google' : 'Facebook'} user`;
+  const suppliedName = String(profile.name || fallbackName)
+    .trim()
+    .replace(/\s+/g, ' ')
+    .slice(0, 100);
+  const name = suppliedName.length >= 2 ? suppliedName : fallbackName;
+  const email = typeof profile.email === 'string' && profile.email.length <= 254
+    ? profile.email.trim().toLowerCase()
+    : '';
+  const customer = {
+    id: crypto.randomUUID(),
+    name,
+    normalizedName: normalizeName(name),
+    phone: '',
+    address: '',
+    email,
+    authProviders: { [provider]: profile.subject },
+    verifiedAt: new Date().toISOString()
+  };
+  customers.push(customer);
+  try {
+    saveCustomers();
+  } catch (error) {
+    customers.pop();
+    console.error('Unable to save OAuth customer:', error.message);
+    const saveError = new Error('Không thể lưu tài khoản lúc này. Vui lòng thử lại sau.');
+    saveError.status = 500;
+    throw saveError;
+  }
+  return customer;
+}
+
+app.get('/api/auth/oauth/:provider', (req, res, next) => {
+  const { provider } = req.params;
+  if (!['google', 'facebook'].includes(provider)) {
+    return res.status(404).json({ error: 'Nhà cung cấp đăng nhập không được hỗ trợ.' });
+  }
+  let config;
+  try {
+    config = getOAuthConfiguration(provider);
+  } catch (error) {
+    return next(error);
+  }
+  const state = crypto.randomBytes(32).toString('hex');
+  const now = Date.now();
+  for (const [savedState, entry] of oauthStates) {
+    if (entry.createdAt + 10 * 60 * 1000 <= now) oauthStates.delete(savedState);
+  }
+  oauthStates.set(state, { provider, createdAt: now });
+  const secure = req.secure || req.headers['x-forwarded-proto'] === 'https';
+  setOAuthStateCookie(res, state, secure);
+
+  const authorizationUrl = provider === 'google'
+    ? new URL('https://accounts.google.com/o/oauth2/v2/auth')
+    : new URL(`https://www.facebook.com/${encodeURIComponent(process.env.FACEBOOK_API_VERSION || 'v24.0')}/dialog/oauth`);
+  authorizationUrl.search = new URLSearchParams({
+    client_id: config.clientId,
+    redirect_uri: config.redirectUri,
+    response_type: 'code',
+    scope: provider === 'google' ? 'openid email profile' : 'email,public_profile',
+    state
+  }).toString();
+  res.setHeader('Cache-Control', 'no-store');
+  return res.redirect(302, authorizationUrl.toString());
+});
+
+app.get('/api/auth/oauth/:provider/callback', async (req, res) => {
+  const { provider } = req.params;
+  let config;
+  try {
+    if (!['google', 'facebook'].includes(provider)) return res.status(404).end();
+    config = getOAuthConfiguration(provider);
+  } catch (error) {
+    return res.status(error.status || 500).send('Đăng nhập xã hội chưa được cấu hình.');
+  }
+
+  const secure = req.secure || req.headers['x-forwarded-proto'] === 'https';
+  const state = String(req.query.state || '');
+  const browserState = readOAuthStateCookie(req);
+  const stateEntry = oauthStates.get(state);
+  oauthStates.delete(state);
+  clearOAuthStateCookie(res, secure);
+  if (!state || state !== browserState || !stateEntry || stateEntry.provider !== provider ||
+      stateEntry.createdAt + 10 * 60 * 1000 <= Date.now()) {
+    return redirectOAuthResult(config.frontendUrl, 'oauth_error', 'invalid_state', res);
+  }
+  if (req.query.error) {
+    return redirectOAuthResult(config.frontendUrl, 'oauth_error', 'cancelled', res);
+  }
+  const code = String(req.query.code || '');
+  if (!code || code.length > 4096) {
+    return redirectOAuthResult(config.frontendUrl, 'oauth_error', 'provider_error', res);
+  }
+
+  try {
+    const profile = await fetchOAuthProfile(provider, config, code);
+    const customer = findOrCreateOAuthCustomer(provider, profile);
+    const exchangeCode = crypto.randomBytes(32).toString('hex');
+    for (const [savedCode, entry] of oauthExchangeCodes) {
+      if (entry.expiresAt <= Date.now()) oauthExchangeCodes.delete(savedCode);
+    }
+    oauthExchangeCodes.set(exchangeCode, {
+      customerId: customer.id,
+      expiresAt: Date.now() + 60 * 1000
+    });
+    return redirectOAuthResult(config.frontendUrl, 'oauth_code', exchangeCode, res);
+  } catch (error) {
+    console.error(`OAuth ${provider} sign-in failed:`, error.message);
+    return redirectOAuthResult(config.frontendUrl, 'oauth_error', 'provider_error', res);
+  }
+});
+
+app.post('/api/auth/oauth/exchange', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const code = String((req.body && req.body.code) || '');
+  const exchange = oauthExchangeCodes.get(code);
+  oauthExchangeCodes.delete(code);
+  if (!/^[0-9a-f]{64}$/.test(code) || !exchange || exchange.expiresAt <= Date.now()) {
+    return res.status(400).json({ error: 'Yêu cầu đăng nhập đã hết hạn. Vui lòng đăng nhập lại.' });
+  }
+  const customer = customers.find(saved => saved.id === exchange.customerId);
+  if (!customer) {
+    return res.status(401).json({ error: 'Không tìm thấy tài khoản. Vui lòng đăng nhập lại.' });
+  }
+  return res.json({ user: publicCustomer(customer), ...accountStore.login(customer.id) });
+});
+
 app.post('/api/auth/register', async (req, res) => {
   const validation = validateRegistration(req.body || {});
   if (validation.error) return res.status(400).json({ error: validation.error });
@@ -2123,7 +2409,8 @@ app.post('/api/auth/login', (req, res) => {
     return res.status(429).json({ error: 'Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau 15 phút.' });
   }
 
-  const customer = customers.find((saved) => saved.normalizedName === normalizeName(name));
+  const customer = customers.find((saved) => saved.normalizedName === normalizeName(name) &&
+    saved.passwordSalt && saved.passwordHash);
   const passwordMatches = customer
     ? verifyPassword(password, customer.passwordSalt, customer.passwordHash)
     : (crypto.scryptSync(password, 'ocop-login-check', 64), false);

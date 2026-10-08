@@ -6,11 +6,12 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <meta name="ocop-api-base" content="">
     <title>OCOP Sales Copilot - Đặc Sản Tuyển Chọn 63 Tỉnh Thành Việt Nam</title>
     
     <script src="ai-shopping.js?v=20261007_priceintent"></script>
     <script src="chat-language.js?v=20261006_3"></script>
-    <link rel="stylesheet" href="assets/tailwind.css?v=3f26965cd68c">
+    <link rel="stylesheet" href="assets/tailwind.css?v=9b075fb4ab6f">
     <!-- Font Awesome Icons & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -2717,6 +2718,15 @@
                 <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer">Đăng Nhập</button>
                 <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
             </div>
+            <div id="auth-social-login" class="space-y-2 mb-4">
+                <button type="button" onclick="startSocialLogin('google')" class="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 font-bold text-gray-700 hover:bg-gray-50 transition cursor-pointer">
+                    <i class="fa-brands fa-google text-red-500"></i><span data-auth-social-label="google">Tiếp tục với Google</span>
+                </button>
+                <button type="button" onclick="startSocialLogin('facebook')" class="w-full flex items-center justify-center gap-2 border border-blue-200 rounded-xl py-2.5 font-bold text-blue-700 hover:bg-blue-50 transition cursor-pointer">
+                    <i class="fa-brands fa-facebook text-blue-600"></i><span data-auth-social-label="facebook">Tiếp tục với Facebook</span>
+                </button>
+                <div class="flex items-center gap-3 text-[10px] text-gray-400"><span class="h-px flex-1 bg-gray-200"></span><span data-auth-social-label="separator">hoặc đăng nhập bằng tài khoản</span><span class="h-px flex-1 bg-gray-200"></span></div>
+            </div>
             <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
                 <div id="name-field">
                     <label for="auth-name" class="block font-bold text-gray-700 mb-1">Họ và tên *</label>
@@ -4522,7 +4532,9 @@
         }
 
         function getAIEndpoint(path) {
-            return window.location.protocol === 'file:' ? `http://localhost:3000${path}` : path;
+            if (window.location.protocol === 'file:') return `http://localhost:3000${path}`;
+            const configuredApiBase = document.querySelector('meta[name="ocop-api-base"]')?.content.trim();
+            return configuredApiBase ? new URL(path, `${configuredApiBase.replace(/\/+$/, '')}/`).toString() : path;
         }
 
         const maxAIChatImages = 10;
@@ -6567,6 +6579,7 @@ async function sendAIMessage() {
             form.reset();
             authStep = 'form';
             pendingRegistration = null;
+            document.getElementById('auth-social-login').classList.toggle('hidden', tab !== 'login');
             document.getElementById('otp-section').classList.add('hidden');
             document.getElementById('auth-otp').required = false;
             document.getElementById('auth-password').autocomplete = tab === 'register' ? 'new-password' : 'current-password';
@@ -6613,6 +6626,48 @@ async function sendAIMessage() {
             }
             return result;
         }
+
+        function startSocialLogin(provider) {
+            if (!['google', 'facebook'].includes(provider)) {
+                showToast('Nhà cung cấp đăng nhập không hợp lệ.', 'error');
+                return;
+            }
+            window.location.assign(getAIEndpoint(`/api/auth/oauth/${provider}`));
+        }
+
+        async function finishSocialLogin() {
+            const params = new URLSearchParams(window.location.hash.slice(1));
+            const code = params.get('oauth_code');
+            const error = params.get('oauth_error');
+            if (!code && !error) return;
+
+            window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+            if (error) {
+                const message = error === 'cancelled'
+                    ? 'Bạn đã hủy đăng nhập xã hội.'
+                    : 'Đăng nhập xã hội không thành công. Vui lòng thử lại.';
+                showToast(currentLanguage === 'en'
+                    ? (error === 'cancelled' ? 'Social sign-in was cancelled.' : 'Social sign-in failed. Please try again.')
+                    : message, 'error');
+                return;
+            }
+
+            try {
+                await window.accountReady;
+                const result = await requestAuth('/api/auth/oauth/exchange', { code });
+                currentUser = result.user;
+                await window.acceptAccountLogin(result);
+                showToast(currentLanguage === 'en'
+                    ? `Welcome ${currentUser.name}! You are signed in.`
+                    : `Xin chào ${currentUser.name}! Bạn đã đăng nhập thành công.`, 'success');
+            } catch (error) {
+                showToast(error.message || (currentLanguage === 'en'
+                    ? 'Social sign-in failed. Please try again.'
+                    : 'Đăng nhập xã hội không thành công. Vui lòng thử lại.'), 'error');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', finishSocialLogin);
 
         async function handleAuthSubmit(e) {
             e.preventDefault();
@@ -7287,6 +7342,9 @@ async function sendAIMessage() {
             text('#auth-modal .text-center p', 'Manage orders and redeem offers', 'Qu\u1ea3n l\u00fd \u0111\u01a1n h\u00e0ng v\u00e0 t\u00edch \u0111i\u1ec3m \u01b0u \u0111\u00e3i');
             text('#tab-login', 'Log in', '\u0110\u0103ng nh\u1eadp');
             text('#tab-register', 'Create account', '\u0110\u0103ng k\u00fd');
+            document.querySelector('[data-auth-social-label="google"]').textContent = en ? 'Continue with Google' : 'Tiếp tục với Google';
+            document.querySelector('[data-auth-social-label="facebook"]').textContent = en ? 'Continue with Facebook' : 'Tiếp tục với Facebook';
+            document.querySelector('[data-auth-social-label="separator"]').textContent = en ? 'or sign in with your account' : 'hoặc đăng nhập bằng tài khoản';
             text('label[for="auth-name"]', 'Full name *', 'H\u1ecd v\u00e0 t\u00ean *');
             text('label[for="auth-phone"]', 'Phone number for SMS code *', 'S\u1ed1 \u0111i\u1ec7n tho\u1ea1i nh\u1eadn m\u00e3 OTP *');
             text('label[for="auth-address"]', 'Address *', '\u0110\u1ecba ch\u1ec9 *');
@@ -7639,7 +7697,7 @@ async function sendAIMessage() {
 <script src="account-client.js?v=20261007_1"></script>
 <script src="chat-dictation.js?v=20261008_1"></script>
 <script>
-    window.chatDictation = ChatDictation.mount({
+    window.chatDictation = ChatDitation.mount({
         input: document.getElementById('ai-chat-input'),
         button: document.getElementById('chat-voice-button'),
         status: document.getElementById('chat-voice-status'),
@@ -7648,4 +7706,3 @@ async function sendAIMessage() {
 </script>
 </body>
 </html>
-    h

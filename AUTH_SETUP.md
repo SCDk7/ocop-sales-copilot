@@ -26,6 +26,31 @@ startup; values already set in the environment take precedence. Without all
 three Twilio values, the site still runs, but registration returns a clear SMS
 configuration error.
 
+## Google and Facebook sign-in
+
+Social sign-in is optional. Create OAuth apps in Google Cloud Console and Meta
+for Developers, then configure these server-side values in `.env`:
+
+- `AUTH_FRONTEND_URL`: the absolute storefront URL to return to after sign-in.
+- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and
+  `GOOGLE_REDIRECT_URI` (for example,
+  `http://localhost:3000/api/auth/oauth/google/callback` for local development).
+- `FACEBOOK_CLIENT_ID`, `FACEBOOK_CLIENT_SECRET`, and
+  `FACEBOOK_REDIRECT_URI` (for example,
+  `http://localhost:3000/api/auth/oauth/facebook/callback` for local development).
+- `FACEBOOK_API_VERSION` is optional and defaults to `v24.0`.
+
+Register each callback URI exactly as written in `.env` with its OAuth
+provider. Use HTTPS for public deployments; HTTP is accepted only for
+`localhost` and `127.0.0.1`. Keep client secrets on the server and never add
+them to browser code. If the storefront is hosted separately from the API,
+set the `content` value of the existing `ocop-api-base` meta tag in
+`index.html` to the backend origin so the OAuth exchange reaches the server.
+A first successful social sign-in creates an OCOP
+customer account; existing accounts are not automatically linked by email.
+Social accounts can use cart, favorites, and order history without a phone
+number, but do not have a password for password-based login.
+
 ## Gemini AI shopping assistant
 
 The chatbot uses Gemini through the Express server. Install Node.js 18 or newer,
