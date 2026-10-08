@@ -26,6 +26,16 @@ startup; values already set in the environment take precedence. Without all
 three Twilio values, the site still runs, but registration returns a clear SMS
 configuration error.
 
+### Render deployment
+
+For Render, add `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and
+`TWILIO_FROM_NUMBER` under the service's **Environment** settings. The
+`render.yaml` Blueprint declares these as secrets, but their values must come
+from your Twilio account; they are not copied from a local `.env` file. Save
+the settings and redeploy or restart the service. Use a Twilio SMS-enabled
+sender number in E.164 format and, for trial accounts, verify the recipient
+phone number in Twilio first.
+
 ## Google and Facebook sign-in
 
 Social sign-in is optional. Create OAuth apps in Google Cloud Console and Meta
