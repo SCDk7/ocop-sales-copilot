@@ -38,3 +38,16 @@ test('price preference survives semantic parsing without becoming a product cate
  const correction=intent.merge(shopping.resolve(changed,PRODUCTS),{...semantic,isCombo:false,maxPrice:6000000,pricePreference:'high'},changed,PRODUCTS);
  assert.equal(correction.pricePreference,'low');assert.equal(correction.maxPrice,500000);
 });
+
+test('one Gemini request understands and answers using supplied catalogue and Wikipedia context',async()=>{
+ let calls=0,payload;
+ const answer={...semantic,isCombo:false,maxPrice:0,minItems:0,maxItems:0,pricePreference:'high',replyMessage:'Dạ, mình gợi ý các món có giá niêm yết cao.',replyProductIds:[492],replyHandoffAdmin:false,replyChips:['Ngân sách?']};
+ const validation={language:'vi',messages:[{role:'user',text:'Tìm món có giá trị cao'}],products:PRODUCTS};
+ const options={maxAttempts:1,replyContext:{systemInstruction:'Current catalogue: id492 price7000000. Wikipedia: Nhân sâm https://vi.wikipedia.org/wiki/Nhân_sâm'}};
+ const fake=async(_url,request)=>{calls++;payload=JSON.parse(request.body);return new Response(JSON.stringify({candidates:[{content:{parts:[{text:JSON.stringify(answer)}]}}]}));};
+ const parsed=await intent.understand(validation,{model:'gemini-3.1-flash-lite',apiKey:'test'},fake,options);
+ assert.equal(calls,1);assert.equal(parsed.pricePreference,'high');assert.equal(parsed.isCombo,false);assert.equal(parsed.provider,'gemini');assert.deepEqual(parsed.reply.productIds,[492]);
+ assert(payload.system_instruction.parts[0].text.includes('price7000000'));assert(payload.system_instruction.parts[0].text.includes('Wikipedia: Nhân sâm'));assert.deepEqual(JSON.parse(payload.contents[0].parts[0].text).messages,validation.messages);
+ assert(payload.generationConfig.responseSchema.required.includes('replyMessage'));assert.equal(payload.generationConfig.thinkingConfig.thinkingLevel,'minimal');
+ await assert.rejects(()=>intent.understand(validation,{model:'test',apiKey:'test'},async()=>new Response(JSON.stringify({candidates:[{content:{parts:[{text:JSON.stringify({...answer,replyProductIds:['492']})}]}}]})),options),/Invalid combined Gemini response/);
+});

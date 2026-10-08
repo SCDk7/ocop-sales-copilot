@@ -15,8 +15,8 @@ Express cho phép lưu đệm tài nguyên có phiên bản và ảnh; HTML luô
 
 Chat gửi lịch sử và yêu cầu của khách, dùng danh mục chuẩn ở máy chủ thay vì tải lên lại 252 sản phẩm ở mỗi lượt. Lượt thử đầu tiên giảm phần thân yêu cầu từ 151.436 xuống 143 byte. Việc đồng bộ danh mục cũng dùng danh mục máy chủ.
 
-Tra Wikipedia cho chủ đề công khai bắt đầu trong lúc Gemini hiểu câu hỏi. Chỉ dùng kết quả tra sớm nếu truy vấn cuối cùng trùng khớp; câu hỏi riêng tư và ảnh được bỏ qua như trước. Phản hồi AI không được lưu đệm dùng chung giữa khách hàng.
+Chat văn bản gộp hiểu yêu cầu và trả lời vào một lượt gọi Gemini Flash-Lite, mức suy nghĩ minimal. Wikipedia được tra cho chủ đề công khai từ ngữ cảnh hội thoại trước khi gọi Gemini, chờ tối đa một giây và chỉ đưa nguồn phù hợp vào lời nhắc. Câu hỏi riêng tư và ảnh không được gửi sang Wikipedia. Phản hồi AI không được lưu đệm dùng chung giữa khách hàng.
 
 Leaflet tải bằng `defer`; GSAP và ScrollTrigger tải bất đồng bộ, chỉ khi thiết bị chạy hiệu ứng máy tính. Điện thoại không tải hai thư viện này. Đom đóm vẫn dùng phiên bản nhẹ trên thiết bị cảm ứng.
 
-Đo sau thay đổi trên local ngày 08/10/2026: hai yêu cầu Gemini thật mất khoảng 3,5 và 3,9 giây. Đây là số đo thử nghiệm; thời gian thực tế phụ thuộc mạng, ảnh, độ dài hội thoại và dịch vụ AI.
+Đo trên local ngày 08/10/2026 với Gemini thật: hỏi món giá cao trả lời đúng trong 4.064 ms; hỏi ba combo tối đa sáu triệu trả lời trong 2.636 ms. Yêu cầu bốn món Tây Nguyên dưới năm triệu mất 3.119 ms; sửa sang món rẻ dưới 100k ở Long An mất 2.900 ms, đều giữ đúng giới hạn. Lượt kiểm tra cuối có một yêu cầu giá cao hết thời gian sau 5.125 ms và một yêu cầu combo thành công trong 3.071 ms. Máy chủ kiểm tra lại giá, tổng tiền và giới hạn của combo. Chat văn bản dừng chờ sau năm giây và báo thử lại nếu Gemini chưa trả lời; ảnh vẫn cần thời gian xử lý riêng. Đây là số đo thử nghiệm, không bảo đảm Google luôn trả lời thành công trong năm giây. Cấu hình GEMINI_MODEL trên host phải đổi sang gemini-3.1-flash-lite để dùng cùng bản thử.

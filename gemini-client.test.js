@@ -32,6 +32,15 @@ test('Gemini auth failures stop immediately and all-overload stays a failure',as
  const overloaded=await generateContent(config,{}, {sleep:async()=>{},fetcher:async()=>{calls++;return new Response('{}',{status:503})}});
  assert.equal(overloaded.response.status,503);assert.equal(calls,3);
 });
+
+test('fast text chat never extends its deadline with retries on overload',async()=>{
+ let calls=0;
+ const result=await generateContent(config,{}, {maxAttempts:1,timeoutMs:5000,perAttemptMs:5000,
+  sleep:async()=>assert.fail('A single-attempt reply must not back off'),
+  fetcher:async()=>{calls++;return new Response('{}',{status:503,headers:{'Retry-After':'30'}});}
+ });
+ assert.equal(calls,1);assert.equal(result.attempts,1);assert.equal(result.response.status,503);
+});
 test('Gemini retries a network failure and honours cancellation and Retry-After',async()=>{
  let calls=0;const delays=[];
  const result=await generateContent(config,{}, {sleep:async ms=>delays.push(ms),fetcher:async()=>{

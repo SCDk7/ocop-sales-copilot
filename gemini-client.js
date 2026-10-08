@@ -2,10 +2,10 @@
 const MODEL_NAME = /^[a-zA-Z0-9._-]+$/;
 async function generateContent(configuration, payload, options = {}) {
     const {fetcher = fetch, signal, timeoutMs = 45000, perAttemptMs = 15000,
-        sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), now = Date.now} = options;
+        sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), now = Date.now, maxAttempts = 3} = options;
     if (!configuration.apiKey || typeof configuration.model !== 'string' || !MODEL_NAME.test(configuration.model)) throw new Error('Gemini configuration unavailable');
     // Every attempt uses the configured model, even if old configuration includes alternatives.
-    const schedule = Array(3).fill(configuration.model);
+    const schedule = Array(Math.max(1, Math.min(3, maxAttempts))).fill(configuration.model);
     const deadline = now() + timeoutMs;
     let lastError, lastResponse, attempts = 0;
     for (const model of schedule) {
