@@ -11,7 +11,7 @@
     
     <script src="ai-shopping.js?v=20261007_priceintent"></script>
     <script src="chat-language.js?v=20261006_3"></script>
-    <link rel="stylesheet" href="assets/tailwind.css?v=9b075fb4ab6f">
+    <link rel="stylesheet" href="assets/tailwind.css?v=ee1c8cbb8006">
     <!-- Font Awesome Icons & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -31,10 +31,55 @@
         }
         #product-grid .product-card {
             content-visibility: auto;
-            contain-intrinsic-size: auto 430px;
+            contain-intrinsic-size: auto 420px;
+            align-self: stretch;
+        }
+        #product-grid .product-card-footer {
+            margin-top: auto;
+        }
+        #product-grid .product-card-footer > div {
+            min-height: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
         }
         #product-grid > div, #product-grid .product-card img {
             will-change: auto;
+        }
+        #product-grid .product-card,
+        #product-grid .product-card [class*="backdrop-blur"] {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        #product-grid .product-card {
+            transform: none !important;
+            box-shadow: 0 2px 6px rgba(15,56,44,.08);
+            transition: border-color .15s ease;
+        }
+        #product-grid .ag-reveal-item {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+        #product-grid .product-card * { will-change: auto !important; }
+        #scroll-ambient-background { display: none; }
+        body.catalog-browsing > main *,
+        body.catalog-browsing > main *::before,
+        body.catalog-browsing > main *::after,
+        body.catalog-browsing > header *,
+        body.catalog-browsing > footer * {
+            animation: none !important;
+        }
+        body > header {
+            background: #fffdf8;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        #scroll-progress-bar {
+            width: 100%;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: none;
         }
         @media (max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce) {
             #product-grid .ag-reveal-item {
@@ -2563,7 +2608,6 @@
                         </div>
                     </div>
                     <p id="image-search-status" class="hidden mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-900" role="status"></p>
-                    <p id="catalog-price-note" class="mb-3 text-xs leading-relaxed text-gray-500"></p>
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                         <!-- Render danh mục sản phẩm từ dữ liệu -->
                     </div>
@@ -3459,6 +3503,7 @@
         }
 
         function enterOcopMarket(mode, onEntered = null) {
+            document.body.classList.add('catalog-browsing');
             const overlay = document.getElementById('ocop-intro-overlay');
             if (overlay.classList.contains('hidden')) {
                 setAIChatWidgetVisibility(true);
@@ -3618,11 +3663,6 @@
         }
 
         function renderProducts(items) {
-            const catalogNote=document.getElementById('catalog-price-note');
-            catalogNote.hidden=!reviewPresentationMode;
-            catalogNote.textContent=currentLanguage==='en'
-                ? 'Illustrative data: random ratings and review counts for the competition presentation; actual reviews take precedence.'
-                : 'Dữ liệu minh họa: điểm và lượt đánh giá ngẫu nhiên phục vụ bài thi; ưu tiên đánh giá thật.';
             const heroProduct = products.find(p => p.region === 'Khánh Hòa' && p.name.includes('Yến')) || products[0];
             if (heroProduct) {
                 document.getElementById('i18n-hero-prodname').textContent = getProductName(heroProduct);
@@ -3651,7 +3691,7 @@
                 const isHotSeller = p.isBestSeller === true;
                 
                 let cardHtml = `
-                <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md hover:shadow-2xl flex flex-col justify-between group relative transition-all duration-300" data-product-id="${p.id}">
+                <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md hover:shadow-2xl flex flex-col group relative transition-all duration-300" data-product-id="${p.id}">
                     <div>
                         <div class="product-card-image-wrap relative h-52 sm:h-56 overflow-hidden bg-amber-50">
                             <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full ${(p.catalogImport || p.imageIsSample) ? 'object-contain p-2' : 'object-cover'}">
@@ -3697,7 +3737,7 @@
                         </div>
 
                         <!-- Thông Tin Chi Tiết Thẻ -->
-                        <div class="p-4 space-y-2">
+                        <div class="px-3 py-2 space-y-1.5">
                             <div class="flex items-center justify-between text-[11px] font-bold">
                                 <span data-review-summary ${getProductReviewLabel(p) ? '' : 'hidden'} class="text-amber-800 flex items-center gap-1">
                                     <i class="fa-solid fa-star text-yellow-500"></i>
@@ -3713,7 +3753,7 @@
                     </div>
 
                     <!-- Footer Thẻ: Giá & Nút Thêm Giỏ -->
-                    <div class="p-4 pt-3 border-t border-amber-100/70 mt-1 flex flex-wrap gap-3 items-center justify-between bg-amber-50/20">
+                    <div class="product-card-footer px-3 py-2 border-t border-amber-100/70 flex flex-wrap gap-2 items-center justify-between bg-amber-50/20">
                         <div class="min-w-0 break-words w-full">
                             ${discountPercent > 0 ? `<span data-promo-reference="${p.id}" class="block text-xs text-gray-400 leading-snug mb-1" title="${currentLanguage === 'en' ? 'Reference price calculated from the displayed promotion percentage.' : 'Giá tham khảo tính theo phần trăm ưu đãi hiển thị.'}"><s>${getProductPromoReferenceLabel(p)}</s></span>` : ''}
                             <span class="font-black text-red-600 text-base sm:text-lg tracking-tight">${getProductPriceLabel(p)}</span>
@@ -3833,18 +3873,27 @@
 
         // Lắng nghe sự kiện cuộn trang để cập nhật thanh tiến trình và nút lên đầu trang
         let scrollProgressFrame = null;
+        let scrollRange = 1;
+        let backToTopVisible = false;
+        const progressBar = document.getElementById('scroll-progress-bar');
+        const backToTopButton = document.getElementById('back-to-top-btn');
+        function updateScrollRange() {
+            scrollRange = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        }
+        window.addEventListener('resize', updateScrollRange, {passive:true});
+        window.addEventListener('load', updateScrollRange, {once:true});
+        if ('ResizeObserver' in window) new ResizeObserver(updateScrollRange).observe(document.body);
+        updateScrollRange();
         window.addEventListener('scroll', () => {
             if (scrollProgressFrame !== null) return;
             scrollProgressFrame = requestAnimationFrame(() => {
                 scrollProgressFrame = null;
-                const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-                const bar = document.getElementById('scroll-progress-bar');
-                if (bar) bar.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
+                const winScroll = window.scrollY;
+                if (progressBar) progressBar.style.transform = `scaleX(${Math.min(1, Math.max(0, winScroll / scrollRange))})`;
 
-                const btt = document.getElementById('back-to-top-btn');
-                if (btt) {
+                const btt = backToTopButton;
+                if (btt && backToTopVisible !== (winScroll > 320)) {
+                    backToTopVisible = winScroll > 320;
                     if (winScroll > 320) {
                         btt.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-6');
                         btt.classList.add('opacity-100', 'translate-y-0');
@@ -7402,99 +7451,7 @@ async function sendAIMessage() {
 /* ==========================================================================
    ANTIGRAVITY ENGINE: 3D MOUSE PARALLAX & SCROLL-DRIVEN REVEAL
    ========================================================================== */
-(function initAntigravityEngine() {
-    // 1. TỰ ĐỘNG PHÂN BỐ DELAY LƠ LỬNG (Không cần thêm class thủ công)
-    const floatingElements = document.querySelectorAll('.ag-hero-float');
-    floatingElements.forEach((el, index) => {
-        if (!el.classList.contains('ag-delay-1') && 
-            !el.classList.contains('ag-delay-2') && 
-            !el.classList.contains('ag-delay-3')) {
-            const dynamicOffset = -((index * 1.618) % 6.0).toFixed(2);
-            el.style.animationDelay = `${dynamicOffset}s`;
-        }
-    });
-
-    // 2. PARALLAX 3D TƯƠNG TÁC THEO CON TRỎ CHUỘT (HERO & INTRO)
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (!isTouchDevice) {
-        let mouseX = 0, mouseY = 0;
-        let currentX = 0, currentY = 0;
-        let isMoving = false;
-
-        window.addEventListener('mousemove', (e) => {
-            const { innerWidth, innerHeight } = window;
-            mouseX = (e.clientX / innerWidth - 0.5) * 2;   // -1.0 đến +1.0
-            mouseY = (e.clientY / innerHeight - 0.5) * 2;  // -1.0 đến +1.0
-            if (!isMoving) {
-                isMoving = true;
-                requestAnimationFrame(updateParallax);
-            }
-        }, { passive: true });
-
-        function updateParallax() {
-            // Thuật toán nội suy tuyến tính (Lerp) tạo quán tính trôi êm ái
-            currentX += (mouseX - currentX) * 0.065;
-            currentY += (mouseY - currentY) * 0.065;
-
-            floatingElements.forEach((el, idx) => {
-                const depth = 5 + (idx % 3) * 4; // Chiều sâu vi sai giữa các phần tử
-                const offsetX = (currentX * depth).toFixed(2);
-                const offsetY = (currentY * depth * 0.6).toFixed(2);
-                el.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
-            });
-
-            if (Math.abs(mouseX - currentX) > 0.001 || Math.abs(mouseY - currentY) > 0.001) {
-                requestAnimationFrame(updateParallax);
-            } else {
-                isMoving = false;
-            }
-        }
-    }
-
-    // 3. SCROLL-DRIVEN WATERFALL REVEAL CHO PRODUCT GRID
-    window.initAntigravityReveals = function() {
-        const cards = document.querySelectorAll('.ag-product-card');
-        if (!('IntersectionObserver' in window)) {
-            cards.forEach(c => c.classList.add('ag-revealed'));
-            return;
-        }
-
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('ag-revealed');
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, {
-            root: null,
-            threshold: 0.08,
-            rootMargin: '0px 0px -30px 0px'
-        });
-
-        cards.forEach((card, i) => {
-            card.classList.add('ag-reveal-item');
-            card.style.transitionDelay = `${(i % 3) * 0.08}s`;
-            observer.observe(card);
-        });
-    };
-
-    // Khởi chạy khi tải trang
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', window.initAntigravityReveals);
-    } else {
-        window.initAntigravityReveals();
-    }
-
-    // Tự động kích hoạt lại hiệu ứng khi người dùng bấm lọc hoặc tìm kiếm
-    const originalRenderProducts = window.renderProducts;
-    if (typeof originalRenderProducts === 'function') {
-        window.renderProducts = function(...args) {
-            originalRenderProducts.apply(this, args);
-            setTimeout(window.initAntigravityReveals, 30);
-        };
-    }
-})();
+// Catalogue cards remain visible; hover effects use CSS.
 </script>
 <script id="antigravity-engine-script">
 (function initAntigravityEngine() {
@@ -7550,157 +7507,18 @@ async function sendAIMessage() {
         heroWrapper.addEventListener('mouseleave', () => { isHovering = false; });
     }
 
-    // 3. Scroll-Driven Reveal cho Lưới Sản Phẩm
-    function initScrollDrivenReveal() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const idx = parseInt(entry.target.dataset.agIndex || 0, 10);
-                    setTimeout(() => entry.target.classList.add('ag-revealed'), (idx % 6) * 65);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12 });
-
-        function scanAndObserve() {
-            observer.disconnect();
-            document.querySelectorAll('#product-grid > div, .product-card').forEach((card, index) => {
-                if (!card.classList.contains('ag-reveal-item')) {
-                    card.classList.add('ag-reveal-item');
-                    card.dataset.agIndex = index;
-                }
-                if (!card.classList.contains('ag-revealed')) observer.observe(card);
-            });
-        }
-        scanAndObserve();
-
-        const grid = document.getElementById('product-grid');
-        if (grid) new MutationObserver(scanAndObserve).observe(grid, { childList: true });
-    }
-
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => { applyStaggerDelays(); initHero3DParallax(); initScrollDrivenReveal(); });
+        document.addEventListener('DOMContentLoaded', () => { applyStaggerDelays(); initHero3DParallax(); });
     } else {
-        applyStaggerDelays(); initHero3DParallax(); initScrollDrivenReveal();
+        applyStaggerDelays(); initHero3DParallax();
     }
 })();
 </script>
 <!-- ============================================================== -->
-<!-- GSAP 3 + ScrollTrigger — Scroll Animations & Hover Effects     -->
-<!-- ============================================================== -->
-<script>
-(async function initGSAP() {
-    if (window.matchMedia('(max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
-    const loadAnimationScript = src => new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = true;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-    });
-    try {
-        await loadAnimationScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
-        await loadAnimationScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
-    } catch (_) { return; }
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    gsap.registerPlugin(ScrollTrigger);
-    if (window.matchMedia('(max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
-
-    /* ─────────────────────────────────────────────────────────────
-       1. HERO BANNER — Text trượt lên, ảnh lướt vào từ bên phải
-    ───────────────────────────────────────────────────────────── */
-    const heroSection = document.querySelector('section.max-w-7xl:not(#products-section)');
-    if (heroSection) {
-        const heroTextCol  = heroSection.querySelector('.lg\\:col-span-7');
-        const heroImageCol = heroSection.querySelector('.lg\\:col-span-5');
-        if (heroTextCol) {
-            gsap.fromTo(heroTextCol,
-                { opacity: 0, y: 48 },
-                { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
-                  scrollTrigger: { trigger: heroSection, start: 'top 82%', toggleActions: 'play none none none' }
-                }
-            );
-        }
-        if (heroImageCol) {
-            gsap.fromTo(heroImageCol,
-                { opacity: 0, x: 60 },
-                { opacity: 1, x: 0, duration: 1, ease: 'power3.out', delay: 0.18,
-                  scrollTrigger: { trigger: heroSection, start: 'top 82%', toggleActions: 'play none none none' }
-                }
-            );
-        }
-    }
-
-    /* ─────────────────────────────────────────────────────────────
-       2. INTRO PILLARS — 4 trụ cột lướt lên khi cuộn trong Intro
-    ───────────────────────────────────────────────────────────── */
-    const introPillars = document.querySelectorAll('#ocop-intro-overlay .grid .gold-card-glow');
-    if (introPillars.length) {
-        gsap.fromTo(introPillars,
-            { opacity: 0, y: 36 },
-            { opacity: 1, y: 0, stagger: 0.12, duration: 0.7, ease: 'back.out(1.4)',
-              scrollTrigger: { trigger: introPillars[0].closest('.grid'), start: 'top 88%', toggleActions: 'play none none none' }
-            }
-        );
-    }
-
-    /* ─────────────────────────────────────────────────────────────
-       3. INTRO REGION BOX — khu vực 3 miền lướt vào từ dưới
-    ───────────────────────────────────────────────────────────── */
-    const regionBox = document.querySelector('#ocop-intro-overlay .space-y-3 .bg-black\\/40');
-    if (regionBox) {
-        gsap.fromTo(regionBox,
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
-              scrollTrigger: { trigger: regionBox, start: 'top 90%', toggleActions: 'play none none none' }
-            }
-        );
-    }
-
-    // Product cards already reveal through IntersectionObserver. Avoid a second
-    // animation spanning the whole catalogue and delaying the last cards.
-
-    /* ─────────────────────────────────────────────────────────────
-       5. HOVER EFFECTS — Card nâng lên + ảnh zoom nhẹ (GPU-smooth)
-    ───────────────────────────────────────────────────────────── */
-    document.addEventListener('mouseover', (e) => {
-        const card = e.target.closest('.product-card');
-        if (!card) return;
-        const img = card.querySelector('.h-48 img');
-        gsap.to(card, { y: -6, boxShadow: '0 22px 48px -8px rgba(15,56,44,0.22)', duration: 0.28, ease: 'power2.out', overwrite: 'auto' });
-        if (img) gsap.to(img, { scale: 1.08, duration: 0.38, ease: 'power2.out', overwrite: 'auto' });
-    });
-
-    document.addEventListener('mouseout', (e) => {
-        const card = e.target.closest('.product-card');
-        if (!card) return;
-        if (card.contains(e.relatedTarget)) return;
-        const img = card.querySelector('.h-48 img');
-        gsap.to(card, { y: 0, boxShadow: '0 1px 4px rgba(0,0,0,0.07)', duration: 0.28, ease: 'power2.inOut', overwrite: 'auto' });
-        if (img) gsap.to(img, { scale: 1, duration: 0.32, ease: 'power2.inOut', overwrite: 'auto' });
-    });
-
-    /* ─────────────────────────────────────────────────────────────
-       6. SIDEBAR — Fade-in từ bên trái khi cuộn tới products-section
-    ───────────────────────────────────────────────────────────── */
-    const sidebar = document.querySelector('aside.hidden.lg\\:block');
-    if (sidebar) {
-        gsap.fromTo(sidebar,
-            { opacity: 0, x: -30 },
-            { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out',
-              scrollTrigger: { trigger: '#products-section', start: 'top 80%', toggleActions: 'play none none none' }
-            }
-        );
-    }
-
-})();
-</script>
 <!-- External Client Scripts -->
 <script src="giohang.js?v=20261006_3"></script>
 <script src="toiuu.js?v=20261006_3"></script>
-<script src="script.js?v=20261006_3"></script>
+<script src="script.js?v=20261008_scroll"></script>
 <script src="product-reviews-ui.js?v=20261007_3"></script>
 <script src="account-client.js?v=20261007_1"></script>
 <script src="chat-dictation.js?v=20261008_1"></script>
