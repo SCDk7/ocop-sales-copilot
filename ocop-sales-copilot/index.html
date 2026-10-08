@@ -2718,7 +2718,7 @@
                 <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer">Đăng Nhập</button>
                 <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
             </div>
-            <div id="auth-social-login" class="space-y-2 mb-4">
+            <div id="auth-social-login" class="flex flex-col gap-2 mb-4" aria-label="Đăng nhập nhanh">
                 <button type="button" onclick="startSocialLogin('google')" class="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 font-bold text-gray-700 hover:bg-gray-50 transition cursor-pointer">
                     <i class="fa-brands fa-google text-red-500"></i><span data-auth-social-label="google">Tiếp tục với Google</span>
                 </button>
@@ -6566,7 +6566,14 @@ async function sendAIMessage() {
         // AUTH MODAL & ĐĂNG NHẬP
         // -------------------------------------------------------------
         function toggleAuthModal() {
-            document.getElementById('auth-modal').classList.toggle('hidden');
+            const modal = document.getElementById('auth-modal');
+            modal.classList.toggle('hidden');
+            syncAuthSocialVisibility();
+        }
+
+        function syncAuthSocialVisibility() {
+            const socialLogin = document.getElementById('auth-social-login');
+            socialLogin.classList.toggle('hidden', authTab !== 'login' || authStep !== 'form');
         }
 
         function switchAuthTab(tab) {
@@ -6579,7 +6586,7 @@ async function sendAIMessage() {
             form.reset();
             authStep = 'form';
             pendingRegistration = null;
-            document.getElementById('auth-social-login').classList.toggle('hidden', tab !== 'login');
+            syncAuthSocialVisibility();
             document.getElementById('otp-section').classList.add('hidden');
             document.getElementById('auth-otp').required = false;
             document.getElementById('auth-password').autocomplete = tab === 'register' ? 'new-password' : 'current-password';
@@ -6711,6 +6718,7 @@ async function sendAIMessage() {
                     };
                     const result = await requestAuth('/api/auth/register', pendingRegistration);
                     authStep = 'otp';
+                    syncAuthSocialVisibility();
                     setAuthField('name-field', 'auth-name', false, false);
                     setAuthField('phone-field', 'auth-phone', false, false);
                     setAuthField('address-field', 'auth-address', false, false);
