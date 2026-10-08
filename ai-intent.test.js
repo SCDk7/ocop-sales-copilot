@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const shopping=require('./ai-shopping'),intent=require('./ai-intent');
 const {PRODUCTS}=require('./data.js');
-const semantic={task:'shopping',isCombo:true,hasExplicitItemCount:false,maxPrice:6000000,minPrice:0,minItems:3,maxItems:3,exactRegion:'',regionKeyword:'',categoryOrKeyword:'',wikipediaQuery:'',needsClarification:false,clarification:''};
+const semantic={task:'shopping',isCombo:true,hasExplicitItemCount:false,pricePreference:'none',maxPrice:6000000,minPrice:0,minItems:3,maxItems:3,exactRegion:'',regionKeyword:'',categoryOrKeyword:'',wikipediaQuery:'',needsClarification:false,clarification:''};
 const rng=()=>{let n=42;return()=>{n=(Math.imul(n,1664525)+1013904223)>>>0;return n/4294967296;};};
 test('combo6tr is a budget, not a default number of items; explicit corrections override model amounts',()=>{
  const messages=[{role:'user',text:'combo6tr'}];const result=intent.merge(shopping.resolve(messages,PRODUCTS),semantic,messages,PRODUCTS);
@@ -26,4 +26,15 @@ test('intent requests use structured Gemini output and reject malformed provider
  const result=await intent.understand({language:'vi',messages:[{role:'user',text:'combo6tr'}],products:PRODUCTS},{model:'test-model',apiKey:'test-key'},fake);
  assert.equal(result.maxPrice,6000000);assert.equal(payload.generationConfig.responseMimeType,'application/json');assert(payload.system_instruction.parts[0].text.includes('never 6 items'));
  await assert.rejects(()=>intent.understand({language:'vi',messages:[],products:PRODUCTS},{model:'test',apiKey:'test'},async()=>new Response(JSON.stringify({candidates:[{content:{parts:[{text:'{}'}]}}]}))));
+});
+
+test('price preference survives semantic parsing without becoming a product category',()=>{
+ const messages=[{role:'user',text:'mình muốn tìm kiếm một số món có giá trị cao'}];
+ const result=intent.merge(shopping.resolve(messages,PRODUCTS),{...semantic,isCombo:false,maxPrice:0,pricePreference:'high',categoryOrKeyword:'giá trị cao'},messages,PRODUCTS);
+ assert.equal(result.pricePreference,'high');assert.equal(result.categoryOrKeyword,null);assert.equal(result.isCombo,false);
+ const recommended=shopping.recommendations(PRODUCTS,result);
+ assert.equal(recommended[0].price,Math.max(...PRODUCTS.map(p=>p.price)));
+ const changed=[...messages,{role:'user',text:'giá rẻ hơn dưới 500k'}];
+ const correction=intent.merge(shopping.resolve(changed,PRODUCTS),{...semantic,isCombo:false,maxPrice:6000000,pricePreference:'high'},changed,PRODUCTS);
+ assert.equal(correction.pricePreference,'low');assert.equal(correction.maxPrice,500000);
 });

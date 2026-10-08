@@ -8,78 +8,9 @@
     <meta http-equiv="Expires" content="0">
     <title>OCOP Sales Copilot - Đặc Sản Tuyển Chọn 63 Tỉnh Thành Việt Nam</title>
     
-    <script src="ai-shopping.js?v=20261007_combos3"></script>
+    <script src="ai-shopping.js?v=20261007_priceintent"></script>
     <script src="chat-language.js?v=20261006_3"></script>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        ocopGreen: '#0F382C',
-                        ocopGreenLight: '#165B46',
-                        ocopGreenDark: '#0A261E',
-                        ocopGold: '#D4AF37',
-                        ocopGoldHover: '#B89528',
-                        ocopWarmBg: '#FAF8F5',
-                        ocopCream: '#F4EFE6',
-                        cyberCyan: '#00F0FF',
-                        aiEmerald: '#10B981'
-                    },
-                    boxShadow: {
-                        'glass': '0 20px 40px rgba(15, 56, 44, 0.08)',
-                        'floating': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-                        'gold-glow': '0 0 35px rgba(212, 175, 55, 0.5)',
-                        'cyber-glow': '0 0 40px rgba(0, 240, 255, 0.35)',
-                        'ai-glow': '0 0 50px rgba(16, 185, 129, 0.4)'
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.25s ease-out forwards',
-                        'pop-in': 'popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
-                        'pulse-glow': 'pulseGlow 2s infinite',
-                        'float-slow': 'floatSlow 4s ease-in-out infinite',
-                        'antigravity': 'antigravity 6s ease-in-out infinite',
-                        'wiggle': 'wiggle 2s ease-in-out infinite',
-                        'hologram': 'hologramScan 3s linear infinite'
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(8px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' }
-                        },
-                        popIn: {
-                            '0%': { opacity: '0', transform: 'scale(0.92)' },
-                            '100%': { opacity: '1', transform: 'scale(1)' }
-                        },
-                        pulseGlow: {
-                            '0%, 100%': { boxShadow: '0 0 20px rgba(212, 175, 55, 0.4)' },
-                            '50%': { boxShadow: '0 0 45px rgba(212, 175, 55, 0.9)' }
-                        },
-                        floatSlow: {
-                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
-                            '50%': { transform: 'translateY(-12px) rotate(1deg)' }
-                        },
-                        antigravity: {
-                            '0%, 100%': { transform: 'translateY(0px) scale(1)' },
-                            '50%': { transform: 'translateY(-18px) scale(1.02)' }
-                        },
-                        wiggle: {
-                            '0%, 100%': { transform: 'rotate(0deg)' },
-                            '10%': { transform: 'rotate(12deg)' },
-                            '20%': { transform: 'rotate(-12deg)' },
-                            '30%': { transform: 'rotate(8deg)' },
-                            '40%': { transform: 'rotate(0deg)' }
-                        },
-                        hologramScan: {
-                            '0%': { backgroundPosition: '0% 0%' },
-                            '100%': { backgroundPosition: '0% 200%' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="assets/tailwind.css?v=3f26965cd68c">
     <!-- Font Awesome Icons & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -92,6 +23,26 @@
 
     <style>
         [data-review-summary][hidden] { display: none !important; }
+        #chat-voice-button.is-listening {
+            color: #b91c1c;
+            background: #fee2e2;
+            border-color: #f87171;
+        }
+        #product-grid .product-card {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 430px;
+        }
+        #product-grid > div, #product-grid .product-card img {
+            will-change: auto;
+        }
+        @media (max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce) {
+            #product-grid .ag-reveal-item {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            #product-grid .product-card { backdrop-filter: none; }
+        }
         html {
             overflow-x: clip;
         }
@@ -1424,7 +1375,7 @@
         #ocop-intro-overlay.intro-scrolling *::before,
         #ocop-intro-overlay.intro-scrolling *::after { animation-play-state: paused !important; }
         @media (max-width: 767px), (pointer: coarse) {
-            #ambient-stardust-canvas, #ocop-intro-overlay .intro-ambient-orb,
+            #ocop-intro-overlay .intro-ambient-orb,
             #ocop-intro-overlay .intro-waterlight,
             #ocop-intro-overlay::before, #ocop-intro-overlay::after { display: none !important; }
             #ocop-intro-overlay *, #ai-chat-window {
@@ -1929,7 +1880,7 @@
             <!-- Thanh Tìm Kiếm Header Desktop -->
             <div class="hidden md:flex flex-1 min-w-[190px] xl:min-w-[240px] max-w-md relative">
                 <label for="header-search-input" class="sr-only">Tìm kiếm sản phẩm OCOP</label>
-                <input type="search" id="header-search-input" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)"
+                <input type="search" id="header-search-input" oninput="scheduleProductSearch(this.value)" onkeydown="handleSearchKeydown(event)"
                        placeholder="Tìm đặc sản, vùng miền..."
                        autocomplete="off" aria-controls="product-grid"
                        class="site-search-input w-full pl-10 pr-20 py-2.5 text-sm rounded-full border border-emerald-200 focus:outline-none bg-emerald-50/60 shadow-sm transition">
@@ -1988,7 +1939,7 @@
         <div class="block md:hidden px-3 pb-2.5 pt-0.5 border-t border-amber-900/5">
             <div class="relative w-full">
                 <label for="mobile-search-input" class="sr-only">Tìm kiếm sản phẩm OCOP</label>
-                <input type="search" id="mobile-search-input" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)"
+                <input type="search" id="mobile-search-input" oninput="scheduleProductSearch(this.value)" onkeydown="handleSearchKeydown(event)"
                        placeholder="Tìm đặc sản, tỉnh thành, trà, sâm..."
                        autocomplete="off" aria-controls="product-grid"
                        class="site-search-input w-full pl-9 pr-20 py-2.5 text-sm rounded-full border border-emerald-200 focus:outline-none bg-emerald-50/60 shadow-sm">
@@ -2517,7 +2468,7 @@
                                 <div class="relative">
                                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-700/60 text-xs"></i>
                                     <label for="product-search" class="sr-only">Tìm kiếm đặc sản theo tên hoặc vùng miền</label>
-                                    <input type="search" id="product-search" oninput="filterProductsGlobal(this.value)" onkeydown="handleSearchKeydown(event)" placeholder="Tên đặc sản hoặc tỉnh thành..." autocomplete="off" aria-controls="product-grid" class="site-search-input w-full pl-9 pr-20 py-2.5 text-sm rounded-xl border border-emerald-200 focus:outline-none bg-emerald-50/50 transition">
+                                    <input type="search" id="product-search" oninput="scheduleProductSearch(this.value)" onkeydown="handleSearchKeydown(event)" placeholder="Tên đặc sản hoặc tỉnh thành..." autocomplete="off" aria-controls="product-grid" class="site-search-input w-full pl-9 pr-20 py-2.5 text-sm rounded-xl border border-emerald-200 focus:outline-none bg-emerald-50/50 transition">
                                     <button type="button" onclick="startVoiceSearch('product-search')" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-ocopGreen rounded-full cursor-pointer">
                                         <i class="fa-solid fa-microphone"></i>
                                     </button>
@@ -2611,7 +2562,7 @@
                         </div>
                     </div>
                     <p id="image-search-status" class="hidden mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-900" role="status"></p>
-                    <p id="catalog-price-note" class="mb-4 rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900"></p>
+                    <p id="catalog-price-note" class="mb-3 text-xs leading-relaxed text-gray-500"></p>
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                         <!-- Render danh mục sản phẩm từ dữ liệu -->
                     </div>
@@ -2656,7 +2607,7 @@
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
                         <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.</p>
-                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn được gửi tới Google Gemini; ảnh đính kèm được lưu trên máy chủ để nhân viên xem và có thể gửi tới Gemini. Ảnh tìm kiếm cũng được gửi tới Gemini. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
+                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn và ảnh có thể được gửi tới Google Gemini hoặc OpenAI để tư vấn; ảnh đính kèm được lưu trên máy chủ để nhân viên xem. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
                     </div>
                 </div>
             </div>
@@ -2678,8 +2629,10 @@
                 <div class="flex items-center space-x-2">
                     <button type="button" id="chat-add-image-button" onclick="document.getElementById('ai-chat-image-input').click()" aria-label="Thêm ảnh" title="Thêm ảnh (dán Ctrl+V hoặc kéo thả)" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-image text-sm"></i></button>
                     <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter'){event.preventDefault();sendAIMessage()}" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
+                    <button type="button" id="chat-voice-button" aria-label="Nhập bằng giọng nói" title="Nhập bằng giọng nói" aria-pressed="false" aria-controls="ai-chat-input" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-microphone text-sm" aria-hidden="true"></i></button>
                     <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 flex-shrink-0 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait"><i class="fa-solid fa-paper-plane text-xs"></i></button>
                 </div>
+                <p id="chat-voice-status" class="text-[10px] text-gray-500 leading-relaxed" role="status" aria-live="polite" hidden></p>
             </div>
         </div>
         
@@ -3005,7 +2958,7 @@
     <!-- JAVASCRIPT XỬ LÝ HOÀN CHỈNH TOÀN BỘ CHỨC NĂNG WEBSITE -->
     <!-- ============================================================== -->
     <script src="data.js?v=20261007_63"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // -------------------------------------------------------------
         // CẤU HÌNH HỆ THỐNG & THANH TOÁN VIETQR
@@ -3084,7 +3037,6 @@
             restorePageScrollState();
             updateCatalogCounts();
             applyLanguage(currentLanguage);
-            renderProducts(products);
             initializeProvinceMap();
             updateIntroMusicButton();
             updateCartBadge();
@@ -3229,7 +3181,8 @@
         // -------------------------------------------------------------
         let stardustAnimationId = null;
         function initAmbientStardustCanvas() {
-            if (window.matchMedia('(max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
+            const lightweight = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
             const canvas = document.getElementById('ambient-stardust-canvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
@@ -3241,6 +3194,7 @@
             window.addEventListener('resize', () => {
                 width = canvas.width = window.innerWidth;
                 height = canvas.height = window.innerHeight;
+                resumeStardust();
             }, { passive: true });
 
             let mouse = { x: -1000, y: -1000, active: false };
@@ -3264,7 +3218,7 @@
                 { r: 245, g: 158, b: 11 }    // Solar Orange
             ];
 
-            const PARTICLE_COUNT = Math.min(85, Math.floor((window.innerWidth * window.innerHeight) / 14000) + 38);
+            const PARTICLE_COUNT = lightweight ? 24 : Math.min(85, Math.floor((window.innerWidth * window.innerHeight) / 14000) + 38);
             const particles = [];
 
             for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -3286,12 +3240,18 @@
                 });
             }
 
-            function renderStardust() {
+            let lastFrameTime = -Infinity;
+            function renderStardust(timestamp = performance.now()) {
+                stardustAnimationId = null;
                 const overlay = document.getElementById('ocop-intro-overlay');
                 if (document.hidden || (overlay && (overlay.classList.contains('hidden') || overlay.classList.contains('intro-scrolling')))) {
+                    return;
+                }
+                if (!reducedMotion.matches && timestamp - lastFrameTime < 1000 / 30) {
                     stardustAnimationId = requestAnimationFrame(renderStardust);
                     return;
                 }
+                lastFrameTime = timestamp;
 
                 ctx.clearRect(0, 0, width, height);
 
@@ -3340,10 +3300,25 @@
                     ctx.fill();
                 }
 
-                stardustAnimationId = requestAnimationFrame(renderStardust);
+                if (!reducedMotion.matches) stardustAnimationId = requestAnimationFrame(renderStardust);
             }
 
-            stardustAnimationId = requestAnimationFrame(renderStardust);
+            const resumeStardust = () => {
+                const overlay = document.getElementById('ocop-intro-overlay');
+                if (document.hidden || !overlay || overlay.classList.contains('hidden') || overlay.classList.contains('intro-scrolling')) {
+                    if (stardustAnimationId !== null) cancelAnimationFrame(stardustAnimationId);
+                    stardustAnimationId = null;
+                    return;
+                }
+                if (!stardustAnimationId && !document.hidden && overlay && !overlay.classList.contains('hidden') && !overlay.classList.contains('intro-scrolling')) {
+                    if (reducedMotion.matches) renderStardust();
+                    else stardustAnimationId = requestAnimationFrame(renderStardust);
+                }
+            };
+            document.addEventListener('visibilitychange', resumeStardust);
+            reducedMotion.addEventListener('change', resumeStardust);
+            new MutationObserver(resumeStardust).observe(document.getElementById('ocop-intro-overlay'), { attributes: true, attributeFilter: ['class'] });
+            resumeStardust();
         }
 
         // -------------------------------------------------------------
@@ -3633,9 +3608,11 @@
         }
 
         function renderProducts(items) {
-            document.getElementById('catalog-price-note').textContent = currentLanguage === 'en'
-                ? '252 entries supplied by the shop. Each product uses the highest supplied reference price per listed unit, consistently across products, cart and sets. Confirm price and packaging before ordering. Photos are illustrative; pending photos are marked.'
-                : '252 mục theo danh sách chủ shop. Mỗi sản phẩm áp dụng một mức giá tham khảo cao nhất theo quy cách, thống nhất trên sản phẩm, giỏ hàng và combo. Xác nhận giá và quy cách khi đặt hàng. Ảnh tham khảo; món chưa có ảnh đúng được đánh dấu.';
+            const catalogNote=document.getElementById('catalog-price-note');
+            catalogNote.hidden=!reviewPresentationMode;
+            catalogNote.textContent=currentLanguage==='en'
+                ? 'Illustrative data: random ratings and review counts for the competition presentation; actual reviews take precedence.'
+                : 'Dữ liệu minh họa: điểm và lượt đánh giá ngẫu nhiên phục vụ bài thi; ưu tiên đánh giá thật.';
             const heroProduct = products.find(p => p.region === 'Khánh Hòa' && p.name.includes('Yến')) || products[0];
             if (heroProduct) {
                 document.getElementById('i18n-hero-prodname').textContent = getProductName(heroProduct);
@@ -3768,7 +3745,15 @@
             }).join('');
         }
 
+        let productSearchTimer;
+        const productSearchText = new WeakMap();
+        function scheduleProductSearch(searchTerm) {
+            clearTimeout(productSearchTimer);
+            productSearchTimer = setTimeout(() => filterProductsGlobal(searchTerm), 140);
+        }
+
         function filterProductsGlobal(searchTerm) {
+            clearTimeout(productSearchTimer);
             const query = String(searchTerm ?? '').trim();
             const terms = normalizeSearchText(query).split(/\s+/).filter(Boolean);
             document.getElementById('image-search-status').classList.add('hidden');
@@ -3809,9 +3794,13 @@
 
             if (terms.length > 0) {
                 filtered = filtered.filter(product => {
-                    const searchableText = normalizeSearchText(
-                        `${product.name} ${product.nameEn || productNamesEn[product.id - 1] || ''} ${product.region} ${product.desc} ${product.descEn || ''} ${product.tag} ${product.tagEn || ''}`
-                    );
+                    let searchableText = productSearchText.get(product);
+                    if (searchableText === undefined) {
+                        searchableText = normalizeSearchText(
+                            `${product.name} ${product.nameEn || productNamesEn[product.id - 1] || ''} ${product.region} ${product.desc} ${product.descEn || ''} ${product.tag} ${product.tagEn || ''}`
+                        );
+                        productSearchText.set(product, searchableText);
+                    }
                     return terms.every(term => searchableText.includes(term));
                 });
             }
@@ -3833,23 +3822,28 @@
         }
 
         // Lắng nghe sự kiện cuộn trang để cập nhật thanh tiến trình và nút lên đầu trang
+        let scrollProgressFrame = null;
         window.addEventListener('scroll', () => {
-            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-            const bar = document.getElementById('scroll-progress-bar');
-            if (bar) bar.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
+            if (scrollProgressFrame !== null) return;
+            scrollProgressFrame = requestAnimationFrame(() => {
+                scrollProgressFrame = null;
+                const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+                const bar = document.getElementById('scroll-progress-bar');
+                if (bar) bar.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
 
-            const btt = document.getElementById('back-to-top-btn');
-            if (btt) {
-                if (winScroll > 320) {
-                    btt.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-6');
-                    btt.classList.add('opacity-100', 'translate-y-0');
-                } else {
-                    btt.classList.add('opacity-0', 'pointer-events-none', 'translate-y-6');
-                    btt.classList.remove('opacity-100', 'translate-y-0');
+                const btt = document.getElementById('back-to-top-btn');
+                if (btt) {
+                    if (winScroll > 320) {
+                        btt.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-6');
+                        btt.classList.add('opacity-100', 'translate-y-0');
+                    } else {
+                        btt.classList.add('opacity-0', 'pointer-events-none', 'translate-y-6');
+                        btt.classList.remove('opacity-100', 'translate-y-0');
+                    }
                 }
-            }
+            });
         }, { passive: true });
 
         function scrollToTopSmooth() {
@@ -4443,7 +4437,10 @@
             widget.hidden = !visible;
             widget.style.display = visible ? '' : 'none';
             widget.classList.toggle('hidden', !visible);
-            if (!visible) document.getElementById('ai-chat-window').classList.add('hidden');
+            if (!visible) {
+                window.chatDictation?.stop(true);
+                document.getElementById('ai-chat-window').classList.add('hidden');
+            }
         }
 
         function toggleAIChat() {
@@ -4459,6 +4456,7 @@
                 const msgBox = document.getElementById('ai-chat-messages');
                 if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
             } else {
+                window.chatDictation?.stop(true);
                 win.classList.add('hidden');
             }
         }
@@ -4677,7 +4675,7 @@
                 const response = await fetch(getAIEndpoint('/api/ai/catalog'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ products: getAIProductPayload() })
+                    body: JSON.stringify({})
                 });
                 const result = await response.json().catch(() => ({}));
                 if (!response.ok) {
@@ -4958,6 +4956,10 @@
 
             const rawQuery = String(query || "").trim();
             const normalized = rawQuery.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").toLowerCase();
+            const priceIntent = AIShopping.resolve([...aiConversationHistory.filter(m => m.role === 'user'), {role:'user',text:rawQuery}], products);
+            if (priceIntent.pricePreference && !priceIntent.isCombo && !priceIntent.isComplaint && !priceIntent.isCSKH && !priceIntent.isShipping && !priceIntent.isUsage && !priceIntent.isOcopKnowledge) {
+                return {...AIShopping.recommendationReply(products,priceIntent,currentLanguage),localFallback:true};
+            }
 
             // 1. CHUYÊN ĐỀ HỖ TRỢ KHÁCH HÀNG & KHIẾU NẠI (CS & COMPLAINTS)
             const isComplaint = /\b(hang loi|hang bi loi|san pham bi loi|san pham loi|bi loi|bi hong|hu hong|vo nat|bi vo|bi be|mop meo|bi mop|bi dap|chay khet|het han|qua han|bi moc|am moc|doi mau|kem chat luong|thieu hang|giao thieu|giao nham|giao sai|sai hang|doi tra|tra hang|hoan tien|chua nhan duoc hang|chua nhan hang|mat tien|khieu nai|phan nan)\b|\b(loi|hong)\s+(hang|san pham|dong goi|nap|hop|chai|lo)\b|^(hang loi|loi|hong|doi tra|tra hang)$/.test(normalized);
@@ -5348,6 +5350,7 @@ async function sendAIMessage() {
                 : 'Vui lòng xem ảnh sản phẩm tôi gửi và hỗ trợ giúp tôi.');
 
             if ((!text && !messageImages.length) || isAIRequestPending) return;
+            window.chatDictation?.stop(true);
             isAIRequestPending = true;
             const sendButton = document.getElementById('chat-send-button');
             sendButton.disabled = true;
@@ -5395,42 +5398,20 @@ async function sendAIMessage() {
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             try {
-                let result;
-                try {
-                    await uploadPendingAIChatImages(messageImages);
-                } catch (error) {
-                    if (!(error instanceof TypeError)) throw error;
-                    result = createLocalCatalogReply(text, messageImages.length > 0);
+                await uploadPendingAIChatImages(messageImages);
+                const response = await fetch(getAIEndpoint('/api/ai/chat'), {
+                    method:'POST',headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id)})
+                });
+                let result = await response.json().catch(()=>({}));
+                if (!response.ok || (!result.message && !result.text_response)) {
+                    throw new Error(result.message || (requestLanguage==='en'?'Cannot connect to the AI assistant. Please try again.':'Chưa kết nối được trợ lý AI. Bạn vui lòng thử lại.'));
                 }
-                if (!result) {
-                    try {
-                        const response = await fetch(getAIEndpoint('/api/ai/chat'), {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                language: requestLanguage,
-                                messages: [...aiConversationHistory.slice(-14), { role: 'user', text: messageText }],
-                                products: getAIProductPayload(),
-                                imageIds: messageImages.map(image => image.id)
-                            })
-                        });
-                        result = await response.json().catch(() => ({}));
-                        if (!response.ok || !result || (!result.message && !result.text_response)) {
-                            result = createLocalCatalogReply(text, messageImages.length > 0);
-                        } else {
-                            result.message = result.text_response || result.message;
-                            result.productIds = result.suggested_products || result.productIds || [];
-                        }
-                    } catch (error) {
-                        result = createLocalCatalogReply(text, messageImages.length > 0);
-                    }
-                }
-                if (!result || typeof result.message !== 'string') {
-                    result = createLocalCatalogReply(text, messageImages.length > 0);
-                }
+                result.message=result.text_response || result.message;
+                result.productIds=result.suggested_products || result.productIds || [];
                 const shoppingIntent = AIShopping.resolve([...aiConversationHistory, { role: 'user', text: messageText }], products);
                 const shoppingQuery = AIShopping.normalize(messageText);
-                if (!messageImages.length && result.understandingStatus !== 'needs_clarification' && !shoppingIntent.isComplaint && !shoppingIntent.isCSKH && !shoppingIntent.isShipping && !shoppingIntent.isUsage && !shoppingIntent.isOcopKnowledge && shoppingIntent.maxPrice && (shoppingIntent.isCombo || shoppingIntent.isGift || /toi co|minh co|ngan sach|tai chinh|budget/.test(shoppingQuery))) {
+                if ((result.integrations?.gemini || result.integrations?.openai) && !messageImages.length && result.understandingStatus !== 'needs_clarification' && !shoppingIntent.isComplaint && !shoppingIntent.isCSKH && !shoppingIntent.isShipping && !shoppingIntent.isUsage && !shoppingIntent.isOcopKnowledge && shoppingIntent.maxPrice && (shoppingIntent.isCombo || shoppingIntent.isGift || /toi co|minh co|ngan sach|tai chinh|budget/.test(shoppingQuery))) {
                     if (!('combo' in result)) {
                         const eligible = products.filter(product =>
                             AIShopping.regionMatches(product, shoppingIntent) &&
@@ -6209,6 +6190,7 @@ async function sendAIMessage() {
             const menu = document.getElementById('admin-support-menu');
             menu.classList.toggle('hidden');
             if (!menu.classList.contains('hidden')) {
+                window.chatDictation?.stop(true);
                 document.getElementById('ai-chat-window').classList.add('hidden');
             }
         }
@@ -6846,11 +6828,34 @@ async function sendAIMessage() {
                 : product.name;
         }
 
+        let reviewPresentationMode = (() => {
+            try { return localStorage.getItem('ocop-review-presentation') !== 'off'; }
+            catch (_) { return true; }
+        })();
+
+        function setReviewPresentationMode(enabled) {
+            reviewPresentationMode = Boolean(enabled);
+            try { localStorage.setItem('ocop-review-presentation', enabled ? 'on' : 'off'); } catch (_) {}
+            filterProductsGlobal(document.getElementById('product-search')?.value || '');
+            document.querySelectorAll('[data-review-product-id]').forEach(el => {
+                const product = products.find(p => p.id === Number(el.dataset.reviewProductId));
+                if (!product) return;
+                el.textContent = getProductReviewLabel(product);
+                const row = el.closest('[data-review-summary]');
+                if (row) row.hidden = !el.textContent;
+            });
+        }
+
         function getProductReviewLabel(product) {
-            if (!Number.isFinite(product.rating) || !product.reviews) {
-                return '';
+            let rating = product.rating, reviews = product.reviews;
+            if (!Number.isFinite(rating) || !reviews) {
+                if (!reviewPresentationMode) return '';
+                // Display-only values: never mutate the catalogue or submit them as reviews.
+                const seed = getProductPromoSeed(product);
+                rating = (46 + seed % 5) / 10;
+                reviews = 120 + (seed >>> 8) % 861;
             }
-            return product.rating.toFixed(1) + ' (' + product.reviews + ' ' + (currentLanguage === 'en' ? 'reviews' : 'đánh giá') + ')';
+            return rating.toFixed(1) + ' (' + reviews + ' ' + (currentLanguage === 'en' ? 'reviews' : 'đánh giá') + ')';
         }
 
         function getProductDescription(product) {
@@ -7071,6 +7076,7 @@ async function sendAIMessage() {
         }
 
         function applyLanguage(language) {
+            window.chatDictation?.stop(true);
             currentLanguage = language === 'en' ? 'en' : 'vi';
             document.documentElement.lang = currentLanguage;
             document.title = currentLanguage === 'en'
@@ -7133,6 +7139,7 @@ async function sendAIMessage() {
             document.getElementById('ai-chat-input').placeholder = currentLanguage === 'en'
                 ? 'Try: gifts under 500k in the Mekong Delta' : 'Ví dụ: quà tặng dưới 500k ở miền Tây';
             document.getElementById('chat-send-button').setAttribute('aria-label', currentLanguage === 'en' ? 'Send message' : 'Gửi tin nhắn');
+            window.chatDictation?.refreshLabels();
             const chatMessages = document.getElementById('ai-chat-messages');
             if (chatMessages.children.length === 1) {
                 document.getElementById('chat-greeting').textContent = currentLanguage === 'en'
@@ -7142,8 +7149,8 @@ async function sendAIMessage() {
                     ? 'Tell me the occasion, region, product type, or your budget.'
                     : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
                 document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
-                    ? 'Messages are sent to Google Gemini; attached images are stored for staff review and may be sent to Gemini. Images used for visual search are also sent to Gemini. Do not share passwords, OTPs, or payment details.'
-                    : 'Tin nhắn được gửi tới Google Gemini; ảnh đính kèm được lưu trên máy chủ để nhân viên xem và có thể gửi tới Gemini. Ảnh tìm kiếm cũng được gửi tới Gemini. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
+                    ? 'Messages and images may be sent to Google Gemini or OpenAI for assistance; attached images are stored for staff review. Do not share passwords, OTPs or payment details.'
+                    : 'Tin nhắn và ảnh có thể được gửi tới Google Gemini hoặc OpenAI để tư vấn; ảnh đính kèm được lưu trên máy chủ để nhân viên xem. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
             }
             document.getElementById('chat-add-image-button').setAttribute(
                 'aria-label',
@@ -7490,12 +7497,13 @@ async function sendAIMessage() {
         }, { threshold: 0.12 });
 
         function scanAndObserve() {
+            observer.disconnect();
             document.querySelectorAll('#product-grid > div, .product-card').forEach((card, index) => {
                 if (!card.classList.contains('ag-reveal-item')) {
                     card.classList.add('ag-reveal-item');
                     card.dataset.agIndex = index;
-                    observer.observe(card);
                 }
+                if (!card.classList.contains('ag-revealed')) observer.observe(card);
             });
         }
         scanAndObserve();
@@ -7514,11 +7522,21 @@ async function sendAIMessage() {
 <!-- ============================================================== -->
 <!-- GSAP 3 + ScrollTrigger — Scroll Animations & Hover Effects     -->
 <!-- ============================================================== -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
 <script>
-(function initGSAP() {
+(async function initGSAP() {
+    if (window.matchMedia('(max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
+    const loadAnimationScript = src => new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+    try {
+        await loadAnimationScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+        await loadAnimationScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
+    } catch (_) { return; }
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
     gsap.registerPlugin(ScrollTrigger);
@@ -7575,44 +7593,8 @@ async function sendAIMessage() {
         );
     }
 
-    /* ─────────────────────────────────────────────────────────────
-       4. PRODUCT GRID — Stagger waterfall khi cuộn tới
-       Tái kích hoạt mỗi khi renderProductsList() inject card mới
-    ───────────────────────────────────────────────────────────── */
-    function animateProductCards() {
-        const cards = gsap.utils.toArray('.product-card');
-        if (!cards.length) return;
-        // Kill ScrollTrigger cũ của card để không nhân đôi
-        ScrollTrigger.getAll()
-            .filter(st => st.vars && st.vars._tag === 'ocopCard')
-            .forEach(st => st.kill());
-
-        gsap.fromTo(cards,
-            { opacity: 0, y: 55, scale: 0.96 },
-            {
-                opacity: 1, y: 0, scale: 1,
-                stagger: 0.08,
-                duration: 0.65,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: '#product-grid',
-                    start: 'top 88%',
-                    toggleActions: 'play none none none',
-                    _tag: 'ocopCard'
-                }
-            }
-        );
-    }
-
-    // Chờ renderProductsList() inject HTML xong rồi mới animate
-    window.addEventListener('DOMContentLoaded', () => setTimeout(animateProductCards, 220));
-
-    // Theo dõi #product-grid để tái animate khi filter thay đổi
-    const productGrid = document.getElementById('product-grid');
-    if (productGrid) {
-        new MutationObserver(() => setTimeout(animateProductCards, 80))
-            .observe(productGrid, { childList: true });
-    }
+    // Product cards already reveal through IntersectionObserver. Avoid a second
+    // animation spanning the whole catalogue and delaying the last cards.
 
     /* ─────────────────────────────────────────────────────────────
        5. HOVER EFFECTS — Card nâng lên + ảnh zoom nhẹ (GPU-smooth)
@@ -7655,6 +7637,15 @@ async function sendAIMessage() {
 <script src="script.js?v=20261006_3"></script>
 <script src="product-reviews-ui.js?v=20261007_3"></script>
 <script src="account-client.js?v=20261007_1"></script>
+<script src="chat-dictation.js?v=20261008_1"></script>
+<script>
+    window.chatDictation = ChatDictation.mount({
+        input: document.getElementById('ai-chat-input'),
+        button: document.getElementById('chat-voice-button'),
+        status: document.getElementById('chat-voice-status'),
+        getLanguage: () => currentLanguage
+    });
+</script>
 </body>
 </html>
     h

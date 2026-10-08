@@ -140,6 +140,42 @@ test('a single item must not displace a valid multi-item combo at the same total
   assert.deepEqual(plan.items.map(product => product.id), [1, 2]);
 });
 
+test('high-value screenshot ranks by catalogue price instead of matching cao or Quang Tri', () => {
+  const {PRODUCTS}=require('./data');
+  const source=fs.readFileSync('server.js','utf8');
+  const context={AIShopping:shopping,expandChatShorthand:text=>text,getRestrictedTopicReply:()=>null,aiWebsiteCatalog:null};
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('function normalizeCatalogTerm'),source.indexOf('function isAIRateLimited')),context);
+  const query='mình muốn tìm kiếm một số món có giá trị cao';
+  assert.equal(context.findDirectCatalogMatches(query,PRODUCTS).length,0);
+  const intent=shopping.resolve([{role:'user',text:query}],PRODUCTS,context.extractSearchIntents);
+  assert.equal(intent.pricePreference,'high');assert.equal(intent.exactRegion,null);assert.equal(intent.categoryOrKeyword,null);
+  const reply=context.buildLocalFallbackReply(query,PRODUCTS,'vi');
+  const selected=reply.productIds.map(id=>PRODUCTS.find(p=>p.id===id));
+  assert.equal(selected.length,3);assert.equal(selected[0].price,Math.max(...PRODUCTS.map(p=>p.price)));
+  assert(selected.every((p,i)=>i===0||p.price<=selected[i-1].price));
+  assert.match(reply.message,/giá niêm yết cao/);assert.doesNotMatch(reply.message,/chất lượng cao nhất/);
+  const regional=shopping.resolve([{role:'user',text:'trà Hà Giang giá trị cao dưới 1 triệu'}],PRODUCTS,context.extractSearchIntents);
+  const scoped=shopping.recommendations(PRODUCTS,regional);
+  assert(scoped.length>0);assert(scoped.every(p=>p.region==='Hà Giang'&&p.price<=1000000&&/trà/i.test(p.name)));
+  const followup=shopping.resolve([{role:'user',text:'trà Hà Giang giá trị cao dưới 1 triệu'},{role:'user',text:'đổi sang giá thấp hơn'}],PRODUCTS,context.extractSearchIntents);
+  assert.equal(followup.pricePreference,'low');assert.equal(followup.exactRegion,'Hà Giang');assert.equal(followup.maxPrice,1000000);
+  const cheap=shopping.recommendations(PRODUCTS,followup);
+  assert(cheap.every((p,i)=>i===0||p.price>=cheap[i-1].price));
+  const teaIntent=shopping.resolve([{role:'user',text:'tìm trà giá cao'}],PRODUCTS,context.extractSearchIntents);
+  const teaCandidates=context.filterProductsByIntent(PRODUCTS,teaIntent);
+  assert(teaCandidates.length>3);
+  assert.equal(shopping.recommendations(teaCandidates,teaIntent)[0].price,Math.max(...PRODUCTS.filter(p=>/trà/i.test(p.name)).map(p=>p.price)));
+  assert.equal(shopping.analyze('không chọn món rẻ',PRODUCTS).pricePreference,'high');
+  assert.equal(shopping.analyze('không cần cao cấp',PRODUCTS).pricePreference,'low');
+  assert.equal(shopping.analyze('giá trị dinh dưỡng cao',PRODUCTS).pricePreference,undefined);
+  assert.equal(shopping.recommendations(PRODUCTS,{...regional,maxPrice:1}).length,0);
+  const ginseng=shopping.resolve([{role:'user',text:'Tôi muốn tìm sâm giá cao'}],PRODUCTS);
+  assert.equal(ginseng.categoryOrKeyword,'sâm');
+  assert(shopping.recommendations(PRODUCTS,ginseng).every(p=>/sâm/i.test(p.name)));
+  assert.equal(shopping.resolve([{role:'user',text:'Tôi muốn tìm món giá cao'}],PRODUCTS).categoryOrKeyword,null);
+});
+
 test('server filters do not silently discard an impossible constraint', () => {
   const source = fs.readFileSync('server.js', 'utf8');
   const context = { normalizeCatalogTerm: shopping.normalize, findDirectCatalogMatches: () => [] };
@@ -294,3 +330,15 @@ test('sommelier comparative analysis and occasion gift intent extraction from se
   assert.equal(veg.isVegetarian, true);
 });
 
+test('maximum budgets and Vietnamese pronouns do not request garlic', () => {
+  const source=fs.readFileSync('server.js','utf8');
+  const context={normalizeCatalogTerm:shopping.normalize,expandChatShorthand:text=>text};
+  vm.createContext(context);
+  vm.runInContext(source.slice(source.indexOf('function extractSearchIntents('),source.indexOf('const REGION_PROVINCES =')),context);
+  for(const analyze of [shopping.analyze,context.extractSearchIntents]) {
+  for (const text of ['Gợi ý 3 combo đặc sản ngân sách tối đa 6 triệu đồng', 'Cho tôi combo 6 triệu', 'Combo tối thiểu 2 triệu']) {
+    assert.equal(analyze(text, []).categoryOrKeyword, null);
+  }
+  assert.equal(analyze('Combo tỏi Lý Sơn tối đa 6 triệu', []).categoryOrKeyword, 'tỏi');
+  }
+});

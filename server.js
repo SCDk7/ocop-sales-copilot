@@ -7,6 +7,8 @@ const AIShopping = require('./ai-shopping.js');
 const { lookupGoogle, relevantWikiSource } = require('./ai-grounding.js');
 const { createReviewStore } = require('./product-reviews.js');
 const AIIntent = require('./ai-intent.js');
+const {generatePreferredContent} = require('./ai-provider.js');
+const {planWikipedia} = require('./ai-wikipedia.js');
 const { createAccountStore } = require('./account-store.js');
 
 function loadEnvironmentFile() {
@@ -117,7 +119,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  if (req.path === '/api/ai/audio-chat' || req.path === '/api/ai/images') return next();
+  if (req.path === '/api/ai/audio-chat' || req.path === '/api/ai/images' || req.path === '/api/ai/search-image') return next();
   return express.json({ limit: req.method === 'POST' && /^\/api\/products\/\d+\/reviews$/.test(req.path) ? '3mb' : '256kb' })(req, res, next);
 });
 
@@ -520,7 +522,7 @@ function validateAIRequest(body) {
 
 function getAIModelConfiguration() {
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  if (!apiKey && !process.env.OPENAI_API_KEY) {
     const error = new Error('Trợ lý AI chưa được cấu hình. Vui lòng liên hệ quản trị viên.');
     error.status = 503;
     throw error;
@@ -532,7 +534,7 @@ function getAIModelConfiguration() {
     error.status = 500;
     throw error;
   }
-  return { apiKey, model };
+  return { apiKey, model, openai:{apiKey:process.env.OPENAI_API_KEY,model:process.env.OPENAI_MODEL||'gpt-4.1-mini'} };
 }
 
 async function uploadImageToGeminiFilesApi(image, configuration, signal) {
@@ -643,9 +645,13 @@ function isImageProductLookupRequest(message) {
 }
 
 function buildAISystemInstruction({ products, filteredProducts = [], language }, { includeTranscription = false, wikiSources = [], googleContext = null, hasImages = false, customerIntent = {} } = {}) {
-  const productContext = JSON.stringify(products.map(p=>({id:p.id,name:p.name,nameEn:p.nameEn,region:p.region,category:p.category,stars:p.stars,priceMin:p.priceMin,priceMax:p.priceMax,price:p.price,unit:p.packaging,unitEn:p.packagingEn,customerRating:p.rating,customerReviewCount:p.reviews||0})));
+  const contextProducts = customerIntent.hasVerifiedCombo
+    ? [...new Map((customerIntent.comboPlans||[]).flatMap(plan=>plan.items).map(p=>[p.id,p])).values()]
+    : customerIntent.pricePreference ? AIShopping.recommendations(filteredProducts,customerIntent)
+    : filteredProducts.length ? filteredProducts : products;
+  const productContext = JSON.stringify(contextProducts.map(p=>({id:p.id,name:p.name,nameEn:p.nameEn,region:p.region,category:p.category,stars:p.stars,priceMin:p.priceMin,priceMax:p.priceMax,price:p.price,unit:p.packaging,unitEn:p.packagingEn,customerRating:p.rating,customerReviewCount:p.reviews||0})));
   const filteredContext = (Array.isArray(filteredProducts) && filteredProducts.length > 0)
-    ? `\n[Sản phẩm OCOP phù hợp nhất với từ khóa/nhu cầu người dùng hiện tại]:\n${JSON.stringify(filteredProducts)}`
+    ? `\n[Sản phẩm OCOP phù hợp nhất với từ khóa/nhu cầu người dùng hiện tại]:\n${JSON.stringify(contextProducts.map(p=>({id:p.id,name:p.name,desc:p.desc,customerReviewExcerpts:p.customerReviewExcerpts})))}`
     : "";
   const intentContext = `\n[Tín hiệu đã nhận diện từ câu hỏi hiện tại]: ${JSON.stringify({
     category: customerIntent.categoryOrKeyword || null,
@@ -654,6 +660,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     allProvinces: Boolean(customerIntent.isAllProvinces),
     region: customerIntent.regionKeyword || null,
     maxPrice: customerIntent.maxPrice || null,
+    pricePreference: customerIntent.pricePreference || null,
     minItems: customerIntent.minItems ?? null,
     maxItems: customerIntent.maxItems ?? null,
     excludedTerms: customerIntent.excludedTerms || [],
@@ -664,11 +671,15 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
   const comboContext = customerIntent.hasVerifiedCombo
     ? '\n[SERVER-VERIFIED COMBO OPTIONS]: '+JSON.stringify((customerIntent.comboPlans||[]).map(plan=>({total:plan.total,budget:plan.budget,items:plan.items.map(p=>({id:p.id,name:p.name,price:p.price}))})))+'\nThe UI displays these separate combinations with exact prices and quantities. Do not invent different items, totals, quantities or a default item cap. In comboIntroduction, write a short natural introduction relevant to the customer, optionally using the supplied Wikipedia context. Do not include digits, money amounts or enumerate products in this introduction; the server appends the verified options. Do not claim price determines quality. If no combinations fit, explain that constraints cannot be met.'
     : '';
+  const recommendationContext = customerIntent.pricePreference && !customerIntent.isCombo
+    ? '\n[SERVER-VERIFIED PRODUCT SELECTION]: '+JSON.stringify(AIShopping.recommendations(filteredProducts,customerIntent).map(p=>({id:p.id,name:p.name,price:p.price,unit:p.packaging})))+'\nIn comboIntroduction, briefly acknowledge the customer requirement and optionally add relevant supplied Wikipedia background. Do not enumerate products, prices or digits; the server appends the verified product list. Never infer quality or health value from price.' : '';
+  const requiredContext = customerIntent.requiredClarification ? '\n[REQUIRED CLARIFICATION]: '+customerIntent.requiredClarification+'\nAsk this clarification; do not recommend products before it is answered.' : '';
+  const reviewContext = customerIntent.verifiedReviewMessage ? '\n[VERIFIED CUSTOMER REVIEW FACTS]: '+customerIntent.verifiedReviewMessage+'\nUse only these persisted review facts; illustration ratings are never customer evidence.' : '';
 
   // ── Wikipedia RAG context block ──────────────────────────────────────────────
   const wikiContext = wikiSources.length
     ? `\n[${language === 'en' ? 'Cultural and geographical context from Vietnamese/English Wikipedia' : 'Ngữ cảnh tri thức văn hóa & địa lý từ Wikipedia Việt/Anh'}]:\n${wikiSources.map(s => `• ${s.title} (${s.url}): ${s.extract}`).join("\n\n")}`
-    : "\n[Không có ngữ cảnh Wikipedia bổ sung].";
+    : '\nNo relevant Wikipedia excerpts were retrieved. Do not claim Wikipedia supports any fact, invent citations or describe a combined Wikipedia answer as successful. Answer only from verified catalogue facts and disclose missing external context when relevant.';
 
   const languageInstruction = language === "en"
     ? "Reply in English with an elegant, prestigious, culturally rich, and welcoming tone. Address the customer politely."
@@ -700,7 +711,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
     intentContext,
     comboContext,
     'Current catalogue: '+productContext,
-    wikiContext,
+    wikiContext, recommendationContext, requiredContext, reviewContext,
     googleContext?.text ? 'Google Search context: '+googleContext.text+' Sources: '+JSON.stringify(googleContext.sources) : ''
   ].join('\n');
 }
@@ -767,7 +778,9 @@ function normalizeCatalogTerm(value) {
 const CATALOG_QUERY_STOP_WORDS = new Set([
   'toi', 'minh', 'em', 'anh', 'chi', 'ban', 'cho', 'hoi', 'muon', 'can', 'tim',
   'xem', 'tu', 'van', 'gia', 'bao', 'nhieu', 'co', 'khong', 'san', 'pham',
-  'dac', 'san', 'loai', 'nay', 'kia', 'voi', 'va', 'hay', 'giup', 'nhe'
+  'dac', 'san', 'loai', 'nay', 'kia', 'voi', 'va', 'hay', 'giup', 'nhe',
+  'mot', 'mon', 'so', 'kiem', 'tri', 'cao', 'thap', 'nhat', 'hon', 'dat',
+  'trung', 'binh', 'cap', 'tien', 'some', 'products', 'value', 'high', 'higher', 'premium', 'expensive', 'cheap', 'affordable'
 ]);
 
 function findDirectCatalogMatches(query, products = [], limit = 3) {
@@ -783,8 +796,9 @@ function findDirectCatalogMatches(query, products = [], limit = 3) {
     ].filter(Boolean).join(' '));
     let score = 0;
     for (const term of terms) {
-      if (name.includes(term)) score += 6;
-      else if (searchable.includes(term)) score += 2;
+      const token = new RegExp('(?:^|[^a-z0-9])' + term + '(?:[^a-z0-9]|$)');
+      if (token.test(name)) score += 6;
+      else if (token.test(searchable)) score += 2;
     }
     return { product, score };
   }).filter(({ score }) => score >= 4)
@@ -802,7 +816,9 @@ function extractSearchIntents(queryText, products = []) {
     .trim();
   // Personal pronoun "tôi" loses its accent to "toi" too. Preserve meaning
   // before searching product keywords such as garlic ("tỏi").
-  const productQuery = normalized.replace(/\btoi\s+(?=muon|can|co|tim|mua|chon|thich|dang|se|duoc|xin|hoi|lay)/g, ' ');
+  const productQuery = normalized
+    .replace(/\btoi\s+(?=muon|can|co|tim|mua|chon|thich|dang|se|duoc|xin|hoi|lay|da\b|thieu\b|uu\b)/g, ' ')
+    .replace(/\b(?:cho|giup|voi|cua)\s+toi\b/g, ' ');
 
   const isComplaint = /\b(hang loi|hang bi loi|san pham bi loi|san pham loi|bi loi|bi hong|hu hong|vo nat|bi vo|bi be|mop meo|bi mop|bi dap|chay khet|het han|qua han|bi moc|am moc|doi mau|kem chat luong|thieu hang|giao thieu|giao nham|giao sai|sai hang|doi tra|tra hang|hoan tien|chua nhan duoc hang|chua nhan hang|mat tien|khieu nai|phan nan)\b|\b(loi|hong)\s+(hang|san pham|dong goi|nap|hop|chai|lo)\b|^(hang loi|loi|hong|doi tra|tra hang)$/.test(normalized);
 
@@ -965,7 +981,7 @@ function filterProductsByIntent(products = [], intent = {}) {
     matched = byRegion;
   }
 
-  if (!intent.isCombo) {
+  if (!intent.isCombo && !intent.pricePreference) {
     const directMatches = findDirectCatalogMatches(intent.rawText, matched);
     if (directMatches.length > 0) return directMatches;
   }
@@ -979,11 +995,11 @@ function generateLocalComboReply(intent, products = [], language = "vi") {
   return { ...reply, text_response: reply.message, suggested_products: reply.productIds };
 }
 
-function buildLocalFallbackReply(query, products = [], language = "vi") {
+function buildLocalFallbackReply(query, products = [], language = "vi", resolvedIntent = null) {
   const restrictedReply = getRestrictedTopicReply(query, language);
   if (restrictedReply) return { ...restrictedReply, fallback: true };
   const catalog = (Array.isArray(products) && products.length > 20) ? products : (aiWebsiteCatalog && Array.isArray(aiWebsiteCatalog.products) && aiWebsiteCatalog.products.length ? aiWebsiteCatalog.products : products);
-  const intent = extractSearchIntents(query, catalog);
+  const intent = resolvedIntent || AIShopping.resolve([{role:'user',text:query}],catalog,extractSearchIntents);
   const english = language === "en";
 
   // 1. Complaint & Returns
@@ -1046,6 +1062,7 @@ function buildLocalFallbackReply(query, products = [], language = "vi") {
   }
 
   // 6. Matched Catalog Products
+  if (intent.pricePreference) return {...AIShopping.recommendationReply(products,intent,language),fallback:true};
   const directMatches = findDirectCatalogMatches(query, products);
   const hasSpecificRequest = directMatches.length > 0 || intent.categoryOrKeyword || intent.exactRegion ||
     intent.regionKeyword || intent.maxPrice !== null || intent.minStars !== null || intent.isGift;
@@ -1070,8 +1087,8 @@ function buildLocalFallbackReply(query, products = [], language = "vi") {
   return {message, text_response: message, productIds: matched.map(p=>p.id), suggested_products: matched.map(p=>p.id), dynamic_chips: [], handoffAdmin: false, fallback: true};
 }
 
-function buildAIUnavailableFallback(query, products, language, hasImages) {
-  if (!hasImages) return buildLocalFallbackReply(query, products, language);
+function buildAIUnavailableFallback(query, products, language, hasImages, resolvedIntent = null) {
+  if (!hasImages) return buildLocalFallbackReply(query, products, language, resolvedIntent);
   const featuredProductIds = getFeaturedProductIds(products);
   const message = language === 'en'
     ? 'I could not identify the product from the image right now. Here are some featured OCOP products from our catalogue while you try again or describe the item.'
@@ -1085,6 +1102,13 @@ function buildAIUnavailableFallback(query, products, language, hasImages) {
     handoffAdmin: false,
     fallback: true
   };
+}
+
+function buildAIServiceUnavailable(language, wikiSources = []) {
+  const message = language === 'en'
+    ? 'The AI services are temporarily unavailable after retries. I cannot provide a model-generated answer with Wikipedia context right now. Please try again shortly.'
+    : 'Trợ lý AI hiện chưa phản hồi sau khi thử lại Gemini và kiểm tra kết nối ChatGPT. Bạn vui lòng thử lại sau ít phút nhé.';
+  return {status:503,body:{message,text_response:message,error:'AI_TEMPORARILY_UNAVAILABLE',retryable:true,productIds:[],suggested_products:[],combos:[],understandingStatus:'needs_clarification',handoffAdmin:false,wikipediaSources:wikiSources.map(({title,url})=>({title,url})),integrations:{gemini:false,openai:false,wikipedia:wikiSources.length>0,googleSearch:false}}};
 }
 
 function getFeaturedProductIds(products, limit = 3) {
@@ -1203,30 +1227,24 @@ async function handleAIChatRequest(req, res) {
     updatedAt: new Date().toISOString()
   };
   let semanticIntent = null;
+  const localIntent = AIShopping.resolve(validation.messages, validation.products, extractSearchIntents);
+  const prefetchPlan = planWikipedia(localIntent, null, lastMessage.text, validation.products, validation.language, attachedImages.length > 0);
+  // Public knowledge lookup can run while Gemini interprets the conversation.
+  // Reuse it only if the final semantic query agrees; private/image queries are skipped.
+  const wikiPrefetch = prefetchPlan.query ? searchWikipedia(prefetchPlan.query, validation.language) : Promise.resolve([]);
   try { semanticIntent = await AIIntent.understand(validation,getAIModelConfiguration()); }
   catch (error) { console.warn('Gemini intent unavailable:',error.message); }
   const complaintClarification = getGeneralComplaintClarification(
     validation.messages[validation.messages.length - 1].text,
     validation.language
   );
-  if (complaintClarification && !attachedImages.length && validation.messages.length === 1) {
-    return res.json({
-      message: complaintClarification,
-      productIds: [],
-      handoffAdmin: false,
-      imageIds
-    });
-  }
   const lastUserMessage = validation.messages[validation.messages.length - 1].text;
-  const userIntent = AIIntent.merge(AIShopping.resolve(validation.messages, validation.products, extractSearchIntents),semanticIntent,validation.messages,validation.products);
+  const userIntent = AIIntent.merge(localIntent,semanticIntent,validation.messages,validation.products);
   const filteredProducts = filterProductsByIntent(validation.products, userIntent).filter(product => AIShopping.allowed(product, userIntent)).map(product => ({ ...product, customerReviewExcerpts: reviewStore.list(product.id).items.slice(0, 3).map(review => ({ rating: review.rating, comment: review.comment.slice(0, 350) })) }));
   const shoppingRequest = !userIntent.isComplaint && !userIntent.isCSKH && !userIntent.isShipping && !userIntent.isUsage && !userIntent.isOcopKnowledge;
-  if (!attachedImages.length && shoppingRequest && userIntent.isCombo && !userIntent.maxPrice) {
-    return res.json({message:validation.language==='en'?'What is your maximum budget for each combo? I can suggest up to three different options.':'Anh/chị muốn mỗi combo trong ngân sách tối đa bao nhiêu? Mình sẽ gợi ý khoảng 3 phương án khác nhau nhé.',productIds:[],combos:[],understandingStatus:'needs_clarification',integrations:{gemini:false,intentGemini:Boolean(semanticIntent),wikipedia:false,googleSearch:false}});
-  }
-  if (semanticIntent?.needsClarification && semanticIntent.clarification && !(shoppingRequest && userIntent.isCombo && userIntent.maxPrice) && !attachedImages.length) {
-    return res.json({message:semanticIntent.clarification,productIds:[],understandingStatus:'needs_clarification',integrations:{gemini:false,intentGemini:true,wikipedia:false,googleSearch:false}});
-  }
+  if (complaintClarification && !attachedImages.length && validation.messages.length === 1) userIntent.requiredClarification = complaintClarification;
+  if (!attachedImages.length && shoppingRequest && userIntent.isCombo && !userIntent.maxPrice) userIntent.requiredClarification = validation.language === 'en' ? 'What is your maximum budget for each combo? I can suggest up to three different options.' : 'Anh/chị muốn mỗi combo trong ngân sách tối đa bao nhiêu? Mình sẽ gợi ý khoảng 3 phương án khác nhau nhé.';
+  else if (semanticIntent?.needsClarification && semanticIntent.clarification && !(shoppingRequest && (userIntent.isCombo && userIntent.maxPrice || userIntent.pricePreference && !userIntent.isCombo))) userIntent.requiredClarification = semanticIntent.clarification;
   if (shoppingRequest && userIntent.maxPrice && (userIntent.isCombo || userIntent.isGift || /toi co|minh co|ngan sach|tai chinh|budget/.test(normalizeCatalogTerm(lastUserMessage)))) {
     userIntent.isCombo = true;
     userIntent.comboPlans = AIShopping.variants(filteredProducts, userIntent);
@@ -1248,55 +1266,43 @@ async function handleAIChatRequest(req, res) {
       : summary.reviews
         ? `${english ? product.nameEn || product.name : product.name}: ${summary.rating.toFixed(1)}/5 · ${summary.reviews} ${english ? 'customer reviews. These are user submissions; purchases have not been verified.' : 'đánh giá thật. Đây là nhận xét người dùng gửi; chưa xác minh mua hàng.'}`
         : `${english ? product.nameEn || product.name : product.name}: ${english ? 'No customer reviews yet.' : 'Chưa có đánh giá của khách hàng.'}`;
-    return res.json({ message, productIds: product ? [product.id] : [], responseMode: 'verified_customer_reviews', integrations: { gemini: false, wikipedia: false, googleSearch: false }, handoffAdmin: false });
+    userIntent.verifiedReviewMessage = message;
+    userIntent.verifiedReviewProductIds = product ? [product.id] : [];
   }
-  const includesPrivateDetails = /\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b|\+?\d[\d ()-]{7,}\d|\b(otp|password|mat khau|ma don hang|order number)\b/i.test(lastUserMessage);
-  
-  // RAG: Use the Wikipedia edition matching the selected interface language.
-  const hasCulturalOrProductEntity = /\b(tra|che|yen|yen sao|mat ong|ca phe|gao|ruou|hat|tay bac|ha giang|mien tay|mien trung|tay nguyen|ben tre|dak lak|khanh hoa|hue|sa pa|moc chau)\b/.test(normalizedQuery);
-  const isPureAdministrativeIssue = /\b(khieu nai|doi tra|tra hang|hoan tien|chuyen khoan|mat tien|chua nhan hang)\b/.test(normalizedQuery);
-
-  let wikiSources = [];
-  let googleContext = null;
-  if (!attachedImages.length && !includesPrivateDetails && !isPureAdministrativeIssue && (userIntent.hasVerifiedCombo || hasCulturalOrProductEntity || userIntent.exactRegion || userIntent.categoryOrKeyword || userIntent.isOcopKnowledge)) {
-    try {
-      const publicQuery = expandChatShorthand(lastUserMessage).slice(0,500);
-      const teaCultureQuestion = /van hoa|culture|lich su|history/.test(normalizedQuery) && /\b(tra|tea|che)\b/.test(normalizedQuery);
-      const wikiQuery = teaCultureQuestion
-        ? (validation.language === 'en' ? 'Vietnamese tea culture' : 'Văn hóa trà Việt Nam')
-        : [userIntent.categoryOrKeyword, userIntent.exactRegion || userIntent.regionKeyword].filter(Boolean).join(' ') || semanticIntent?.wikipediaQuery || (userIntent.hasVerifiedCombo ? 'OCOP' : publicQuery);
-      let googleConfig; try { googleConfig = getAIModelConfiguration(); } catch (_) {}
-      [wikiSources, googleContext] = await Promise.all([
-        searchWikipedia(wikiQuery, validation.language),
-        userIntent.hasVerifiedCombo ? Promise.resolve(null) : lookupGoogle(publicQuery, googleConfig, validation.language)
-      ]);
-      if (!wikiSources.length) {
-        wikiSources = await searchWikipedia(teaCultureQuestion ? (validation.language === 'en' ? 'Văn hóa trà Việt Nam' : 'Vietnamese tea culture') : wikiQuery, validation.language === 'en' ? 'vi' : 'en');
-      }
-      if (teaCultureQuestion) wikiSources = wikiSources.filter(source => /\b(tra|tea)\b/.test(normalizeCatalogTerm(source.title)));
-      if (shoppingRequest) {
-        const topics=[userIntent.categoryOrKeyword,userIntent.exactRegion,userIntent.regionKeyword].filter(Boolean).map(normalizeCatalogTerm);
-        wikiSources=wikiSources.filter(source=>{
-          const title=normalizeCatalogTerm(source.title);
-          if (/chien dich|bieu tinh|battle|war|vu an|dai an|vtv|truyen hinh/.test(title)) return false;
-          return topics.some(topic=>title===topic||(/^(van hoa|am thuc|dia ly|nong nghiep|duyen hai)/.test(title)&&title.includes(topic)))||/^(ocop|moi xa mot san pham|chuong trinh moi xa mot san pham)$/.test(title);
-        });
-      }
-    } catch (wikiErr) {
-      console.warn('Wikipedia fetch ignored on error:', wikiErr.message);
-      wikiSources = [];
+  const wikiPlan = planWikipedia(userIntent,semanticIntent,lastUserMessage,filteredProducts,validation.language,attachedImages.length>0);
+  let wikiSources = [], googleContext = null;
+  if (wikiPlan.query) {
+    wikiSources = await (wikiPlan.query === prefetchPlan.query
+      ? wikiPrefetch : searchWikipedia(wikiPlan.query,validation.language));
+    if (!wikiSources.length) wikiSources = await searchWikipedia(wikiPlan.query,validation.language==='en'?'vi':'en');
+    wikiSources = wikiSources.filter(source => !/chien dich|bieu tinh|battle|war|vu an|dai an|vtv|truyen hinh/.test(normalizeCatalogTerm(source.title)) && wikiPlan.topics.some(topic=>relevantWikiSource(source,topic)));
+    if (wikiPlan.teaCulture) wikiSources = wikiSources.filter(source=>/\b(?:tra|tea)\b/.test(normalizeCatalogTerm(source.title)));
+    if (/google|tim tren mang|web search/.test(normalizedQuery)) {
+      let googleConfig; try {googleConfig=getAIModelConfiguration();} catch (_) {}
+      googleContext=await lookupGoogle(expandChatShorthand(lastUserMessage).slice(0,500),googleConfig,validation.language);
     }
   }
 
-
   const result = await generateAIResponse(validation, { attachedImages, wikiSources, googleContext, filteredProducts, userIntent });
-  if (userIntent.hasVerifiedCombo && !attachedImages.length) {
+  if ((result.body.integrations?.gemini || result.body.integrations?.openai) && userIntent.hasVerifiedCombo && !attachedImages.length) {
     const verified = AIShopping.replyOptions(userIntent.comboPlans, userIntent, validation.language);
-    const intro = result.body.integrations?.gemini && typeof result.body.comboIntroduction==='string' && result.body.comboIntroduction.length<=800 && !/\d|₫|\bVND\b/i.test(result.body.comboIntroduction) ? result.body.comboIntroduction.trim() : '';
+    const intro = (result.body.integrations?.gemini || result.body.integrations?.openai) && typeof result.body.comboIntroduction==='string' && result.body.comboIntroduction.length<=800 && !/\d|₫|\bVND\b/i.test(result.body.comboIntroduction) ? result.body.comboIntroduction.trim() : '';
     const message = (intro ? intro+'\n\n' : '')+verified.message;
     result.body = { ...result.body, ...verified, message, text_response:message, suggested_products:verified.productIds, responseMode:'verified_catalog_combos' };
+  } else if ((result.body.integrations?.gemini || result.body.integrations?.openai) && shoppingRequest && userIntent.pricePreference && !attachedImages.length) {
+    const verified=AIShopping.recommendationReply(filteredProducts,userIntent,validation.language);
+    const intro=typeof result.body.comboIntroduction==='string' && result.body.comboIntroduction.length<=800 && !/\d|₫|\bVND\b/i.test(result.body.comboIntroduction) ? result.body.comboIntroduction.trim() : '';
+    const message=(intro ? intro+'\n\n' : '')+verified.message;
+    result.body = {...result.body,...verified,message,text_response:message,understandingStatus:'understood'};
   }
-  return res.status(result.status || 200).json({ ...result.body, integrations:{gemini:false,wikipedia:false,googleSearch:false,...result.body.integrations,intentGemini:Boolean(semanticIntent)}, resolvedRequirements:{maxPrice:userIntent.maxPrice,minPrice:userIntent.minPrice,minItems:userIntent.minItems,maxItems:userIntent.maxItems,province:userIntent.exactRegion,region:userIntent.regionKeyword,category:userIntent.categoryOrKeyword}, imageIds });
+  if ((result.body.integrations?.gemini || result.body.integrations?.openai) && userIntent.requiredClarification) {
+    result.body={...result.body,message:userIntent.requiredClarification,text_response:userIntent.requiredClarification,productIds:[],suggested_products:[],combos:[],understandingStatus:'needs_clarification'};
+  }
+  if ((result.body.integrations?.gemini || result.body.integrations?.openai) && userIntent.verifiedReviewMessage) {
+    result.body={...result.body,message:userIntent.verifiedReviewMessage,text_response:userIntent.verifiedReviewMessage,productIds:userIntent.verifiedReviewProductIds,suggested_products:userIntent.verifiedReviewProductIds,responseMode:'verified_customer_reviews'};
+  }
+  result.body.wikipediaLookup={attempted:Boolean(wikiPlan.query),status:wikiPlan.skipReason || (wikiSources.length?'found':'no_relevant_sources')};
+  return res.status(result.status || 200).json({ ...result.body, integrations:{gemini:false,openai:false,wikipedia:false,googleSearch:false,...result.body.integrations,intentGemini:Boolean(semanticIntent)&&semanticIntent.provider!=='openai',intentOpenAI:semanticIntent?.provider==='openai'}, resolvedRequirements:{maxPrice:userIntent.maxPrice,minPrice:userIntent.minPrice,minItems:userIntent.minItems,maxItems:userIntent.maxItems,province:userIntent.exactRegion,region:userIntent.regionKeyword,category:userIntent.categoryOrKeyword}, imageIds });
 }
 
 app.post('/api/ai/chat', handleAIChatRequest);
@@ -1362,18 +1368,12 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
   let configuration;
   const lastUserMessage = validation.messages[validation.messages.length - 1].text;
   const hasImages = attachedImages.length > 0 || Boolean(imageData);
-  const targetProducts = userIntent.isCombo
-    ? validation.products
-    : ((Array.isArray(filteredProducts) && filteredProducts.length > 0)
-        ? filteredProducts
-        : validation.products);
 
   try {
     configuration = getAIModelConfiguration();
   } catch (configError) {
-    console.warn('Gemini not configured or invalid key, triggering bulletproof fallback:', configError.message);
-    const fallbackData = buildAIUnavailableFallback(lastUserMessage, targetProducts, validation.language, hasImages);
-    return { status: 200, body: fallbackData };
+    console.warn('Gemini configuration unavailable:', configError.message);
+    return buildAIServiceUnavailable(validation.language, wikiSources);
   }
 
 
@@ -1381,7 +1381,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
   const totalAttachedImageBytes = attachedImages.reduce((total, image) => total + image.bytes, 0);
   const timeoutMs = totalAttachedImageBytes > GEMINI_INLINE_IMAGE_LIMIT_BYTES
     ? 600000
-    : attachedImages.length || imageData ? 120000 : 30000;
+    : attachedImages.length || imageData ? 120000 : 45000;
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
@@ -1420,14 +1420,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
         text: 'Review the attached customer product image(s) as context for the customer message. Do not claim a return, refund, or replacement is approved; ask for missing details and explain staff must verify.'
       });
     }
-    const endpoint = new URL(
-      `https://generativelanguage.googleapis.com/v1beta/models/${configuration.model}:generateContent`
-    );
-    endpoint.searchParams.set('key', configuration.apiKey);
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const {response, data:result, model:responseModel, attempts:providerAttempts, provider:responseProvider} = await generatePreferredContent(configuration, {
         system_instruction: {
           parts: [{ text: buildAISystemInstruction({ ...validation, filteredProducts }, { wikiSources, googleContext, hasImages, customerIntent: userIntent }) }]
         },
@@ -1450,15 +1443,10 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
             required: ['understandingStatus', 'message', 'comboIntroduction', 'productIds', 'imageMatchStatus', 'handoffAdmin', 'dynamic_chips']
           }
         }
-      }),
-      signal: controller.signal
-    });
-
-    const result = await response.json().catch(() => ({}));
+      }, {signal:controller.signal,timeoutMs,perAttemptMs:hasImages?60000:15000});
     if (!response.ok) {
-      console.warn('Gemini API call failed, falling back gracefully:', response.status, result.error?.message);
-      const fallbackData = buildAIUnavailableFallback(lastUserMessage, targetProducts, validation.language, hasImages);
-      return { status: 200, body: fallbackData };
+      console.warn('Gemini unavailable after retries:', response.status, result.error?.message);
+      return buildAIServiceUnavailable(validation.language, wikiSources);
     }
 
     const output = result.candidates && result.candidates[0] &&
@@ -1468,18 +1456,16 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     try {
       answer = JSON.parse(output);
     } catch {
-      console.warn('Gemini JSON parse failed, falling back gracefully');
-      const fallbackData = buildAIUnavailableFallback(lastUserMessage, targetProducts, validation.language, hasImages);
-      return { status: 200, body: fallbackData };
+      console.warn('Gemini returned invalid JSON');
+      return buildAIServiceUnavailable(validation.language, wikiSources);
     }
 
     if (!answer || typeof answer.message !== 'string' || !answer.message.trim() ||
         !['understood', 'needs_clarification'].includes(answer.understandingStatus) ||
         !Array.isArray(answer.productIds) || typeof answer.imageMatchStatus !== 'string' ||
         typeof answer.handoffAdmin !== 'boolean') {
-      console.warn('Gemini schema mismatch, falling back gracefully');
-      const fallbackData = buildAIUnavailableFallback(lastUserMessage, targetProducts, validation.language, hasImages);
-      return { status: 200, body: fallbackData };
+      console.warn('Gemini schema mismatch');
+      return buildAIServiceUnavailable(validation.language, wikiSources);
     }
 
     const responseProducts = userIntent.isAllProvinces
@@ -1509,8 +1495,6 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     if (isImageLookup && imageMatchStatus === 'exact' && !productIds.length) {
       imageMatchStatus = 'unknown';
     }
-    const normalizedAnswer = message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    const imageNeedsClarification = /khong ro|chua ro|khong the nhan dang|chua the nhan dang|khong nhan dien duoc|chua nhan dien duoc|anh khong ro|cannot identify|can't identify|unclear image|image is unclear/.test(normalizedAnswer);
     if (isImageLookup && imageMatchStatus !== 'exact' && answer.understandingStatus === 'understood') {
       const relatedProductIds = imageMatchStatus === 'similar' ? productIds.slice(0, 2) : [];
       productIds = relatedProductIds;
@@ -1521,8 +1505,13 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
         : validation.language === 'en'
           ? 'I could not identify this product. Please send a clearer photo of its label or tell me its name.'
           : 'Dạ, em chưa nhận diện được sản phẩm này. Anh/Chị gửi ảnh nhãn rõ hơn hoặc cho em biết tên sản phẩm nhé.';
-      const shouldKeepModelDetail = imageMatchStatus === 'similar' && !imageNeedsClarification;
-      message = shouldKeepModelDetail ? `${prefix}\n\n${message}` : prefix;
+      // Similar appearance does not establish cultivar, origin, grade or authenticity.
+      // Keep Gemini's related catalogue IDs without repeating unverified identity claims.
+      message = imageMatchStatus === 'similar'
+        ? prefix + (validation.language === 'en'
+          ? '\nPlease send a clear label photo or its name and manufacturer so I can check the exact product. Appearance alone cannot confirm origin, quality or authenticity.'
+          : '\nAnh/Chị gửi ảnh nhãn rõ hơn hoặc tên và nhà sản xuất để em đối chiếu chính xác nhé. Chỉ từ hình dáng chưa thể xác nhận nguồn gốc, chất lượng hay hàng chính hãng.')
+        : prefix;
     }
 
     // Sanitise dynamic_chips: string-only, strip empties, cap length & count
@@ -1549,14 +1538,15 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
         wikipediaSources: wikiSources.map(({ title, url }) => ({ title, url })),
         googleSources: googleContext?.sources || [],
         googleSearchSuggestions: googleContext?.suggestions || '',
-        integrations: { gemini: true, wikipedia: wikiSources.length > 0, googleSearch: Boolean(googleContext?.sources?.length) }
+        aiProvider:responseProvider, aiModel:responseModel,
+        geminiModel:responseProvider==='gemini'?responseModel:undefined,openaiModel:responseProvider==='openai'?responseModel:undefined,providerAttempts,
+        integrations: { gemini: responseProvider==='gemini', openai:responseProvider==='openai', wikipedia: wikiSources.length > 0, googleSearch: Boolean(googleContext?.sources?.length) }
       }
     };
 
   } catch (error) {
-    console.warn('Gemini call errored/timed out, triggering bulletproof fallback:', error.message);
-    const fallbackData = buildAIUnavailableFallback(lastUserMessage, targetProducts, validation.language, hasImages);
-    return { status: 200, body: fallbackData };
+    console.warn('Gemini request failed after retries:', error.message);
+    return buildAIServiceUnavailable(validation.language, wikiSources);
   } finally {
     clearTimeout(timeout);
   }
@@ -2114,7 +2104,19 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.use(express.static(__dirname, { dotfiles: 'deny' }));
+app.use(express.static(__dirname, {
+  dotfiles: 'deny',
+  setHeaders(res, filePath) {
+    // Versioned assets get a new URL on rebuild; HTML always checks for updates.
+    if (/\.(css|js)$/i.test(filePath) && /[?&]v=[a-z0-9_]+(?:&|$)/i.test(res.req.originalUrl)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else if (/\.(png|jpe?g|webp|svg|woff2?)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+    } else {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+  }
+}));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));

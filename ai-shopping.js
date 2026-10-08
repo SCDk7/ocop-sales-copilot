@@ -20,7 +20,11 @@
     const perItem = q.match(/(?:moi|tung)\s+(?:mon|san pham|mat hang).*?(\d+(?:[.,]\d+)*)\s*(trieu|tr|m|k|nghin|ngan|vnd|dong|d|₫)(?!\w)/);
     const premium = /(?:khong|dung)\s+(?:chon\s+)?(?:mon re|hang re)|gia tri (?:trung binh cao|cao)|cao cap|it mon|premium|higher value/.test(q);
     const cheap = /(?:moi|tung)\s+(?:mon|san pham|mat hang).*?(?:re|gia (?:nho|thap)|gia thanh (?:nho|thap))|nhieu mon re|small items|cheap items/.test(q);
-    return premium ? { smallItems: false, perItemMax: null } : perItem || cheap ? { smallItems: true, perItemMax: perItem ? money(perItem[1], perItem[2]) : null } : {};
+    const high = /gia tri cao|gia (?:thanh )?cao|dat (?:tien|nhat|hon)|cao cap|premium|high(?:er)?[- ](?:value|price)|expensive/.test(q);
+    const low = /gia (?:thanh )?(?:thap|re)|gia re|re (?:nhat|hon)|mon re|hang re|tiet kiem|cheap|affordable|low(?:er)?[- ]price/.test(q);
+    const negatedHigh = /(?:khong|dung|ko)\s+(?:(?:can|chon|muon|lay)\s+)?(?:mon\s+)?(?:gia cao|dat|cao cap)/.test(q);
+    const preference = negatedHigh ? {pricePreference:'low'} : premium || high ? {pricePreference:'high'} : low ? {pricePreference:'low'} : {};
+    return (premium || high) && !negatedHigh ? { ...preference, smallItems: false, perItemMax: null } : perItem || cheap ? { ...preference, smallItems: true, perItemMax: perItem ? money(perItem[1], perItem[2]) : null } : preference;
   }
   function itemCount(text) {
     const words = { mot: 1, hai: 2, ba: 3, bon: 4, nam: 5, sau: 6, bay: 7, tam: 8, chin: 9, muoi: 10 };
@@ -74,7 +78,10 @@
   }
   function analyze(text, products) {
     const q = normalize(text);
-    const categories = [['trà', /\b(tra|che|tea)\b/], ['cà phê', /ca phe|coffee/], ['mật ong', /mat ong|honey/], ['bánh', /banh|keo|snack/], ['yến', /yen sao|to yen/], ['gạo', /gao|rice/]];
+    const productQuery = q
+      .replace(/\btoi\s+(?=muon|can|co|tim|mua|chon|thich|dang|se|duoc|xin|hoi|lay|da\b|thieu\b|uu\b)/g,' ')
+      .replace(/\b(?:cho|giup|voi|cua)\s+toi\b/g,' ');
+    const categories = [['trà', /\b(tra|che|tea)\b/], ['cà phê', /ca phe|coffee/], ['mật ong', /mat ong|honey/], ['bánh', /banh|keo|snack/], ['yến', /yen sao|to yen/], ['gạo', /gao|rice/], ['sâm', /\b(sam|ginseng)\b/], ['tỏi', /\b(toi|garlic)\b/], ['nước mắm', /nuoc mam|fish sauce/], ['hạt', /hat dieu|hat mac ca|mac ca|cashew|macadamia/]];
     const isAllProvinces = /(tat ca|tat ca cac tinh|tat ca tinh|toan quoc|63 tinh|xuyen viet|bac trung nam|3 mien|ba mien|lien tinh|nhieu tinh|cac tinh thanh|gom tinh|gom cac tinh|gom het)/.test(q);
     const allProvinces = [...new Set(products.map(p => p.region).filter(Boolean))].sort((a, b) => b.length - a.length);
     const exactRegions = allProvinces.filter(r => {
@@ -82,7 +89,7 @@
       return nr.length >= 3 && q.includes(nr);
     });
     const exactRegion = exactRegions[0] || null;
-    return { ...budget(text), rawText: text,
+    return { ...budget(text), ...preferences(text), rawText: text,
       isCombo: /combo|bo qua|gio qua|set qua|gift set|bundle/.test(q),
       isGift: /qua|bieu|tang|gift/.test(q),
       isComplaint: /doi tra|hang loi|hoan tien|khieu nai/.test(q),
@@ -93,7 +100,7 @@
       isAllProvinces,
       exactRegions,
       exactRegion,
-      categoryOrKeyword: categories.find(([, pattern]) => pattern.test(q))?.[0] || null,
+      categoryOrKeyword: categories.find(([, pattern]) => pattern.test(productQuery))?.[0] || null,
       regionKeyword: Object.keys(regions).find(region => q.includes(normalize(region))) || null,
       minStars: /5\s*sao|5\s*star/.test(q) ? 5 : /4\s*sao|4\s*star/.test(q) ? 4 : null };
   }
@@ -161,6 +168,26 @@
     return { ...current, ...saved, rawText: messages.filter(m => m.role === 'user').at(-1)?.text || '' };
   }
   // Exact subset-sum: no item-count cap, one unit per catalogue item.
+  function recommendations(products, intent, limit = 3) {
+    const keyword = normalize(intent.categoryOrKeyword);
+    return products.filter(p => Number.isFinite(p.price) && p.price > 0 && regionMatches(p, intent) && allowed(p, intent)
+      && (intent.maxPrice == null || p.price <= intent.maxPrice)
+      && (intent.minPrice == null || p.price >= intent.minPrice)
+      && (intent.minStars == null || p.stars >= intent.minStars)
+      && (!keyword || normalize([p.name,p.nameEn,p.category,p.desc,p.description].join(' ')).includes(keyword)))
+      .sort((a,b) => (intent.pricePreference === 'high' ? b.price-a.price : intent.pricePreference === 'low' ? a.price-b.price : 0)
+        || (b.stars || 0)-(a.stars || 0) || a.id-b.id).slice(0,limit);
+  }
+  function recommendationReply(products, intent, language = 'vi') {
+    const items = recommendations(products, intent), en = language === 'en';
+    const heading = intent.pricePreference === 'high'
+      ? (en ? 'You are looking for higher-priced products. These have the highest listed prices among products meeting your requirements:' : 'Bạn đang tìm món có giá trị cao. Mình ưu tiên những sản phẩm có giá niêm yết cao trong nhóm phù hợp yêu cầu của bạn:')
+      : (en ? 'These are the lowest-priced products meeting your requirements:' : 'Mình ưu tiên những sản phẩm có giá niêm yết thấp trong nhóm phù hợp yêu cầu của bạn:');
+    const message = items.length ? [heading,...items.map(p => `• ${en ? p.nameEn || p.name : p.name}: ${p.price.toLocaleString('vi-VN')} ₫${p.packaging ? ' / '+(en ? p.packagingEn || p.packaging : p.packaging) : ''}`),
+      en ? 'Prices are per listed selling unit. Which budget or product type would you like to narrow this down to?' : 'Giá theo quy cách bán của từng món. Bạn muốn giới hạn ngân sách hoặc ưu tiên loại sản phẩm nào?'].join('\n')
+      : (en ? 'No product meets all your requirements. Would you like to change the budget, province or product type?' : 'Chưa có sản phẩm đáp ứng đồng thời các yêu cầu. Bạn muốn điều chỉnh ngân sách, tỉnh hoặc loại sản phẩm nào?');
+    return {message,text_response:message,productIds:items.map(p=>p.id),suggested_products:items.map(p=>p.id),dynamic_chips:en?['Set budget','Choose product type']:['Chọn ngân sách','Chọn loại sản phẩm'],handoffAdmin:false,responseMode:'verified_catalog_price_preference'};
+  }
   // Each card represents one unit, so cart contents and quoted totals agree.
   function closest(products, intent) {
     const ceiling = intent.maxPrice;
@@ -264,7 +291,7 @@
     ].join('\n');
     return {message,combos:plans,combo:plans[0],productIds:[...new Set(plans.flatMap(plan=>plan.items.map(p=>p.id)))],dynamic_chips:en?['Other combinations','Adjust budget']:['Combo khác','Đổi ngân sách']};
   }
-  const api = { normalize, budget, analyze, resolve, closest, reply, variants, replyOptions, itemCount, allowed, regionMatches };
+  const api = { normalize, budget, analyze, resolve, closest, reply, variants, replyOptions, itemCount, allowed, regionMatches, preferences, recommendations, recommendationReply };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.AIShopping = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
