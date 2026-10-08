@@ -1,0 +1,308 @@
+/* ==========================================================================
+   ANTIGRAVITY & FLOATING FX - ULTRA PREMIUM MICRO-INTERACTIONS
+   Designed for OCOP Sales Copilot | 120Hz Smoothness & Hardware Acceleration
+   ========================================================================== */
+
+:root {
+    /* Premium Physics-based Cubic Bezier Curves */
+    --ag-ease-float: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    --ag-ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ag-ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Dynamic Levitation Shadows (Bóng đổ nâng 3D quang học) */
+    --ag-shadow-rest: 0 10px 25px -5px rgba(15, 56, 44, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    --ag-shadow-lift: 0 24px 48px -12px rgba(15, 56, 44, 0.2), 0 12px 28px -6px rgba(212, 175, 55, 0.3);
+    --ag-shadow-hero: 0 20px 40px -10px rgba(0, 0, 0, 0.45), 0 0 25px rgba(212, 175, 55, 0.3);
+    --ag-shadow-hero-hover: 0 32px 64px -12px rgba(0, 0, 0, 0.6), 0 0 45px rgba(212, 175, 55, 0.55), inset 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   1. KEYFRAMES: MULTI-AXIS ZERO-GRAVITY OSCILLATIONS
+   -------------------------------------------------------------------------- */
+
+/* Dao động không trọng lực tự nhiên (Dịch chuyển Y + Trôi vi mô X + Góc nghiêng Z) */
+@keyframes agFloatGentle {
+    0% {
+        transform: translate3d(0, 0px, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate3d(1.5px, -11px, 0) rotate(1.2deg);
+    }
+    66% {
+        transform: translate3d(-1.5px, -6px, 0) rotate(-1deg);
+    }
+    100% {
+        transform: translate3d(0, 0px, 0) rotate(0deg);
+    }
+}
+
+/* Chu kỳ dao động thứ cấp lệch pha (Kèm độ co giãn thể tích thở) */
+@keyframes agFloatOrbital {
+    0% {
+        transform: translate3d(0, 0px, 0) scale(1) rotate(0deg);
+    }
+    50% {
+        transform: translate3d(-2px, -15px, 0) scale(1.025) rotate(-1.5deg);
+    }
+    100% {
+        transform: translate3d(0, 0px, 0) scale(1) rotate(0deg);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2. HERO & INTRO FLOATING CLASSES
+   -------------------------------------------------------------------------- */
+
+/* Class chủ đạo cho các icon/phần tử lơ lửng màn Hero & Intro */
+.ag-hero-float {
+    display: inline-block;
+    animation: agFloatGentle 6.5s var(--ag-ease-float) infinite;
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.45s var(--ag-ease-fluid), box-shadow 0.45s var(--ag-ease-fluid), filter 0.45s ease;
+}
+
+/* Biến thể dao động quỹ đạo */
+.ag-hero-float-alt {
+    animation-name: agFloatOrbital;
+    animation-duration: 7.8s;
+}
+
+/* Hệ thống tự động lệch pha thời gian (Staggered Delays) */
+.ag-delay-1 { animation-delay: -1.35s !important; }
+.ag-delay-2 { animation-delay: -3.15s !important; }
+.ag-delay-3 { animation-delay: -4.85s !important; }
+.ag-delay-4 { animation-delay: -2.10s !important; }
+.ag-delay-5 { animation-delay: -5.60s !important; }
+
+/* Tốc độ tùy biến */
+.ag-speed-fast   { animation-duration: 4.2s !important; }
+.ag-speed-medium { animation-duration: 6.2s !important; }
+.ag-speed-slow   { animation-duration: 8.5s !important; }
+
+/* Phản ứng khi di chuột (Hover Lift & Volumetric Glow) */
+.ag-hero-float:hover {
+    animation-play-state: paused;
+    transform: translate3d(0, -9px, 0) scale(1.08) rotate(0deg) !important;
+    box-shadow: var(--ag-shadow-hero-hover);
+    z-index: 10;
+}
+
+/* --------------------------------------------------------------------------
+   3. PRODUCT GRID: ANTIGRAVITY LIFT & HOVER DYNAMICS
+   -------------------------------------------------------------------------- */
+
+/* Thẻ sản phẩm với phản lực không trọng lực */
+.ag-product-card {
+    position: relative;
+    will-change: transform, box-shadow, border-color;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    transition: 
+        transform 0.4s var(--ag-ease-spring),
+        box-shadow 0.4s var(--ag-ease-fluid),
+        border-color 0.3s ease,
+        background-color 0.3s ease;
+}
+
+/* Lực nâng nhấc bổng khi hover */
+.ag-product-card:hover {
+    transform: translate3d(0, -9px, 0) scale(1.018);
+    box-shadow: var(--ag-shadow-lift);
+    border-color: rgba(212, 175, 55, 0.78) !important;
+    z-index: 5;
+}
+
+/* Ảnh sản phẩm lướt zoom nổi 3D */
+.ag-product-card .product-card-image {
+    transition: transform 0.65s var(--ag-ease-fluid), filter 0.65s ease;
+    will-change: transform;
+}
+
+.ag-product-card:hover .product-card-image {
+    transform: scale(1.06) translate3d(0, -2px, 0);
+}
+
+/* Huy hiệu và nút tim lơ lửng vi mô bên trong thẻ */
+.ag-product-card .absolute.top-3.left-3,
+.ag-product-card .absolute.top-3.right-3 {
+    transition: transform 0.35s var(--ag-ease-spring);
+    will-change: transform;
+}
+
+.ag-product-card:hover .absolute.top-3.left-3 {
+    transform: translate3d(0, -2px, 0) scale(1.04);
+}
+
+.ag-product-card:hover .absolute.top-3.right-3 {
+    transform: translate3d(0, -2px, 0) scale(1.08);
+}
+
+/* --------------------------------------------------------------------------
+   4. SCROLL-DRIVEN REVEAL SYSTEM (HIỆU ỨNG THÁC NƯỚC KHI CUỘN)
+   -------------------------------------------------------------------------- */
+.ag-reveal-item {
+    opacity: 0;
+    transform: translate3d(0, 36px, 0) scale(0.97);
+    transition: 
+        opacity 0.65s var(--ag-ease-fluid),
+        transform 0.65s var(--ag-ease-fluid);
+    will-change: opacity, transform;
+}
+
+.ag-reveal-item.ag-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* --------------------------------------------------------------------------
+   5. CÁC THÀNH PHẦN HERO & INTRO ĐẶC TRƯNG
+   -------------------------------------------------------------------------- */
+/* 4 Trụ cột Hologram Cards */
+.intro-pillars > div {
+    will-change: transform, box-shadow;
+    transition: transform 0.4s var(--ag-ease-spring), box-shadow 0.4s var(--ag-ease-fluid), border-color 0.3s ease;
+}
+
+.intro-pillars > div:hover {
+    transform: translate3d(0, -6px, 0) scale(1.03) !important;
+    box-shadow: 0 16px 32px rgba(2, 20, 14, 0.22), 0 0 20px rgba(212, 175, 55, 0.3) !important;
+    border-color: rgba(212, 175, 55, 0.8) !important;
+}
+
+/* Thẻ đặc sản 3 miền (Region Showcase) */
+.region-item-card {
+    will-change: transform, box-shadow;
+    transition: transform 0.35s var(--ag-ease-spring), box-shadow 0.35s var(--ag-ease-fluid), background-color 0.25s ease;
+}
+
+.region-item-card:hover {
+    transform: translate3d(0, -5px, 0) scale(1.02) !important;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35), 0 0 22px rgba(212, 175, 55, 0.3) !important;
+}
+
+/* Hòm Lộc Vàng */
+#intro-lucky-card {
+    will-change: transform, box-shadow;
+    transition: transform 0.4s var(--ag-ease-spring), box-shadow 0.4s var(--ag-ease-fluid);
+}
+
+#intro-lucky-card:hover {
+    transform: translate3d(0, -4px, 0) scale(1.015);
+    box-shadow: 0 18px 36px rgba(15, 56, 44, 0.18), 0 0 30px rgba(212, 175, 55, 0.35);
+}
+
+/* Banner Showcase Shop Hero */
+#shop-hero .glass-panel {
+    will-change: transform, box-shadow;
+    transition: transform 0.55s var(--ag-ease-fluid), box-shadow 0.55s var(--ag-ease-fluid), border-color 0.4s ease;
+}
+
+#shop-hero .glass-panel:hover {
+    transform: translate3d(0, -8px, 0) scale(1.012);
+    box-shadow: 0 26px 52px -12px rgba(15, 56, 44, 0.2), 0 0 35px rgba(212, 175, 55, 0.25);
+    border-color: rgba(212, 175, 55, 0.7) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. 120HZ HARDWARE ACCELERATION & ACCESSIBILITY
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .ag-hero-float,
+    .ag-hero-float-alt,
+    .ag-product-card,
+    .ag-reveal-item,
+    .intro-pillars > div,
+    .region-item-card,
+    #shop-hero .glass-panel {
+        animation: none !important;
+        transform: none !important;
+        transition: none !important;
+        will-change: auto !important;
+    }
+    .ag-reveal-item { opacity: 1 !important; }
+}
+/* ==========================================================================
+   ANTIGRAVITY & FLOATING FX - ULTRA PREMIUM MICRO-INTERACTIONS
+   Designed for OCOP Sales Copilot | 90Hz/120Hz Smoothness & GPU Accelerated
+   ========================================================================== */
+
+:root {
+    --ag-ease-float: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    --ag-ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ag-ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+    
+    --ag-shadow-lift: 0 24px 48px -12px rgba(15, 56, 44, 0.22), 0 12px 24px -8px rgba(212, 175, 55, 0.35);
+    --ag-shadow-hero-hover: 0 32px 64px -12px rgba(0, 0, 0, 0.6), 0 0 45px rgba(212, 175, 55, 0.55);
+}
+
+/* 1. Đa trục dao động lơ lửng */
+@keyframes agFloatGentle {
+    0% { transform: translate3d(0, 0px, 0) rotate(0deg); }
+    33% { transform: translate3d(2px, -12px, 0) rotate(1.2deg); }
+    66% { transform: translate3d(-2px, -6px, 0) rotate(-1deg); }
+    100% { transform: translate3d(0, 0px, 0) rotate(0deg); }
+}
+
+.ag-hero-float {
+    display: inline-block;
+    animation: agFloatGentle 6.5s var(--ag-ease-float) infinite;
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.45s var(--ag-ease-fluid), box-shadow 0.45s var(--ag-ease-fluid);
+}
+
+.ag-hero-float:hover {
+    animation-play-state: paused;
+    transform: translate3d(0, -10px, 0) scale(1.05) rotate(0deg) !important;
+    box-shadow: var(--ag-shadow-hero-hover) !important;
+    z-index: 20;
+}
+
+/* 2. Thẻ sản phẩm nhấc bổng Antigravity */
+.ag-product-card,
+.product-card,
+#product-grid > div {
+    position: relative;
+    will-change: transform, box-shadow, border-color;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.4s var(--ag-ease-spring), box-shadow 0.4s var(--ag-ease-fluid), border-color 0.3s ease;
+}
+
+.ag-product-card:hover,
+.product-card:hover,
+#product-grid > div:hover {
+    transform: translate3d(0, -10px, 0) scale(1.02) !important;
+    box-shadow: var(--ag-shadow-lift) !important;
+    border-color: rgba(212, 175, 55, 0.8) !important;
+    z-index: 10;
+}
+
+.ag-product-card img,
+.product-card img,
+#product-grid > div img {
+    transition: transform 0.65s var(--ag-ease-fluid);
+    will-change: transform;
+}
+
+.ag-product-card:hover img,
+.product-card:hover img,
+#product-grid > div:hover img {
+    transform: scale(1.08) translate3d(0, -3px, 0);
+}
+
+/* 3. Hiệu ứng cuộn Reveal */
+.ag-reveal-item {
+    opacity: 0;
+    transform: translate3d(0, 36px, 0) scale(0.97);
+    transition: opacity 0.65s var(--ag-ease-fluid), transform 0.65s var(--ag-ease-fluid);
+    will-change: opacity, transform;
+}
+
+.ag-reveal-item.ag-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}

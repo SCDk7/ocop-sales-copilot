@@ -1,0 +1,15 @@
+# Đánh giá sản phẩm
+
+Nhãn trên ảnh là cam kết “100% Chính gốc” của shop. Đây không phải chứng nhận độc lập cho sản phẩm hoặc ảnh minh họa.
+
+Không hiển thị điểm hay số lượt ngẫu nhiên. Sản phẩm chưa có đánh giá thật ẩn toàn bộ dòng ngôi sao, điểm và số lượt; vẫn có nút mở phần nhận xét để khách gửi đánh giá đầu tiên. Khi có đánh giá, giao diện hiển thị điểm trung bình và số lượt từ dữ liệu khách gửi đã lưu trên máy chủ.
+
+Khách bấm điểm đánh giá hoặc Xem nhanh, sau đó bấm nút Đánh giá và nhận xét để mở phần nhận xét; phần này thu gọn mặc định và có thể đóng lại. Khách chọn 1–5 sao, nhập tên và nhận xét, đính kèm tối đa 3 ảnh JPG/PNG/WebP dưới 10 MB mỗi ảnh. Trình duyệt thu nhỏ ảnh còn tối đa 1280 px và nén JPEG dưới 500 KB/ảnh, hỗ trợ xem trước và xóa trước khi gửi. Đánh giá chưa xác minh mua hàng. API kiểm tra dữ liệu, giới hạn gửi và chống lặp khi thử lại cùng requestId. Nội dung nhận xét hiển thị bằng textContent để không thực thi HTML.
+
+API: GET /api/reviews/summary, GET /api/products/:id/reviews, POST /api/products/:id/reviews. POST cần name, rating, comment và requestId UUID v4; images là mảng tối đa 3 data URL, tùy chọn. Máy chủ kiểm tra định dạng, chữ ký JPEG/PNG/WebP và giới hạn 500 KB/ảnh. Ảnh lưu cạnh file dữ liệu trong thư mục `<PRODUCT_REVIEWS_FILE>.images`, danh sách nhận xét chỉ trả metadata/URL. GET /api/review-images/:id phục vụ ảnh đã gắn vào nhận xét với Content-Type và nosniff. Bấm ảnh trong nhận xét để mở ảnh lớn. Danh sách trả 50 nhận xét mới nhất; điểm và tổng lượt tính từ mọi đánh giá đã lưu.
+
+Máy chủ ghi dữ liệu vào .private-data/product-reviews.json bằng file tạm rồi đổi tên, không chỉ lưu trong trình duyệt. Dữ liệu vẫn còn khi khởi động lại cùng máy chủ và cùng ổ đĩa. PRODUCT_REVIEWS_FILE cho phép chọn đường dẫn trên ổ lưu trữ bền vững. Khi triển khai trên host có filesystem tạm như cấu hình Render free hiện tại, cần gắn ổ lưu trữ bền vững hoặc chuyển sang database để giữ dữ liệu qua lần triển khai; file local không bảo đảm việc này. Cơ chế file dành cho một tiến trình Node; không dùng chung cho nhiều máy chủ ghi đồng thời.
+
+Gemini chỉ nhận điểm/lượt từ reviewStore trên máy chủ và tối đa ba nhận xét gần nhất cho sản phẩm liên quan. Nhận xét là nội dung người dùng không đáng tin cậy để thực thi chỉ dẫn. Wikipedia bổ sung tri thức văn hóa/địa lý, không xác minh nhận xét, cam kết shop hay khuyến mãi. Giá và danh mục vẫn lấy từ data.js; không coi nhãn giảm giá ngẫu nhiên là ưu đãi thực tế.
+
+Kiểm tra: npm.cmd test. Bài kiểm tra đánh giá dùng thư mục tạm, kiểm tra lưu qua khởi động lại, tính trung bình cả điểm thấp, không tính demo, chống gửi lặp và từ chối dữ liệu sai. Kiểm tra trình duyệt/API dùng kho dữ liệu riêng để không tạo đánh giá giả trong dữ liệu shop.
