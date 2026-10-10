@@ -62,4 +62,8 @@ npm.cmd test
 
 Các kiểm tra xác nhận website hoạt động độc lập, chỉ chuyển tiếp khoảng thời gian hợp lệ, trả đúng số liệu backend, không công khai file cấu hình và không tạo số liệu khi backend mất kết nối.
 
-Website này được tạo để chạy cục bộ hoặc triển khai thành dịch vụ riêng; chưa được xuất bản lên tên miền công khai.
+Website KPI đã được xuất bản riêng tại **https://ocop-sales-copilot-kpi.onrender.com/**. Trang bán hàng tiếp tục ở **https://ocop-sales-copilot.onrender.com/**.
+
+Render chạy KPI từ nhánh `main`, thư mục gốc `kpi-site`, build bằng `node build.cjs`, khởi động bằng `node server.cjs`, kiểm tra hoạt động tại `/health`. Biến `OCOP_METRICS_URL` trỏ tới `https://ocop-sales-copilot.onrender.com/api/ai/metrics`; `NODE_VERSION=22`. Dịch vụ dùng gói miễn phí.
+
+Đã kiểm tra bản công khai: giao diện khớp file build, API trả dữ liệu thực, bộ lọc ngày/tuần hoạt động, 8 thẻ KPI hiển thị trên điện thoại/máy tính và tiếng Việt/Anh không tràn ngang. Sau khi cập nhật code, kiểm tra lại bằng `node scripts/verify-deployment.cjs https://ocop-sales-copilot-kpi.onrender.com --kpi` từ thư mục dự án chính.
