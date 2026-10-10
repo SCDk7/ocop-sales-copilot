@@ -351,10 +351,15 @@
         /* ============================================================= */
         /* RECTANGULAR LANGUAGE DROPDOWN UI (DEEP TECH)                  */
         /* ============================================================= */
+        .intro-header {
+            position: relative !important;
+            z-index: 100 !important;
+        }
         .lang-dropdown-container {
             position: relative !important;
             display: inline-block !important;
             user-select: none !important;
+            z-index: 99999 !important;
         }
         .lang-dropdown-btn {
             display: inline-flex !important;
@@ -388,15 +393,14 @@
         }
         .lang-dropdown-menu {
             position: absolute !important;
-            top: 100% !important;
+            top: calc(100% + 8px) !important;
             right: 0 !important;
-            z-index: 999 !important;
-            margin-top: 8px !important;
+            z-index: 99999 !important;
             min-width: 175px !important;
             border-radius: 8px !important;
             background: #111827 !important;
             border: 1px solid rgba(212, 175, 55, 0.35) !important;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.2) !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
             padding: 6px !important;
             display: flex !important;
             flex-direction: column !important;
@@ -2077,7 +2081,7 @@
         </div>
 
         <!-- HEADER ĐẢO NỔI GLASSMORPHISM -->
-        <div class="intro-header relative z-20 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-amber-400/30">
+        <div class="intro-header relative z-50 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-amber-400/30">
             <div class="flex items-center space-x-3">
                 <div class="intro-brand-mark relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-700 to-amber-500 border-2 border-ocopGold flex items-center justify-center text-white text-xl shadow-[0_0_25px_rgba(212,175,55,0.7)] group">
                     <i class="fa-solid fa-leaf text-amber-300"></i>

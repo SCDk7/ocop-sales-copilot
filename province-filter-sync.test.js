@@ -266,13 +266,16 @@ test('Rectangular Language Dropdown UI and full 5-language sync validation', () 
     assert(html.includes('id="header-lang-dropdown-btn"'), 'Header dropdown trigger button must exist');
     assert(html.includes('id="header-lang-dropdown-menu"'), 'Header dropdown menu list must exist');
 
-    // 2. Kiểm tra CSS class & styling Deep Tech
+    // 2. Kiểm tra CSS class & styling Deep Tech (Z-index & Positioning fix)
     assert(html.includes('.lang-dropdown-container'), 'CSS .lang-dropdown-container must be defined');
     assert(html.includes('.lang-dropdown-btn'), 'CSS .lang-dropdown-btn must be defined');
     assert(html.includes('.lang-dropdown-menu'), 'CSS .lang-dropdown-menu must be defined');
     assert(html.includes('.lang-dropdown-item'), 'CSS .lang-dropdown-item must be defined');
     assert(html.includes('border-radius: 6px'), 'Button must have 6px border radius');
     assert(html.includes('background: #111827'), 'Dropdown menu must have deep tech #111827 background');
+    assert(html.includes('z-index: 99999'), 'Dropdown must enforce z-index 99999 to prevent ticker overlap');
+    assert(html.includes('top: calc(100% + 8px)'), 'Dropdown must enforce top: calc(100% + 8px)');
+    assert(html.includes('box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5)'), 'Dropdown must enforce deep elevated box-shadow');
 
     // 3. Kiểm tra các hàm điều khiển ngôn ngữ & dropdown
     assert(html.includes('function changeLanguage'), 'changeLanguage function must be defined');
