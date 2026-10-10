@@ -120,4 +120,23 @@ test('Catalog parent wrapper and multi-column product grid layout validation', (
     assert(html.includes('#product-grid .product-card-image-wrap'), 'Image wrap must enforce 220px height with cover');
 });
 
+test('Dropdown options language, styling, and AI Engine Toast notification validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Kiểm tra ngôn từ quản trị số trong dropdown sắp xếp
+    assert(html.includes('Biên lợi nhuận: Tăng dần'), 'Sorting option must be Biên lợi nhuận: Tăng dần');
+    assert(html.includes('Biên lợi nhuận: Giảm dần'), 'Sorting option must be Biên lợi nhuận: Giảm dần');
+    assert(html.includes('Sản lượng số hóa: Cao nhất'), 'Sorting option must be Sản lượng số hóa: Cao nhất');
+    assert(html.includes('Phân hạng: Ưu tiên OCOP 5 Sao'), 'Sorting option must be Phân hạng: Ưu tiên OCOP 5 Sao');
+
+    // 2. Kiểm tra CSS tương phản Deep Tech cho dropdown
+    assert(html.includes('#product-sort-select option'), 'CSS must style dropdown options');
+    assert(html.includes('background-color: #0d1b15'), 'Dropdown options must have deep tech background');
+
+    // 3. Kiểm tra Toast box công nghệ AI Engine
+    assert(html.includes('.ai-toast-box'), 'CSS must define .ai-toast-box class');
+    assert(html.includes('ai-toast-icon-pulse'), 'Pulse animation must be applied to toast icon');
+    assert(html.includes('⚡ AI Engine: Đã đồng bộ và tối ưu dữ liệu dòng tiền điểm bán tỉnh'), 'Province toast must use AI Engine cash flow copy');
+});
+
 

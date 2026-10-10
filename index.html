@@ -165,6 +165,83 @@
             transform: translate3d(0, 0, 0);
             will-change: transform, opacity;
         }
+
+        /* ============================================================= */
+        /* UI FIX: DROPDOWN SELECT CÔNG NGHỆ CAO (DEEP TECH CONTRAST)    */
+        /* ============================================================= */
+        select,
+        select option,
+        select optgroup {
+            background-color: #0d1b15 !important;
+            color: #fef08a !important;
+        }
+
+        #product-sort-select,
+        #sidebar-province-select,
+        #province-map-select {
+            background-color: #0d1b15 !important;
+            color: #fef08a !important;
+            border: 1px solid rgba(212, 175, 55, 0.35) !important;
+            border-radius: 0.75rem !important;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15) !important;
+            font-weight: 800 !important;
+            transition: all 0.25s ease !important;
+            cursor: pointer !important;
+            outline: none !important;
+        }
+
+        #product-sort-select:hover,
+        #sidebar-province-select:hover,
+        #province-map-select:hover,
+        #product-sort-select:focus,
+        #sidebar-province-select:focus,
+        #province-map-select:focus {
+            border-color: rgba(234, 179, 8, 0.8) !important;
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.35) !important;
+        }
+
+        #product-sort-select option,
+        #sidebar-province-select option,
+        #sidebar-province-select optgroup,
+        #province-map-select option {
+            background-color: #0d1b15 !important;
+            color: #fef08a !important;
+            padding: 10px 14px !important;
+            font-weight: 700 !important;
+            border: none !important;
+        }
+
+        #product-sort-select option:hover,
+        #product-sort-select option:focus,
+        #product-sort-select option:checked,
+        #sidebar-province-select option:hover,
+        #sidebar-province-select option:focus,
+        #sidebar-province-select option:checked,
+        #province-map-select option:hover,
+        #province-map-select option:focus,
+        #province-map-select option:checked {
+            background: #1b4332 !important;
+            background-color: #1b4332 !important;
+            color: #ffffff !important;
+        }
+
+        /* ============================================================= */
+        /* TOAST THÔNG BÁO AI ENGINE: GRADIENT XANH RÊU + VIỀN NEON     */
+        /* ============================================================= */
+        .ai-toast-box {
+            background: linear-gradient(135deg, #0f2b1d 0%, #0a0f0d 100%) !important;
+            border: 1px solid rgba(16, 185, 129, 0.6) !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.35), 0 10px 30px rgba(0, 0, 0, 0.85) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+        }
+        .ai-toast-icon-pulse {
+            animation: toastIconPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes toastIconPulse {
+            0%, 100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.8)); }
+            50% { transform: scale(1.18); opacity: 0.9; filter: drop-shadow(0 0 8px rgba(251, 191, 36, 1)); }
+        }
         #product-grid .product-card * { will-change: auto !important; }
         #scroll-ambient-background { display: none; }
         body.catalog-browsing > main *,
@@ -2906,15 +2983,15 @@
                         
                         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
                             <!-- Bộ Sắp Xếp Nhanh -->
-                            <div class="relative flex items-center gap-1.5 bg-slate-900 border border-amber-400/40 px-2.5 py-1.5 rounded-xl shadow-2xs hover:border-amber-400 transition">
+                            <div class="relative flex items-center gap-1.5 bg-[#0d1b15] border border-amber-400/40 px-3 py-1.5 rounded-xl shadow-[0_0_15px_rgba(212,175,55,0.15)] hover:border-amber-400 hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition">
                                 <i class="fa-solid fa-arrow-down-short-wide text-amber-400 text-[11px]"></i>
                                 <label for="product-sort-select" class="sr-only">Sắp xếp sản phẩm</label>
-                                <select id="product-sort-select" onchange="changeProductSort(this.value)" class="bg-transparent text-amber-100 font-extrabold text-xs focus:outline-none cursor-pointer pr-1">
-                                    <option value="default" class="bg-slate-900 text-amber-100">Sắp xếp: Mặc định</option>
-                                    <option value="price-asc" class="bg-slate-900 text-amber-100">Giá: Thấp đến cao</option>
-                                    <option value="price-desc" class="bg-slate-900 text-amber-100">Giá: Cao đến thấp</option>
-                                    <option value="rating-desc" class="bg-slate-900 text-amber-100">Đánh giá sao cao nhất</option>
-                                    <option value="stars-desc" class="bg-slate-900 text-amber-100">OCOP 5 Sao ưu tiên</option>
+                                <select id="product-sort-select" onchange="changeProductSort(this.value)" class="bg-[#0d1b15] text-amber-200 font-extrabold text-xs focus:outline-none cursor-pointer pr-1 border-none">
+                                    <option value="default" class="bg-[#0d1b15] text-amber-200 font-bold">Sắp xếp: Mặc định</option>
+                                    <option value="price-asc" class="bg-[#0d1b15] text-amber-200 font-bold">Biên lợi nhuận: Tăng dần</option>
+                                    <option value="price-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Biên lợi nhuận: Giảm dần</option>
+                                    <option value="rating-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Sản lượng số hóa: Cao nhất</option>
+                                    <option value="stars-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Phân hạng: Ưu tiên OCOP 5 Sao</option>
                                 </select>
                             </div>
                             
@@ -5274,9 +5351,9 @@
                 }
 
                 if (selectedProvince) {
-                    showToast(`Đã hiển thị ${sortedList.length} đặc sản OCOP tỉnh ${selectedProvince.name}!`, "success");
+                    showToast(`⚡ AI Engine: Đã đồng bộ và tối ưu dữ liệu dòng tiền điểm bán tỉnh ${selectedProvince.name}!`, "success");
                 } else {
-                    showToast(`Hiển thị tất cả 63 tỉnh thành (${sortedList.length} sản phẩm)`, "info");
+                    showToast(`⚡ AI Engine: Đã đồng bộ mạng lưới đặc sản toàn quốc (63 Tỉnh Thành • ${sortedList.length} Sản phẩm)`, "info");
                 }
             } catch (filterError) {
                 console.error('[onProvinceFilterChange] Filter Exception caught:', filterError);
@@ -5756,7 +5833,7 @@
 
             renderProducts(products);
             updateProvinceSelectionStatus(products.length);
-            showToast("Đã làm mới toàn bộ bộ lọc đặc sản!", "info");
+            showToast("⚡ AI Engine: Đã làm mới và đồng bộ dữ liệu đặc sản 63 tỉnh thành!", "info");
         }
 
         // -------------------------------------------------------------
@@ -9190,27 +9267,23 @@ async function sendAIMessage() {
             toast.dataset.toastMessage = message;
             toast.dataset.toastCount = '1';
 
-            let bg = 'bg-gray-900 text-white';
-            let icon = 'fa-info-circle text-blue-400';
+            let icon = 'fa-circle-check text-amber-400 ai-toast-icon-pulse';
 
-            if (type === 'success') {
-                bg = 'bg-ocopGreen text-white border border-ocopGold/60';
-                icon = 'fa-circle-check text-ocopGold';
-            } else if (type === 'warning') {
-                bg = 'bg-amber-800 text-white';
-                icon = 'fa-triangle-exclamation text-yellow-300';
+            if (type === 'warning') {
+                icon = 'fa-triangle-exclamation text-yellow-300 ai-toast-icon-pulse';
             } else if (type === 'error') {
-                bg = 'bg-red-700 text-white';
-                icon = 'fa-circle-exclamation text-red-200';
+                icon = 'fa-circle-exclamation text-red-300 ai-toast-icon-pulse';
+            } else if (type === 'info') {
+                icon = 'fa-bolt text-amber-300 ai-toast-icon-pulse';
             }
 
-            toast.className = `${bg} w-full sm:w-auto max-w-sm px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-bold animate-pop-in pointer-events-auto cursor-pointer`;
+            toast.className = `ai-toast-box w-full sm:w-auto max-w-md px-4 py-3 rounded-2xl flex items-center gap-3 text-xs font-bold animate-pop-in pointer-events-auto cursor-pointer transition-all duration-300 hover:scale-[1.02]`;
             toast.setAttribute('role', type === 'error' || type === 'warning' ? 'alert' : 'status');
             toast.setAttribute('aria-live', type === 'error' || type === 'warning' ? 'assertive' : 'polite');
             const iconElement = document.createElement('i');
-            iconElement.className = `fa-solid ${icon} text-base`;
+            iconElement.className = `fa-solid ${icon} text-base shrink-0`;
             const messageElement = document.createElement('span');
-            messageElement.className = 'min-w-0 flex-1';
+            messageElement.className = 'min-w-0 flex-1 leading-relaxed text-amber-100 font-semibold';
             messageElement.textContent = message;
             toast.append(iconElement, messageElement);
             container.appendChild(toast);
