@@ -385,3 +385,4 @@ const fileHeader = `// =========================================================
 
 fs.writeFileSync('ocop-stores.js', fileHeader, 'utf8');
 console.log('Successfully generated ocop-stores.js with ' + Object.keys(allStoreData).length + ' products!');
+

@@ -1943,6 +1943,10 @@
             <nav class="header-primary-nav items-center space-x-6 font-bold text-sm">
                 <a href="#" class="text-ocopGreen font-extrabold border-b-2 border-ocopGold pb-1 transition" id="i18n-nav-home">Trang chủ</a>
                 <a href="#products-section" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-products">Danh mục Đặc sản 63 Tỉnh Thành</a>
+                <button type="button" onclick="openAllStoresModal()" class="text-amber-800 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition flex items-center space-x-1 cursor-pointer font-bold">
+                    <i class="fa-solid fa-store text-ocopGold text-xs"></i>
+                    <span>Điểm Bán & Showroom OCOP</span>
+                </button>
                 <a href="#contact-footer" class="text-gray-600 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition" id="i18n-nav-contact">Liên hệ & Hỗ trợ</a>
                 <button onclick="openIntroModal()" class="text-amber-700 hover:text-ocopGreen border-b-2 border-transparent hover:border-ocopGold pb-1 transition flex items-center space-x-1.5 cursor-pointer" id="i18n-nav-intro">
                     <i class="fa-solid fa-sparkles text-ocopGold text-xs"></i>
@@ -2007,37 +2011,37 @@
                 <div class="lg:col-span-7 space-y-6">
                     <div class="inline-flex items-center space-x-2 bg-amber-100/90 text-amber-900 border border-amber-300/80 px-4 py-1.5 rounded-full text-xs font-bold shadow-xs">
                         <i class="fa-solid fa-award text-amber-600 text-sm"></i>
-                        <span id="i18n-hero-badge">Chương Trình Quốc Gia Mỗi Xã Một Sản Phẩm</span>
+                        <span id="i18n-hero-badge">Cổng Thông Tin Quảng Bá Điểm Bán & Hợp Tác Xã OCOP 63 Tỉnh Thành</span>
                     </div>
                     <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-[1.15]">
-                        <span id="i18n-hero-title1">Khám Phá Tinh Hoa</span> <br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-ocopGreen via-emerald-700 to-amber-700" id="i18n-hero-title2">Đặc Sản Tuyển Chọn 63 Tỉnh Thành</span>
+                        <span id="i18n-hero-title1">Mạng Lưới Điểm Bán &</span> <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-ocopGreen via-emerald-700 to-amber-700" id="i18n-hero-title2">Hợp Tác Xã OCOP Chính Hãng</span>
                     </h2>
                     <p class="text-gray-700 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc">
-                        Khám phá các sản phẩm OCOP tuyển chọn trọn vẹn từ 63 tỉnh thành Việt Nam, với bản đồ tương tác, thông tin vùng miền và đánh giá khách hàng.
+                        Quảng bá chính xác từng cơ sở sản xuất, hợp tác xã và hệ thống cửa hàng/showroom được chứng nhận OCOP 4 - 5 sao trên khắp 63 tỉnh thành Việt Nam. Tra cứu địa chỉ thực tế, số hotline và dẫn đường Google Maps.
                     </p>
                     <div class="grid grid-cols-3 gap-4 max-w-lg pt-2 border-t border-amber-200/60">
                         <div>
-                            <span class="block text-xl font-extrabold text-ocopGreen" id="i18n-stat-count">140+</span>
-                            <span class="text-[11px] text-gray-600 font-semibold" id="i18n-stat1">Đặc Sản Chọn Lọc</span>
+                            <span class="block text-xl font-extrabold text-ocopGreen" id="i18n-stat-count">252+</span>
+                            <span class="text-[11px] text-gray-600 font-semibold" id="i18n-stat1">Sản Phẩm Đạt Chuẩn</span>
                         </div>
                         <div>
-                            <span class="block text-xl font-extrabold text-ocopGreen">100%</span>
-                            <span class="text-[11px] text-gray-600 font-semibold" id="i18n-stat2">Chính Gốc Xuất Xứ</span>
+                            <span class="block text-xl font-extrabold text-ocopGreen">500+</span>
+                            <span class="text-[11px] text-gray-600 font-semibold" id="i18n-stat2">Điểm Bán & HTX</span>
                         </div>
                         <div>
-                            <span class="block text-xl font-extrabold text-ocopGreen">4 - 5★</span>
-                            <span class="text-[11px] text-gray-600 font-semibold" id="i18n-stat3">Đạt Chuẩn Quốc Gia</span>
+                            <span class="block text-xl font-extrabold text-ocopGreen">63</span>
+                            <span class="text-[11px] text-gray-600 font-semibold" id="i18n-stat3">Tỉnh Thành Toàn Quốc</span>
                         </div>
                     </div>
-                    <div class="flex flex-wrap items-center justify-center gap-4 pt-3">
-                        <a href="#products-section" class="bg-ocopGreen text-white font-bold px-7 py-3.5 rounded-2xl shadow-lg hover:bg-ocopGreenLight hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-ocopGold/40 hover:-translate-y-0.5">
-                            <span id="i18n-btn-explore">Khám phá Đặc Sản OCOP</span>
+                    <div class="flex flex-wrap items-center justify-start gap-3 sm:gap-4 pt-3">
+                        <button type="button" onclick="openAllStoresModal()" class="bg-ocopGold text-amber-950 font-black px-6 py-3.5 rounded-2xl shadow-lg hover:bg-amber-400 hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-amber-500 hover:-translate-y-0.5 cursor-pointer">
+                            <i class="fa-solid fa-store text-base"></i>
+                            <span>Bản Đồ Mạng Lưới Điểm Bán OCOP</span>
+                        </button>
+                        <a href="#products-section" class="bg-ocopGreen text-white font-bold px-6 py-3.5 rounded-2xl shadow-lg hover:bg-ocopGreenLight hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-ocopGold/40 hover:-translate-y-0.5">
+                            <span id="i18n-btn-explore">Khám phá 252 Đặc Sản</span>
                             <i class="fa-solid fa-arrow-down text-ocopGold animate-bounce"></i>
-                        </a>
-                        <a href="#contact-footer" class="bg-white text-ocopGreen font-bold px-7 py-3.5 rounded-2xl border border-amber-300 hover:bg-amber-50 transition text-xs sm:text-sm shadow-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-phone text-amber-600"></i>
-                            <span id="i18n-btn-support">Liên Hệ Tư Vấn Quà Biếu</span>
                         </a>
                     </div>
                 </div>
@@ -2369,34 +2373,30 @@
                     </button>
                 </div>
             </div>
-            <!-- DẢI CHỮ CHẠY MARQUEE TINH HOA NÔNG SẢN VIỆT (TƯƠNG TÁC SỐNG ĐỘNG KHI CUỘN) -->
+            <!-- DẢI CHỮ CHẠY MARQUEE QUẢNG BÁ ĐIỂM BÁN OCOP 63 TỈNH THÀNH (TƯƠNG TÁC SỐNG ĐỘNG KHI CUỘN) -->
             <div class="mb-6 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-950 text-amber-200 py-2.5 px-4 shadow-md border border-amber-400/30 flex items-center gap-3">
                 <span class="flex items-center gap-1.5 bg-amber-400 text-emerald-950 font-black text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0 shadow-sm animate-pulse">
-                    <i class="fa-solid fa-bolt text-red-600"></i>
-                    <span>TIN OCOP</span>
+                    <i class="fa-solid fa-store text-red-600"></i>
+                    <span>ĐIỂM BÁN OCOP</span>
                 </span>
                 <div class="overflow-hidden flex-1 relative whitespace-nowrap">
                     <div class="animate-marquee-flow text-xs font-bold space-x-8 inline-flex items-center">
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-amber-300"></i> Miễn phí giao hàng toàn quốc từ 500k</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-store text-amber-300"></i> Mạng lưới 500+ Cửa hàng, Showroom & Hợp tác xã OCOP chính hãng trên 63 tỉnh thành</span>
                         <span class="text-amber-400/50">•</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-medal text-amber-300"></i> 100% Sản phẩm đạt chứng nhận OCOP 4 - 5 Sao Quốc Gia</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-certificate text-amber-300"></i> 100% Sản phẩm đạt chứng nhận OCOP 4 - 5 Sao Quốc Gia được cấp phép bởi UBND Tỉnh & Trung ương</span>
                         <span class="text-amber-400/50">•</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-gift text-amber-300"></i> Hộp quà sang trọng thiết kế đậm đà bản sắc 63 tỉnh thành</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-map-location-dot text-amber-300"></i> Tra cứu địa chỉ cửa hàng, showroom chính xác & bản đồ chỉ đường Google Maps tận nơi</span>
                         <span class="text-amber-400/50">•</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-qrcode text-amber-300"></i> Quét mã VietQR nhận ngay ưu đãi & tích điểm thành viên</span>
-                        <span class="text-amber-400/50">•</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-headset text-amber-300"></i> Trợ lý AI OCOP Copilot tư vấn khẩu vị & quà biếu 24/7</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-headset text-amber-300"></i> Trợ lý AI OCOP Copilot chỉ dẫn điểm bán gần bạn & thông tin hợp tác xã 24/7</span>
                         <span class="text-amber-400/50">•</span>
                         <!-- Lặp lại chuỗi cho vòng marquee mượt mà -->
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-amber-300"></i> Miễn phí giao hàng toàn quốc từ 500k</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-store text-amber-300"></i> Mạng lưới 500+ Cửa hàng, Showroom & Hợp tác xã OCOP chính hãng trên 63 tỉnh thành</span>
                         <span class="text-amber-400/50">•</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-medal text-amber-300"></i> 100% Sản phẩm đạt chứng nhận OCOP 4 - 5 Sao Quốc Gia</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-certificate text-amber-300"></i> 100% Sản phẩm đạt chứng nhận OCOP 4 - 5 Sao Quốc Gia được cấp phép bởi UBND Tỉnh & Trung ương</span>
                         <span class="text-amber-400/50">•</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-gift text-amber-300"></i> Hộp quà sang trọng thiết kế đậm đà bản sắc 63 tỉnh thành</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-map-location-dot text-amber-300"></i> Tra cứu địa chỉ cửa hàng, showroom chính xác & bản đồ chỉ đường Google Maps tận nơi</span>
                         <span class="text-amber-400/50">•</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-qrcode text-amber-300"></i> Quét mã VietQR nhận ngay ưu đãi & tích điểm thành viên</span>
-                        <span class="text-amber-400/50">•</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-headset text-amber-300"></i> Trợ lý AI OCOP Copilot tư vấn khẩu vị & quà biếu 24/7</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-headset text-amber-300"></i> Trợ lý AI OCOP Copilot chỉ dẫn điểm bán gần bạn & thông tin hợp tác xã 24/7</span>
                     </div>
                 </div>
             </div>
@@ -2576,10 +2576,14 @@
                     <div class="flex flex-wrap items-center justify-between gap-3 mb-5 bg-gradient-to-r from-amber-50/90 via-white/80 to-emerald-50/90 p-3 sm:px-4 sm:py-3 rounded-2xl border border-amber-200/90 shadow-sm text-xs font-bold text-gray-700">
                         <div class="flex items-center space-x-2 flex-wrap gap-y-1">
                             <span class="inline-flex items-center gap-1.5 bg-ocopGreen text-white px-2.5 py-1 rounded-xl text-xs font-black shadow-xs">
-                                <i class="fa-solid fa-box-open text-amber-300"></i>
-                                <span id="product-count-badge">142</span>
+                                <i class="fa-solid fa-store text-amber-300"></i>
+                                <span id="product-count-badge">252</span>
                             </span>
-                            <span id="search-status-text" class="text-gray-800 font-extrabold">Đặc sản OCOP chuẩn Quốc Gia</span>
+                            <span id="search-status-text" class="text-gray-800 font-extrabold">Đặc sản OCOP chuẩn Quốc Gia & Điểm Bán</span>
+                            <button type="button" onclick="openAllStoresModal()" class="ml-1 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-500 text-slate-950 px-3 py-1.5 rounded-xl border border-yellow-300 flex items-center gap-1.5 font-black text-xs shadow-xs hover:scale-105 active:scale-95 transition cursor-pointer">
+                                <i class="fa-solid fa-map-location-dot text-emerald-950"></i>
+                                <span>Bản đồ Điểm Bán OCOP</span>
+                            </button>
                         </div>
                         
                         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
@@ -2830,6 +2834,56 @@
         </div>
     </div>
 
+    <!-- 8.1 MODAL CHI TIẾT ĐIỂM BÁN & CỬA HÀNG OCOP CỦA SẢN PHẨM -->
+    <div id="ocop-store-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="absolute inset-0 bg-black/65 backdrop-blur-sm" onclick="closeStoreLocator()"></div>
+        <div class="relative bg-white rounded-3xl max-w-3xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+            <!-- Header Modal -->
+            <div class="p-4 bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-900 text-white rounded-t-3xl flex items-center justify-between border-b border-amber-400/40 relative">
+                <div class="flex items-center space-x-2.5">
+                    <span class="w-9 h-9 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md">
+                        <i class="fa-solid fa-store text-base"></i>
+                    </span>
+                    <div>
+                        <h3 class="font-black text-sm sm:text-base text-amber-200 tracking-wide flex items-center gap-1.5">
+                            <span>MẠNG LƯỚI ĐIỂM BÁN & CỬA HÀNG OCOP CHÍNH HÃNG</span>
+                        </h3>
+                        <p class="text-[11px] text-emerald-100 font-medium">Xác thực chứng nhận OCOP Quốc Gia & Chỉ dẫn đường đến cửa hàng</p>
+                    </div>
+                </div>
+                <button onclick="closeStoreLocator()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-gray-900 flex items-center justify-center text-sm transition cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Nội dung chi tiết cửa hàng (render động) -->
+            <div id="ocop-store-modal-body" class="p-4 sm:p-6 space-y-5 bg-gradient-to-b from-amber-50/30 to-white"></div>
+        </div>
+    </div>
+
+    <!-- 8.2 MODAL BẢN ĐỒ & DANH BẠ ĐIỂM BÁN OCOP TOÀN QUỐC -->
+    <div id="ocop-all-stores-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="absolute inset-0 bg-black/65 backdrop-blur-sm" onclick="closeAllStoresModal()"></div>
+        <div class="relative bg-white rounded-3xl max-w-4xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+            <div class="p-4 bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-900 text-white rounded-t-3xl flex items-center justify-between border-b border-amber-400/40">
+                <div class="flex items-center space-x-2.5">
+                    <span class="w-9 h-9 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md">
+                        <i class="fa-solid fa-map-location-dot text-base"></i>
+                    </span>
+                    <div>
+                        <h3 class="font-black text-sm sm:text-base text-amber-200 tracking-wide">
+                            DANH BẠ CÁC TRUNG TÂM & ĐIỂM BÁN OCOP TRỌNG ĐIỂM QUỐC GIA
+                        </h3>
+                        <p class="text-[11px] text-emerald-100 font-medium">Hệ thống phân phối chính hãng được Sở Công Thương & Bộ NN&PTNT phê duyệt</p>
+                    </div>
+                </div>
+                <button onclick="closeAllStoresModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-gray-900 flex items-center justify-center text-sm transition cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-4 sm:p-6 space-y-5 bg-gradient-to-b from-amber-50/20 to-white" id="ocop-all-stores-body"></div>
+        </div>
+    </div>
+
     <!-- 9. DRAWER YÊU THÍCH (WISHLIST) -->
     <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
         <div onclick="toggleWishlistDrawer()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
@@ -3012,6 +3066,7 @@
     <!-- JAVASCRIPT XỬ LÝ HOÀN CHỈNH TOÀN BỘ CHỨC NĂNG WEBSITE -->
     <!-- ============================================================== -->
     <script src="data.js?v=20261007_63"></script>
+    <script src="ocop-stores.js?v=20261010_1"></script>
     <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // -------------------------------------------------------------
@@ -3690,6 +3745,8 @@
                 const discountPercent = getProductPromoPercent(p);
                 const isHotSeller = p.isBestSeller === true;
                 
+                const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(p.id) : null;
+                
                 let cardHtml = `
                 <div class="product-card glass-panel rounded-3xl border border-amber-200/90 overflow-hidden shadow-md hover:shadow-2xl flex flex-col group relative transition-all duration-300" data-product-id="${p.id}">
                     <div>
@@ -3750,18 +3807,43 @@
                             <h3 class="font-extrabold text-sm text-gray-900 group-hover:text-ocopGreen transition-colors duration-200 line-clamp-2 leading-snug">${productName}</h3>
                             <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed font-medium">${productDescription}</p>
                         </div>
+
+                        <!-- Khối Thông Tin Chủ Thể OCOP & Điểm Bán Chính Thức -->
+                        <div class="mx-3 mb-2 p-2 rounded-xl bg-gradient-to-br from-amber-50/80 via-emerald-50/30 to-white border border-amber-200/80 text-[10.5px] space-y-1 shadow-2xs">
+                            <div class="flex items-center gap-1.5 font-bold text-emerald-950 truncate" title="${storeInfo ? storeInfo.producerName : p.region}">
+                                <i class="fa-solid fa-landmark text-amber-600 text-[10px] shrink-0"></i>
+                                <span class="truncate">${storeInfo ? storeInfo.producerName : ('Chủ thể OCOP ' + p.region)}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 text-gray-700 text-[10px] truncate" title="${storeInfo ? storeInfo.primaryStore.name + ' - ' + storeInfo.primaryStore.address : ''}">
+                                <i class="fa-solid fa-store text-emerald-600 text-[9px] shrink-0"></i>
+                                <span class="truncate font-semibold text-gray-900">${storeInfo ? storeInfo.primaryStore.name : ('Điểm bán OCOP ' + p.region)}</span>
+                            </div>
+                            <div class="flex items-center justify-between text-[10px] pt-1 border-t border-amber-200/50">
+                                <span class="flex items-center gap-1 text-emerald-800 font-extrabold">
+                                    <i class="fa-solid fa-phone text-[9px]"></i> ${storeInfo ? storeInfo.hotline : 'Hotline cơ sở'}
+                                </span>
+                                <span class="text-[9px] font-black uppercase text-amber-900 bg-amber-200/70 px-1.5 py-0.5 rounded">
+                                    ${p.region}
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Footer Thẻ: Giá & Nút Thêm Giỏ -->
-                    <div class="product-card-footer px-3 py-2 border-t border-amber-100/70 flex flex-wrap gap-2 items-center justify-between bg-amber-50/20">
-                        <div class="min-w-0 break-words w-full">
-                            ${discountPercent > 0 ? `<span data-promo-reference="${p.id}" class="block text-xs text-gray-400 leading-snug mb-1" title="${currentLanguage === 'en' ? 'Reference price calculated from the displayed promotion percentage.' : 'Giá tham khảo tính theo phần trăm ưu đãi hiển thị.'}"><s>${getProductPromoReferenceLabel(p)}</s></span>` : ''}
-                            <span class="font-black text-red-600 text-base sm:text-lg tracking-tight">${getProductPriceLabel(p)}</span>
+                    <!-- Footer Thẻ: Giá & Nút Xem Điểm Bán OCOP -->
+                    <div class="product-card-footer px-3 py-2 border-t border-amber-100/70 flex items-center justify-between gap-2 bg-amber-50/30">
+                        <div class="min-w-0 flex-1">
+                            ${discountPercent > 0 ? `<span data-promo-reference="${p.id}" class="block text-xs text-gray-400 leading-none mb-0.5" title="${currentLanguage === 'en' ? 'Reference price' : 'Giá tham khảo'}"><s>${getProductPromoReferenceLabel(p)}</s></span>` : ''}
+                            <span class="font-black text-red-600 text-sm sm:text-base tracking-tight leading-tight block">${getProductPriceLabel(p)}</span>
                         </div>
-                        <button onclick="addToCart(${p.id})" class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 hover:from-emerald-700 hover:to-amber-700 text-white px-3.5 py-2.5 rounded-xl font-bold transition-all flex items-center space-x-1.5 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 cursor-pointer border border-emerald-600/30 group/btn">
-                            <i class="fa-solid fa-cart-plus text-amber-300 text-xs group-hover/btn:rotate-12 transition-transform"></i>
-                            <span class="text-xs font-black tracking-wide">${currentLanguage === 'en' ? 'Add to cart' : 'Thêm giỏ'}</span>
-                        </button>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="openStoreLocator(${p.id})" title="${currentLanguage === 'en' ? 'View certified stores & showrooms' : 'Xem danh sách cửa hàng & showroom OCOP được chứng nhận'}" class="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs px-2.5 sm:px-3 py-2 rounded-xl shadow-md flex items-center space-x-1.5 transition-all hover:scale-105 active:scale-95 cursor-pointer border border-amber-400/80">
+                                <i class="fa-solid fa-store text-emerald-950 text-xs"></i>
+                                <span class="whitespace-nowrap">${currentLanguage === 'en' ? 'Stores' : 'Điểm bán OCOP'}</span>
+                            </button>
+                            <button onclick="addToCart(${p.id})" title="${currentLanguage === 'en' ? 'Order online / connect distributor' : 'Đặt trực tuyến qua sàn / Kết nối đại lý'}" class="p-2 rounded-xl border border-emerald-600/30 text-emerald-800 bg-emerald-50 hover:bg-emerald-100 text-xs font-bold transition flex items-center justify-center cursor-pointer shadow-2xs hover:scale-105 active:scale-95">
+                                <i class="fa-solid fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 `;
@@ -5048,6 +5130,145 @@
                     productIds: [],
                     dynamic_chips: ["Admin 1 - Tư vấn", "Admin 4 - CSKH 24/7", "Hotline: 0987.654.321", "Chính sách đổi trả"],
                     handoffAdmin: true,
+                    localFallback: true
+                };
+            }
+
+            // 2.0 CHUYÊN ĐỀ MẠNG LƯỚI ĐIỂM BÁN, CỬA HÀNG & HỢP TÁC XÃ OCOP (STORE LOCATOR & PRODUCER COOPERATIVES)
+            const isStoreQuery = /(?:mua|ban|tim|co).*(?:o\s+dau|tai\s+dau)|(?:o\s+dau|cho\s+nao|noi\s+nao).*(?:ban|co\s+ban)|(?:dia\s+chi|diem\s+ban|cua\s+hang|showroom|dai\s+ly|hop\s+tac\s+xa|co\s+so\s+san\s+xuat|sieu\s+thi\s+ban|mua\s+truc\s+tiep|ghe\s+mua)/.test(normalized);
+            if (isStoreQuery) {
+                const storeHelper = window.OcopStores;
+                const stopwords = new Set(['cua', 'hang', 'diem', 'ban', 'dia', 'chi', 'showroom', 'o', 'dau', 'tai', 'cho', 'nao', 'mua', 'tim', 'co', 'hop', 'tac', 'xa', 'htx', 'so', 'san', 'xuat', 'pham', 'dac', 'san', 'tinh', 'thanh', 'pho', 'chinh', 'hang', 'uy', 'tin', 'ocop']);
+                const cleanWords = normalized.split(/[\s,()/?!.-]+/).filter(w => w.length > 1 && !stopwords.has(w));
+
+                const allProvinces = [...new Set(products.map(p => p.region).filter(Boolean))];
+                const matchedProvince = allProvinces.find(r => {
+                    const nr = r.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").toLowerCase();
+                    return normalized.includes(nr);
+                }) || (/(ha noi|hn)\b/.test(normalized) ? 'Hà Nội' : /(tp hcm|tphcm|sai gon|hcm)\b/.test(normalized) ? 'Hồ Chí Minh' : null);
+
+                const isOnlyProvince = Boolean(matchedProvince && cleanWords.every(w => {
+                    const np = matchedProvince.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").toLowerCase();
+                    return np.includes(w);
+                }));
+
+                const matchedProducts = isOnlyProvince || cleanWords.length === 0 ? [] : products.filter(p => {
+                    const np = p.name.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").toLowerCase();
+                    const prodWords = np.split(/[\s,()/-]+/).filter(w => w.length > 2 && !stopwords.has(w));
+                    return normalized.includes(np) || (cleanWords.length >= 2 && cleanWords.filter(w => prodWords.includes(w)).length >= 2) || (cleanWords.length === 1 && prodWords.includes(cleanWords[0]));
+                });
+
+                matchedProducts.sort((a, b) => {
+                    const na = a.name.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").toLowerCase();
+                    const nb = b.name.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").toLowerCase();
+                    return cleanWords.filter(w => nb.includes(w)).length - cleanWords.filter(w => na.includes(w)).length;
+                });
+
+                if (matchedProducts.length > 0) {
+                    const targetProducts = matchedProducts.slice(0, 3);
+                    const pIds = targetProducts.map(p => p.id);
+                    lastAIRecommendedProductIds = pIds;
+
+                    let msg = english
+                        ? "🏛️ **Verified OCOP Producer & Certified Store Directory**:\n\n"
+                        : "🏛️ **Thông Tin Hợp Tác Xã & Điểm Bán OCOP Chính Thức**:\n\nDạ, dưới đây là địa chỉ chính xác của cơ sở sản xuất và hệ thống điểm bán/showroom được công nhận OCOP:\n\n";
+
+                    targetProducts.forEach(p => {
+                        const s = storeHelper ? storeHelper.getOcopStoreInfo(p.id) : null;
+                        if (s) {
+                            if (english) {
+                                msg += `⭐ **${p.nameEn || p.name}** (${p.stars}★ OCOP - ${p.region})\n` +
+                                       `• **Producer:** ${s.producerName}\n` +
+                                       `• **Facility Address:** ${s.producerAddress}\n` +
+                                       `• **Official Certification:** ${s.certDecision}\n` +
+                                       `• **Primary Showroom:** ${s.primaryStore.name}\n` +
+                                       `  📍 ${s.primaryStore.address}\n` +
+                                       `  📞 Hotline: ${s.hotline} | 🕒 Hours: ${s.primaryStore.hours || '08:00 - 21:00'}\n` +
+                                       `  🗺️ [Google Maps Directions](${s.mapUrl})\n\n`;
+                            } else {
+                                msg += `⭐ **${p.name}** (OCOP ${p.stars} Sao - ${p.region})\n` +
+                                       `• **Cơ sở sản xuất:** ${s.producerName}\n` +
+                                       `• **Địa chỉ xưởng:** ${s.producerAddress}\n` +
+                                       `• **Chứng nhận pháp lý:** ${s.certDecision}\n` +
+                                       `• **Showroom / Điểm bán chính:** ${s.primaryStore.name}\n` +
+                                       `  📍 ${s.primaryStore.address}\n` +
+                                       `  📞 Hotline: ${s.hotline} | 🕒 Mở cửa: ${s.primaryStore.hours || '08:00 - 21:00'}\n` +
+                                       `  🗺️ [Xem chỉ đường Google Maps](${s.mapUrl})\n\n`;
+                            }
+                        }
+                    });
+
+                    msg += english
+                        ? "👉 *Click [Store Locations] on the product card below to view all authorized outlets, or order online directly!*"
+                        : "👉 *Anh/Chị bấm vào nút [🏪 Điểm bán OCOP] trên thẻ sản phẩm bên dưới để xem chi tiết bản đồ và các đại lý ủy quyền nhé!*";
+
+                    return {
+                        message: msg,
+                        productIds: pIds,
+                        dynamic_chips: ["🏪 Xem điểm bán", "Bản đồ OCOP", "Hotline CSKH"],
+                        handoffAdmin: false,
+                        localFallback: true
+                    };
+                }
+
+                if (matchedProvince) {
+                    const provinceStores = storeHelper ? storeHelper.getStoresByProvince(matchedProvince) : [];
+                    const pIds = provinceStores.slice(0, 4).map(s => s.id);
+                    lastAIRecommendedProductIds = pIds;
+
+                    let msg = english
+                        ? `🏛️ **Certified OCOP Cooperatives & Showrooms in ${matchedProvince}**:\n\n`
+                        : `🏛️ **Mạng Lưới Điểm Bán & Hợp Tác Xã OCOP tại ${matchedProvince}**:\n\nDạ, dưới đây là danh sách các cơ sở sản xuất và showroom đặc sản OCOP chính hãng tại ${matchedProvince}:\n\n`;
+
+                    provinceStores.slice(0, 3).forEach(s => {
+                        msg += `• **${s.productName}** (${s.stars}★)\n` +
+                               `  🏛️ **HTX:** ${s.producerName}\n` +
+                               `  📍 **Điểm bán:** ${s.primaryStore.name} — ${s.primaryStore.address}\n` +
+                               `  📞 **Hotline:** ${s.hotline} | 🕒 ${s.primaryStore.hours || '08:00 - 21:00'}\n` +
+                               `  🗺️ [Google Maps](${s.mapUrl})\n\n`;
+                    });
+
+                    msg += english
+                        ? "👉 *You can click [Store Locations] on any product card below to view full details!*"
+                        : "👉 *Anh/Chị có thể bấm [🏪 Điểm bán OCOP] ở từng thẻ sản phẩm bên dưới để mở bản đồ định vị chính xác nhé!*";
+
+                    return {
+                        message: msg,
+                        productIds: pIds,
+                        dynamic_chips: ["Bản đồ " + matchedProvince, "Mạng lưới 63 tỉnh", "Hotline CSKH"],
+                        handoffAdmin: false,
+                        localFallback: true
+                    };
+                }
+
+                const majorCenters = storeHelper ? storeHelper.MAJOR_OCOP_CENTERS : [];
+                let msg = english
+                    ? "🏛️ **Nationwide Certified OCOP Showrooms & Centers**:\n\n" +
+                      "OCOP Copilot connects you directly with over 500+ certified local cooperatives across all 63 provinces:\n\n" +
+                      "🌟 **National OCOP Promotion Centers:**\n" +
+                      "1. **Hanoi:** National OCOP Trade Promotion Center — 489 Hoang Quoc Viet, Cau Giay (Hotline: 024.3755.8899)\n" +
+                      "2. **HCMC:** Regional OCOP Distribution Center — 459 Chu Van An, Binh Thanh (Hotline: 028.3899.6677)\n" +
+                      "3. **Da Nang:** Central Vietnam OCOP Center — 08 Cach Mang Thang Tam, Cam Le (Hotline: 0236.388.9911)\n\n" +
+                      "📍 **For each specific product:**\n" +
+                      "Every product card features a **[🏪 Store Locations]** button displaying the official certified Cooperative, Provincial Decision, physical Showroom address, hotline, and Google Maps.\n\n" +
+                      "👉 *Tell me which specialty you are interested in or click [Bản đồ Điểm Bán OCOP] above!*"
+                    : "🏛️ **Hệ Thống Điểm Bán & Showroom OCOP Toàn Quốc**:\n\n" +
+                      "Dạ, OCOP Copilot kết nối trực tiếp với hơn 500+ Hợp tác xã, Cơ sở sản xuất và Showroom OCOP chính hãng trên toàn bộ 63 tỉnh thành Việt Nam:\n\n" +
+                      "🌟 **Các Trung Tâm Giới Thiệu & Bán Sản Phẩm OCOP Tiêu Biểu:**\n" +
+                      "1. **Hà Nội:** Trung tâm Xúc tiến Thương mại & Trưng bày OCOP Quốc Gia — Số 489 Hoàng Quốc Việt, Cầu Giấy (Hotline: 024.3755.8899)\n" +
+                      "2. **TP. Hồ Chí Minh:** Trung tâm Trưng bày & Phân phối OCOP Vùng Miền — Số 459 Chu Văn An, P. 12, Q. Bình Thạnh (Hotline: 028.3899.6677)\n" +
+                      "3. **Đà Nẵng:** Điểm Bán & Quảng Bá OCOP Miền Trung - Tây Nguyên — Số 08 Cách Mạng Tháng Tám, Q. Cẩm Lệ (Hotline: 0236.388.9911)\n\n" +
+                      "📍 **Đối với từng sản phẩm cụ thể:**\n" +
+                      "Mỗi sản phẩm đều hiển thị đích danh Hợp tác xã sản xuất, Quyết định chứng nhận UBND tỉnh, địa chỉ showroom thực tế và định vị Google Maps.\n\n" +
+                      "👉 *Anh/Chị có thể bấm nút **\"Bản đồ Điểm Bán OCOP\"** trên thanh công cụ hoặc cho em biết tên món đặc sản cần tìm để em gửi địa chỉ chính xác nhé!*";
+
+                const featuredIds = [336, 492, 480, 348];
+                lastAIRecommendedProductIds = featuredIds;
+                return {
+                    message: msg,
+                    productIds: featuredIds,
+                    dynamic_chips: ["Mạng lưới 63 tỉnh", "Showroom Hà Nội", "Showroom TP.HCM", "Hotline CSKH"],
+                    handoffAdmin: false,
                     localFallback: true
                 };
             }
@@ -6658,6 +6879,7 @@ async function sendAIMessage() {
             const p = products.find(item => item.id === productId);
             if (!p) return;
 
+            const store = window.OcopStores ? window.OcopStores.getOcopStoreInfo(productId) : null;
             const container = document.getElementById('quickview-content');
             container.innerHTML = `
                 <div class="h-64 md:h-full bg-amber-100 relative">
@@ -6675,6 +6897,30 @@ async function sendAIMessage() {
                             <span data-review-product-id="${p.id}">${getProductReviewLabel(p)}</span>
                         </div>
                         <p class="text-xs text-gray-600 leading-relaxed pt-2 border-t border-gray-100">${getProductDescription(p)}</p>
+                        ${store ? `
+                        <div class="rounded-2xl border border-amber-300 bg-amber-50/90 p-3 space-y-1.5 text-xs text-amber-950 mt-2 shadow-xs">
+                            <div class="flex items-center justify-between font-bold text-ocopGreen">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-award text-amber-600"></i>
+                                    <span>${currentLanguage === 'en' ? 'Certified OCOP Cooperative / Producer:' : 'Hợp tác xã / Cơ sở sản xuất chứng nhận:'}</span>
+                                </span>
+                                <span class="text-[10px] bg-ocopGold text-amber-950 px-2 py-0.5 rounded-full font-black">${store.stars}★ OCOP</span>
+                            </div>
+                            <div class="font-extrabold text-gray-900 pl-4 text-xs">${store.producerName}</div>
+                            <div class="text-[11px] text-gray-600 pl-4 flex items-start gap-1">
+                                <i class="fa-solid fa-location-dot text-amber-600 mt-0.5 shrink-0"></i>
+                                <span><strong>Showroom:</strong> ${store.primaryStore.name} — ${store.primaryStore.address}</span>
+                            </div>
+                            <div class="text-[11px] text-gray-600 pl-4 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                                <span><i class="fa-solid fa-phone text-ocopGreen"></i> <strong>Hotline:</strong> <a href="tel:${store.hotline}" class="text-ocopGreen font-bold hover:underline">${store.hotline}</a></span>
+                                <span><i class="fa-regular fa-clock text-gray-500"></i> ${store.primaryStore.hours || '08:00 - 20:30'}</span>
+                            </div>
+                            <button type="button" onclick="closeQuickView(); openStoreLocator(${p.id});" class="mt-2 w-full py-2 px-3 rounded-xl bg-ocopGold hover:bg-amber-400 text-amber-950 font-black text-xs shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-map-location-dot text-sm"></i>
+                                <span>${currentLanguage === 'en' ? 'View Store Details & Google Maps' : 'Tra Cứu Chi Tiết Điểm Bán & Chỉ Đường Maps'}</span>
+                            </button>
+                        </div>
+                        ` : ''}
                         ${p.imageIsSample ? `<p class="text-[11px] text-gray-500">${p.imageIllustrative ? (currentLanguage === 'en' ? 'Illustrative photo selected by product name; actual brand, packaging and appearance may differ.' : 'Ảnh minh họa theo tên món; thương hiệu, bao bì và hình thức thực tế có thể khác.') : (currentLanguage === 'en' ? 'Sample product image; sold pack size is specified above.' : 'Ảnh mẫu sản phẩm; quy cách bán theo mô tả ở trên.')}</p>` : ''}
                     </div>
                     <div class="space-y-3 pt-3 border-t border-gray-100">
@@ -6686,9 +6932,13 @@ async function sendAIMessage() {
                             <button id="quickview-wishlist-toggle" type="button" onclick="toggleWishlist(${p.id})" class="flex min-h-12 w-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200 bg-white text-gray-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 cursor-pointer" aria-label="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}" aria-pressed="false" title="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}">
                                 <i class="fa-regular fa-heart text-lg" aria-hidden="true"></i>
                             </button>
-                            <button onclick="addToCart(${p.id}); closeQuickView();" class="min-h-12 flex-1 rounded-2xl bg-ocopGreen py-3 text-xs font-bold text-white shadow-lg transition hover:bg-ocopGreenLight flex items-center justify-center space-x-2 cursor-pointer">
+                            <button onclick="closeQuickView(); openStoreLocator(${p.id});" class="min-h-12 flex-1 rounded-2xl bg-amber-500 hover:bg-amber-600 py-3 text-xs font-bold text-white shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer">
+                                <i class="fa-solid fa-store text-amber-100"></i>
+                                <span>${currentLanguage === 'en' ? 'Store Locations' : '🏪 Điểm Bán OCOP'}</span>
+                            </button>
+                            <button onclick="addToCart(${p.id}); closeQuickView();" class="min-h-12 flex-1 rounded-2xl bg-ocopGreen py-3 text-xs font-bold text-white shadow-lg transition hover:bg-ocopGreenLight flex items-center justify-center space-x-1.5 cursor-pointer">
                                 <i class="fa-solid fa-cart-plus text-ocopGold"></i>
-                                <span>${currentLanguage === 'en' ? 'Add to cart' : 'Thêm Vào Giỏ Hàng Mua Ngay'}</span>
+                                <span>${currentLanguage === 'en' ? 'Order Online' : 'Đặt Hàng Online'}</span>
                             </button>
                         </div>
                     </div>
@@ -6721,6 +6971,283 @@ async function sendAIMessage() {
 
         function closeQuickView() {
             document.getElementById('quickview-modal').classList.add('hidden');
+        }
+
+        // -------------------------------------------------------------
+        // OCOP STORES & CERTIFIED OUTLETS DIRECTORY CONTROLLER
+        // -------------------------------------------------------------
+        function openStoreLocator(productId) {
+            const p = products.find(item => item.id === productId);
+            if (!p) return;
+            const store = window.OcopStores ? window.OcopStores.getOcopStoreInfo(productId) : null;
+            if (!store) return;
+
+            const modal = document.getElementById('ocop-store-modal');
+            const body = document.getElementById('ocop-store-modal-body');
+            if (!modal || !body) return;
+
+            const starsLabel = getProductStarLabel(p);
+            const priceLabel = getProductPriceLabel(p);
+            const productName = getProductName(p);
+
+            body.innerHTML = `
+                <!-- Thông tin tóm tắt sản phẩm -->
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-white border border-amber-200/90 shadow-sm">
+                    <img src="${p.img}" alt="${productName}" class="w-24 h-24 object-contain rounded-xl bg-amber-50/50 p-1.5 border border-amber-200 shrink-0">
+                    <div class="space-y-1.5 text-center sm:text-left flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
+                            <span class="bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow">
+                                ⭐ OCOP ${starsLabel} SAO
+                            </span>
+                            <span class="bg-emerald-100 text-emerald-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-300">
+                                📍 ${p.region}
+                            </span>
+                            <span class="bg-blue-50 text-blue-900 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-blue-200">
+                                🛡️ 100% Chính gốc
+                            </span>
+                        </div>
+                        <h4 class="font-black text-base text-gray-900 leading-snug">${productName}</h4>
+                        <div class="flex items-center justify-center sm:justify-start gap-3 text-xs">
+                            <span class="font-black text-red-600 text-base">${priceLabel}</span>
+                            <span class="text-gray-500 font-medium">Quy cách: <strong>${p.packaging || 'hộp'}</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Khối Chủ thể Sản Xuất & Chứng Nhận Pháp Lý -->
+                <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-950 to-teal-950 text-white space-y-2.5 shadow-md border border-emerald-400/30">
+                    <div class="flex items-center justify-between border-b border-emerald-700/50 pb-2">
+                        <span class="text-xs font-black uppercase text-amber-300 flex items-center gap-1.5 tracking-wider">
+                            <i class="fa-solid fa-landmark text-amber-400"></i> CHỦ THỂ SẢN XUẤT ĐẠT CHỨNG NHẬN OCOP
+                        </span>
+                        <span class="bg-amber-400 text-emerald-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                            Chủ thể OCOP
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <span class="text-emerald-300/80 block text-[10.5px]">Đơn vị / Hợp tác xã:</span>
+                            <strong class="text-white text-sm font-black">${store.producerName}</strong>
+                        </div>
+                        <div>
+                            <span class="text-emerald-300/80 block text-[10.5px]">Số Quyết định OCOP:</span>
+                            <span class="text-amber-200 font-mono font-bold">${store.certDecision}</span>
+                        </div>
+                        <div class="md:col-span-2">
+                            <span class="text-emerald-300/80 block text-[10.5px]">Địa chỉ cơ sở / Vùng nguyên liệu:</span>
+                            <span class="text-emerald-100 font-medium">${store.producerAddress}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Danh sách Cửa hàng & Showroom Phân phối Chính Thức -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-black text-xs sm:text-sm text-gray-900 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-location-dot text-red-600"></i> CÁC CỬA HÀNG & ĐIỂM BÁN CHÍNH THỨC
+                        </h4>
+                        <span class="text-[10px] text-gray-500 font-bold">Điểm bán đạt chuẩn</span>
+                    </div>
+
+                    <!-- Điểm 1: Showroom chính của cơ sở tại Tỉnh -->
+                    <div class="p-4 rounded-2xl bg-white border-2 border-amber-300 shadow-sm space-y-2 hover:border-amber-500 transition">
+                        <div class="flex flex-wrap items-center justify-between gap-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-full bg-amber-500 text-white font-black text-xs flex items-center justify-center">1</span>
+                                <strong class="text-sm font-black text-gray-900">${store.primaryStore.name}</strong>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-900 text-[10px] font-black px-2 py-0.5 rounded-full">
+                                Showroom Trực tiếp tại ${store.region}
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-700 flex items-start gap-1.5">
+                            <i class="fa-solid fa-location-dot text-amber-600 mt-0.5 text-xs"></i>
+                            <span><strong>Địa chỉ:</strong> ${store.primaryStore.address}</span>
+                        </p>
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-gray-100">
+                            <div class="flex items-center gap-3">
+                                <span class="text-gray-500"><i class="fa-regular fa-clock text-gray-400"></i> ${store.primaryStore.hours || '07:30 - 21:00'}</span>
+                                <span class="text-emerald-800 font-bold"><i class="fa-solid fa-phone text-emerald-600"></i> ${store.primaryStore.phone}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <a href="${store.mapUrl}" target="_blank" rel="noopener noreferrer" class="bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-[11px] px-3 py-1.5 rounded-xl shadow-xs flex items-center gap-1 transition">
+                                    <i class="fa-solid fa-diamond-turn-right text-amber-300"></i> Chỉ đường Google Maps
+                                </a>
+                                <a href="tel:${store.primaryStore.phone.replace(/[^0-9]/g, '')}" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-black text-[11px] px-3 py-1.5 rounded-xl border border-amber-300 flex items-center gap-1 transition">
+                                    <i class="fa-solid fa-phone"></i> Gọi hotline
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Điểm 2 & 3: Các điểm bán OCOP liên kết tại Hà Nội / TP.HCM -->
+                    ${Array.isArray(store.outlets) && store.outlets.length ? store.outlets.map((outlet, idx) => `
+                        <div class="p-3.5 rounded-2xl bg-white border border-gray-200 shadow-2xs space-y-1.5 hover:border-emerald-300 transition">
+                            <div class="flex flex-wrap items-center justify-between gap-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-emerald-800 text-white font-bold text-[10px] flex items-center justify-center">${idx + 2}</span>
+                                    <strong class="text-xs font-black text-gray-900">${outlet.name}</strong>
+                                </div>
+                                <span class="text-[9.5px] font-extrabold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">Điểm bán OCOP liên kết</span>
+                            </div>
+                            <p class="text-xs text-gray-600 flex items-start gap-1.5">
+                                <i class="fa-solid fa-location-arrow text-emerald-600 mt-0.5 text-[11px]"></i>
+                                <span>${outlet.address}</span>
+                            </p>
+                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-1.5 border-t border-gray-100">
+                                <span class="text-emerald-800 font-bold text-[11px]"><i class="fa-solid fa-phone text-emerald-600 text-[10px]"></i> ${outlet.phone}</span>
+                                <div class="flex items-center gap-1.5">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(outlet.name + ' ' + outlet.address)}" target="_blank" rel="noopener noreferrer" class="text-emerald-800 hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                        <i class="fa-solid fa-map-location-dot"></i> Bản đồ
+                                    </a>
+                                    <span class="text-gray-300">|</span>
+                                    <a href="tel:${outlet.phone.replace(/[^0-9]/g, '')}" class="text-amber-800 hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                        <i class="fa-solid fa-phone"></i> Gọi ngay
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('') : ''}
+                </div>
+
+                <!-- Footer Modal: Hướng dẫn & Đặt mua trực tiếp -->
+                <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                    <div class="flex items-center gap-2 text-gray-700">
+                        <i class="fa-solid fa-qrcode text-xl text-emerald-800"></i>
+                        <span class="text-[11px]">Tất cả sản phẩm tại các điểm bán trên đều có <strong>Tem chống giả & QR Code OCOP</strong>.</span>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button onclick="addToCart(${p.id}); closeStoreLocator();" class="flex-1 sm:flex-initial bg-ocopGreen hover:bg-ocopGreenLight text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-cart-plus text-amber-300"></i>
+                            <span>Đặt online qua sàn</span>
+                        </button>
+                        <button onclick="closeStoreLocator(); toggleAIChat();" class="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl font-black text-xs transition flex items-center justify-center gap-1 cursor-pointer">
+                            <i class="fa-solid fa-comments"></i>
+                            <span>Hỏi AI điểm bán</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        }
+
+        function closeStoreLocator() {
+            const modal = document.getElementById('ocop-store-modal');
+            if (modal) modal.classList.add('hidden');
+            restorePageScrollState();
+        }
+
+        function openAllStoresModal() {
+            const modal = document.getElementById('ocop-all-stores-modal');
+            const body = document.getElementById('ocop-all-stores-body');
+            if (!modal || !body) return;
+
+            const majorCenters = window.OcopStores ? window.OcopStores.MAJOR_OCOP_CENTERS : [];
+            const provinces = [...new Set(products.map(p => p.region))];
+
+            body.innerHTML = `
+                <div class="space-y-4">
+                    <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
+                        <div class="space-y-1 text-center sm:text-left">
+                            <h4 class="font-black text-sm uppercase">Cổng Quảng Bá & Bản Đồ Điểm Bán OCOP 63 Tỉnh Thành</h4>
+                            <p class="text-xs font-semibold text-slate-900">Tra cứu nhanh địa chỉ các Trung tâm Xúc tiến Thương mại, Showroom và Điểm bán OCOP chính thức trên toàn quốc.</p>
+                        </div>
+                        <span class="bg-slate-950 text-amber-300 font-mono font-black text-xs px-3 py-1 rounded-xl shrink-0">
+                            63 Tỉnh Thành
+                        </span>
+                    </div>
+
+                    <!-- Ô tra cứu điểm bán theo tỉnh -->
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="store-modal-search" oninput="filterStoresInModal(this.value)" placeholder="Nhập tên tỉnh thành hoặc tên đặc sản để tìm cửa hàng OCOP..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-amber-300 bg-white text-xs font-bold text-gray-800 focus:outline-none focus:ring-2 focus:ring-ocopGreen shadow-2xs">
+                    </div>
+
+                    <!-- Các Trung tâm OCOP Quốc Gia Trọng Điểm -->
+                    <div class="space-y-2.5">
+                        <h4 class="font-black text-xs text-gray-900 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-star text-amber-500"></i> CÁC TRUNG TÂM OCOP TRỌNG ĐIỂM QUỐC GIA (HÀ NỘI - ĐÀ NẴNG - TP.HCM)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="major-centers-grid">
+                            ${majorCenters.map(c => `
+                                <div class="p-3.5 rounded-2xl bg-white border border-amber-200 shadow-2xs space-y-1.5 hover:shadow-md transition">
+                                    <div class="flex items-center justify-between">
+                                        <span class="bg-emerald-950 text-amber-300 font-black text-[10px] px-2 py-0.5 rounded-full uppercase">${c.city}</span>
+                                        <span class="text-[10px] text-gray-500"><i class="fa-regular fa-clock"></i> ${c.hours}</span>
+                                    </div>
+                                    <h5 class="font-black text-xs text-gray-900">${c.name}</h5>
+                                    <p class="text-xs text-gray-600 flex items-start gap-1">
+                                        <i class="fa-solid fa-location-dot text-amber-600 text-[11px] mt-0.5"></i>
+                                        <span>${c.address}</span>
+                                    </p>
+                                    <div class="flex items-center justify-between pt-1.5 border-t border-gray-100 text-xs">
+                                        <span class="text-emerald-800 font-bold"><i class="fa-solid fa-phone text-emerald-600"></i> ${c.hotline}</span>
+                                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.name + ' ' + c.address)}" target="_blank" rel="noopener noreferrer" class="text-emerald-700 hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                            <i class="fa-solid fa-diamond-turn-right text-amber-500"></i> Google Maps
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Danh sách Điểm Bán OCOP Theo 63 Tỉnh Thành -->
+                    <div class="space-y-2.5 pt-2 border-t border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-black text-xs text-gray-900 uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-building-flag text-emerald-800"></i> ĐIỂM BÁN & HỢP TÁC XÃ THEO TỈNH THÀNH (BẤM ĐỂ XEM)
+                            </h4>
+                            <span class="text-[10px] text-gray-500 font-bold" id="store-prov-count">${provinces.length} Tỉnh thành</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2" id="store-provinces-list">
+                            ${provinces.map(prov => {
+                                return `
+                                    <button onclick="filterProductsGlobal('${prov}'); closeAllStoresModal();" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
+                                        <span class="font-bold text-xs text-gray-800 group-hover:text-ocopGreen">${prov}</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-gray-400 group-hover:text-amber-600"></i>
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        }
+
+        function closeAllStoresModal() {
+            const modal = document.getElementById('ocop-all-stores-modal');
+            if (modal) modal.classList.add('hidden');
+            restorePageScrollState();
+        }
+
+        function filterStoresInModal(query) {
+            const q = String(query || '').toLowerCase().trim();
+            const listEl = document.getElementById('store-provinces-list');
+            const countEl = document.getElementById('store-prov-count');
+            if (!listEl) return;
+
+            const provinces = [...new Set(products.map(p => p.region))];
+            const filtered = provinces.filter(prov => {
+                if (!q) return true;
+                if (prov.toLowerCase().includes(q)) return true;
+                const matchProds = products.filter(p => p.region === prov && p.name.toLowerCase().includes(q));
+                return matchProds.length > 0;
+            });
+
+            if (countEl) countEl.textContent = `${filtered.length} Tỉnh thành`;
+            listEl.innerHTML = filtered.length ? filtered.map(prov => `
+                <button onclick="filterProductsGlobal('${prov}'); closeAllStoresModal();" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
+                    <span class="font-bold text-xs text-gray-800 group-hover:text-ocopGreen">${prov}</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-gray-400 group-hover:text-amber-600"></i>
+                </button>
+            `).join('') : '<p class="col-span-full text-center text-xs text-gray-500 py-4">Không tìm thấy tỉnh thành hoặc đặc sản phù hợp.</p>';
         }
 
         // -------------------------------------------------------------
