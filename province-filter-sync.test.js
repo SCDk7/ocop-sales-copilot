@@ -294,3 +294,52 @@ test('Technical metrics, Hero product card, and Chatbot AI 5-language sync valid
     assert(!html.includes('Verified 100% (0.00% variance)'));
 
 });
+
+test('Central navigation bar Flexbox layout, wishlist removal, and 5-language sync validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Kiểm tra cấu hình Flexbox Engine cho thanh điều hướng trung tâm
+    assert(html.includes('display: flex !important'), 'Flex display rule');
+    assert(html.includes('flex-direction: row !important'), 'Row direction rule');
+    assert(html.includes('flex-wrap: nowrap !important'), 'Nowrap flex rule');
+    assert(html.includes('gap: 16px !important'), '16px gap rule');
+    assert(html.includes('white-space: nowrap !important'), 'Text nowrap rule');
+    assert(html.includes('font-size: 14px !important'), 'Font size 14px rule');
+    assert(html.includes('padding: 6px 14px !important'), 'Padding 6px 14px rule');
+
+    // 2. Kiểm tra gỡ bỏ hoàn toàn nút yêu thích bán lẻ (Heart icon & wishlist-count) khỏi Header
+    assert(!html.includes('id="wishlist-count"'), 'Wishlist count badge must be removed from header');
+    assert(!html.includes('fa-regular fa-heart text-xs sm:text-sm text-red-500'), 'Heart icon must be removed from header');
+
+    // 3. Kiểm tra đồng bộ đa ngôn ngữ 5 thứ tiếng cho các nút điều hướng trung tâm
+    // Nút Đề Án Challenge 2026
+    assert(html.includes('Đề Án Challenge 2026') &&
+           html.includes('Challenge Project 2026') &&
+           html.includes('2026 挑战赛方案') &&
+           html.includes('2026 챌린지 프로젝트') &&
+           html.includes('2026 チャレンジプロジェクト'),
+           'Đề Án Challenge 2026 must be mapped to all 5 languages');
+
+    // Nút Điểm Bán OCOP
+    assert(html.includes('Điểm Bán OCOP') &&
+           html.includes('OCOP Showrooms') &&
+           html.includes('OCOP 展厅') &&
+           html.includes('OCOP 쇼룸') &&
+           html.includes('OCOP ショールーム'),
+           'Điểm Bán OCOP must be mapped to all 5 languages');
+
+    // Nút Bảng Quản Trị
+    assert(html.includes('Bảng Quản Trị') &&
+           html.includes('KPI Dashboard') &&
+           html.includes('管理控制台') &&
+           html.includes('관리 대시보드') &&
+           html.includes('管理ダッシュボード'),
+           'Bảng Quản Trị must be mapped to all 5 languages');
+
+    // Nút AI Financial Engine
+    assert(html.includes('AI Financial Engine') &&
+           html.includes('AI 财务引擎') &&
+           html.includes('AI 재무 엔진') &&
+           html.includes('AI 財務エンジン'),
+           'AI Financial Engine must be mapped to all 5 languages');
+});
