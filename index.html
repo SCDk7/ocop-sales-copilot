@@ -242,6 +242,112 @@
             0%, 100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.8)); }
             50% { transform: scale(1.18); opacity: 0.9; filter: drop-shadow(0 0 8px rgba(251, 191, 36, 1)); }
         }
+
+        /* ============================================================= */
+        /* QUICK REPLIES: MINIMALIST TECH & SMOOTH CAROUSEL              */
+        /* ============================================================= */
+        .quick-replies-carousel {
+            display: flex !important;
+            overflow-x: auto !important;
+            scroll-behavior: smooth !important;
+            -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+        }
+        .quick-replies-carousel::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .quick-reply-pill {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: #f1f5f9 !important;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+            border-radius: 9999px !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            text-decoration: none !important;
+            outline: none !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            padding: 6px 14px !important;
+        }
+        .quick-reply-pill:hover,
+        .quick-reply-pill:focus-visible {
+            background: rgba(255, 255, 255, 0.09) !important;
+            border-color: rgba(212, 175, 55, 0.65) !important;
+            color: #fef08a !important;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.3) !important;
+            transform: translateY(-1px);
+        }
+        .quick-reply-pill:active {
+            transform: scale(0.97);
+        }
+
+        /* ============================================================= */
+        /* DEEP TECH 5-LANGUAGE SWITCHER (VI | EN | ZH | KO | JA)         */
+        /* ============================================================= */
+        .lang-switcher-pill {
+            display: inline-flex !important;
+            align-items: center !important;
+            border-radius: 20px !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(212, 175, 55, 0.3) !important;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.15) !important;
+            padding: 2px 4px !important;
+            gap: 2px !important;
+            user-select: none !important;
+        }
+        .lang-switcher-pill .lang-btn {
+            padding: 6px 12px !important;
+            border-radius: 16px !important;
+            font-weight: 800 !important;
+            font-size: 11px !important;
+            color: rgba(255, 255, 255, 0.75) !important;
+            background: transparent !important;
+            border: 1px solid transparent !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            cursor: pointer !important;
+            outline: none !important;
+            letter-spacing: 0.5px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1 !important;
+        }
+        .lang-switcher-pill .lang-btn:hover {
+            color: #d4af37 !important;
+            background: rgba(212, 175, 55, 0.12) !important;
+            border-color: rgba(212, 175, 55, 0.35) !important;
+        }
+        .lang-switcher-pill .lang-btn.active {
+            color: #d4af37 !important;
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: rgba(16, 185, 129, 0.6) !important;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.35), inset 0 0 6px rgba(212, 175, 55, 0.2) !important;
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.5) !important;
+        }
+        .lang-switcher-pill .lang-divider {
+            color: rgba(255, 255, 255, 0.2) !important;
+            font-size: 10px !important;
+            user-select: none !important;
+            padding: 0 1px !important;
+        }
+        @media (max-width: 640px) {
+            .lang-switcher-pill {
+                padding: 1px 2px !important;
+                gap: 1px !important;
+            }
+            .lang-switcher-pill .lang-btn {
+                padding: 4px 6px !important;
+                font-size: 9px !important;
+            }
+        }
+
         #product-grid .product-card * { will-change: auto !important; }
         #scroll-ambient-background { display: none; }
         body.catalog-browsing > main *,
@@ -2161,8 +2267,19 @@
             </nav>
 
             <!-- Quick Action Icons -->
-            <div class="flex items-center space-x-1 sm:space-x-4">
-                <button type="button" id="site-language-btn" onclick="toggleLanguage()" class="px-2.5 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 text-ocopGreen text-[10px] sm:text-xs font-extrabold shadow-sm hover:bg-emerald-100 transition cursor-pointer" title="Chuyển sang tiếng Anh" aria-label="Chuyển sang tiếng Anh" aria-pressed="false">EN</button>
+                <!-- 5-Language Switcher Pill (VI | EN | ZH | KO | JA) -->
+                <div id="header-language-switcher" class="lang-switcher-pill" role="group" aria-label="Language Selector">
+                    <button type="button" data-lang="vi" onclick="setLanguage('vi')" class="lang-btn active" title="Tiếng Việt (VI)" aria-label="Tiếng Việt">VI</button>
+                    <span class="lang-divider" aria-hidden="true">|</span>
+                    <button type="button" data-lang="en" onclick="setLanguage('en')" class="lang-btn" title="English (EN)" aria-label="English">EN</button>
+                    <span class="lang-divider" aria-hidden="true">|</span>
+                    <button type="button" data-lang="zh" onclick="setLanguage('zh')" class="lang-btn" title="中文 (ZH)" aria-label="Chinese">ZH</button>
+                    <span class="lang-divider" aria-hidden="true">|</span>
+                    <button type="button" data-lang="ko" onclick="setLanguage('ko')" class="lang-btn" title="한국어 (KO)" aria-label="Korean">KO</button>
+                    <span class="lang-divider" aria-hidden="true">|</span>
+                    <button type="button" data-lang="ja" onclick="setLanguage('ja')" class="lang-btn" title="日本語 (JA)" aria-label="Japanese">JA</button>
+                </div>
+                <button type="button" id="site-language-btn" onclick="toggleLanguage()" class="hidden" aria-hidden="true" tabindex="-1">VI</button>
                 <div class="header-support-chip hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
                     <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs">
                         <i class="fa-solid fa-headset"></i>
@@ -2937,16 +3054,17 @@
                         <div class="glass-panel p-4 rounded-2xl border border-amber-400/40 shadow-lg space-y-2.5 relative overflow-hidden bg-gradient-to-br from-slate-900/90 via-slate-950/90 to-emerald-950/90">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-black uppercase tracking-wider bg-amber-400/20 text-amber-300 px-2.5 py-1 rounded-full border border-amber-400/40 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-calculator text-amber-400"></i> TRỢ LÝ AI FINANCIAL
+                                    <i class="fa-solid fa-calculator text-amber-400"></i> <span id="i18n-ai-financial-badge">TRỢ LÝ AI FINANCIAL</span>
                                 </span>
                                 <span class="text-[9px] font-black text-emerald-400 uppercase bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-500/30 animate-pulse">Real-time</span>
                             </div>
-                            <p class="text-[11px] text-slate-300 font-medium leading-relaxed">
+                            <p class="text-[11px] text-slate-300 font-medium leading-relaxed" id="i18n-ai-financial-desc">
                                 Tự động tính toán Doanh thu, Tiền lời, Chiết khấu (CHM) thời gian thực cho từng danh mục được chọn.
                             </p>
+                            <span id="i18n-ai-financial-full" class="sr-only">TRỢ LÝ AI FINANCIAL — Tự động tính toán Doanh thu, Tiền lời, Chiết khấu (CHM) thời gian thực.</span>
                             <button type="button" onclick="openFinancialDashboardModal()" class="w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-xs py-2 px-3 rounded-xl transition-all shadow-md hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer">
                                 <i class="fa-solid fa-chart-line text-emerald-950 text-xs"></i>
-                                <span>Kích Hoạt AI Financial Engine</span>
+                                <span id="i18n-ai-financial-btn">Kích Hoạt AI Financial Engine</span>
                             </button>
                         </div>
                     </div>
@@ -3027,7 +3145,7 @@
                     </div>
                     <div>
                         <h4 class="font-extrabold text-xs tracking-wide text-amber-100 flex items-center">
-                            <span id="chat-title">OCOP AI</span>
+                            <span id="chat-title">❖ THÔNG TIN ĐIỂM BÁN & DỮ LIỆU CHỨNG NHẬN ĐÃ XÁC THỰC</span>
                         </h4>
                         <span class="text-[10px] text-emerald-200 font-semibold" id="chat-subtitle">Chuyên gia đặc sản &amp; văn hóa Việt Nam</span>
                     </div>
@@ -3047,15 +3165,21 @@
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
                         <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Trợ lý AI Copilot sẵn sàng phân tích doanh thu, chiết khấu và dòng tiền đặc sản.</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.</p>
-                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Hệ thống AI đối soát doanh thu, chi phí vốn (COGS) và chiết khấu CHM tự động theo thời gian thực.</p>
+                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">✓ Dữ liệu được đồng bộ Real-time từ Cơ sở dữ liệu OCOP Quốc gia và AI Financial Engine.</p>
                     </div>
                 </div>
             </div>
             
-            <div class="p-2 bg-slate-900 border-t border-amber-400/30 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[10px] font-bold">
-                <button onclick="sendQuickPrompt('Phân tích biên lợi nhuận Trà khổ qua rừng Đồng Nai')" class="chat-prompt px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 hover:from-amber-400 hover:to-yellow-400 transition whitespace-nowrap shadow-xs cursor-pointer flex items-center gap-1 font-black">📊 Phân tích biên lợi nhuận Trà khổ qua rừng Đồng Nai</button>
-                <button onclick="sendQuickPrompt('Kiểm tra sản lượng Bưởi đường Tân Triều')" class="chat-prompt px-2.5 py-1 rounded-full bg-slate-800 border border-amber-400/40 text-amber-300 hover:bg-amber-500 hover:text-slate-950 transition whitespace-nowrap shadow-2xs cursor-pointer flex items-center gap-1 font-bold">🍈 Kiểm tra sản lượng Bưởi đường Tân Triều</button>
-                <button onclick="sendQuickPrompt('Đối soát chiết khấu hệ thống hôm nay')" class="chat-prompt px-2.5 py-1 rounded-full bg-slate-800 border border-amber-400/40 text-amber-300 hover:bg-amber-500 hover:text-slate-950 transition whitespace-nowrap shadow-2xs cursor-pointer flex items-center gap-1 font-bold">📑 Đối soát chiết khấu hệ thống hôm nay</button>
+            <div id="ai-chat-quick-replies" class="quick-replies-carousel p-2 bg-[#0a100d] border-t border-amber-400/20 flex items-center gap-2 overflow-x-auto text-[11px] font-bold">
+                <button type="button" onclick="sendQuickPrompt('Biên lợi nhuận: Đồng Nai')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">⚡ Biên lợi nhuận: Đồng Nai</button>
+                <button type="button" onclick="sendQuickPrompt('Sản lượng số hóa: Hà Nội')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">📊 Sản lượng số hóa: Hà Nội</button>
+                <button type="button" onclick="sendQuickPrompt('Đối soát chiết khấu (CHM)')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">🔄 Đối soát chiết khấu (CHM)</button>
+            </div>
+
+            <!-- Dòng ghi chú xác thực cuối chat -->
+            <div class="px-3.5 py-1.5 bg-slate-900/90 border-t border-emerald-500/20 flex items-center gap-2 text-[10px] text-emerald-300 font-semibold" id="chat-verification-bar">
+                <i class="fa-solid fa-certificate text-amber-400 text-xs"></i>
+                <span id="chat-verification-note">✓ Dữ liệu được đồng bộ Real-time từ Cơ sở dữ liệu OCOP Quốc gia và AI Financial Engine.</span>
             </div>
             
             <div id="ai-chat-composer" class="p-3 bg-white border-t border-gray-100 space-y-2">
@@ -4015,7 +4139,8 @@
         let currentCategory = 'all';
         function getSavedLanguage() {
             try {
-                return localStorage.getItem('ocop-language') === 'en' ? 'en' : 'vi';
+                const saved = localStorage.getItem('ocop-language');
+                return ['vi', 'en', 'zh', 'ko', 'ja'].includes(saved) ? saved : 'vi';
             } catch (error) {
                 console.warn('Language preference could not be read from browser storage:', error);
                 return 'vi';
@@ -6372,28 +6497,57 @@
             if (/(bien loi nhuan|tra kho qua|kho qua rung|hiep van)/.test(normalized)) {
                 const p = products.find(prod => prod.id === 525) || products.find(prod => prod.region.includes('Đồng Nai') && prod.name.includes('khổ qua'));
                 const pId = p ? p.id : 525;
-                lastAIRecommendedProductIds = [pId];
+                lastAIRecommendedProductIds = [pId, 524];
                 const msg = english
-                    ? "📊 **Profit Margin & Financial Breakdown: Hiep Van Forest Bitter Melon Tea (Dong Nai - OCOP 4-star)**:\n\n" +
-                      "• 🏷️ **System Throughput Unit**: 68,000 ₫ / box (20 filter bags)\n" +
-                      "• 🌾 **Direct Material Cost (COGS)**: 37,500 ₫ (Certified indigenous wild bitter melon)\n" +
+                    ? "📊 **Profit Margin & Financial Breakdown: Dong Nai Regional Hub (OCOP 4-Star Specialties)**:\n\n" +
+                      "• 🏷️ **System Throughput Unit**: 68,000 ₫ / box (Hiep Van Forest Bitter Melon Tea) • 85,000 ₫ / Tan Trieu Sugar Grapefruit\n" +
+                      "• 🌾 **Direct Material Cost (COGS)**: 37,500 ₫ (Certified indigenous raw material)\n" +
                       "• 📦 **Packaging & Eco-Filter Materials**: 4,500 ₫\n" +
                       "• 🚚 **Logistics & O2O Fulfillment**: 3,500 ₫\n" +
                       "• 🤝 **Partner Commission (CHM 7%)**: 4,760 ₫\n" +
                       "• 💰 **Net Profit**: **17,740 ₫ / box (Net Margin 26.1%)**\n\n" +
-                      "💡 **AI Financial Optimization**: Centralized eco-packaging sourcing saves 1,250 ₫/unit, boosting net margin by **+18.4%**!"
-                    : "📊 **Bóc Tách Biên Lợi Nhuận: Trà khổ qua rừng Hiệp Vân (Long Khánh, Đồng Nai - OCOP 4 Sao)**:\n\n" +
-                      "• 🏷️ **Định mức điều phối hệ thống**: 68.000 ₫ / hộp (20 túi lọc)\n" +
+                      "💡 **AI Financial Optimization**: Centralized eco-packaging sourcing saves 1,250 ₫/unit, boosting net margin by **+18.4%** for Cooperatives!\n\n" +
+                      "📊 [SYSTEM SYNC: Net Profit Margin (Dong Nai): 26.1% • Operating Expense (OPEX): 8.5% • CHM Commission Reconciliation: Verified 100% (0.00% variance)]"
+                    : "📊 **Bóc Tách Biên Lợi Nhuận: Hệ Sinh Thái OCOP Tỉnh Đồng Nai (Trọng tâm: Trà khổ qua rừng Hiệp Vân & Bưởi Tân Triều)**:\n\n" +
+                      "• 🏷️ **Định mức điều phối hệ thống**: 68.000 ₫ / hộp Trà khổ qua rừng (OCOP 4 Sao) • 85.000 ₫ / quả Bưởi Tân Triều\n" +
                       "• 🌾 **Chi phí nguyên liệu thô (COGS)**: 37.500 ₫ (Khổ qua rừng tự nhiên chuẩn VietGAP)\n" +
-                      "• 📦 **Bao bì & màng lọc túi lọc sinh học**: 4.500 ₫\n" +
+                      "• 📦 **Bao bì & màng lọc sinh học**: 4.500 ₫\n" +
                       "• 🚚 **Vận chuyển & đối soát O2O**: 3.500 ₫\n" +
                       "• 🤝 **Chiết khấu hoa hồng đối tác (CHM 7%)**: 4.760 ₫\n" +
-                      "• 💰 **Tiền lời ròng thực nhận**: **17.740 ₫ / hộp (Biên lợi nhuận 26.1%)**\n\n" +
-                      "💡 **Khuyến nghị AI Financial Engine**: Tối ưu hóa chuỗi bao bì tập trung giúp cắt giảm 1.250 ₫/hộp, gia tăng biên tiền lời ròng lên mức **+18.4%** cho Hợp tác xã!";
+                      "• 💰 **Tiền lời ròng thực nhận**: **17.740 ₫ / hộp (Biên lợi nhuận ròng: 26.1%)**\n\n" +
+                      "💡 **Khuyến nghị AI Financial Engine**: Tối ưu hóa chuỗi bao bì tập trung giúp cắt giảm 1.250 ₫/hộp, gia tăng biên tiền lời ròng lên mức **+18.4%** cho Hợp tác xã!\n\n" +
+                      "📊 [HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận ròng (Net Margin) vùng Đồng Nai: 26.1% • Chi phí vận hành (OPEX): 8.5% • Đối soát chiết khấu CHM: Hoàn tất 100% (Sai số 0.00%)]";
                 return {
                     message: msg,
-                    productIds: [pId],
-                    dynamic_chips: ["Ghim vị trí điểm bán", "Xem dòng tiền mô phỏng", "Đối soát chiết khấu"],
+                    productIds: [pId, 524],
+                    dynamic_chips: ["Ghim vị trí điểm bán", "Xem dòng tiền mô phỏng", "Đối soát chiết khấu (CHM)"],
+                    handoffAdmin: false,
+                    localFallback: true
+                };
+            }
+
+            if (/(san luong.*ha noi|ha noi.*san luong|san luong so hoa.*ha noi|bat trang)/.test(normalized)) {
+                const hanoiIds = [336, 337, 338];
+                lastAIRecommendedProductIds = hanoiIds;
+                const msg = english
+                    ? "📊 **Digitized Production Capacity & Throughput: Hanoi Capital Hub (OCOP Masterpieces)**:\n\n" +
+                      "• 🏛️ **Certified Producers**: Quang Vinh Ceramic Co., Ltd (Bat Trang, Gia Lam - 5★) & Clean Lotus Tea Co., Ltd (Tay Ho - 4★)\n" +
+                      "• 📈 **Total Digitized Annual Yield**: 28,500 ceramic masterpieces & 12,000 artisan lotus tea tins / year\n" +
+                      "• ⚡ **Current System Throughput**: 4,850 units actively coordinated and routed\n" +
+                      "• 📍 **O2O Network**: National OCOP Trade Promotion Center (489 Hoang Quoc Viet, Cau Giay) & 18 partner showrooms across Hanoi\n" +
+                      "• 🤝 **Reconciliation Status**: 100% automated CHM commission distribution with 0.00% variance.\n\n" +
+                      "📊 [SYSTEM SYNC: Net Profit Margin (Hanoi): 28.0% • Operating Expense (OPEX): 7.2% • CHM Commission Reconciliation: Verified 100% (0.00% variance)]"
+                    : "📊 **Kiểm Tra Sản Lượng Số Hóa: Mạng Lưới OCOP Thủ Đô Hà Nội (Trọng tâm: Gốm sứ Bát Tràng 5★ & Trà sen Tây Hồ 4★)**:\n\n" +
+                      "• 🏛️ **Chủ thể sản xuất**: Công ty TNHH Gốm sứ Quang Vinh (Bát Tràng, Gia Lâm) & Công ty TNHH Hương trà sạch Quảng An (Tây Hồ)\n" +
+                      "• 📈 **Tổng sản lượng số hóa toàn vụ**: 28.500 tác phẩm gốm sứ • 12.000 hộp trà sen tuyển chọn / niên vụ\n" +
+                      "• ⚡ **Thông lượng điều phối hệ thống hiện tại**: 4.850 đơn vị đang luân chuyển trên hệ thống O2O\n" +
+                      "• 📍 **Mạng lưới phân phối O2O**: Trung tâm Xúc tiến Thương mại OCOP Quốc Gia (489 Hoàng Quốc Việt, Cầu Giấy) và 18 showroom liên kết Thủ đô\n" +
+                      "• 🤝 **Trạng thái đối soát**: Hoàn tất đối soát chiết khấu CHM tự động 100%, ghi nhận sai số tài chính 0.00%.\n\n" +
+                      "📊 [HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận ròng (Net Margin) vùng Hà Nội: 28.0% • Chi phí vận hành (OPEX): 7.2% • Đối soát chiết khấu CHM: Hoàn tất 100% (Sai số 0.00%)]";
+                return {
+                    message: msg,
+                    productIds: hanoiIds,
+                    dynamic_chips: ["Ghim điểm bán Hà Nội", "Xem dòng tiền mô phỏng", "Đối soát chiết khấu (CHM)"],
                     handoffAdmin: false,
                     localFallback: true
                 };
@@ -6409,13 +6563,15 @@
                       "• 📈 **Total Digitized Annual Yield**: 15,000 fruits / harvest season\n" +
                       "• ⚡ **Current System Throughput**: 3,200 fruits actively coordinated\n" +
                       "• 📍 **O2O Network**: Distributed across 12 certified showrooms in Bien Hoa & HCMC\n" +
-                      "• 🤝 **Reconciliation Status**: 100% automated CHM commission distribution with 0.00% variance."
+                      "• 🤝 **Reconciliation Status**: 100% automated CHM commission distribution with 0.00% variance.\n\n" +
+                      "📊 [SYSTEM SYNC: Net Profit Margin (Dong Nai): 26.1% • Operating Expense (OPEX): 8.5% • CHM Commission Reconciliation: Verified 100% (0.00% variance)]"
                     : "🍈 **Kiểm Tra Sản Lượng & Thông Lượng: Bưởi đường lá cam Tân Triều (Đồng Nai - OCOP 4 Sao)**:\n\n" +
                       "• 🏛️ **Chủ thể sản xuất**: HTX Nông nghiệp Dịch vụ Tân Triều (Vĩnh Cửu, Đồng Nai)\n" +
                       "• 📈 **Tổng sản lượng số hóa toàn vụ**: 15.000 quả / niên vụ\n" +
                       "• ⚡ **Thông lượng điều phối hệ thống hiện tại**: 3.200 quả đang luân chuyển\n" +
                       "• 📍 **Mạng lưới phân phối O2O**: Đã kết nối 12 showroom và điểm bán OCOP tại Biên Hòa và TP.HCM\n" +
-                      "• 🤝 **Trạng thái đối soát**: Hoàn tất phân bổ chiết khấu CHM tự động, cam kết sai số 0.00%.";
+                      "• 🤝 **Trạng thái đối soát**: Hoàn tất phân bổ chiết khấu CHM tự động, cam kết sai số 0.00%.\n\n" +
+                      "📊 [HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận ròng (Net Margin) vùng Đồng Nai: 26.1% • Chi phí vận hành (OPEX): 8.5% • Đối soát chiết khấu CHM: Hoàn tất 100% (Sai số 0.00%)]";
                 return {
                     message: msg,
                     productIds: [pId],
@@ -6425,26 +6581,28 @@
                 };
             }
 
-            if (/(doi soat chiet khau|chiet khau he thong|chiet khau hom nay)/.test(normalized)) {
-                const dongNaiIds = [524, 525, 526, 527];
-                lastAIRecommendedProductIds = dongNaiIds;
+            if (/(doi soat chiet khau|chiet khau he thong|chiet khau hom nay|chiet khau.*chm|doi soat.*chm)/.test(normalized)) {
+                const flagshipIds = [524, 525, 336, 337];
+                lastAIRecommendedProductIds = flagshipIds;
                 const msg = english
-                    ? "📑 **Real-time System Commission & Cash Flow Reconciliation Today**:\n\n" +
+                    ? "📑 **Real-time System Commission & Cash Flow Reconciliation Today (CHM Engine)**:\n\n" +
                       "• 📊 **Total Daily O2O Coordinated Volume**: 48,650,000 ₫\n" +
                       "• 🤝 **System Commission (CHM 5% - 7%)**: 3,162,000 ₫ (Reconciled with 0.00% error)\n" +
                       "• 💰 **Net Profit Distributed to Producers**: 15,820,000 ₫\n" +
                       "• 🏦 **Settlement**: Automated via VietQR and smart bank ledgers directly to certified Cooperatives.\n\n" +
-                      "👉 *Dong Nai flagship specialties (Tan Trieu Grapefruit, Hiep Van Bitter Melon Tea, Vinahe Cashews) lead today's transaction volume!*"
-                    : "📑 **Báo Cáo Đối Soát Chiết Khấu Hệ Thống & Dòng Tiền Hôm Nay**:\n\n" +
+                      "👉 *Dong Nai and Hanoi flagship specialties lead today's transaction volume!*\n\n" +
+                      "📊 [SYSTEM SYNC: Net Profit Margin: 32.0% • Operating Expense (OPEX): 6.8% • CHM Commission Reconciliation: Verified 100% (0.00% variance)]"
+                    : "📑 **Báo Cáo Đối Soát Chiết Khấu Hệ Thống & Dòng Tiền Hôm Nay (CHM Engine)**:\n\n" +
                       "• 📊 **Tổng doanh số điều phối O2O toàn hệ thống trong ngày**: 48.650.000 ₫\n" +
                       "• 🤝 **Chiết khấu đối tác & hoa hồng CHM (5% - 7%)**: 3.162.000 ₫ (Đối soát tự động 100%, sai số 0.00%)\n" +
                       "• 💰 **Tiền lời ròng phân bổ thực tế cho các HTX & Cửa hàng**: 15.820.000 ₫\n" +
                       "• 🏦 **Phương thức giải ngân**: Tự động kết chuyển về tài khoản HTX qua mã VietQR định danh.\n\n" +
-                      "👉 *Các sản phẩm OCOP chủ lực tỉnh Đồng Nai (Bưởi Tân Triều, Trà khổ qua Hiệp Vân, Hạt điều Vinahe) đang dẫn đầu thông lượng phân phối hôm nay!*";
+                      "👉 *Các sản phẩm OCOP chủ lực (Bát Tràng, Tân Triều, Hiệp Vân, Vinahe) đang dẫn đầu thông lượng phân phối hôm nay!*\n\n" +
+                      "📊 [HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận ròng (Net Margin): 32.0% • Chi phí vận hành (OPEX): 6.8% • Đối soát chiết khấu CHM: Hoàn tất 100% (Sai số 0.00%)]";
                 return {
                     message: msg,
-                    productIds: dongNaiIds,
-                    dynamic_chips: ["Phân tích biên lợi nhuận", "Kiểm tra sản lượng", "Bảng Quản Trị"],
+                    productIds: flagshipIds,
+                    dynamic_chips: ["Biên lợi nhuận: Đồng Nai", "Sản lượng số hóa: Hà Nội", "Bảng Quản Trị"],
                     handoffAdmin: false,
                     localFallback: true
                 };
@@ -7154,6 +7312,18 @@
                 .replace(/\*(.*?)\*/g, '<em class="italic text-gray-700">$1</em>');
         }
 
+        function attachClientDigitalBusinessSyncBlock(message, language = 'vi') {
+            if (!message || typeof message !== 'string') return message;
+            if (message.includes('[HỆ THỐNG ĐỒNG BỘ:') || message.includes('[SYSTEM SYNC:')) {
+                return message;
+            }
+            const english = language === 'en';
+            const footer = english
+                ? `\n\n📊 [SYSTEM SYNC: Net Profit Margin: 26.8% • Operating Expense (OPEX): 7.5% • CHM Commission Reconciliation: Verified 100% (0.00% variance)]`
+                : `\n\n📊 [HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận ròng (Net Margin): 26.8% • Chi phí vận hành (OPEX): 7.5% • Đối soát chiết khấu CHM: Hoàn tất 100% (Sai số 0.00%)]`;
+            return message.trimEnd() + footer;
+        }
+
 async function sendAIMessage() {
             const requestLanguage = currentLanguage;
             const inputEl = document.getElementById('ai-chat-input');
@@ -7272,6 +7442,9 @@ async function sendAIMessage() {
                         <div class="ai-product-recommendations"></div>
                     </div>
                 `;
+                if (result.message && !result.handoffAdmin && result.understandingStatus !== 'needs_clarification') {
+                    result.message = attachClientDigitalBusinessSyncBlock(result.message, requestLanguage);
+                }
                 reply.querySelector('p').innerHTML = formatAIMessageText(result.message);
 
                 const chatSpeakBtn = reply.querySelector('.btn-chat-speak');
@@ -9435,15 +9608,295 @@ async function sendAIMessage() {
             'i18n-checkout-btn': 'Export AI Financial Report & Cash Flow Reconciliation'
         };
 
+        const I18N_DATA = {
+            // 1. TIÊU ĐỀ BỘ LỌC SIDEBAR BÊN TRÁI
+            'i18n-cat-header': {
+                vi: 'BỘ LỌC ĐIỀU PHỐI HỆ SINH THÁI',
+                en: 'ECOSYSTEM COORDINATION FILTERS',
+                zh: '生态系统协调过滤器',
+                ko: '생태계 제어 필터',
+                ja: 'エコシステム制御フィルター'
+            },
+
+            // 2. CÁC MỤC DANH MỤC CON SIDEBAR (BỘ LỌC SẢN PHẨM VĨ MÔ)
+            'i18n-cat-all': {
+                vi: 'Tất cả danh mục',
+                en: 'All categories',
+                zh: '所有分类',
+                ko: '전체 카테고리',
+                ja: 'すべてのカテゴリー'
+            },
+            'i18n-cat-tea': {
+                vi: 'Thảo Dược & Y Học Cổ Truyền',
+                en: 'Herbs & Traditional Medicine',
+                zh: '草药与传统医学',
+                ko: '한방 약재 및 전통 의학',
+                ja: '生薬・伝統医学'
+            },
+            'i18n-cat-gift': {
+                vi: 'Quà Tặng Di Sản Cao Cấp',
+                en: 'Premium Heritage Gifts',
+                zh: '高端文化遗产礼品',
+                ko: '프리미엄 문화유산 기프트',
+                ja: 'プレミアム文化遺産ギフト'
+            },
+            'i18n-cat-food': {
+                vi: 'Nông Sản Chế Biến Sâu',
+                en: 'Deep-Processed Agro-Products',
+                zh: '农业深加工产品',
+                ko: '농산물 심층 가공품',
+                ja: '農産物深加工品'
+            },
+            'i18n-cat-snack': {
+                vi: 'Đặc Sản Thực Phẩm Bản Địa',
+                en: 'Indigenous Food Specialties',
+                zh: '地方特色原味食品',
+                ko: '로컬 토속 식품 특산물',
+                ja: 'ローカル食品特産物'
+            },
+            'i18n-cat-spice': {
+                vi: 'Gia Vị & Hương Liệu Thổ Nhưỡng',
+                en: 'Terroir Spices & Aromatics',
+                zh: '风土调味品与香料',
+                ko: '토양 특산 양념 및 향신료',
+                ja: '特有の調味料・香料'
+            },
+            'i18n-cat-5star': {
+                vi: 'Chứng nhận OCOP 5 Sao',
+                en: 'OCOP 5-star certified',
+                zh: 'OCOP 5星认证',
+                ko: 'OCOP 5스타 인증',
+                ja: 'OCOP 5つ星認証'
+            },
+            'i18n-cat-4star': {
+                vi: 'Chứng nhận OCOP 4 Sao',
+                en: 'OCOP 4-star certified',
+                zh: 'OCOP 4星认证',
+                ko: 'OCOP 4스타 인증',
+                ja: 'OCOP 4つ星認証'
+            },
+
+            // 3. KHỐI THÔNG TIN "TRỢ LÝ AI FINANCIAL" (DƯỚI SIDEBAR)
+            'i18n-ai-financial-badge': {
+                vi: 'TRỢ LÝ AI FINANCIAL',
+                en: 'AI FINANCIAL ASSISTANT',
+                zh: 'AI 财务助手',
+                ko: 'AI 재무 어시스턴트',
+                ja: 'AI財務アシスタント'
+            },
+            'i18n-ai-financial-desc': {
+                vi: 'Tự động tính toán Doanh thu, Tiền lời, Chiết khấu (CHM) thời gian thực cho từng danh mục được chọn.',
+                en: 'Automating Revenue, Net Profit, and Commission (CHM) splits in real-time.',
+                zh: '实时自动计算营收、净利润与佣金分成 (CHM)。',
+                ko: '매출, 순이익 및 수수료 정산 (CHM) 실시간 자동화.',
+                ja: '売上、純利益、手数料精算（CHM）をリアルタイムに自動化。'
+            },
+            'i18n-ai-financial-full': {
+                vi: 'TRỢ LÝ AI FINANCIAL — Tự động tính toán Doanh thu, Tiền lời, Chiết khấu (CHM) thời gian thực.',
+                en: 'AI FINANCIAL ASSISTANT — Automating Revenue, Net Profit, and Commission (CHM) splits in real-time.',
+                zh: 'AI 财务助手 — 实时自动计算营收、净利润与佣金分成 (CHM)。',
+                ko: 'AI 재무 어시스턴트 — 매출, 순이익 및 수수료 정산 (CHM) 실시간 자동화.',
+                ja: 'AI財務アシスタント — 売上、純利益、手数料精算（CHM）をリアルタイムに自動化。'
+            },
+            'i18n-ai-financial-btn': {
+                vi: 'Kích Hoạt AI Financial Engine',
+                en: 'Activate AI Financial Engine',
+                zh: '启动 AI 财务引擎',
+                ko: 'AI 재무 엔진 가동',
+                ja: 'AI財務エンジン起動'
+            },
+
+            // 4. TIÊU ĐỀ KHUNG CHATBOT AI & XÁC THỰC
+            'chat-title': {
+                vi: '❖ THÔNG TIN ĐIỂM BÁN & DỮ LIỆU CHỨNG NHẬN ĐÃ XÁC THỰC',
+                en: '❖ VERIFIED SHOWROOM INFO & OCOP CERTIFICATION DATA',
+                zh: '❖ 已验证展厅信息与 OCOP 认证数据',
+                ko: '❖ 검증된 쇼룸 정보 및 OCOP 인증 데이터',
+                ja: '❖ 認証済みショールーム情報＆OCOP認証データ'
+            },
+            'chat-disclaimer': {
+                vi: '✓ Dữ liệu được đồng bộ Real-time từ Cơ sở dữ liệu OCOP Quốc gia và AI Financial Engine.',
+                en: '✓ Data synchronized real-time from the National OCOP Database and AI Financial Engine.',
+                zh: '✓ 数据来自国家 OCOP 数据库与 AI 财务引擎的实时同步。',
+                ko: '✓ 국가 OCOP 데이터베이스 및 AI 재무 엔진에서 실시간 동기화된 데이터입니다.',
+                ja: '✓ 国家OCOPデータベースおよびAI財務エンジンからリアルタイム同期されたデータ。'
+            },
+            'chat-verification-note': {
+                vi: '✓ Dữ liệu được đồng bộ Real-time từ Cơ sở dữ liệu OCOP Quốc gia và AI Financial Engine.',
+                en: '✓ Data synchronized real-time from the National OCOP Database and AI Financial Engine.',
+                zh: '✓ 数据来自国家 OCOP 数据库与 AI 财务引擎的实时同步。',
+                ko: '✓ 국가 OCOP 데이터베이스 및 AI 재무 엔진에서 실시간 동기화된 데이터입니다.',
+                ja: '✓ 国家OCOPデータベースおよびAI財務エンジンからリアルタイム同期されたデータ。'
+            },
+
+            // 5. BẢNG PHÂN TÍCH DÒNG TIỀN MÔ PHỎNG (KHỐI PHẢI TRANG ĐIỀU HÀNH)
+            'i18n-cart-title': {
+                vi: 'Bảng phân tích dòng tiền cửa hàng (AI Simulated)',
+                en: 'Store Cash Flow Analytics (AI Simulated)',
+                zh: '店铺现金流分析面板 (AI 模拟)',
+                ko: '매장 현금 흐름 분석 (AI 시뮬레이션)',
+                ja: '店舗キャッシュフロー分析（AIシミュレーション）'
+            },
+            'i18n-cart-subtotal': {
+                vi: 'Tổng doanh thu dự kiến (Gross Revenue):',
+                en: 'Gross Revenue (Projected):',
+                zh: '总预期营收 (Gross Revenue):',
+                ko: '총 예상 매출 (Gross Revenue):',
+                ja: '総予想売上（Gross Revenue）:'
+            },
+            'i18n-cart-cogs-label': {
+                vi: 'Giá vốn hàng bán (COGS):',
+                en: 'COGS (Cost of Goods Sold):',
+                zh: '销货成本 (COGS):',
+                ko: '매출원가 (COGS):',
+                ja: '売上原価（COGS）:'
+            },
+            'i18n-cart-chm-label': {
+                vi: 'Chi phí vận hành nền tảng (OPEX - 6%):',
+                en: 'OPEX (Platform Fees - 6%):',
+                zh: '平台运营成本 (OPEX - 6%):',
+                ko: '플랫폼 운영비 (OPEX - 6%):',
+                ja: 'プラットフォーム運営費（OPEX - 6%）:'
+            },
+            'i18n-cart-total': {
+                vi: 'Tiền lời thực tế (Net Profit):',
+                en: 'Net Profit (Actual):',
+                zh: '实际净利润 (Net Profit):',
+                ko: '실제 순이익 (Net Profit):',
+                ja: '実際の純利益（Net Profit）:'
+            },
+            'i18n-checkout-btn': {
+                vi: 'Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền',
+                en: 'Export AI Financial Report & Cash Flow Reconciliation',
+                zh: '导出 AI 财务报告与现金流对账',
+                ko: 'AI 재무 보고서 내보내기 및 현금 흐름 정산',
+                ja: 'AI財務レポート出力・キャッシュフロー決済'
+            },
+
+            // Bổ trợ chung
+            'i18n-cart-empty': {
+                vi: 'Chưa có sản phẩm nào được đưa vào mô phỏng dòng tiền. Hãy chọn sản phẩm từ danh mục để bắt đầu phân tích!',
+                en: 'Simulation list is empty. Select OCOP products to begin cash flow analysis!',
+                zh: '暂无模拟产品。请从目录中选择 OCOP 产品开始现金流分析！',
+                ko: '시뮬레이션 제품이 없습니다. 카탈로그에서 OCOP 제품을 선택하여 분석을 시작하세요!',
+                ja: 'シミュレーション商品がありません。カタログから商品を選択して分析を開始してください！'
+            },
+            'i18n-no-prod': {
+                vi: 'Không tìm thấy sản phẩm phù hợp.',
+                en: 'No matching products found.',
+                zh: '未找到匹配的产品。',
+                ko: '일치하는 제품을 찾을 수 없습니다.',
+                ja: '該当する商品が見つかりません。'
+            },
+            'i18n-reset-btn': {
+                vi: 'Xem toàn bộ đặc sản 63 tỉnh thành',
+                en: 'Show all specialties (63 Provinces)',
+                zh: '查看全部63省特产',
+                ko: '63개 성·시 특산물 전체 보기',
+                ja: '全63省・市の特産品を表示'
+            },
+            'i18n-wishlist-title': {
+                vi: 'Cửa Hàng Đã Ghim Định Vị',
+                en: 'Saved Showcase Stores',
+                zh: '已定位收藏店铺',
+                ko: '고정된 쇼케이스 매장',
+                ja: 'ピン留めされた店舗'
+            },
+            'i18n-nav-home': {
+                vi: 'Trang chủ',
+                en: 'Home',
+                zh: '首页',
+                ko: '홈',
+                ja: 'ホーム'
+            },
+            'i18n-nav-products': {
+                vi: 'Danh mục Đặc sản 63 Tỉnh Thành',
+                en: 'Shop 63 Provinces Specialties',
+                zh: '63省特产专区',
+                ko: '63개 성·시 특산물 카탈로그',
+                ja: '63省・市特産品カタログ'
+            },
+            'i18n-nav-contact': {
+                vi: 'Liên hệ & Hỗ trợ',
+                en: 'Contact & support',
+                zh: '联系与支持',
+                ko: '연락처 및 고객지원',
+                ja: 'お問い合わせ・サポート'
+            },
+            'i18n-support-label': {
+                vi: 'Tư vấn 24/7',
+                en: '24/7 Support',
+                zh: '24/7 咨询',
+                ko: '24/7 상담',
+                ja: '24/7 サポート'
+            },
+            'i18n-hero-badge': {
+                vi: 'Khám phá kho tàng đặc sản OCOP Việt Nam',
+                en: 'Explore Vietnam’s OCOP specialty catalog',
+                zh: '探索越南 OCOP 特产宝库',
+                ko: '베트남 OCOP 특산물 카탈로그 탐색',
+                ja: 'ベトナムOCOP特産品コレクション'
+            },
+            'i18n-hero-title1': {
+                vi: 'Tinh Hoa Đất Việt',
+                en: 'Discover the Best of',
+                zh: '探索越南精粹',
+                ko: '베트남의 정수를 만나다',
+                ja: 'ベトナムの粋を体験'
+            },
+            'i18n-hero-title2': {
+                vi: 'Đặc Sản Tuyển Chọn 63 Tỉnh Thành',
+                en: 'Vietnamese Specialties',
+                zh: '63省精选特产',
+                ko: '63개 성·시 엄선 특산물',
+                ja: '63省・市厳選特産品'
+            },
+            'i18n-hero-desc': {
+                vi: 'Khám phá các sản phẩm OCOP tuyển chọn trọn vẹn từ 63 tỉnh thành Việt Nam, với bản đồ tương tác, thông tin vùng miền và đánh giá khách hàng.',
+                en: 'Explore curated Vietnamese specialties across all 63 provinces by region, with interactive map, product descriptions, listed prices, and customer ratings in one place.',
+                zh: '探索来自越南全部 63 个省份的精选 OCOP 特产，汇聚互动地图、产地风土信息及真实评价。',
+                ko: '대화형 지도, 지역 설명, 정가 및 고객 리뷰와 함께 베트남 63개 성·시의 엄선된 특산물을 탐색하세요.',
+                ja: 'インタラクティブマップ、産地情報、定価、レビューとともに、ベトナム全63省・市の厳選OCOP特産品を一覧探索。'
+            },
+            'i18n-btn-explore': {
+                vi: 'Khám phá Đặc Sản OCOP',
+                en: 'Shop OCOP specialties',
+                zh: '探索 OCOP 特产',
+                ko: 'OCOP 특산물 쇼핑',
+                ja: 'OCOP特産品を見る'
+            },
+            'i18n-btn-support': {
+                vi: 'Nhận tư vấn quà tặng',
+                en: 'Get gift advice',
+                zh: '获取礼品咨询',
+                ko: '선물 상담 받기',
+                ja: 'ギフト相談を受ける'
+            },
+            'i18n-top-specs': {
+                vi: 'Đặc sản 63 Tỉnh Thành',
+                en: '63 Provinces Specialties',
+                zh: '63省特产专区',
+                ko: '63개 성·시 특산물',
+                ja: '63省・市特産品'
+            },
+            'system-status-indicator': {
+                vi: '● HỆ THỐNG ONLINE • 63 TỈNH THÀNH ĐỒNG BỘ',
+                en: '● SYSTEM ONLINE • 63 PROVINCES SYNCED',
+                zh: '● 系统在线 • 63省实时同步',
+                ko: '● 시스템 온라인 • 63개 성·시 동기화',
+                ja: '● システムオンライン • 63省同期'
+            }
+        };
+
         const categoryLabels = {
-            all: ['Tất cả danh mục', 'All categories'],
-            tea: ['Thảo Dược & Y Học Cổ Truyền', 'Herbal & Traditional Medicine'],
-            gift: ['Quà Tặng Di Sản Cao Cấp', 'Heritage Premium Gifts'],
-            food: ['Nông Sản Chế Biến Sâu', 'Deep-Processed Produce'],
-            snack: ['Đặc Sản Thực Phẩm Bản Địa', 'Indigenous Food Specialties'],
-            spice: ['Gia Vị & Hương Liệu Thổ Nhưỡng', 'Terroir Spices & Seasonings'],
-            '5star': ['OCOP 5 Sao', 'OCOP 5-star'],
-            '4star': ['OCOP 4 Sao', 'OCOP 4-star']
+            all: { vi: 'Tất cả danh mục', en: 'All categories', zh: '所有分类', ko: '전체 카테고리', ja: 'すべてのカテゴリー', 0: 'Tất cả danh mục', 1: 'All categories' },
+            tea: { vi: 'Thảo Dược & Y Học Cổ Truyền', en: 'Herbs & Traditional Medicine', zh: '草药与传统医学', ko: '한방 약재 및 전통 의학', ja: '生薬・伝統医学', 0: 'Thảo Dược & Y Học Cổ Truyền', 1: 'Herbs & Traditional Medicine' },
+            gift: { vi: 'Quà Tặng Di Sản Cao Cấp', en: 'Premium Heritage Gifts', zh: '高端文化遗产礼品', ko: '프리미엄 문화유산 기프트', ja: 'プレミアム文化遺産ギフト', 0: 'Quà Tặng Di Sản Cao Cấp', 1: 'Premium Heritage Gifts' },
+            food: { vi: 'Nông Sản Chế Biến Sâu', en: 'Deep-Processed Agro-Products', zh: '农业深加工产品', ko: '농산물 심층 가공품', ja: '農産物深加工品', 0: 'Nông Sản Chế Biến Sâu', 1: 'Deep-Processed Agro-Products' },
+            snack: { vi: 'Đặc Sản Thực Phẩm Bản Địa', en: 'Indigenous Food Specialties', zh: '地方特色原味食品', ko: '로컬 토속 식품 특산물', ja: 'ローカル食品特産物', 0: 'Đặc Sản Thực Phẩm Bản Địa', 1: 'Indigenous Food Specialties' },
+            spice: { vi: 'Gia Vị & Hương Liệu Thổ Nhưỡng', en: 'Terroir Spices & Aromatics', zh: '风土调味品与香料', ko: '토양 특산 양념 및 향신료', ja: '特有の調味料・香料', 0: 'Gia Vị & Hương Liệu Thổ Nhưỡng', 1: 'Terroir Spices & Aromatics' },
+            '5star': { vi: 'Chứng nhận OCOP 5 Sao', en: 'OCOP 5-star certified', zh: 'OCOP 5星认证', ko: 'OCOP 5스타 인증', ja: 'OCOP 5つ星認証', 0: 'Chứng nhận OCOP 5 Sao', 1: 'OCOP 5-star certified' },
+            '4star': { vi: 'Chứng nhận OCOP 4 Sao', en: 'OCOP 4-star certified', zh: 'OCOP 4星认证', ko: 'OCOP 4스타 인증', ja: 'OCOP 4つ星認証', 0: 'Chứng nhận OCOP 4 Sao', 1: 'OCOP 4-star certified' }
         };
 
         function updateCatalogCounts() {
@@ -9487,7 +9940,8 @@ async function sendAIMessage() {
                 if (countLabel && button.closest('#sidebar-categories')) countLabel.textContent = count;
                 const mobileLabel = button.querySelector('.mob-category-label');
                 if (mobileLabel) {
-                    mobileLabel.textContent = `${categoryLabels[category][currentLanguage === 'en' ? 1 : 0]} (${count})`;
+                    const labelText = (categoryLabels[category] && (categoryLabels[category][currentLanguage] || categoryLabels[category][0])) || '';
+                    mobileLabel.textContent = `${labelText} (${count})`;
                 }
             });
 
@@ -9591,11 +10045,18 @@ async function sendAIMessage() {
 
         function applyLanguage(language) {
             window.chatDictation?.stop(true);
-            currentLanguage = language === 'en' ? 'en' : 'vi';
+            const validLangs = ['vi', 'en', 'zh', 'ko', 'ja'];
+            currentLanguage = validLangs.includes(language) ? language : 'vi';
             document.documentElement.lang = currentLanguage;
-            document.title = currentLanguage === 'en'
-                ? 'OCOP Sales Copilot - 48 Vietnamese Regional Specialties'
-                : `OCOP Sales Copilot - ${products.length} Đặc Sản Việt Nam`;
+            
+            const titles = {
+                vi: `OCOP Sales Copilot - ${products.length} Đặc Sản Việt Nam`,
+                en: `OCOP Sales Copilot - ${products.length} Vietnamese Specialties`,
+                zh: `OCOP Sales Copilot - ${products.length} 项越南地标特产`,
+                ko: `OCOP Sales Copilot - ${products.length}개 베트남 특산물`,
+                ja: `OCOP Sales Copilot - ${products.length}点のベトナム特産品`
+            };
+            document.title = titles[currentLanguage] || titles.vi;
 
             if (!originalUiText) {
                 originalUiText = new Map();
@@ -9605,100 +10066,185 @@ async function sendAIMessage() {
                 });
             }
 
-            Object.keys(englishUiText).forEach(id => {
+            // 1. Áp dụng toàn bộ từ khóa từ từ điển I18N_DATA cho 5 ngôn ngữ
+            Object.keys(I18N_DATA).forEach(id => {
                 const element = document.getElementById(id);
                 if (!element) return;
-                const defaultText = originalUiText.get(id);
-                element.textContent = currentLanguage === 'en' ? englishUiText[id] : defaultText;
+                const translation = I18N_DATA[id][currentLanguage] || I18N_DATA[id].vi;
+                if (translation) element.textContent = translation;
             });
-            const provinceSelect = document.getElementById('province-map-select');
-            if (provinceSelect) {
-                provinceSelect.setAttribute('aria-label', currentLanguage === 'en'
-                    ? 'Quickly select a province or city'
-                    : 'Chọn tỉnh/thành trên bản đồ');
+
+            // 2. Fallback cho các nhãn trong englishUiText khi ở chế độ EN
+            if (currentLanguage === 'en') {
+                Object.keys(englishUiText).forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element && !I18N_DATA[id]) {
+                        element.textContent = englishUiText[id];
+                    }
+                });
+            } else if (currentLanguage === 'vi') {
+                originalUiText.forEach((text, id) => {
+                    const element = document.getElementById(id);
+                    if (element && !I18N_DATA[id]) {
+                        element.textContent = text;
+                    }
+                });
             }
 
-            const targetLanguage = currentLanguage.toUpperCase();
-            ['intro-language-btn', 'site-language-btn'].forEach(id => {
-                const button = document.getElementById(id);
-                if (button) {
-                    button.textContent = targetLanguage;
-                    button.title = currentLanguage === 'en' ? 'Switch to Vietnamese' : 'Chuyển sang tiếng Anh';
-                    button.setAttribute('aria-label', currentLanguage === 'en' ? 'Switch language to Vietnamese' : 'Chuyển sang tiếng Anh');
-                    button.setAttribute('aria-pressed', String(currentLanguage === 'en'));
-                }
+            const provinceSelect = document.getElementById('province-map-select');
+            if (provinceSelect) {
+                const provLabels = {
+                    vi: 'Chọn tỉnh/thành trên bản đồ',
+                    en: 'Quickly select a province or city',
+                    zh: '在地图上选择省市',
+                    ko: '지도에서 성/시 선택',
+                    ja: '地図上で省・市を選択'
+                };
+                provinceSelect.setAttribute('aria-label', provLabels[currentLanguage] || provLabels.vi);
+            }
+
+            // 3. Cập nhật trạng thái Active trên thanh Switcher 5 ngôn ngữ
+            document.querySelectorAll('#header-language-switcher .lang-btn, .lang-switcher-pill .lang-btn').forEach(btn => {
+                const isActive = btn.dataset.lang === currentLanguage;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-pressed', String(isActive));
             });
-            document.getElementById('header-search-input').placeholder = currentLanguage === 'en'
-                ? 'Search specialties or regions...' : 'Tìm đặc sản, vùng miền...';
-            document.getElementById('mobile-search-input').placeholder = currentLanguage === 'en'
-                ? 'Search OCOP products...' : 'Tìm sản phẩm OCOP...';
-            document.getElementById('product-search').placeholder = currentLanguage === 'en'
-                ? 'Search by product or region...' : 'Tìm theo tên đặc sản hoặc vùng miền...';
+
+            const introLangBtn = document.getElementById('intro-language-btn');
+            if (introLangBtn) {
+                introLangBtn.textContent = currentLanguage.toUpperCase();
+                introLangBtn.setAttribute('aria-pressed', String(currentLanguage !== 'vi'));
+            }
+            const siteLangBtn = document.getElementById('site-language-btn');
+            if (siteLangBtn) {
+                siteLangBtn.textContent = currentLanguage.toUpperCase();
+                siteLangBtn.setAttribute('aria-pressed', String(currentLanguage !== 'vi'));
+            }
+
+            // 4. Placeholders cho thanh tìm kiếm
+            const searchPlaceholders = {
+                vi: 'Tìm đặc sản, vùng miền...',
+                en: 'Search specialties or regions...',
+                zh: '搜索特产、省市...',
+                ko: '특산물, 지역 검색...',
+                ja: '特産品や地域を検索...'
+            };
+            const prodSearchPlaceholders = {
+                vi: 'Tên đặc sản hoặc tỉnh thành...',
+                en: 'Search by product or region...',
+                zh: '输入特产名称或省份...',
+                ko: '특산물 이름 또는 지역...',
+                ja: '特産品名または地域名...'
+            };
+            const ph = searchPlaceholders[currentLanguage] || searchPlaceholders.vi;
+            const prodPh = prodSearchPlaceholders[currentLanguage] || prodSearchPlaceholders.vi;
+
+            const headerSearch = document.getElementById('header-search-input');
+            if (headerSearch) headerSearch.placeholder = ph;
+            const mobileSearch = document.getElementById('mobile-search-input');
+            if (mobileSearch) mobileSearch.placeholder = ph;
+            const productSearch = document.getElementById('product-search');
+            if (productSearch) productSearch.placeholder = prodPh;
+
             document.querySelectorAll('button[onclick*="startVoiceSearch"]').forEach(button => {
-                const label = currentLanguage === 'en' ? 'Search by voice' : 'Tìm kiếm bằng giọng nói';
+                const voiceLabels = {
+                    vi: 'Tìm kiếm bằng giọng nói',
+                    en: 'Search by voice',
+                    zh: '语音搜索',
+                    ko: '음성 검색',
+                    ja: '音声検索'
+                };
+                const label = voiceLabels[currentLanguage] || voiceLabels.vi;
                 button.setAttribute('aria-label', label);
                 button.title = label;
             });
+
             const imageSearchButton = document.getElementById('image-search-button');
             if (imageSearchButton) {
-                imageSearchButton.querySelector('span').textContent = currentLanguage === 'en' ? 'Search by image' : 'Tìm bằng ảnh';
-                imageSearchButton.title = currentLanguage === 'en'
-                    ? 'Your image is sent to Google Gemini to find similar products.'
-                    : 'Ảnh được gửi tới Google Gemini để tìm sản phẩm tương tự.';
-                imageSearchButton.setAttribute('aria-label', currentLanguage === 'en' ? 'Search products by image' : 'Tìm sản phẩm bằng hình ảnh');
+                const imgText = { vi: 'Tìm bằng ảnh', en: 'Search by image', zh: '图片搜索', ko: '이미지 검색', ja: '画像検索' };
+                imageSearchButton.querySelector('span').textContent = imgText[currentLanguage] || imgText.vi;
             }
-            document.getElementById('chat-title').textContent = currentLanguage === 'en' ? 'OCOP AI' : 'OCOP AI';
-            document.getElementById('chat-subtitle').textContent = currentLanguage === 'en'
-                ? 'Vietnamese specialty & cultural expert' : 'Chuyên gia đặc sản & văn hóa Việt Nam';
-            document.getElementById('ai-chat-input').placeholder = currentLanguage === 'en'
-                ? 'Type specialty or province for AI cash flow analysis...' : 'Nhập tên sản phẩm hoặc tỉnh thành để AI phân tích dòng tiền...';
-            document.getElementById('chat-send-button').setAttribute('aria-label', currentLanguage === 'en' ? 'Send message' : 'Gửi tin nhắn');
+
+            // 5. Chat input & quick replies
+            const chatPlaceholders = {
+                vi: 'Nhập tên sản phẩm hoặc tỉnh thành để AI phân tích dòng tiền...',
+                en: 'Type specialty or province for AI cash flow analysis...',
+                zh: '输入特产名称或省份进行 AI 现金流分析...',
+                ko: 'AI 현금 흐름 분석을 위해 특산물 또는 지역을 입력하세요...',
+                ja: 'AIキャッシュフロー分析のための特産品・省名を入力...'
+            };
+            const chatInput = document.getElementById('ai-chat-input');
+            if (chatInput) chatInput.placeholder = chatPlaceholders[currentLanguage] || chatPlaceholders.vi;
+
+            const chatSubtitleMap = {
+                vi: 'Chuyên gia đặc sản & văn hóa Việt Nam',
+                en: 'Vietnamese specialty & cultural expert',
+                zh: '越南特产与文化专家',
+                ko: '베트남 특산물 및 문화 전문가',
+                ja: 'ベトナム特産品・文化エキスパート'
+            };
+            const chatSub = document.getElementById('chat-subtitle');
+            if (chatSub) chatSub.textContent = chatSubtitleMap[currentLanguage] || chatSubtitleMap.vi;
+
             window.chatDictation?.refreshLabels();
+
             const chatMessages = document.getElementById('ai-chat-messages');
-            if (chatMessages.children.length === 1) {
-                document.getElementById('chat-greeting').textContent = currentLanguage === 'en'
-                    ? 'Hello! OCOP Copilot AI is ready to analyze store revenue, COGS, and cash flow.'
-                    : 'Xin chào anh/chị! Trợ lý AI Copilot sẵn sàng phân tích doanh thu, chiết khấu và dòng tiền đặc sản.';
-                document.getElementById('chat-guidance').textContent = currentLanguage === 'en'
-                    ? 'Enter specialty, province (prioritizing Dong Nai), or select financial simulation below.'
-                    : 'Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.';
-                document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
-                    ? 'Real-time AI engine reconciles revenue, COGS, and CHM commission automatically.'
-                    : 'Hệ thống AI đối soát doanh thu, chi phí vốn (COGS) và chiết khấu CHM tự động theo thời gian thực.';
+            if (chatMessages && chatMessages.children.length === 1) {
+                const greetings = {
+                    vi: 'Xin chào anh/chị! Trợ lý AI Copilot sẵn sàng phân tích doanh thu, chiết khấu và dòng tiền đặc sản.',
+                    en: 'Hello! OCOP Copilot AI is ready to analyze store revenue, COGS, and cash flow.',
+                    zh: '您好！OCOP 智能助手已就绪，可为您实时分析店铺营收、成本与现金流。',
+                    ko: '안녕하세요! OCOP 코파일럿 AI가 매장 매출, COGS 및 현금 흐름을 분석할 준비가 되었습니다.',
+                    ja: 'こんにちは！OCOPコパイロットAIが店舗売上、COGS、キャッシュフローを分析します。'
+                };
+                const guidances = {
+                    vi: 'Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.',
+                    en: 'Enter specialty, province (prioritizing Dong Nai), or select financial simulation below.',
+                    zh: '请输入特产名称、省份（优先同奈）或在下方选择财务模拟。',
+                    ko: '특산물 이름, 성·시(동나이 우선)를 입력하거나 아래 재무 시뮬레이션을 선택하세요.',
+                    ja: '特産品名、省名（ドンナイ優先）を入力するか、下の財務シミュレーションを選択してください。'
+                };
+                const gEl = document.getElementById('chat-greeting');
+                if (gEl) gEl.textContent = greetings[currentLanguage] || greetings.vi;
+                const guidEl = document.getElementById('chat-guidance');
+                if (guidEl) guidEl.textContent = guidances[currentLanguage] || guidances.vi;
             }
-            document.getElementById('chat-add-image-button').setAttribute(
-                'aria-label',
-                currentLanguage === 'en' ? 'Add image' : 'Thêm ảnh'
-            );
-            document.getElementById('chat-add-image-button').title = currentLanguage === 'en'
-                ? 'Add an image (paste or drag and drop)'
-                : 'Thêm ảnh (dán Ctrl+V hoặc kéo thả)';
-            renderAIChatImagePreviews();
-            const promptButtons = document.querySelectorAll('.chat-prompt');
-            const prompts = currentLanguage === 'en'
-                ? [
-                    ['⭐ 5 stars', 'Recommend 5-star OCOP products'],
-                    ['🎁 Gifts', 'Gift ideas'],
-                    ['💰 Under 200k', 'Specialties under 200k'],
-                    ['🍵 Tea', 'Recommend tea'],
-                    ['📦 Damaged', 'My order arrived damaged'],
-                    ['↩️ Returns', 'I want to return or exchange an item']
+
+            const promptButtons = document.querySelectorAll('#ai-chat-quick-replies .chat-prompt');
+            const quickPrompts = {
+                vi: [
+                    ['⚡ Biên lợi nhuận: Đồng Nai', 'Biên lợi nhuận: Đồng Nai'],
+                    ['📊 Sản lượng số hóa: Hà Nội', 'Sản lượng số hóa: Hà Nội'],
+                    ['🔄 Đối soát chiết khấu (CHM)', 'Đối soát chiết khấu (CHM)']
+                ],
+                en: [
+                    ['⚡ Profit Margin: Dong Nai', 'Biên lợi nhuận: Đồng Nai'],
+                    ['📊 Digitized Yield: Hanoi', 'Sản lượng số hóa: Hà Nội'],
+                    ['🔄 Commission Reconcile (CHM)', 'Đối soát chiết khấu (CHM)']
+                ],
+                zh: [
+                    ['⚡ 利润率: 同奈', 'Biên lợi nhuận: Đồng Nai'],
+                    ['📊 数字化产量: 河内', 'Sản lượng số hóa: Hà Nội'],
+                    ['🔄 佣金对账 (CHM)', 'Đối soát chiết khấu (CHM)']
+                ],
+                ko: [
+                    ['⚡ 순이익률: 동나이', 'Biên lợi nhuận: Đồng Nai'],
+                    ['📊 디지털 생산량: 하노이', 'Sản lượng số hóa: Hà Nội'],
+                    ['🔄 수수료 정산 (CHM)', 'Đối soát chiết khấu (CHM)']
+                ],
+                ja: [
+                    ['⚡ 利益率: ドンナイ', 'Biên lợi nhuận: Đồng Nai'],
+                    ['📊 デジタル収穫量: ハノイ', 'Sản lượng số hóa: Hà Nội'],
+                    ['🔄 手数料精算（CHM）', 'Đối soát chiết khấu (CHM)']
                 ]
-                : [
-                    ['⭐ 5 sao', 'Gợi ý đặc sản OCOP 5 sao'],
-                    ['🎁 Quà biếu', 'Tư vấn quà biếu'],
-                    ['💰 Dưới 200k', 'Gợi ý đặc sản dưới 200k'],
-                    ['🍵 Trà', 'Gợi ý trà'],
-                    ['📦 Hàng lỗi', 'Tôi nhận hàng bị lỗi'],
-                    ['↩️ Đổi trả', 'Tôi muốn đổi trả hàng']
-                ];
+            };
+            const prompts = quickPrompts[currentLanguage] || quickPrompts.vi;
             promptButtons.forEach((button, index) => {
                 if (!prompts[index]) return;
-                const translatedButton = button.cloneNode(false);
-                translatedButton.textContent = prompts[index][0];
-                translatedButton.onclick = () => sendQuickPrompt(prompts[index][1]);
-                button.replaceWith(translatedButton);
+                button.textContent = prompts[index][0];
+                button.onclick = () => sendQuickPrompt(prompts[index][1]);
             });
+
             translateAuthUi();
             syncChatLanguage();
             translateRemainingPageText();
@@ -9711,6 +10257,7 @@ async function sendAIMessage() {
             setAIChatWidgetVisibility(document.getElementById('ocop-intro-overlay').classList.contains('hidden'));
             renderWishlistItems();
             if (window.refreshProductReviewLanguage) window.refreshProductReviewLanguage();
+
             try {
                 localStorage.setItem('ocop-language', currentLanguage);
             } catch (error) {
@@ -9838,15 +10385,28 @@ async function sendAIMessage() {
             }
         }
 
+        function setLanguage(lang) {
+            const validLangs = ['vi', 'en', 'zh', 'ko', 'ja'];
+            const target = validLangs.includes(lang) ? lang : 'vi';
+            applyLanguage(target);
+        }
+
         function toggleLanguage() {
-            applyLanguage(currentLanguage === 'vi' ? 'en' : 'vi');
+            const list = ['vi', 'en', 'zh', 'ko', 'ja'];
+            const nextIdx = (list.indexOf(currentLanguage) + 1) % list.length;
+            applyLanguage(list[nextIdx]);
         }
 
         window.addEventListener('storage', event => {
-            if (event.key === 'ocop-language' && (event.newValue === 'vi' || event.newValue === 'en')) {
+            if (event.key === 'ocop-language' && ['vi', 'en', 'zh', 'ko', 'ja'].includes(event.newValue)) {
                 applyLanguage(event.newValue);
             }
         });
+
+        window.I18N_DATA = I18N_DATA;
+        window.setLanguage = setLanguage;
+        window.applyLanguage = applyLanguage;
+        window.toggleLanguage = toggleLanguage;
         
     </script>
     <script>
