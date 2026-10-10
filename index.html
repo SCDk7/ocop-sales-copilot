@@ -348,6 +348,101 @@
             }
         }
 
+        /* ============================================================= */
+        /* RECTANGULAR LANGUAGE DROPDOWN UI (DEEP TECH)                  */
+        /* ============================================================= */
+        .lang-dropdown-container {
+            position: relative !important;
+            display: inline-block !important;
+            user-select: none !important;
+        }
+        .lang-dropdown-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            border-radius: 6px !important;
+            padding: 6px 12px !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            border: 1px solid rgba(212, 175, 55, 0.4) !important;
+            color: #fef08a !important;
+            font-size: 12px !important;
+            font-weight: 800 !important;
+            cursor: pointer !important;
+            outline: none !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            white-space: nowrap !important;
+        }
+        .lang-dropdown-btn:hover {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-color: rgba(212, 175, 55, 0.85) !important;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.35) !important;
+            color: #ffffff !important;
+            transform: translateY(-1px) !important;
+        }
+        .lang-dropdown-btn:active {
+            transform: scale(0.97) !important;
+        }
+        .lang-dropdown-menu {
+            position: absolute !important;
+            top: 100% !important;
+            right: 0 !important;
+            z-index: 999 !important;
+            margin-top: 8px !important;
+            min-width: 175px !important;
+            border-radius: 8px !important;
+            background: #111827 !important;
+            border: 1px solid rgba(212, 175, 55, 0.35) !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.2) !important;
+            padding: 6px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 3px !important;
+        }
+        .lang-dropdown-menu.hidden {
+            display: none !important;
+        }
+        .lang-dropdown-item {
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 8px 12px !important;
+            border-radius: 6px !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            color: #e2e8f0 !important;
+            background: transparent !important;
+            border: 1px solid transparent !important;
+            transition: all 0.2s ease !important;
+            cursor: pointer !important;
+            text-align: left !important;
+        }
+        .lang-dropdown-item:hover {
+            background: #0f2b1d !important;
+            border-color: rgba(16, 185, 129, 0.5) !important;
+            color: #d4af37 !important;
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.5) !important;
+        }
+        .lang-dropdown-item.active {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: rgba(16, 185, 129, 0.6) !important;
+            color: #fbbf24 !important;
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.6) !important;
+        }
+        .lang-dropdown-item .item-code {
+            font-weight: 900 !important;
+            letter-spacing: 0.5px !important;
+            color: #fbbf24 !important;
+        }
+        .lang-dropdown-item .item-label {
+            font-weight: 600 !important;
+            opacity: 0.85 !important;
+        }
+
         #product-grid .product-card * { will-change: auto !important; }
         #scroll-ambient-background { display: none; }
         body.catalog-browsing > main *,
@@ -2000,9 +2095,37 @@
                     <i class="fa-solid fa-volume-xmark text-gray-400" id="intro-sound-icon"></i>
                     <span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">Nhạc: Tắt</span>
                 </button>
-                <button type="button" id="intro-language-btn" onclick="toggleLanguage()" class="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-800 text-amber-200 hover:text-white font-black text-xs border border-amber-400/60 shadow-md flex items-center justify-center transition hover:scale-105 cursor-pointer" title="Chuyển ngôn ngữ" aria-label="Chuyển ngôn ngữ" aria-pressed="false">
-                    VI
-                </button>
+                <!-- Nút chọn ngôn ngữ hình chữ nhật & Dropdown cao cấp -->
+                <div class="lang-dropdown-container" id="intro-lang-dropdown-container">
+                    <button type="button" id="intro-lang-dropdown-btn" onclick="toggleLanguageDropdown(event, 'intro-lang-dropdown-menu')" class="lang-dropdown-btn" aria-haspopup="true" aria-expanded="false" title="Chọn ngôn ngữ / Select Language">
+                        <i class="fa-solid fa-globe text-amber-300 text-xs"></i>
+                        <span class="current-lang-code">VI</span>
+                        <i class="fa-solid fa-chevron-down text-[9px] text-amber-300/80"></i>
+                    </button>
+                    <div id="intro-lang-dropdown-menu" class="lang-dropdown-menu hidden" role="menu">
+                        <button type="button" onclick="changeLanguage('vi')" class="lang-dropdown-item active" data-lang="vi" role="menuitem">
+                            <span class="item-code">VI</span>
+                            <span class="item-label">Tiếng Việt</span>
+                        </button>
+                        <button type="button" onclick="changeLanguage('en')" class="lang-dropdown-item" data-lang="en" role="menuitem">
+                            <span class="item-code">EN</span>
+                            <span class="item-label">English</span>
+                        </button>
+                        <button type="button" onclick="changeLanguage('zh')" class="lang-dropdown-item" data-lang="zh" role="menuitem">
+                            <span class="item-code">ZH</span>
+                            <span class="item-label">中文</span>
+                        </button>
+                        <button type="button" onclick="changeLanguage('ko')" class="lang-dropdown-item" data-lang="ko" role="menuitem">
+                            <span class="item-code">KO</span>
+                            <span class="item-label">한국어</span>
+                        </button>
+                        <button type="button" onclick="changeLanguage('ja')" class="lang-dropdown-item" data-lang="ja" role="menuitem">
+                            <span class="item-code">JA</span>
+                            <span class="item-label">日本語</span>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" id="intro-language-btn" onclick="toggleLanguage()" class="hidden" aria-hidden="true" tabindex="-1">VI</button>
                 <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="intro-mega-btn px-4 py-1.5 rounded-full text-xs font-black transition flex items-center space-x-1.5 shadow-md cursor-pointer">
                     <span id="i18n-intro-skip">Bảng Quản Trị (Dashboard) -></span>
                 </button>
@@ -2267,18 +2390,37 @@
             </nav>
 
             <!-- Quick Action Icons -->
-                <!-- 5-Language Switcher Pill (VI | EN | ZH | KO | JA) -->
-                <div id="header-language-switcher" class="lang-switcher-pill" role="group" aria-label="Language Selector">
-                    <button type="button" data-lang="vi" onclick="setLanguage('vi')" class="lang-btn active" title="Tiếng Việt (VI)" aria-label="Tiếng Việt">VI</button>
-                    <span class="lang-divider" aria-hidden="true">|</span>
-                    <button type="button" data-lang="en" onclick="setLanguage('en')" class="lang-btn" title="English (EN)" aria-label="English">EN</button>
-                    <span class="lang-divider" aria-hidden="true">|</span>
-                    <button type="button" data-lang="zh" onclick="setLanguage('zh')" class="lang-btn" title="中文 (ZH)" aria-label="Chinese">ZH</button>
-                    <span class="lang-divider" aria-hidden="true">|</span>
-                    <button type="button" data-lang="ko" onclick="setLanguage('ko')" class="lang-btn" title="한국어 (KO)" aria-label="Korean">KO</button>
-                    <span class="lang-divider" aria-hidden="true">|</span>
-                    <button type="button" data-lang="ja" onclick="setLanguage('ja')" class="lang-btn" title="日本語 (JA)" aria-label="Japanese">JA</button>
+                <!-- Rectangular Language Dropdown (VI | EN | ZH | KO | JA) -->
+                <div class="lang-dropdown-container" id="header-lang-dropdown-container">
+                    <button type="button" id="header-lang-dropdown-btn" onclick="toggleLanguageDropdown(event, 'header-lang-dropdown-menu')" class="lang-dropdown-btn" aria-haspopup="true" aria-expanded="false" title="Chọn ngôn ngữ / Select Language">
+                        <i class="fa-solid fa-globe text-amber-300 text-xs"></i>
+                        <span class="current-lang-code">VI</span>
+                        <i class="fa-solid fa-chevron-down text-[9px] text-amber-300/80"></i>
+                    </button>
+                    <div id="header-lang-dropdown-menu" class="lang-dropdown-menu hidden" role="menu">
+                        <button type="button" onclick="changeLanguage('vi')" class="lang-dropdown-item active" data-lang="vi" role="menuitem">
+                            <span class="item-code">VI</span>
+                            <span class="item-label">Tiếng Việt</span>
+                        </button>
+                        <button type="button" onclick="changeLanguage('en')" class="lang-dropdown-item" data-lang="en" role="menuitem">
+                            <span class="item-code">EN</span>
+                            <span class="item-label">English</span>
+                        </button>
+                        <button type="button" onclick="changeLanguage('zh')" class="lang-dropdown-item" data-lang="zh" role="menuitem">
+                            <span class="item-code">ZH</span>
+                            <span class="item-label">中文</span>
+                        </button>
+                        <button type="button" onclick="changeLanguage('ko')" class="lang-dropdown-item" data-lang="ko" role="menuitem">
+                            <span class="item-code">KO</span>
+                            <span class="item-label">한국어</span>
+                        </button>
+                        <button type="button" onclick="changeLanguage('ja')" class="lang-dropdown-item" data-lang="ja" role="menuitem">
+                            <span class="item-code">JA</span>
+                            <span class="item-label">日本語</span>
+                        </button>
+                    </div>
                 </div>
+                <div id="header-language-switcher" class="hidden" aria-hidden="true"></div>
                 <button type="button" id="site-language-btn" onclick="toggleLanguage()" class="hidden" aria-hidden="true" tabindex="-1">VI</button>
                 <div class="header-support-chip hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
                     <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs">
@@ -9884,7 +10026,113 @@ async function sendAIMessage() {
                 en: '● SYSTEM ONLINE • 63 PROVINCES SYNCED',
                 zh: '● 系统在线 • 63省实时同步',
                 ko: '● 시스템 온라인 • 63개 성·시 동기화',
-                ja: '● システムオンライン • 63省同期'
+                ja: '● 系统オンライン • 63省同期'
+            },
+
+            // 3.A Slogan chính dưới Logo trên Header & Intro
+            'i18n-subbrand': {
+                vi: 'OCOP SALES COPILOT - Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam',
+                en: 'OCOP SALES COPILOT - Digital Operating System & AI Financial Management Platform',
+                zh: 'OCOP SALES COPILOT - 数字操作系统与 AI 财务管理平台',
+                ko: 'OCOP SALES COPILOT - 디지털 운영 체제 및 AI 재무 관리 플랫폼',
+                ja: 'OCOP SALES COPILOT - デジタルオペレーティングシステム＆AI財務管理プラットフォーム'
+            },
+            'i18n-intro-badge': {
+                vi: 'OCOP SALES COPILOT - Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam',
+                en: 'OCOP SALES COPILOT - Digital Operating System & AI Financial Management Platform',
+                zh: 'OCOP SALES COPILOT - 数字操作系统与 AI 财务管理平台',
+                ko: 'OCOP SALES COPILOT - 디지털 운영 체제 및 AI 재무 관리 플랫폼',
+                ja: 'OCOP SALES COPILOT - デジタルオペレーティングシステム＆AI財務管理プラットフォーム'
+            },
+
+            // 3.B Nút vàng góc phải (Sửa văn phong)
+            'i18n-intro-skip': {
+                vi: 'Bảng Quản Trị (Dashboard) ->',
+                en: 'Management Dashboard ->',
+                zh: '管理控制台 ->',
+                ko: '관리 대시보드 ->',
+                ja: '管理ダッシュボード ->'
+            },
+
+            // 4 thẻ cam kết vận hành (Pillars)
+            'i18n-intro-pillar1': {
+                vi: 'Bản Đồ Số 63 Tỉnh Thành',
+                en: '63 Provinces Across Vietnam',
+                zh: '63省数字地图',
+                ko: '63개 성·시 디지털 지도',
+                ja: '63省・市デジタルマップ'
+            },
+            'i18n-intro-pillar1-sub': {
+                vi: 'Thông tin và giá niêm yết',
+                en: 'Product details and listed prices',
+                zh: '产品详情与公开发行价',
+                ko: '제품 상세 정보 및 공시 가격',
+                ja: '商品詳細と公認価格'
+            },
+            'i18n-intro-pillar2': {
+                vi: 'Đặc Sản Vùng Miền Việt Nam',
+                en: 'Specialties from Vietnam',
+                zh: '越南地标特色产品',
+                ko: '베트남 지역 특산물',
+                ja: 'ベトナム地域特産品'
+            },
+            'i18n-intro-pillar2-sub': {
+                vi: 'Hương vị và truyền thống bản địa',
+                en: 'Regional flavors and traditions',
+                zh: '地道风味与传统工艺',
+                ko: '지역 고유의 풍미와 전통',
+                ja: '風土の味わいと伝統工芸'
+            },
+            'i18n-intro-pillar3': {
+                vi: 'Tư Vấn Bán Hàng Bằng AI',
+                en: 'AI Shopping Advice',
+                zh: 'AI 智能导购咨询',
+                ko: 'AI 쇼핑 어드바이저',
+                ja: 'AIショッピング相談'
+            },
+            'i18n-intro-pillar3-sub': {
+                vi: 'Gợi ý thông minh từ danh mục',
+                en: 'Suggestions from the product catalog',
+                zh: '基于产品目录智能匹配',
+                ko: '카탈로그 맞춤 추천',
+                ja: 'カタログから最適な提案'
+            },
+            'i18n-intro-pillar4': {
+                vi: 'Thanh Toán VietQR & Đối Soát',
+                en: 'VietQR Payment',
+                zh: 'VietQR 支付与对账',
+                ko: 'VietQR 결제 및 정산',
+                ja: 'VietQR決済＆照合'
+            },
+            'i18n-intro-pillar4-sub': {
+                vi: 'Kiểm tra đơn trước khi thanh toán',
+                en: 'Review your order before payment',
+                zh: '付款前快速核对订单',
+                ko: '결제 전 주문 확인',
+                ja: '決済前の注文確認'
+            },
+
+            // Thanh thông báo Top Bar
+            'i18n-top-guarantee': {
+                vi: 'Khám phá kho tàng đặc sản OCOP Việt Nam',
+                en: 'Browse Vietnam’s OCOP specialties',
+                zh: '探索越南 OCOP 特产宝库',
+                ko: '베트남 OCOP 특산물 둘러보기',
+                ja: 'ベトナムOCOP特産品を探索'
+            },
+            'i18n-top-shipping': {
+                vi: 'Chính sách vận chuyển theo điều kiện đơn',
+                en: 'Shipping offers depend on order conditions',
+                zh: '配送优惠视订单条件而定',
+                ko: '주문 조건에 따른 배송 혜택',
+                ja: '注文条件に応じた配送ポリシー'
+            },
+            'i18n-top-hotline': {
+                vi: 'Tư vấn sản phẩm & hỗ trợ:',
+                en: 'Product advice & support:',
+                zh: '产品咨询与支持:',
+                ko: '제품 상담 및 고객 지원:',
+                ja: '商品相談・サポート:'
             }
         };
 
@@ -10108,6 +10356,16 @@ async function sendAIMessage() {
                 const isActive = btn.dataset.lang === currentLanguage;
                 btn.classList.toggle('active', isActive);
                 btn.setAttribute('aria-pressed', String(isActive));
+            });
+
+            // Đồng bộ trạng thái nút Dropdown hình chữ nhật và các item xổ xuống
+            document.querySelectorAll('.current-lang-code').forEach(el => {
+                el.textContent = currentLanguage.toUpperCase();
+            });
+            document.querySelectorAll('.lang-dropdown-item').forEach(item => {
+                const isActive = item.dataset.lang === currentLanguage;
+                item.classList.toggle('active', isActive);
+                item.setAttribute('aria-selected', String(isActive));
             });
 
             const introLangBtn = document.getElementById('intro-language-btn');
@@ -10397,6 +10655,43 @@ async function sendAIMessage() {
             applyLanguage(list[nextIdx]);
         }
 
+        function closeAllLanguageDropdowns() {
+            document.querySelectorAll('.lang-dropdown-menu').forEach(menu => {
+                menu.classList.add('hidden');
+            });
+            document.querySelectorAll('.lang-dropdown-btn').forEach(btn => {
+                btn.setAttribute('aria-expanded', 'false');
+            });
+        }
+
+        function toggleLanguageDropdown(event, menuId) {
+            if (event) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+            const targetMenu = document.getElementById(menuId);
+            if (!targetMenu) return;
+            const isCurrentlyHidden = targetMenu.classList.contains('hidden');
+            closeAllLanguageDropdowns();
+            if (isCurrentlyHidden) {
+                targetMenu.classList.remove('hidden');
+                const container = targetMenu.closest('.lang-dropdown-container');
+                const btn = container ? container.querySelector('.lang-dropdown-btn') : null;
+                if (btn) btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        function changeLanguage(lang) {
+            applyLanguage(lang);
+            closeAllLanguageDropdowns();
+        }
+
+        document.addEventListener('click', event => {
+            if (!event.target.closest('.lang-dropdown-container')) {
+                closeAllLanguageDropdowns();
+            }
+        });
+
         window.addEventListener('storage', event => {
             if (event.key === 'ocop-language' && ['vi', 'en', 'zh', 'ko', 'ja'].includes(event.newValue)) {
                 applyLanguage(event.newValue);
@@ -10405,6 +10700,9 @@ async function sendAIMessage() {
 
         window.I18N_DATA = I18N_DATA;
         window.setLanguage = setLanguage;
+        window.changeLanguage = changeLanguage;
+        window.toggleLanguageDropdown = toggleLanguageDropdown;
+        window.closeAllLanguageDropdowns = closeAllLanguageDropdowns;
         window.applyLanguage = applyLanguage;
         window.toggleLanguage = toggleLanguage;
         

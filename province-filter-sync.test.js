@@ -257,5 +257,57 @@ test('Comprehensive 5-language localization architecture validation (VI, EN, ZH,
     assert(html.includes('AI財務レポート出力・キャッシュフロー決済'), 'Action button JA');
 });
 
+test('Rectangular Language Dropdown UI and full 5-language sync validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Kiểm tra cấu trúc nút bấm hình chữ nhật và Dropdown Menu trong Intro và Header
+    assert(html.includes('id="intro-lang-dropdown-btn"'), 'Intro dropdown trigger button must exist');
+    assert(html.includes('id="intro-lang-dropdown-menu"'), 'Intro dropdown menu list must exist');
+    assert(html.includes('id="header-lang-dropdown-btn"'), 'Header dropdown trigger button must exist');
+    assert(html.includes('id="header-lang-dropdown-menu"'), 'Header dropdown menu list must exist');
+
+    // 2. Kiểm tra CSS class & styling Deep Tech
+    assert(html.includes('.lang-dropdown-container'), 'CSS .lang-dropdown-container must be defined');
+    assert(html.includes('.lang-dropdown-btn'), 'CSS .lang-dropdown-btn must be defined');
+    assert(html.includes('.lang-dropdown-menu'), 'CSS .lang-dropdown-menu must be defined');
+    assert(html.includes('.lang-dropdown-item'), 'CSS .lang-dropdown-item must be defined');
+    assert(html.includes('border-radius: 6px'), 'Button must have 6px border radius');
+    assert(html.includes('background: #111827'), 'Dropdown menu must have deep tech #111827 background');
+
+    // 3. Kiểm tra các hàm điều khiển ngôn ngữ & dropdown
+    assert(html.includes('function changeLanguage'), 'changeLanguage function must be defined');
+    assert(html.includes('function toggleLanguageDropdown'), 'toggleLanguageDropdown function must be defined');
+    assert(html.includes('function closeAllLanguageDropdowns'), 'closeAllLanguageDropdowns function must be defined');
+    assert(html.includes('window.changeLanguage = changeLanguage'), 'changeLanguage must be exported to window');
+
+    // 4. Kiểm tra 5 ngôn ngữ trong Dropdown Items: VI, EN, ZH, KO, JA
+    assert(html.includes('Tiếng Việt'), 'VI label must exist');
+    assert(html.includes('English'), 'EN label must exist');
+    assert(html.includes('中文'), 'ZH label must exist');
+    assert(html.includes('한국어'), 'KO label must exist');
+    assert(html.includes('日本語'), 'JA label must exist');
+
+    // 5. Kiểm tra Slogan & Subbrand trên Header & Intro đồng bộ 5 ngôn ngữ
+    assert(html.includes('OCOP SALES COPILOT - Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam'), 'Subbrand VI');
+    assert(html.includes('OCOP SALES COPILOT - Digital Operating System & AI Financial Management Platform'), 'Subbrand EN');
+    assert(html.includes('OCOP SALES COPILOT - 数字操作系统与 AI 财务管理平台'), 'Subbrand ZH');
+    assert(html.includes('OCOP SALES COPILOT - 디지털 운영 체제 및 AI 재무 관리 플랫폼'), 'Subbrand KO');
+    assert(html.includes('OCOP SALES COPILOT - デジタルオペレーティングシステム＆AI財務管理プラットフォーム'), 'Subbrand JA');
+
+    // 6. Kiểm tra nút Bảng Quản Trị / Dashboard góc phải đồng bộ 5 ngôn ngữ
+    assert(html.includes('Bảng Quản Trị (Dashboard) ->'), 'Dashboard skip button VI');
+    assert(html.includes('Management Dashboard ->'), 'Dashboard skip button EN');
+    assert(html.includes('管理控制台 ->'), 'Dashboard skip button ZH');
+    assert(html.includes('관리 대시보드 ->'), 'Dashboard skip button KO');
+    assert(html.includes('管理ダッシュボード ->'), 'Dashboard skip button JA');
+
+    // 7. Kiểm tra 4 thẻ cam kết vận hành (Pillars)
+    assert(html.includes('Bản Đồ Số 63 Tỉnh Thành'), 'Pillar 1 VI');
+    assert(html.includes('63 Provinces Across Vietnam'), 'Pillar 1 EN');
+    assert(html.includes('63省数字地图'), 'Pillar 1 ZH');
+    assert(html.includes('63개 성·시 디지털 지도'), 'Pillar 1 KO');
+    assert(html.includes('63省・市デジタルマップ'), 'Pillar 1 JA');
+});
+
 
 
