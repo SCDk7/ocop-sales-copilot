@@ -312,5 +312,48 @@ test('Rectangular Language Dropdown UI and full 5-language sync validation', () 
     assert(html.includes('63省・市デジタルマップ'), 'Pillar 1 JA');
 });
 
+test('Technical metrics, Hero product card, and Chatbot AI 5-language sync validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+    const serverJs = fs.readFileSync('server.js', 'utf8');
+
+    // PHẦN 1: Khối chỉ số kỹ thuật (0%, +18.4%, >95%, <3s) sang 5 thứ tiếng
+    assert(html.includes('Sai Số Tài Chính') && html.includes('Financial Margins of Error') && html.includes('财务误差率') && html.includes('재무 오차율') && html.includes('财务誤差率'), '0% metric label 5 languages');
+    assert(html.includes('Tăng Tiền Lời') && html.includes('Net Profit Growth') && html.includes('净利润增长') && html.includes('순이익 증가율') && html.includes('純利益の成長'), '+18.4% metric label 5 languages');
+    assert(html.includes('Độ Chuẩn RAG AI') && html.includes('AI RAG Accuracy') && html.includes('AI RAG 准确率') && html.includes('AI RAG 정확도') && html.includes('AI RAG 精度'), '>95% metric label 5 languages');
+    assert(html.includes('Tốc Độ Phản Hồi') && html.includes('Response Time') && html.includes('系统响应时间') && html.includes('응답 속도') && html.includes('応答速度'), '<3s metric label 5 languages');
+
+    // PHẦN 2: Thẻ sản phẩm & thông số tài chính sang 5 thứ tiếng
+    assert(html.includes('★ TINH HOA NÔNG SẢN VIỆT') && html.includes('★ VIETNAM PREMIUM NATIVE AGRO') && html.includes('★ 越南优质农产品') && html.includes('★ 베트남 프리미엄 농산물') && html.includes('★ ベトナムプレミアム農産物'), 'Badge 5 languages');
+    assert(html.includes('NATIONAL OCOP PLATFORM — Hợp Nhất Dòng Tiền • Số Hóa Chuỗi Cung Ứng Đơn Vị Vùng Miền') && html.includes('NATIONAL OCOP PLATFORM — Cash Flow Integration • Supply Chain Digitalization') && html.includes('NATIONAL OCOP PLATFORM — 现金流整合 • 区域供应链数字化') && html.includes('NATIONAL OCOP PLATFORM — 현금 흐름 통합 • 지역 공급망 디지털화') && html.includes('NATIONAL OCOP PLATFORM — キャッシュフロー統合 • 地域サプライチェーンデジタル化'), 'White banner subtext 5 languages');
+    assert(html.includes('Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)') && html.includes('Hiep Van Forest Bitter Melon Tea - Long Khanh, Dong Nai Specialty (OCOP 4-Star)') && html.includes('协云 森林苦瓜袋泡茶 - 同奈省 隆庆特产 (OCOP 4星级)') && html.includes('혭번 야생 여주 티백 - 동나이성 롱카인 특산물 (OCOP 4성급)') && html.includes('協雲 野生ゴーヤティーバッグ - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'), 'Product name 5 languages');
+    assert(html.includes('Điểm Bán O2O • Định Vị') && html.includes('O2O Showroom Locator') && html.includes('O2O 展厅定位') && html.includes('O2O 쇼룸 위치 관제') && html.includes('O2Oショールーム位置確認'), 'O2O Showroom Locator 5 languages');
+    assert(html.includes('[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]') && html.includes('[System Coordinated Volume: 1,200 units • CHM Reconciliation Status: Automatically Distributed]') && html.includes('[系统统筹流通量: 1,200 单位 • CHM 对账状态: 已自动分配]') && html.includes('[시스템 조정 유통량: 1,200 단위 • CHM 정산 상태: 자동 분배 완료]') && html.includes('[システム調整流通量: 1,200 ユニット • CHM 精算ステータス: 自動配分完了]'), 'System coordinated volume 5 languages');
+
+    // PHẦN 3: Chatbot AI Action buttons
+    assert(html.includes('Ghim vị trí điểm bán') && html.includes('Pin Showroom Location') && html.includes('固定展厅位置') && html.includes('쇼룸 위치 고정') && html.includes('ショールーム位置を固定'), 'Action Button 1 5 languages');
+    assert(html.includes('Xem dòng tiền mô phỏng') && html.includes('View Simulated Cash Flow') && html.includes('查看模拟现金流') && html.includes('시뮬레이션 흐름 보기') && html.includes('キャッシュフローシミュレーション'), 'Action Button 2 5 languages');
+
+    // PHẦN 3: Chatbot Quick Replies
+    assert(html.includes('⚡ 边际利润: 同奈苦瓜茶') && html.includes('详细分析同奈省森林苦瓜茶的毛利率与净利润'), 'Quick reply ZH 1');
+    assert(html.includes('📊 数字化产量: 河内绿柚') && html.includes('更新河内大青柚的数字化分配产量'), 'Quick reply ZH 2');
+    assert(html.includes('🔄 佣金对账 (CHM): 10%') && html.includes('核对CHM系统的10%交易佣金'), 'Quick reply ZH 3');
+
+    assert(html.includes('⚡ 마진율: 동나이 여주차') && html.includes('동나이성 야생 여주 티백의 매출 총이익 및 순이익 분석'), 'Quick reply KO 1');
+    assert(html.includes('📊 디지털 생산량: 하노이 자몽') && html.includes('하노이 대청 자몽의 디지털 배분 생산량 현황'), 'Quick reply KO 2');
+    assert(html.includes('🔄 수수료 정산 (CHM): 10%') && html.includes('CHM 시스템 10% 거래 수수료 대조'), 'Quick reply KO 3');
+
+    assert(html.includes('⚡ 利益率: ドンナイゴーヤ茶') && html.includes('ドンナイ省野生ゴーヤ茶の粗利益および純利益の詳細分析'), 'Quick reply JA 1');
+    assert(html.includes('📊 デジタル生産量: ハノイポメロ') && html.includes('ハノイ産ポメロのデジタル配分生産量の最新状況'), 'Quick reply JA 2');
+    assert(html.includes('🔄 手数料照合 (CHM): 10%') && html.includes('CHMシステムにおける10%の取引手数料を照合'), 'Quick reply JA 3');
+
+    assert(html.includes('⚡ Margin: Dong Nai Bitter Melon Tea') && html.includes('Detail the gross & net margin for Dong Nai forest bitter melon tea'), 'Quick reply EN 1');
+    assert(html.includes('📊 Digitized Yield: Hanoi Pomelo') && html.includes('Check digitized allocation volume for Hanoi green pomelo'), 'Quick reply EN 2');
+    assert(html.includes('🔄 CHM Fee Reconciliation: 10%') && html.includes('Reconcile the 10% transaction commission in the CHM system'), 'Quick reply EN 3');
+
+    // Model Alignment footers in 5 languages across server.js and index.html
+    assert(serverJs.includes('[HỆ THỐNG ĐỒNG BỘ:') && serverJs.includes('[SYSTEM SYNC:') && serverJs.includes('[系统同步:') && serverJs.includes('[시스템 동기화:') && serverJs.includes('[システム同期:'), 'serverJs alignment footers in 5 languages');
+    assert(html.includes('[HỆ THỐNG ĐỒNG BỘ:') && html.includes('[SYSTEM SYNC:') && html.includes('[系统同步:') && html.includes('[시스템 동기화:') && html.includes('[システム同期:'), 'html alignment footers in 5 languages');
+});
+
 
 
