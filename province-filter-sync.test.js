@@ -352,3 +352,60 @@ test('Central navigation bar Flexbox layout, wishlist removal, and 5-language sy
            html.includes('AI 財務エンジン'),
            'AI Financial Engine must be mapped to all 5 languages');
 });
+
+test('Product card reconciliation button, system metrics, cash flow drawer sync, and 5-language localization validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Kiểm tra nút hành động màu vàng trên thẻ sản phẩm (Yellow Action Button)
+    assert(html.includes('onclick="activateProductReconciliation(${p.id})"'), 'Action button must call activateProductReconciliation');
+    assert(html.includes('reconcileBtnLabels'), 'reconcileBtnLabels mapping must be defined');
+
+    // 5 ngôn ngữ cho nhãn nút hành động
+    assert(html.includes('⚡ Kích Hoạt Đối Soát'), 'VI button label: ⚡ Kích Hoạt Đối Soát');
+    assert(html.includes('⚡ Activate Reconciliation'), 'EN button label: ⚡ Activate Reconciliation');
+    assert(html.includes('⚡ 激活财务对账'), 'ZH button label: ⚡ 激活财务对账');
+    assert(html.includes('⚡ 정산 데이터 활성화'), 'KO button label: ⚡ 정산 데이터 활성화');
+    assert(html.includes('⚡ 財務決済の有効化'), 'JA button label: ⚡ 財務決済の有効化');
+
+    // 2. Kiểm tra chỉ số quản trị thay thế giá bán lẻ (System Metrics)
+    assert(html.includes('getProductSystemMetrics'), 'getProductSystemMetrics function must exist');
+    assert(html.includes('Sản lượng số hóa:'), 'VI volume label must exist');
+    assert(html.includes('Biên lợi nhuận ròng:'), 'VI margin label must exist');
+    assert(html.includes('Digitized Volume:'), 'EN volume label must exist');
+    assert(html.includes('Net Profit Margin:'), 'EN margin label must exist');
+    assert(html.includes('数字化统筹量:'), 'ZH volume label must exist');
+    assert(html.includes('净利润率:'), 'ZH margin label must exist');
+    assert(html.includes('디지털 조율량:'), 'KO volume label must exist');
+    assert(html.includes('순이익률:'), 'KO margin label must exist');
+    assert(html.includes('デジタル調整量:'), 'JA volume label must exist');
+    assert(html.includes('純利益率:'), 'JA margin label must exist');
+
+    // Footer thẻ sản phẩm không còn hiển thị giá lẻ tiêu dùng
+    assert(html.includes('product-card-footer px-3 py-2.5'), 'Product card footer exists');
+    assert(html.includes('sysMetrics.volume') && html.includes('sysMetrics.margin'), 'Footer renders system metrics');
+
+    // 3. Kiểm tra hàm activateProductReconciliation & Reset Virtual Anchor
+    assert(html.includes('function activateProductReconciliation(productId)'), 'activateProductReconciliation function must be defined');
+    assert(html.includes('window.activateProductReconciliation = activateProductReconciliation;'), 'Function must be exported to window');
+    assert(html.includes('cartItems.scrollTop = 0;'), 'Virtual Anchor reset must reset scrollTop to 0');
+    assert(html.includes("drawer.classList.remove('hidden');"), 'Must open cart-drawer when activated');
+
+    // 4. Kiểm tra Bảng Phân Tích Dòng Tiền (AI Simulated Drawer) & Tính toán COGS 62%, OPEX 7.5%, Net Profit
+    assert(html.includes('id="cart-drawer"'), 'cart-drawer element exists');
+    assert(html.includes('id="cart-cogs"'), 'cart-cogs element exists');
+    assert(html.includes('id="cart-opex"'), 'cart-opex element exists');
+    assert(html.includes('id="cart-subtotal"'), 'cart-subtotal element exists');
+    assert(html.includes('id="cart-total"'), 'cart-total element exists');
+    assert(html.includes('Math.round(subtotal * 0.62)'), 'COGS calculation must be 62%');
+    assert(html.includes('Math.round(subtotal * 0.075)'), 'OPEX calculation must be 7.5%');
+    assert(html.includes('Math.max(0, subtotal - cogs - opex - discount)'), 'Net Profit calculation formula');
+
+    // 5. Kiểm tra I18N_DATA cho bảng dòng tiền đa ngôn ngữ
+    assert(html.includes("'i18n-cart-title'") && html.includes("Bảng Phân Tích Dòng Tiền Cửa Hàng (AI Simulated)"), 'i18n-cart-title localized');
+    assert(html.includes("'i18n-cart-subtotal'") && html.includes("Gross Revenue (Tổng doanh thu):"), 'i18n-cart-subtotal localized');
+    assert(html.includes("'i18n-cart-cogs-label'") && html.includes("COGS (Giá vốn hàng bán 62%):"), 'i18n-cart-cogs-label localized');
+    assert(html.includes("'i18n-cart-chm-label'") && html.includes("OPEX (Chi phí vận hành 7.5%):"), 'i18n-cart-chm-label localized');
+    assert(html.includes("'i18n-cart-total'") && html.includes("Net Profit (Tiền lời ròng thực nhận):"), 'i18n-cart-total localized');
+    assert(html.includes("'i18n-cart-empty'") && html.includes("Bảng mô phỏng đang trống. Hãy bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để phân tích!"), 'i18n-cart-empty localized');
+});
+

@@ -4076,12 +4076,12 @@
         <div id="cart-overlay" onclick="toggleCart()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
             <div class="p-4 bg-ocopGreen text-white flex items-center justify-between border-b border-ocopGold/30">
-                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-cart-shopping mr-2 text-ocopGold"></i> <span id="i18n-cart-title">Giỏ hàng của bạn</span></h3>
+                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-chart-line mr-2 text-ocopGold"></i> <span id="i18n-cart-title">Bảng Phân Tích Dòng Tiền Cửa Hàng (AI Simulated)</span></h3>
                 <button onclick="toggleCart()" class="text-white/80 hover:text-white p-1 cursor-pointer"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
 
             <div id="cart-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg">
-                <p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">Giỏ hàng của bạn đang trống.</p>
+                <p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">Bảng mô phỏng đang trống. Hãy bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để phân tích!</p>
             </div>
             <div class="p-4 border-t border-gray-200 bg-white space-y-3 shadow-lg">
                 <!-- KHỐI ÁP DỤNG MÃ GIẢM GIÁ / VOUCHER -->
@@ -4095,19 +4095,23 @@
                     </button>
                 </div>
 
-                <div class="space-y-1 text-xs text-gray-600 bg-amber-50 p-3 rounded-2xl border border-amber-200">
-                    <div class="flex justify-between">
-                        <span id="i18n-cart-subtotal">Tạm tính:</span>
-                        <span id="cart-subtotal" class="font-bold text-gray-800">0 ₫</span>
+                <div class="space-y-1.5 text-xs bg-amber-50/90 p-3.5 rounded-2xl border border-amber-300 shadow-xs">
+                    <div class="flex justify-between items-center">
+                        <span id="i18n-cart-subtotal" class="font-bold text-gray-700">Gross Revenue (Tổng doanh thu):</span>
+                        <span id="cart-subtotal" class="font-black text-gray-900 text-sm">0 ₫</span>
                     </div>
-                    <div class="flex justify-between">
-                        <span id="i18n-cart-shipping">Phí vận chuyển:</span>
-                        <span class="font-bold text-emerald-700" id="i18n-free-shipping">Miễn phí toàn quốc</span>
+                    <div class="flex justify-between items-center text-slate-600">
+                        <span id="i18n-cart-cogs-label">COGS (Giá vốn hàng bán 62%):</span>
+                        <span id="cart-cogs" class="font-bold text-slate-800">0 ₫</span>
+                    </div>
+                    <div class="flex justify-between items-center text-slate-600">
+                        <span id="i18n-cart-chm-label">OPEX (Chi phí vận hành 7.5%):</span>
+                        <span id="cart-opex" class="font-bold text-slate-800">0 ₫</span>
                     </div>
                     <div id="cart-voucher-row" class="hidden flex justify-between items-center text-emerald-800 font-bold"><span id="cart-voucher-label"></span><span id="cart-voucher-discount" class="text-red-600 font-black"></span></div>
-                    <div class="flex justify-between text-sm font-extrabold pt-1.5 border-t border-amber-200 text-gray-900">
-                        <span id="i18n-cart-total">Tổng cộng:</span>
-                        <span id="cart-total" class="text-red-600">0 ₫</span>
+                    <div class="flex justify-between items-center text-sm font-extrabold pt-2 border-t border-amber-300 text-emerald-900">
+                        <span id="i18n-cart-total">Net Profit (Tiền lời ròng thực nhận):</span>
+                        <span id="cart-total" class="text-emerald-700 font-black text-base">0 ₫</span>
                     </div>
                 </div>
                 <button onclick="checkout()" class="w-full bg-ocopGreen text-white py-3.5 rounded-2xl font-bold text-sm hover:bg-ocopGreenLight transition shadow-lg border border-ocopGold/30 flex items-center justify-center space-x-2 cursor-pointer">
@@ -5066,12 +5070,56 @@
 
             noMsg.style.display = 'none';
             grid.style.display = 'grid';
+
+            const reconcileBtnLabels = {
+                vi: '⚡ Kích Hoạt Đối Soát',
+                en: '⚡ Activate Reconciliation',
+                zh: '⚡ 激活财务对账',
+                ko: '⚡ 정산 데이터 활성화',
+                ja: '⚡ 財務決済の有効化'
+            };
+            const reconcileBtnTitles = {
+                vi: 'Kích hoạt đối soát dòng tiền và đưa sản phẩm vào Bảng phân tích AI',
+                en: 'Activate cash flow reconciliation and sync product to AI Financial Analysis',
+                zh: '激活现金流财务对账并将特产同步至 AI 财务分析看板',
+                ko: '현금 흐름 정산 데이터를 활성화하고 AI 재무 분석 대시보드에 동기화',
+                ja: 'キャッシュフロー決済を有効化し、AI財務分析ダッシュボードに同期'
+            };
+            const getProductSystemMetrics = (prod) => {
+                const baseVolume = 1200 + ((prod.id * 43) % 1800);
+                const volumeStr = baseVolume.toLocaleString('vi-VN');
+                const marginVal = (21.5 + ((prod.id * 17) % 70) / 10).toFixed(1);
+                const metricsMap = {
+                    vi: {
+                        volume: `Sản lượng số hóa: ${volumeStr}+ Đơn vị`,
+                        margin: `Biên lợi nhuận ròng: ${marginVal}%`
+                    },
+                    en: {
+                        volume: `Digitized Volume: ${volumeStr}+ Units`,
+                        margin: `Net Profit Margin: ${marginVal}%`
+                    },
+                    zh: {
+                        volume: `数字化统筹量: ${volumeStr}+ 件`,
+                        margin: `净利润率: ${marginVal}%`
+                    },
+                    ko: {
+                        volume: `디지털 조율량: ${volumeStr}+ 개`,
+                        margin: `순이익률: ${marginVal}%`
+                    },
+                    ja: {
+                        volume: `デジタル調整量: ${volumeStr}+ ユニット`,
+                        margin: `純利益率: ${marginVal}%`
+                    }
+                };
+                return metricsMap[currentLanguage] || metricsMap.vi;
+            };
+
             grid.innerHTML = items.map((p, idx) => {
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
-                const discountPercent = getProductPromoPercent(p);
                 const isHotSeller = p.isBestSeller === true;
+                const sysMetrics = getProductSystemMetrics(p);
 
                 const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(p.id) : null;
 
@@ -5093,17 +5141,11 @@
                                 </span>
                             </div>
 
-                            <!-- Huy Hiệu Giảm Giá & Nút Yêu Thích -->
+                            <!-- Nút Yêu Thích & Huy Hiệu Tiêu Biểu -->
                             <div class="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-10">
-                                <div class="flex items-center gap-1.5">
-                                ${discountPercent > 0 ? `
-                                <span data-promo-percent="${discountPercent}" class="bg-gradient-to-r from-rose-600 to-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full shadow-md border border-rose-300/40">
-                                    -${discountPercent}%
-                                </span>` : ''}
                                 <button onclick="toggleWishlist(${p.id})" aria-label="Yêu thích" class="w-8 h-8 rounded-full bg-slate-900/90 backdrop-blur-md text-red-400 flex items-center justify-center hover:scale-110 active:scale-95 transition shadow-md cursor-pointer border border-amber-400/30 group/heart">
                                     <i class="${isFav ? 'fa-solid text-red-500 scale-110' : 'fa-regular group-hover/heart:scale-110'} fa-heart text-xs transition-transform"></i>
                                 </button>
-                                </div>
                                 ${isHotSeller ? `
                                 <span class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-black text-[9px] px-2 py-0.5 rounded-full shadow-md border border-yellow-300/50 flex items-center gap-1 animate-pulse">
                                     <i class="fa-solid fa-fire text-yellow-300"></i> ${currentLanguage === 'en' ? 'BESTSELLER' : 'BÁN CHẠY'}
@@ -5157,19 +5199,21 @@
                         </div>
                     </div>
 
-                    <!-- Footer Thẻ: Giá & Nút Xem Điểm Bán OCOP -->
-                    <div class="product-card-footer px-3 py-2 border-t border-amber-400/20 flex items-center justify-between gap-2 bg-slate-950/80">
-                        <div class="min-w-0 flex-1">
-                            ${discountPercent > 0 ? `<span data-promo-reference="${p.id}" class="block text-xs text-gray-400 leading-none mb-0.5" title="${currentLanguage === 'en' ? 'Reference price' : 'Giá tham khảo'}"><s>${getProductPromoReferenceLabel(p)}</s></span>` : ''}
-                            <span class="font-black text-amber-400 text-sm sm:text-base tracking-tight leading-tight block">${getProductPriceLabel(p)}</span>
+                    <!-- Footer Thẻ: Thông Số Sản Lượng Hệ Thống & Nút Hành Động Kích Hoạt Đối Soát -->
+                    <div class="product-card-footer px-3 py-2.5 border-t border-amber-400/20 flex items-center justify-between gap-2 bg-slate-950/80">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <div class="text-[11px] font-black text-amber-300 truncate tracking-tight flex items-center gap-1" title="${sysMetrics.volume}">
+                                <i class="fa-solid fa-cubes text-amber-400 text-[10px] shrink-0"></i>
+                                <span class="truncate">${sysMetrics.volume}</span>
+                            </div>
+                            <div class="text-[10px] font-extrabold text-emerald-400 flex items-center gap-1 truncate" title="${sysMetrics.margin}">
+                                <i class="fa-solid fa-arrow-trend-up text-[9px] shrink-0"></i>
+                                <span>${sysMetrics.margin}</span>
+                            </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                            <button onclick="openStoreLocator(${p.id})" title="${currentLanguage === 'en' ? 'View certified stores & showrooms' : 'Xem danh sách cửa hàng & showroom OCOP được chứng nhận'}" class="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs px-2.5 sm:px-3 py-2 rounded-xl shadow-md flex items-center space-x-1.5 transition-all hover:scale-105 active:scale-95 cursor-pointer border border-amber-400/80">
-                                <i class="fa-solid fa-store text-emerald-950 text-xs"></i>
-                                <span class="whitespace-nowrap">${currentLanguage === 'en' ? 'Stores' : 'Điểm bán OCOP'}</span>
-                            </button>
-                            <button onclick="addToCart(${p.id})" title="${currentLanguage === 'en' ? 'Add to AI Cash Flow Simulation' : 'Đưa vào Bảng phân tích dòng tiền cửa hàng (AI Simulated)'}" class="p-2 rounded-xl border border-emerald-500/40 text-emerald-300 bg-emerald-950/70 hover:bg-emerald-900 text-xs font-bold transition flex items-center justify-center cursor-pointer shadow-2xs hover:scale-105 active:scale-95">
-                                <i class="fa-solid fa-chart-line text-xs"></i>
+                            <button type="button" onclick="activateProductReconciliation(${p.id})" title="${reconcileBtnTitles[currentLanguage] || reconcileBtnTitles.vi}" class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-xs px-2.5 sm:px-3 py-2 rounded-xl shadow-md flex items-center space-x-1.5 transition-all hover:scale-105 active:scale-95 cursor-pointer border border-yellow-200">
+                                <span class="whitespace-nowrap">${reconcileBtnLabels[currentLanguage] || reconcileBtnLabels.vi}</span>
                             </button>
                         </div>
                     </div>
@@ -8609,6 +8653,53 @@
             drawer.classList.toggle('hidden');
         }
 
+        function activateProductReconciliation(productId) {
+            const prod = products.find(p => p.id === productId);
+            if (!prod) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.qty += 1;
+                existing.qrScans = (existing.qrScans || 28) + 14;
+                existing.aiDraftOrders = (existing.aiDraftOrders || 18) + 9;
+            } else {
+                cart.push({
+                    ...prod,
+                    qty: 1,
+                    qrScans: Math.floor(Math.random() * 16) + 24, // Số lượt quét QR định vị tại quầy
+                    aiDraftOrders: Math.floor(Math.random() * 12) + 14 // Số lượt AI tư vấn chốt đơn nháp
+                });
+            }
+
+            updateCartBadge();
+            renderCartItems();
+
+            // Mở Bảng phân tích dòng tiền cửa hàng (AI Simulated) bên phải nếu đang đóng
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer && drawer.classList.contains('hidden')) {
+                drawer.classList.remove('hidden');
+            }
+
+            // Reset Virtual Anchor: Đưa vị trí cuộn của bảng dòng tiền bên phải về đỉnh trong < 0.5s
+            const cartItems = document.getElementById('cart-items');
+            if (cartItems) {
+                cartItems.scrollTop = 0;
+                try {
+                    cartItems.scrollTo({ top: 0, behavior: 'smooth' });
+                } catch (_) {}
+            }
+
+            const toastMsgs = {
+                vi: `⚡ Đã kích hoạt đối soát & đồng bộ "${getProductName(prod)}" sang Bảng phân tích dòng tiền!`,
+                en: `⚡ Activated reconciliation & synced "${getProductName(prod)}" to Cash Flow Analysis!`,
+                zh: `⚡ 已激活特产 "${getProductName(prod)}" 的财务对账并同步至现金流看板！`,
+                ko: `⚡ "${getProductName(prod)}" 정산 데이터를 활성화하고 현금 흐름 분석표에 동기화했습니다!`,
+                ja: `⚡ "${getProductName(prod)}" の財務決済を有効化し、キャッシュフロー分析に同期しました！`
+            };
+            showToast(toastMsgs[currentLanguage] || toastMsgs.vi, "success");
+        }
+        window.activateProductReconciliation = activateProductReconciliation;
+
         function addToCart(productId) {
             const prod = products.find(p => p.id === productId);
             if (!prod) return;
@@ -8714,16 +8805,36 @@
             const voucherRow = document.getElementById('cart-voucher-row');
             const voucherLabel = document.getElementById('cart-voucher-label');
             const voucherDiscount = document.getElementById('cart-voucher-discount');
+            const cogsEl = document.getElementById('cart-cogs');
+            const opexEl = document.getElementById('cart-opex');
 
             if (cart.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${currentLanguage === 'en' ? 'Your cart is empty.' : 'Giỏ hàng của bạn đang trống.'}</p>`;
+                const emptyMsgs = {
+                    vi: "Bảng mô phỏng đang trống. Hãy bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để phân tích!",
+                    en: "Simulation table is empty. Click '⚡ Activate Reconciliation' on a product to analyze!",
+                    zh: "模拟看板为空。点击特产上的 '⚡ 激活财务对账' 即可开始分析！",
+                    ko: "시뮬레이션 분석표가 비어 있습니다. 특산품의 '⚡ 정산 데이터 활성화'를 클릭하세요!",
+                    ja: "シミュレーションは空です。特産品の「⚡ 財務決済の有効化」をクリックして分析してください！"
+                };
+                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">${emptyMsgs[currentLanguage] || emptyMsgs.vi}</p>`;
                 subtotalEl.innerText = "0 ₫";
+                if (cogsEl) cogsEl.innerText = "0 ₫";
+                if (opexEl) opexEl.innerText = "0 ₫";
                 totalEl.innerText = "0 ₫";
                 voucherRow.classList.add('hidden');
                 return;
             }
 
             let subtotal = 0;
+            const netMarginBadge = {
+                vi: '+30.5% Lời ròng',
+                en: '+30.5% Net Margin',
+                zh: '+30.5% 净利',
+                ko: '+30.5% 순이익',
+                ja: '+30.5% 純利'
+            };
+            const marginText = netMarginBadge[currentLanguage] || netMarginBadge.vi;
+
             container.innerHTML = cart.map(item => {
                 const itemTotal = item.price * item.qty;
                 subtotal += itemTotal;
@@ -8731,9 +8842,12 @@
                 <div class="bg-white p-3 rounded-2xl border border-amber-200 flex items-center justify-between gap-3 shadow-xs">
                     <img src="${item.img}" class="w-14 h-14 object-cover rounded-xl border border-amber-100 flex-shrink-0">
                     <div class="flex-1 min-w-0">
-                        <h4 class="font-bold text-xs text-gray-900 truncate">${getProductName(item)}</h4>
-                        <span class="text-[10px] text-amber-800">${item.region} • ${item.stars}★</span>
-                        <div class="text-red-600 font-extrabold text-xs mt-0.5">${item.price.toLocaleString('vi-VN')} ₫</div>
+                        <h4 class="font-bold text-xs text-gray-900 truncate" title="${escapeAIHtml(getProductName(item))}">${escapeAIHtml(getProductName(item))}</h4>
+                        <div class="text-[10px] text-amber-800 font-medium">${item.region} • ${item.stars}★</div>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            <span class="text-slate-900 font-black text-xs">${itemTotal.toLocaleString('vi-VN')} ₫</span>
+                            <span class="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded border border-emerald-200">${marginText}</span>
+                        </div>
                     </div>
                     <div class="flex items-center space-x-1.5 bg-gray-100 p-1 rounded-xl">
                         <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-white text-gray-700 font-bold flex items-center justify-center shadow-xs cursor-pointer">-</button>
@@ -8744,8 +8858,15 @@
                 `;
             }).join('');
 
+            const cogs = Math.round(subtotal * 0.62);
+            const opex = Math.round(subtotal * 0.075);
             const discount = getVoucherDiscount(subtotal);
+            const netProfit = Math.max(0, subtotal - cogs - opex - discount);
+
             subtotalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
+            if (cogsEl) cogsEl.innerText = cogs.toLocaleString('vi-VN') + " ₫";
+            if (opexEl) opexEl.innerText = opex.toLocaleString('vi-VN') + " ₫";
+            totalEl.innerText = netProfit.toLocaleString('vi-VN') + " ₫";
             if (activeVoucher) {
                 voucherRow.classList.remove('hidden');
                 const minOrder = activeVoucher.minOrder.toLocaleString('vi-VN') + " ₫";
@@ -8756,7 +8877,6 @@
             } else {
                 voucherRow.classList.add('hidden');
             }
-            totalEl.innerText = (subtotal - discount).toLocaleString('vi-VN') + " ₫";
             updateVoucherLanguage();
         }
 
@@ -9978,12 +10098,12 @@
             'i18n-reset-btn': 'Show all specialties (63 Provinces)',
             'i18n-wishlist-title': 'Saved items',
             'i18n-cart-title': 'Store Cash Flow Analysis (AI Simulated)',
-            'i18n-cart-empty': 'Simulation list is empty. Select OCOP products to begin cash flow analysis!',
+            'i18n-cart-empty': "Simulation table is empty. Click '⚡ Activate Reconciliation' on a product to analyze!",
             'i18n-cart-subtotal': 'Gross Revenue (Projected):',
-            'i18n-cart-cogs-label': 'Cost of Goods Sold (COGS):',
-            'i18n-cart-chm-label': 'Operating Expenses (OPEX - 6%):',
-            'i18n-cart-total': 'Order total:',
-            'i18n-checkout-btn': 'Place order'
+            'i18n-cart-cogs-label': 'COGS (Cost of Goods Sold 62%):',
+            'i18n-cart-chm-label': 'OPEX (Operating Expenses 7.5%):',
+            'i18n-cart-total': 'Net Profit (Estimated Margin +30.5%):',
+            'i18n-checkout-btn': 'VietQR BIDV Payment Settlement'
         };
 
         const I18N_DATA = {
@@ -10109,55 +10229,55 @@
 
             // 5. BẢNG PHÂN TÍCH DÒNG TIỀN MÔ PHỎNG (KHỐI PHẢI TRANG ĐIỀU HÀNH)
             'i18n-cart-title': {
-                vi: "Giỏ hàng",
-                en: "Shopping cart",
-                zh: "购物车",
-                ko: "장바구니",
-                ja: "カート"
+                vi: "Bảng Phân Tích Dòng Tiền Cửa Hàng (AI Simulated)",
+                en: "Store Cash Flow Analysis (AI Simulated)",
+                zh: "门店现金流分析看板 (AI 模拟)",
+                ko: "매장 현금 흐름 분석 대시보드 (AI 시뮬레이션)",
+                ja: "店舗キャッシュフロー分析ダッシュボード（AIシミュレーション）"
             },
             'i18n-cart-subtotal': {
-                vi: "Tạm tính:",
-                en: "Subtotal:",
-                zh: "小计：",
-                ko: "소계:",
-                ja: "小計:"
+                vi: "Gross Revenue (Tổng doanh thu):",
+                en: "Gross Revenue (Projected):",
+                zh: "Gross Revenue (预计总收入):",
+                ko: "Gross Revenue (예상 총매출):",
+                ja: "Gross Revenue (予想総売上):"
             },
             'i18n-cart-cogs-label': {
-                vi: 'Giá vốn hàng bán (COGS):',
-                en: 'COGS (Cost of Goods Sold):',
-                zh: '销货成本 (COGS):',
-                ko: '매출원가 (COGS):',
-                ja: '売上原価（COGS）:'
+                vi: 'COGS (Giá vốn hàng bán 62%):',
+                en: 'COGS (Cost of Goods Sold 62%):',
+                zh: 'COGS (销货成本 62%):',
+                ko: 'COGS (매출원가 62%):',
+                ja: 'COGS (売上原価 62%):'
             },
             'i18n-cart-chm-label': {
-                vi: 'Chi phí vận hành nền tảng (OPEX - 6%):',
-                en: 'OPEX (Platform Fees - 6%):',
-                zh: '平台运营成本 (OPEX - 6%):',
-                ko: '플랫폼 운영비 (OPEX - 6%):',
-                ja: 'プラットフォーム運営費（OPEX - 6%）:'
+                vi: 'OPEX (Chi phí vận hành 7.5%):',
+                en: 'OPEX (Operating Expenses 7.5%):',
+                zh: 'OPEX (平台运营成本 7.5%):',
+                ko: 'OPEX (플랫폼 운영비 7.5%):',
+                ja: 'OPEX (運営経費 7.5%):'
             },
             'i18n-cart-total': {
-                vi: "Tổng cộng:",
-                en: "Total:",
-                zh: "总计：",
-                ko: "합계:",
-                ja: "合計:"
+                vi: "Net Profit (Tiền lời ròng thực nhận):",
+                en: "Net Profit (Estimated Margin +30.5%):",
+                zh: "Net Profit (实际净利润 +30.5%):",
+                ko: "Net Profit (실제 순이익 +30.5%):",
+                ja: "Net Profit (実質純利益 +30.5%):"
             },
             'i18n-checkout-btn': {
-                vi: "Đặt hàng",
-                en: "Place order",
-                zh: "下单",
-                ko: "주문하기",
-                ja: "注文する"
+                vi: "Thanh Toán VietQR BIDV",
+                en: "VietQR BIDV Payment Settlement",
+                zh: "VietQR BIDV 财务结算支付",
+                ko: "VietQR BIDV 정산 결제",
+                ja: "VietQR BIDV 決済実行"
             },
 
             // Bổ trợ chung
             'i18n-cart-empty': {
-                vi: "Giỏ hàng đang trống.",
-                en: "Your cart is empty.",
-                zh: "购物车为空。",
-                ko: "장바구니가 비어 있습니다.",
-                ja: "カートは空です。"
+                vi: "Bảng mô phỏng đang trống. Hãy bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để phân tích!",
+                en: "Simulation table is empty. Click '⚡ Activate Reconciliation' on a product to analyze!",
+                zh: "模拟看板为空。点击特产上的 '⚡ 激活财务对账' 即可开始分析！",
+                ko: "시뮬레이션 분석표가 비어 있습니다. 특산품의 '⚡ 정산 데이터 활성화'를 클릭하세요!",
+                ja: "シミュレーションは空です。特産品の「⚡ 財務決済の有効化」をクリックして分析してください！"
             },
             'i18n-no-prod': {
                 vi: 'Không tìm thấy sản phẩm phù hợp.',
