@@ -8,7 +8,9 @@ const number=value=>Number(value||0).toLocaleString(language==='vi'?'vi-VN':'en-
 function renderLanguage(){
  document.documentElement.lang=language;document.title=text('OCOP • Bảng KPI','OCOP • KPI Dashboard');
  document.querySelectorAll('[data-vi]').forEach(el=>el.textContent=el.dataset[language]);
- $('lang').textContent=text('English','Tiếng Việt');
+ $('lang').textContent=text('Tiếng Việt','English');
+ $('lang').title=text('Chuyển sang tiếng Anh','Switch to Vietnamese');
+ $('lang').setAttribute('aria-label',text('Ngôn ngữ hiện tại: Tiếng Việt. Chuyển sang tiếng Anh','Current language: English. Switch to Vietnamese'));
  if(lastMetrics)renderMetrics(lastMetrics);
 }
 function svgElement(tag,attributes={},content){
