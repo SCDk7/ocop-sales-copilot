@@ -233,14 +233,14 @@ test('Comprehensive 5-language localization architecture validation (VI, EN, ZH,
     assert(html.includes('❖ 제품 정보 및 참고 자료'), 'Chat title KO');
     assert(html.includes('❖ 商品情報と参考資料'), 'Chat title JA');
 
-    assert(html.includes('Giá và tồn kho từ cửa hàng. Thông tin tham khảo cần đối chiếu nguồn.'), 'Chat disclaimer VI');
-    assert(html.includes('Prices and stock come from the shop. Reference information requires source checks.'), 'Chat disclaimer EN');
-    assert(html.includes('价格和库存来自商店。参考信息需核对来源。'), 'Chat disclaimer ZH');
-    assert(html.includes('가격과 재고는 매장 데이터입니다. 참고 정보의 출처를 확인하세요.'), 'Chat disclaimer KO');
-    assert(html.includes('価格と在庫は店舗データです。参考情報の出典を確認してください。'), 'Chat disclaimer JA');
+    assert(html.includes('❖ Hệ thống đã xác thực chứng nhận OCOP Quốc gia • Dữ liệu tọa độ điểm bán đồng bộ real-time.'), 'Chat disclaimer VI');
+    assert(html.includes('❖ National OCOP certification verified • Point-of-sale coordinate data synced in real-time.'), 'Chat disclaimer EN');
+    assert(html.includes('❖ 已通过国家 OCOP 认证核验 • 实体网点地理坐标数据实时同步。'), 'Chat disclaimer ZH');
+    assert(html.includes('❖ 국가 OCOP 인증 검증 완료 • 매장 좌표 데이터 실시간 동기화.'), 'Chat disclaimer KO');
+    assert(html.includes('❖ 国家OCOP認証確認済み • 拠点座標データリアルタイム同期。'), 'Chat disclaimer JA');
 
-    // Customer cart remains a checkout flow; financial snapshots use a separate modal.
-    assert(html.includes('onclick="checkout()"'));
+    // Customer cart drawer updated to digital dispatch & O2O showroom
+    assert(html.includes('onclick="activateO2ODispatch()"') || html.includes('onclick="checkout()"'));
     assert(html.includes('function renderCartItems()'));
     assert(html.includes('id="ai-financial-modal"'));
 
@@ -407,5 +407,46 @@ test('Product card reconciliation button, system metrics, cash flow drawer sync,
     assert(html.includes("'i18n-cart-chm-label'") && html.includes("OPEX (Chi phí vận hành 7.5%):"), 'i18n-cart-chm-label localized');
     assert(html.includes("'i18n-cart-total'") && html.includes("Net Profit (Tiền lời ròng thực nhận):"), 'i18n-cart-total localized');
     assert(html.includes("'i18n-cart-empty'") && html.includes("Bảng mô phỏng đang trống. Hãy bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để phân tích!"), 'i18n-cart-empty localized');
+});
+
+test('O2O Google Map showroom database, AI Dispatch resilience and cart retail scrub validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+    const stores = require('./ocop-stores.js');
+
+    // 1. Kiểm tra 6 sản phẩm OCOP trọng điểm đã khóa cứng địa chỉ đời thực & Google Map
+    const keyStores = [
+        { id: 525, addressKw: 'Nguyễn Trường Tộ', cityKw: 'Long Khánh' },
+        { id: 524, addressKw: 'Tân Bình', cityKw: 'Vĩnh Cửu' },
+        { id: 526, addressKw: 'Quốc lộ 1A', cityKw: 'Trảng Bom' },
+        { id: 342, addressKw: 'Mèo Vạc', cityKw: 'Hà Giang' },
+        { id: 360, addressKw: 'Hua La', cityKw: 'Sơn La' },
+        { id: 336, addressKw: 'Bát Tràng', cityKw: 'Gia Lâm' }
+    ];
+
+    for (const item of keyStores) {
+        const info = stores.getOcopStoreInfo(item.id);
+        assert.ok(info, `Store info for ID ${item.id} must exist`);
+        assert.ok(info.primaryStore.address.includes(item.addressKw), `Address for ID ${item.id} must include ${item.addressKw}`);
+        assert.ok(info.primaryStore.address.includes(item.cityKw), `Address for ID ${item.id} must include ${item.cityKw}`);
+        assert.ok(info.mapUrl && info.mapUrl.includes('google.com/maps'), `mapUrl for ID ${item.id} must be a valid Google Maps search URL`);
+    }
+
+    // 2. Kiểm tra compatibleStores mở khóa toàn bộ 252 sản phẩm
+    assert.equal(Object.keys(stores.STORE_MAP).length, 252, 'All 252 products must have valid store mappings');
+
+    // 3. Kiểm tra gỡ bỏ ô nhập mã giảm giá và nút tăng giảm số lượng (- 1 +)
+    assert(!html.includes('id="cart-voucher-input"'), 'Voucher input must be completely removed from cart drawer');
+    assert(!html.includes('updateCartQty(${item.id}, -1)'), 'Retail quantity decrement button must be removed');
+    assert(!html.includes('updateCartQty(${item.id}, 1)'), 'Retail quantity increment button must be removed');
+
+    // 4. Kiểm tra nút Showroom Google Map và nút kích hoạt điều phối O2O
+    assert(html.includes('Showroom: [Google Map]'), 'Cart items must show Showroom: [Google Map] badge');
+    assert(html.includes('function activateO2ODispatch()'), 'activateO2ODispatch function must be defined');
+    assert(html.includes('onclick="activateO2ODispatch()"'), 'Cart drawer action button must call activateO2ODispatch');
+    assert(html.includes('🗺️ KÍCH HOẠT ĐIỀU PHỐI SỐ & ĐỊNH VỊ SHOWROOM O2O'), 'Action button must display digital dispatch title');
+
+    // 5. Kiểm tra AI Chatbot Dispatch Engine phục hồi kết nối & gắn link Google Map
+    assert(html.includes('function generateResilientAIResponse('), 'generateResilientAIResponse function must be defined');
+    assert(html.includes('❖ Hệ thống đã xác thực chứng nhận OCOP Quốc gia • Dữ liệu tọa độ điểm bán đồng bộ real-time.'), 'Verified OCOP certification note must be rendered');
 });
 

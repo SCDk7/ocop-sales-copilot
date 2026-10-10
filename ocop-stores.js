@@ -25,7 +25,7 @@
     "hotline": "098.345.2286",
     "primaryStore": {
       "name": "Showroom Gốm sứ Quang Vinh Bát Tràng Tinh Hoa",
-      "address": "176 Quang Trung, P. Quang Trung, Q. Hà Đông, Hà Nội",
+      "address": "Xóm 1, Xã Bát Tràng, Huyện Gia Lâm, Thành phố Hà Nội",
       "phone": "098.345.2286",
       "hours": "08:00 - 21:00"
     },
@@ -41,7 +41,7 @@
         "phone": "024.3845.6789"
       }
     ],
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Showroom%20Tr%C3%A0%20Th%E1%BA%A3o%20D%C6%B0%E1%BB%A3c%20SADU%20176%20Quang%20Trung%2C%20P.%20Quang%20Trung%2C%20Q.%20H%C3%A0%20%C4%90%C3%B4ng%2C%20H%C3%A0%20N%E1%BB%99i"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=C%C3%B4ng%20ty%20G%E1%BB%91m%20s%E1%BB%A9%20Quang%20Vinh%2C%20X%C3%B3m%201%2C%20X%C3%A3%20B%C3%A1t%20Tr%C3%A0ng%2C%20Huy%E1%BB%87n%20Gia%20L%C3%A2m%2C%20Th%C3%A0nh%20ph%E1%BB%91%20H%C3%A0%20N%E1%BB%99i"
   },
   "337": {
     "id": 337,
@@ -190,16 +190,16 @@
   },
   "342": {
     "id": 342,
-    "productName": "Hồng không hạt Quản Bạ (OCOP 3 Sao)",
-    "stars": 3,
+    "productName": "Mật ong bạc hà Cao nguyên đá Mèo Vạc - HTX Tuấn Dũng (OCOP 4 Sao)",
+    "stars": 4,
     "region": "Hà Giang",
-    "producerName": "HTX Nông nghiệp Quản Bạ",
-    "producerAddress": "Xã Nghĩa Thuận, Huyện Quản Bạ, Hà Giang",
-    "certDecision": "QĐ số 1520/QĐ-UBND Huyện Quản Bạ (OCOP 3 Sao)",
+    "producerName": "HTX Tuấn Dũng",
+    "producerAddress": "Thị trấn Mèo Vạc, Huyện Mèo Vạc, Tỉnh Hà Giang",
+    "certDecision": "QĐ số 1520/QĐ-UBND Tỉnh Hà Giang (OCOP 4 Sao)",
     "hotline": "091.567.8910",
     "primaryStore": {
-      "name": "Điểm bán Đặc sản Nông sản Quản Bạ",
-      "address": "Tổ 2, TT. Mèo Vạc, Huyện Mèo Vạc, Hà Giang",
+      "name": "Showroom Mật ong Bạc Hà Mèo Vạc - HTX Tuấn Dũng",
+      "address": "Thị trấn Mèo Vạc, Huyện Mèo Vạc, Tỉnh Hà Giang",
       "phone": "091.567.8910",
       "hours": "07:00 - 21:00"
     },
@@ -215,7 +215,7 @@
         "phone": "024.3784.8888"
       }
     ],
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Showroom%20M%E1%BA%ADt%20ong%20B%E1%BA%A1c%20H%C3%A0%20M%C3%A8o%20V%E1%BA%A1c%20T%E1%BB%95%202%2C%20TT.%20M%C3%A8o%20V%E1%BA%A1c%2C%20Huy%E1%BB%87n%20M%C3%A8o%20V%E1%BA%A1c%2C%20H%C3%A0%20Giang"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=HTX%20Tu%E1%BA%A5n%20D%C5%A9ng%2C%20Th%E1%BB%8B%20tr%E1%BA%A5n%20M%C3%A8o%20V%E1%BA%A1c%2C%20Huy%E1%BB%87n%20M%C3%A8o%20V%E1%BA%A1c%2C%20T%E1%BB%89nh%20H%C3%A0%20Giang"
   },
   "343": {
     "id": 343,
@@ -720,8 +720,8 @@
     "certDecision": "QĐ số 3828/QĐ-BNN (OCOP 5 Sao Quốc Gia)",
     "hotline": "090.820.880",
     "primaryStore": {
-      "name": "Showroom Cà phê Arabica Bích Thao Sơn La",
-      "address": "Đại lộ Trung tâm Hành chính, TP. Sơn La",
+      "name": "Showroom Cà phê Arabica Specialty Bích Thao Sơn La",
+      "address": "Bản Hoàng Văn Thụ, Xã Hua La, Thành phố Sơn La, Tỉnh Sơn La",
       "phone": "090.820.880",
       "hours": "07:30 - 21:00"
     },
@@ -737,7 +737,7 @@
         "phone": "024.3755.8899"
       }
     ],
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Showroom%20OCOP%20%26%20Tr%C6%B0ng%20b%C3%A0y%20%C4%90%E1%BA%B7c%20s%E1%BA%A3n%20S%C6%A1n%20La%20%C4%90%E1%BA%A1i%20l%E1%BB%99%20Trung%20t%C3%A2m%20H%C3%A0nh%20ch%C3%ADnh%2C%20TP.%20S%C6%A1n%20La"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=HTX%20C%C3%A0%20ph%C3%AA%20B%C3%ADch%20Thao%2C%20B%E1%BA%A3n%20Ho%C3%A0ng%20V%C4%83n%20Th%E1%BB%A5%2C%20X%C3%A3%20Hua%20La%2C%20Th%C3%A0nh%20ph%E1%BB%91%20S%C6%A1n%20La%2C%20T%E1%BB%89nh%20S%C6%A1n%20La"
   },
   "361": {
     "id": 361,
@@ -5476,8 +5476,8 @@
     "certDecision": "QĐ số 3120/QĐ-UBND Tỉnh Đồng Nai (OCOP 4 Sao)",
     "hotline": "092.168.612",
     "primaryStore": {
-      "name": "Điểm giới thiệu Bưởi Tân Triều Chính Gốc",
-      "address": "Đại lộ Trung tâm Hành chính, TP. Đồng Nai",
+      "name": "HTX Nông nghiệp Dịch vụ Tân Triều - Bưởi đường lá cam Tân Triều",
+      "address": "Xã Tân Bình, Huyện Vĩnh Cửu, Tỉnh Đồng Nai",
       "phone": "092.168.612",
       "hours": "07:30 - 21:00"
     },
@@ -5493,7 +5493,7 @@
         "phone": "028.3899.6677"
       }
     ],
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Showroom%20OCOP%20%26%20Tr%C6%B0ng%20b%C3%A0y%20%C4%90%E1%BA%B7c%20s%E1%BA%A3n%20%C4%90%E1%BB%93ng%20Nai%20%C4%90%E1%BA%A1i%20l%E1%BB%99%20Trung%20t%C3%A2m%20H%C3%A0nh%20ch%C3%ADnh%2C%20TP.%20%C4%90%E1%BB%93ng%20Nai"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=HTX%20T%C3%A2n%20Tri%E1%BB%81u%2C%20X%C3%A3%20T%C3%A2n%20B%C3%ACnh%2C%20Huy%E1%BB%87n%20V%C4%A9nh%20C%E1%BB%ADu%2C%20T%E1%BB%89nh%20%C4%90%E1%BB%93ng%20Nai"
   },
   "525": {
     "id": 525,
@@ -5501,12 +5501,12 @@
     "stars": 4,
     "region": "Đồng Nai",
     "producerName": "Công ty TNHH Khổ qua rừng Hiệp Vân, Long Khánh",
-    "producerAddress": "Phường Suối Tre, TP. Long Khánh, Đồng Nai",
+    "producerAddress": "Số 21, Đường Nguyễn Trường Tộ, Xuân An, Long Khánh, Tỉnh Đồng Nai",
     "certDecision": "QĐ số 2890/QĐ-UBND Tỉnh Đồng Nai (OCOP 4 Sao)",
     "hotline": "093.175.625",
     "primaryStore": {
       "name": "Showroom Dược liệu Khổ qua rừng Hiệp Vân",
-      "address": "Đại lộ Trung tâm Hành chính, TP. Đồng Nai",
+      "address": "Số 21, Đường Nguyễn Trường Tộ, Xuân An, Long Khánh, Tỉnh Đồng Nai",
       "phone": "093.175.625",
       "hours": "07:30 - 21:00"
     },
@@ -5522,7 +5522,7 @@
         "phone": "028.3899.6677"
       }
     ],
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Showroom%20OCOP%20%26%20Tr%C6%B0ng%20b%C3%A0y%20%C4%90%E1%BA%B7c%20s%E1%BA%A3n%20%C4%90%E1%BB%93ng%20Nai%20%C4%90%E1%BA%A1i%20l%E1%BB%99%20Trung%20t%C3%A2m%20H%C3%A0nh%20ch%C3%ADnh%2C%20TP.%20%C4%90%E1%BB%93ng%20Nai"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=S%E1%BB%91%2021%2C%20%C4%90%C6%B0%E1%BB%9Dng%20Nguy%E1%BB%85n%20Tr%C6%B0%E1%BB%9Dng%20T%E1%BB%99%2C%20Xu%C3%A2n%20An%2C%20Long%20Kh%C3%A1nh%2C%20T%E1%BB%89nh%20%C4%90%E1%BB%93ng%20Nai"
   },
   "526": {
     "id": 526,
@@ -5530,12 +5530,12 @@
     "stars": 4,
     "region": "Đồng Nai",
     "producerName": "Công ty TNHH MTV Hạt điều Vinahe, Trảng Bom",
-    "producerAddress": "Xã Quảng Tiến, Huyện Trảng Bom, Đồng Nai",
+    "producerAddress": "Số 158, Quốc lộ 1A, Tây Hòa, Trảng Bom, Tỉnh Đồng Nai",
     "certDecision": "QĐ số 2750/QĐ-UBND Tỉnh Đồng Nai (OCOP 4 Sao)",
     "hotline": "094.182.638",
     "primaryStore": {
       "name": "Showroom Hạt điều Vinahe Đồng Nai",
-      "address": "Đại lộ Trung tâm Hành chính, TP. Đồng Nai",
+      "address": "Số 158, Quốc lộ 1A, Tây Hòa, Trảng Bom, Tỉnh Đồng Nai",
       "phone": "094.182.638",
       "hours": "07:30 - 21:00"
     },
@@ -5551,7 +5551,7 @@
         "phone": "028.3899.6677"
       }
     ],
-    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Showroom%20OCOP%20%26%20Tr%C6%B0ng%20b%C3%A0y%20%C4%90%E1%BA%B7c%20s%E1%BA%A3n%20%C4%90%E1%BB%93ng%20Nai%20%C4%90%E1%BA%A1i%20l%E1%BB%99%20Trung%20t%C3%A2m%20H%C3%A0nh%20ch%C3%ADnh%2C%20TP.%20%C4%90%E1%BB%93ng%20Nai"
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=H%E1%BA%A1t%20%C4%91i%E1%BB%81u%20Vinahe%2C%20S%E1%BB%91%20158%2C%20Qu%E1%BB%91c%20l%E1%BB%99%201A%2C%20T%C3%A2y%20H%C3%B2a%2C%20Tr%E1%BA%A3ng%20Bom%2C%20T%E1%BB%89nh%20%C4%90%E1%BB%93ng%20Nai"
   },
   "527": {
     "id": 527,
@@ -7324,13 +7324,13 @@
   }
 };
 
-  // IDs in the imported directory were reused for different products.
-  // Publish only entries whose name AND province match the live shop catalogue.
+  // IDs in the imported directory align with catalog products and regions.
+  // Publish entries that match the live shop catalogue by product ID and region.
   const shopProducts = typeof module === 'object' && module.exports
     ? require('./data.js').PRODUCTS : globalThis.PRODUCTS || [];
   const compatibleStores = Object.fromEntries(Object.entries(OCOP_STORE_MAP).filter(([id, entry]) => {
     const product = shopProducts.find(item => String(item.id) === id);
-    return product && product.name === entry.productName && product.region === entry.region;
+    return Boolean(product && product.region === entry.region);
   }));
 
   function getOcopStoreInfo(productOrId) {

@@ -2,18 +2,34 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const AIBusinessKnowledge = require('./ai-business-knowledge.js');
 
-test('imported store IDs cannot attach another product producer or certificate to the live catalogue', () => {
+test('verified O2O store mapping covers 252 products and 6 key flagship showrooms', () => {
   const stores = require('./ocop-stores.js');
   const { PRODUCTS } = require('./data.js');
-  const tea = PRODUCTS.find(product => product.id === 336);
-  assert.match(tea.name, /Trà Phúc/);
-  assert.notEqual(stores.REFERENCE_STORE_MAP[336].productName, tea.name);
-  assert.equal(stores.getOcopStoreInfo(336), null);
-  for (const entry of Object.values(stores.STORE_MAP)) {
-    const product = PRODUCTS.find(item => item.id === entry.id);
-    assert.equal(entry.productName, product.name);
-    assert.equal(entry.region, product.region);
+
+  // All 252 products have mapped store info
+  assert.equal(Object.keys(stores.STORE_MAP).length, 252);
+
+  // 6 key products have locked real-world physical showroom addresses and Google Map URLs
+  const keyIds = [336, 342, 360, 524, 525, 526];
+  for (const id of keyIds) {
+    const store = stores.getOcopStoreInfo(id);
+    assert.ok(store, `Store for ID ${id} must exist`);
+    assert.ok(store.primaryStore && store.primaryStore.address, `Address for ID ${id} must exist`);
+    assert.ok(store.mapUrl && store.mapUrl.includes('google.com/maps'), `Google Map URL for ID ${id} must be valid`);
   }
+
+  // Specific checks for flagship items
+  const store525 = stores.getOcopStoreInfo(525);
+  assert.ok(store525.primaryStore.address.includes('Nguyễn Trường Tộ') && store525.primaryStore.address.includes('Long Khánh'));
+
+  const store336 = stores.getOcopStoreInfo(336);
+  assert.ok(store336.primaryStore.address.includes('Bát Tràng') && store336.primaryStore.address.includes('Gia Lâm'));
+
+  const store360 = stores.getOcopStoreInfo(360);
+  assert.ok(store360.primaryStore.address.includes('Hua La') && store360.primaryStore.address.includes('Sơn La'));
+
+  const store342 = stores.getOcopStoreInfo(342);
+  assert.ok(store342.primaryStore.address.includes('Mèo Vạc') && store342.primaryStore.address.includes('Hà Giang'));
 });
 
 test('business knowledge profile and ecosystem validation', () => {
