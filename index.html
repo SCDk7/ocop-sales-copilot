@@ -2647,6 +2647,52 @@
                             </div>
                         </div>
 
+                        <!-- 2.1 BỘ LỌC 63 TỈNH THÀNH (SIDEBAR PROVINCE FILTER & QUICK CHIPS) -->
+                        <div class="glass-panel p-3 rounded-2xl border border-amber-400/30 shadow-sm space-y-2 bg-slate-950/70">
+                            <div class="text-[11px] font-black text-amber-300 uppercase flex items-center justify-between">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-location-dot text-amber-400"></i>
+                                    <span>Bộ Lọc 63 Tỉnh Thành</span>
+                                </span>
+                                <span class="text-[9px] bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">OCOP O2O</span>
+                            </div>
+                            <div class="relative">
+                                <label for="sidebar-province-select" class="sr-only">Lọc theo tỉnh thành</label>
+                                <select id="sidebar-province-select" onchange="onProvinceFilterChange(this.value, event)" class="w-full bg-slate-900 border border-amber-400/40 text-amber-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400 cursor-pointer shadow-inner font-bold">
+                                    <option value="">-- Tất cả 63 Tỉnh Thành --</option>
+                                    <optgroup label="⭐ Tỉnh Thành Tiêu Biểu (Ưu tiên Đồng Nai)">
+                                        <option value="Đồng Nai">⭐ Đồng Nai (Bưởi Tân Triều, Trà khổ qua Hiệp Vân)</option>
+                                        <option value="Hà Nội">Hà Nội (Gốm Bát Tràng, Trà sen Tây Hồ)</option>
+                                        <option value="Thành phố Hồ Chí Minh">TP. Hồ Chí Minh (Showroom O2O)</option>
+                                        <option value="Hà Giang">Hà Giang (Chè Shan Tuyết)</option>
+                                        <option value="Lâm Đồng">Lâm Đồng (Cà phê Arabica Cầu Đất)</option>
+                                        <option value="Sơn La">Sơn La (Cà phê đặc sản Sơn La)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <!-- Các chip tỉnh thành chọn nhanh -->
+                            <div class="flex flex-wrap gap-1 text-[10px] font-bold" id="sidebar-quick-provinces">
+                                <button type="button" data-province="Đồng Nai" onclick="onProvinceFilterChange('Đồng Nai', event)" class="prov-chip-btn px-2.5 py-1 rounded-lg bg-slate-900 border border-amber-400/40 text-amber-300 hover:bg-amber-400 hover:text-slate-950 transition cursor-pointer flex items-center gap-1 shadow-2xs font-black">
+                                    <i class="fa-solid fa-star text-amber-400 text-[8px]"></i> Đồng Nai
+                                </button>
+                                <button type="button" data-province="Hà Nội" onclick="onProvinceFilterChange('Hà Nội', event)" class="prov-chip-btn px-2 py-1 rounded-lg bg-slate-900 border border-amber-400/20 text-slate-200 hover:bg-amber-400 hover:text-slate-950 transition cursor-pointer">
+                                    Hà Nội
+                                </button>
+                                <button type="button" data-province="Thành phố Hồ Chí Minh" onclick="onProvinceFilterChange('Thành phố Hồ Chí Minh', event)" class="prov-chip-btn px-2 py-1 rounded-lg bg-slate-900 border border-amber-400/20 text-slate-200 hover:bg-amber-400 hover:text-slate-950 transition cursor-pointer">
+                                    TP.HCM
+                                </button>
+                                <button type="button" data-province="Hà Giang" onclick="onProvinceFilterChange('Hà Giang', event)" class="prov-chip-btn px-2 py-1 rounded-lg bg-slate-900 border border-amber-400/20 text-slate-200 hover:bg-amber-400 hover:text-slate-950 transition cursor-pointer">
+                                    Hà Giang
+                                </button>
+                                <button type="button" data-province="Lâm Đồng" onclick="onProvinceFilterChange('Lâm Đồng', event)" class="prov-chip-btn px-2 py-1 rounded-lg bg-slate-900 border border-amber-400/20 text-slate-200 hover:bg-amber-400 hover:text-slate-950 transition cursor-pointer">
+                                    Lâm Đồng
+                                </button>
+                                <button type="button" data-province="Sơn La" onclick="onProvinceFilterChange('Sơn La', event)" class="prov-chip-btn px-2 py-1 rounded-lg bg-slate-900 border border-amber-400/20 text-slate-200 hover:bg-amber-400 hover:text-slate-950 transition cursor-pointer">
+                                    Sơn La
+                                </button>
+                            </div>
+                        </div>
+
                         <!-- 3. DANH MỤC SẢN PHẨM & TÌM KIẾM CHÍNH -->
                         <div class="glass-panel rounded-3xl border border-amber-400/30 p-4 shadow-lg space-y-3">
                             <div class="bg-gradient-to-r from-emerald-950 to-slate-900 border border-amber-400/40 text-amber-200 px-4 py-3 rounded-2xl flex items-center justify-between shadow-sm">
@@ -3851,10 +3897,21 @@
             document.documentElement.style.overflow = '';
         }
 
-        // TỰ ĐỘNG NẠP VÀ HIỂN THỊ DANH SÁCH SẢN PHẨM MẶC ĐỊNH (FIX CRITICAL EMPTY STATE)
+        // TỰ ĐỘNG NẠP VÀ HIỂN THỊ DANH SÁCH SẢN PHẨM (BẢO LƯU TRẠNG THÁI BỘ LỌC)
         function fetchProducts() {
             if (Array.isArray(products) && products.length > 0) {
-                renderProducts(products);
+                if (typeof populateSidebarProvinces === 'function') {
+                    populateSidebarProvinces();
+                }
+                if (selectedProvince) {
+                    if (typeof onProvinceFilterChange === 'function') {
+                        onProvinceFilterChange(selectedProvince.name);
+                    } else {
+                        filterProductsGlobal(document.getElementById('product-search')?.value || '');
+                    }
+                } else {
+                    renderProducts(products);
+                }
             }
         }
 
@@ -4424,7 +4481,11 @@
             document.getElementById('macro-region-hint').textContent = english ? 'Products' : 'Số sản phẩm';
         }
 
-        function filterByMacroRegion(macro, btn) {
+        function filterByMacroRegion(macro, btn, event = null) {
+            if (event) {
+                if (typeof event.preventDefault === 'function') event.preventDefault();
+                if (typeof event.stopPropagation === 'function') event.stopPropagation();
+            }
             const btns = document.querySelectorAll('.macro-reg-btn');
             if (currentMacroRegion === macro) {
                 currentMacroRegion = null;
@@ -4437,6 +4498,37 @@
                 const name = macro === 'bac' ? 'Miền Bắc' : (macro === 'trung' ? 'Miền Trung' : 'Miền Nam');
                 showToast("Đang lọc đặc sản " + name, "success");
             }
+
+            // Giải quyết xung đột: nếu province đã chọn không thuộc miền mới, bỏ chọn province
+            if (selectedProvince && currentMacroRegion) {
+                const normSelected = normalizeProvinceName(selectedProvince.name);
+                const belongs = (MACRO_REGIONS[currentMacroRegion] || []).some(p => normalizeProvinceName(p) === normSelected);
+                if (!belongs) {
+                    selectedProvince = null;
+                    provinceProductsHidden = false;
+                    const sidebarSelect = document.getElementById('sidebar-province-select');
+                    if (sidebarSelect) sidebarSelect.value = '';
+                    const mapSelect = document.getElementById('province-map-select');
+                    if (mapSelect) mapSelect.value = '';
+                    provinceBoundaryLayer?.setStyle(getProvinceStyle);
+                    document.querySelectorAll('.prov-chip-btn').forEach(c => {
+                        c.classList.remove('bg-amber-400', 'text-slate-950', 'border-yellow-200');
+                        c.classList.add('bg-slate-900', 'text-slate-200', 'border-amber-400/20');
+                    });
+                }
+            }
+
+            // Scroll anchor reset về vị trí trên cùng của danh mục
+            const grid = document.getElementById('product-grid');
+            if (grid) grid.scrollTop = 0;
+            const sec = document.getElementById('products-section');
+            if (sec) {
+                const targetY = sec.getBoundingClientRect().top + window.scrollY - 80;
+                if (window.scrollY > targetY + 120) {
+                    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                }
+            }
+
             updateMacroRegionCounts();
             filterProductsGlobal(document.getElementById('product-search')?.value || '');
         }
@@ -4660,19 +4752,29 @@
 
             let filtered = products;
 
-            if (currentCategory !== 'all') {
-                if (currentCategory === '5star') filtered = filtered.filter(p => p.stars === 5);
-                else if (currentCategory === '4star') filtered = filtered.filter(p => p.stars === 4);
-                else filtered = filtered.filter(p => p.category === currentCategory);
-            }
-
-            if (currentMacroRegion && MACRO_REGIONS[currentMacroRegion]) {
-                filtered = filtered.filter(product => productMatchesMacroRegion(product, currentMacroRegion));
-            }
-
             if (selectedProvince) {
                 const selectedProvinceName = normalizeProvinceName(selectedProvince.name);
-                filtered = filtered.filter(product => normalizeProvinceName(product.region) === selectedProvinceName);
+                const provFiltered = filtered.filter(product => normalizeProvinceName(product.region) === selectedProvinceName);
+                if (currentCategory !== 'all') {
+                    const catFiltered = provFiltered.filter(p => {
+                        if (currentCategory === '5star') return p.stars === 5;
+                        if (currentCategory === '4star') return p.stars === 4;
+                        return p.category === currentCategory;
+                    });
+                    filtered = catFiltered.length > 0 ? catFiltered : provFiltered;
+                } else {
+                    filtered = provFiltered;
+                }
+            } else {
+                if (currentCategory !== 'all') {
+                    if (currentCategory === '5star') filtered = filtered.filter(p => p.stars === 5);
+                    else if (currentCategory === '4star') filtered = filtered.filter(p => p.stars === 4);
+                    else filtered = filtered.filter(p => p.category === currentCategory);
+                }
+
+                if (currentMacroRegion && MACRO_REGIONS[currentMacroRegion]) {
+                    filtered = filtered.filter(product => productMatchesMacroRegion(product, currentMacroRegion));
+                }
             }
 
             if (terms.length > 0) {
@@ -4893,35 +4995,245 @@
             window.dispatchEvent(new CustomEvent('ocop:province-selected', { detail: selection }));
         }
 
+        let currentFilterSequenceId = 0;
+
+        function populateSidebarProvinces() {
+            const sel = document.getElementById('sidebar-province-select');
+            if (!sel || sel.dataset.populated === 'true') return;
+
+            const allProvs = [...new Set(products.map(p => p.region))].sort((a,b) => a.localeCompare(b, 'vi'));
+            if (!allProvs.length) return;
+
+            const bacList = allProvs.filter(p => (MACRO_REGIONS.bac || []).some(m => normalizeProvinceName(m) === normalizeProvinceName(p)));
+            const trungList = allProvs.filter(p => (MACRO_REGIONS.trung || []).some(m => normalizeProvinceName(m) === normalizeProvinceName(p)));
+            const namList = allProvs.filter(p => (MACRO_REGIONS.nam || []).some(m => normalizeProvinceName(m) === normalizeProvinceName(p)));
+
+            const addGroup = (lbl, list) => {
+                const grp = document.createElement('optgroup');
+                grp.label = lbl;
+                list.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p + (p === 'Đồng Nai' ? ' ⭐ (Đặc sản OCOP tiêu biểu)' : '');
+                    grp.appendChild(opt);
+                });
+                sel.appendChild(grp);
+            };
+
+            addGroup('🏔️ Miền Bắc (25 Tỉnh Thành)', bacList);
+            addGroup('🌊 Miền Trung & Tây Nguyên (19 Tỉnh Thành)', trungList);
+            addGroup('🌴 Miền Nam (19 Tỉnh Thành)', namList);
+            sel.dataset.populated = 'true';
+        }
+
+        async function onProvinceFilterChange(provinceInput, event = null) {
+            if (event) {
+                if (typeof event.preventDefault === 'function') event.preventDefault();
+                if (typeof event.stopPropagation === 'function') event.stopPropagation();
+            }
+
+            const filterSeq = ++currentFilterSequenceId;
+            const grid = document.getElementById('product-grid');
+            const noMsg = document.getElementById('no-products-msg');
+            const productsSection = document.getElementById('products-section');
+
+            try {
+                // 1. SCROLL ANCHOR RESET (Đồng bộ hóa vị trí cuộn trang)
+                // Ép tọa độ cuộn của khung chứa sản phẩm tự động reset về vị trí trên cùng
+                if (grid) {
+                    grid.scrollTop = 0;
+                }
+                if (productsSection) {
+                    const secTop = productsSection.getBoundingClientRect().top + window.scrollY - 80;
+                    if (window.scrollY > secTop + 120) {
+                        window.scrollTo({ top: Math.max(0, secTop), behavior: 'smooth' });
+                    }
+                }
+
+                // 2. MEMORY & VIRTUAL SCROLL CLEAN-UP (Giải phóng bộ nhớ & DOM cũ)
+                // Giải phóng hoàn toàn các thẻ DOM cũ đang bị ghim bởi contain: content / will-change
+                if (grid) {
+                    grid.style.minHeight = '360px';
+                    grid.replaceChildren();
+                }
+
+                // Bất đồng bộ hóa (Async Filter Request) để browser hoàn tất cycle layout
+                await new Promise(r => requestAnimationFrame(r));
+                if (filterSeq !== currentFilterSequenceId) return;
+
+                // 3. XỬ LÝ LỰA CHỌN TỈNH THÀNH (RESOLVE STATE)
+                const targetName = typeof provinceInput === 'object' && provinceInput ? provinceInput.name : String(provinceInput || '').trim();
+
+                if (!targetName || targetName === 'all') {
+                    selectedProvince = null;
+                    provinceProductsHidden = false;
+                    const sidebarSelect = document.getElementById('sidebar-province-select');
+                    if (sidebarSelect) sidebarSelect.value = '';
+                    const mapSelect = document.getElementById('province-map-select');
+                    if (mapSelect) mapSelect.value = '';
+                    provinceBoundaryLayer?.setStyle(getProvinceStyle);
+                } else {
+                    const normTarget = normalizeProvinceName(targetName);
+                    selectedProvince = { id: targetName, name: targetName };
+                    provinceProductsHidden = false;
+
+                    // Đồng bộ Macro Region (Bắc - Trung - Nam) theo tỉnh thành
+                    let matchedMacro = null;
+                    for (const [m, list] of Object.entries(MACRO_REGIONS)) {
+                        if (list.some(p => normalizeProvinceName(p) === normTarget)) {
+                            matchedMacro = m;
+                            break;
+                        }
+                    }
+                    currentMacroRegion = matchedMacro;
+                    document.querySelectorAll('.macro-reg-btn').forEach(btn => {
+                        const isMatch = btn.dataset.macroRegion === matchedMacro;
+                        btn.classList.toggle('bg-ocopGreen', isMatch);
+                        btn.classList.toggle('text-white', isMatch);
+                        btn.setAttribute('aria-pressed', String(isMatch));
+                    });
+
+                    // Đồng bộ dropdown Sidebar
+                    const sidebarSelect = document.getElementById('sidebar-province-select');
+                    if (sidebarSelect) {
+                        for (let opt of sidebarSelect.options) {
+                            if (normalizeProvinceName(opt.value) === normTarget || normalizeProvinceName(opt.text) === normTarget) {
+                                sidebarSelect.value = opt.value;
+                                break;
+                            }
+                        }
+                    }
+
+                    // Đồng bộ dropdown Intro Map
+                    const mapSelect = document.getElementById('province-map-select');
+                    if (mapSelect) {
+                        for (let opt of mapSelect.options) {
+                            if (normalizeProvinceName(opt.text) === normTarget || normalizeProvinceName(opt.value) === normTarget) {
+                                mapSelect.value = opt.value;
+                                break;
+                            }
+                        }
+                    }
+
+                    // Cập nhật Layer bản đồ Leaflet
+                    if (provinceBoundaryLayer) {
+                        provinceBoundaryLayer.eachLayer(layer => {
+                            if (normalizeProvinceName(layer.feature.properties.name) === normTarget) {
+                                selectedProvince.id = layer.feature.properties.id;
+                            }
+                        });
+                        provinceBoundaryLayer.setStyle(getProvinceStyle);
+                    }
+                }
+
+                // Cập nhật trạng thái Active trên các Quick Chip Sidebar
+                document.querySelectorAll('.prov-chip-btn').forEach(chip => {
+                    const chipProv = chip.dataset.province;
+                    const isActive = selectedProvince && normalizeProvinceName(chipProv) === normalizeProvinceName(selectedProvince.name);
+                    chip.classList.toggle('active', Boolean(isActive));
+                    if (isActive) {
+                        chip.classList.add('bg-amber-400', 'text-slate-950', 'border-yellow-200');
+                        chip.classList.remove('bg-slate-900', 'text-slate-200', 'border-amber-400/20');
+                    } else {
+                        chip.classList.remove('bg-amber-400', 'text-slate-950', 'border-yellow-200');
+                        chip.classList.add('bg-slate-900', 'text-slate-200', 'border-amber-400/20');
+                    }
+                });
+
+                publishProvinceSelection();
+
+                // 4. LỌC SẢN PHẨM KHÔNG XUNG ĐỘT (SMART NON-BLOCKING FILTER)
+                let matchedList = products;
+                if (selectedProvince) {
+                    const normSel = normalizeProvinceName(selectedProvince.name);
+                    const provProducts = products.filter(p => normalizeProvinceName(p.region) === normSel);
+                    
+                    // Nếu đang có category filter mà tỉnh này không có sản phẩm trong category đó, tự động chuyển category về 'all'
+                    if (currentCategory !== 'all') {
+                        const catMatch = provProducts.filter(p => {
+                            if (currentCategory === '5star') return p.stars === 5;
+                            if (currentCategory === '4star') return p.stars === 4;
+                            return p.category === currentCategory;
+                        });
+                        if (catMatch.length > 0) {
+                            matchedList = catMatch;
+                        } else {
+                            currentCategory = 'all';
+                            document.querySelectorAll('.cat-side-btn, .mob-cat-btn').forEach(btn => {
+                                btn.classList.toggle('active', btn.getAttribute('onclick')?.includes("'all'"));
+                            });
+                            matchedList = provProducts;
+                        }
+                    } else {
+                        matchedList = provProducts;
+                    }
+                } else {
+                    if (currentCategory !== 'all') {
+                        if (currentCategory === '5star') matchedList = matchedList.filter(p => p.stars === 5);
+                        else if (currentCategory === '4star') matchedList = matchedList.filter(p => p.stars === 4);
+                        else matchedList = matchedList.filter(p => p.category === currentCategory);
+                    }
+                    if (currentMacroRegion && MACRO_REGIONS[currentMacroRegion]) {
+                        matchedList = matchedList.filter(p => productMatchesMacroRegion(p, currentMacroRegion));
+                    }
+                }
+
+                // Sắp xếp
+                let sortedList = [...matchedList];
+                if (currentSortMode === 'price-asc') sortedList.sort((a, b) => a.price - b.price);
+                else if (currentSortMode === 'price-desc') sortedList.sort((a, b) => b.price - a.price);
+                else if (currentSortMode === 'rating-desc') sortedList.sort((a, b) => b.rating - a.rating);
+                else if (currentSortMode === 'stars-desc') sortedList.sort((a, b) => (b.stars - a.stars) || (b.rating - a.rating));
+
+                if (filterSeq !== currentFilterSequenceId) return;
+
+                // 5. NẠP DỮ LIỆU MỚI VÀ RENDER
+                renderProducts(sortedList);
+                updateProvinceSelectionStatus(sortedList.length);
+
+                if (grid) {
+                    grid.style.minHeight = '';
+                    grid.scrollTop = 0;
+                }
+
+                if (selectedProvince) {
+                    showToast(`Đã hiển thị ${sortedList.length} đặc sản OCOP tỉnh ${selectedProvince.name}!`, "success");
+                } else {
+                    showToast(`Hiển thị tất cả 63 tỉnh thành (${sortedList.length} sản phẩm)`, "info");
+                }
+            } catch (filterError) {
+                console.error('[onProvinceFilterChange] Filter Exception caught:', filterError);
+                if (grid) {
+                    grid.style.minHeight = '';
+                    renderProducts(products);
+                }
+            }
+        }
+
         function clearSelectedProvince() {
-            selectedProvince = null;
-            provinceProductsHidden = false;
-            const provinceSelect = document.getElementById('province-map-select');
-            if (provinceSelect) provinceSelect.value = '';
-            provinceBoundaryLayer?.setStyle(getProvinceStyle);
-            publishProvinceSelection();
-            filterProductsGlobal(document.getElementById('product-search').value);
+            onProvinceFilterChange('all');
         }
 
         function selectProvinceById(provinceId) {
-            if (!provinceId || !provinceBoundaryLayer) return;
-            let selectedFeature = null;
-            provinceBoundaryLayer.eachLayer(layer => {
-                if (layer.feature.properties.id === provinceId) selectedFeature = layer.feature;
-            });
-            if (selectedFeature) selectProvince(selectedFeature.properties);
+            if (!provinceId) {
+                onProvinceFilterChange('all');
+                return;
+            }
+            if (provinceBoundaryLayer) {
+                let selectedFeature = null;
+                provinceBoundaryLayer.eachLayer(layer => {
+                    if (layer.feature.properties.id === provinceId) selectedFeature = layer.feature;
+                });
+                if (selectedFeature) {
+                    onProvinceFilterChange(selectedFeature.properties.name);
+                    return;
+                }
+            }
+            onProvinceFilterChange(provinceId);
         }
 
         function selectProvince(province) {
-            selectedProvince = { id: province.id, name: province.name };
-            provinceProductsHidden = false;
-            provinceBoundaryLayer?.setStyle(getProvinceStyle);
-
-            const provinceSelect = document.getElementById('province-map-select');
-            if (provinceSelect) provinceSelect.value = province.id;
-
-            publishProvinceSelection();
-            filterProductsGlobal(document.getElementById('product-search').value);
+            onProvinceFilterChange(province?.name || province?.id);
             revealProvinceProductsOnMobile();
         }
 
@@ -5105,6 +5417,11 @@
         }
 
         function clearSearchInput() {
+            ['product-search', 'header-search-input', 'mobile-search-input'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            document.querySelectorAll('.search-clear-button').forEach(btn => btn.classList.add('hidden'));
             filterProductsGlobal('');
         }
 
@@ -5312,11 +5629,57 @@
             const sortSelect = document.getElementById('product-sort-select');
             if (sortSelect) sortSelect.value = 'default';
             currentMacroRegion = null;
-            document.querySelectorAll('.macro-reg-btn').forEach(b => b.classList.remove('bg-ocopGreen', 'text-white'));
-            if (selectedProvince) clearSelectedProvince();
-            setCategoryFilter('all');
-            clearSearchInput();
-            showToast("Đã làm mới danh mục đặc sản!", "info");
+            document.querySelectorAll('.macro-reg-btn').forEach(b => {
+                b.classList.remove('bg-ocopGreen', 'text-white');
+                b.setAttribute('aria-pressed', 'false');
+            });
+
+            // Reset Tỉnh/Thành, Bản đồ và Quick Chips
+            selectedProvince = null;
+            provinceProductsHidden = false;
+            const sidebarSelect = document.getElementById('sidebar-province-select');
+            if (sidebarSelect) sidebarSelect.value = '';
+            const mapSelect = document.getElementById('province-map-select');
+            if (mapSelect) mapSelect.value = '';
+            document.querySelectorAll('.prov-chip-btn').forEach(chip => {
+                chip.classList.remove('active', 'bg-amber-400', 'text-slate-950', 'border-yellow-200');
+                chip.classList.add('bg-slate-900', 'text-slate-200', 'border-amber-400/20');
+            });
+            if (provinceBoundaryLayer) {
+                provinceBoundaryLayer.setStyle(getProvinceStyle);
+            }
+            publishProvinceSelection();
+
+            // Reset Category
+            currentCategory = 'all';
+            document.querySelectorAll('.cat-side-btn, .mob-cat-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick')?.includes("'all'"));
+            });
+
+            // Reset Search
+            ['product-search', 'header-search-input', 'mobile-search-input'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            document.querySelectorAll('.search-clear-button').forEach(btn => btn.classList.add('hidden'));
+
+            // Scroll Anchor Reset
+            const grid = document.getElementById('product-grid');
+            if (grid) {
+                grid.scrollTop = 0;
+                grid.style.minHeight = '';
+            }
+            const productsSection = document.getElementById('products-section');
+            if (productsSection) {
+                const secTop = productsSection.getBoundingClientRect().top + window.scrollY - 80;
+                if (window.scrollY > secTop + 120) {
+                    window.scrollTo({ top: Math.max(0, secTop), behavior: 'smooth' });
+                }
+            }
+
+            renderProducts(products);
+            updateProvinceSelectionStatus(products.length);
+            showToast("Đã làm mới toàn bộ bộ lọc đặc sản!", "info");
         }
 
         // -------------------------------------------------------------
@@ -8273,7 +8636,7 @@ async function sendAIMessage() {
                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2" id="store-provinces-list">
                             ${provinces.map(prov => {
                                 return `
-                                    <button onclick="filterProductsGlobal('${prov}'); closeAllStoresModal();" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
+                                    <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
                                         <span class="font-bold text-xs text-gray-800 group-hover:text-ocopGreen">${prov}</span>
                                         <i class="fa-solid fa-chevron-right text-[10px] text-gray-400 group-hover:text-amber-600"></i>
                                     </button>
@@ -8311,7 +8674,7 @@ async function sendAIMessage() {
 
             if (countEl) countEl.textContent = `${filtered.length} Tỉnh thành`;
             listEl.innerHTML = filtered.length ? filtered.map(prov => `
-                <button onclick="filterProductsGlobal('${prov}'); closeAllStoresModal();" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
+                <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
                     <span class="font-bold text-xs text-gray-800 group-hover:text-ocopGreen">${prov}</span>
                     <i class="fa-solid fa-chevron-right text-[10px] text-gray-400 group-hover:text-amber-600"></i>
                 </button>
