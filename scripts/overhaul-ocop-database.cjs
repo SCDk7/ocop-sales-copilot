@@ -5,50 +5,50 @@ const path = require('path');
 const currentData = require('../data.js');
 const PRODUCTS = currentData.PRODUCTS;
 
-// 2. Define specific overrides for the 10 core provinces requested by user
+// 2. Define specific overrides for core provinces requested by user
 const specificOverrides = {
   'Hà Nội': [
     {
-      name: 'Gốm sứ tâm linh cao cấp Bát Tràng - Xưởng nghệ nhân (OCOP 5 sao)',
-      nameEn: 'Bat Trang Premium Spiritual Ceramics - Master Artisan Workshop (OCOP 5-star)',
+      name: 'Gốm sứ tâm linh dòng men rạn cổ Bát Tràng - Công ty TNHH Gốm sứ Quang Vinh (OCOP 5 Sao Quốc gia)',
+      nameEn: 'Bat Trang Ancient Crackle Glaze Spiritual Ceramics - Quang Vinh Ceramics (OCOP 5-star)',
       stars: 5,
       category: 'gift',
       price: 2500000,
       packaging: 'bộ',
       packagingEn: 'set',
-      producer: 'Xưởng nghệ nhân Gốm sứ Bát Tràng',
+      producer: 'Công ty TNHH Gốm sứ Quang Vinh',
       address: 'Xóm 1, Làng cổ Bát Tràng, Gia Lâm, Hà Nội',
-      store: 'Showroom Gốm sứ Bát Tràng Tinh Hoa',
+      store: 'Showroom Gốm sứ Quang Vinh Bát Tràng Tinh Hoa',
       cert: 'QĐ số 3828/QĐ-UBND TP. Hà Nội (OCOP 5 Sao Quốc Gia)'
     },
     {
-      name: 'Trà sen Tây Hồ - Cơ sở Quảng An (OCOP 4 sao)',
-      nameEn: 'Tay Ho Lotus Scented Tea - Quang An Facility (OCOP 4-star)',
+      name: 'Trà sen Tây Hồ - Công ty TNHH hương trà sạch Quảng An (OCOP 4 Sao)',
+      nameEn: 'Tay Ho Lotus Scented Tea - Quang An Clean Tea (OCOP 4-star)',
       stars: 4,
       category: 'tea',
       price: 1800000,
       packaging: 'hộp',
       packagingEn: 'box',
-      producer: 'Cơ sở Trà sen truyền thống Quảng An',
+      producer: 'Công ty TNHH hương trà sạch Quảng An',
       address: 'Số 12 Ngõ 50 Đặng Thai Mai, P. Quảng An, Tây Hồ, Hà Nội',
-      store: 'Không gian Trà sen Tây Hồ',
+      store: 'Không gian Trà sen Tây Hồ Quảng An',
       cert: 'QĐ số 4125/QĐ-UBND TP. Hà Nội (OCOP 4 Sao)'
     },
     {
-      name: 'Giò chả Ước Lễ - Cơ sở truyền thống Thanh Oai (OCOP 4 sao)',
-      nameEn: 'Uoc Le Traditional Pork Roll - Thanh Oai Facility (OCOP 4-star)',
+      name: 'Giò chả Ước Lễ - Cơ sở giò chả truyền thống Ước Lễ, Thanh Oai (OCOP 4 Sao)',
+      nameEn: 'Uoc Le Traditional Pork Roll - Uoc Le Thanh Oai (OCOP 4-star)',
       stars: 4,
       category: 'food',
       price: 250000,
       packaging: 'kg',
       packagingEn: 'kg',
-      producer: 'Cơ sở Giò chả truyền thống Ước Lễ',
+      producer: 'Cơ sở giò chả truyền thống Ước Lễ, Thanh Oai',
       address: 'Làng Ước Lễ, Xã Tân Ước, Huyện Thanh Oai, Hà Nội',
       store: 'Cửa hàng Giò chả Ước Lễ Gia Truyền',
       cert: 'QĐ số 2190/QĐ-UBND TP. Hà Nội (OCOP 4 Sao)'
     },
     {
-      name: 'Gạo tẻ thơm Thượng Cốc - HTX Nông nghiệp Thanh Oai (OCOP 3 sao)',
+      name: 'Gạo tẻ thơm Thượng Cốc - HTX Nông nghiệp Thanh Oai (OCOP 3 Sao)',
       nameEn: 'Thuong Coc Aromatic Rice - Thanh Oai Agricultural Cooperative (OCOP 3-star)',
       stars: 3,
       category: 'food',
@@ -63,33 +63,33 @@ const specificOverrides = {
   ],
   'Hà Giang': [
     {
-      name: 'Trà / Chè chốt Shan tuyết cổ thụ Tây Côn Lĩnh (OCOP 4 sao)',
-      nameEn: 'Tay Con Linh Ancient Shan Tuyet Tea - Organic Mountain Harvest (OCOP 4-star)',
-      stars: 4,
+      name: 'Trà / Chè Shan tuyết cổ thụ Tây Côn Lĩnh - HTX Chè Phìn Hồ (OCOP 5 Sao Quốc gia)',
+      nameEn: 'Tay Con Linh Ancient Shan Tuyet Tea - Phin Ho Cooperative (OCOP 5-star)',
+      stars: 5,
       category: 'tea',
-      price: 600000,
+      price: 850000,
       packaging: 'hộp',
       packagingEn: 'box',
-      producer: 'HTX Chè Tây Côn Lĩnh',
-      address: 'Xã Cao Bồ, Huyện Vị Xuyên, Hà Giang',
-      store: 'Showroom Trà Shan Tuyết Tây Côn Lĩnh',
-      cert: 'QĐ số 1982/QĐ-UBND Tỉnh Hà Giang (OCOP 4 Sao)'
+      producer: 'HTX Chè Phìn Hồ',
+      address: 'Xã Thông Nguyên, Huyện Hoàng Su Phì, Hà Giang',
+      store: 'Showroom Trà Shan Tuyết Phìn Hồ Tinh Hoa',
+      cert: 'QĐ số 3828/QĐ-BNN (OCOP 5 Sao Quốc Gia)'
     },
     {
-      name: 'Mật ong bạc hà Cao nguyên đá Mèo Vạc (OCOP 4 sao)',
-      nameEn: 'Meo Vac Stone Plateau Mint Honey (OCOP 4-star)',
+      name: 'Mật ong bạc hà Cao nguyên đá Mèo Vạc - HTX Tuấn Dũng (OCOP 4 Sao)',
+      nameEn: 'Meo Vac Stone Plateau Mint Honey - Tuan Dung Cooperative (OCOP 4-star)',
       stars: 4,
       category: 'food',
       price: 650000,
       packaging: 'lít',
       packagingEn: 'liter',
-      producer: 'HTX Nuôi ong Cao nguyên đá Mèo Vạc',
+      producer: 'HTX Tuấn Dũng',
       address: 'Thị trấn Mèo Vạc, Huyện Mèo Vạc, Hà Giang',
-      store: 'Điểm giới thiệu Mật ong Bạc hà Mèo Vạc',
+      store: 'Điểm giới thiệu Mật ong Bạc hà Tuấn Dũng Mèo Vạc',
       cert: 'QĐ số 2045/QĐ-UBND Tỉnh Hà Giang (OCOP 4 Sao)'
     },
     {
-      name: 'Hồng không hạt Quản Bạ (OCOP 3 sao)',
+      name: 'Hồng không hạt Quản Bạ (OCOP 3 Sao)',
       nameEn: 'Quan Ba Seedless Persimmon (OCOP 3-star)',
       stars: 3,
       category: 'snack',
@@ -102,7 +102,7 @@ const specificOverrides = {
       cert: 'QĐ số 1520/QĐ-UBND Huyện Quản Bạ (OCOP 3 Sao)'
     },
     {
-      name: 'Thảo quả khô Vị Xuyên (OCOP 3 sao)',
+      name: 'Thảo quả khô Vị Xuyên (OCOP 3 Sao)',
       nameEn: 'Vi Xuyen Dried Black Cardamom (OCOP 3-star)',
       stars: 3,
       category: 'spice',
@@ -117,21 +117,21 @@ const specificOverrides = {
   ],
   'Sơn La': [
     {
-      name: 'Cà phê Arabica Sơn La - HTX Bích Thao (OCOP 5 sao)',
-      nameEn: 'Son La Arabica Coffee - Bich Thao Cooperative (OCOP 5-star)',
+      name: 'Cà phê bột Arabica Specialty Sơn La - HTX Cà phê Bích Thao Sơn La (OCOP 5 Sao Quốc gia)',
+      nameEn: 'Son La Arabica Specialty Powder Coffee - Bich Thao Cooperative (OCOP 5-star)',
       stars: 5,
       category: 'tea',
-      price: 400000,
+      price: 450000,
       packaging: 'hộp',
       packagingEn: 'box',
       producer: 'HTX Cà phê Bích Thao Sơn La',
       address: 'Bản Hoàng Văn Thụ, Xã Hua La, TP. Sơn La, Sơn La',
-      store: 'Showroom Cà phê Arabica Bích Thao',
-      cert: 'QĐ số 3828/QĐ-BNN-VPĐP (OCOP 5 Sao Quốc Gia)'
+      store: 'Showroom Cà phê Arabica Bích Thao Sơn La',
+      cert: 'QĐ số 3828/QĐ-BNN (OCOP 5 Sao Quốc Gia)'
     },
     {
-      name: 'Chè Shan tuyết Tà Xùa - Bắc Yên (OCOP 4 sao)',
-      nameEn: 'Ta Xua Shan Tuyet Ancient Tea - Bac Yen (OCOP 4-star)',
+      name: 'Chè Shan tuyết Tà Xùa - Bắc Yên (OCOP 4 Sao)',
+      nameEn: 'Ta Xua Shan Tuyet Ancient Tea - Bac Yên (OCOP 4-star)',
       stars: 4,
       category: 'tea',
       price: 900000,
@@ -143,7 +143,7 @@ const specificOverrides = {
       cert: 'QĐ số 2580/QĐ-UBND Tỉnh Sơn La (OCOP 4 Sao)'
     },
     {
-      name: 'Xoài tròn Yên Châu (OCOP 4 sao)',
+      name: 'Xoài tròn Yên Châu (OCOP 4 Sao)',
       nameEn: 'Yen Chau Round Mango - Geographical Indication (OCOP 4-star)',
       stars: 4,
       category: 'food',
@@ -156,7 +156,7 @@ const specificOverrides = {
       cert: 'QĐ số 1930/QĐ-UBND Tỉnh Sơn La (OCOP 4 Sao)'
     },
     {
-      name: 'Mận hậu chín sớm Mộc Châu (OCOP 3 sao)',
+      name: 'Mận hậu chín sớm Mộc Châu (OCOP 3 Sao)',
       nameEn: 'Moc Chau Early Harvest Plum (OCOP 3-star)',
       stars: 3,
       category: 'snack',
@@ -169,89 +169,35 @@ const specificOverrides = {
       cert: 'QĐ số 1640/QĐ-UBND Huyện Mộc Châu (OCOP 3 Sao)'
     }
   ],
-  'Bắc Giang': [
-    {
-      name: 'Vải thiều lục ngạn sấy khô - HTX Hồng Xuân (OCOP 4 sao)',
-      nameEn: 'Luc Ngan Dried Lychee - Hong Xuan Cooperative (OCOP 4-star)',
-      stars: 4,
-      category: 'snack',
-      price: 150000,
-      packaging: 'hộp',
-      packagingEn: 'box',
-      producer: 'HTX Nông nghiệp Hồng Xuân',
-      address: 'Xã Quý Sơn, Huyện Lục Ngạn, Bắc Giang',
-      store: 'Showroom Vải thiều Lục Ngạn Hồng Xuân',
-      cert: 'QĐ số 2890/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)'
-    },
-    {
-      name: 'Mỳ Chũ đặc biệt Thủ Dương (OCOP 4 sao)',
-      nameEn: 'Thu Duong Special Chu Rice Noodles (OCOP 4-star)',
-      stars: 4,
-      category: 'food',
-      price: 80000,
-      packaging: 'kg',
-      packagingEn: 'kg',
-      producer: 'HTX Mỳ Chũ Thủ Dương',
-      address: 'Làng Thủ Dương, Xã Nam Dương, Lục Ngạn, Bắc Giang',
-      store: 'Cửa hàng Giới thiệu Mỳ Chũ Nam Dương',
-      cert: 'QĐ số 2140/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)'
-    },
-    {
-      name: 'Chè xanh Bản Ven (OCOP 4 sao)',
-      nameEn: 'Ban Ven Green Tea - Yen The (OCOP 4-star)',
-      stars: 4,
-      category: 'tea',
-      price: 300000,
-      packaging: 'hộp',
-      packagingEn: 'box',
-      producer: 'HTX Thân Trường Bản Ven',
-      address: 'Bản Ven, Xã Xuân Lương, Huyện Yên Thế, Bắc Giang',
-      store: 'Không gian Văn hóa Trà Bản Ven',
-      cert: 'QĐ số 2315/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)'
-    },
-    {
-      name: 'Rượu Làng Vân - Cơ sở chưng cất truyền thống Vân Hà (OCOP 4 sao)',
-      nameEn: 'Lang Van Traditional Distilled Spirit - Van Ha (OCOP 4-star)',
-      stars: 4,
-      category: 'tea',
-      price: 120000,
-      packaging: 'chai',
-      packagingEn: 'bottle',
-      producer: 'Cơ sở sản xuất Rượu Làng Vân',
-      address: 'Làng Vân, Xã Vân Hà, Thị xã Việt Yên, Bắc Giang',
-      store: 'Điểm giới thiệu Rượu Làng Vân Chính Hiệu',
-      cert: 'QĐ số 1980/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)'
-    }
-  ],
   'Quảng Nam': [
     {
-      name: 'Sâm Ngọc Linh ngâm mật ong rừng - Nam Trà My (OCOP 5 sao)',
-      nameEn: 'Nam Tra My Ngoc Linh Ginseng in Wild Forest Honey (OCOP 5-star)',
+      name: 'Sâm Ngọc Linh ngâm mật ong rừng - Công ty CP Thương mại & Dược phẩm Quảng Nam (OCOP 5 Sao)',
+      nameEn: 'Ngoc Linh Ginseng in Wild Forest Honey - Quang Nam Pharma (OCOP 5-star)',
       stars: 5,
       category: 'gift',
       price: 3800000,
       packaging: 'hũ',
       packagingEn: 'jar',
-      producer: 'Công ty CP Dược liệu Sâm Ngọc Linh Nam Trà My',
-      address: 'Thôn 2, Xã Trà Mai, Huyện Nam Trà My, Quảng Nam',
-      store: 'Trung tâm Giới thiệu Sâm Ngọc Linh Quốc Bảo',
+      producer: 'Công ty CP Thương mại & Dược phẩm Quảng Nam',
+      address: 'Số 222 Huỳnh Thúc Kháng, TP. Tam Kỳ, Quảng Nam',
+      store: 'Trung tâm Giới thiệu Sâm Ngọc Linh Quảng Nam',
       cert: 'QĐ số 3828/QĐ-BNN (OCOP 5 Sao Quốc Gia)'
     },
     {
-      name: 'Nước mắm cốt cá cơm Cửa Khe (OCOP 4 sao)',
-      nameEn: 'Cua Khe Traditional Anchovy Fish Sauce (OCOP 4-star)',
+      name: 'Nước mắm cốt cá cơm Cửa Khe - HTX Nước mắm Cửa Khe (OCOP 4 Sao)',
+      nameEn: 'Cua Khe Traditional Anchovy Fish Sauce - Cua Khe Cooperative (OCOP 4-star)',
       stars: 4,
       category: 'spice',
       price: 160000,
       packaging: 'chai',
       packagingEn: 'bottle',
-      producer: 'Làng nghề Nước mắm Cửa Khe',
+      producer: 'HTX Nước mắm Cửa Khe',
       address: 'Thôn Cửa Khe, Xã Bình Dương, Thăng Bình, Quảng Nam',
       store: 'Cửa hàng Nước mắm Truyền thống Cửa Khe',
       cert: 'QĐ số 2640/QĐ-UBND Tỉnh Quảng Nam (OCOP 4 Sao)'
     },
     {
-      name: 'Trà nấm lim xanh Tiên Phước (OCOP 4 sao)',
+      name: 'Trà nấm lim xanh Tiên Phước (OCOP 4 Sao)',
       nameEn: 'Tien Phuoc Wild Ganoderma Lucidum Tea (OCOP 4-star)',
       stars: 4,
       category: 'tea',
@@ -264,7 +210,7 @@ const specificOverrides = {
       cert: 'QĐ số 2480/QĐ-UBND Tỉnh Quảng Nam (OCOP 4 Sao)'
     },
     {
-      name: 'Bánh tráng sắn Lộc Đại (OCOP 3 sao)',
+      name: 'Bánh tráng sắn Lộc Đại (OCOP 3 Sao)',
       nameEn: 'Loc Dai Cassava Rice Paper (OCOP 3-star)',
       stars: 3,
       category: 'snack',
@@ -277,76 +223,22 @@ const specificOverrides = {
       cert: 'QĐ số 1750/QĐ-UBND Huyện Quế Sơn (OCOP 3 Sao)'
     }
   ],
-  'Thừa Thiên Huế': [
-    {
-      name: 'Tinh dầu tràm Huế - Cơ sở Hoa Nén (OCOP 4 sao)',
-      nameEn: 'Hoa Nen Hue Pure Melaleuca Cajeput Oil (OCOP 4-star)',
-      stars: 4,
-      category: 'gift',
-      price: 200000,
-      packaging: 'chai',
-      packagingEn: 'bottle',
-      producer: 'Công ty TNHH MTV Sản xuất Tinh dầu Hoa Nén',
-      address: 'Thôn Đông Lâm, Xã Phong An, Huyện Phong Điền, Thừa Thiên Huế',
-      store: 'Showroom Tinh dầu Tràm Hoa Nén Huế',
-      cert: 'QĐ số 2980/QĐ-UBND Tỉnh Thừa Thiên Huế (OCOP 4 Sao)'
-    },
-    {
-      name: 'Trà sâm tiến vua xứ Huế (OCOP 4 sao)',
-      nameEn: 'Hue Royal Imperial Ginseng Herbal Tea (OCOP 4-star)',
-      stars: 4,
-      category: 'tea',
-      price: 380000,
-      packaging: 'hộp',
-      packagingEn: 'box',
-      producer: 'Công ty Cung đình Thượng uyển Huế',
-      address: 'Đường Nguyễn Huệ, TP. Huế, Thừa Thiên Huế',
-      store: 'Trà đình Hoàng gia Cố Đô',
-      cert: 'QĐ số 2750/QĐ-UBND Tỉnh Thừa Thiên Huế (OCOP 4 Sao)'
-    },
-    {
-      name: 'Hạt sen khô tịnh tâm Đại Nội (OCOP 3 sao)',
-      nameEn: 'Dai Noi Hue Dried Tinh Tam Lotus Seeds (OCOP 3-star)',
-      stars: 3,
-      category: 'food',
-      price: 360000,
-      packaging: 'kg',
-      packagingEn: 'kg',
-      producer: 'HTX Nông nghiệp Hạt sen Tịnh Tâm',
-      address: 'Hồ Tịnh Tâm, P. Thuận Thành, TP. Huế, Thừa Thiên Huế',
-      store: 'Đại lý Sen Huế Tịnh Tâm Cố Đô',
-      cert: 'QĐ số 1820/QĐ-UBND TP. Huế (OCOP 3 Sao)'
-    },
-    {
-      name: 'Tôm chua Huế đầm phá Tam Giang - Cơ sở truyền thống (OCOP 4 sao)',
-      nameEn: 'Tam Giang Lagoon Traditional Sour Shrimp (OCOP 4-star)',
-      stars: 4,
-      category: 'food',
-      price: 90000,
-      packaging: 'hũ',
-      packagingEn: 'jar',
-      producer: 'Cơ sở Tôm chua Tam Giang Cố Đô',
-      address: 'Thị trấn Thuận An, Huyện Phú Vang, Thừa Thiên Huế',
-      store: 'Đặc sản Tôm chua Huế Truyền thống',
-      cert: 'QĐ số 2310/QĐ-UBND Tỉnh Thừa Thiên Huế (OCOP 4 Sao)'
-    }
-  ],
   'Lâm Đồng': [
     {
-      name: 'Trà Ô long Cầu Đất - Đà Lạt (OCOP 5 sao)',
-      nameEn: 'Cau Dat Da Lat High Mountain Oolong Tea (OCOP 5-star)',
+      name: 'Trà Ô long Cầu Đất - Công ty CP Chè Cầu Đất Đà Lạt (OCOP 5 Sao Quốc gia)',
+      nameEn: 'Cau Dat Da Lat High Mountain Oolong Tea - Cau Dat Tea JSC (OCOP 5-star)',
       stars: 5,
       category: 'tea',
       price: 650000,
       packaging: 'hộp',
       packagingEn: 'box',
-      producer: 'Công ty Cổ phần Cầu Đất Farm Đà Lạt',
+      producer: 'Công ty CP Chè Cầu Đất Đà Lạt',
       address: 'Thôn Trường Thọ, Xã Trạm Hành, TP. Đà Lạt, Lâm Đồng',
-      store: 'Showroom Trà & Cà phê Cầu Đất Farm',
+      store: 'Showroom Trà Cầu Đất Đà Lạt Tinh Hoa',
       cert: 'QĐ số 3828/QĐ-BNN (OCOP 5 Sao Quốc Gia)'
     },
     {
-      name: 'Hồng treo gió công nghệ Nhật Bản Mộc Nhiên (OCOP 4 sao)',
+      name: 'Hồng treo gió công nghệ Nhật Bản Mộc Nhiên (OCOP 4 Sao)',
       nameEn: 'Moc Nhien Japanese Air-dried Hoshigaki Persimmons (OCOP 4-star)',
       stars: 4,
       category: 'snack',
@@ -359,7 +251,7 @@ const specificOverrides = {
       cert: 'QĐ số 3120/QĐ-UBND Tỉnh Lâm Đồng (OCOP 4 Sao)'
     },
     {
-      name: 'Chuối Laba sấy dẻo Đơn Dương (OCOP 4 sao)',
+      name: 'Chuối Laba sấy dẻo Đơn Dương (OCOP 4 Sao)',
       nameEn: 'Don Duong King Laba Soft Dried Bananas (OCOP 4-star)',
       stars: 4,
       category: 'snack',
@@ -372,7 +264,7 @@ const specificOverrides = {
       cert: 'QĐ số 2590/QĐ-UBND Tỉnh Lâm Đồng (OCOP 4 Sao)'
     },
     {
-      name: 'Đông trùng hạ thảo Đà Lạt (OCOP 4 sao)',
+      name: 'Đông trùng hạ thảo Đà Lạt (OCOP 4 Sao)',
       nameEn: 'Da Lat Cordyceps Militaris Cultivation (OCOP 4-star)',
       stars: 4,
       category: 'gift',
@@ -385,22 +277,76 @@ const specificOverrides = {
       cert: 'QĐ số 2840/QĐ-UBND Tỉnh Lâm Đồng (OCOP 4 Sao)'
     }
   ],
+  'Đồng Nai': [
+    {
+      name: 'Bưởi đường lá cam Tân Triều - HTX Nông nghiệp dịch vụ Tân Triều (OCOP 4 Sao)',
+      nameEn: 'Tan Trieu Cam Leaf Sugar Pomelo - Tan Trieu Agricultural Cooperative (OCOP 4-star)',
+      stars: 4,
+      category: 'food',
+      price: 120000,
+      packaging: 'kg',
+      packagingEn: 'kg',
+      producer: 'HTX Nông nghiệp dịch vụ Tân Triều',
+      address: 'Xã Tân Bình, Huyện Vĩnh Cửu, Đồng Nai',
+      store: 'Điểm giới thiệu Bưởi Tân Triều Chính Gốc',
+      cert: 'QĐ số 3120/QĐ-UBND Tỉnh Đồng Nai (OCOP 4 Sao)'
+    },
+    {
+      name: 'Trà khổ qua rừng túi lọc - Công ty TNHH Khổ qua rừng Hiệp Vân, Long Khánh (OCOP 4 Sao)',
+      nameEn: 'Hiep Van Forest Bitter Melon Tea Bags - Long Khanh (OCOP 4-star)',
+      stars: 4,
+      category: 'tea',
+      price: 95000,
+      packaging: 'hộp',
+      packagingEn: 'box',
+      producer: 'Công ty TNHH Khổ qua rừng Hiệp Vân, Long Khánh',
+      address: 'Phường Suối Tre, TP. Long Khánh, Đồng Nai',
+      store: 'Showroom Dược liệu Khổ qua rừng Hiệp Vân',
+      cert: 'QĐ số 2890/QĐ-UBND Tỉnh Đồng Nai (OCOP 4 Sao)'
+    },
+    {
+      name: 'Hạt điều rang muối - Công ty TNHH MTV Hạt điều Vinahe, Trảng Bom (OCOP 4 Sao)',
+      nameEn: 'Vinahe Salt-roasted Cashews - Trang Bom (OCOP 4-star)',
+      stars: 4,
+      category: 'snack',
+      price: 180000,
+      packaging: 'hộp',
+      packagingEn: 'box',
+      producer: 'Công ty TNHH MTV Hạt điều Vinahe, Trảng Bom',
+      address: 'Xã Quảng Tiến, Huyện Trảng Bom, Đồng Nai',
+      store: 'Showroom Hạt điều Vinahe Đồng Nai',
+      cert: 'QĐ số 2750/QĐ-UBND Tỉnh Đồng Nai (OCOP 4 Sao)'
+    },
+    {
+      name: 'Chuối sấy cứng Cường Hoa - Cơ sở chế biến nông sản Cường Hoa, Thống Nhất (OCOP 3 Sao)',
+      nameEn: 'Cuong Hoa Crispy Dried Bananas - Thong Nhat (OCOP 3-star)',
+      stars: 3,
+      category: 'snack',
+      price: 45000,
+      packaging: 'gói',
+      packagingEn: 'pack',
+      producer: 'Cơ sở chế biến nông sản Cường Hoa, Thống Nhất',
+      address: 'Xã Gia Tân 2, Huyện Thống Nhất, Đồng Nai',
+      store: 'Đại lý Nông sản sấy Cường Hoa Đồng Nai',
+      cert: 'QĐ số 1940/QĐ-UBND Huyện Thống Nhất (OCOP 3 Sao)'
+    }
+  ],
   'Bến Tre': [
     {
-      name: 'Kẹo dừa truyền thống Tuyết Phụng (OCOP 4 sao)',
-      nameEn: 'Tuyet Phung Traditional Ben Tre Coconut Candy (OCOP 4-star)',
+      name: 'Kẹo dừa gừng đậu phộng Tuyết Phụng - Cơ sở sản xuất kẹo dừa Tuyết Phụng (OCOP 4 Sao)',
+      nameEn: 'Tuyet Phung Ginger Peanut Coconut Candy - Tuyet Phung Facility (OCOP 4-star)',
       stars: 4,
       category: 'snack',
       price: 75000,
       packaging: 'hộp',
       packagingEn: 'box',
-      producer: 'Doanh nghiệp tư nhân Sản xuất Kẹo dừa Tuyết Phụng',
+      producer: 'Cơ sở sản xuất kẹo dừa Tuyết Phụng',
       address: 'Số 56 Ấp 4, Thị trấn Mỏ Cày, Huyện Mỏ Cày Nam, Bến Tre',
       store: 'Showroom Kẹo Dừa Tuyết Phụng Mỏ Cày',
       cert: 'QĐ số 2730/QĐ-UBND Tỉnh Bến Tre (OCOP 4 Sao)'
     },
     {
-      name: 'Bưởi da xanh Hàm Luông (OCOP 4 sao)',
+      name: 'Bưởi da xanh Hàm Luông (OCOP 4 Sao)',
       nameEn: 'Ham Luong Green Skin Pomelo - Certified Origin (OCOP 4-star)',
       stars: 4,
       category: 'food',
@@ -413,7 +359,7 @@ const specificOverrides = {
       cert: 'QĐ số 2580/QĐ-UBND Tỉnh Bến Tre (OCOP 4 Sao)'
     },
     {
-      name: 'Dầu dừa nguyên chất tinh khiết Bến Tre (OCOP 3 sao)',
+      name: 'Dầu dừa nguyên chất tinh khiết Bến Tre (OCOP 3 Sao)',
       nameEn: 'Ben Tre Pure Virgin Cold-pressed Coconut Oil (OCOP 3-star)',
       stars: 3,
       category: 'spice',
@@ -426,7 +372,7 @@ const specificOverrides = {
       cert: 'QĐ số 1680/QĐ-UBND Huyện Châu Thành (OCOP 3 Sao)'
     },
     {
-      name: 'Nước màu dừa đậm đặc Mỏ Cày Nam (OCOP 3 sao)',
+      name: 'Nước màu dừa đậm đặc Mỏ Cày Nam (OCOP 3 Sao)',
       nameEn: 'Mo Cay Nam Concentrated Coconut Caramel (OCOP 3-star)',
       stars: 3,
       category: 'spice',
@@ -441,7 +387,20 @@ const specificOverrides = {
   ],
   'Thành phố Hồ Chí Minh': [
     {
-      name: 'Tổ yến chưng đường phèn Cần Giờ (OCOP 4 sao)',
+      name: 'Mật dừa nước tinh chất hữu cơ Bình Chánh - Công ty TNHH Phát triển Dừa nước Việt Nam VIETNIPA (OCOP 4 Sao)',
+      nameEn: 'VIETNIPA Organic Nipa Palm Nectar Binh Chanh - VIETNIPA (OCOP 4-star)',
+      stars: 4,
+      category: 'food',
+      price: 145000,
+      packaging: 'chai',
+      packagingEn: 'bottle',
+      producer: 'Công ty TNHH Phát triển Dừa nước Việt Nam VIETNIPA',
+      address: 'Xã An Phú Tây, Huyện Bình Chánh, TP. Hồ Chí Minh',
+      store: 'Showroom Mật dừa nước VIETNIPA Bình Chánh',
+      cert: 'QĐ số 3080/QĐ-UBND TP. Hồ Chí Minh (OCOP 4 Sao)'
+    },
+    {
+      name: 'Tổ yến chưng đường phèn Cần Giờ (OCOP 4 Sao)',
       nameEn: 'Can Gio Steamed Bird Nest with Rock Sugar (OCOP 4-star)',
       stars: 4,
       category: 'gift',
@@ -454,7 +413,7 @@ const specificOverrides = {
       cert: 'QĐ số 3240/QĐ-UBND TP. Hồ Chí Minh (OCOP 4 Sao)'
     },
     {
-      name: 'Xoài cát Cần Giờ (OCOP 4 sao)',
+      name: 'Xoài cát Cần Giờ (OCOP 4 Sao)',
       nameEn: 'Can Gio Cat Mango - Coastal Biosphere Harvest (OCOP 4-star)',
       stars: 4,
       category: 'food',
@@ -467,7 +426,7 @@ const specificOverrides = {
       cert: 'QĐ số 2810/QĐ-UBND TP. Hồ Chí Minh (OCOP 4 Sao)'
     },
     {
-      name: 'Khô cá dứa một nắng Cần Giờ (OCOP 4 sao)',
+      name: 'Khô cá dứa một nắng Cần Giờ (OCOP 4 Sao)',
       nameEn: 'Can Gio Sun-dried Pangasius Fish Specialty (OCOP 4-star)',
       stars: 4,
       category: 'food',
@@ -478,24 +437,24 @@ const specificOverrides = {
       address: 'Thị trấn Cần Thạnh, Huyện Cần Giờ, TP. Hồ Chí Minh',
       store: 'Đại lý Đặc sản Khô cá dứa Cần Giờ',
       cert: 'QĐ số 2990/QĐ-UBND TP. Hồ Chí Minh (OCOP 4 Sao)'
-    },
-    {
-      name: 'Mật dừa nước ông Sáu - Bình Chánh (OCOP 4 sao)',
-      nameEn: 'Ong Sau Nipa Palm Nectar - Binh Chanh (OCOP 4-star)',
-      stars: 4,
-      category: 'food',
-      price: 145000,
-      packaging: 'chai',
-      packagingEn: 'bottle',
-      producer: 'Công ty TNHH Phát triển Dừa nước Việt Nam (VietNipa)',
-      address: 'Xã An Phú Tây, Huyện Bình Chánh, TP. Hồ Chí Minh',
-      store: 'Showroom Mật dừa nước VietNipa',
-      cert: 'QĐ số 3080/QĐ-UBND TP. Hồ Chí Minh (OCOP 4 Sao)'
     }
   ],
   'Đồng Tháp': [
     {
-      name: 'Hạt sen sấy giòn bơ tỏi Tháp Mười (OCOP 4 sao)',
+      name: 'Bánh phồng tôm Sa Giang - Công ty CP Xuất nhập khẩu Sa Giang (OCOP 5 Sao Quốc gia)',
+      nameEn: 'Sa Giang Premium Prawn Crackers - Sa Giang Import Export JSC (OCOP 5-star)',
+      stars: 5,
+      category: 'snack',
+      price: 95000,
+      packaging: 'hộp',
+      packagingEn: 'box',
+      producer: 'Công ty CP Xuất nhập khẩu Sa Giang',
+      address: 'Lô CII-3, KCN Sa Đéc, TP. Sa Đéc, Đồng Tháp',
+      store: 'Showroom Bánh phồng tôm Sa Giang Sa Đéc',
+      cert: 'QĐ số 3828/QĐ-BNN (OCOP 5 Sao Quốc Gia)'
+    },
+    {
+      name: 'Hạt sen sấy giòn bơ tỏi Tháp Mười (OCOP 4 Sao)',
       nameEn: 'Thap Muoi Crispy Garlic Butter Lotus Seeds (OCOP 4-star)',
       stars: 4,
       category: 'snack',
@@ -508,33 +467,7 @@ const specificOverrides = {
       cert: 'QĐ số 2950/QĐ-UBND Tỉnh Đồng Tháp (OCOP 4 Sao)'
     },
     {
-      name: 'Bánh phồng tôm Sa Giang cao cấp (OCOP 4 sao)',
-      nameEn: 'Sa Giang Premium Prawn Crackers (OCOP 4-star)',
-      stars: 4,
-      category: 'snack',
-      price: 85000,
-      packaging: 'hộp',
-      packagingEn: 'box',
-      producer: 'Công ty Cổ phần Xuất nhập khẩu Sa Giang',
-      address: 'Lô CII-3, KCN Sa Đéc, TP. Sa Đéc, Đồng Tháp',
-      store: 'Điểm Giới thiệu Bánh phồng tôm Sa Giang',
-      cert: 'QĐ số 3180/QĐ-UBND Tỉnh Đồng Tháp (OCOP 4 Sao)'
-    },
-    {
-      name: 'Nem chua Lai Vung - Cơ sở Giáo Dừa (OCOP 3 sao)',
-      nameEn: 'Giao Dua Traditional Lai Vung Fermented Pork (OCOP 3-star)',
-      stars: 3,
-      category: 'food',
-      price: 60000,
-      packaging: 'chục',
-      packagingEn: 'pack of 10',
-      producer: 'Cơ sở Nem Giáo Dừa Lai Vung',
-      address: 'Thị trấn Lai Vung, Huyện Lai Vung, Đồng Tháp',
-      store: 'Đại lý Nem Lai Vung Giáo Dừa Chính Gốc',
-      cert: 'QĐ số 1890/QĐ-UBND Huyện Lai Vung (OCOP 3 Sao)'
-    },
-    {
-      name: 'Mango sấy dẻo Cao Lãnh (OCOP 4 sao)',
+      name: 'Mango sấy dẻo Cao Lãnh (OCOP 4 Sao)',
       nameEn: 'Cao Lanh Soft Dried Cat Chu Mango (OCOP 4-star)',
       stars: 4,
       category: 'snack',
@@ -545,6 +478,19 @@ const specificOverrides = {
       address: 'Xã Tịnh Thới, TP. Cao Lãnh, Đồng Tháp',
       store: 'Cửa hàng Nông sản Đất Sen Hồng',
       cert: 'QĐ số 2820/QĐ-UBND Tỉnh Đồng Tháp (OCOP 4 Sao)'
+    },
+    {
+      name: 'Nem chua Lai Vung - Cơ sở Giáo Dừa (OCOP 3 Sao)',
+      nameEn: 'Giao Dua Traditional Lai Vung Fermented Pork (OCOP 3-star)',
+      stars: 3,
+      category: 'food',
+      price: 60000,
+      packaging: 'chục',
+      packagingEn: 'pack of 10',
+      producer: 'Cơ sở Nem Giáo Dừa Lai Vung',
+      address: 'Thị trấn Lai Vung, Huyện Lai Vung, Đồng Tháp',
+      store: 'Đại lý Nem Lai Vung Giáo Dừa Chính Gốc',
+      cert: 'QĐ số 1890/QĐ-UBND Huyện Lai Vung (OCOP 3 Sao)'
     }
   ]
 };
@@ -553,16 +499,16 @@ const specificOverrides = {
 function cleanGenericRetailName(name, region, stars) {
   let cleaned = name;
   cleaned = cleaned.replace(/\s*\(.*?\)\s*/g, ' ').replace(/\s+hút chân không.*$/i, '').replace(/\s+đóng hũ kín.*$/i, '').replace(/\s+thượng hạng.*$/i, '').replace(/\s+cao cấp.*$/i, '').replace(/\s+xuất khẩu.*$/i, '').trim();
-  // Ensure format: [Đặc Sản] - [Địa Danh/Cơ Sở] (OCOP X sao)
+  // Ensure format: [Đặc Sản] - [Địa Danh/Cơ Sở] (OCOP X Sao)
   if (!cleaned.includes(' - ')) {
     cleaned = `${cleaned} - Đặc sản ${region}`;
   }
-  return `${cleaned} (OCOP ${stars} sao)`;
+  return `${cleaned} (OCOP ${stars} Sao)`;
 }
 
 // 4. Update PRODUCTS
 let updatedCount = 0;
-const newProducts = PRODUCTS.map((prod, index) => {
+const newProducts = PRODUCTS.map((prod) => {
   const region = prod.region;
   const regionList = specificOverrides[region];
   if (regionList) {
