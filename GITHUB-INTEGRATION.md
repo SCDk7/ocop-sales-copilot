@@ -2,7 +2,15 @@
 
 Đã lấy `origin/main` tại commit `73a338d` (bao gồm bản danh mục `dab74d1`) và gộp với các nâng cấp cục bộ. Bản lưu trước khi gộp nằm trong `.private-data/github-sync-backup-2026-10-10T05-37-48-728Z/`; file `.env` và dữ liệu riêng được giữ ngoài Git.
 
-## Các giao diện
+## Đối chiếu bản GitHub người dùng gửi ngày 10/10/2026
+
+- Đã đọc file HTML đính kèm có 11.129 dòng và dùng nó trong phép gộp ba chiều với các nâng cấp hiện tại.
+- Nội dung file đính kèm khớp `b891810:index.html` sau khi chuẩn hóa xuống dòng và bỏ dòng trống cuối file. Không có tính năng mới trong file đính kèm khác với bản GitHub đã nhập.
+- Kết quả gộp giữ 11.061 dòng, các hàm tham khảo từ GitHub, luồng chat backend, sửa combo/ngân sách, nút đăng nhập có trạng thái, nhập giọng nói Gemini, giỏ hàng khách và đồng bộ giá.
+- KPI tiếp tục là website riêng trong `kpi-site`, không đưa vào giao diện bán hàng.
+- Lưu bản người dùng gửi và bản trước khi gộp trong `.private-data/pasted-github-integration/`, không đưa tệp đính kèm hoặc dữ liệu riêng lên GitHub.
+
+## Các giao diện sau khi tổng hợp
 
 | Giao diện | Địa chỉ cục bộ | Chức năng |
 | --- | --- | --- |
