@@ -4,6 +4,36 @@ const {PRODUCTS}=require('./data.js');
 const semantic={task:'shopping',isCombo:true,hasExplicitItemCount:false,pricePreference:'none',maxPrice:6000000,minPrice:0,minItems:3,maxItems:3,exactRegion:'',regionKeyword:'',categoryOrKeyword:'',wikipediaQuery:'',needsClarification:false,clarification:''};
 const rng=()=>{let n=42;return()=>{n=(Math.imul(n,1664525)+1013904223)>>>0;return n/4294967296;};};
 
+test('a punctuated combo choice completes the four-million budget even when Gemini misclassifies it', () => {
+ for (const answer of ['com,bo', 'com.bo', 'COM-BO', 'combo']) {
+  const messages=[{role:'user',text:'4tr'},{role:'assistant',text:'Anh/chị muốn 1 món hay combo tổng ngân sách 4.000.000 ₫?'},{role:'user',text:answer}];
+  const local=shopping.resolve(messages,PRODUCTS,query => ({isCombo:false,categoryOrKeyword:/\bcom\b/.test(query) ? 'bánh' : null}));
+  const resolved=intent.merge(local,{...semantic,isCombo:false,maxPrice:300000,categoryOrKeyword:'bánh',exactRegion:'Đồng Nai'},messages,PRODUCTS);
+  assert.equal(resolved.isCombo,true);
+  assert.equal(resolved.purchaseMode,'combo');
+  assert.equal(resolved.maxPrice,4000000);
+  assert.equal(resolved.categoryOrKeyword,null);
+  assert.equal(resolved.exactRegion,undefined);
+  const {composeDataReply}=require('./ai-data-reply');
+  resolved.comboPlans=shopping.variants(PRODUCTS,resolved,3,rng());
+  resolved.hasVerifiedCombo=true;
+  const reply=composeDataReply(PRODUCTS,resolved,'vi');
+  assert.equal(reply.combos.length,3);
+  assert(reply.combos.every(plan=>plan.total===4000000 && plan.items.length>1));
+  assert.match(reply.message,/combo/);
+ }
+});
+
+test('combo corrections keep province and category while rice-and-beef wording is not a combo', () => {
+ const messages=[{role:'user',text:'trà Đồng Nai ngân sách 4tr'},{role:'user',text:'com,bo nhé'}];
+ const resolved=intent.merge(shopping.resolve(messages,PRODUCTS),{...semantic,isCombo:false,maxPrice:500000,categoryOrKeyword:'bánh',exactRegion:'Hà Nội'},messages,PRODUCTS);
+ assert.equal(resolved.maxPrice,4000000);
+ assert.equal(resolved.categoryOrKeyword,'trà');
+ assert.equal(resolved.exactRegion,'Đồng Nai');
+ assert.equal(resolved.isCombo,true);
+ assert.equal(shopping.analyze('cơm,bò',PRODUCTS).isCombo,false);
+});
+
 test('changing Dong Nai to Southern region retains the six-item five-million request despite stale model fields',()=>{
  const messages=[{role:'user',text:'combo 5tr 6 món khu vực đồng nai'},{role:'assistant',text:'Chưa tìm được combo phù hợp.'},{role:'user',text:'vậy khu vực miền nam,'}];
  const resolved=intent.merge(shopping.resolve(messages,PRODUCTS),{...semantic,isCombo:false,maxPrice:6000000,exactRegion:'Đồng Nai'},messages,PRODUCTS);

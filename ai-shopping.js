@@ -1,6 +1,7 @@
 (function (root) {
   'use strict';
-  const normalize = text => String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').trim();
+  const normalizeComboSpelling = text => String(text || '').replace(/\bcom\s*[,._-]+\s*bo\b/gi, 'combo');
+  const normalize = text => normalizeComboSpelling(text).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').trim();
   function money(value, unit) {
     const number = Number(value.replace(/[.,](?=\d{3}(?:\D|$))/g, '').replace(',', '.'));
     return Math.round(number * (/^(trieu|tr|m)$/.test(unit) ? 1000000 : /^(k|nghin|ngan)$/.test(unit) ? 1000 : 1));
@@ -136,7 +137,8 @@
     let saved = {};
     let current = {};
     for (const message of messages.filter(m => m.role === 'user')) {
-      current = { ...extract(message.text, products), ...budget(message.text) };
+      current = { ...extract(normalizeComboSpelling(message.text), products), ...budget(message.text) };
+      current.isCombo ||= analyze(message.text, products).isCombo;
       current.regionKeyword ||= analyze(message.text, products).regionKeyword;
       // A per-item amount must never overwrite the total shopping budget.
       if (!Object.keys(budget(message.text)).length && preferences(message.text).perItemMax) { current.minPrice = null; current.maxPrice = null; }

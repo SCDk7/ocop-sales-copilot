@@ -73,6 +73,13 @@ function merge(local, semantic, messages, products) {
     result.regionKeyword=semantic.regionKeyword;result.exactRegion=null;result.exactRegions=[];
   }
   let category=semantic.categoryOrKeyword.trim();
+  // A short answer chooses the shopping mode, not a new budget or product category.
+  const modeAnswer=/^(?:(?:toi|minh|cho toi|cho minh|chon|lay|mua|mot|1)\s+)*(?:combo|bundle|gift set)(?:\s+(?:nhe|nha|a|please))?[.!?,]*$/.test(shopping.normalize(latest));
+  if (modeAnswer) {
+    result.isCombo=true;
+    for (const key of ['maxPrice','minPrice','categoryOrKeyword','exactRegion','exactRegions','regionKeyword','isAllProvinces','isComplaint','isCSKH','isShipping','isUsage','isOcopKnowledge']) result[key]=local[key];
+    category=local.categoryOrKeyword || '';
+  }
   // The latest explicitly changed region wins over a stale model interpretation.
   if(explicitRegion.isAllProvinces){result.isAllProvinces=true;result.exactRegion=null;result.exactRegions=[];result.regionKeyword=null;}
   else if(explicitRegion.exactRegions?.length){result.isAllProvinces=false;result.exactRegion=explicitRegion.exactRegion;result.exactRegions=explicitRegion.exactRegions;result.regionKeyword=null;}
