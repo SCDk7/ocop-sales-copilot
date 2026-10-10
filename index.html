@@ -2575,7 +2575,7 @@
                     <div class="flex flex-wrap items-center justify-start gap-2.5 sm:gap-3 pt-3">
                         <button type="button" onclick="openFinancialDashboardModal()" class="bg-ocopGreen text-white font-black px-5 py-3 rounded-2xl shadow-lg hover:bg-ocopGreenLight hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-emerald-400 hover:-translate-y-0.5 cursor-pointer">
                             <i class="fa-solid fa-chart-line text-ocopGold text-base"></i>
-                            <span id="i18n-hero-btn-dashboard">Bảng Quản Trị Tài Chính AI</span>
+                            <span id="i18n-hero-btn-dashboard">AI Quản Trị Tài Chính</span>
                         </button>
                         <button type="button" onclick="openAllStoresModal()" class="bg-ocopGold text-amber-950 font-black px-5 py-3 rounded-2xl shadow-lg hover:bg-amber-400 hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-amber-500 hover:-translate-y-0.5 cursor-pointer">
                             <i class="fa-solid fa-store text-base"></i>
@@ -5028,10 +5028,10 @@
             if (heroProduct) {
                 const heroNames = {
                     vi: 'Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)',
-                    en: 'Hiep Van Forest Bitter Melon Tea - Long Khanh, Dong Nai Specialty (OCOP 4-Star)',
-                    zh: '协云 森林苦瓜袋泡茶 - 同奈省 隆庆特产 (OCOP 4星级)',
-                    ko: '혭번 야생 여주 티백 - 동나이성 롱카인 특산물 (OCOP 4성급)',
-                    ja: '協雲 野生ゴーヤティーバッグ - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'
+                    en: 'Trà khổ qua rừng túi lọc Hiệp Vân - Long Khanh, Dong Nai Specialty (OCOP 4-Star)',
+                    zh: 'Trà khổ qua rừng túi lọc Hiệp Vân - 同奈省 隆庆特产 (OCOP 4星级)',
+                    ko: 'Trà khổ qua rừng túi lọc Hiệp Vân - 동나이성 롱카인 특산물 (OCOP 4성급)',
+                    ja: 'Trà khổ qua rừng túi lọc Hiệp Vân - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'
                 };
                 const heroO2o = {
                     vi: 'Điểm Bán O2O • Định Vị',
@@ -5042,10 +5042,10 @@
                 };
                 const heroFinance = {
                     vi: '[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]',
-                    en: '[System Coordinated Volume: 1,200 units • CHM Reconciliation Status: Automatically Distributed]',
-                    zh: '[系统统筹流通量: 1,200 单位 • CHM 对账状态: 已自动分配]',
-                    ko: '[시스템 조정 유통량: 1,200 단위 • CHM 정산 상태: 자동 분배 완료]',
-                    ja: '[システム調整流通量: 1,200 ユニット • CHM 精算ステータス: 自動配分完了]'
+                    en: '[System Volume: 1,200 units • CHM Settlement: Automatically distributed via Smart Contract]',
+                    zh: '[系统调度量：1,200 件 • CHM 佣金结算：智能合约自动拨付]',
+                    ko: '[시스템 조율량: 1,200개 • CHM 수수료 정산: 스마트 계약 자동 정산 완료]',
+                    ja: '[システム調整量：1,200個 • CHM手数料精算：スマートコントラクト自動決済済]'
                 };
                 document.getElementById('i18n-hero-prodname').textContent = heroNames[currentLanguage] || heroNames.vi;
                 document.getElementById('hero-product-price').textContent = heroFinance[currentLanguage] || heroFinance.vi;
@@ -6679,7 +6679,7 @@
                 lastAIRecommendedProductIds = [pId, 524];
                 const msgMap = {
                     en: "📊 **Profit Margin & Financial Breakdown: Dong Nai Regional Hub (OCOP 4-Star Specialties)**:\n\n" +
-                        "• 🏷️ **System Throughput Unit**: 68,000 ₫ / box (Hiep Van Forest Bitter Melon Tea) • 85,000 ₫ / Tan Trieu Sugar Grapefruit\n" +
+                        "• 🏷️ **System Throughput Unit**: 68,000 ₫ / box (Trà khổ qua rừng túi lọc Hiệp Vân) • 85,000 ₫ / Bưởi đường lá cam Tân Triều\n" +
                         "• 🌾 **Direct Material Cost (COGS)**: 37,500 ₫ (Certified indigenous raw material)\n" +
                         "• 📦 **Packaging & Eco-Filter Materials**: 4,500 ₫\n" +
                         "• 🚚 **Logistics & O2O Fulfillment**: 3,500 ₫\n" +
@@ -6688,7 +6688,7 @@
                         "💡 **AI Financial Optimization**: Centralized eco-packaging sourcing saves 1,250 ₫/unit, boosting net margin by **+18.4%** for Cooperatives!\n\n" +
                         "📊 [SYSTEM SYNC: Net Profit Margin (Dong Nai): 26.1% • Operating Expense (OPEX): 8.5% • CHM Commission Reconciliation: Simulation only; backend verification required]",
                     zh: "📊 **利润率与财务核算分析: 同奈省区域枢纽 (OCOP 四星级地标特产)**:\n\n" +
-                        "• 🏷️ **系统统筹单位**: 68,000 ₫ / 盒 (协云森林苦瓜茶) • 85,000 ₫ / 新潮糖青柚\n" +
+                        "• 🏷️ **系统统筹单位**: 68,000 ₫ / 盒 (Trà khổ qua rừng túi lọc Hiệp Vân) • 85,000 ₫ / Bưởi đường lá cam Tân Triều\n" +
                         "• 🌾 **直接原材料成本 (COGS)**: 37,500 ₫ (VietGAP 认证天然森林苦瓜)\n" +
                         "• 📦 **包装与生物滤膜材料**: 4,500 ₫\n" +
                         "• 🚚 **物流与 O2O 履约结算**: 3,500 ₫\n" +
@@ -6697,7 +6697,7 @@
                         "💡 **AI 财务引擎优化建议**: 集中采购环保滤袋包装每盒节省 1,250 ₫，助力合作社净利润增长 **+18.4%**！\n\n" +
                         "📊 [系统同步: 净利润率 (Net Margin) (同奈): 26.1% • 运营成本 (OPEX): 8.5% • CHM 佣金智能对账: 100% 已验证 (0.00% 误差)]",
                     ko: "📊 **순이익률 및 재무 분석: 동나이 지역 허브 (OCOP 4성 특산물)**:\n\n" +
-                        "• 🏷️ **시스템 배분 기준가**: 68,000 ₫ / 상자 (히엡반 야생 여주차) • 85,000 ₫ / 탄찌에우 당자몽\n" +
+                        "• 🏷️ **시스템 배분 기준가**: 68,000 ₫ / 상자 (Trà khổ qua rừng túi lọc Hiệp Vân) • 85,000 ₫ / Bưởi đường lá cam Tân Triều\n" +
                         "• 🌾 **직접 원자재 비용 (COGS)**: 37,500 ₫ (VietGAP 인증 천연 야생 여주)\n" +
                         "• 📦 **포장재 및 친환경 필터**: 4,500 ₫\n" +
                         "• 🚚 **물류 및 O2O 매장 배송**: 3,500 ₫\n" +
@@ -6706,7 +6706,7 @@
                         "💡 **AI 재무 엔진 최적화 제안**: 친환경 티백 포장재 일괄 조달로 개당 1,250 ₫ 절감, 협동조합 순이익 **+18.4%** 증가 달성!\n\n" +
                         "📊 [시스템 동기화: 순이익률 (Net Margin) (동나이): 26.1% • 운영 비용 (OPEX): 8.5% • CHM 수수료 정산: 100% 검증 완료 (0.00% 오차)]",
                     ja: "📊 **純利益率と財務内訳分析: ドンナイ地域ハブ（OCOP 4つ星特産品）**:\n\n" +
-                        "• 🏷️ **システム配分基準単価**: 68,000 ₫ / 箱（ヒエップヴァン野生ゴーヤ茶）• 85,000 ₫ / タンチュウ文旦\n" +
+                        "• 🏷️ **システム配分基準単価**: 68,000 ₫ / 箱（Trà khổ qua rừng túi lọc Hiệp Vân）• 85,000 ₫ / Bưởi đường lá cam Tân Triều\n" +
                         "• 🌾 **原材料直接原価 (COGS)**: 37,500 ₫（VietGAP認証天然野生ゴーヤ）\n" +
                         "• 📦 **包装・生分解性フィルター材**: 4,500 ₫\n" +
                         "• 🚚 **物流・O2Oショールーム決済**: 3,500 ₫\n" +
@@ -6801,28 +6801,28 @@
                 const pId = p ? p.id : 524;
                 lastAIRecommendedProductIds = [pId];
                 const msgMap = {
-                    en: "🍈 **Production Capacity & Throughput: Tan Trieu Sugar Grapefruit (Dong Nai - OCOP 4-star)**:\n\n" +
+                    en: "🍈 **Production Capacity & Throughput: Bưởi đường lá cam Tân Triều (Dong Nai - OCOP 4-Star)**:\n\n" +
                         "• 🏛️ **Producer**: Tan Trieu Agricultural Service Cooperative, Vinh Cuu, Dong Nai\n" +
                         "• 📈 **Total Digitized Annual Yield**: 15,000 fruits / harvest season\n" +
                         "• ⚡ **Current System Throughput**: 3,200 fruits actively coordinated\n" +
                         "• 📍 **O2O Network**: Distributed across 12 certified showrooms in Bien Hoa & HCMC\n" +
                         "• 🤝 **Reconciliation Status**: 100% automated CHM commission distribution with 0.00% variance.\n\n" +
                         "📊 [SYSTEM SYNC: Net Profit Margin (Dong Nai): 26.1% • Operating Expense (OPEX): 8.5% • CHM Commission Reconciliation: Simulation only; backend verification required]",
-                    zh: "🍈 **产量与统筹流通量核验: 新潮糖叶青柚 (同奈省 - OCOP 四星级)**:\n\n" +
+                    zh: "🍈 **产量与统筹流通量核验: Bưởi đường lá cam Tân Triều (同奈省 - OCOP 4星级)**:\n\n" +
                         "• 🏛️ **生产主体**: 新潮农业服务合作社 (同奈省永久县)\n" +
                         "• 📈 **年度数字化总产量**: 15,000 颗 / 产季\n" +
                         "• ⚡ **当前系统统筹流量**: 3,200 颗正高速调配流转\n" +
                         "• 📍 **O2O 展厅网络**: 已连接边和市及胡志明市 12 家认证实体展厅与 OCOP 销售网点\n" +
                         "• 🤝 **对账结算状态**: 自动完成 CHM 佣金分配，承诺 0.00% 财务误差。\n\n" +
                         "📊 [系统同步: 净利润率 (Net Margin) (同奈): 26.1% • 运营成本 (OPEX): 8.5% • CHM 佣金智能对账: 100% 已验证 (0.00% 误差)]",
-                    ko: "🍈 **생산량 및 유통량 확인: 탄찌에우 당자몽 (동나이 - OCOP 4성)**:\n\n" +
+                    ko: "🍈 **생산량 및 유통량 확인: Bưởi đường lá cam Tân Triều (동나이성 - OCOP 4성급)**:\n\n" +
                         "• 🏛️ **생산 주체**: 탄찌에우 농업 서비스 협동조합 (동나이 빈끄우)\n" +
                         "• 📈 **연간 디지털 총생산량**: 15,000과 / 수확 시즌\n" +
                         "• ⚡ **현재 시스템 조정 유통량**: 3,200과 유통 배분 중\n" +
                         "• 📍 **O2O 유통 네트워크**: 비엔호아 및 호치민 12개 공인 쇼룸 및 OCOP 매장 연계\n" +
                         "• 🤝 **정산 상태**: CHM 수수료 자동 배분 완료, 재무 오차 0.00% 보장.\n\n" +
                         "📊 [시스템 동기화: 순이익률 (Net Margin) (동나이): 26.1% • 운영 비용 (OPEX): 8.5% • CHM 수수료 정산: 100% 검증 완료 (0.00% 오차)]",
-                    ja: "🍈 **生産能力・流通量確認: タンチュウ甘葉文旦（ドンナイ省 - OCOP 4つ星）**:\n\n" +
+                    ja: "🍈 **生産能力・流通量確認: Bưởi đường lá cam Tân Triều（ドンナイ省 - OCOP 4つ星）**:\n\n" +
                         "• 🏛️ **生産主体**: タンチュウ農業サービス協同組合（ドンナイ省ヴィンクー県）\n" +
                         "• 📈 **年間デジタル総生産量**: 15,000玉 / 収穫期\n" +
                         "• ⚡ **現在のシステム調整流通量**: 3,200玉が調整流通中\n" +
@@ -6987,7 +6987,7 @@
                         const s = storeHelper ? storeHelper.getOcopStoreInfo(p.id) : null;
                         if (s) {
                             if (english) {
-                                msg += `⭐ **${p.nameEn || p.name}** (${p.stars}★ OCOP - ${p.region})\n` +
+                                msg += `⭐ **${p.name}** (${p.stars}★ OCOP - ${p.region})\n` +
                                        `• **Producer:** ${s.producerName}\n` +
                                        `• **Facility Address:** ${s.producerAddress}\n` +
                                        `• **Official Certification:** ${s.certDecision}\n` +
@@ -9849,26 +9849,24 @@
             if (product.id === 525 || (product.region && product.region.includes('Đồng Nai') && product.name && product.name.includes('khổ qua'))) {
                 const names = {
                     vi: 'Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)',
-                    en: 'Hiep Van Forest Bitter Melon Tea - Long Khanh, Dong Nai Specialty (OCOP 4-Star)',
-                    zh: '协云 森林苦瓜袋泡茶 - 同奈省 隆庆特产 (OCOP 4星级)',
-                    ko: '혭번 야생 여주 티백 - 동나이성 롱카인 특산물 (OCOP 4성급)',
-                    ja: '協雲 野生ゴーヤティーバッグ - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'
+                    en: 'Trà khổ qua rừng túi lọc Hiệp Vân - Long Khanh, Dong Nai Specialty (OCOP 4-Star)',
+                    zh: 'Trà khổ qua rừng túi lọc Hiệp Vân - 同奈省 隆庆特产 (OCOP 4星级)',
+                    ko: 'Trà khổ qua rừng túi lọc Hiệp Vân - 동나이성 롱카인 특산물 (OCOP 4성급)',
+                    ja: 'Trà khổ qua rừng túi lọc Hiệp Vân - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'
                 };
                 if (names[currentLanguage]) return names[currentLanguage];
             }
             if (product.id === 524 || (product.region && product.region.includes('Đồng Nai') && product.name && product.name.includes('Tân Triều'))) {
                 const names = {
                     vi: 'Bưởi đường lá cam Tân Triều (Đồng Nai - OCOP 4 Sao)',
-                    en: 'Tan Trieu Sugar Grapefruit (Dong Nai - OCOP 4-star)',
-                    zh: '新潮大青柚 (同奈省 - OCOP 4星级)',
-                    ko: '탄찌에우 자몽 (동나이성 - OCOP 4성급)',
-                    ja: 'タンチュウ文旦（ドンナイ省 - OCOP 4つ星）'
+                    en: 'Bưởi đường lá cam Tân Triều (Dong Nai - OCOP 4-Star)',
+                    zh: 'Bưởi đường lá cam Tân Triều (同奈省 - OCOP 4星级)',
+                    ko: 'Bưởi đường lá cam Tân Triều (동나이성 - OCOP 4성급)',
+                    ja: 'Bưởi đường lá cam Tân Triều (ドンナイ省 - OCOP 4つ星)'
                 };
                 if (names[currentLanguage]) return names[currentLanguage];
             }
-            return currentLanguage === 'en'
-                ? (product.nameEn || productNamesEn[product.id - 1] || product.name)
-                : product.name;
+            return product.name;
         }
 
         let reviewPresentationMode = (() => {
@@ -9966,7 +9964,7 @@
             'i18n-stat3': 'OCOP star ratings',
             'i18n-btn-explore': 'Shop OCOP specialties',
             'i18n-btn-support': 'Get gift advice',
-            'i18n-hero-prodname': 'Hiep Van Forest Bitter Melon Tea Bags - Long Khanh, Dong Nai (OCOP 4-star)',
+            'i18n-hero-prodname': 'Trà khổ qua rừng túi lọc Hiệp Vân - Long Khanh, Dong Nai Specialty (OCOP 4-Star)',
             'i18n-cat-header': 'Ecosystem Coordination Filters',
             'i18n-cat-all': 'All categories',
             'i18n-cat-tea': 'Herbal & Traditional Medicine',
@@ -10448,10 +10446,10 @@
             },
             'i18n-hero-prodname': {
                 vi: 'Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)',
-                en: 'Hiep Van Forest Bitter Melon Tea - Long Khanh, Dong Nai Specialty (OCOP 4-Star)',
-                zh: '协云 森林苦瓜袋泡茶 - 同奈省 隆庆特产 (OCOP 4星级)',
-                ko: '혭번 야생 여주 티백 - 동나이성 롱카인 특산물 (OCOP 4성급)',
-                ja: '協雲 野生ゴーヤティーバッグ - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'
+                en: 'Trà khổ qua rừng túi lọc Hiệp Vân - Long Khanh, Dong Nai Specialty (OCOP 4-Star)',
+                zh: 'Trà khổ qua rừng túi lọc Hiệp Vân - 同奈省 隆庆特产 (OCOP 4星级)',
+                ko: 'Trà khổ qua rừng túi lọc Hiệp Vân - 동나이성 롱카인 특산물 (OCOP 4성급)',
+                ja: 'Trà khổ qua rừng túi lọc Hiệp Vân - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'
             },
             'hero-product-stars': {
                 vi: 'Điểm Bán O2O • Định Vị',
@@ -10462,33 +10460,33 @@
             },
             'hero-product-price': {
                 vi: '[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]',
-                en: '[System Coordinated Volume: 1,200 units • CHM Reconciliation Status: Automatically Distributed]',
-                zh: '[系统统筹流通量: 1,200 单位 • CHM 对账状态: 已自动分配]',
-                ko: '[시스템 조정 유통량: 1,200 단위 • CHM 정산 상태: 자동 분배 완료]',
-                ja: '[システム調整流通量: 1,200 ユニット • CHM 精算ステータス: 自動配分完了]'
+                en: '[System Volume: 1,200 units • CHM Settlement: Automatically distributed via Smart Contract]',
+                zh: '[系统调度量：1,200 件 • CHM 佣金结算：智能合约自动拨付]',
+                ko: '[시스템 조율량: 1,200개 • CHM 수수료 정산: 스마트 계약 자동 정산 완료]',
+                ja: '[システム調整量：1,200個 • CHM手数料精算：スマートコントラクト自動決済済]'
             },
 
             // Các nút điều hướng Hero
             'i18n-hero-btn-dashboard': {
-                vi: 'Bảng Quản Trị Tài Chính AI',
+                vi: 'AI Quản Trị Tài Chính',
                 en: 'AI Financial Dashboard',
-                zh: 'AI 财务管理面板',
-                ko: 'AI 재무 관리 대시보드',
-                ja: 'AI財務管理ダッシュボード'
+                zh: 'AI 财务看板',
+                ko: 'AI 재무 대시보드',
+                ja: 'AI財務ダッシュボード'
             },
             'i18n-hero-btn-stores': {
                 vi: 'Mạng Lưới Điểm Bán OCOP',
                 en: 'OCOP Showroom Network',
                 zh: 'OCOP 展厅网络',
                 ko: 'OCOP 쇼룸 네트워크',
-                ja: 'OCOPショールーム網'
+                ja: 'OCOPショールームネットワーク'
             },
             'i18n-hero-btn-proposal': {
                 vi: 'Hồ Sơ Đề Án Challenge 2026',
-                en: 'Challenge 2026 Proposal',
-                zh: 'Challenge 2026 方案',
-                ko: 'Challenge 2026 기획서',
-                ja: 'Challenge 2026 提案書'
+                en: 'Challenge 2026 Project File',
+                zh: '2026 挑战赛方案',
+                ko: '2026 챌린지 프로젝트',
+                ja: '2026 チャレンジプロジェクト'
             }
         };
 

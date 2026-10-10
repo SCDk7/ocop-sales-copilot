@@ -265,9 +265,9 @@ test('Technical metrics, Hero product card, and Chatbot AI 5-language sync valid
     // PHẦN 2: Thẻ sản phẩm & thông số tài chính sang 5 thứ tiếng
     assert(html.includes('★ TINH HOA NÔNG SẢN VIỆT') && html.includes('★ VIETNAM PREMIUM NATIVE AGRO') && html.includes('★ 越南优质农产品') && html.includes('★ 베트남 프리미엄 농산물') && html.includes('★ ベトナムプレミアム農産物'), 'Badge 5 languages');
     assert(html.includes('NATIONAL OCOP PLATFORM — Hợp Nhất Dòng Tiền • Số Hóa Chuỗi Cung Ứng Đơn Vị Vùng Miền') && html.includes('NATIONAL OCOP PLATFORM — Cash Flow Integration • Supply Chain Digitalization') && html.includes('NATIONAL OCOP PLATFORM — 现金流整合 • 区域供应链数字化') && html.includes('NATIONAL OCOP PLATFORM — 현금 흐름 통합 • 지역 공급망 디지털화') && html.includes('NATIONAL OCOP PLATFORM — キャッシュフロー統合 • 地域サプライチェーンデジタル化'), 'White banner subtext 5 languages');
-    assert(html.includes('Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)') && html.includes('Hiep Van Forest Bitter Melon Tea - Long Khanh, Dong Nai Specialty (OCOP 4-Star)') && html.includes('协云 森林苦瓜袋泡茶 - 同奈省 隆庆特产 (OCOP 4星级)') && html.includes('혭번 야생 여주 티백 - 동나이성 롱카인 특산물 (OCOP 4성급)') && html.includes('協雲 野生ゴーヤティーバッグ - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'), 'Product name 5 languages');
+    assert(html.includes('Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)') && html.includes('Trà khổ qua rừng túi lọc Hiệp Vân - Long Khanh, Dong Nai Specialty (OCOP 4-Star)') && html.includes('Trà khổ qua rừng túi lọc Hiệp Vân - 同奈省 隆庆特产 (OCOP 4星级)') && html.includes('Trà khổ qua rừng túi lọc Hiệp Vân - 동나이성 롱카인 특산물 (OCOP 4성급)') && html.includes('Trà khổ qua rừng túi lọc Hiệp Vân - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'), 'Product name 5 languages');
     assert(html.includes('Điểm Bán O2O • Định Vị') && html.includes('O2O Showroom Locator') && html.includes('O2O 展厅定位') && html.includes('O2O 쇼룸 위치 관제') && html.includes('O2Oショールーム位置確認'), 'O2O Showroom Locator 5 languages');
-    assert(html.includes('[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]') && html.includes('[System Coordinated Volume: 1,200 units • CHM Reconciliation Status: Automatically Distributed]') && html.includes('[系统统筹流通量: 1,200 单位 • CHM 对账状态: 已自动分配]') && html.includes('[시스템 조정 유통량: 1,200 단위 • CHM 정산 상태: 자동 분배 완료]') && html.includes('[システム調整流通量: 1,200 ユニット • CHM 精算ステータス: 自動配分完了]'), 'System coordinated volume 5 languages');
+    assert(html.includes('[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]') && html.includes('[System Volume: 1,200 units • CHM Settlement: Automatically distributed via Smart Contract]') && html.includes('[系统调度量：1,200 件 • CHM 佣金结算：智能合约自动拨付]') && html.includes('[시스템 조율량: 1,200개 • CHM 수수료 정산: 스마트 계약 자동 정산 완료]') && html.includes('[システム調整量：1,200個 • CHM手数料精算：スマートコントラクト自動決済済]'), 'System coordinated volume 5 languages');
 
     // PHẦN 3: Chatbot AI Action buttons
     assert(html.includes('Ghim vị trí điểm bán') && html.includes('Pin Showroom Location') && html.includes('固定展厅位置') && html.includes('쇼룸 위치 고정') && html.includes('ショールーム位置を固定'), 'Action Button 1 5 languages');
@@ -289,6 +289,15 @@ test('Technical metrics, Hero product card, and Chatbot AI 5-language sync valid
     assert(html.includes('⚡ Margin: Dong Nai Bitter Melon Tea') && html.includes('Detail the gross & net margin for Dong Nai forest bitter melon tea'), 'Quick reply EN 1');
     assert(html.includes('📊 Digitized Yield: Hanoi Pomelo') && html.includes('Check digitized allocation volume for Hanoi green pomelo'), 'Quick reply EN 2');
     assert(html.includes('🔄 CHM Fee Reconciliation: 10%') && html.includes('Reconcile the 10% transaction commission in the CHM system'), 'Quick reply EN 3');
+
+    // PHẦN 4: 3 Nút Hành động Lớn (Hero Action Buttons) sang 5 thứ tiếng
+    assert(html.includes('AI Quản Trị Tài Chính') && html.includes('AI Financial Dashboard') && html.includes('AI 财务看板') && html.includes('AI 재무 대시보드') && html.includes('AI財務ダッシュボード'), 'Hero Action Button 1 (Dashboard) 5 languages');
+    assert(html.includes('Mạng Lưới Điểm Bán OCOP') && html.includes('OCOP Showroom Network') && html.includes('OCOP 展厅网络') && html.includes('OCOP 쇼룸 네트워크') && html.includes('OCOPショールームネットワーク'), 'Hero Action Button 2 (Stores) 5 languages');
+    assert(html.includes('Hồ Sơ Đề Án Challenge 2026') && html.includes('Challenge 2026 Project File') && html.includes('2026 挑战赛方案') && html.includes('2026 챌린지 프로젝트') && html.includes('2026 チャレンジプロジェクト'), 'Hero Action Button 3 (Proposal) 5 languages');
+
+    // Server OCOP product name rule
+    assert(serverJs.includes('CRITICAL OCOP LOCALIZATION RULE'), 'Server must have critical OCOP localization rule');
+    assert(serverJs.includes('Tất cả Tên sản phẩm đặc sản OCOP thực tế'), 'Server rule 9 must lock Vietnamese product names');
 
     assert(!serverJs.includes('Verified 100% (0.00% variance)'));
     assert(!html.includes('Verified 100% (0.00% variance)'));
