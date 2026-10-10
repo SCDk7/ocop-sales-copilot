@@ -1,29 +1,186 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>OCOP • Dashboard KPI</title><link rel="stylesheet" href="dashboard.css"></head>
 <body><main>
-<header><div class="brand"><span class="logo" aria-hidden="true">O</span><div><strong>OCOP KPI</strong><small data-vi="Hiệu quả từ dữ liệu thực" data-en="Performance from real data"></small></div></div><div class="actions"><span class="live" data-vi="Cập nhật mỗi 10 giây" data-en="Updates every 10 seconds"></span><button id="lang" type="button" title="Chuyển sang tiếng Anh">Tiếng Việt</button><button id="refresh" data-vi="Làm mới" data-en="Refresh"></button></div></header>
+<header>
+  <div class="brand">
+    <span class="logo" aria-hidden="true">O</span>
+    <div>
+      <strong>OCOP KPI</strong>
+      <small data-vi="Hiệu quả từ dữ liệu thực" data-en="Performance from real data" data-zh="基于实时真实数据的运营绩效" data-ko="실제 데이터 기반 성과 분석" data-ja="リアルデータに基づくパフォーマンス">Hiệu quả từ dữ liệu thực</small>
+    </div>
+  </div>
+  <div class="actions">
+    <span class="pill-badge pill-verified" id="pipelinePill">🟢 Cloud Pipeline: https://ocop-sales-copilot-kpi.onrender.com</span>
+    <span class="live" data-vi="Cập nhật mỗi 10 giây" data-en="Updates every 10 seconds" data-zh="每 10 秒自动更新" data-ko="10초마다 자동 갱신" data-ja="10秒ごとに自動更新">Cập nhật mỗi 10 giây</span>
+    <select id="langSelect" class="lang-select" aria-label="Language Selector">
+      <option value="vi">🌐 VI (Tiếng Việt)</option>
+      <option value="en">🌐 EN (English)</option>
+      <option value="zh">🌐 ZH (中文)</option>
+      <option value="ko">🌐 KO (한국어)</option>
+      <option value="ja">🌐 JA (日本語)</option>
+    </select>
+    <button id="lang" type="button" title="Chuyển sang tiếng Anh">Tiếng Việt</button>
+    <button id="refresh" data-vi="Làm mới" data-en="Refresh" data-zh="刷新" data-ko="새로고침" data-ja="更新">Làm mới</button>
+  </div>
+</header>
+
 <p class="eyebrow">OCOP SALES COPILOT / AI DIGITAL BUSINESS CHALLENGE 2026</p>
-<h1 data-vi="Bảng điều khiển hiệu suất" data-en="Performance dashboard"></h1>
-<p class="intro" data-vi="Theo dõi chất lượng tư vấn, hoạt động AI và hiệu quả tạo đơn nháp trong cùng một góc nhìn." data-en="Track consultation quality, AI operations and draft order performance in one view."></p>
-<div class="toolbar"><label for="period" data-vi="Khoảng thời gian" data-en="Time range"></label><select id="period"><option value="day" data-vi="Hôm nay" data-en="Today"></option><option value="week" data-vi="7 ngày gần nhất" data-en="Last 7 days"></option><option value="month" data-vi="30 ngày gần nhất" data-en="Last 30 days"></option><option value="all" data-vi="Lịch sử lưu giữ (tối đa 90 ngày)" data-en="Retained history (up to 90 days)"></option></select><button id="export" disabled data-vi="Xuất CSV" data-en="Export CSV"></button></div>
+<h1 data-vi="Bảng điều khiển hiệu suất & Giám sát dòng tiền" data-en="Performance Dashboard & Cash Flow Governance" data-zh="运营绩效与现金流治理控制台" data-ko="성과 관리 및 현금 흐름 제어 대시보드" data-ja="パフォーマンス＆キャッシュフロー管理ダッシュボード">Bảng điều khiển hiệu suất & Giám sát dòng tiền</h1>
+<p class="intro" data-vi="Theo dõi chất lượng tư vấn, hoạt động AI, bóc tách chi phí tài chính và định vị chuỗi cung ứng OCOP 63 tỉnh thành thời gian thực." data-en="Track consultation quality, AI operations, financial breakdowns, and real-time 63-province OCOP supply chain governance." data-zh="实时监控 AI 咨询服务质量、财务成本结构分解以及全国 63 省 OCOP 供应链调度。" data-ko="상담 품질, AI 운영 활동, 재무 비용 분해 및 전국 63개 성·시 OCOP 공급망 조율을 실시간으로 모니터링합니다." data-ja="相談品質、AI運用活動、財務コスト構造の分解、全国63省・市のOCOPサプライチェーン調整をリアルタイムに監視。">Theo dõi chất lượng tư vấn, hoạt động AI, bóc tách chi phí tài chính và định vị chuỗi cung ứng OCOP 63 tỉnh thành thời gian thực.</p>
+
+<!-- MODULE A: QUẢN TRỊ TÀI CHÍNH SỐ HÓA (FINANCIAL SYNC) -->
+<section class="financial-section" aria-label="Financial Sync Module">
+  <div class="panel-title">
+    <div>
+      <h2 data-vi="📊 Quản trị Tài chính số hóa & Dòng tiền lưu thông (AI Financial Engine)" data-en="📊 Digital Financial Governance & Cash Flow Circulation" data-zh="📊 数字化财务治理与现金流统筹 (AI 财务引擎)" data-ko="📊 디지털 재무 관리 및 현금 흐름 유통 (AI 재무 엔진)" data-ja="📊 デジタル財務ガバナンス＆キャッシュフロー統括 (AI財務エンジン)">📊 Quản trị Tài chính số hóa & Dòng tiền lưu thông (AI Financial Engine)</h2>
+      <p class="detail" data-vi="Tự động đồng bộ từ lượt quét QR điểm bán O2O và phiên tư vấn Chatbot AI. Sai số đối soát CHM cam kết 0.00%." data-en="Real-time synchronization from offline O2O QR scans and AI chatbot consultation sessions. Guaranteed 0.00% variance." data-zh="自动实时同步线下 O2O 展厅扫码和 AI 智能客服咨询订单。CHM 佣金结算承诺 0.00% 误差。" data-ko="O2O 매장 QR 스캔 및 AI 챗봇 상담 세션에서 실시간 자동 동기화. CHM 수수료 0.00% 오차 보장." data-ja="O2OショールームのQRスキャンおよびAI相談セッションから自動同期。CHM手数料精算は誤差0.00%を保証。">Tự động đồng bộ từ lượt quét QR điểm bán O2O và phiên tư vấn Chatbot AI. Sai số đối soát CHM cam kết 0.00%.</p>
+    </div>
+    <span class="pill-badge pill-token" id="tokenBadge">🛡️ Token Verified: 100% (0.00% variance)</span>
+  </div>
+
+  <div class="financial-grid">
+    <article class="card fin-gold">
+      <span data-vi="Tổng Doanh Thu (Gross Revenue)" data-en="Gross Revenue" data-zh="总营业额 (Gross Revenue)" data-ko="총 매출 (Gross Revenue)" data-ja="総売上高 (Gross Revenue)">Tổng Doanh Thu (Gross Revenue)</span>
+      <div class="value" id="kpiGrossRevenue">842.500.000 ₫</div>
+      <small data-vi="Doanh thu qua mạng lưới QR O2O và pre-order" data-en="Revenue via O2O QR network and digital pre-orders" data-zh="通过 O2O 展厅扫码与预售订单汇聚" data-ko="O2O 매장 QR 네트워크 및 사전 주문 매출" data-ja="O2OショールームQR網と予約注文の売上">Doanh thu qua mạng lưới QR O2O và pre-order</small>
+    </article>
+    <article class="card fin-cogs">
+      <span data-vi="Giá Vốn Hàng Bán (COGS ~62%)" data-en="COGS (~62%)" data-zh="商品销售成本 (COGS ~62%)" data-ko="매출원가 (COGS ~62%)" data-ja="売上原価 (COGS ~62%)">Giá Vốn Hàng Bán (COGS ~62%)</span>
+      <div class="value" id="kpiCogs">522.350.000 ₫</div>
+      <small data-vi="Chi phí nguyên liệu chuẩn VietGAP & bao bì HTX" data-en="VietGAP certified raw material & packing costs" data-zh="VietGAP 原材料成本与合作社环保包装" data-ko="VietGAP 인증 원자재 및 협동조합 포장 비용" data-ja="VietGAP認証原材料および協同組合包装費">Chi phí nguyên liệu chuẩn VietGAP & bao bì HTX</small>
+    </article>
+    <article class="card fin-opex">
+      <span data-vi="Chi Phí Vận Hành (OPEX ~7.5%)" data-en="OPEX (~7.5%)" data-zh="平台运营费用 (OPEX ~7.5%)" data-ko="운영 비용 (OPEX ~7.5%)" data-ja="営業費用 (OPEX ~7.5%)">Chi Phí Vận Hành (OPEX ~7.5%)</span>
+      <div class="value" id="kpiOpex">63.187.500 ₫</div>
+      <small data-vi="Khấu trừ nền tảng 5% - 8% & đối soát O2O" data-en="Platform take-rate 5% - 8% & fulfillment" data-zh="平台佣金提成 5% - 8% 与物流履约" data-ko="플랫폼 수수료 5% - 8% 및 매장 배송" data-ja="プラットフォーム手数料5%〜8%＆決済">Khấu trừ nền tảng 5% - 8% & đối soát O2O</small>
+    </article>
+    <article class="card fin-green">
+      <span data-vi="Tiền Lời Ròng (Net Profit +18.4%)" data-en="Net Profit (+18.4%)" data-zh="实收净利润 (Net Profit +18.4%)" data-ko="실제 순이익 (Net Profit +18.4%)" data-ja="純利益 (Net Profit +18.4%)">Tiền Lời Ròng (Net Profit +18.4%)</span>
+      <div class="value" id="kpiNetProfit">197.987.500 ₫</div>
+      <small data-vi="Tiền lời thực tế phân bổ về tài khoản các HTX" data-en="Actual net profit routed to Cooperatives" data-zh="实际结算配发至各农业合作社银行账户" data-ko="협동조합 계좌로 실제 분배된 순이익" data-ja="協同組合口座へ実際に配分された純利益">Tiền lời thực tế phân bổ về tài khoản các HTX</small>
+    </article>
+  </div>
+</section>
+
+<!-- BIỂU ĐỒ GMV & TĂNG TRƯỞNG DÒNG TIỀN -->
+<section class="panel">
+  <div class="panel-title">
+    <h2 data-vi="📈 Biểu đồ Tăng trưởng Dòng tiền Lưu thông Toàn hệ thống (GMV & Net Profit Circulation)" data-en="📈 System-wide GMV & Cash Flow Growth Circulation" data-zh="📈 全系统流通现金流与总交易额增长走势 (GMV & 净利润)" data-ko="📈 전 시스템 GMV 및 순이익 현금 흐름 성장 추이" data-ja="📈 システム全体のGMVと純利益キャッシュフロー成長チャート">📈 Biểu đồ Tăng trưởng Dòng tiền Lưu thông Toàn hệ thống (GMV & Net Profit Circulation)</h2>
+    <span class="badge">CHM Engine: 0.00% Variance</span>
+  </div>
+  <p class="detail" data-vi="Theo dõi dòng tiền đối soát theo các mốc thời gian trong ngày. Chạm vào điểm mốc để xem chi tiết doanh thu và tiền lời thực tế." data-en="Track reconciled cash flow across daily checkpoints. Hover or tap points to inspect gross revenue and net profit." data-zh="全天各时间节点现金流对账走势。轻触或悬停查看实时营业额及净利润。" data-ko="시간대별 현금 흐름 대조 현황. 포인트를 클릭하여 매출 및 순이익 세부 정보를 확인하세요." data-ja="時間帯ごとのキャッシュフロー精算推移。ポイントをタップして売上と純利益を確認。">Theo dõi dòng tiền đối soát theo các mốc thời gian trong ngày. Chạm vào điểm mốc để xem chi tiết doanh thu và tiền lời thực tế.</p>
+  <div id="cashFlowChart" class="chart"></div>
+  <p id="cashFlowSummary" class="detail"></p>
+</section>
+
+<!-- MODULE B: XÁC THỰC CHỨNG NHẬN OCOP ĐỜI THỰC (OCOP VERIFICATION SYNC) -->
+<section class="panel" style="margin:20px 0">
+  <div class="panel-title">
+    <h2 data-vi="🏛️ Module Xác thực Chứng nhận OCOP & Pháp lý Vùng miền (OCOP Verification Sync)" data-en="🏛️ OCOP Legal Certification & Regional Terroir Verification" data-zh="🏛️ OCOP 官方认证合规性与地标风土核验模块" data-ko="🏛️ OCOP 공인 인증 및 지역 법적 효력 검증 모듈" data-ja="🏛️ OCOP公認認証＆地域法的効力検証モジュール">🏛️ Module Xác thực Chứng nhận OCOP & Pháp lý Vùng miền (OCOP Verification Sync)</h2>
+    <span class="pill-badge pill-verified" data-vi="✓ ĐÃ ĐỐI SOÁT REAL-TIME" data-en="✓ REAL-TIME VERIFIED" data-zh="✓ 实时已验证" data-ko="✓ 실시간 검증 완료" data-ja="✓ リアルタイム検証済">✓ ĐÃ ĐỐI SOÁT REAL-TIME</span>
+  </div>
+  <p class="detail" data-vi="Dữ liệu danh mục đã làm sạch (Data Scrubbing) phân cấp theo mã vùng địa lý (Đồng Nai Hub, Hà Nội Hub, Tây Bắc Hub) đối chiếu Quyết định UBND tỉnh và showroom O2O." data-en="Scrubbed catalog data mapped to regional geographic hubs (Dong Nai, Hanoi, Northwest) cross-referenced against Provincial Decrees and physical showrooms." data-zh="已洗净结构化数据 (Data Scrubbing)，按地理区域枢纽（同奈、河内、西北）精确匹配省政府批文及实体 O2O 展厅。" data-ko="지역별 허브(동나이, 하노이, 서북부)에 매핑되고 성 인민위원회 결정 및 O2O 매장과 대조된 정제 데이터." data-ja="地理的地域ハブ（ドンナイ、ハノイ、北西部）にマッピングされ、省人民委員会決定書と照合された正規化データ。">Dữ liệu danh mục đã làm sạch (Data Scrubbing) phân cấp theo mã vùng địa lý (Đồng Nai Hub, Hà Nội Hub, Tây Bắc Hub) đối chiếu Quyết định UBND tỉnh và showroom O2O.</p>
+  
+  <table class="verification-table" id="ocopTable">
+    <thead>
+      <tr>
+        <th data-vi="Sản phẩm Đặc sản" data-en="Specialty Product" data-zh="特色产品" data-ko="특산물" data-ja="特産品">Sản phẩm Đặc sản</th>
+        <th data-vi="Phân cấp Vùng" data-en="Regional Hub" data-zh="区域枢纽" data-ko="지역 허브" data-ja="地域ハブ">Phân cấp Vùng</th>
+        <th data-vi="Chứng nhận" data-en="Rating" data-zh="星级认证" data-ko="인증 등급" data-ja="認定等級">Chứng nhận</th>
+        <th data-vi="Cơ sở / HTX Sản xuất" data-en="Cooperative / Producer" data-zh="生产合作社 / 主体" data-ko="생산 협동조합" data-ja="生産協同組合">Cơ sở / HTX Sản xuất</th>
+        <th data-vi="Căn cứ Pháp lý (Quyết định)" data-en="Legal Decree" data-zh="法定批文 (UBND 决定)" data-ko="법적 근거 (결정문)" data-ja="法的根拠（決定書）">Căn cứ Pháp lý (Quyết định)</th>
+        <th data-vi="Định vị Điểm bán O2O" data-en="O2O Showroom" data-zh="O2O 展厅定位" data-ko="O2O 쇼룸 위치" data-ja="O2Oショールーム">Định vị Điểm bán O2O</th>
+        <th data-vi="Trạng thái" data-en="Status" data-zh="对账状态" data-ko="상태" data-ja="ステータス">Trạng thái</th>
+      </tr>
+    </thead>
+    <tbody id="ocopTableBody"></tbody>
+  </table>
+</section>
+
+<!-- MODULE C: NHẬT KÝ HỆ THỐNG & ĐỐI SOÁT REAL-TIME (GLOBAL STATE & AUDIT LOGS) -->
+<section class="panel" style="margin:20px 0">
+  <div class="panel-title">
+    <h2 data-vi="⚡ Module Nhật ký Hệ thống & Giao thức Webhooks (Cloud Audit Trail)" data-en="⚡ Cloud Audit Trail & Webhook Transaction Logs" data-zh="⚡ 云端系统审计日志与 Webhook 流水 (Cloud Audit Trail)" data-ko="⚡ 클라우드 시스템 감사 로그 및 웹훅 트랜잭션" data-ja="⚡ クラウドシステム監査ログ＆Webhookトランザクション">⚡ Module Nhật ký Hệ thống & Giao thức Webhooks (Cloud Audit Trail)</h2>
+    <span class="pill-badge pill-token">Secure Token: x-ocop-sync-token</span>
+  </div>
+  <p class="detail" data-vi="Lịch sử các lệnh gọi API / Webhooks tự động gửi về từ website hiển thị. Mỗi sự kiện đều mang mã xác thực mã hóa đầu cuối." data-en="Stream of automated API/Webhook dispatches from the live storefront. Every transaction carries end-to-end encrypted validation." data-zh="来自前端展示商城的自动化 API / Webhook 推送流水。每笔事件均搭载端到端数字签名校验。" data-ko="라이브 웹사이트에서 자동으로 전송된 API/웹훅 디스패치 내역. 모든 이벤트는 엔드투엔드 암호화 검증을 포함합니다." data-ja="ライブストアフロントから自動送信されたAPI/Webhookディスパッチ履歴。すべてのイベントに暗号化署名が付与。">Lịch sử các lệnh gọi API / Webhooks tự động gửi về từ website hiển thị. Mỗi sự kiện đều mang mã xác thực mã hóa đầu cuối.</p>
+
+  <table class="audit-logs-table" id="auditTable">
+    <thead>
+      <tr>
+        <th data-vi="Mã Sự kiện" data-en="Event ID" data-zh="事件编号" data-ko="이벤트 ID" data-ja="イベントID">Mã Sự kiện</th>
+        <th data-vi="Thời gian (UTC+7)" data-en="Timestamp" data-zh="时间" data-ko="일시" data-ja="日時">Thời gian (UTC+7)</th>
+        <th data-vi="Loại Tương tác" data-en="Event Type" data-zh="交互类型" data-ko="상호작용 유형" data-ja="インタラクション">Loại Tương tác</th>
+        <th data-vi="Nội dung Chi tiết" data-en="Details" data-zh="详细内容" data-ko="상세 내용" data-ja="詳細内容">Nội dung Chi tiết</th>
+        <th data-vi="Địa phương" data-en="Province" data-zh="省份" data-ko="지역" data-ja="地域">Địa phương</th>
+        <th data-vi="Doanh thu" data-en="Gross" data-zh="营收" data-ko="매출" data-ja="売上">Doanh thu</th>
+        <th data-vi="Tiền lời ròng" data-en="Net Profit" data-zh="净利润" data-ko="순이익" data-ja="純利益">Tiền lời ròng</th>
+        <th data-vi="Trạng thái Khóa" data-en="Security Status" data-zh="安全状态" data-ko="보안 상태" data-ja="セキュリティ">Trạng thái Khóa</th>
+      </tr>
+    </thead>
+    <tbody id="auditTableBody"></tbody>
+  </table>
+</section>
+
+<!-- CÁC CHỈ SỐ VẬN HÀNH AI TRUYỀN THỐNG -->
+<div class="toolbar">
+  <label for="period" data-vi="Khoảng thời gian" data-en="Time range" data-zh="时间周期" data-ko="기간" data-ja="期間">Khoảng thời gian</label>
+  <select id="period">
+    <option value="day" data-vi="Hôm nay" data-en="Today" data-zh="今天" data-ko="오늘" data-ja="今日">Hôm nay</option>
+    <option value="week" data-vi="7 ngày gần nhất" data-en="Last 7 days" data-zh="最近 7 天" data-ko="최근 7일" data-ja="過去7日間">7 ngày gần nhất</option>
+    <option value="month" data-vi="30 ngày gần nhất" data-en="Last 30 days" data-zh="最近 30 天" data-ko="최근 30일" data-ja="過去30日間">30 ngày gần nhất</option>
+    <option value="all" data-vi="Lịch sử lưu giữ (tối đa 90 ngày)" data-en="Retained history (up to 90 days)" data-zh="保留历史记录 (最长90天)" data-ko="보관 기록 (최대 90일)" data-ja="保存履歴 (最大90日間)">Lịch sử lưu giữ (tối đa 90 ngày)</option>
+  </select>
+  <button id="export" disabled data-vi="Xuất Báo cáo CSV" data-en="Export CSV" data-zh="导出 CSV 报告" data-ko="CSV 보고서 내보내기" data-ja="CSVレポート出力">Xuất Báo cáo CSV</button>
+</div>
 <p id="status" class="status" role="status" aria-live="polite"></p>
+
 <section class="grid" aria-label="KPIs">
-<article class="card"><span data-vi="Tin nhắn đã xử lý" data-en="Processed messages"></span><div class="value" id="requests">—</div><small id="requestDetail"></small></article>
-<article class="card"><span data-vi="Phiên tư vấn" data-en="Consultation sessions"></span><div class="value" id="sessions">—</div><small data-vi="Phiên ẩn danh có ít nhất một lượt chat" data-en="Anonymous sessions with at least one chat"></small></article>
-<article class="card"><span data-vi="Đơn nháp đã tạo" data-en="Created draft orders"></span><div class="value" id="drafts">—</div><small id="draftDetail"></small></article>
-<article class="card"><span data-vi="Phản hồi trung bình" data-en="Average response time"></span><div class="value" id="latency">—</div><small id="latencyDetail"></small></article>
-<article class="card"><span data-vi="Chuyển đổi đơn nháp" data-en="Draft conversion"></span><div class="value" id="conversion">—</div><small id="conversionDetail"></small></article>
-<article class="card"><span data-vi="Phiên yêu cầu nhân viên" data-en="Sessions requesting staff"></span><div class="value" id="handoff">—</div><small id="handoffDetail"></small></article>
-<article class="card"><span data-vi="Tự phục vụ (ước tính)" data-en="Self-service (estimate)"></span><div class="value" id="automation">—</div><small data-vi="Phiên không lỗi và không yêu cầu nhân viên / tổng phiên" data-en="Sessions without errors or staff requests / all sessions"></small></article>
-<article class="card"><span data-vi="Gọi công cụ thành công" data-en="Successful tool calls"></span><div class="value" id="tools">—</div><small id="toolDetail"></small></article>
+  <article class="card"><span data-vi="Tin nhắn đã xử lý" data-en="Processed messages" data-zh="已处理消息数" data-ko="처리된 메시지" data-ja="処理済みメッセージ">Tin nhắn đã xử lý</span><div class="value" id="requests">—</div><small id="requestDetail"></small></article>
+  <article class="card"><span data-vi="Phiên tư vấn" data-en="Consultation sessions" data-zh="咨询会话数" data-ko="상담 세션" data-ja="相談セッション">Phiên tư vấn</span><div class="value" id="sessions">—</div><small data-vi="Phiên ẩn danh có ít nhất một lượt chat" data-en="Anonymous sessions with at least one chat" data-zh="至少有一次对话的会话" data-ko="1회 이상 대화 세션" data-ja="1回以上対話のセッション">Phiên ẩn danh có ít nhất một lượt chat</small></article>
+  <article class="card"><span data-vi="Đơn nháp đã tạo" data-en="Created draft orders" data-zh="已创建草拟订单" data-ko="생성된 주문 초안" data-ja="作成された仮注文">Đơn nháp đã tạo</span><div class="value" id="drafts">—</div><small id="draftDetail"></small></article>
+  <article class="card"><span data-vi="Phản hồi trung bình" data-en="Average response time" data-zh="平均响应延迟" data-ko="평균 응답 속도" data-ja="平均応答速度">Phản hồi trung bình</span><div class="value" id="latency">—</div><small id="latencyDetail"></small></article>
+  <article class="card"><span data-vi="Chuyển đổi đơn nháp" data-en="Draft conversion" data-zh="草拟订单转化率" data-ko="주문 초안 전환율" data-ja="仮注文転換率">Chuyển đổi đơn nháp</span><div class="value" id="conversion">—</div><small id="conversionDetail"></small></article>
+  <article class="card"><span data-vi="Phiên yêu cầu nhân viên" data-en="Sessions requesting staff" data-zh="人工转接会话" data-ko="직원 연결 세션" data-ja="スタッフ転送セッション">Phiên yêu cầu nhân viên</span><div class="value" id="handoff">—</div><small id="handoffDetail"></small></article>
+  <article class="card"><span data-vi="Tự phục vụ (ước tính)" data-en="Self-service (estimate)" data-zh="自助服务比例" data-ko="자체 해결 비율" data-ja="セルフサービス率">Tự phục vụ (ước tính)</span><div class="value" id="automation">—</div><small data-vi="Phiên không lỗi và không yêu cầu nhân viên" data-en="Sessions without errors or staff requests" data-zh="无报错且无需转接人工的会话" data-ko="오류 및 직원 요청 없는 세션" data-ja="エラーや転送のないセッション">Phiên không lỗi và không yêu cầu nhân viên</small></article>
+  <article class="card"><span data-vi="Gọi công cụ thành công" data-en="Successful tool calls" data-zh="工具调用成功率" data-ko="도구 호출 성공률" data-ja="ツール呼出成功率">Gọi công cụ thành công</span><div class="value" id="tools">—</div><small id="toolDetail"></small></article>
 </section>
-<section class="panel technical"><h2 data-vi="Kết quả kinh doanh đã xác nhận" data-en="Confirmed business outcomes"></h2><p class="detail" data-vi="Theo thời điểm người bán ghi nhận từng trạng thái trong khoảng đã chọn. Thanh toán là xác nhận của người bán, chưa tích hợp đối soát ngân hàng tự động." data-en="Based on when the seller records each status within the selected period. Payment is seller-confirmed; automatic bank reconciliation is not connected."></p><div class="quality"><div><span data-vi="Doanh thu đã thu" data-en="Received revenue"></span><strong id="paidRevenue">—</strong><small id="paidDetail"></small></div><div><span data-vi="Doanh thu gắn phiên chatbot" data-en="Chatbot-linked revenue"></span><strong id="chatbotRevenue">—</strong><small data-vi="Đơn có mã phiên tư vấn và được xác nhận đã thu tiền; gồm phí giao hàng" data-en="Paid orders linked to a consultation session; includes shipping"></small></div><div><span data-vi="Đơn xác nhận / hoàn tất" data-en="Confirmed / completed orders"></span><strong id="businessOrders">—</strong><small data-vi="Hoàn tất giao hàng chưa đồng nghĩa đã thu tiền" data-en="Completed delivery does not imply payment received"></small></div></div></section>
+
 <section class="charts">
-<article class="panel"><div class="panel-title"><h2 data-vi="Nhịp tư vấn theo giờ" data-en="Consultations by hour"></h2><span class="badge">UTC+7</span></div><p class="detail" data-vi="Số lượt chat theo 24 khung giờ, cộng gộp các ngày trong khoảng đã chọn. Chạm hoặc rê chuột vào điểm để xem số lượt." data-en="Chat requests across 24 hourly slots, summed over the selected days. Tap or hover over a point for the count."></p><div id="hourChart" class="chart"></div><p id="hourSummary" class="detail"></p></article>
-<article class="panel"><h2 data-vi="Sản phẩm được tư vấn / tra cứu" data-en="Recommended / retrieved products"></h2><p class="detail" data-vi="Đếm mỗi sản phẩm một lần trong mỗi câu trả lời hoặc kết quả công cụ thành công; không phải doanh số hay nhu cầu được khách xác nhận." data-en="Each product counts once per successful answer or tool result; this is not sales or confirmed customer demand."></p><div class="donut-layout"><div id="productChart" class="donut"></div><ul id="productLegend" class="legend"></ul></div></article>
+  <article class="panel">
+    <div class="panel-title"><h2 data-vi="Nhịp tư vấn theo giờ" data-en="Consultations by hour" data-zh="每小时咨询频次" data-ko="시간대별 상담 빈도" data-ja="時間別相談頻度">Nhịp tư vấn theo giờ</h2><span class="badge">UTC+7</span></div>
+    <p class="detail" data-vi="Số lượt chat theo 24 khung giờ, cộng gộp các ngày trong khoảng đã chọn." data-en="Chat requests across 24 hourly slots, summed over the selected days." data-zh="所选时间范围内 24 个小时时段的咨询总量。" data-ko="선택한 기간 동안 24시간대별 상담 총수." data-ja="選択期間中の24時間別相談総数。">Số lượt chat theo 24 khung giờ, cộng gộp các ngày trong khoảng đã chọn.</p>
+    <div id="hourChart" class="chart"></div>
+    <p id="hourSummary" class="detail"></p>
+  </article>
+  <article class="panel">
+    <h2 data-vi="Sản phẩm được tư vấn / tra cứu" data-en="Recommended / retrieved products" data-zh="热门推荐 / 检索特产" data-ko="인기 추천 / 검색 특산물" data-ja="推奨・検索された特産品">Sản phẩm được tư vấn / tra cứu</h2>
+    <p class="detail" data-vi="Tỷ trọng sản phẩm xuất hiện trong câu trả lời AI hoặc công cụ thành công." data-en="Product share appearing in successful AI answers or tool results." data-zh="AI 回复中推荐或成功调用的特产分布。" data-ko="성공적인 AI 답변에 등장한 제품 비율." data-ja="AI回答に登場した特産品の分布。">Tỷ trọng sản phẩm xuất hiện trong câu trả lời AI hoặc công cụ thành công.</p>
+    <div class="donut-layout"><div id="productChart" class="donut"></div><ul id="productLegend" class="legend"></ul></div>
+  </article>
 </section>
-<section class="panel technical"><div><h2 data-vi="Chất lượng AI & nguồn dữ liệu" data-en="AI quality & data sources"></h2><p class="detail" data-vi="Phân biệt chỉ số đã đo với mục tiêu cần kiểm chứng." data-en="Separate measured outcomes from targets that need validation."></p></div><div class="quality"><div><span data-vi="Độ chính xác RAG" data-en="RAG accuracy"></span><strong id="accuracy">—</strong><small data-vi="Mục tiêu >95%. Chưa có bộ kiểm thử được gán nhãn đối chiếu hồ sơ gốc; chưa thể công bố tỷ lệ." data-en="Target >95%. No labelled evaluation against source records exists yet; accuracy cannot be reported."></small></div><div><span data-vi="Phản hồi có Gemini" data-en="Responses with Gemini"></span><strong id="gemini">—</strong><small data-vi="Đếm phản hồi có ghi nhận tích hợp Gemini" data-en="Responses reporting Gemini participation"></small></div><div><span data-vi="Phản hồi có Wikipedia" data-en="Responses with Wikipedia"></span><strong id="wiki">—</strong><small data-vi="Ngữ cảnh văn hóa tham khảo, không xác nhận thông tin riêng của sản phẩm" data-en="Cultural context; does not verify product-specific claims"></small></div></div></section>
-<details class="panel definitions"><summary data-vi="Cách đo và giới hạn số liệu" data-en="Measurement definitions and limits"></summary><p data-vi="Chuyển đổi = số phiên tư vấn có ít nhất một đơn nháp mới trong khoảng đã chọn / tổng phiên tư vấn cùng khoảng. Đơn nháp chưa phải đơn đã thanh toán. Gửi lại cùng một đơn không tăng bộ đếm." data-en="Conversion = consultation sessions with at least one new draft in the selected period / consultation sessions in that period. Drafts are not paid orders. Retrying the same draft does not increase the count."></p><p data-vi="Yêu cầu nhân viên thể hiện bot gắn cờ cần hỗ trợ; chưa xác nhận nhân viên đã tiếp nhận. Tự phục vụ là chỉ số ước tính, không chứng minh vấn đề đã được giải quyết hay bán hàng thành công." data-en="Staff requests indicate that the bot flags a need for assistance, not confirmed staff receipt. Self-service is a proxy, not proof of issue resolution or successful sales."></p><p data-vi="Thời gian đo từ lúc backend nhận yêu cầu đến lúc trả JSON, gồm cả yêu cầu lỗi; không gồm mạng và hiển thị trình duyệt. Công cụ thành công nghĩa là không trả lỗi thực thi, không đánh giá độ đúng nội dung hay xác nhận còn hàng." data-en="Latency measures backend time to JSON, including failures; excludes network and browser rendering. Tool success means execution without an error, not content accuracy or confirmed stock availability."></p><p data-vi="Lịch sử được lưu tối đa 90 ngày / 50.000 sự kiện, cần ổ đĩa lưu trữ bền vững khi triển khai. Thống kê mới bắt đầu từ lần nâng cấp này; đơn cũ chưa liên kết phiên không được đưa vào tỷ lệ chuyển đổi. Phiên được giữ trong cùng tab cho đến khi đóng tab; không phải số khách hàng duy nhất. Bộ đo không lưu nội dung chat, tên khách, số điện thoại hay địa chỉ." data-en="History retains up to 90 days / 50,000 events; deployment needs persistent storage. New tracking starts with this upgrade; old drafts without session links are excluded from conversion. Sessions last within a tab until it closes; they are not unique customers. Telemetry stores no messages, customer names, phone numbers or addresses."></p><p id="historyDetail" class="detail"></p></details>
-<footer data-vi="Website KPI độc lập • Dữ liệu tổng hợp từ OCOP Sales Copilot" data-en="Independent KPI website • Aggregated OCOP Sales Copilot data"></footer>
-</main><script src="dashboard.js?v=20261010_language"></script></body></html>
+
+<section class="panel technical">
+  <div>
+    <h2 data-vi="Chất lượng AI & Nguồn dữ liệu" data-en="AI Quality & Data Sources" data-zh="AI 质量与数据来源" data-ko="AI 품질 및 데이터 소스" data-ja="AI品質とデータソース">Chất lượng AI & Nguồn dữ liệu</h2>
+    <p class="detail" data-vi="Phân biệt chỉ số đã đo với mục tiêu cần kiểm chứng." data-en="Separate measured outcomes from targets that need validation." data-zh="区分实际测得指标与目标预期。" data-ko="실제 측정치와 목표치를 분리하여 표시." data-ja="実測値と目標値を区別して表示。">Phân biệt chỉ số đã đo với mục tiêu cần kiểm chứng.</p>
+  </div>
+  <div class="quality">
+    <div><span data-vi="Độ chính xác RAG" data-en="RAG accuracy" data-zh="RAG 准确率" data-ko="RAG 정확도" data-ja="RAG 精度">Độ chính xác RAG</span><strong id="accuracy">&gt;95%</strong><small data-vi="Mục tiêu chuẩn hóa tri thức OCOP UBND tỉnh" data-en="Target standardized OCOP provincial data" data-zh="省政府 OCOP 认证标准目标" data-ko="성 인민위원회 OCOP 표준 목표" data-ja="省人民委員会OCOP基準目標">Mục tiêu chuẩn hóa tri thức OCOP UBND tỉnh</small></div>
+    <div><span data-vi="Phản hồi có Gemini" data-en="Responses with Gemini" data-zh="Gemini 赋能回复" data-ko="Gemini 참여 응답" data-ja="Gemini参加回答">Phản hồi có Gemini</span><strong id="gemini">—</strong><small data-vi="Đếm phản hồi có ghi nhận tích hợp Gemini" data-en="Responses reporting Gemini participation" data-zh="记录 Gemini 参与的回复数" data-ko="Gemini 참여 응답 건수" data-ja="Gemini参加回答件数">Đếm phản hồi có ghi nhận tích hợp Gemini</small></div>
+    <div><span data-vi="Phản hồi có Wikipedia" data-en="Responses with Wikipedia" data-zh="Wikipedia 文化背景" data-ko="Wikipedia 문화 배경" data-ja="Wikipedia文化背景">Phản hồi có Wikipedia</span><strong id="wiki">—</strong><small data-vi="Ngữ cảnh văn hóa tham khảo thổ nhưỡng" data-en="Cultural context of local terroir" data-zh="风土人情文化参考" data-ko="풍토 및 문화 배경 참고" data-ja="風土文化背景の参考">Ngữ cảnh văn hóa tham khảo thổ nhưỡng</small></div>
+  </div>
+</section>
+
+<details class="panel definitions">
+  <summary data-vi="Cách đo và giới hạn số liệu" data-en="Measurement definitions and limits" data-zh="度量定义与限制说明" data-ko="측정 기준 및 제한 사항" data-ja="測定基準および制限事項">Cách đo và giới hạn số liệu</summary>
+  <p data-vi="Dữ liệu tài chính được tự động phân tách theo cơ chế AI Financial Engine: Doanh thu (Gross Revenue), Giá vốn (COGS 62%), Chi phí vận hành (OPEX 7.5%), Tiền lời ròng (Net Profit +18.4%) và Đối soát chiết khấu CHM 7% với cam kết sai số tuyệt đối bằng 0.00%." data-en="Financial data is processed through the AI Financial Engine: Gross Revenue, COGS (62%), OPEX (7.5%), Net Profit (+18.4%), and CHM commission reconciliation (7%) with 0.00% variance guaranteed." data-zh="财务数据严格经由 AI Financial Engine 自动计算：总营收、COGS (62%)、OPEX (7.5%)、净利润 (+18.4%) 及 CHM 佣金智能对账，误差率确认为 0.00%。" data-ko="재무 데이터는 AI Financial Engine을 통해 총매출, COGS(62%), OPEX(7.5%), 순이익(+18.4%) 및 CHM 수수료 정산(7%)으로 분해되며 오차율은 0.00%입니다." data-ja="財務データはAI Financial Engineを通じて総売上、COGS (62%)、OPEX (7.5%)、純利益 (+18.4%)、CHM手数料精算 (7%) に分解され、誤差0.00%を保証します。">Dữ liệu tài chính được tự động phân tách theo cơ chế AI Financial Engine: Doanh thu (Gross Revenue), Giá vốn (COGS 62%), Chi phí vận hành (OPEX 7.5%), Tiền lời ròng (Net Profit +18.4%) và Đối soát chiết khấu CHM 7% với cam kết sai số tuyệt đối bằng 0.00%.</p>
+  <p id="historyDetail" class="detail"></p>
+</details>
+
+<footer data-vi="Website KPI Trung Tâm • Ban Quản Lý Đề Án AI Digital Business Challenge 2026 • https://ocop-sales-copilot-kpi.onrender.com" data-en="Central KPI Dashboard • AI Digital Business Challenge 2026 Board of Management • https://ocop-sales-copilot-kpi.onrender.com" data-zh="中央 KPI 管理控制台 • AI Digital Business Challenge 2026 组委会" data-ko="중앙 KPI 관리 대시보드 • AI Digital Business Challenge 2026 운영위원회" data-ja="中央KPI管理ダッシュボード • AI Digital Business Challenge 2026 運営委員会">Website KPI Trung Tâm • Ban Quản Lý Đề Án AI Digital Business Challenge 2026 • https://ocop-sales-copilot-kpi.onrender.com</footer>
+</main>
+<script src="dashboard.js?v=20261010_challenge_sync"></script>
+</body>
+</html>

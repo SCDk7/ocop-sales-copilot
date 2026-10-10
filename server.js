@@ -21,6 +21,7 @@ const {transcribeAudio}=require('./audio-transcription');
 const { createAccountStore } = require('./account-store.js');
 const OcopStores = require('./ocop-stores.js');
 const AIBusinessKnowledge = require('./ai-business-knowledge.js');
+const { kpiSyncService } = require('./kpi-sync-service.js');
 
 function loadEnvironmentFile() {
   const environmentFile = path.join(__dirname, '.env');
@@ -145,7 +146,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
   }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-goog-api-key');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-goog-api-key, x-ocop-sync-token, x-ocop-signature, x-ocop-timestamp');
   if (req.method === 'OPTIONS') {
     return res.status(204).end();
   }
@@ -173,8 +174,54 @@ app.post('/api/ai/draft-orders',(req,res,next)=>{
     if(isAIRateLimited(req.ip))return res.status(429).json({error:'Vui lòng chờ trước khi tạo thêm đơn nháp.'});
     const draft=salesStore.createDraft(req.body||{},{consultationVerified:salesMetrics.hasSession(req.body?.sessionId)});
     salesMetrics.recordDraft({id:draft.id,reused:draft.reused,sessionId:req.body?.sessionId});
+    // AI DIGITAL BUSINESS CHALLENGE 2026: Automatic Real-Time Financial Sync
+    kpiSyncService.syncFinancial({
+      id: draft.id,
+      type: 'draft_order',
+      grossRevenue: draft.total || draft.subtotal || 0,
+      sessionId: req.body?.sessionId,
+      products: draft.lines || []
+    }).catch(err => console.warn('KPI draft sync notice:', err.message));
     res.status(draft.reused?200:201).json({draft:{id:draft.id,status:draft.status,lines:draft.lines,subtotal:draft.subtotal,shippingFee:draft.shippingFee,total:draft.total,inventoryVerified:draft.inventoryVerified,reserved:Boolean(draft.reserved),paymentStatus:draft.paymentStatus||"unpaid",trackingNumber:draft.trackingNumber||null,reused:draft.reused}});
   }catch(error){next(error);}
+});
+
+// AI DIGITAL BUSINESS CHALLENGE 2026: CLOUD KPI DATA PIPELINE API ROUTES
+app.post('/api/sync/financial', async (req, res, next) => {
+  try {
+    const result = await kpiSyncService.syncFinancial(req.body || {});
+    res.json({ ok: true, ...result });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/sync/verify-ocop', async (req, res, next) => {
+  try {
+    const catalog = req.body?.products || req.body?.catalog || null;
+    const result = await kpiSyncService.syncOcopVerification(catalog);
+    res.json({ ok: true, ...result });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/sync/global-state', async (req, res, next) => {
+  try {
+    const result = await kpiSyncService.syncGlobalState(req.body || {});
+    res.json({ ok: true, ...result });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/sync/status', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({
+    ok: true,
+    pipeline: kpiSyncService.getPipelineHealth(),
+    recentLogs: kpiSyncService.getRecentLogs(15)
+  });
 });
 app.get('/api/admin/sales/drafts',(req,res)=>{if(!requireAudioAdmin(req,res))return;res.setHeader('Cache-Control','no-store');res.json({drafts:salesStore.list()});});
 app.get('/api/admin/sales/conversations',(req,res)=>{if(!requireAudioAdmin(req,res))return;res.setHeader('Cache-Control','no-store');res.json({conversations:salesConversations.list()});});

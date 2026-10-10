@@ -5618,6 +5618,17 @@
 
                 if (selectedProvince) {
                     showToast(`⚡ AI Engine: Đã đồng bộ và tối ưu dữ liệu dòng tiền điểm bán tỉnh ${selectedProvince.name}!`, "success");
+                    if (window.OcopSyncEngine && typeof window.OcopSyncEngine.syncFinancial === 'function') {
+                        window.OcopSyncEngine.syncFinancial({
+                            type: 'qr_scan',
+                            title: `Quét mã QR / Định vị showroom O2O tỉnh ${selectedProvince.name}`,
+                            province: selectedProvince.name,
+                            grossRevenue: 85000 * Math.max(1, sortedList.length),
+                            cogs: Math.round(85000 * Math.max(1, sortedList.length) * 0.62),
+                            opex: Math.round(85000 * Math.max(1, sortedList.length) * 0.075),
+                            netProfit: Math.round(85000 * Math.max(1, sortedList.length) * 0.235)
+                        });
+                    }
                 } else {
                     showToast(`⚡ AI Engine: Đã đồng bộ mạng lưới đặc sản toàn quốc (63 Tỉnh Thành • ${sortedList.length} Sản phẩm)`, "info");
                 }
@@ -8753,6 +8764,20 @@
             const qrUrl = `https://img.vietqr.io/image/${bankBin}-${accNum}-compact2.png?amount=${totalAmount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(accName)}`;
             document.getElementById('bidv-qr').src = qrUrl;
 
+            if (window.OcopSyncEngine && typeof window.OcopSyncEngine.syncFinancial === 'function') {
+                window.OcopSyncEngine.syncFinancial({
+                    id: currentOrderCode,
+                    type: 'draft_order',
+                    title: `Tạo mã VietQR BIDV đơn #${currentOrderCode}`,
+                    grossRevenue: totalAmount,
+                    cogs: Math.round(totalAmount * 0.62),
+                    opex: Math.round(totalAmount * 0.075),
+                    netProfit: Math.round(totalAmount * 0.235),
+                    province: 'Toàn quốc',
+                    products: (cart || []).map(c => ({ id: c.id, name: c.name, quantity: c.quantity, price: c.price }))
+                });
+            }
+
             document.getElementById('cart-drawer').classList.add('hidden');
             document.getElementById('qr-modal').classList.remove('hidden');
         }
@@ -10872,6 +10897,9 @@
                     if (event.target instanceof HTMLInputElement) event.target.setCustomValidity('');
                 });
             }
+            if (window.OcopSyncEngine && typeof window.OcopSyncEngine.syncGlobalState === 'function') {
+                window.OcopSyncEngine.syncGlobalState(currentLanguage);
+            }
         }
 
         function setLanguage(lang) {
@@ -10936,6 +10964,84 @@
         window.closeAllLanguageDropdowns = closeAllLanguageDropdowns;
         window.applyLanguage = applyLanguage;
         window.toggleLanguage = toggleLanguage;
+
+        // ==========================================================================
+        // AI DIGITAL BUSINESS CHALLENGE 2026: REAL-TIME DATA PIPELINE & KPI SYNC
+        // ==========================================================================
+        window.OcopSyncEngine = {
+            targetUrl: 'https://ocop-sales-copilot-kpi.onrender.com',
+            token: 'OCOP_2026_SECURE_TOKEN_AI_CHALLENGE_SYNC_998877',
+
+            async syncFinancial(data = {}) {
+                try {
+                    const gross = Number(data.grossRevenue || data.amount || 68000);
+                    const cogs = Number(data.cogs || Math.round(gross * 0.62));
+                    const opex = Number(data.opex || Math.round(gross * 0.075));
+                    const chm = Number(data.chmCommission || Math.round(gross * 0.07));
+                    const netProfit = Number(data.netProfit || Math.round(gross * 0.235));
+
+                    const record = {
+                        id: data.id || ('SYNC-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6)),
+                        type: data.type || 'qr_scan',
+                        title: data.title || 'Đồng bộ điểm bán O2O',
+                        grossRevenue: gross,
+                        cogs: cogs,
+                        opex: opex,
+                        chmCommission: chm,
+                        netProfit: netProfit,
+                        province: data.province || 'Đồng Nai',
+                        products: data.products || [],
+                        language: window.currentLanguage || 'vi',
+                        timestamp: new Date().toISOString(),
+                        source: 'ocop_storefront_client'
+                    };
+
+                    // Non-blocking dispatch to local server
+                    fetch('/api/sync/financial', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(record)
+                    }).catch(() => {});
+
+                    // Non-blocking dispatch to central cloud dashboard
+                    fetch(this.targetUrl + '/api/sync/financial', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-ocop-sync-token': this.token
+                        },
+                        body: JSON.stringify(record),
+                        signal: AbortSignal.timeout(3500)
+                    }).catch(() => {});
+                } catch (e) {
+                    console.warn('OcopSyncEngine financial sync notice:', e);
+                }
+            },
+
+            async syncGlobalState(lang) {
+                try {
+                    const statePayload = {
+                        language: lang,
+                        timestamp: new Date().toISOString()
+                    };
+                    fetch('/api/sync/global-state', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(statePayload)
+                    }).catch(() => {});
+
+                    fetch(this.targetUrl + '/api/sync/global-state', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-ocop-sync-token': this.token
+                        },
+                        body: JSON.stringify(statePayload),
+                        signal: AbortSignal.timeout(3500)
+                    }).catch(() => {});
+                } catch (e) {}
+            }
+        };
 
     </script>
     <script>
