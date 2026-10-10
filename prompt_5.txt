@@ -1,0 +1,82 @@
+<USER_REQUEST>
+# ROLE & CONTEXT
+Bạn là một Giám đốc nghệ thuật (Art Director), Kỹ sư hệ thống Full-stack và Chuyên gia chiến lược kinh doanh số. Hãy giúp tôi CẬP NHẬT TOÀN DIỆN ngôn từ, giao diện (UI/UX) và sửa lỗi logic hiển thị cho hai trang: TRANG CHỦ (Home Page) và TRANG DANH MỤC (Product Catalog) phục vụ cuộc thi "AI Digital Business Challenge 2026".
+
+MỤC TIÊU CỐT LÕI: Loại bỏ hoàn toàn các yếu tố bán lẻ e-commerce bình dân (giỏ hàng, mua sắm, ưu đãi giảm giá, bốc thăm). Đồng bộ toàn bộ website thành một "Hệ điều hành nền tảng số đa kết nối (B2B2C/O2O) chuyên quảng bá đặc sản và tích hợp Trợ lý AI quản trị tài chính thông minh (Doanh thu, Tiền lời, Chiết khấu CHM)".
+
+---
+
+# PHẦN 1: LỘT XÁC DIỆN MẠO TRANG CHỦ (HOME PAGE UI)
+
+Hãy rà soát giao diện Trang chủ và thay thế chính xác các chuỗi ký tự từ trên xuống dưới:
+
+## 1. Thanh điều hướng trên cùng (Header & Top Bar)
+*   **Logo & Slogan chính:** Đổi thành: **"OCOP SALES COPILOT - Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam"**.
+*   **Nút màu vàng góc phải:** Đổi từ "Vào Chợ (Esc) ->" thành **"Bảng Quản Trị (Dashboard) ->"**.
+*   **Thanh chạy chữ (Live Ticker):** Thay chuỗi văn bản cũ thành thông số số hóa real-time:
+    - *Văn bản mới:* `[LIVE STATS] Tổng sản lượng số hóa: 63 Tỉnh Thành • Trợ lý AI Financial Engine: Tự động hóa dòng tiền, tối ưu chiết khấu và tiền lời thực tế cho 10.000+ Cửa hàng OCOP • Minh bạch - Tốc độ - Di sản Việt.`
+
+## 2. Phần tiêu đề chính & Mô tả (Hero Section)
+*   **Nhãn nhỏ phía trên:** Đổi thành: **"✨ NỀN TẢNG ĐIỀU PHỐI SỐ & ĐỊNH VỊ THƯƠNG HIỆU OCOP TOÀN QUỐC ✨"**.
+*   **Tiêu đề lớn (Main Title):** Đổi thành: **"Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt"**.
+*   **Tiêu đề phụ (Subtitle):** Đổi thành: **"63 TỈNH THÀNH • SỐ HÓA ĐIỂM BÁN • AI QUẢN TRỊ"**.
+*   **Đoạn mô tả ngắn (Paragraph):** Đổi thành: **"Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương tự động hóa vận hành, quản trị doanh thu, tiền lời, chiết khấu real-time thông qua trợ lý AI Copilot thông minh."**
+
+## 3. Bốn khối tính năng nhỏ (Feature Cards)
+*   **Khối 1 (Vàng):** Đổi thành: **"Bản Đồ Số 63 Tỉnh Thành"** | *Mô tả nhỏ:* *Định vị showroom O2O trực quan.*
+*   **Khối 2 (Xanh lá):** Đổi thành: **"Sô Hóa Chuỗi Cung Ứng"** | *Mô tả nhỏ:* *Kết nối Nhà vựa và Cửa hàng lẻ.*
+*   **Khối 3 (Xanh dương):** Đổi thành: **"AI Financial Engine"** | *Mô tả nhỏ:* *Tự động tính toán doanh thu & tiền lời ròng.*
+*   **Khối 4 (Vàng nhạt):** Đổi thành: **"Smart Commission (CHM)"** | *Mô tả nhỏ:* *Phân bổ chiết khấu tự động, chính xác 100%.*
+
+## 4. Thanh Banner dưới cùng (Bottom Banner)
+*   **Nội dung chữ bên trái:** Đổi thành: **"T TỐI ƯU VẬN HÀNH • KÍCH HOẠT LIGHTWEIGHT MVP NGAY HÔM NAY"**.
+*   **Nút bấm bên phải:** Đổi thành: **"⚡ Đăng Ký Điểm Bán Mới"**.
+
+---
+
+# PHẦN 2: FIX LỖI HIỂN THỊ & TÂN TRANG TRANG DANH MỤC (PRODUCT CATALOG)
+
+## 1. Sửa lỗi critical bug (Trang trống khi mới truy cập)
+*   **Cấu hình hiển thị mặc định (Default State):** Tự động kích hoạt hàm gọi API lấy danh sách sản phẩm (`fetchProducts()`) ngay trong vòng đời khởi tạo trang (`useEffect` hoặc `onMounted`). Đảm bảo danh sách sản phẩm OCOP tự động render tràn ra màn hình ngay khi người dùng vừa vào trang mà không bắt click bộ lọc hay nút sắp xếp.
+
+## 2. Thay đổi phong cách thiết kế & Phối màu (Deep Tech Theme)
+*   **Màu nền trang chủ đạo:** Sử dụng tông màu xám tối/xanh rêu đậm công nghệ (`#0d1b15` hoặc `#111827`) để loại bỏ cảm giác web bán hàng đại trà.
+*   **Khối nội dung & Sidebar:** Thiết kế bo góc mềm mại, bổ sung viền phát sáng mờ (Glow effect) màu vàng gold hoặc xanh neon nhạt để mô phỏng giao diện Dashboard tài chính tương lai.
+*   **Thẻ sản phẩm:** Thiết kế viền mỏng tinh tế, hiển thị rõ huy hiệu số sao OCOP (3★, 4★, 5★) mạ vàng nổi bật trên mỗi sản phẩm.
+
+## 3. Sửa đổi ngôn từ bộ lọc Sidebar & Điều hướng thành công cụ quản trị
+*   **Khung tình trạng hệ thống (Top Left):** Đổi thành: **"● HỆ THỐNG ONLINE • 63 TỈNH THÀNH ĐỒNG BỘ"**.
+*   **Thanh điều hướng dữ liệu (Top Center):** 
+    - Đổi dòng text thành: **"CƠ SỞ DỮ LIỆU CHỨNG NHẬN OCOP QUỐC GIA"**.
+    - Đổi nút Bản đồ thành: **"🗺️ KÍCH HOẠT BẢN ĐỒ SỐ O2O"**.
+    - Đổi nút Tìm bằng ảnh thành: **"📸 AI QUÉT CHỨNG NHẬN (OCR)"**.
+*   **Danh mục bộ lọc Sidebar (Bên trái):**
+    - Tiêu đề chính: Đổi thành **"BỘ LỌC ĐIỀU PHỐI HỆ SINH THÁI"**.
+    - Các mục con thay thế hoàn toàn thành:
+        *   "Trà & Dược Liệu" -> **"Thảo Dược & Y Học Cổ Truyền"**
+        *   "Quà Biểu Sức Khỏe" -> **"Quà Tặng Di Sản Cao Cấp"**
+        *   "Nông Sản & Ẩm Thực" -> **"Nông Sản Chế Biến Sâu"**
+        *   "Món Ngon & Đồ Nhắm" -> **"Đặc Sản Thực Phẩm Bản Địa"**
+        *   "Gia Vị Truyền Thống" -> **"Gia Vị & Hương Liệu Thổ Nhưỡng"**
+*   **Khối dưới cùng bên trái (Xóa bỏ phần ưu đãi/nhập mã giảm giá bán lẻ):**
+    - Thay thế hoàn toàn bằng khối thông tin: **"TRỢ LÝ AI FINANCIAL"** | *Mô tả nhỏ bên dưới:* *Tự động tính toán Doanh thu, Tiền lời, Chiết khấu (CHM) thời gian thực cho từng danh mục được chọn.*
+
+---
+
+# OUTPUT REQUIREMENT (YÊU CẦU ĐẦU RA)
+Hãy xử lý thông tin, áp dụng mã sửa lỗi hiển thị mặc định và cập nhật chính xác hệ thống văn bản giao diện frontend theo cấu trúc chuẩn hóa phía trên. Đảm bảo giữ nguyên các cấu trúc code lõi và các cập nhật về cơ sở dữ liệu OCOP đa vùng miền đã nạp thành công trước đó để website vận hành trơn tru và chuyên nghiệp.
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-10T10:36:13+07:00.
+
+The user's current state is as follows:
+Active Document: c:\DuAn\ocop-sales-copilot\index.html (LANGUAGE_UNSPECIFIED)
+Cursor is on line: 9073
+Other open documents:
+- c:\DuAn\ocop-sales-copilot\scripts\overhaul-ocop-database.cjs (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\DE_AN_AI_DIGITAL_BUSINESS_CHALLENGE_2026.md (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\ai-business-knowledge.js (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\catalog-63.test.js (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\data\imports\parse-63-provinces.cjs (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
