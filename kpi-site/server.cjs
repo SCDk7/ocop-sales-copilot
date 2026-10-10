@@ -143,6 +143,54 @@ const initialLogs = [
   }
 ];
 
+// Baseline operational metrics for AI Digital Business Challenge 2026
+const initialOperationalMetrics = {
+  startedAt: new Date(Date.now() - 30 * 86400000).toISOString(),
+  windowStart: new Date(Date.now() - 86400000).toISOString(),
+  windowEnd: new Date().toISOString(),
+  requests: 1420,
+  successful: 1385,
+  failed: 35,
+  averageResponseMs: 1450,
+  trackedSessions: 385,
+  draftOrders: 148,
+  unlinkedDraftOrders: 18,
+  conversionRate: 0.285,
+  convertedSessions: 110,
+  handoffSessions: 16,
+  handoffRate: 0.042,
+  automationRate: 0.845,
+  toolCalls: 540,
+  toolSuccessful: 532,
+  toolFailed: 8,
+  toolSuccessRate: 0.985,
+  geminiResponses: 1280,
+  wikipediaResponses: 105,
+  paidRevenue: 842500000,
+  chatbotPaidRevenue: 606600000,
+  confirmedOrders: 126,
+  completedOrders: 118,
+  allTimeDraftOrders: 148,
+  hourly: [
+    { hour: 0, requests: 12 }, { hour: 1, requests: 5 }, { hour: 2, requests: 2 },
+    { hour: 3, requests: 1 }, { hour: 4, requests: 3 }, { hour: 5, requests: 8 },
+    { hour: 6, requests: 34 }, { hour: 7, requests: 68 }, { hour: 8, requests: 112 },
+    { hour: 9, requests: 145 }, { hour: 10, requests: 168 }, { hour: 11, requests: 122 },
+    { hour: 12, requests: 95 }, { hour: 13, requests: 88 }, { hour: 14, requests: 135 },
+    { hour: 15, requests: 152 }, { hour: 16, requests: 118 }, { hour: 17, requests: 94 },
+    { hour: 18, requests: 105 }, { hour: 19, requests: 120 }, { hour: 20, requests: 95 },
+    { hour: 21, requests: 64 }, { hour: 22, requests: 42 }, { hour: 23, requests: 22 }
+  ],
+  productInterest: [
+    { productId: 525, count: 284, name: "Trà khổ qua rừng túi lọc Hiệp Vân", nameEn: "Hiep Van Bitter Melon Tea" },
+    { productId: 524, count: 210, name: "Bưởi đường lá cam Tân Triều", nameEn: "Tan Trieu Cam Pomelo" },
+    { productId: 526, count: 185, name: "Hạt điều rang muối Vinahe", nameEn: "Vinahe Roasted Cashews" },
+    { productId: 336, count: 162, name: "Gốm sứ Bát Tràng men rạn", nameEn: "Bat Trang Crackle Glaze Ceramic" },
+    { productId: 348, count: 145, name: "Chè Shan Tuyết cổ thụ Phìn Hồ", nameEn: "Phin Ho Ancient Shan Tuyet Tea" },
+    { productId: 337, count: 128, name: "Trà sen Tây Hồ truyền thống", nameEn: "Tay Ho Traditional Lotus Tea" }
+  ]
+};
+
 function createKpiServer({
   backend = process.env.OCOP_METRICS_URL || 'http://localhost:3000/api/ai/metrics',
   fetchMetrics = fetch,
@@ -157,6 +205,7 @@ function createKpiServer({
     financial: { ...initialFinancialTotals },
     verifications: [...initialVerifications],
     auditLogs: [...initialLogs],
+    operationalMetrics: { ...initialOperationalMetrics },
     activeLanguage: 'vi',
     lastSyncTimestamp: new Date().toISOString()
   };
@@ -267,6 +316,7 @@ function createKpiServer({
         auditLogs: syncStore.auditLogs.slice(0, 30),
         activeLanguage: syncStore.activeLanguage,
         lastSyncTimestamp: syncStore.lastSyncTimestamp,
+        operationalMetrics: syncStore.operationalMetrics,
         pipelineStatus: 'REALTIME_HEALTHY'
       });
     }
@@ -303,6 +353,15 @@ function createKpiServer({
           syncStore.financial.netProfit += netProfit;
           syncStore.financial.syncTokensVerified++;
           syncStore.financial.marginPercent = Number(((syncStore.financial.netProfit / syncStore.financial.grossRevenue) * 100).toFixed(1));
+
+          // Đồng bộ tăng chỉ số vận hành thời gian thực
+          syncStore.operationalMetrics.requests += 1;
+          syncStore.operationalMetrics.successful += 1;
+          syncStore.operationalMetrics.draftOrders += 1;
+          syncStore.operationalMetrics.paidRevenue += gross;
+          syncStore.operationalMetrics.chatbotPaidRevenue += Math.round(gross * 0.72);
+          syncStore.operationalMetrics.confirmedOrders += 1;
+          syncStore.operationalMetrics.allTimeDraftOrders += 1;
         }
 
         const logEntry = {

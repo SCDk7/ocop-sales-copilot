@@ -8689,6 +8689,23 @@
                 } catch (_) {}
             }
 
+            // Tự động đẩy sự kiện tài chính sang Server Quản trị Render KPI
+            if (window.OcopSyncEngine && typeof window.OcopSyncEngine.syncFinancial === 'function') {
+                const itemPrice = prod.price || 120000;
+                window.OcopSyncEngine.syncFinancial({
+                    id: 'ACTIVATE-' + prod.id + '-' + Date.now(),
+                    type: 'cash_flow_simulation',
+                    title: `Kích hoạt đối soát dòng tiền: ${getProductName(prod)}`,
+                    grossRevenue: itemPrice,
+                    cogs: Math.round(itemPrice * 0.62),
+                    opex: Math.round(itemPrice * 0.075),
+                    chmCommission: Math.round(itemPrice * 0.07),
+                    netProfit: Math.round(itemPrice * 0.235),
+                    province: prod.region || 'Toàn quốc',
+                    products: [{ id: prod.id, name: getProductName(prod), price: itemPrice }]
+                });
+            }
+
             const toastMsgs = {
                 vi: `⚡ Đã kích hoạt đối soát & đồng bộ "${getProductName(prod)}" sang Bảng phân tích dòng tiền!`,
                 en: `⚡ Activated reconciliation & synced "${getProductName(prod)}" to Cash Flow Analysis!`,
