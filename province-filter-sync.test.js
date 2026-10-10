@@ -6,7 +6,7 @@ const { PRODUCTS } = require('./data');
 // Trích xuất các hàm và cấu hình từ index.html để test logic cô lập
 function loadFilterHelpers() {
     const html = fs.readFileSync('index.html', 'utf8');
-    
+
     // Kiểm tra các từ khóa quan trọng có trong index.html
     assert(html.includes('function onProvinceFilterChange'), 'onProvinceFilterChange must be defined');
     assert(html.includes('function resetFilters'), 'resetFilters must be defined');
@@ -36,7 +36,7 @@ test('normalizeProvinceName maps all 63 real provinces correctly', () => {
     const { normalizeProvinceName } = loadFilterHelpers();
     const provinces = [...new Set(PRODUCTS.map(p => p.region))];
     assert.equal(provinces.length, 63);
-    
+
     // Test Đồng Nai variants
     assert.equal(normalizeProvinceName('Đồng Nai'), normalizeProvinceName('dong nai'));
     assert.equal(normalizeProvinceName('Tỉnh Đồng Nai'), normalizeProvinceName('Dong Nai'));
@@ -46,7 +46,7 @@ test('normalizeProvinceName maps all 63 real provinces correctly', () => {
 
 test('Province selection logic resolves exact province products without macro region collision', () => {
     const { normalizeProvinceName, MACRO_REGIONS } = loadFilterHelpers();
-    
+
     // Kịch bản: Người dùng ban đầu ở Miền Bắc, sau đó chọn Đồng Nai (thuộc Miền Nam)
     let currentMacroRegion = 'bac';
     let targetProvince = 'Đồng Nai';
@@ -67,7 +67,7 @@ test('Province selection logic resolves exact province products without macro re
     const selectedProvince = { id: targetProvince, name: targetProvince };
     const normSel = normalizeProvinceName(selectedProvince.name);
     const provProducts = PRODUCTS.filter(p => normalizeProvinceName(p.region) === normSel);
-    
+
     assert.equal(provProducts.length, 4, 'Đồng Nai must have exactly 4 real OCOP products');
     assert(provProducts.every(p => p.region === 'Đồng Nai'));
     assert.deepEqual(provProducts.map(p => p.id), PRODUCTS.filter(p => p.region === 'Đồng Nai').map(p => p.id));
@@ -76,11 +76,11 @@ test('Province selection logic resolves exact province products without macro re
 test('Category auto-recovery: falls back to all when province lacks products in chosen category', () => {
     const { normalizeProvinceName } = loadFilterHelpers();
     const dongNaiProducts = PRODUCTS.filter(p => normalizeProvinceName(p.region) === normalizeProvinceName('Đồng Nai'));
-    
+
     // Giả sử category 'handicraft' không có trong Đồng Nai (Đồng Nai chủ yếu food/beverage)
     let currentCategory = 'handicraft';
     let catMatch = dongNaiProducts.filter(p => p.category === currentCategory);
-    
+
     let matchedList = dongNaiProducts;
     if (catMatch.length > 0) {
         matchedList = catMatch;
@@ -294,6 +294,3 @@ test('Technical metrics, Hero product card, and Chatbot AI 5-language sync valid
     assert(!html.includes('Verified 100% (0.00% variance)'));
 
 });
-
-
-

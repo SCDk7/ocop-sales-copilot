@@ -265,4 +265,3 @@
     SAMPLE_FINANCIAL_SNAPSHOT
   };
 }));
-

@@ -1,6 +1,6 @@
 # Bản tổng hợp code OCOP — 10/10/2026
 
-Đã lấy `origin/main` tại commit `dab74d1` và gộp với các nâng cấp cục bộ. Bản lưu trước khi gộp nằm trong `.private-data/github-sync-backup-2026-10-10T05-37-48-728Z/`; file `.env` và dữ liệu riêng được giữ ngoài Git.
+Đã lấy `origin/main` tại commit `73a338d` (bao gồm bản danh mục `dab74d1`) và gộp với các nâng cấp cục bộ. Bản lưu trước khi gộp nằm trong `.private-data/github-sync-backup-2026-10-10T05-37-48-728Z/`; file `.env` và dữ liệu riêng được giữ ngoài Git.
 
 ## Các giao diện
 

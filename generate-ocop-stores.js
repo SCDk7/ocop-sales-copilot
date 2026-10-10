@@ -326,7 +326,7 @@ const fileHeader = `// =========================================================
   function getStoresByProvince(provinceName) {
     if (!provinceName) return [];
     const query = String(provinceName).toLowerCase().trim();
-    return Object.values(OCOP_STORE_MAP).filter(item => 
+    return Object.values(OCOP_STORE_MAP).filter(item =>
       item.region.toLowerCase().includes(query)
     );
   }
@@ -385,4 +385,3 @@ const fileHeader = `// =========================================================
 
 fs.writeFileSync('ocop-stores.js', fileHeader, 'utf8');
 console.log('Successfully generated ocop-stores.js with ' + Object.keys(allStoreData).length + ' products!');
-

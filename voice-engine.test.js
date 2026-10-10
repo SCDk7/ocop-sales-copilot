@@ -150,4 +150,3 @@ test('speak plays through SpeechSynthesis when neural voice is available', () =>
   assert.ok(spokenUtterance);
   assert.ok(spokenUtterance.text.includes('Ô Cốp'));
 });
-

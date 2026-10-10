@@ -19,7 +19,7 @@ test('imported store IDs cannot attach another product producer or certificate t
 test('business knowledge profile and ecosystem validation', () => {
   assert.equal(AIBusinessKnowledge.PROJECT_PROFILE.competition, 'AI Digital Business Challenge 2026');
   assert.equal(AIBusinessKnowledge.PROJECT_PROFILE.modelType, 'B2B2C & O2O (Online-to-Offline) Tri-party Digital Ecosystem');
-  
+
   const ecosystem = AIBusinessKnowledge.BUSINESS_MODEL.triPartyEcosystem;
   assert.ok(ecosystem.party1_Producers, 'Producers/Cooperatives must be defined');
   assert.ok(ecosystem.party2_Consumers, 'Consumers/Tourists must be defined');
@@ -29,12 +29,12 @@ test('business knowledge profile and ecosystem validation', () => {
 test('financial engine metrics and calculations', () => {
   const snapshot = AIBusinessKnowledge.SAMPLE_FINANCIAL_SNAPSHOT;
   const overview = snapshot.overview;
-  
+
   assert.equal(overview.totalRevenue, 842500000);
   assert.equal(overview.netProfit, 269600000);
   assert.equal(overview.errorRate, '0.00%');
   assert.equal(overview.aiOptimizedGrowth, '+18.4%');
-  
+
   // Verify top products have exact net profit = retailPrice - cogs - platformCommission - ctvCommission
   for (const item of snapshot.topProductsFinancials) {
     const calculatedNetProfit = item.retailPrice - item.cogs - item.platformCommission - item.ctvCommission;
@@ -60,4 +60,3 @@ test('KPIs and strategic differentiators validation', () => {
   assert.ok(diffIds.includes('voice_first_multiregion'));
   assert.ok(diffIds.includes('lightweight_mvp'));
 });
-
