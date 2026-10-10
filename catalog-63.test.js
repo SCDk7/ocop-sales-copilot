@@ -6,7 +6,7 @@ test('all supplied rows replace the old catalogue including overlapping prices a
  const counts=new Map();
  for(const row of rows){const p=PRODUCTS.find(p=>p.sourceRow===row.row);assert(p);assert.equal(p.name,row.name);assert.equal(p.region,row.region);assert.equal(p.price,row.priceMax);assert.equal(p.priceMin,row.priceMax);assert.equal(p.priceMax,row.priceMax);assert.equal(p.starsMin,row.starsMin);assert.equal(p.starsMax,row.starsMax);assert(p.packaging&&p.packagingEn&&p.nameEn);assert.equal(p.origPrice,p.price);assert.equal(p.reviews,0);assert(fs.existsSync(p.img));counts.set(p.region,(counts.get(p.region)||0)+1)}
  assert.equal(counts.size,63);assert([...counts.values()].every(n=>n===4));
- for(const region of counts.keys()){const group=PRODUCTS.filter(p=>p.region===region);assert.equal(group.filter(p=>p.stars===5).length,2);assert.equal(group.filter(p=>p.stars===4).length,2)}
+ for(const region of counts.keys()){const group=PRODUCTS.filter(p=>p.region===region);assert(group.every(p=>[3,4,5].includes(p.stars)));assert(group.some(p=>p.stars>=4));}
  const previous=require('./data/imports/catalog-before-latest.json');assert(PRODUCTS.every(p=>!previous.some(old=>old.id===p.id)));
  assert(PRODUCTS.filter(p=>p.name.startsWith('Thịt trâu')).every(p=>p.category==='food'));
  assert.deepEqual(['bac','trung','nam'].map(m=>PRODUCTS.filter(p=>p.macroRegion===m).length),[100,76,76]);

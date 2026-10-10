@@ -16,15 +16,15 @@
   const OCOP_STORE_MAP = {
   "336": {
     "id": 336,
-    "productName": "Trà Phúc / Trà Lộc / Trà Thọ (Cồ Bắc/Hà Nội)",
+    "productName": "Gốm sứ tâm linh cao cấp Bát Tràng - Xưởng nghệ nhân (OCOP 5 sao)",
     "stars": 5,
     "region": "Hà Nội",
-    "producerName": "Công ty CP Nông nghiệp Công nghệ cao Thăng Long (SADU)",
-    "producerAddress": "Thôn 2, Xã Đại Yên, Huyện Chương Mỹ, TP. Hà Nội",
+    "producerName": "Xưởng nghệ nhân Gốm sứ Bát Tràng",
+    "producerAddress": "Xóm 1, Làng cổ Bát Tràng, Gia Lâm, Hà Nội",
     "certDecision": "QĐ số 3828/QĐ-UBND TP. Hà Nội (OCOP 5 Sao Quốc Gia)",
     "hotline": "098.345.2286",
     "primaryStore": {
-      "name": "Showroom Trà Thảo Dược SADU",
+      "name": "Showroom Gốm sứ Bát Tràng Tinh Hoa",
       "address": "176 Quang Trung, P. Quang Trung, Q. Hà Đông, Hà Nội",
       "phone": "098.345.2286",
       "hours": "08:00 - 21:00"
@@ -45,15 +45,15 @@
   },
   "337": {
     "id": 337,
-    "productName": "Chăn bông tơ tằm tự dệt (Mỹ Đức)",
-    "stars": 5,
+    "productName": "Trà sen Tây Hồ - Cơ sở Quảng An (OCOP 4 sao)",
+    "stars": 4,
     "region": "Hà Nội",
-    "producerName": "Công ty TNHH Dâu tằm tơ Mỹ Đức (Nghệ nhân Phan Thị Thuận)",
-    "producerAddress": "Xóm 8, Làng dệt Phùng Xá, Huyện Mỹ Đức, TP. Hà Nội",
-    "certDecision": "QĐ số 4120/QĐ-UBND TP. Hà Nội (OCOP 5 Sao)",
+    "producerName": "Cơ sở Trà sen truyền thống Quảng An",
+    "producerAddress": "Số 12 Ngõ 50 Đặng Thai Mai, P. Quảng An, Tây Hồ, Hà Nội",
+    "certDecision": "QĐ số 4125/QĐ-UBND TP. Hà Nội (OCOP 4 Sao)",
     "hotline": "091.234.5678",
     "primaryStore": {
-      "name": "Không gian Trưng bày Tơ tằm Phùng Xá",
+      "name": "Không gian Trà sen Tây Hồ",
       "address": "Làng nghề Phùng Xá, Huyện Mỹ Đức, Hà Nội",
       "phone": "091.234.5678",
       "hours": "07:30 - 18:30"
@@ -74,15 +74,15 @@
   },
   "338": {
     "id": 338,
-    "productName": "Miến dong Minh Hồng (Hoài Đức)",
+    "productName": "Giò chả Ước Lễ - Cơ sở truyền thống Thanh Oai (OCOP 4 sao)",
     "stars": 4,
     "region": "Hà Nội",
-    "producerName": "Cơ sở Sản xuất Miến dong Minh Hồng",
-    "producerAddress": "Đội 6, Làng nghề Dương Liễu, Huyện Hoài Đức, TP. Hà Nội",
-    "certDecision": "QĐ số 2980/QĐ-UBND TP. Hà Nội (OCOP 4 Sao)",
+    "producerName": "Cơ sở Giò chả truyền thống Ước Lễ",
+    "producerAddress": "Làng Ước Lễ, Xã Tân Ước, Huyện Thanh Oai, Hà Nội",
+    "certDecision": "QĐ số 2190/QĐ-UBND TP. Hà Nội (OCOP 4 Sao)",
     "hotline": "097.654.3210",
     "primaryStore": {
-      "name": "Cửa hàng Miến dong Minh Hồng",
+      "name": "Cửa hàng Giò chả Ước Lễ Gia Truyền",
       "address": "Đường Làng Dương Liễu, Hoài Đức, Hà Nội",
       "phone": "097.654.3210",
       "hours": "07:00 - 19:00"
@@ -103,15 +103,15 @@
   },
   "339": {
     "id": 339,
-    "productName": "Bánh chưng Tranh Khúc hút chân không",
-    "stars": 4,
+    "productName": "Gạo tẻ thơm Thượng Cốc - HTX Nông nghiệp Thanh Oai (OCOP 3 sao)",
+    "stars": 3,
     "region": "Hà Nội",
-    "producerName": "Cơ sở Bánh chưng truyền thống Tranh Khúc",
-    "producerAddress": "Làng nghề Tranh Khúc, Xã Duyên Hà, Huyện Thanh Trì, TP. Hà Nội",
-    "certDecision": "QĐ số 3150/QĐ-UBND TP. Hà Nội (OCOP 4 Sao)",
+    "producerName": "Hợp tác xã Nông nghiệp Thượng Cốc",
+    "producerAddress": "Thôn Thượng Cốc, Xã Hồng Dương, Thanh Oai, Hà Nội",
+    "certDecision": "QĐ số 1845/QĐ-UBND Huyện Thanh Oai (OCOP 3 Sao)",
     "hotline": "098.876.5432",
     "primaryStore": {
-      "name": "Điểm Bán Bánh chưng Tranh Khúc",
+      "name": "Điểm phân phối Gạo thơm Thượng Cốc",
       "address": "Xóm 3, Làng Tranh Khúc, Duyên Hà, Thanh Trì, Hà Nội",
       "phone": "098.876.5432",
       "hours": "06:00 - 20:00"
@@ -132,15 +132,15 @@
   },
   "340": {
     "id": 340,
-    "productName": "Trà xanh cổ thụ Phìn Hồ hộp 100g",
-    "stars": 5,
+    "productName": "Trà / Chè chốt Shan tuyết cổ thụ Tây Côn Lĩnh (OCOP 4 sao)",
+    "stars": 4,
     "region": "Hà Giang",
-    "producerName": "HTX Chế biến Chè Phìn Hồ (Fìn Hò Trà)",
-    "producerAddress": "Thôn Phìn Hồ, Xã Thông Nguyên, Huyện Hoàng Su Phì, Hà Giang",
-    "certDecision": "QĐ số 2115/QĐ-UBND Tỉnh Hà Giang (OCOP 5 Sao Quốc Gia)",
+    "producerName": "HTX Chè Tây Côn Lĩnh",
+    "producerAddress": "Xã Cao Bồ, Huyện Vị Xuyên, Hà Giang",
+    "certDecision": "QĐ số 1982/QĐ-UBND Tỉnh Hà Giang (OCOP 4 Sao)",
     "hotline": "098.243.6688",
     "primaryStore": {
-      "name": "Không gian Trà Phìn Hồ",
+      "name": "Showroom Trà Shan Tuyết Tây Côn Lĩnh",
       "address": "Thôn Phìn Hồ, Thông Nguyên, Hoàng Su Phì, Hà Giang",
       "phone": "098.243.6688",
       "hours": "07:30 - 20:30"
@@ -161,15 +161,15 @@
   },
   "341": {
     "id": 341,
-    "productName": "Hồng trà Phìn Hồ hộp 100g",
-    "stars": 5,
+    "productName": "Mật ong bạc hà Cao nguyên đá Mèo Vạc (OCOP 4 sao)",
+    "stars": 4,
     "region": "Hà Giang",
-    "producerName": "HTX Chế biến Chè Phìn Hồ (Fìn Hò Trà)",
-    "producerAddress": "Thôn Phìn Hồ, Xã Thông Nguyên, Huyện Hoàng Su Phì, Hà Giang",
-    "certDecision": "QĐ số 2115/QĐ-UBND Tỉnh Hà Giang (OCOP 5 Sao Quốc Gia)",
+    "producerName": "HTX Nuôi ong Cao nguyên đá Mèo Vạc",
+    "producerAddress": "Thị trấn Mèo Vạc, Huyện Mèo Vạc, Hà Giang",
+    "certDecision": "QĐ số 2045/QĐ-UBND Tỉnh Hà Giang (OCOP 4 Sao)",
     "hotline": "098.243.6688",
     "primaryStore": {
-      "name": "Cửa hàng Hồng Trà Cổ Thụ Phìn Hồ",
+      "name": "Điểm giới thiệu Mật ong Bạc hà Mèo Vạc",
       "address": "Km18, TT. Vinh Quang, Hoàng Su Phì, Hà Giang",
       "phone": "098.243.6688",
       "hours": "07:30 - 20:30"
@@ -190,15 +190,15 @@
   },
   "342": {
     "id": 342,
-    "productName": "Mật ong bạc hà Mèo Vạc",
-    "stars": 4,
+    "productName": "Hồng không hạt Quản Bạ (OCOP 3 sao)",
+    "stars": 3,
     "region": "Hà Giang",
-    "producerName": "HTX Nuôi ong Cao nguyên đá Mèo Vạc",
-    "producerAddress": "Thị trấn Mèo Vạc, Huyện Mèo Vạc, Tỉnh Hà Giang",
-    "certDecision": "QĐ số 1890/QĐ-UBND Tỉnh Hà Giang (OCOP 4 Sao)",
+    "producerName": "HTX Nông nghiệp Quản Bạ",
+    "producerAddress": "Xã Nghĩa Thuận, Huyện Quản Bạ, Hà Giang",
+    "certDecision": "QĐ số 1520/QĐ-UBND Huyện Quản Bạ (OCOP 3 Sao)",
     "hotline": "091.567.8910",
     "primaryStore": {
-      "name": "Showroom Mật ong Bạc Hà Mèo Vạc",
+      "name": "Điểm bán Đặc sản Nông sản Quản Bạ",
       "address": "Tổ 2, TT. Mèo Vạc, Huyện Mèo Vạc, Hà Giang",
       "phone": "091.567.8910",
       "hours": "07:00 - 21:00"
@@ -219,15 +219,15 @@
   },
   "343": {
     "id": 343,
-    "productName": "Thịt trâu gác bếp hút chân không",
-    "stars": 4,
+    "productName": "Thảo quả khô Vị Xuyên (OCOP 3 sao)",
+    "stars": 3,
     "region": "Hà Giang",
-    "producerName": "Cơ sở Chế biến Nông sản Tây Bắc Hà Giang",
-    "producerAddress": "Tổ 3, Phường Quang Trung, TP. Hà Giang, Tỉnh Hà Giang",
-    "certDecision": "QĐ số 1755/QĐ-UBND Tỉnh Hà Giang (OCOP 4 Sao)",
+    "producerName": "HTX Dược liệu Rừng Vị Xuyên",
+    "producerAddress": "Xã Lao Chải, Huyện Vị Xuyên, Hà Giang",
+    "certDecision": "QĐ số 1432/QĐ-UBND Huyện Vị Xuyên (OCOP 3 Sao)",
     "hotline": "097.321.4567",
     "primaryStore": {
-      "name": "Điểm Bán Thịt trâu Gác bếp Hà Giang",
+      "name": "Cửa hàng Nông sản Dược liệu Vị Xuyên",
       "address": "Số 45 đường Lý Tự Trọng, TP. Hà Giang",
       "phone": "097.321.4567",
       "hours": "06:30 - 21:00"
@@ -248,7 +248,7 @@
   },
   "344": {
     "id": 344,
-    "productName": "Trà phun sương Actiso Sa Pa",
+    "productName": "Trà phun sương Actiso Sa Pa - Đặc sản Lào Cai (OCOP 5 sao)",
     "stars": 5,
     "region": "Lào Cai",
     "producerName": "Công ty Cổ phần Traphaco Sa Pa",
@@ -277,7 +277,7 @@
   },
   "345": {
     "id": 345,
-    "productName": "Cao mềm Actiso Sa Pa",
+    "productName": "Cao mềm Actiso Sa Pa - Đặc sản Lào Cai (OCOP 5 sao)",
     "stars": 5,
     "region": "Lào Cai",
     "producerName": "Công ty Cổ phần Traphaco Sa Pa",
@@ -306,7 +306,7 @@
   },
   "346": {
     "id": 346,
-    "productName": "Nấm hương rừng Sa Pa khô",
+    "productName": "Nấm hương rừng Sa Pa khô - Đặc sản Lào Cai (OCOP 4 sao)",
     "stars": 4,
     "region": "Lào Cai",
     "producerName": "HTX Nông nghiệp Bản địa Sa Pa (Sa Pa OCOP)",
@@ -335,7 +335,7 @@
   },
   "347": {
     "id": 347,
-    "productName": "Tương ớt Mường Khương",
+    "productName": "Tương ớt Mường Khương - Đặc sản Lào Cai (OCOP 4 sao)",
     "stars": 4,
     "region": "Lào Cai",
     "producerName": "HTX Kinh doanh Nông sản Mường Khương",
@@ -364,7 +364,7 @@
   },
   "348": {
     "id": 348,
-    "productName": "Chè Shan tuyết Suối Giàng thượng hạng",
+    "productName": "Chè Shan tuyết Suối Giàng - Đặc sản Yên Bái (OCOP 5 sao)",
     "stars": 5,
     "region": "Yên Bái",
     "producerName": "HTX Trà Suối Giàng",
@@ -393,7 +393,7 @@
   },
   "349": {
     "id": 349,
-    "productName": "Quế ống khô bóc vỏ xuất khẩu",
+    "productName": "Quế ống khô bóc vỏ - Đặc sản Yên Bái (OCOP 5 sao)",
     "stars": 5,
     "region": "Yên Bái",
     "producerName": "HTX Quế Hồi Văn Yên",
@@ -422,7 +422,7 @@
   },
   "350": {
     "id": 350,
-    "productName": "Mật ong nhãn Văn Chấn",
+    "productName": "Mật ong nhãn Văn Chấn - Đặc sản Yên Bái (OCOP 4 sao)",
     "stars": 4,
     "region": "Yên Bái",
     "producerName": "HTX Nuôi ong Nghĩa Lộ - Văn Chấn",
@@ -451,7 +451,7 @@
   },
   "351": {
     "id": 351,
-    "productName": "Miến đao Giới Phiên",
+    "productName": "Miến đao Giới Phiên - Đặc sản Yên Bái (OCOP 4 sao)",
     "stars": 4,
     "region": "Yên Bái",
     "producerName": "HTX Sản xuất Miến đao Giới Phiên",
@@ -480,7 +480,7 @@
   },
   "352": {
     "id": 352,
-    "productName": "Gạo nương Điện Biên thơm đặc sản (Hút chân không tiêu chuẩn xuất khẩu)",
+    "productName": "Gạo nương Điện Biên thơm đặc sản - Đặc sản Điện Biên (OCOP 5 sao)",
     "stars": 5,
     "region": "Điện Biên",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Điện Biên",
@@ -509,7 +509,7 @@
   },
   "353": {
     "id": 353,
-    "productName": "Cà phê Mường Ảng hạt rang cao cấp",
+    "productName": "Cà phê Mường Ảng hạt rang - Đặc sản Điện Biên (OCOP 5 sao)",
     "stars": 5,
     "region": "Điện Biên",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Điện Biên",
@@ -538,7 +538,7 @@
   },
   "354": {
     "id": 354,
-    "productName": "Thịt trâu sấy gác bếp bản địa",
+    "productName": "Thịt trâu sấy gác bếp bản địa - Đặc sản Điện Biên (OCOP 4 sao)",
     "stars": 4,
     "region": "Điện Biên",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Điện Biên",
@@ -567,7 +567,7 @@
   },
   "355": {
     "id": 355,
-    "productName": "Hạt mắc khén khô",
+    "productName": "Hạt mắc khén khô - Đặc sản Điện Biên (OCOP 4 sao)",
     "stars": 4,
     "region": "Điện Biên",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Điện Biên",
@@ -596,7 +596,7 @@
   },
   "356": {
     "id": 356,
-    "productName": "Sâm Lai Châu củ tươi / thái lát sấy khô thượng hạng",
+    "productName": "Sâm Lai Châu củ tươi / thái lát sấy khô - Đặc sản Lai Châu (OCOP 5 sao)",
     "stars": 5,
     "region": "Lai Châu",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Lai Châu",
@@ -625,7 +625,7 @@
   },
   "357": {
     "id": 357,
-    "productName": "Hạt mắc ca Lai Châu tách hạt sấy khô",
+    "productName": "Hạt mắc ca Lai Châu tách hạt sấy khô - Đặc sản Lai Châu (OCOP 5 sao)",
     "stars": 5,
     "region": "Lai Châu",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Lai Châu",
@@ -654,7 +654,7 @@
   },
   "358": {
     "id": 358,
-    "productName": "Mật ong rừng nguyên chất Lai Châu",
+    "productName": "Mật ong rừng nguyên chất Lai Châu - Đặc sản Lai Châu (OCOP 4 sao)",
     "stars": 4,
     "region": "Lai Châu",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Lai Châu",
@@ -683,7 +683,7 @@
   },
   "359": {
     "id": 359,
-    "productName": "Thịt lợn sấy gác bếp",
+    "productName": "Thịt lợn sấy gác bếp - Đặc sản Lai Châu (OCOP 4 sao)",
     "stars": 4,
     "region": "Lai Châu",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Lai Châu",
@@ -712,15 +712,15 @@
   },
   "360": {
     "id": 360,
-    "productName": "Cà phê bột nguyên chất Bích Thao",
+    "productName": "Cà phê Arabica Sơn La - HTX Bích Thao (OCOP 5 sao)",
     "stars": 5,
     "region": "Sơn La",
-    "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Sơn La",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Sơn La",
-    "certDecision": "QĐ số 1120/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "HTX Cà phê Bích Thao Sơn La",
+    "producerAddress": "Bản Hoàng Văn Thụ, Xã Hua La, TP. Sơn La, Sơn La",
+    "certDecision": "QĐ số 3828/QĐ-BNN-VPĐP (OCOP 5 Sao Quốc Gia)",
     "hotline": "090.820.880",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Sơn La",
+      "name": "Showroom Cà phê Arabica Bích Thao",
       "address": "Đại lộ Trung tâm Hành chính, TP. Sơn La",
       "phone": "090.820.880",
       "hours": "07:30 - 21:00"
@@ -741,15 +741,15 @@
   },
   "361": {
     "id": 361,
-    "productName": "Trà Ô Long Mộc Châu cao cấp",
-    "stars": 5,
+    "productName": "Chè Shan tuyết Tà Xùa - Bắc Yên (OCOP 4 sao)",
+    "stars": 4,
     "region": "Sơn La",
-    "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Sơn La",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Sơn La",
-    "certDecision": "QĐ số 1137/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "HTX Trà Tà Xùa",
+    "producerAddress": "Bản Bẹ, Xã Tà Xùa, Huyện Bắc Yên, Sơn La",
+    "certDecision": "QĐ số 2580/QĐ-UBND Tỉnh Sơn La (OCOP 4 Sao)",
     "hotline": "091.827.893",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Sơn La",
+      "name": "Điểm giới thiệu Trà cổ thụ Tà Xùa",
       "address": "Đại lộ Trung tâm Hành chính, TP. Sơn La",
       "phone": "091.827.893",
       "hours": "07:30 - 21:00"
@@ -770,15 +770,15 @@
   },
   "362": {
     "id": 362,
-    "productName": "Xoài sấy dẻo Yên Châu",
+    "productName": "Xoài tròn Yên Châu (OCOP 4 sao)",
     "stars": 4,
     "region": "Sơn La",
-    "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Sơn La",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Sơn La",
-    "certDecision": "QĐ số 1826/QĐ-UBND Tỉnh Sơn La (OCOP 4 Sao)",
+    "producerName": "HTX Nông nghiệp Yên Châu",
+    "producerAddress": "Tiểu khu 2, Thị trấn Yên Châu, Sơn La",
+    "certDecision": "QĐ số 1930/QĐ-UBND Tỉnh Sơn La (OCOP 4 Sao)",
     "hotline": "092.834.906",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Sơn La",
+      "name": "Cửa hàng Nông sản An toàn Yên Châu",
       "address": "Đại lộ Trung tâm Hành chính, TP. Sơn La",
       "phone": "092.834.906",
       "hours": "07:30 - 21:00"
@@ -799,15 +799,15 @@
   },
   "363": {
     "id": 363,
-    "productName": "Thịt bò khô bản địa",
-    "stars": 4,
+    "productName": "Mận hậu chín sớm Mộc Châu (OCOP 3 sao)",
+    "stars": 3,
     "region": "Sơn La",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Sơn La",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Sơn La",
-    "certDecision": "QĐ số 1849/QĐ-UBND Tỉnh Sơn La (OCOP 4 Sao)",
+    "producerName": "HTX Nông nghiệp Mộc Châu",
+    "producerAddress": "Tiểu khu Pa Khen, Thị trấn Nông trường Mộc Châu, Sơn La",
+    "certDecision": "QĐ số 1640/QĐ-UBND Huyện Mộc Châu (OCOP 3 Sao)",
     "hotline": "093.841.919",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Sơn La",
+      "name": "Điểm dừng chân Nông sản Mộc Châu",
       "address": "Đại lộ Trung tâm Hành chính, TP. Sơn La",
       "phone": "093.841.919",
       "hours": "07:30 - 21:00"
@@ -828,7 +828,7 @@
   },
   "364": {
     "id": 364,
-    "productName": "Măng chua thái sẵn Kim Bôi",
+    "productName": "Măng chua thái sẵn Kim Bôi - Đặc sản Hòa Bình (OCOP 5 sao)",
     "stars": 5,
     "region": "Hòa Bình",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hòa Bình",
@@ -857,7 +857,7 @@
   },
   "365": {
     "id": 365,
-    "productName": "Măng nứa khô nấu ngay",
+    "productName": "Măng nứa khô nấu ngay - Đặc sản Hòa Bình (OCOP 5 sao)",
     "stars": 5,
     "region": "Hòa Bình",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hòa Bình",
@@ -886,7 +886,7 @@
   },
   "366": {
     "id": 366,
-    "productName": "Giảo cổ lam sấy khô",
+    "productName": "Giảo cổ lam sấy khô - Đặc sản Hòa Bình (OCOP 4 sao)",
     "stars": 4,
     "region": "Hòa Bình",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Hòa Bình",
@@ -915,7 +915,7 @@
   },
   "367": {
     "id": 367,
-    "productName": "Mật ong rừng Hòa Bình",
+    "productName": "Mật ong rừng Hòa Bình - Đặc sản Hòa Bình (OCOP 4 sao)",
     "stars": 4,
     "region": "Hòa Bình",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hòa Bình",
@@ -944,7 +944,7 @@
   },
   "368": {
     "id": 368,
-    "productName": "Chè Đinh cao cấp Hoài Trung",
+    "productName": "Chè Đinh - Đặc sản Phú Thọ (OCOP 5 sao)",
     "stars": 5,
     "region": "Phú Thọ",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Phú Thọ",
@@ -973,7 +973,7 @@
   },
   "369": {
     "id": 369,
-    "productName": "Mỳ gạo sạch Hùng Lô",
+    "productName": "Mỳ gạo sạch Hùng Lô - Đặc sản Phú Thọ (OCOP 5 sao)",
     "stars": 5,
     "region": "Phú Thọ",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Phú Thọ",
@@ -1002,7 +1002,7 @@
   },
   "370": {
     "id": 370,
-    "productName": "Thịt chua Thanh Sơn (Hộp đóng kín)",
+    "productName": "Thịt chua Thanh Sơn - Đặc sản Phú Thọ (OCOP 4 sao)",
     "stars": 4,
     "region": "Phú Thọ",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Phú Thọ",
@@ -1031,7 +1031,7 @@
   },
   "371": {
     "id": 371,
-    "productName": "Chè búp tím Thanh Ba",
+    "productName": "Chè búp tím Thanh Ba - Đặc sản Phú Thọ (OCOP 4 sao)",
     "stars": 4,
     "region": "Phú Thọ",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Phú Thọ",
@@ -1060,7 +1060,7 @@
   },
   "372": {
     "id": 372,
-    "productName": "Trà hoa vàng Tam Đảo thượng hạng (Hộp quà tặng)",
+    "productName": "Trà hoa vàng Tam Đảo - Đặc sản Vĩnh Phúc (OCOP 5 sao)",
     "stars": 5,
     "region": "Vĩnh Phúc",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Vĩnh Phúc",
@@ -1089,7 +1089,7 @@
   },
   "373": {
     "id": 373,
-    "productName": "Cao gắm Tam Đảo hỗ trợ xương khớp",
+    "productName": "Cao gắm Tam Đảo hỗ trợ xương khớp - Đặc sản Vĩnh Phúc (OCOP 5 sao)",
     "stars": 5,
     "region": "Vĩnh Phúc",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Vĩnh Phúc",
@@ -1118,7 +1118,7 @@
   },
   "374": {
     "id": 374,
-    "productName": "Mật ong Tam Đảo",
+    "productName": "Mật ong Tam Đảo - Đặc sản Vĩnh Phúc (OCOP 4 sao)",
     "stars": 4,
     "region": "Vĩnh Phúc",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Vĩnh Phúc",
@@ -1147,7 +1147,7 @@
   },
   "375": {
     "id": 375,
-    "productName": "Trà đinh lăng sấy khô",
+    "productName": "Trà đinh lăng sấy khô - Đặc sản Vĩnh Phúc (OCOP 4 sao)",
     "stars": 4,
     "region": "Vĩnh Phúc",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Vĩnh Phúc",
@@ -1176,7 +1176,7 @@
   },
   "376": {
     "id": 376,
-    "productName": "Chè tôm nõn Hảo Đạt",
+    "productName": "Chè tôm nõn Hảo Đạt - Đặc sản Thái Nguyên (OCOP 5 sao)",
     "stars": 5,
     "region": "Thái Nguyên",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Thái Nguyên",
@@ -1205,7 +1205,7 @@
   },
   "377": {
     "id": 377,
-    "productName": "Miến Việt Cường",
+    "productName": "Miến Việt Cường - Đặc sản Thái Nguyên (OCOP 5 sao)",
     "stars": 5,
     "region": "Thái Nguyên",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Thái Nguyên",
@@ -1234,7 +1234,7 @@
   },
   "378": {
     "id": 378,
-    "productName": "Cao chè vằng Thái Nguyên",
+    "productName": "Cao chè vằng Thái Nguyên - Đặc sản Thái Nguyên (OCOP 4 sao)",
     "stars": 4,
     "region": "Thái Nguyên",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Thái Nguyên",
@@ -1263,7 +1263,7 @@
   },
   "379": {
     "id": 379,
-    "productName": "Bánh chưng bờ Đậu hút chân không",
+    "productName": "Bánh chưng bờ Đậu - Đặc sản Thái Nguyên (OCOP 4 sao)",
     "stars": 4,
     "region": "Thái Nguyên",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Thái Nguyên",
@@ -1292,7 +1292,7 @@
   },
   "380": {
     "id": 380,
-    "productName": "Miến dong Tài Hoan",
+    "productName": "Miến dong Tài Hoan - Đặc sản Bắc Kạn (OCOP 5 sao)",
     "stars": 5,
     "region": "Bắc Kạn",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Bắc Kạn",
@@ -1321,7 +1321,7 @@
   },
   "381": {
     "id": 381,
-    "productName": "Nano Curcumin Bắc Hà (Vicumax)",
+    "productName": "Nano Curcumin Bắc Hà - Đặc sản Bắc Kạn (OCOP 5 sao)",
     "stars": 5,
     "region": "Bắc Kạn",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Bắc Kạn",
@@ -1350,7 +1350,7 @@
   },
   "382": {
     "id": 382,
-    "productName": "Tinh bột nghệ vàng Bắc Kạn",
+    "productName": "Tinh bột nghệ vàng Bắc Kạn - Đặc sản Bắc Kạn (OCOP 4 sao)",
     "stars": 4,
     "region": "Bắc Kạn",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bắc Kạn",
@@ -1379,7 +1379,7 @@
   },
   "383": {
     "id": 383,
-    "productName": "Trà mướp đắng rừng",
+    "productName": "Trà mướp đắng rừng - Đặc sản Bắc Kạn (OCOP 4 sao)",
     "stars": 4,
     "region": "Bắc Kạn",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Bắc Kạn",
@@ -1408,15 +1408,15 @@
   },
   "384": {
     "id": 384,
-    "productName": "Vải thiều Lục Ngạn Hồng Xuân (Đóng gói tiêu chuẩn xuất khẩu)",
-    "stars": 5,
+    "productName": "Vải thiều lục ngạn sấy khô - HTX Hồng Xuân (OCOP 4 sao)",
+    "stars": 4,
     "region": "Bắc Giang",
-    "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bắc Giang",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Bắc Giang",
-    "certDecision": "QĐ số 1528/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "HTX Nông nghiệp Hồng Xuân",
+    "producerAddress": "Xã Quý Sơn, Huyện Lục Ngạn, Bắc Giang",
+    "certDecision": "QĐ số 2890/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)",
     "hotline": "096.988.392",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Bắc Giang",
+      "name": "Showroom Vải thiều Lục Ngạn Hồng Xuân",
       "address": "Đại lộ Trung tâm Hành chính, TP. Bắc Giang",
       "phone": "096.988.392",
       "hours": "07:30 - 21:00"
@@ -1437,15 +1437,15 @@
   },
   "385": {
     "id": 385,
-    "productName": "Mỳ Chũ cao cấp Chũ Xuân Trường",
-    "stars": 5,
+    "productName": "Mỳ Chũ đặc biệt Thủ Dương (OCOP 4 sao)",
+    "stars": 4,
     "region": "Bắc Giang",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Bắc Giang",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Bắc Giang",
-    "certDecision": "QĐ số 1545/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "HTX Mỳ Chũ Thủ Dương",
+    "producerAddress": "Làng Thủ Dương, Xã Nam Dương, Lục Ngạn, Bắc Giang",
+    "certDecision": "QĐ số 2140/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)",
     "hotline": "097.995.405",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Bắc Giang",
+      "name": "Cửa hàng Giới thiệu Mỳ Chũ Nam Dương",
       "address": "Đại lộ Trung tâm Hành chính, TP. Bắc Giang",
       "phone": "097.995.405",
       "hours": "07:30 - 21:00"
@@ -1466,15 +1466,15 @@
   },
   "386": {
     "id": 386,
-    "productName": "Mật ong hoa vải Lục Ngạn",
+    "productName": "Chè xanh Bản Ven (OCOP 4 sao)",
     "stars": 4,
     "region": "Bắc Giang",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Bắc Giang",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Bắc Giang",
-    "certDecision": "QĐ số 2378/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)",
+    "producerName": "HTX Thân Trường Bản Ven",
+    "producerAddress": "Bản Ven, Xã Xuân Lương, Huyện Yên Thế, Bắc Giang",
+    "certDecision": "QĐ số 2315/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)",
     "hotline": "098.102.418",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Bắc Giang",
+      "name": "Không gian Văn hóa Trà Bản Ven",
       "address": "Đại lộ Trung tâm Hành chính, TP. Bắc Giang",
       "phone": "098.102.418",
       "hours": "07:30 - 21:00"
@@ -1495,15 +1495,15 @@
   },
   "387": {
     "id": 387,
-    "productName": "Rượu làng Vân",
+    "productName": "Rượu Làng Vân - Cơ sở chưng cất truyền thống Vân Hà (OCOP 4 sao)",
     "stars": 4,
     "region": "Bắc Giang",
-    "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Bắc Giang",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Bắc Giang",
-    "certDecision": "QĐ số 2401/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)",
+    "producerName": "Cơ sở sản xuất Rượu Làng Vân",
+    "producerAddress": "Làng Vân, Xã Vân Hà, Thị xã Việt Yên, Bắc Giang",
+    "certDecision": "QĐ số 1980/QĐ-UBND Tỉnh Bắc Giang (OCOP 4 Sao)",
     "hotline": "090.109.431",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Bắc Giang",
+      "name": "Điểm giới thiệu Rượu Làng Vân Chính Hiệu",
       "address": "Đại lộ Trung tâm Hành chính, TP. Bắc Giang",
       "phone": "090.109.431",
       "hours": "07:30 - 21:00"
@@ -1524,7 +1524,7 @@
   },
   "388": {
     "id": 388,
-    "productName": "Miến dong Bình Liêu",
+    "productName": "Miến dong Bình Liêu - Đặc sản Quảng Ninh (OCOP 5 sao)",
     "stars": 5,
     "region": "Quảng Ninh",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Quảng Ninh",
@@ -1553,7 +1553,7 @@
   },
   "389": {
     "id": 389,
-    "productName": "Bộ lọ hoa men chảy Gốm sứ Quang Vinh",
+    "productName": "Bộ lọ hoa men chảy Gốm sứ Quang Vinh - Đặc sản Quảng Ninh (OCOP 5 sao)",
     "stars": 5,
     "region": "Quảng Ninh",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Quảng Ninh",
@@ -1582,7 +1582,7 @@
   },
   "390": {
     "id": 390,
-    "productName": "Chả mực Hạ Long hút chân không cấp đông",
+    "productName": "Chả mực Hạ Long - Đặc sản Quảng Ninh (OCOP 4 sao)",
     "stars": 4,
     "region": "Quảng Ninh",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Quảng Ninh",
@@ -1611,7 +1611,7 @@
   },
   "391": {
     "id": 391,
-    "productName": "Trà hoa vàng Ba Chẽ khô",
+    "productName": "Trà hoa vàng Ba Chẽ khô - Đặc sản Quảng Ninh (OCOP 4 sao)",
     "stars": 4,
     "region": "Quảng Ninh",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Quảng Ninh",
@@ -1640,7 +1640,7 @@
   },
   "392": {
     "id": 392,
-    "productName": "Nước mắm Cát Hải đặc biệt (Thùng quà tặng)",
+    "productName": "Nước mắm Cát Hải đặc biệt - Đặc sản Hải Phòng (OCOP 5 sao)",
     "stars": 5,
     "region": "Hải Phòng",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Hải Phòng",
@@ -1669,7 +1669,7 @@
   },
   "393": {
     "id": 393,
-    "productName": "Hải sản khô thượng hạng Cát Bà (Tôm/Mực khô đóng hộp)",
+    "productName": "Hải sản khô - Đặc sản Hải Phòng (OCOP 5 sao)",
     "stars": 5,
     "region": "Hải Phòng",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hải Phòng",
@@ -1698,7 +1698,7 @@
   },
   "394": {
     "id": 394,
-    "productName": "Bánh đa cua khô Hải Phòng",
+    "productName": "Bánh đa cua khô Hải Phòng - Đặc sản Hải Phòng (OCOP 4 sao)",
     "stars": 4,
     "region": "Hải Phòng",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hải Phòng",
@@ -1727,7 +1727,7 @@
   },
   "395": {
     "id": 395,
-    "productName": "Mật ong rừng Cát Bà",
+    "productName": "Mật ong rừng Cát Bà - Đặc sản Hải Phòng (OCOP 4 sao)",
     "stars": 4,
     "region": "Hải Phòng",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hải Phòng",
@@ -1756,7 +1756,7 @@
   },
   "396": {
     "id": 396,
-    "productName": "Bình hút lộc / Bình giọt ngọc Gốm Chu Đậu",
+    "productName": "Bình hút lộc / Bình giọt ngọc Gốm Chu Đậu - Đặc sản Hải Dương (OCOP 5 sao)",
     "stars": 5,
     "region": "Hải Dương",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Hải Dương",
@@ -1785,7 +1785,7 @@
   },
   "397": {
     "id": 397,
-    "productName": "Bánh đậu xanh Rồng Vàng Hoàng Gia",
+    "productName": "Bánh đậu xanh Rồng Vàng Hoàng Gia - Đặc sản Hải Dương (OCOP 5 sao)",
     "stars": 5,
     "region": "Hải Dương",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hải Dương",
@@ -1814,7 +1814,7 @@
   },
   "398": {
     "id": 398,
-    "productName": "Bánh gai Ninh Giang",
+    "productName": "Bánh gai Ninh Giang - Đặc sản Hải Dương (OCOP 4 sao)",
     "stars": 4,
     "region": "Hải Dương",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hải Dương",
@@ -1843,7 +1843,7 @@
   },
   "399": {
     "id": 399,
-    "productName": "Tỏi đen Chí Linh",
+    "productName": "Tỏi đen Chí Linh - Đặc sản Hải Dương (OCOP 4 sao)",
     "stars": 4,
     "region": "Hải Dương",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hải Dương",
@@ -1872,7 +1872,7 @@
   },
   "400": {
     "id": 400,
-    "productName": "Long nhãn lồng Hưng Yên thượng hạng (Hộp biếu cao cấp)",
+    "productName": "Long nhãn lồng Hưng Yên - Đặc sản Hưng Yên (OCOP 5 sao)",
     "stars": 5,
     "region": "Hưng Yên",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hưng Yên",
@@ -1901,7 +1901,7 @@
   },
   "401": {
     "id": 401,
-    "productName": "Hạt sen sấy khô nguyên vị Hưng Yên",
+    "productName": "Hạt sen sấy khô nguyên vị Hưng Yên - Đặc sản Hưng Yên (OCOP 5 sao)",
     "stars": 5,
     "region": "Hưng Yên",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hưng Yên",
@@ -1930,7 +1930,7 @@
   },
   "402": {
     "id": 402,
-    "productName": "Tinh bột nghệ đỏ Hưng Yên",
+    "productName": "Tinh bột nghệ đỏ Hưng Yên - Đặc sản Hưng Yên (OCOP 4 sao)",
     "stars": 4,
     "region": "Hưng Yên",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Hưng Yên",
@@ -1959,7 +1959,7 @@
   },
   "403": {
     "id": 403,
-    "productName": "Tương Bần Hưng Yên đóng chai",
+    "productName": "Tương Bần Hưng Yên đóng chai - Đặc sản Hưng Yên (OCOP 4 sao)",
     "stars": 4,
     "region": "Hưng Yên",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Hưng Yên",
@@ -1988,7 +1988,7 @@
   },
   "404": {
     "id": 404,
-    "productName": "Gạo hữu cơ chất lượng cao Thái Bình (Hút chân không)",
+    "productName": "Gạo hữu cơ chất lượng cao Thái Bình - Đặc sản Thái Bình (OCOP 5 sao)",
     "stars": 5,
     "region": "Thái Bình",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Thái Bình",
@@ -2017,7 +2017,7 @@
   },
   "405": {
     "id": 405,
-    "productName": "Rượu nếp cái hoa vàng Kiến Xương thượng hạng",
+    "productName": "Rượu nếp cái hoa vàng Kiến Xương - Đặc sản Thái Bình (OCOP 5 sao)",
     "stars": 5,
     "region": "Thái Bình",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Thái Bình",
@@ -2046,7 +2046,7 @@
   },
   "406": {
     "id": 406,
-    "productName": "Bánh cáy làng Nguyễn",
+    "productName": "Bánh cáy làng Nguyễn - Đặc sản Thái Bình (OCOP 4 sao)",
     "stars": 4,
     "region": "Thái Bình",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Thái Bình",
@@ -2075,7 +2075,7 @@
   },
   "407": {
     "id": 407,
-    "productName": "Trà hoa hòe sấy khô",
+    "productName": "Trà hoa hòe sấy khô - Đặc sản Thái Bình (OCOP 4 sao)",
     "stars": 4,
     "region": "Thái Bình",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Thái Bình",
@@ -2104,7 +2104,7 @@
   },
   "408": {
     "id": 408,
-    "productName": "Gạo sinh thái ruộng rươi Toản Xuân",
+    "productName": "Gạo sinh thái ruộng rươi Toản Xuân - Đặc sản Nam Định (OCOP 5 sao)",
     "stars": 5,
     "region": "Nam Định",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Nam Định",
@@ -2133,7 +2133,7 @@
   },
   "409": {
     "id": 409,
-    "productName": "Gạo sạch chất lượng cao Toản Xuân 999",
+    "productName": "Gạo sạch chất lượng cao Toản Xuân 999 - Đặc sản Nam Định (OCOP 5 sao)",
     "stars": 5,
     "region": "Nam Định",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Nam Định",
@@ -2162,7 +2162,7 @@
   },
   "410": {
     "id": 410,
-    "productName": "Bánh nhãn Hải Hậu",
+    "productName": "Bánh nhãn Hải Hậu - Đặc sản Nam Định (OCOP 4 sao)",
     "stars": 4,
     "region": "Nam Định",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Nam Định",
@@ -2191,7 +2191,7 @@
   },
   "411": {
     "id": 411,
-    "productName": "Kẹo sìu châu Nam Định",
+    "productName": "Kẹo sìu châu Nam Định - Đặc sản Nam Định (OCOP 4 sao)",
     "stars": 4,
     "region": "Nam Định",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Nam Định",
@@ -2220,7 +2220,7 @@
   },
   "412": {
     "id": 412,
-    "productName": "Cơm cháy Ninh Bình cao cấp (Đóng gói xuất khẩu)",
+    "productName": "Cơm cháy Ninh Bình - Đặc sản Ninh Bình (OCOP 5 sao)",
     "stars": 5,
     "region": "Ninh Bình",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Ninh Bình",
@@ -2249,7 +2249,7 @@
   },
   "413": {
     "id": 413,
-    "productName": "Rượu nếp Kim Sơn hảo hạng (Bình sứ)",
+    "productName": "Rượu nếp Kim Sơn hảo hạng - Đặc sản Ninh Bình (OCOP 5 sao)",
     "stars": 5,
     "region": "Ninh Bình",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Ninh Bình",
@@ -2278,7 +2278,7 @@
   },
   "414": {
     "id": 414,
-    "productName": "Mắm tép Gia Viễn",
+    "productName": "Mắm tép Gia Viễn - Đặc sản Ninh Bình (OCOP 4 sao)",
     "stars": 4,
     "region": "Ninh Bình",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Ninh Bình",
@@ -2307,7 +2307,7 @@
   },
   "415": {
     "id": 415,
-    "productName": "Hoa cúc chi sấy khô Ninh Bình",
+    "productName": "Hoa cúc chi sấy khô Ninh Bình - Đặc sản Ninh Bình (OCOP 4 sao)",
     "stars": 4,
     "region": "Ninh Bình",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Ninh Bình",
@@ -2336,7 +2336,7 @@
   },
   "416": {
     "id": 416,
-    "productName": "Chuối ngự Đại Hoàng đặc sản tuyển chọn (Đóng thùng an toàn)",
+    "productName": "Chuối ngự Đại Hoàng đặc sản tuyển chọn - Đặc sản Hà Nam (OCOP 5 sao)",
     "stars": 5,
     "region": "Hà Nam",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hà Nam",
@@ -2365,7 +2365,7 @@
   },
   "417": {
     "id": 417,
-    "productName": "Bột sắn dây nguyên chất cao cấp Hà Nam",
+    "productName": "Bột sắn dây nguyên chất - Đặc sản Hà Nam (OCOP 5 sao)",
     "stars": 5,
     "region": "Hà Nam",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Hà Nam",
@@ -2394,7 +2394,7 @@
   },
   "418": {
     "id": 418,
-    "productName": "Kẹo lạc Duy Tiên",
+    "productName": "Kẹo lạc Duy Tiên - Đặc sản Hà Nam (OCOP 4 sao)",
     "stars": 4,
     "region": "Hà Nam",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hà Nam",
@@ -2423,7 +2423,7 @@
   },
   "419": {
     "id": 419,
-    "productName": "Bánh đa nem Chợ Sí",
+    "productName": "Bánh đa nem Chợ Sí - Đặc sản Hà Nam (OCOP 4 sao)",
     "stars": 4,
     "region": "Hà Nam",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hà Nam",
@@ -2452,7 +2452,7 @@
   },
   "420": {
     "id": 420,
-    "productName": "Hoa hồi khô nguyên bông Lạng Sơn xuất khẩu",
+    "productName": "Hoa hồi khô nguyên bông Lạng Sơn - Đặc sản Lạng Sơn (OCOP 5 sao)",
     "stars": 5,
     "region": "Lạng Sơn",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Lạng Sơn",
@@ -2481,7 +2481,7 @@
   },
   "421": {
     "id": 421,
-    "productName": "Tinh dầu hồi Lạng Sơn nguyên chất",
+    "productName": "Tinh dầu hồi Lạng Sơn nguyên chất - Đặc sản Lạng Sơn (OCOP 5 sao)",
     "stars": 5,
     "region": "Lạng Sơn",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Lạng Sơn",
@@ -2510,7 +2510,7 @@
   },
   "422": {
     "id": 422,
-    "productName": "Thịt quay giòn bì Lạng Sơn hút chân không",
+    "productName": "Thịt quay giòn bì Lạng Sơn - Đặc sản Lạng Sơn (OCOP 4 sao)",
     "stars": 4,
     "region": "Lạng Sơn",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Lạng Sơn",
@@ -2539,7 +2539,7 @@
   },
   "423": {
     "id": 423,
-    "productName": "Mạch nha Lạng Sơn",
+    "productName": "Mạch nha Lạng Sơn - Đặc sản Lạng Sơn (OCOP 4 sao)",
     "stars": 4,
     "region": "Lạng Sơn",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Lạng Sơn",
@@ -2568,7 +2568,7 @@
   },
   "424": {
     "id": 424,
-    "productName": "Hạt dẻ Trùng Khánh loại 1 tuyển chọn",
+    "productName": "Hạt dẻ Trùng Khánh loại 1 tuyển chọn - Đặc sản Cao Bằng (OCOP 5 sao)",
     "stars": 5,
     "region": "Cao Bằng",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Cao Bằng",
@@ -2597,7 +2597,7 @@
   },
   "425": {
     "id": 425,
-    "productName": "Miến dong Trà Lĩnh thượng hạng",
+    "productName": "Miến dong Trà Lĩnh - Đặc sản Cao Bằng (OCOP 5 sao)",
     "stars": 5,
     "region": "Cao Bằng",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Cao Bằng",
@@ -2626,7 +2626,7 @@
   },
   "426": {
     "id": 426,
-    "productName": "Bánh khảo Cao Bằng",
+    "productName": "Bánh khảo Cao Bằng - Đặc sản Cao Bằng (OCOP 4 sao)",
     "stars": 4,
     "region": "Cao Bằng",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Cao Bằng",
@@ -2655,7 +2655,7 @@
   },
   "427": {
     "id": 427,
-    "productName": "Thịt lợn xông khói Cao Bằng",
+    "productName": "Thịt lợn xông khói Cao Bằng - Đặc sản Cao Bằng (OCOP 4 sao)",
     "stars": 4,
     "region": "Cao Bằng",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Cao Bằng",
@@ -2684,7 +2684,7 @@
   },
   "428": {
     "id": 428,
-    "productName": "Rượu làng Hòa Tiến thượng hạng (Bình gốm)",
+    "productName": "Rượu làng Hòa Tiến - Đặc sản Bắc Ninh (OCOP 5 sao)",
     "stars": 5,
     "region": "Bắc Ninh",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Bắc Ninh",
@@ -2713,7 +2713,7 @@
   },
   "429": {
     "id": 429,
-    "productName": "Tranh dân tộc Hồ cao cấp (Sản phẩm thủ công mỹ nghệ 5 sao)",
+    "productName": "Tranh dân tộc Hồ - Đặc sản Bắc Ninh (OCOP 5 sao)",
     "stars": 5,
     "region": "Bắc Ninh",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Bắc Ninh",
@@ -2742,7 +2742,7 @@
   },
   "430": {
     "id": 430,
-    "productName": "Bánh phu thê Đình Bảng",
+    "productName": "Bánh phu thê Đình Bảng - Đặc sản Bắc Ninh (OCOP 4 sao)",
     "stars": 4,
     "region": "Bắc Ninh",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Bắc Ninh",
@@ -2771,7 +2771,7 @@
   },
   "431": {
     "id": 431,
-    "productName": "Nem Bùi Từ Sơn hút chân không",
+    "productName": "Nem Bùi Từ Sơn - Đặc sản Bắc Ninh (OCOP 4 sao)",
     "stars": 4,
     "region": "Bắc Ninh",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Bắc Ninh",
@@ -2800,7 +2800,7 @@
   },
   "432": {
     "id": 432,
-    "productName": "Chè Shan tuyết Na Hang hảo hạng",
+    "productName": "Chè Shan tuyết Na Hang hảo hạng - Đặc sản Tuyên Quang (OCOP 5 sao)",
     "stars": 5,
     "region": "Tuyên Quang",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Tuyên Quang",
@@ -2829,7 +2829,7 @@
   },
   "433": {
     "id": 433,
-    "productName": "Mật ong phong mật Na Hang nguyên chất",
+    "productName": "Mật ong phong mật Na Hang nguyên chất - Đặc sản Tuyên Quang (OCOP 5 sao)",
     "stars": 5,
     "region": "Tuyên Quang",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Tuyên Quang",
@@ -2858,7 +2858,7 @@
   },
   "434": {
     "id": 434,
-    "productName": "Miến dong Minh Hương",
+    "productName": "Miến dong Minh Hương - Đặc sản Tuyên Quang (OCOP 4 sao)",
     "stars": 4,
     "region": "Tuyên Quang",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Tuyên Quang",
@@ -2887,7 +2887,7 @@
   },
   "435": {
     "id": 435,
-    "productName": "Thịt trâu khô gác bếp Chiêm Hóa",
+    "productName": "Thịt trâu khô gác bếp Chiêm Hóa - Đặc sản Tuyên Quang (OCOP 4 sao)",
     "stars": 4,
     "region": "Tuyên Quang",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Tuyên Quang",
@@ -2916,7 +2916,7 @@
   },
   "436": {
     "id": 436,
-    "productName": "Nước mắm Lê Gia cốt đặc biệt",
+    "productName": "Nước mắm Lê Gia cốt đặc biệt - Đặc sản Thanh Hóa (OCOP 5 sao)",
     "stars": 5,
     "region": "Thanh Hóa",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Thanh Hóa",
@@ -2945,7 +2945,7 @@
   },
   "437": {
     "id": 437,
-    "productName": "Mắm tôm Lê Gia cao cấp",
+    "productName": "Mắm tôm Lê Gia - Đặc sản Thanh Hóa (OCOP 5 sao)",
     "stars": 5,
     "region": "Thanh Hóa",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Thanh Hóa",
@@ -2974,7 +2974,7 @@
   },
   "438": {
     "id": 438,
-    "productName": "Nem chua Thanh Hóa hút chân không",
+    "productName": "Nem chua Thanh Hóa - Đặc sản Thanh Hóa (OCOP 4 sao)",
     "stars": 4,
     "region": "Thanh Hóa",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Thanh Hóa",
@@ -3003,7 +3003,7 @@
   },
   "439": {
     "id": 439,
-    "productName": "Bánh gai Tứ Trụ",
+    "productName": "Bánh gai Tứ Trụ - Đặc sản Thanh Hóa (OCOP 4 sao)",
     "stars": 4,
     "region": "Thanh Hóa",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Thanh Hóa",
@@ -3032,7 +3032,7 @@
   },
   "440": {
     "id": 440,
-    "productName": "Bộ đèn tre Đức Phong (Thủ công mỹ nghệ)",
+    "productName": "Bộ đèn tre Đức Phong - Đặc sản Nghệ An (OCOP 5 sao)",
     "stars": 5,
     "region": "Nghệ An",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Nghệ An",
@@ -3061,7 +3061,7 @@
   },
   "441": {
     "id": 441,
-    "productName": "Nước mắm Vạn Phần thượng hạng",
+    "productName": "Nước mắm Vạn Phần - Đặc sản Nghệ An (OCOP 5 sao)",
     "stars": 5,
     "region": "Nghệ An",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Nghệ An",
@@ -3090,7 +3090,7 @@
   },
   "442": {
     "id": 442,
-    "productName": "Tương Nam Đàn đóng chai",
+    "productName": "Tương Nam Đàn đóng chai - Đặc sản Nghệ An (OCOP 4 sao)",
     "stars": 4,
     "region": "Nghệ An",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Nghệ An",
@@ -3119,7 +3119,7 @@
   },
   "443": {
     "id": 443,
-    "productName": "Tinh bột nghệ Nghệ An",
+    "productName": "Tinh bột nghệ Nghệ An - Đặc sản Nghệ An (OCOP 4 sao)",
     "stars": 4,
     "region": "Nghệ An",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Nghệ An",
@@ -3148,7 +3148,7 @@
   },
   "444": {
     "id": 444,
-    "productName": "Kẹo cu đơ Thư Sơn thượng hạng (Hộp ép kín)",
+    "productName": "Kẹo cu đơ Thư Sơn - Đặc sản Hà Tĩnh (OCOP 5 sao)",
     "stars": 5,
     "region": "Hà Tĩnh",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hà Tĩnh",
@@ -3177,7 +3177,7 @@
   },
   "445": {
     "id": 445,
-    "productName": "Mật ong rừng Vũ Quang nguyên chất",
+    "productName": "Mật ong rừng Vũ Quang nguyên chất - Đặc sản Hà Tĩnh (OCOP 5 sao)",
     "stars": 5,
     "region": "Hà Tĩnh",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hà Tĩnh",
@@ -3206,7 +3206,7 @@
   },
   "446": {
     "id": 446,
-    "productName": "Bánh đa dừa Độc Lập",
+    "productName": "Bánh đa dừa Độc Lập - Đặc sản Hà Tĩnh (OCOP 4 sao)",
     "stars": 4,
     "region": "Hà Tĩnh",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hà Tĩnh",
@@ -3235,7 +3235,7 @@
   },
   "447": {
     "id": 447,
-    "productName": "Hải sản khô Kỳ Anh",
+    "productName": "Hải sản khô Kỳ Anh - Đặc sản Hà Tĩnh (OCOP 4 sao)",
     "stars": 4,
     "region": "Hà Tĩnh",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hà Tĩnh",
@@ -3264,7 +3264,7 @@
   },
   "448": {
     "id": 448,
-    "productName": "Đũa gỗ Quảng Thủy xuất khẩu",
+    "productName": "Đũa gỗ Quảng Thủy - Đặc sản Quảng Bình (OCOP 5 sao)",
     "stars": 5,
     "region": "Quảng Bình",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Quảng Bình",
@@ -3293,7 +3293,7 @@
   },
   "449": {
     "id": 449,
-    "productName": "Mật ong rừng Lệ Thủy thượng hạng",
+    "productName": "Mật ong rừng Lệ Thủy - Đặc sản Quảng Bình (OCOP 5 sao)",
     "stars": 5,
     "region": "Quảng Bình",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Quảng Bình",
@@ -3322,7 +3322,7 @@
   },
   "450": {
     "id": 450,
-    "productName": "Khoai dẻo Quảng Bình",
+    "productName": "Khoai dẻo Quảng Bình - Đặc sản Quảng Bình (OCOP 4 sao)",
     "stars": 4,
     "region": "Quảng Bình",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Quảng Bình",
@@ -3351,7 +3351,7 @@
   },
   "451": {
     "id": 451,
-    "productName": "Nước mắm Bảo Ninh",
+    "productName": "Nước mắm Bảo Ninh - Đặc sản Quảng Bình (OCOP 4 sao)",
     "stars": 4,
     "region": "Quảng Bình",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Quảng Bình",
@@ -3380,7 +3380,7 @@
   },
   "452": {
     "id": 452,
-    "productName": "Gạo hữu cơ Quảng Trị cao cấp (Hút chân không)",
+    "productName": "Gạo hữu cơ Quảng Trị - Đặc sản Quảng Trị (OCOP 5 sao)",
     "stars": 5,
     "region": "Quảng Trị",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Quảng Trị",
@@ -3409,7 +3409,7 @@
   },
   "453": {
     "id": 453,
-    "productName": "Tiêu đen hữu cơ Cam Lộ thượng hạng",
+    "productName": "Tiêu đen hữu cơ Cam Lộ - Đặc sản Quảng Trị (OCOP 5 sao)",
     "stars": 5,
     "region": "Quảng Trị",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Quảng Trị",
@@ -3438,7 +3438,7 @@
   },
   "454": {
     "id": 454,
-    "productName": "Tinh dầu nén Quảng Trị",
+    "productName": "Tinh dầu nén Quảng Trị - Đặc sản Quảng Trị (OCOP 4 sao)",
     "stars": 4,
     "region": "Quảng Trị",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Quảng Trị",
@@ -3467,7 +3467,7 @@
   },
   "455": {
     "id": 455,
-    "productName": "Cao gắm thảo dược",
+    "productName": "Cao gắm thảo dược - Đặc sản Quảng Trị (OCOP 4 sao)",
     "stars": 4,
     "region": "Quảng Trị",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Quảng Trị",
@@ -3496,15 +3496,15 @@
   },
   "456": {
     "id": 456,
-    "productName": "Trà cung đình Huế thượng hạng (Hộp quà biếu)",
-    "stars": 5,
+    "productName": "Tinh dầu tràm Huế - Cơ sở Hoa Nén (OCOP 4 sao)",
+    "stars": 4,
     "region": "Thừa Thiên Huế",
-    "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Thừa Thiên Huế",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Thừa Thiên Huế",
-    "certDecision": "QĐ số 2752/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Công ty TNHH MTV Sản xuất Tinh dầu Hoa Nén",
+    "producerAddress": "Thôn Đông Lâm, Xã Phong An, Huyện Phong Điền, Thừa Thiên Huế",
+    "certDecision": "QĐ số 2980/QĐ-UBND Tỉnh Thừa Thiên Huế (OCOP 4 Sao)",
     "hotline": "096.592.528",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Thừa Thiên Huế",
+      "name": "Showroom Tinh dầu Tràm Hoa Nén Huế",
       "address": "Đại lộ Trung tâm Hành chính, TP. Thừa Thiên Huế",
       "phone": "096.592.528",
       "hours": "07:30 - 21:00"
@@ -3525,15 +3525,15 @@
   },
   "457": {
     "id": 457,
-    "productName": "Sen gật gù / Hạt sen khô Huế tuyển chọn",
-    "stars": 5,
+    "productName": "Trà sâm tiến vua xứ Huế (OCOP 4 sao)",
+    "stars": 4,
     "region": "Thừa Thiên Huế",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Thừa Thiên Huế",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Thừa Thiên Huế",
-    "certDecision": "QĐ số 2769/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Công ty Cung đình Thượng uyển Huế",
+    "producerAddress": "Đường Nguyễn Huệ, TP. Huế, Thừa Thiên Huế",
+    "certDecision": "QĐ số 2750/QĐ-UBND Tỉnh Thừa Thiên Huế (OCOP 4 Sao)",
     "hotline": "097.599.541",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Thừa Thiên Huế",
+      "name": "Trà đình Hoàng gia Cố Đô",
       "address": "Đại lộ Trung tâm Hành chính, TP. Thừa Thiên Huế",
       "phone": "097.599.541",
       "hours": "07:30 - 21:00"
@@ -3554,15 +3554,15 @@
   },
   "458": {
     "id": 458,
-    "productName": "Tôm chua Huế đóng hũ kín",
-    "stars": 4,
+    "productName": "Hạt sen khô tịnh tâm Đại Nội (OCOP 3 sao)",
+    "stars": 3,
     "region": "Thừa Thiên Huế",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Thừa Thiên Huế",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Thừa Thiên Huế",
-    "certDecision": "QĐ số 1534/QĐ-UBND Tỉnh Thừa Thiên Huế (OCOP 4 Sao)",
+    "producerName": "HTX Nông nghiệp Hạt sen Tịnh Tâm",
+    "producerAddress": "Hồ Tịnh Tâm, P. Thuận Thành, TP. Huế, Thừa Thiên Huế",
+    "certDecision": "QĐ số 1820/QĐ-UBND TP. Huế (OCOP 3 Sao)",
     "hotline": "098.606.554",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Thừa Thiên Huế",
+      "name": "Đại lý Sen Huế Tịnh Tâm Cố Đô",
       "address": "Đại lộ Trung tâm Hành chính, TP. Thừa Thiên Huế",
       "phone": "098.606.554",
       "hours": "07:30 - 21:00"
@@ -3583,15 +3583,15 @@
   },
   "459": {
     "id": 459,
-    "productName": "Dầu tràm Huế nguyên chất",
+    "productName": "Tôm chua Huế đầm phá Tam Giang - Cơ sở truyền thống (OCOP 4 sao)",
     "stars": 4,
     "region": "Thừa Thiên Huế",
-    "producerName": "Công ty TNHH Đặc sản & Quà biếu Thừa Thiên Huế",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Thừa Thiên Huế",
-    "certDecision": "QĐ số 1557/QĐ-UBND Tỉnh Thừa Thiên Huế (OCOP 4 Sao)",
+    "producerName": "Cơ sở Tôm chua Tam Giang Cố Đô",
+    "producerAddress": "Thị trấn Thuận An, Huyện Phú Vang, Thừa Thiên Huế",
+    "certDecision": "QĐ số 2310/QĐ-UBND Tỉnh Thừa Thiên Huế (OCOP 4 Sao)",
     "hotline": "090.613.567",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Thừa Thiên Huế",
+      "name": "Đặc sản Tôm chua Huế Truyền thống",
       "address": "Đại lộ Trung tâm Hành chính, TP. Thừa Thiên Huế",
       "phone": "090.613.567",
       "hours": "07:30 - 21:00"
@@ -3612,7 +3612,7 @@
   },
   "460": {
     "id": 460,
-    "productName": "Nước mắm Nam Ô nhĩ đặc biệt",
+    "productName": "Nước mắm Nam Ô nhĩ đặc biệt - Đặc sản Đà Nẵng (OCOP 5 sao)",
     "stars": 5,
     "region": "Đà Nẵng",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Đà Nẵng",
@@ -3641,7 +3641,7 @@
   },
   "461": {
     "id": 461,
-    "productName": "Đồ thủ công mỹ nghệ đá non Ngũ Hành Sơn cao cấp",
+    "productName": "Đồ thủ công mỹ nghệ đá non Ngũ Hành Sơn - Đặc sản Đà Nẵng (OCOP 5 sao)",
     "stars": 5,
     "region": "Đà Nẵng",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Đà Nẵng",
@@ -3670,7 +3670,7 @@
   },
   "462": {
     "id": 462,
-    "productName": "Chả bò Đà Nẵng hút chân không",
+    "productName": "Chả bò Đà Nẵng - Đặc sản Đà Nẵng (OCOP 4 sao)",
     "stars": 4,
     "region": "Đà Nẵng",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Đà Nẵng",
@@ -3699,7 +3699,7 @@
   },
   "463": {
     "id": 463,
-    "productName": "Bánh khô mè Cẩm Lệ",
+    "productName": "Bánh khô mè Cẩm Lệ - Đặc sản Đà Nẵng (OCOP 4 sao)",
     "stars": 4,
     "region": "Đà Nẵng",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Đà Nẵng",
@@ -3728,15 +3728,15 @@
   },
   "464": {
     "id": 464,
-    "productName": "Quế Trà My bóc vỏ thượng hạng (Hộp quà)",
+    "productName": "Sâm Ngọc Linh ngâm mật ong rừng - Nam Trà My (OCOP 5 sao)",
     "stars": 5,
     "region": "Quảng Nam",
-    "producerName": "Cơ sở Chế biến Gia vị Truyền thống Quảng Nam",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Quảng Nam",
-    "certDecision": "QĐ số 2888/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Công ty CP Dược liệu Sâm Ngọc Linh Nam Trà My",
+    "producerAddress": "Thôn 2, Xã Trà Mai, Huyện Nam Trà My, Quảng Nam",
+    "certDecision": "QĐ số 3828/QĐ-BNN (OCOP 5 Sao Quốc Gia)",
     "hotline": "095.648.632",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Quảng Nam",
+      "name": "Trung tâm Giới thiệu Sâm Ngọc Linh Quốc Bảo",
       "address": "Đại lộ Trung tâm Hành chính, TP. Quảng Nam",
       "phone": "095.648.632",
       "hours": "07:30 - 21:00"
@@ -3757,15 +3757,15 @@
   },
   "465": {
     "id": 465,
-    "productName": "Trà sâm dược liệu Quế Trà My",
-    "stars": 5,
+    "productName": "Nước mắm cốt cá cơm Cửa Khe (OCOP 4 sao)",
+    "stars": 4,
     "region": "Quảng Nam",
-    "producerName": "Công ty TNHH Đặc sản & Quà biếu Quảng Nam",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Quảng Nam",
-    "certDecision": "QĐ số 2905/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Làng nghề Nước mắm Cửa Khe",
+    "producerAddress": "Thôn Cửa Khe, Xã Bình Dương, Thăng Bình, Quảng Nam",
+    "certDecision": "QĐ số 2640/QĐ-UBND Tỉnh Quảng Nam (OCOP 4 Sao)",
     "hotline": "096.655.645",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Quảng Nam",
+      "name": "Cửa hàng Nước mắm Truyền thống Cửa Khe",
       "address": "Đại lộ Trung tâm Hành chính, TP. Quảng Nam",
       "phone": "096.655.645",
       "hours": "07:30 - 21:00"
@@ -3786,15 +3786,15 @@
   },
   "466": {
     "id": 466,
-    "productName": "Bánh tráng Đại Lộc",
+    "productName": "Trà nấm lim xanh Tiên Phước (OCOP 4 sao)",
     "stars": 4,
     "region": "Quảng Nam",
-    "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Quảng Nam",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Quảng Nam",
-    "certDecision": "QĐ số 1718/QĐ-UBND Tỉnh Quảng Nam (OCOP 4 Sao)",
+    "producerName": "HTX Nấm lim xanh Tiên Phước",
+    "producerAddress": "Xã Tiên Hiệp, Huyện Tiên Phước, Quảng Nam",
+    "certDecision": "QĐ số 2480/QĐ-UBND Tỉnh Quảng Nam (OCOP 4 Sao)",
     "hotline": "097.662.658",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Quảng Nam",
+      "name": "Điểm phân phối Nấm lim xanh Tiên Phước",
       "address": "Đại lộ Trung tâm Hành chính, TP. Quảng Nam",
       "phone": "097.662.658",
       "hours": "07:30 - 21:00"
@@ -3815,15 +3815,15 @@
   },
   "467": {
     "id": 467,
-    "productName": "Cao lầu khô Hội An",
-    "stars": 4,
+    "productName": "Bánh tráng sắn Lộc Đại (OCOP 3 sao)",
+    "stars": 3,
     "region": "Quảng Nam",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Quảng Nam",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Quảng Nam",
-    "certDecision": "QĐ số 1741/QĐ-UBND Tỉnh Quảng Nam (OCOP 4 Sao)",
+    "producerName": "HTX Nông nghiệp Lộc Đại",
+    "producerAddress": "Xã Quế Hiệp, Huyện Quế Sơn, Quảng Nam",
+    "certDecision": "QĐ số 1750/QĐ-UBND Huyện Quế Sơn (OCOP 3 Sao)",
     "hotline": "098.669.671",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Quảng Nam",
+      "name": "Điểm bán Đặc sản Bánh tráng sắn Quế Sơn",
       "address": "Đại lộ Trung tâm Hành chính, TP. Quảng Nam",
       "phone": "098.669.671",
       "hours": "07:30 - 21:00"
@@ -3844,7 +3844,7 @@
   },
   "468": {
     "id": 468,
-    "productName": "Tỏi Lý Sơn chính hãng (Hộp đóng gói xuất khẩu)",
+    "productName": "Tỏi Lý Sơn chính hãng - Đặc sản Quảng Ngãi (OCOP 5 sao)",
     "stars": 5,
     "region": "Quảng Ngãi",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Quảng Ngãi",
@@ -3873,7 +3873,7 @@
   },
   "469": {
     "id": 469,
-    "productName": "Mạch nha Quảng Ngãi đường Mantoza",
+    "productName": "Mạch nha Quảng Ngãi đường Mantoza - Đặc sản Quảng Ngãi (OCOP 5 sao)",
     "stars": 5,
     "region": "Quảng Ngãi",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Quảng Ngãi",
@@ -3902,7 +3902,7 @@
   },
   "470": {
     "id": 470,
-    "productName": "Đường phèn, đường phổi Quảng Ngãi",
+    "productName": "Đường phèn, đường phổi Quảng Ngãi - Đặc sản Quảng Ngãi (OCOP 4 sao)",
     "stars": 4,
     "region": "Quảng Ngãi",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Quảng Ngãi",
@@ -3931,7 +3931,7 @@
   },
   "471": {
     "id": 471,
-    "productName": "Cá bống sông Trà rim khô",
+    "productName": "Cá bống sông Trà rim khô - Đặc sản Quảng Ngãi (OCOP 4 sao)",
     "stars": 4,
     "region": "Quảng Ngãi",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Quảng Ngãi",
@@ -3960,7 +3960,7 @@
   },
   "472": {
     "id": 472,
-    "productName": "Bánh tráng gạo mè Dalop đặc biệt M4",
+    "productName": "Bánh tráng gạo mè Dalop đặc biệt M4 - Đặc sản Bình Định (OCOP 5 sao)",
     "stars": 5,
     "region": "Bình Định",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Bình Định",
@@ -3989,7 +3989,7 @@
   },
   "473": {
     "id": 473,
-    "productName": "Rượu bầu đá truyền thống (Bình cao cấp)",
+    "productName": "Rượu bầu đá truyền thống - Đặc sản Bình Định (OCOP 5 sao)",
     "stars": 5,
     "region": "Bình Định",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Bình Định",
@@ -4018,7 +4018,7 @@
   },
   "474": {
     "id": 474,
-    "productName": "Bánh tráng dừa Tam Quan",
+    "productName": "Bánh tráng dừa Tam Quan - Đặc sản Bình Định (OCOP 4 sao)",
     "stars": 4,
     "region": "Bình Định",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Bình Định",
@@ -4047,7 +4047,7 @@
   },
   "475": {
     "id": 475,
-    "productName": "Nem chợ Huyện hút chân không",
+    "productName": "Nem chợ Huyện - Đặc sản Bình Định (OCOP 4 sao)",
     "stars": 4,
     "region": "Bình Định",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Bình Định",
@@ -4076,7 +4076,7 @@
   },
   "476": {
     "id": 476,
-    "productName": "Bò một nắng hai sương Sơn Hòa thượng hạng (Hút chân không)",
+    "productName": "Bò một nắng hai sương Sơn Hòa - Đặc sản Phú Yên (OCOP 5 sao)",
     "stars": 5,
     "region": "Phú Yên",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Phú Yên",
@@ -4105,7 +4105,7 @@
   },
   "477": {
     "id": 477,
-    "productName": "Hạt đười ươi bay khô nguyên chất",
+    "productName": "Hạt đười ươi bay khô nguyên chất - Đặc sản Phú Yên (OCOP 5 sao)",
     "stars": 5,
     "region": "Phú Yên",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Phú Yên",
@@ -4134,7 +4134,7 @@
   },
   "478": {
     "id": 478,
-    "productName": "Bánh tráng Hòa Đa",
+    "productName": "Bánh tráng Hòa Đa - Đặc sản Phú Yên (OCOP 4 sao)",
     "stars": 4,
     "region": "Phú Yên",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Phú Yên",
@@ -4163,7 +4163,7 @@
   },
   "479": {
     "id": 479,
-    "productName": "Cà phê rang xay nguyên chất Phú Yên",
+    "productName": "Cà phê rang xay nguyên chất Phú Yên - Đặc sản Phú Yên (OCOP 4 sao)",
     "stars": 4,
     "region": "Phú Yên",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Phú Yên",
@@ -4192,7 +4192,7 @@
   },
   "480": {
     "id": 480,
-    "productName": "Yến sào Khánh Hòa tinh chế cao cấp (Hộp quà biếu)",
+    "productName": "Yến sào Khánh Hòa tinh chế - Đặc sản Khánh Hòa (OCOP 5 sao)",
     "stars": 5,
     "region": "Khánh Hòa",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Khánh Hòa",
@@ -4221,7 +4221,7 @@
   },
   "481": {
     "id": 481,
-    "productName": "Rong biển sấy khô Nha Trang giòn nguyên vị",
+    "productName": "Rong biển sấy khô Nha Trang giòn nguyên vị - Đặc sản Khánh Hòa (OCOP 5 sao)",
     "stars": 5,
     "region": "Khánh Hòa",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Khánh Hòa",
@@ -4250,7 +4250,7 @@
   },
   "482": {
     "id": 482,
-    "productName": "Bánh xoài Cam Ranh",
+    "productName": "Bánh xoài Cam Ranh - Đặc sản Khánh Hòa (OCOP 4 sao)",
     "stars": 4,
     "region": "Khánh Hòa",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Khánh Hòa",
@@ -4279,7 +4279,7 @@
   },
   "483": {
     "id": 483,
-    "productName": "Muối ớt tôm Nha Trang",
+    "productName": "Muối ớt tôm Nha Trang - Đặc sản Khánh Hòa (OCOP 4 sao)",
     "stars": 4,
     "region": "Khánh Hòa",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Khánh Hòa",
@@ -4308,7 +4308,7 @@
   },
   "484": {
     "id": 484,
-    "productName": "Tỏi cô đơn Ninh Thuận thượng hạng",
+    "productName": "Tỏi cô đơn Ninh Thuận - Đặc sản Ninh Thuận (OCOP 5 sao)",
     "stars": 5,
     "region": "Ninh Thuận",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Ninh Thuận",
@@ -4337,7 +4337,7 @@
   },
   "485": {
     "id": 485,
-    "productName": "Nho khô nguyên cành Ninh Thuận nhập/sấy xuất khẩu",
+    "productName": "Nho khô nguyên cành Ninh Thuận nhập/sấy - Đặc sản Ninh Thuận (OCOP 5 sao)",
     "stars": 5,
     "region": "Ninh Thuận",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Ninh Thuận",
@@ -4366,7 +4366,7 @@
   },
   "486": {
     "id": 486,
-    "productName": "Mật nho nguyên chất",
+    "productName": "Mật nho nguyên chất - Đặc sản Ninh Thuận (OCOP 4 sao)",
     "stars": 4,
     "region": "Ninh Thuận",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Ninh Thuận",
@@ -4395,7 +4395,7 @@
   },
   "487": {
     "id": 487,
-    "productName": "Thịt cừu sấy khô",
+    "productName": "Thịt cừu sấy khô - Đặc sản Ninh Thuận (OCOP 4 sao)",
     "stars": 4,
     "region": "Ninh Thuận",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Ninh Thuận",
@@ -4424,7 +4424,7 @@
   },
   "488": {
     "id": 488,
-    "productName": "Nước mắm Phan Thiết nhĩ đặc biệt (Chai đóng seal)",
+    "productName": "Nước mắm Phan Thiết nhĩ đặc biệt - Đặc sản Bình Thuận (OCOP 5 sao)",
     "stars": 5,
     "region": "Bình Thuận",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bình Thuận",
@@ -4453,7 +4453,7 @@
   },
   "489": {
     "id": 489,
-    "productName": "Thanh long sấy dẻo công nghệ cao (Hộp xuất khẩu)",
+    "productName": "Thanh long sấy dẻo công nghệ cao - Đặc sản Bình Thuận (OCOP 5 sao)",
     "stars": 5,
     "region": "Bình Thuận",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Bình Thuận",
@@ -4482,7 +4482,7 @@
   },
   "490": {
     "id": 490,
-    "productName": "Mực một nắng Phan Thiết (Hút chân không cấp đông)",
+    "productName": "Mực một nắng Phan Thiết - Đặc sản Bình Thuận (OCOP 4 sao)",
     "stars": 4,
     "region": "Bình Thuận",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Bình Thuận",
@@ -4511,7 +4511,7 @@
   },
   "491": {
     "id": 491,
-    "productName": "Bánh rế Phan Thiết",
+    "productName": "Bánh rế Phan Thiết - Đặc sản Bình Thuận (OCOP 4 sao)",
     "stars": 4,
     "region": "Bình Thuận",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Bình Thuận",
@@ -4540,7 +4540,7 @@
   },
   "492": {
     "id": 492,
-    "productName": "Sâm Ngọc Linh Kon Tum ngâm mật ong rừng",
+    "productName": "Sâm Ngọc Linh Kon Tum ngâm mật ong rừng - Đặc sản Kon Tum (OCOP 5 sao)",
     "stars": 5,
     "region": "Kon Tum",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Kon Tum",
@@ -4569,7 +4569,7 @@
   },
   "493": {
     "id": 493,
-    "productName": "Cà phê hạt rang nguyên chất Măng Đen",
+    "productName": "Cà phê hạt rang nguyên chất Măng Đen - Đặc sản Kon Tum (OCOP 5 sao)",
     "stars": 5,
     "region": "Kon Tum",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Kon Tum",
@@ -4598,7 +4598,7 @@
   },
   "494": {
     "id": 494,
-    "productName": "Măng khô rừng Măng Đen",
+    "productName": "Măng khô rừng Măng Đen - Đặc sản Kon Tum (OCOP 4 sao)",
     "stars": 4,
     "region": "Kon Tum",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Kon Tum",
@@ -4627,7 +4627,7 @@
   },
   "495": {
     "id": 495,
-    "productName": "Hạt dổi rừng khô",
+    "productName": "Hạt dổi rừng khô - Đặc sản Kon Tum (OCOP 4 sao)",
     "stars": 4,
     "region": "Kon Tum",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Kon Tum",
@@ -4656,7 +4656,7 @@
   },
   "496": {
     "id": 496,
-    "productName": "Cà phê Fine Robusta Nam Yang",
+    "productName": "Cà phê Fine Robusta Nam Yang - Đặc sản Gia Lai (OCOP 5 sao)",
     "stars": 5,
     "region": "Gia Lai",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Gia Lai",
@@ -4685,7 +4685,7 @@
   },
   "497": {
     "id": 497,
-    "productName": "Hạt điều rang muối đặc sản Gia Lai",
+    "productName": "Hạt điều rang muối đặc sản Gia Lai - Đặc sản Gia Lai (OCOP 5 sao)",
     "stars": 5,
     "region": "Gia Lai",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Gia Lai",
@@ -4714,7 +4714,7 @@
   },
   "498": {
     "id": 498,
-    "productName": "Mật ong hoa cà phê nguyên chất",
+    "productName": "Mật ong hoa cà phê nguyên chất - Đặc sản Gia Lai (OCOP 4 sao)",
     "stars": 4,
     "region": "Gia Lai",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Gia Lai",
@@ -4743,7 +4743,7 @@
   },
   "499": {
     "id": 499,
-    "productName": "Bò một nắng Chư Sê",
+    "productName": "Bò một nắng Chư Sê - Đặc sản Gia Lai (OCOP 4 sao)",
     "stars": 4,
     "region": "Gia Lai",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Gia Lai",
@@ -4772,7 +4772,7 @@
   },
   "500": {
     "id": 500,
-    "productName": "Cà phê hạt rang Buôn Ma Thuột thượng hạng",
+    "productName": "Cà phê hạt rang Buôn Ma Thuột - Đặc sản Đắk Lắk (OCOP 5 sao)",
     "stars": 5,
     "region": "Đắk Lắk",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Đắk Lắk",
@@ -4801,7 +4801,7 @@
   },
   "501": {
     "id": 501,
-    "productName": "Bột cacao nguyên chất Buôn Ma Thuột",
+    "productName": "Bột cacao nguyên chất Buôn Ma Thuột - Đặc sản Đắk Lắk (OCOP 5 sao)",
     "stars": 5,
     "region": "Đắk Lắk",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Đắk Lắk",
@@ -4830,7 +4830,7 @@
   },
   "502": {
     "id": 502,
-    "productName": "Bơ sấy dẻo",
+    "productName": "Bơ sấy dẻo - Đặc sản Đắk Lắk (OCOP 4 sao)",
     "stars": 4,
     "region": "Đắk Lắk",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Đắk Lắk",
@@ -4859,7 +4859,7 @@
   },
   "503": {
     "id": 503,
-    "productName": "Hạt mắc ca Krông Năng",
+    "productName": "Hạt mắc ca Krông Năng - Đặc sản Đắk Lắk (OCOP 4 sao)",
     "stars": 4,
     "region": "Đắk Lắk",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Đắk Lắk",
@@ -4888,7 +4888,7 @@
   },
   "504": {
     "id": 504,
-    "productName": "Hạt điều rang củi Đắk Nông xuất khẩu",
+    "productName": "Hạt điều rang củi Đắk Nông - Đặc sản Đắk Nông (OCOP 5 sao)",
     "stars": 5,
     "region": "Đắk Nông",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Đắk Nông",
@@ -4917,7 +4917,7 @@
   },
   "505": {
     "id": 505,
-    "productName": "Cà phê hạt rang xay Đắk Nông nguyên chất",
+    "productName": "Cà phê hạt rang xay Đắk Nông nguyên chất - Đặc sản Đắk Nông (OCOP 5 sao)",
     "stars": 5,
     "region": "Đắk Nông",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Đắk Nông",
@@ -4946,7 +4946,7 @@
   },
   "506": {
     "id": 506,
-    "productName": "Khổ qua rừng sấy khô",
+    "productName": "Khổ qua rừng sấy khô - Đặc sản Đắk Nông (OCOP 4 sao)",
     "stars": 4,
     "region": "Đắk Nông",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Đắk Nông",
@@ -4975,7 +4975,7 @@
   },
   "507": {
     "id": 507,
-    "productName": "Tinh bột nghệ nguyên chất Đắk Nông",
+    "productName": "Tinh bột nghệ nguyên chất Đắk Nông - Đặc sản Đắk Nông (OCOP 4 sao)",
     "stars": 4,
     "region": "Đắk Nông",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Đắk Nông",
@@ -5004,15 +5004,15 @@
   },
   "508": {
     "id": 508,
-    "productName": "Cà phê Arabica Cầu Đất thượng hạng (Hộp thiếc)",
+    "productName": "Trà Ô long Cầu Đất - Đà Lạt (OCOP 5 sao)",
     "stars": 5,
     "region": "Lâm Đồng",
-    "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Lâm Đồng",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Lâm Đồng",
-    "certDecision": "QĐ số 3636/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Công ty Cổ phần Cầu Đất Farm Đà Lạt",
+    "producerAddress": "Thôn Trường Thọ, Xã Trạm Hành, TP. Đà Lạt, Lâm Đồng",
+    "certDecision": "QĐ số 3828/QĐ-BNN (OCOP 5 Sao Quốc Gia)",
     "hotline": "094.956.404",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Lâm Đồng",
+      "name": "Showroom Trà & Cà phê Cầu Đất Farm",
       "address": "Đại lộ Trung tâm Hành chính, TP. Lâm Đồng",
       "phone": "094.956.404",
       "hours": "07:30 - 21:00"
@@ -5033,15 +5033,15 @@
   },
   "509": {
     "id": 509,
-    "productName": "Hồng treo gió Đà Lạt công nghệ cao (Hút chân không)",
-    "stars": 5,
+    "productName": "Hồng treo gió công nghệ Nhật Bản Mộc Nhiên (OCOP 4 sao)",
+    "stars": 4,
     "region": "Lâm Đồng",
-    "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Lâm Đồng",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Lâm Đồng",
-    "certDecision": "QĐ số 3653/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Công ty Nông sản Mộc Nhiên Đà Lạt",
+    "producerAddress": "Đường Khe Sanh, Phường 10, TP. Đà Lạt, Lâm Đồng",
+    "certDecision": "QĐ số 3120/QĐ-UBND Tỉnh Lâm Đồng (OCOP 4 Sao)",
     "hotline": "095.963.417",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Lâm Đồng",
+      "name": "Không gian Nông sản Sấy Mộc Nhiên",
       "address": "Đại lộ Trung tâm Hành chính, TP. Lâm Đồng",
       "phone": "095.963.417",
       "hours": "07:30 - 21:00"
@@ -5062,15 +5062,15 @@
   },
   "510": {
     "id": 510,
-    "productName": "Trà Atiso Đà Lạt túi lọc / sấy khô",
+    "productName": "Chuối Laba sấy dẻo Đơn Dương (OCOP 4 sao)",
     "stars": 4,
     "region": "Lâm Đồng",
-    "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Lâm Đồng",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Lâm Đồng",
-    "certDecision": "QĐ số 2730/QĐ-UBND Tỉnh Lâm Đồng (OCOP 4 Sao)",
+    "producerName": "HTX Nông nghiệp Laba Đơn Dương",
+    "producerAddress": "Thị trấn Thạnh Mỹ, Huyện Đơn Dương, Lâm Đồng",
+    "certDecision": "QĐ số 2590/QĐ-UBND Tỉnh Lâm Đồng (OCOP 4 Sao)",
     "hotline": "096.970.430",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Lâm Đồng",
+      "name": "Điểm phân phối Chuối Laba Tiến Vua",
       "address": "Đại lộ Trung tâm Hành chính, TP. Lâm Đồng",
       "phone": "096.970.430",
       "hours": "07:30 - 21:00"
@@ -5091,15 +5091,15 @@
   },
   "511": {
     "id": 511,
-    "productName": "Nước cốt dâu tằm / chanh dây nguyên chất",
+    "productName": "Đông trùng hạ thảo Đà Lạt (OCOP 4 sao)",
     "stars": 4,
     "region": "Lâm Đồng",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Lâm Đồng",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Lâm Đồng",
-    "certDecision": "QĐ số 2753/QĐ-UBND Tỉnh Lâm Đồng (OCOP 4 Sao)",
+    "producerName": "Công ty TNHH Sinh học Cao nguyên Đà Lạt",
+    "producerAddress": "Đường Vạn Hạnh, Phường 8, TP. Đà Lạt, Lâm Đồng",
+    "certDecision": "QĐ số 2840/QĐ-UBND Tỉnh Lâm Đồng (OCOP 4 Sao)",
     "hotline": "097.977.443",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Lâm Đồng",
+      "name": "Trung tâm Dược liệu Đông trùng Cao nguyên",
       "address": "Đại lộ Trung tâm Hành chính, TP. Lâm Đồng",
       "phone": "097.977.443",
       "hours": "07:30 - 21:00"
@@ -5120,7 +5120,7 @@
   },
   "512": {
     "id": 512,
-    "productName": "Hạt điều rang muối Bình Phước xuất khẩu (Hộp cao cấp)",
+    "productName": "Hạt điều rang muối Bình Phước - Đặc sản Bình Phước (OCOP 5 sao)",
     "stars": 5,
     "region": "Bình Phước",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bình Phước",
@@ -5149,7 +5149,7 @@
   },
   "513": {
     "id": 513,
-    "productName": "Cà phê Phước Long hạt rang thượng hạng",
+    "productName": "Cà phê Phước Long hạt rang - Đặc sản Bình Phước (OCOP 5 sao)",
     "stars": 5,
     "region": "Bình Phước",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Bình Phước",
@@ -5178,7 +5178,7 @@
   },
   "514": {
     "id": 514,
-    "productName": "Mật ong hoa điều nguyên chất",
+    "productName": "Mật ong hoa điều nguyên chất - Đặc sản Bình Phước (OCOP 4 sao)",
     "stars": 4,
     "region": "Bình Phước",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Bình Phước",
@@ -5207,7 +5207,7 @@
   },
   "515": {
     "id": 515,
-    "productName": "Trái cây sấy thập cẩm",
+    "productName": "Trái cây sấy thập cẩm - Đặc sản Bình Phước (OCOP 4 sao)",
     "stars": 4,
     "region": "Bình Phước",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Bình Phước",
@@ -5236,7 +5236,7 @@
   },
   "516": {
     "id": 516,
-    "productName": "Bánh tráng phơi sương Trảng Bàng cao cấp (Đóng gói kín)",
+    "productName": "Bánh tráng phơi sương Trảng Bàng - Đặc sản Tây Ninh (OCOP 5 sao)",
     "stars": 5,
     "region": "Tây Ninh",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Tây Ninh",
@@ -5265,7 +5265,7 @@
   },
   "517": {
     "id": 517,
-    "productName": "Muối tôm Tây Ninh thượng hạng (Hũ niêm phong)",
+    "productName": "Muối tôm Tây Ninh - Đặc sản Tây Ninh (OCOP 5 sao)",
     "stars": 5,
     "region": "Tây Ninh",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Tây Ninh",
@@ -5294,7 +5294,7 @@
   },
   "518": {
     "id": 518,
-    "productName": "Bánh tráng me Tây Ninh",
+    "productName": "Bánh tráng me Tây Ninh - Đặc sản Tây Ninh (OCOP 4 sao)",
     "stars": 4,
     "region": "Tây Ninh",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Tây Ninh",
@@ -5323,7 +5323,7 @@
   },
   "519": {
     "id": 519,
-    "productName": "Mít sấy dẻo Tây Ninh",
+    "productName": "Mít sấy dẻo Tây Ninh - Đặc sản Tây Ninh (OCOP 4 sao)",
     "stars": 4,
     "region": "Tây Ninh",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Tây Ninh",
@@ -5352,7 +5352,7 @@
   },
   "520": {
     "id": 520,
-    "productName": "Hạt điều rang muối Bình Dương thượng hạng",
+    "productName": "Hạt điều rang muối Bình Dương - Đặc sản Bình Dương (OCOP 5 sao)",
     "stars": 5,
     "region": "Bình Dương",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bình Dương",
@@ -5381,7 +5381,7 @@
   },
   "521": {
     "id": 521,
-    "productName": "Gốm sứ thủ công mỹ nghệ cao cấp Bình Dương",
+    "productName": "Gốm sứ thủ công mỹ nghệ - Đặc sản Bình Dương (OCOP 5 sao)",
     "stars": 5,
     "region": "Bình Dương",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Bình Dương",
@@ -5410,7 +5410,7 @@
   },
   "522": {
     "id": 522,
-    "productName": "Tinh bột nghệ Bình Dương",
+    "productName": "Tinh bột nghệ Bình Dương - Đặc sản Bình Dương (OCOP 4 sao)",
     "stars": 4,
     "region": "Bình Dương",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bình Dương",
@@ -5439,7 +5439,7 @@
   },
   "523": {
     "id": 523,
-    "productName": "Mủ trôm nguyên chất",
+    "productName": "Mủ trôm nguyên chất - Đặc sản Bình Dương (OCOP 4 sao)",
     "stars": 4,
     "region": "Bình Dương",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Bình Dương",
@@ -5468,7 +5468,7 @@
   },
   "524": {
     "id": 524,
-    "productName": "Hạt điều vị rang muối nguyên bản Nga Biên",
+    "productName": "Hạt điều vị rang muối nguyên bản Nga Biên - Đặc sản Đồng Nai (OCOP 5 sao)",
     "stars": 5,
     "region": "Đồng Nai",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Đồng Nai",
@@ -5497,7 +5497,7 @@
   },
   "525": {
     "id": 525,
-    "productName": "Bột cacao nguyên chất Trọng Đức",
+    "productName": "Bột cacao nguyên chất Trọng Đức - Đặc sản Đồng Nai (OCOP 5 sao)",
     "stars": 5,
     "region": "Đồng Nai",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Đồng Nai",
@@ -5526,7 +5526,7 @@
   },
   "526": {
     "id": 526,
-    "productName": "Trà sen Nhơn Trạch",
+    "productName": "Trà sen Nhơn Trạch - Đặc sản Đồng Nai (OCOP 4 sao)",
     "stars": 4,
     "region": "Đồng Nai",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Đồng Nai",
@@ -5555,7 +5555,7 @@
   },
   "527": {
     "id": 527,
-    "productName": "Mật ong hoa tràm / hoa cao su Đồng Nai",
+    "productName": "Mật ong hoa tràm / hoa cao su Đồng Nai - Đặc sản Đồng Nai (OCOP 4 sao)",
     "stars": 4,
     "region": "Đồng Nai",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Đồng Nai",
@@ -5584,7 +5584,7 @@
   },
   "528": {
     "id": 528,
-    "productName": "Hạt ca cao nguyên chất Châu Đức thượng hạng",
+    "productName": "Hạt ca cao nguyên chất Châu Đức - Đặc sản Bà Rịa - Vũng Tàu (OCOP 5 sao)",
     "stars": 5,
     "region": "Bà Rịa - Vũng Tàu",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Bà Rịa - Vũng Tàu",
@@ -5613,7 +5613,7 @@
   },
   "529": {
     "id": 529,
-    "productName": "Nước mắm Trí Hải cốt đặc biệt",
+    "productName": "Nước mắm Trí Hải cốt đặc biệt - Đặc sản Bà Rịa - Vũng Tàu (OCOP 5 sao)",
     "stars": 5,
     "region": "Bà Rịa - Vũng Tàu",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bà Rịa - Vũng Tàu",
@@ -5642,7 +5642,7 @@
   },
   "530": {
     "id": 530,
-    "productName": "Hải sản khô một nắng Côn Đảo (Mực/Cá thu hút chân không)",
+    "productName": "Hải sản khô một nắng Côn Đảo - Đặc sản Bà Rịa - Vũng Tàu (OCOP 4 sao)",
     "stars": 4,
     "region": "Bà Rịa - Vũng Tàu",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Bà Rịa - Vũng Tàu",
@@ -5671,7 +5671,7 @@
   },
   "531": {
     "id": 531,
-    "productName": "Bánh bông lan trứng muối đóng hộp cứng",
+    "productName": "Bánh bông lan trứng muối đóng hộp cứng - Đặc sản Bà Rịa - Vũng Tàu (OCOP 4 sao)",
     "stars": 4,
     "region": "Bà Rịa - Vũng Tàu",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bà Rịa - Vũng Tàu",
@@ -5700,15 +5700,15 @@
   },
   "532": {
     "id": 532,
-    "productName": "Cà phê hòa tan / rang xay cao cấp xuất khẩu TP.HCM",
-    "stars": 5,
+    "productName": "Tổ yến chưng đường phèn Cần Giờ (OCOP 4 sao)",
+    "stars": 4,
     "region": "Thành phố Hồ Chí Minh",
-    "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Thành phố Hồ Chí Minh",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Thành phố Hồ Chí Minh",
-    "certDecision": "QĐ số 1044/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Công ty TNHH Yến sào Cần Giờ",
+    "producerAddress": "Xã Tam Thôn Hiệp, Huyện Cần Giờ, TP. Hồ Chí Minh",
+    "certDecision": "QĐ số 3240/QĐ-UBND TP. Hồ Chí Minh (OCOP 4 Sao)",
     "hotline": "091.224.716",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Thành phố Hồ Chí Minh",
+      "name": "Showroom Yến sào Cần Giờ Tinh Hoa",
       "address": "Đại lộ Trung tâm Hành chính, TP. Thủ Đức, TP. Hồ Chí Minh",
       "phone": "091.224.716",
       "hours": "07:30 - 21:00"
@@ -5729,15 +5729,15 @@
   },
   "533": {
     "id": 533,
-    "productName": "Thực phẩm sấy khô hữu cơ cao cấp TP.HCM",
-    "stars": 5,
+    "productName": "Xoài cát Cần Giờ (OCOP 4 sao)",
+    "stars": 4,
     "region": "Thành phố Hồ Chí Minh",
-    "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Thành phố Hồ Chí Minh",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Thành phố Hồ Chí Minh",
-    "certDecision": "QĐ số 1061/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "HTX Nông nghiệp Cần Giờ",
+    "producerAddress": "Xã Long Hòa, Huyện Cần Giờ, TP. Hồ Chí Minh",
+    "certDecision": "QĐ số 2810/QĐ-UBND TP. Hồ Chí Minh (OCOP 4 Sao)",
     "hotline": "092.231.729",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Thành phố Hồ Chí Minh",
+      "name": "Cửa hàng Nông sản Sinh thái Cần Giờ",
       "address": "Đại lộ Trung tâm Hành chính, TP. Thủ Đức, TP. Hồ Chí Minh",
       "phone": "092.231.729",
       "hours": "07:30 - 21:00"
@@ -5758,15 +5758,15 @@
   },
   "534": {
     "id": 534,
-    "productName": "Hàng thủ công mây tre đan Sài Gòn",
+    "productName": "Khô cá dứa một nắng Cần Giờ (OCOP 4 sao)",
     "stars": 4,
     "region": "Thành phố Hồ Chí Minh",
-    "producerName": "Công ty TNHH Đặc sản & Quà biếu Thành phố Hồ Chí Minh",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Thành phố Hồ Chí Minh",
-    "certDecision": "QĐ số 3282/QĐ-UBND Tỉnh Thành phố Hồ Chí Minh (OCOP 4 Sao)",
+    "producerName": "Cơ sở Thủy hải sản Nắng Cần Giờ",
+    "producerAddress": "Thị trấn Cần Thạnh, Huyện Cần Giờ, TP. Hồ Chí Minh",
+    "certDecision": "QĐ số 2990/QĐ-UBND TP. Hồ Chí Minh (OCOP 4 Sao)",
     "hotline": "093.238.742",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Thành phố Hồ Chí Minh",
+      "name": "Đại lý Đặc sản Khô cá dứa Cần Giờ",
       "address": "Đại lộ Trung tâm Hành chính, TP. Thủ Đức, TP. Hồ Chí Minh",
       "phone": "093.238.742",
       "hours": "07:30 - 21:00"
@@ -5787,15 +5787,15 @@
   },
   "535": {
     "id": 535,
-    "productName": "Bánh tráng nướng muối ớt Sài Gòn",
+    "productName": "Mật dừa nước ông Sáu - Bình Chánh (OCOP 4 sao)",
     "stars": 4,
     "region": "Thành phố Hồ Chí Minh",
-    "producerName": "Cơ sở Chế biến Gia vị Truyền thống Thành phố Hồ Chí Minh",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Thành phố Hồ Chí Minh",
-    "certDecision": "QĐ số 3305/QĐ-UBND Tỉnh Thành phố Hồ Chí Minh (OCOP 4 Sao)",
+    "producerName": "Công ty TNHH Phát triển Dừa nước Việt Nam (VietNipa)",
+    "producerAddress": "Xã An Phú Tây, Huyện Bình Chánh, TP. Hồ Chí Minh",
+    "certDecision": "QĐ số 3080/QĐ-UBND TP. Hồ Chí Minh (OCOP 4 Sao)",
     "hotline": "094.245.755",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Thành phố Hồ Chí Minh",
+      "name": "Showroom Mật dừa nước VietNipa",
       "address": "Đại lộ Trung tâm Hành chính, TP. Thủ Đức, TP. Hồ Chí Minh",
       "phone": "094.245.755",
       "hours": "07:30 - 21:00"
@@ -5816,7 +5816,7 @@
   },
   "536": {
     "id": 536,
-    "productName": "Gạo Nếp nàng hoa Long An thượng hạng (Hút chân không)",
+    "productName": "Gạo Nếp nàng hoa Long An - Đặc sản Long An (OCOP 5 sao)",
     "stars": 5,
     "region": "Long An",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Long An",
@@ -5845,7 +5845,7 @@
   },
   "537": {
     "id": 537,
-    "productName": "Rượu đế Gò Đen hảo hạng (Bình gốm)",
+    "productName": "Rượu đế Gò Đen hảo hạng - Đặc sản Long An (OCOP 5 sao)",
     "stars": 5,
     "region": "Long An",
     "producerName": "Công ty TNHH Đặc sản & Quà biếu Long An",
@@ -5874,7 +5874,7 @@
   },
   "538": {
     "id": 538,
-    "productName": "Thanh long sấy dẻo Châu Thành",
+    "productName": "Thanh long sấy dẻo Châu Thành - Đặc sản Long An (OCOP 4 sao)",
     "stars": 4,
     "region": "Long An",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Long An",
@@ -5903,7 +5903,7 @@
   },
   "539": {
     "id": 539,
-    "productName": "Bánh tráng Long Trì",
+    "productName": "Bánh tráng Long Trì - Đặc sản Long An (OCOP 4 sao)",
     "stars": 4,
     "region": "Long An",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Long An",
@@ -5932,7 +5932,7 @@
   },
   "540": {
     "id": 540,
-    "productName": "Bột ca cao nguyên chất Xuân Ron Chợ Gạo",
+    "productName": "Bột ca cao nguyên chất Xuân Ron Chợ Gạo - Đặc sản Tiền Giang (OCOP 5 sao)",
     "stars": 5,
     "region": "Tiền Giang",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Tiền Giang",
@@ -5961,7 +5961,7 @@
   },
   "541": {
     "id": 541,
-    "productName": "Kẹo dừa sầu riêng Tiền Giang đặc biệt",
+    "productName": "Kẹo dừa sầu riêng Tiền Giang đặc biệt - Đặc sản Tiền Giang (OCOP 5 sao)",
     "stars": 5,
     "region": "Tiền Giang",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Tiền Giang",
@@ -5990,7 +5990,7 @@
   },
   "542": {
     "id": 542,
-    "productName": "Mít sấy dẻo Cai Lậy",
+    "productName": "Mít sấy dẻo Cai Lậy - Đặc sản Tiền Giang (OCOP 4 sao)",
     "stars": 4,
     "region": "Tiền Giang",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Tiền Giang",
@@ -6019,7 +6019,7 @@
   },
   "543": {
     "id": 543,
-    "productName": "Nước mắm Gò Công",
+    "productName": "Nước mắm Gò Công - Đặc sản Tiền Giang (OCOP 4 sao)",
     "stars": 4,
     "region": "Tiền Giang",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Tiền Giang",
@@ -6048,15 +6048,15 @@
   },
   "544": {
     "id": 544,
-    "productName": "Mật hoa dừa cô đặc Bến Tre",
-    "stars": 5,
+    "productName": "Kẹo dừa truyền thống Tuyết Phụng (OCOP 4 sao)",
+    "stars": 4,
     "region": "Bến Tre",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Bến Tre",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Bến Tre",
-    "certDecision": "QĐ số 1248/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Doanh nghiệp tư nhân Sản xuất Kẹo dừa Tuyết Phụng",
+    "producerAddress": "Số 56 Ấp 4, Thị trấn Mỏ Cày, Huyện Mỏ Cày Nam, Bến Tre",
+    "certDecision": "QĐ số 2730/QĐ-UBND Tỉnh Bến Tre (OCOP 4 Sao)",
     "hotline": "094.308.872",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Bến Tre",
+      "name": "Showroom Kẹo Dừa Tuyết Phụng Mỏ Cày",
       "address": "Đại lộ Trung tâm Hành chính, TP. Bến Tre",
       "phone": "094.308.872",
       "hours": "07:30 - 21:00"
@@ -6077,15 +6077,15 @@
   },
   "545": {
     "id": 545,
-    "productName": "Dầu dừa tinh khiết xuất khẩu Bến Tre",
-    "stars": 5,
+    "productName": "Bưởi da xanh Hàm Luông (OCOP 4 sao)",
+    "stars": 4,
     "region": "Bến Tre",
-    "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bến Tre",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Bến Tre",
-    "certDecision": "QĐ số 1265/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "HTX Bưởi da xanh Bến Tre",
+    "producerAddress": "Xã Giao Long, Huyện Châu Thành, Bến Tre",
+    "certDecision": "QĐ số 2580/QĐ-UBND Tỉnh Bến Tre (OCOP 4 Sao)",
     "hotline": "095.315.885",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Bến Tre",
+      "name": "Trạm Xúc tiến Bưởi da xanh Bến Tre",
       "address": "Đại lộ Trung tâm Hành chính, TP. Bến Tre",
       "phone": "095.315.885",
       "hours": "07:30 - 21:00"
@@ -6106,15 +6106,15 @@
   },
   "546": {
     "id": 546,
-    "productName": "Kẹo dừa Bến Tre truyền thống",
-    "stars": 4,
+    "productName": "Dầu dừa nguyên chất tinh khiết Bến Tre (OCOP 3 sao)",
+    "stars": 3,
     "region": "Bến Tre",
-    "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Bến Tre",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Bến Tre",
-    "certDecision": "QĐ số 1058/QĐ-UBND Tỉnh Bến Tre (OCOP 4 Sao)",
+    "producerName": "Cơ sở Dầu dừa Tinh khiết Bến Tre",
+    "producerAddress": "Xã Hữu Định, Huyện Châu Thành, Bến Tre",
+    "certDecision": "QĐ số 1680/QĐ-UBND Huyện Châu Thành (OCOP 3 Sao)",
     "hotline": "096.322.898",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Bến Tre",
+      "name": "Cửa hàng Tinh hoa Dừa Bến Tre",
       "address": "Đại lộ Trung tâm Hành chính, TP. Bến Tre",
       "phone": "096.322.898",
       "hours": "07:30 - 21:00"
@@ -6135,15 +6135,15 @@
   },
   "547": {
     "id": 547,
-    "productName": "Bánh phồng sữa dừa",
-    "stars": 4,
+    "productName": "Nước màu dừa đậm đặc Mỏ Cày Nam (OCOP 3 sao)",
+    "stars": 3,
     "region": "Bến Tre",
-    "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Bến Tre",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Bến Tre",
-    "certDecision": "QĐ số 1081/QĐ-UBND Tỉnh Bến Tre (OCOP 4 Sao)",
+    "producerName": "Cơ sở Nước màu dừa Truyền thống Mỏ Cày",
+    "producerAddress": "Thị trấn Mỏ Cày Nam, Bến Tre",
+    "certDecision": "QĐ số 1540/QĐ-UBND Huyện Mỏ Cày Nam (OCOP 3 Sao)",
     "hotline": "097.329.911",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Bến Tre",
+      "name": "Đại lý Nước màu dừa Mỏ Cày Nam",
       "address": "Đại lộ Trung tâm Hành chính, TP. Bến Tre",
       "phone": "097.329.911",
       "hours": "07:30 - 21:00"
@@ -6164,7 +6164,7 @@
   },
   "548": {
     "id": 548,
-    "productName": "Kẹo dừa sáp nguyên chất Cầu Kè",
+    "productName": "Kẹo dừa sáp nguyên chất Cầu Kè - Đặc sản Trà Vinh (OCOP 5 sao)",
     "stars": 5,
     "region": "Trà Vinh",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Trà Vinh",
@@ -6193,7 +6193,7 @@
   },
   "549": {
     "id": 549,
-    "productName": "Kẹo dừa sáp cacao / lá dứa Cầu Kè",
+    "productName": "Kẹo dừa sáp cacao / lá dứa Cầu Kè - Đặc sản Trà Vinh (OCOP 5 sao)",
     "stars": 5,
     "region": "Trà Vinh",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Trà Vinh",
@@ -6222,7 +6222,7 @@
   },
   "550": {
     "id": 550,
-    "productName": "Cốm dẹp Trà Vinh",
+    "productName": "Cốm dẹp Trà Vinh - Đặc sản Trà Vinh (OCOP 4 sao)",
     "stars": 4,
     "region": "Trà Vinh",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Trà Vinh",
@@ -6251,7 +6251,7 @@
   },
   "551": {
     "id": 551,
-    "productName": "Bánh tét Trà Vinh hút chân không",
+    "productName": "Bánh tét Trà Vinh - Đặc sản Trà Vinh (OCOP 4 sao)",
     "stars": 4,
     "region": "Trà Vinh",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Trà Vinh",
@@ -6280,7 +6280,7 @@
   },
   "552": {
     "id": 552,
-    "productName": "Tàu hũ ky Bình Minh khô thượng hạng (Đóng gói xuất khẩu)",
+    "productName": "Tàu hũ ky Bình Minh khô - Đặc sản Vĩnh Long (OCOP 5 sao)",
     "stars": 5,
     "region": "Vĩnh Long",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Vĩnh Long",
@@ -6309,7 +6309,7 @@
   },
   "553": {
     "id": 553,
-    "productName": "Mứt bưởi da xanh cao cấp",
+    "productName": "Mứt bưởi da xanh - Đặc sản Vĩnh Long (OCOP 5 sao)",
     "stars": 5,
     "region": "Vĩnh Long",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Vĩnh Long",
@@ -6338,7 +6338,7 @@
   },
   "554": {
     "id": 554,
-    "productName": "Bánh tráng cù lao Mây",
+    "productName": "Bánh tráng cù lao Mây - Đặc sản Vĩnh Long (OCOP 4 sao)",
     "stars": 4,
     "region": "Vĩnh Long",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Vĩnh Long",
@@ -6367,7 +6367,7 @@
   },
   "555": {
     "id": 555,
-    "productName": "Trà đinh lăng Vĩnh Long",
+    "productName": "Trà đinh lăng Vĩnh Long - Đặc sản Vĩnh Long (OCOP 4 sao)",
     "stars": 4,
     "region": "Vĩnh Long",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Vĩnh Long",
@@ -6396,15 +6396,15 @@
   },
   "556": {
     "id": 556,
-    "productName": "Sen hồng sấy khô / Sữa hạt sen Đồng Tháp thượng hạng",
-    "stars": 5,
+    "productName": "Hạt sen sấy giòn bơ tỏi Tháp Mười (OCOP 4 sao)",
+    "stars": 4,
     "region": "Đồng Tháp",
-    "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Đồng Tháp",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Đồng Tháp",
-    "certDecision": "QĐ số 1452/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Công ty Cổ phần Thực phẩm Sen Đại Việt",
+    "producerAddress": "Thị trấn Mỹ An, Huyện Tháp Mười, Đồng Tháp",
+    "certDecision": "QĐ số 2950/QĐ-UBND Tỉnh Đồng Tháp (OCOP 4 Sao)",
     "hotline": "097.392.228",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Đồng Tháp",
+      "name": "Showroom Sen Đại Việt Tháp Mười",
       "address": "Đại lộ Trung tâm Hành chính, TP. Đồng Tháp",
       "phone": "097.392.228",
       "hours": "07:30 - 21:00"
@@ -6425,15 +6425,15 @@
   },
   "557": {
     "id": 557,
-    "productName": "Xoài cát Cao Lãnh sấy dẻo công nghệ cao",
-    "stars": 5,
+    "productName": "Bánh phồng tôm Sa Giang cao cấp (OCOP 4 sao)",
+    "stars": 4,
     "region": "Đồng Tháp",
-    "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Đồng Tháp",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Đồng Tháp",
-    "certDecision": "QĐ số 1469/QĐ-TTg (OCOP 5 Sao Quốc Gia)",
+    "producerName": "Công ty Cổ phần Xuất nhập khẩu Sa Giang",
+    "producerAddress": "Lô CII-3, KCN Sa Đéc, TP. Sa Đéc, Đồng Tháp",
+    "certDecision": "QĐ số 3180/QĐ-UBND Tỉnh Đồng Tháp (OCOP 4 Sao)",
     "hotline": "098.399.241",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Đồng Tháp",
+      "name": "Điểm Giới thiệu Bánh phồng tôm Sa Giang",
       "address": "Đại lộ Trung tâm Hành chính, TP. Đồng Tháp",
       "phone": "098.399.241",
       "hours": "07:30 - 21:00"
@@ -6454,15 +6454,15 @@
   },
   "558": {
     "id": 558,
-    "productName": "Nem Lai Vung hút chân không chuẩn vị",
-    "stars": 4,
+    "productName": "Nem chua Lai Vung - Cơ sở Giáo Dừa (OCOP 3 sao)",
+    "stars": 3,
     "region": "Đồng Tháp",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Đồng Tháp",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Đồng Tháp",
-    "certDecision": "QĐ số 1334/QĐ-UBND Tỉnh Đồng Tháp (OCOP 4 Sao)",
+    "producerName": "Cơ sở Nem Giáo Dừa Lai Vung",
+    "producerAddress": "Thị trấn Lai Vung, Huyện Lai Vung, Đồng Tháp",
+    "certDecision": "QĐ số 1890/QĐ-UBND Huyện Lai Vung (OCOP 3 Sao)",
     "hotline": "090.406.254",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Đồng Tháp",
+      "name": "Đại lý Nem Lai Vung Giáo Dừa Chính Gốc",
       "address": "Đại lộ Trung tâm Hành chính, TP. Đồng Tháp",
       "phone": "090.406.254",
       "hours": "07:30 - 21:00"
@@ -6483,15 +6483,15 @@
   },
   "559": {
     "id": 559,
-    "productName": "Cá lóc khô một nắng",
+    "productName": "Mango sấy dẻo Cao Lãnh (OCOP 4 sao)",
     "stars": 4,
     "region": "Đồng Tháp",
-    "producerName": "HTX Sản xuất Nông đặc sản An toàn Đồng Tháp",
-    "producerAddress": "Khu sản xuất tập trung Làng nghề OCOP, Tỉnh Đồng Tháp",
-    "certDecision": "QĐ số 1357/QĐ-UBND Tỉnh Đồng Tháp (OCOP 4 Sao)",
+    "producerName": "HTX Nông sản Sấy Cao Lãnh",
+    "producerAddress": "Xã Tịnh Thới, TP. Cao Lãnh, Đồng Tháp",
+    "certDecision": "QĐ số 2820/QĐ-UBND Tỉnh Đồng Tháp (OCOP 4 Sao)",
     "hotline": "091.413.267",
     "primaryStore": {
-      "name": "Showroom OCOP & Trưng bày Đặc sản Đồng Tháp",
+      "name": "Cửa hàng Nông sản Đất Sen Hồng",
       "address": "Đại lộ Trung tâm Hành chính, TP. Đồng Tháp",
       "phone": "091.413.267",
       "hours": "07:30 - 21:00"
@@ -6512,7 +6512,7 @@
   },
   "560": {
     "id": 560,
-    "productName": "Đường thốt nốt nguyên chất An Giang (Dạng viên/hũ cao cấp)",
+    "productName": "Đường thốt nốt nguyên chất An Giang - Đặc sản An Giang (OCOP 5 sao)",
     "stars": 5,
     "region": "An Giang",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn An Giang",
@@ -6541,7 +6541,7 @@
   },
   "561": {
     "id": 561,
-    "productName": "Gạo Nếp vú sữa Tân Châu thượng hạng (Hút chân không)",
+    "productName": "Gạo Nếp vú sữa Tân Châu - Đặc sản An Giang (OCOP 5 sao)",
     "stars": 5,
     "region": "An Giang",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn An Giang",
@@ -6570,7 +6570,7 @@
   },
   "562": {
     "id": 562,
-    "productName": "Mắm cá linh / Mắm thái Châu Đốc (Hũ nhựa kín)",
+    "productName": "Mắm cá linh / Mắm thái Châu Đốc - Đặc sản An Giang (OCOP 4 sao)",
     "stars": 4,
     "region": "An Giang",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống An Giang",
@@ -6599,7 +6599,7 @@
   },
   "563": {
     "id": 563,
-    "productName": "Khô bò dứa An Phú",
+    "productName": "Khô bò dứa An Phú - Đặc sản An Giang (OCOP 4 sao)",
     "stars": 4,
     "region": "An Giang",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn An Giang",
@@ -6628,7 +6628,7 @@
   },
   "564": {
     "id": 564,
-    "productName": "Nước mắm Phú Quốc Huỳnh Khoa 43°/45° đạm",
+    "productName": "Nước mắm Phú Quốc Huỳnh Khoa 43°/45° đạm - Đặc sản Kiên Giang (OCOP 5 sao)",
     "stars": 5,
     "region": "Kiên Giang",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Kiên Giang",
@@ -6657,7 +6657,7 @@
   },
   "565": {
     "id": 565,
-    "productName": "Rượu sim Phú Quốc thượng hạng",
+    "productName": "Rượu sim Phú Quốc - Đặc sản Kiên Giang (OCOP 5 sao)",
     "stars": 5,
     "region": "Kiên Giang",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Kiên Giang",
@@ -6686,7 +6686,7 @@
   },
   "566": {
     "id": 566,
-    "productName": "Khô cá thiều Phú Quốc hút chân không",
+    "productName": "Khô cá thiều Phú Quốc - Đặc sản Kiên Giang (OCOP 4 sao)",
     "stars": 4,
     "region": "Kiên Giang",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Kiên Giang",
@@ -6715,7 +6715,7 @@
   },
   "567": {
     "id": 567,
-    "productName": "Tiêu hạt Phú Quốc khô",
+    "productName": "Tiêu hạt Phú Quốc khô - Đặc sản Kiên Giang (OCOP 4 sao)",
     "stars": 4,
     "region": "Kiên Giang",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Kiên Giang",
@@ -6744,7 +6744,7 @@
   },
   "568": {
     "id": 568,
-    "productName": "Cacao nguyên chất Phong Điền thượng hạng (Hộp thiếc)",
+    "productName": "Cacao nguyên chất Phong Điền - Đặc sản Cần Thơ (OCOP 5 sao)",
     "stars": 5,
     "region": "Cần Thơ",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Cần Thơ",
@@ -6773,7 +6773,7 @@
   },
   "569": {
     "id": 569,
-    "productName": "Bánh tráng Thuận Hưng cao cấp (Loại dày/mỏng phơi khô)",
+    "productName": "Bánh tráng Thuận Hưng - Đặc sản Cần Thơ (OCOP 5 sao)",
     "stars": 5,
     "region": "Cần Thơ",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Cần Thơ",
@@ -6802,7 +6802,7 @@
   },
   "570": {
     "id": 570,
-    "productName": "Trà đinh lăng Cần Thơ",
+    "productName": "Trà đinh lăng Cần Thơ - Đặc sản Cần Thơ (OCOP 4 sao)",
     "stars": 4,
     "region": "Cần Thơ",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Cần Thơ",
@@ -6831,7 +6831,7 @@
   },
   "571": {
     "id": 571,
-    "productName": "Khô nhái (\"vũ nữ chân dài\") đóng gói",
+    "productName": "Khô nhái đóng gói - Đặc sản Cần Thơ (OCOP 4 sao)",
     "stars": 4,
     "region": "Cần Thơ",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Cần Thơ",
@@ -6860,7 +6860,7 @@
   },
   "572": {
     "id": 572,
-    "productName": "Khô cá thát lát Hậu Giang thượng hạng (Hút chân không cấp đông)",
+    "productName": "Khô cá thát lát Hậu Giang - Đặc sản Hậu Giang (OCOP 5 sao)",
     "stars": 5,
     "region": "Hậu Giang",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hậu Giang",
@@ -6889,7 +6889,7 @@
   },
   "573": {
     "id": 573,
-    "productName": "Trà mãng cầu Hậu Giang nguyên chất",
+    "productName": "Trà mãng cầu Hậu Giang nguyên chất - Đặc sản Hậu Giang (OCOP 5 sao)",
     "stars": 5,
     "region": "Hậu Giang",
     "producerName": "HTX Nông nghiệp & Dược liệu Danh trà Hậu Giang",
@@ -6918,7 +6918,7 @@
   },
   "574": {
     "id": 574,
-    "productName": "Khóm Cầu Đúc sấy dẻo",
+    "productName": "Khóm Cầu Đúc sấy dẻo - Đặc sản Hậu Giang (OCOP 4 sao)",
     "stars": 4,
     "region": "Hậu Giang",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Hậu Giang",
@@ -6947,7 +6947,7 @@
   },
   "575": {
     "id": 575,
-    "productName": "Mật ong hoa tràm U Minh",
+    "productName": "Mật ong hoa tràm U Minh - Đặc sản Hậu Giang (OCOP 4 sao)",
     "stars": 4,
     "region": "Hậu Giang",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Hậu Giang",
@@ -6976,7 +6976,7 @@
   },
   "576": {
     "id": 576,
-    "productName": "Gạo ST25 Sóc Trăng chính hãng Hồ Quang Trí (Hút chân không)",
+    "productName": "Gạo ST25 Sóc Trăng chính hãng Hồ Quang Trí - Đặc sản Sóc Trăng (OCOP 5 sao)",
     "stars": 5,
     "region": "Sóc Trăng",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Sóc Trăng",
@@ -7005,7 +7005,7 @@
   },
   "577": {
     "id": 577,
-    "productName": "Bánh pía Sóc Trăng cao cấp thượng hạng (Hộp đặc biệt)",
+    "productName": "Bánh pía Sóc Trăng - Đặc sản Sóc Trăng (OCOP 5 sao)",
     "stars": 5,
     "region": "Sóc Trăng",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Sóc Trăng",
@@ -7034,7 +7034,7 @@
   },
   "578": {
     "id": 578,
-    "productName": "Lạp xưởng tôm Sóc Trăng hút chân không",
+    "productName": "Lạp xưởng tôm Sóc Trăng - Đặc sản Sóc Trăng (OCOP 4 sao)",
     "stars": 4,
     "region": "Sóc Trăng",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Sóc Trăng",
@@ -7063,7 +7063,7 @@
   },
   "579": {
     "id": 579,
-    "productName": "Bánh phồng tôm Miệt Thứ",
+    "productName": "Bánh phồng tôm Miệt Thứ - Đặc sản Sóc Trăng (OCOP 4 sao)",
     "stars": 4,
     "region": "Sóc Trăng",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Sóc Trăng",
@@ -7092,7 +7092,7 @@
   },
   "580": {
     "id": 580,
-    "productName": "Muối hạt / Muối tinh Bạc Liêu cao cấp (Hộp xuất khẩu)",
+    "productName": "Muối hạt / Muối tinh Bạc Liêu - Đặc sản Bạc Liêu (OCOP 5 sao)",
     "stars": 5,
     "region": "Bạc Liêu",
     "producerName": "Cơ sở Chế biến Gia vị Truyền thống Bạc Liêu",
@@ -7121,7 +7121,7 @@
   },
   "581": {
     "id": 581,
-    "productName": "Gạo Nếp thơm Bạc Liêu tuyển chọn",
+    "productName": "Gạo Nếp thơm Bạc Liêu tuyển chọn - Đặc sản Bạc Liêu (OCOP 5 sao)",
     "stars": 5,
     "region": "Bạc Liêu",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Bạc Liêu",
@@ -7150,7 +7150,7 @@
   },
   "582": {
     "id": 582,
-    "productName": "Bánh phồng tôm Bạc Liêu",
+    "productName": "Bánh phồng tôm Bạc Liêu - Đặc sản Bạc Liêu (OCOP 4 sao)",
     "stars": 4,
     "region": "Bạc Liêu",
     "producerName": "HTX Nông nghiệp Dịch vụ Bản địa Bạc Liêu",
@@ -7179,7 +7179,7 @@
   },
   "583": {
     "id": 583,
-    "productName": "Khô cá lóc đồng Bạc Liêu",
+    "productName": "Khô cá lóc đồng Bạc Liêu - Đặc sản Bạc Liêu (OCOP 4 sao)",
     "stars": 4,
     "region": "Bạc Liêu",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Bạc Liêu",
@@ -7208,7 +7208,7 @@
   },
   "584": {
     "id": 584,
-    "productName": "Tôm khô Cà Mau loại thượng hạng đặc biệt (Hút chân không)",
+    "productName": "Tôm khô Cà Mau loại - Đặc sản Cà Mau (OCOP 5 sao)",
     "stars": 5,
     "region": "Cà Mau",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Cà Mau",
@@ -7237,7 +7237,7 @@
   },
   "585": {
     "id": 585,
-    "productName": "Mật ong rừng U Minh Hạ nguyên chất 100%",
+    "productName": "Mật ong rừng U Minh Hạ nguyên chất 100% - Đặc sản Cà Mau (OCOP 5 sao)",
     "stars": 5,
     "region": "Cà Mau",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Cà Mau",
@@ -7266,7 +7266,7 @@
   },
   "586": {
     "id": 586,
-    "productName": "Khô cá bổi U Minh",
+    "productName": "Khô cá bổi U Minh - Đặc sản Cà Mau (OCOP 4 sao)",
     "stars": 4,
     "region": "Cà Mau",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Cà Mau",
@@ -7295,7 +7295,7 @@
   },
   "587": {
     "id": 587,
-    "productName": "Cua biển Cà Mau đóng thùng xốp vận chuyển xa",
+    "productName": "Cua biển Cà Mau đóng thùng xốp vận chuyển xa - Đặc sản Cà Mau (OCOP 4 sao)",
     "stars": 4,
     "region": "Cà Mau",
     "producerName": "HTX Sản xuất Nông đặc sản An toàn Cà Mau",

@@ -9,7 +9,7 @@ function parse(text) {
     if (/^# .*PHẦN 3/.test(line)) group = 'nam';
     const heading = line.match(/^#### (\d+)\. (.+)/);
     if (heading) { province = { number: Number(heading[1]), name: heading[2].trim() }; continue; }
-    const starHeading = line.match(/^\* \*\*OCOP ([45]) Sao:\*\*/i);
+    const starHeading = line.match(/^\* \*\*OCOP ([345]) Sao:\*\*/i);
     if (starHeading) { currentStars = Number(starHeading[1]); continue; }
     const numberedProduct = line.match(/^\d+\. (.+?):\s*~([\d.]+)\s*[–-]\s*([\d.]+)\s*VNĐ(.*)$/);
     if (numberedProduct) {
@@ -18,7 +18,7 @@ function parse(text) {
       rows.push({ row: rows.length + 1, provinceNumber: province.number, region: province.name, macroRegion: group, name, starsMin: currentStars, starsMax: currentStars, priceMin: Number(min.replaceAll('.', '')), priceMax: Number(max.replaceAll('.', '')), priceOpenEnded: suffix.includes('+'), priceSuffix: suffix.trim(), sourceLine: line });
       continue;
     }
-    const product = line.match(/^\* \*\*(.+?) \(OCOP (4-5|4|5) sao\):\*\*\s*~([\d.]+)\s*[–-]\s*([\d.]+)\s*VNĐ(.*)$/);
+    const product = line.match(/^\* \*\*(.+?) \(OCOP (3-5|3-4|4-5|3|4|5) sao\):\*\*\s*~([\d.]+)\s*[–-]\s*([\d.]+)\s*VNĐ(.*)$/);
     if (!product) { if (line.startsWith('* **')) throw Error('Unparsed product: ' + line); continue; }
     const [, name, stars, min, max, suffix] = product;
     rows.push({ row: rows.length + 1, provinceNumber: province.number, region: province.name, macroRegion: group, name, starsMin: Number(stars[0]), starsMax: Number(stars.at(-1)), priceMin: Number(min.replaceAll('.', '')), priceMax: Number(max.replaceAll('.', '')), priceOpenEnded: suffix.includes('+'), priceSuffix: suffix.trim(), sourceLine: line });

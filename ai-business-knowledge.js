@@ -190,7 +190,7 @@
     topProductsFinancials: [
       {
         id: 336,
-        name: "Trà SADU Phúc Lộc Thọ (Hà Nội)",
+        name: "Gốm sứ tâm linh Bát Tràng 5★ (Hà Nội)",
         retailPrice: 2000000,
         cogs: 1200000,
         platformCommission: 100000, // 5%
