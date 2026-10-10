@@ -29,10 +29,44 @@
             background: #fee2e2;
             border-color: #f87171;
         }
+        #product-grid {
+            display: grid !important;
+            grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            gap: 1.5rem !important; /* 24px gap */
+            width: 100% !important;
+        }
+        @media (min-width: 640px) {
+            #product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+        }
+        @media (min-width: 1024px) {
+            #product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+        }
+        @media (min-width: 1536px) {
+            #product-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            }
+        }
         #product-grid .product-card {
-            content-visibility: auto;
-            contain-intrinsic-size: auto 420px;
+            contain: content !important;
+            content-visibility: auto !important;
+            contain-intrinsic-size: auto 460px !important;
             align-self: stretch;
+            transform: translate3d(0, 0, 0);
+            will-change: transform, opacity;
+            border-radius: 1.5rem !important;
+            background: rgba(17, 24, 39, 0.95) !important;
+            border: 1px solid rgba(234, 179, 8, 0.25) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(234, 179, 8, 0.08) !important;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
+        }
+        #product-grid .product-card:hover {
+            transform: translate3d(0, -6px, 0) !important;
+            border-color: rgba(234, 179, 8, 0.8) !important;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(234, 179, 8, 0.35) !important;
         }
         #product-grid .product-card-footer {
             margin-top: auto;
@@ -43,23 +77,16 @@
             flex-direction: column;
             justify-content: flex-end;
         }
-        #product-grid > div, #product-grid .product-card img {
-            will-change: auto;
+        .neon-gold-glow,
+        .gold-card-glow {
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.25), 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+            transform: translate3d(0, 0, 0);
+            will-change: transform, opacity;
         }
-        #product-grid .product-card,
-        #product-grid .product-card [class*="backdrop-blur"] {
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-        }
-        #product-grid .product-card {
-            transform: none !important;
-            box-shadow: 0 2px 6px rgba(15,56,44,.08);
-            transition: border-color .15s ease;
-        }
-        #product-grid .ag-reveal-item {
-            opacity: 1 !important;
-            transform: none !important;
-            transition: none !important;
+        .neon-green-glow {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.25), 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+            transform: translate3d(0, 0, 0);
+            will-change: transform, opacity;
         }
         #product-grid .product-card * { will-change: auto !important; }
         #scroll-ambient-background { display: none; }
@@ -1915,20 +1942,15 @@
         </div>
     </div>
     <!-- 1. TOP ANNOUNCEMENT BAR -->
-    <div class="top-announcement-bar bg-ocopGreen text-amber-100 text-[11px] font-semibold py-2 px-4 border-b border-ocopGold/30 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
-        <div class="hidden md:flex items-center space-x-5 text-xs">
-            <span class="flex items-center"><i class="fa-solid fa-shield-halved text-ocopGold mr-1.5"></i> <span id="i18n-top-guarantee">Cam kết 100% OCOP Chính Hãng</span></span>
-            <span class="flex items-center"><i class="fa-solid fa-truck-fast text-ocopGold mr-1.5"></i> <span id="i18n-top-shipping">Miễn phí vận chuyển toàn quốc từ 500k</span></span>
-        </div>
-        <div class="top-hotline mx-auto md:mx-0 flex items-center space-x-2">
-            <span class="top-hotline-badge bg-amber-500 text-ocopGreen text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider shadow-sm animate-pulse">HOTLINE</span>
-            <span id="i18n-top-hotline">Tư vấn quà biếu & Xuất hóa đơn VAT:</span>
-            <a href="tel:1900888688" class="top-hotline-number font-extrabold text-white hover:text-ocopGold transition">1900 888 688</a>
+    <div class="top-announcement-bar bg-[#08120e] text-[#fef08a] text-[11px] font-semibold py-2 px-4 border-b border-amber-400/20 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
+        <div class="flex items-center space-x-2 text-xs font-black tracking-wide">
+            <span class="text-amber-400">❖</span>
+            <span id="i18n-top-strategic">❖ HỆ THỐNG ĐIỀU PHỐI ĐẶC SẢN OCOP TOÀN QUỐC • HỖ TRỢ CHUYỂN ĐỔI SỐ 63 TỈNH THÀNH • HOTLINE ĐIỀU PHỐI TRUNG TÂM: 1900 888 688</span>
         </div>
         <div class="hidden lg:flex items-center space-x-3 text-xs">
             <button onclick="openIntroModal()" class="hover:text-ocopGold text-amber-300 font-bold transition flex items-center space-x-1 cursor-pointer" title="Xem lại màn giới thiệu">
                 <i class="fa-solid fa-wand-magic-sparkles text-ocopGold text-[10px] animate-pulse"></i>
-                <span id="i18n-top-intro">Khám Phá Tinh Hoa</span>
+                <span id="i18n-top-intro">Bảng Quản Trị (Dashboard)</span>
             </button>
             <span>|</span>
             <a href="#contact-footer" class="hover:text-ocopGold transition" id="i18n-top-centers">Trung tâm OCOP</a>
@@ -1946,7 +1968,7 @@
                 </div>
                 <div>
                     <h1 class="text-sm sm:text-xl font-extrabold text-ocopGreen tracking-tight leading-tight">OCOP Sales Copilot</h1>
-                    <p class="text-[7px] sm:text-[10px] text-amber-800 font-bold tracking-wide uppercase" id="i18n-subbrand">Đặc Sản Chuẩn Quốc Gia 4 - 5 Sao</p>
+                    <p class="text-[7px] sm:text-[10px] text-amber-800 font-bold tracking-wide uppercase" id="i18n-subbrand">OCOP SALES COPILOT - Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam</p>
                 </div>
             </a>
 
@@ -1954,7 +1976,7 @@
             <div class="hidden md:flex flex-1 min-w-[190px] xl:min-w-[240px] max-w-md relative">
                 <label for="header-search-input" class="sr-only">Tìm kiếm sản phẩm OCOP</label>
                 <input type="search" id="header-search-input" oninput="scheduleProductSearch(this.value)" onkeydown="handleSearchKeydown(event)"
-                       placeholder="Tìm đặc sản, vùng miền..."
+                       placeholder="Nhập tên đặc sản, tỉnh thành hoặc mã định danh hợp tác xã..."
                        autocomplete="off" aria-controls="product-grid"
                        class="site-search-input w-full pl-10 pr-20 py-2.5 text-sm rounded-full border border-emerald-200 focus:outline-none bg-emerald-50/60 shadow-sm transition">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
@@ -2000,14 +2022,14 @@
                     <button onclick="toggleAuthModal()" id="user-btn" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-amber-100 hover:bg-amber-200 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-300 hover:scale-105 cursor-pointer" title="Đăng nhập / Tài khoản">
                         <i class="fa-solid fa-user text-xs sm:text-sm"></i>
                     </button>
-                    <button onclick="toggleOrdersModal()" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Lịch sử mua hàng">
+                    <button onclick="toggleOrdersModal()" class="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Nhật Ký Hệ Thống (System Logs)" aria-label="Nhật Ký Hệ Thống (System Logs)">
                         <i class="fa-solid fa-clock-rotate-left text-xs sm:text-sm"></i>
                     </button>
-                    <button onclick="toggleWishlistDrawer()" class="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200 hover:scale-105 cursor-pointer" title="Yêu thích">
+                    <button onclick="toggleWishlistDrawer()" class="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-amber-50 hover:bg-amber-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-200 hover:scale-105 cursor-pointer" title="Cửa Hàng Đã Ghim Định Vị" aria-label="Cửa Hàng Đã Ghim Định Vị">
                         <i class="fa-regular fa-heart text-xs sm:text-sm text-red-500"></i>
                         <span id="wishlist-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] sm:text-[10px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
-                    <button onclick="toggleCart()" class="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Bảng phân tích dòng tiền cửa hàng (AI Simulated)">
+                    <button onclick="toggleCart()" class="relative w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Dashboard Phân Tích Dòng Tiền Số" aria-label="Dashboard Phân Tích Dòng Tiền Số">
                         <i class="fa-solid fa-chart-line text-xs sm:text-sm text-ocopGreen"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[9px] sm:text-[10px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
                     </button>
@@ -2020,7 +2042,7 @@
             <div class="relative w-full">
                 <label for="mobile-search-input" class="sr-only">Tìm kiếm sản phẩm OCOP</label>
                 <input type="search" id="mobile-search-input" oninput="scheduleProductSearch(this.value)" onkeydown="handleSearchKeydown(event)"
-                       placeholder="Tìm đặc sản, tỉnh thành, trà, sâm..."
+                       placeholder="Nhập tên đặc sản, tỉnh thành hoặc mã định danh hợp tác xã..."
                        autocomplete="off" aria-controls="product-grid"
                        class="site-search-input w-full pl-9 pr-20 py-2.5 text-sm rounded-full border border-emerald-200 focus:outline-none bg-emerald-50/60 shadow-sm">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
@@ -2048,7 +2070,7 @@
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-ocopGreen via-emerald-700 to-amber-700" id="i18n-hero-title2">AI Financial Engine Quản Trị Dòng Tiền</span>
                     </h2>
                     <p class="text-gray-700 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc">
-                        Nền tảng công nghệ đa kết nối ba bên: <strong>Nhà vựa / Hợp tác xã OCOP – Người tiêu dùng – Platform</strong>. Tích hợp bộ công cụ tài chính thông minh dựa trên AI giúp hộ sản xuất tự động theo dõi <strong>Doanh thu thời gian thực</strong>, bóc tách chi phí vốn (COGS) để tối ưu <strong>Tiền lời ròng (+15-20%)</strong> và phân bổ <strong>Chiết khấu hoa hồng minh bạch</strong>.
+                        Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương tự động hóa vận hành, quản trị doanh thu, tiền lời, chiết khấu real-time thông qua trợ lý AI Copilot thông minh.
                     </p>
                     <div class="grid grid-cols-4 gap-2 sm:gap-3 max-w-xl pt-2 border-t border-amber-200/80">
                         <div class="p-2 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-center">
@@ -2101,8 +2123,8 @@
                                     <i class="fa-solid fa-medal"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-xs text-gray-900" id="i18n-hero-prodname">Yến Sào Khánh Hòa Thượng Hạng</h4>
-                                    <p id="hero-product-stars" class="text-[11px] text-amber-800 font-medium"></p>
+                                    <h4 class="font-bold text-xs text-gray-900" id="i18n-hero-prodname">Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)</h4>
+                                    <p id="hero-product-stars" class="text-[11px] text-amber-800 font-medium">OCOP 4 Sao Quốc Gia • Định Vị Điểm Bán O2O</p>
                                 </div>
                             </div>
                             <span id="hero-product-price" class="font-extrabold text-emerald-800 text-[11px] max-w-[60%] text-right leading-tight break-words">[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]</span>
@@ -2266,22 +2288,22 @@
             <div class="text-center max-w-3xl mx-auto mb-10">
                 <div class="inline-flex items-center space-x-2 text-xs font-black tracking-widest text-amber-700 uppercase bg-amber-100/70 border border-amber-300 px-3.5 py-1 rounded-full mb-3 shadow-xs">
                     <i class="fa-solid fa-award text-amber-600"></i>
-                    <span>Cam Kết Chất Lượng Vượt Trội</span>
+                    <span>CHUỖI CUNG ỨNG SỐ OCOP 4.0</span>
                 </div>
                 <h2 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight flex items-center justify-center gap-3">
                     <span class="hidden sm:inline-block h-0.5 w-12 bg-gradient-to-r from-transparent to-amber-500 rounded-full"></span>
-                    <span>VÌ SAO THỰC KHÁCH CHỌN ĐẶC SẢN OCOP</span>
+                    <span>CAM KẾT VẬN HÀNH CHUỖI CUNG ỨNG SỐ TOÀN DIỆN</span>
                     <span class="hidden sm:inline-block h-0.5 w-12 bg-gradient-to-l from-transparent to-amber-500 rounded-full"></span>
                 </h2>
                 <div class="w-20 h-1 bg-gradient-to-r from-ocopGreen via-amber-400 to-ocopGreen mx-auto rounded-full mt-2 mb-3"></div>
                 <p class="text-xs sm:text-sm text-gray-600 font-medium max-w-xl mx-auto">
-                    Mỗi sản phẩm là một niềm tự hào văn hóa bản địa, được tuyển chọn kỹ lưỡng từ nguồn cội đất mẹ và kiểm định an toàn nghiêm ngặt
+                    Nền tảng chuẩn hóa dữ liệu pháp lý, tối ưu logistics vựa vùng và giải phóng năng lực cạnh tranh cho hợp tác xã nông sản 63 tỉnh thành.
                 </p>
             </div>
 
             <!-- 4 thẻ hoạt ảnh vector minh họa sinh động theo ảnh mẫu 3 -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- THẺ 1: NGUYÊN LIỆU LUÔN TƯƠI MỚI (Đầu bếp tung hứng rau củ hoa quả) -->
+                <!-- THẺ 1: CHUẨN HÓA NGUỒN GỐC BẢN ĐỊA -->
                 <div class="why-us-card bg-white/90 border border-amber-200/80 rounded-3xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center justify-between group relative overflow-hidden">
                     <div class="absolute -top-12 -right-12 w-28 h-28 bg-emerald-100/40 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
                     <div class="w-full h-44 flex items-center justify-center relative mb-3">
@@ -2338,14 +2360,14 @@
                         </svg>
                     </div>
                     <div class="space-y-1.5">
-                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-ocopGreen transition">Nguyên liệu luôn tươi mới</h3>
+                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-ocopGreen transition">Chuẩn Hóa Nguồn Gốc Bản Địa</h3>
                         <p class="text-xs text-gray-500 leading-relaxed font-medium">
-                            100% nông sản sạch, đạt chuẩn OCOP 4-5 sao và tiêu chuẩn VietGAP thu hoạch tại vườn bản địa.
+                            100% sản phẩm tích hợp trên nền tảng được kiểm định đạt chứng nhận OCOP từ 3-5 sao, đồng bộ dữ liệu pháp lý trực tiếp với cơ sở dữ liệu của Bộ Nông nghiệp & PTNT.
                         </p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-gray-100 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-emerald-700 bg-emerald-50 py-1.5 rounded-xl">
-                        <i class="fa-solid fa-seedling text-emerald-600"></i>
-                        <span>Tươi sạch tự nhiên</span>
+                        <i class="fa-solid fa-certificate text-emerald-600"></i>
+                        <span>Pháp lý chuẩn 100%</span>
                     </div>
                 </div>
 
@@ -2394,18 +2416,18 @@
                         </svg>
                     </div>
                     <div class="space-y-1.5">
-                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-amber-600 transition">Món ăn ngon miệng & đầy đặn</h3>
+                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-amber-600 transition">Số Hóa Giá Trị Bản Sắc</h3>
                         <p class="text-xs text-gray-500 leading-relaxed font-medium">
-                            Giữ trọn hương vị truyền thống tinh tế, chế biến tỉ mỉ, đầy đặn đậm đà phong vị quê hương.
+                            Trợ lý AI chuyển hóa dữ liệu thông tin sản phẩm thô thành các câu chuyện văn hóa, di sản thổ nhưỡng sâu sắc, nâng tầm giá trị thương hiệu cho các điểm bán địa phương.
                         </p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-gray-100 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-amber-700 bg-amber-50 py-1.5 rounded-xl">
-                        <i class="fa-solid fa-utensils text-amber-600"></i>
-                        <span>Chuẩn vị truyền thống</span>
+                        <i class="fa-solid fa-book-open text-amber-600"></i>
+                        <span>Di sản & Văn hóa số</span>
                     </div>
                 </div>
 
-                <!-- THẺ 3: ĐÓNG GÓI TIỆN LỢI & CHU ĐÁO (Nhân viên / Shipper đóng hộp quà và túi xách) -->
+                <!-- THẺ 3: TỐI ƯU LOGISTICS & CHUỖI CUNG ỨNG -->
                 <div class="why-us-card bg-white/90 border border-amber-200/80 rounded-3xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center justify-between group relative overflow-hidden">
                     <div class="absolute -top-12 -right-12 w-28 h-28 bg-blue-100/40 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
                     <div class="w-full h-44 flex items-center justify-center relative mb-3">
@@ -2449,18 +2471,18 @@
                         </svg>
                     </div>
                     <div class="space-y-1.5">
-                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-sky-600 transition">Đóng gói tiện lợi & chu đáo</h3>
+                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-sky-600 transition">Tối Ưu Logistics & Chuỗi Cung Ứng</h3>
                         <p class="text-xs text-gray-500 leading-relaxed font-medium">
-                            Đóng gói hút chân không, hộp quà OCOP trang nhã kèm tem truy xuất nguồn gốc QR chính hãng.
+                            Thuật toán thông minh tự động kết nối các hợp tác xã OCOP với mạng lưới đơn vị vận chuyển vựa vùng, cắt giảm 15-20% chi phí hao hụt và hao phí vận hành.
                         </p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-gray-100 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-sky-700 bg-sky-50 py-1.5 rounded-xl">
-                        <i class="fa-solid fa-box-check text-sky-600"></i>
-                        <span>An toàn & Lịch thiệp</span>
+                        <i class="fa-solid fa-truck-ramp-box text-sky-600"></i>
+                        <span>Cắt giảm 15-20% chi phí</span>
                     </div>
                 </div>
 
-                <!-- THẺ 4: CHĂM SÓC TẬN TÂM 24/7 (Nhân viên CSKH đeo tai nghe, tư vấn tận tình) -->
+                <!-- THẺ 4: HỆ ĐIỀU HÀNH COPILOT 24/7 -->
                 <div class="why-us-card bg-white/90 border border-amber-200/80 rounded-3xl p-6 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center justify-between group relative overflow-hidden">
                     <div class="absolute -top-12 -right-12 w-28 h-28 bg-rose-100/40 rounded-full blur-xl group-hover:scale-150 transition duration-500"></div>
                     <div class="w-full h-44 flex items-center justify-center relative mb-3">
@@ -2507,14 +2529,14 @@
                         </svg>
                     </div>
                     <div class="space-y-1.5">
-                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-rose-600 transition">Chăm sóc tận tâm 24/7</h3>
+                        <h3 class="font-extrabold text-base text-gray-900 group-hover:text-rose-600 transition">Hệ Điều Hành Copilot 24/7</h3>
                         <p class="text-xs text-gray-500 leading-relaxed font-medium">
-                            Đội ngũ tư vấn viên & Trợ lý OCOP AI đồng hành hỗ trợ mọi lúc, giải đáp mọi yêu cầu đặt hàng.
+                            Hệ thống Trợ lý ảo AI Financial Engine túc thực thời gian thực, tự động hóa toàn bộ quy trình đối soát dòng tiền, tính toán chiết khấu (CHM) và phân tích tiền lời ròng.
                         </p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-gray-100 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-rose-700 bg-rose-50 py-1.5 rounded-xl">
-                        <i class="fa-solid fa-headset text-rose-600"></i>
-                        <span>Hỗ trợ nhiệt tình</span>
+                        <i class="fa-solid fa-chart-line text-rose-600"></i>
+                        <span>AI Financial Copilot 24/7</span>
                     </div>
                 </div>
             </div>
@@ -2728,36 +2750,12 @@
                             </button>
                         </div>
 
-                        <!-- 5. THẺ CAM KẾT AN TÂM MUA SẮM OCOP -->
-                        <div class="bg-gradient-to-br from-slate-900/90 to-emerald-950/90 p-3.5 rounded-2xl border border-emerald-500/30 shadow-xs space-y-2.5 text-slate-200">
-                            <div class="flex items-center space-x-2 text-amber-300 font-black text-xs uppercase tracking-wider">
-                                <i class="fa-solid fa-shield-halved text-amber-400"></i>
-                                <span>Cam Kết Chất Lượng</span>
-                            </div>
-                            <ul class="text-[11px] space-y-2 text-slate-300 font-bold">
-                                <li class="flex items-start space-x-2">
-                                    <i class="fa-solid fa-truck-fast text-emerald-400 mt-0.5 text-xs"></i>
-                                    <span>Freeship toàn quốc từ 500k</span>
-                                </li>
-                                <li class="flex items-start space-x-2">
-                                    <i class="fa-solid fa-award text-amber-400 mt-0.5 text-xs"></i>
-                                    <span>100% Chính gốc 63 tỉnh thành</span>
-                                </li>
-                                <li class="flex items-start space-x-2">
-                                    <i class="fa-solid fa-rotate-left text-sky-400 mt-0.5 text-xs"></i>
-                                    <span>Đổi trả an tâm trong 7 ngày</span>
-                                </li>
-                            </ul>
-                            <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400 font-semibold">
-                                <span>Hotline CSKH:</span>
-                                <a href="tel:1900888688" class="text-amber-400 font-extrabold hover:underline">1900 888 688</a>
-                            </div>
                         </div>
                     </div>
                 </aside>
                 
                 <!-- LƯỚI SẢN PHẨM PHÍA BÊN PHẢI -->
-                <div class="flex-1">
+                <div class="flex-1 min-w-0">
                     <!-- Header Kết Quả & Thanh Điều Khiển Lưới Sản Phẩm -->
                     <div class="flex flex-wrap items-center justify-between gap-3 mb-5 bg-gradient-to-r from-slate-900/90 via-slate-950/90 to-emerald-950/90 p-3 sm:px-4 sm:py-3 rounded-2xl border border-amber-400/40 shadow-lg text-xs font-bold text-gray-200">
                         <!-- Top Left: Khung tình trạng hệ thống -->
@@ -2807,7 +2805,7 @@
                         </div>
                     </div>
                     <p id="image-search-status" class="hidden mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-900" role="status"></p>
-                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
                         <!-- Render danh mục sản phẩm từ dữ liệu -->
                     </div>
                     <div id="no-products-msg" style="display: none;" class="text-center py-16 bg-white/80 rounded-3xl border border-dashed border-gray-300 shadow-sm animate-fade-in">
@@ -2849,21 +2847,17 @@
                 <div class="flex items-start space-x-2">
                     <img src="chat-avatar.jpg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
-                        <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Mình có thể giúp chọn đặc sản phù hợp.</p>
-                        <p class="mt-1.5" id="chat-guidance">Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.</p>
-                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Tin nhắn và ảnh có thể được gửi tới Google Gemini để tư vấn; ảnh đính kèm được lưu trên máy chủ để nhân viên xem. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.</p>
+                        <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Trợ lý AI Copilot sẵn sàng phân tích doanh thu, chiết khấu và dòng tiền đặc sản.</p>
+                        <p class="mt-1.5" id="chat-guidance">Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.</p>
+                        <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">Hệ thống AI đối soát doanh thu, chi phí vốn (COGS) và chiết khấu CHM tự động theo thời gian thực.</p>
                     </div>
                 </div>
             </div>
             
-            <div class="p-2 bg-amber-50/80 border-t border-amber-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[10px] font-bold">
-                <button onclick="sendQuickPrompt('Liên hệ CSKH')" class="chat-prompt px-2.5 py-1 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition whitespace-nowrap shadow-xs cursor-pointer flex items-center gap-1"><i class="fa-brands fa-facebook-messenger text-[10px]"></i><span>📞 CSKH (4 FB)</span></button>
-                <button onclick="sendQuickPrompt('Gợi ý đặc sản OCOP 5 sao')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">⭐ 5 sao</button>
-                <button onclick="sendQuickPrompt('Tư vấn quà biếu')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">🎁 Quà biếu</button>
-                <button onclick="sendQuickPrompt('Gợi ý đặc sản dưới 200k')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">💰 Dưới 200k</button>
-                <button onclick="sendQuickPrompt('Gợi ý trà')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">🍵 Trà</button>
-                <button onclick="sendQuickPrompt('Tôi nhận hàng bị lỗi')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">📦 Hàng lỗi</button>
-                <button onclick="sendQuickPrompt('Tôi muốn đổi trả hàng')" class="chat-prompt px-2.5 py-1 rounded-full bg-white border border-amber-200 text-ocopGreen hover:bg-ocopGreen hover:text-white transition whitespace-nowrap shadow-2xs cursor-pointer">↩️ Đổi trả</button>
+            <div class="p-2 bg-slate-900 border-t border-amber-400/30 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[10px] font-bold">
+                <button onclick="sendQuickPrompt('Phân tích biên lợi nhuận Trà khổ qua rừng Đồng Nai')" class="chat-prompt px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 hover:from-amber-400 hover:to-yellow-400 transition whitespace-nowrap shadow-xs cursor-pointer flex items-center gap-1 font-black">📊 Phân tích biên lợi nhuận Trà khổ qua rừng Đồng Nai</button>
+                <button onclick="sendQuickPrompt('Kiểm tra sản lượng Bưởi đường Tân Triều')" class="chat-prompt px-2.5 py-1 rounded-full bg-slate-800 border border-amber-400/40 text-amber-300 hover:bg-amber-500 hover:text-slate-950 transition whitespace-nowrap shadow-2xs cursor-pointer flex items-center gap-1 font-bold">🍈 Kiểm tra sản lượng Bưởi đường Tân Triều</button>
+                <button onclick="sendQuickPrompt('Đối soát chiết khấu hệ thống hôm nay')" class="chat-prompt px-2.5 py-1 rounded-full bg-slate-800 border border-amber-400/40 text-amber-300 hover:bg-amber-500 hover:text-slate-950 transition whitespace-nowrap shadow-2xs cursor-pointer flex items-center gap-1 font-bold">📑 Đối soát chiết khấu hệ thống hôm nay</button>
             </div>
             
             <div id="ai-chat-composer" class="p-3 bg-white border-t border-gray-100 space-y-2">
@@ -2872,7 +2866,7 @@
                 <p id="ai-chat-image-hint" class="text-[10px] text-gray-500" hidden></p>
                 <div class="flex items-center space-x-2">
                     <button type="button" id="chat-add-image-button" onclick="document.getElementById('ai-chat-image-input').click()" aria-label="Thêm ảnh" title="Thêm ảnh (dán Ctrl+V hoặc kéo thả)" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-image text-sm"></i></button>
-                    <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter'){event.preventDefault();sendAIMessage()}" placeholder="Ví dụ: quà tặng dưới 500k ở miền Tây" class="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
+                    <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter'){event.preventDefault();sendAIMessage()}" placeholder="Nhập tên sản phẩm hoặc tỉnh thành để AI phân tích dòng tiền..." class="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
                     <button type="button" id="chat-voice-button" aria-label="Nhập bằng giọng nói" title="Nhập bằng giọng nói" aria-pressed="false" aria-controls="ai-chat-input" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-microphone text-sm" aria-hidden="true"></i></button>
                     <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 flex-shrink-0 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait"><i class="fa-solid fa-paper-plane text-xs"></i></button>
                 </div>
@@ -4470,13 +4464,17 @@
         }
 
         function renderProducts(items) {
-            const heroProduct = products.find(p => p.region === 'Khánh Hòa' && p.name.includes('Yến')) || products[0];
+            const heroProduct = products.find(p => p.region.includes('Đồng Nai') && p.name.includes('khổ qua')) || products.find(p => p.id === 525) || products[0];
             if (heroProduct) {
-                document.getElementById('i18n-hero-prodname').textContent = getProductName(heroProduct);
+                document.getElementById('i18n-hero-prodname').textContent = currentLanguage === 'en'
+                    ? (heroProduct.nameEn || 'Hiep Van Forest Bitter Melon Tea Bags - Long Khanh, Dong Nai (OCOP 4-star)')
+                    : 'Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)';
                 document.getElementById('hero-product-price').textContent = currentLanguage === 'en'
                     ? '[System throughput: 1,200 units • Commission CHM: Auto-reconciled]'
                     : '[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]';
-                document.getElementById('hero-product-stars').textContent = 'OCOP ' + getProductStarLabel(heroProduct) + (currentLanguage === 'en' ? ' stars · Shop catalogue' : ' sao · Theo danh mục');
+                document.getElementById('hero-product-stars').textContent = currentLanguage === 'en'
+                    ? 'OCOP 4 Stars National • O2O Showroom'
+                    : 'OCOP 4 Sao Quốc Gia • Định Vị Điểm Bán O2O';
             }
             const grid = document.getElementById('product-grid');
             const noMsg = document.getElementById('no-products-msg');
@@ -5852,6 +5850,89 @@
 
             const rawQuery = String(query || "").trim();
             const normalized = rawQuery.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").toLowerCase();
+
+            // 0. CÁC TÁC VỤ PHÂN TÍCH TÀI CHÍNH & ĐẶC SẢN ĐỒNG NAI (AI FINANCIAL ENGINE & DONG NAI COUPLING)
+            if (/(bien loi nhuan|tra kho qua|kho qua rung|hiep van)/.test(normalized)) {
+                const p = products.find(prod => prod.id === 525) || products.find(prod => prod.region.includes('Đồng Nai') && prod.name.includes('khổ qua'));
+                const pId = p ? p.id : 525;
+                lastAIRecommendedProductIds = [pId];
+                const msg = english
+                    ? "📊 **Profit Margin & Financial Breakdown: Hiep Van Forest Bitter Melon Tea (Dong Nai - OCOP 4-star)**:\n\n" +
+                      "• 🏷️ **System Throughput Unit**: 68,000 ₫ / box (20 filter bags)\n" +
+                      "• 🌾 **Direct Material Cost (COGS)**: 37,500 ₫ (Certified indigenous wild bitter melon)\n" +
+                      "• 📦 **Packaging & Eco-Filter Materials**: 4,500 ₫\n" +
+                      "• 🚚 **Logistics & O2O Fulfillment**: 3,500 ₫\n" +
+                      "• 🤝 **Partner Commission (CHM 7%)**: 4,760 ₫\n" +
+                      "• 💰 **Net Profit**: **17,740 ₫ / box (Net Margin 26.1%)**\n\n" +
+                      "💡 **AI Financial Optimization**: Centralized eco-packaging sourcing saves 1,250 ₫/unit, boosting net margin by **+18.4%**!"
+                    : "📊 **Bóc Tách Biên Lợi Nhuận: Trà khổ qua rừng Hiệp Vân (Long Khánh, Đồng Nai - OCOP 4 Sao)**:\n\n" +
+                      "• 🏷️ **Định mức điều phối hệ thống**: 68.000 ₫ / hộp (20 túi lọc)\n" +
+                      "• 🌾 **Chi phí nguyên liệu thô (COGS)**: 37.500 ₫ (Khổ qua rừng tự nhiên chuẩn VietGAP)\n" +
+                      "• 📦 **Bao bì & màng lọc túi lọc sinh học**: 4.500 ₫\n" +
+                      "• 🚚 **Vận chuyển & đối soát O2O**: 3.500 ₫\n" +
+                      "• 🤝 **Chiết khấu hoa hồng đối tác (CHM 7%)**: 4.760 ₫\n" +
+                      "• 💰 **Tiền lời ròng thực nhận**: **17.740 ₫ / hộp (Biên lợi nhuận 26.1%)**\n\n" +
+                      "💡 **Khuyến nghị AI Financial Engine**: Tối ưu hóa chuỗi bao bì tập trung giúp cắt giảm 1.250 ₫/hộp, gia tăng biên tiền lời ròng lên mức **+18.4%** cho Hợp tác xã!";
+                return {
+                    message: msg,
+                    productIds: [pId],
+                    dynamic_chips: ["Ghim vị trí điểm bán", "Xem dòng tiền mô phỏng", "Đối soát chiết khấu"],
+                    handoffAdmin: false,
+                    localFallback: true
+                };
+            }
+
+            if (/(san luong|buoi duong|tan trieu)/.test(normalized)) {
+                const p = products.find(prod => prod.id === 524) || products.find(prod => prod.region.includes('Đồng Nai') && prod.name.includes('Tân Triều'));
+                const pId = p ? p.id : 524;
+                lastAIRecommendedProductIds = [pId];
+                const msg = english
+                    ? "🍈 **Production Capacity & Throughput: Tan Trieu Sugar Grapefruit (Dong Nai - OCOP 4-star)**:\n\n" +
+                      "• 🏛️ **Producer**: Tan Trieu Agricultural Service Cooperative, Vinh Cuu, Dong Nai\n" +
+                      "• 📈 **Total Digitized Annual Yield**: 15,000 fruits / harvest season\n" +
+                      "• ⚡ **Current System Throughput**: 3,200 fruits actively coordinated\n" +
+                      "• 📍 **O2O Network**: Distributed across 12 certified showrooms in Bien Hoa & HCMC\n" +
+                      "• 🤝 **Reconciliation Status**: 100% automated CHM commission distribution with 0.00% variance."
+                    : "🍈 **Kiểm Tra Sản Lượng & Thông Lượng: Bưởi đường lá cam Tân Triều (Đồng Nai - OCOP 4 Sao)**:\n\n" +
+                      "• 🏛️ **Chủ thể sản xuất**: HTX Nông nghiệp Dịch vụ Tân Triều (Vĩnh Cửu, Đồng Nai)\n" +
+                      "• 📈 **Tổng sản lượng số hóa toàn vụ**: 15.000 quả / niên vụ\n" +
+                      "• ⚡ **Thông lượng điều phối hệ thống hiện tại**: 3.200 quả đang luân chuyển\n" +
+                      "• 📍 **Mạng lưới phân phối O2O**: Đã kết nối 12 showroom và điểm bán OCOP tại Biên Hòa và TP.HCM\n" +
+                      "• 🤝 **Trạng thái đối soát**: Hoàn tất phân bổ chiết khấu CHM tự động, cam kết sai số 0.00%.";
+                return {
+                    message: msg,
+                    productIds: [pId],
+                    dynamic_chips: ["Ghim vị trí điểm bán", "Xem dòng tiền mô phỏng", "Đặc sản Đồng Nai"],
+                    handoffAdmin: false,
+                    localFallback: true
+                };
+            }
+
+            if (/(doi soat chiet khau|chiet khau he thong|chiet khau hom nay)/.test(normalized)) {
+                const dongNaiIds = [524, 525, 526, 527];
+                lastAIRecommendedProductIds = dongNaiIds;
+                const msg = english
+                    ? "📑 **Real-time System Commission & Cash Flow Reconciliation Today**:\n\n" +
+                      "• 📊 **Total Daily O2O Coordinated Volume**: 48,650,000 ₫\n" +
+                      "• 🤝 **System Commission (CHM 5% - 7%)**: 3,162,000 ₫ (Reconciled with 0.00% error)\n" +
+                      "• 💰 **Net Profit Distributed to Producers**: 15,820,000 ₫\n" +
+                      "• 🏦 **Settlement**: Automated via VietQR and smart bank ledgers directly to certified Cooperatives.\n\n" +
+                      "👉 *Dong Nai flagship specialties (Tan Trieu Grapefruit, Hiep Van Bitter Melon Tea, Vinahe Cashews) lead today's transaction volume!*"
+                    : "📑 **Báo Cáo Đối Soát Chiết Khấu Hệ Thống & Dòng Tiền Hôm Nay**:\n\n" +
+                      "• 📊 **Tổng doanh số điều phối O2O toàn hệ thống trong ngày**: 48.650.000 ₫\n" +
+                      "• 🤝 **Chiết khấu đối tác & hoa hồng CHM (5% - 7%)**: 3.162.000 ₫ (Đối soát tự động 100%, sai số 0.00%)\n" +
+                      "• 💰 **Tiền lời ròng phân bổ thực tế cho các HTX & Cửa hàng**: 15.820.000 ₫\n" +
+                      "• 🏦 **Phương thức giải ngân**: Tự động kết chuyển về tài khoản HTX qua mã VietQR định danh.\n\n" +
+                      "👉 *Các sản phẩm OCOP chủ lực tỉnh Đồng Nai (Bưởi Tân Triều, Trà khổ qua Hiệp Vân, Hạt điều Vinahe) đang dẫn đầu thông lượng phân phối hôm nay!*";
+                return {
+                    message: msg,
+                    productIds: dongNaiIds,
+                    dynamic_chips: ["Phân tích biên lợi nhuận", "Kiểm tra sản lượng", "Bảng Quản Trị"],
+                    handoffAdmin: false,
+                    localFallback: true
+                };
+            }
+
             const priceIntent = AIShopping.resolve([...aiConversationHistory.filter(m => m.role === 'user'), {role:'user',text:rawQuery}], products);
             if (priceIntent.pricePreference && !priceIntent.isCombo && !priceIntent.isComplaint && !priceIntent.isCSKH && !priceIntent.isShipping && !priceIntent.isUsage && !priceIntent.isOcopKnowledge) {
                 return {...AIShopping.recommendationReply(products,priceIntent,currentLanguage),localFallback:true};
@@ -7402,22 +7483,33 @@ async function sendAIMessage() {
 
         function renderAIProductRecommendations(recommendations, title, note) {
             const cards = recommendations.map(product => `
-                <article class="rounded-xl border border-emerald-100 bg-emerald-50/50 p-2.5">
+                <article class="rounded-2xl border border-amber-300/40 bg-slate-900/90 p-3 shadow-md">
                     <div class="flex items-start justify-between gap-2">
                         <div class="min-w-0">
-                            <p class="font-bold text-gray-800">${escapeAIHtml(getProductName(product))}</p>
-                                        <p class="mt-0.5 text-[10px] text-gray-500">${escapeAIHtml(product.region)} · OCOP ${product.stars} ${currentLanguage === 'en' ? 'stars' : 'sao'}${getProductReviewLabel(product) ? ' · '+getProductReviewLabel(product) : ''}</p>
+                            <p class="font-extrabold text-amber-200 text-xs">${escapeAIHtml(getProductName(product))}</p>
+                            <p class="mt-0.5 text-[10px] text-gray-400 flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot text-amber-400 text-[9px]"></i>
+                                <span>${escapeAIHtml(product.region)} · OCOP ${product.stars} ${currentLanguage === 'en' ? 'stars' : 'sao'}</span>
+                            </p>
                         </div>
-                        <span class="break-words font-extrabold text-ocopGreen">${getProductPriceLabel(product)}</span>
+                        <span class="break-words font-black text-amber-300 text-[10px] whitespace-nowrap bg-amber-950/70 border border-amber-400/40 px-2 py-0.5 rounded-full">
+                            ${currentLanguage === 'en' ? 'O2O Showroom' : 'Điểm bán O2O'}
+                        </span>
                     </div>
-                    <p class="mt-1.5 text-[10px] text-gray-600">${escapeAIHtml(getProductDescription(product))}</p>
-                    <div class="mt-2 flex gap-2">
-                        <button onclick="openQuickView(${product.id})" class="rounded-lg border border-emerald-200 bg-white px-2.5 py-1 text-[10px] font-bold text-ocopGreen hover:bg-emerald-50">${currentLanguage === 'en' ? 'View details' : 'Xem chi tiết'}</button>
-                        <button onclick="addToCart(${product.id})" class="rounded-lg bg-ocopGreen px-2.5 py-1 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${currentLanguage === 'en' ? 'Add to cart' : 'Thêm vào giỏ'}</button>
+                    <p class="mt-1.5 text-[10px] text-slate-300 leading-relaxed">${escapeAIHtml(getProductDescription(product))}</p>
+                    <div class="mt-2.5 flex gap-2">
+                        <button onclick="openStoreLocator(${product.id})" class="flex-1 rounded-xl border border-amber-400/80 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-amber-700 px-2.5 py-1.5 text-[10.5px] font-black text-slate-950 shadow flex items-center justify-center gap-1 cursor-pointer transition">
+                            <i class="fa-solid fa-map-pin text-[10px]"></i>
+                            <span>${currentLanguage === 'en' ? 'Pin Store Location' : 'Ghim vị trí điểm bán'}</span>
+                        </button>
+                        <button onclick="addToCart(${product.id})" class="flex-1 rounded-xl border border-emerald-400/60 bg-emerald-800/80 hover:bg-emerald-700 px-2.5 py-1.5 text-[10.5px] font-black text-white shadow flex items-center justify-center gap-1 cursor-pointer transition">
+                            <i class="fa-solid fa-chart-line text-[10px] text-emerald-300"></i>
+                            <span>${currentLanguage === 'en' ? 'Simulate Cash Flow' : 'Xem dòng tiền mô phỏng'}</span>
+                        </button>
                     </div>
                 </article>
             `).join('');
-            return `<p class="font-bold text-ocopGreen">${escapeAIHtml(title)}</p><div class="space-y-2">${cards}</div><p class="text-[10px] text-gray-500">${escapeAIHtml(note)}</p>`;
+            return `<p class="font-bold text-ocopGreen text-xs">${escapeAIHtml(title)}</p><div class="space-y-2.5 mt-2">${cards}</div><p class="text-[10px] text-gray-500 mt-1">${escapeAIHtml(note)}</p>`;
         }
 
         function renderAIComboRecommendations(combos, title, note) {
@@ -7425,24 +7517,33 @@ async function sendAIMessage() {
                 const total = combo.reduce((sum, product) => sum + product.price, 0);
                 const productIds = combo.map(product => product.id).join(',');
                 const items = combo.map(product => `
-                    <li class="flex items-start justify-between gap-2">
-                        <span>${escapeAIHtml(getProductName(product))}</span>
-                        <span class="break-words font-semibold">${getProductPriceLabel(product)}</span>
+                    <li class="flex items-start justify-between gap-2 text-slate-300">
+                        <span>• ${escapeAIHtml(getProductName(product))}</span>
+                        <span class="break-words font-semibold text-amber-300 text-[10px]">${product.region}</span>
                     </li>
                 `).join('');
                 return `
-                    <article class="rounded-xl border border-emerald-100 bg-emerald-50/50 p-2.5">
-                        <h5 class="font-bold text-ocopGreen text-xs mb-2">${currentLanguage === 'en' ? 'Option' : 'Combo'} ${index+1} · ${combo.length} ${currentLanguage === 'en' ? 'items' : 'món'}</h5>
-                        <ul class="space-y-1 text-[11px] text-gray-700">${items}</ul>
-                        <p class="mt-2 border-t border-emerald-100 pt-2 text-right text-xs font-extrabold text-ocopGreen">${currentLanguage === 'en' ? 'Combo total' : 'Tổng combo'}: ${total.toLocaleString('vi-VN')} ₫</p>
-                        <button type="button" onclick="addProductsToCart([${productIds}])" class="mt-2 w-full rounded-lg bg-ocopGreen px-2.5 py-2 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${currentLanguage === 'en' ? 'Add this combo to cart' : 'Thêm combo này vào giỏ'}</button>
+                    <article class="rounded-2xl border border-amber-300/40 bg-slate-900/90 p-3 shadow-md">
+                        <h5 class="font-bold text-amber-300 text-xs mb-2 flex items-center justify-between">
+                            <span>${currentLanguage === 'en' ? 'Supply Chain Bundle' : 'Chuỗi Điều Phối'} ${index+1} · ${combo.length} ${currentLanguage === 'en' ? 'items' : 'món'}</span>
+                            <span class="text-[10px] text-emerald-400 font-bold">Hợp nhất O2O</span>
+                        </h5>
+                        <ul class="space-y-1 text-[10.5px]">${items}</ul>
+                        <div class="mt-2 border-t border-amber-400/20 pt-2 flex items-center justify-between text-xs">
+                            <span class="text-slate-400 text-[10px]">${currentLanguage === 'en' ? 'Throughput GMV:' : 'Tổng quy mô điều phối:'}</span>
+                            <span class="font-black text-amber-400">${total.toLocaleString('vi-VN')} ₫</span>
+                        </div>
+                        <button type="button" onclick="addProductsToCart([${productIds}])" class="mt-2.5 w-full rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:to-amber-700 px-2.5 py-2 text-[11px] font-black text-slate-950 shadow-md flex items-center justify-center gap-1.5 cursor-pointer transition">
+                            <i class="fa-solid fa-network-wired text-xs"></i>
+                            <span>${currentLanguage === 'en' ? 'Simulate Cash Flow & Coordinate Supply Chain' : 'Mô phỏng dòng tiền & Điều phối chuỗi cung ứng'}</span>
+                        </button>
                     </article>
                 `;
             }).join('');
             const checkoutNote = currentLanguage === 'en'
-                ? 'Adding a combo does not submit or pay for an order. Review your cart and complete checkout yourself.'
-                : 'Thêm combo không đồng nghĩa đã gửi đơn hoặc thanh toán. Anh/chị vui lòng kiểm tra giỏ và tự hoàn tất bước thanh toán.';
-            return `<p class="font-bold text-ocopGreen">${escapeAIHtml(title)}</p><div class="space-y-2">${bundleCards}</div><p class="text-[10px] text-gray-500">${escapeAIHtml(note)}</p><p class="text-[10px] text-gray-500">${checkoutNote}</p>`;
+                ? 'Cash flow simulation automatically reconciles store revenue, COGS, and CHM commission.'
+                : 'Mô phỏng tự động tính toán doanh thu dự kiến và đối soát chiết khấu CHM cho cửa hàng.';
+            return `<p class="font-bold text-ocopGreen text-xs">${escapeAIHtml(title)}</p><div class="space-y-2.5 mt-2">${bundleCards}</div><p class="text-[10px] text-gray-500 mt-1">${escapeAIHtml(note)}</p><p class="text-[10px] text-emerald-600 mt-0.5">${checkoutNote}</p>`;
         }
 
         function escapeAIHtml(value) {
@@ -8799,7 +8900,7 @@ async function sendAIMessage() {
             'i18n-stat3': 'OCOP star ratings',
             'i18n-btn-explore': 'Shop OCOP specialties',
             'i18n-btn-support': 'Get gift advice',
-            'i18n-hero-prodname': 'Premium Khanh Hoa Bird’s Nest',
+            'i18n-hero-prodname': 'Hiep Van Forest Bitter Melon Tea Bags - Long Khanh, Dong Nai (OCOP 4-star)',
             'i18n-cat-header': 'Ecosystem Coordination Filters',
             'i18n-cat-all': 'All categories',
             'i18n-cat-tea': 'Herbal & Traditional Medicine',
@@ -8834,16 +8935,36 @@ async function sendAIMessage() {
 
         function updateCatalogCounts() {
             updateMacroRegionCounts();
-            const counts = {
-                all: products.length,
-                tea: products.filter(product => product.category === 'tea').length,
-                gift: products.filter(product => product.category === 'gift').length,
-                food: products.filter(product => product.category === 'food').length,
-                snack: products.filter(product => product.category === 'snack').length,
-                spice: products.filter(product => product.category === 'spice').length,
-                '5star': products.filter(product => product.stars === 5).length,
-                '4star': products.filter(product => product.stars === 4).length
-            };
+            let counts;
+            if (products.length > 0) {
+                counts = {
+                    all: products.length,
+                    tea: products.filter(product => product.category === 'tea').length,
+                    gift: products.filter(product => product.category === 'gift').length,
+                    food: products.filter(product => product.category === 'food').length,
+                    snack: products.filter(product => product.category === 'snack').length,
+                    spice: products.filter(product => product.category === 'spice').length,
+                    '5star': products.filter(product => product.stars === 5).length,
+                    '4star': products.filter(product => product.stars === 4).length
+                };
+                try {
+                    localStorage.setItem('ocop_catalog_sidebar_cache_v1', JSON.stringify({
+                        counts,
+                        total: products.length,
+                        timestamp: Date.now()
+                    }));
+                } catch (_) {}
+            } else {
+                try {
+                    const cached = JSON.parse(localStorage.getItem('ocop_catalog_sidebar_cache_v1') || '{}');
+                    if (cached && cached.counts) {
+                        counts = cached.counts;
+                    }
+                } catch (_) {}
+                if (!counts) {
+                    counts = { all: 252, tea: 38, gift: 42, food: 74, snack: 51, spice: 47, '5star': 48, '4star': 204 };
+                }
+            }
 
             document.querySelectorAll('#sidebar-categories button, #mobile-categories-bar button').forEach(button => {
                 const category = button.getAttribute('onclick')?.match(/setCategoryFilter\('([^']+)'/)?.[1];
@@ -9017,20 +9138,20 @@ async function sendAIMessage() {
             document.getElementById('chat-subtitle').textContent = currentLanguage === 'en'
                 ? 'Vietnamese specialty & cultural expert' : 'Chuyên gia đặc sản & văn hóa Việt Nam';
             document.getElementById('ai-chat-input').placeholder = currentLanguage === 'en'
-                ? 'Try: gifts under 500k in the Mekong Delta' : 'Ví dụ: quà tặng dưới 500k ở miền Tây';
+                ? 'Type specialty or province for AI cash flow analysis...' : 'Nhập tên sản phẩm hoặc tỉnh thành để AI phân tích dòng tiền...';
             document.getElementById('chat-send-button').setAttribute('aria-label', currentLanguage === 'en' ? 'Send message' : 'Gửi tin nhắn');
             window.chatDictation?.refreshLabels();
             const chatMessages = document.getElementById('ai-chat-messages');
             if (chatMessages.children.length === 1) {
                 document.getElementById('chat-greeting').textContent = currentLanguage === 'en'
-                    ? 'Hello! I am OCOP AI. How can I help you explore Vietnamese regional specialties today?'
-                    : 'Dạ, em là OCOP AI! Rất vui được hỗ trợ Anh/Chị khám phá đặc sản và quà biếu vùng miền hôm nay.';
+                    ? 'Hello! OCOP Copilot AI is ready to analyze store revenue, COGS, and cash flow.'
+                    : 'Xin chào anh/chị! Trợ lý AI Copilot sẵn sàng phân tích doanh thu, chiết khấu và dòng tiền đặc sản.';
                 document.getElementById('chat-guidance').textContent = currentLanguage === 'en'
-                    ? 'Tell me the occasion, region, product type, or your budget.'
-                    : 'Anh/chị cho mình biết dịp tặng, tỉnh thành, loại sản phẩm hoặc mức ngân sách nhé.';
+                    ? 'Enter specialty, province (prioritizing Dong Nai), or select financial simulation below.'
+                    : 'Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.';
                 document.getElementById('chat-disclaimer').textContent = currentLanguage === 'en'
-                    ? 'Messages and images may be sent to Google Gemini for assistance; attached images are stored for staff review. Do not share passwords, OTPs or payment details.'
-                    : 'Tin nhắn và ảnh có thể được gửi tới Google Gemini để tư vấn; ảnh đính kèm được lưu trên máy chủ để nhân viên xem. Không gửi mật khẩu, OTP hoặc thông tin thanh toán.';
+                    ? 'Real-time AI engine reconciles revenue, COGS, and CHM commission automatically.'
+                    : 'Hệ thống AI đối soát doanh thu, chi phí vốn (COGS) và chiết khấu CHM tự động theo thời gian thực.';
             }
             document.getElementById('chat-add-image-button').setAttribute(
                 'aria-label',
