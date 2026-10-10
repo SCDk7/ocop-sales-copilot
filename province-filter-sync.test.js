@@ -115,7 +115,7 @@ test('Catalog parent wrapper and multi-column product grid layout validation', (
     assert(html.includes('width: 320px'), 'Sidebar width must be locked at 320px');
 
     // 3. Kiểm tra #product-grid cấu hình 3 cột trên desktop
-    assert(html.includes('grid-template-columns: repeat(3, minmax(0, 1fr))'), 'Desktop product grid must display 3 columns');
+    assert(html.includes('grid-template-columns: repeat(3, 1fr)'), 'Desktop product grid must display 3 columns');
     assert(html.includes('#product-grid .product-card'), 'Product card sizing rules must be defined');
     assert(html.includes('#product-grid .product-card-image-wrap'), 'Image wrap must enforce 220px height with cover');
 });

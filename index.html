@@ -64,27 +64,29 @@
         /* ============================================================= */
         #product-grid {
             display: grid !important;
-            grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            grid-template-columns: repeat(3, 1fr) !important;
             gap: 24px !important;
             width: 100% !important;
             align-content: start !important;
         }
-        @media (min-width: 640px) {
+        @media (max-width: 639px) {
+            #product-grid {
+                grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+                gap: 16px !important;
+            }
+        }
+        @media (min-width: 640px) and (max-width: 1023px) {
             #product-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-                gap: 24px !important;
+                gap: 20px !important;
             }
         }
         @media (min-width: 1024px) {
             #product-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
                 gap: 24px !important;
-            }
-        }
-        @media (min-width: 1600px) {
-            #product-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
-                gap: 24px !important;
+                width: 100% !important;
             }
         }
         #product-grid > .col-span-full {
@@ -2924,7 +2926,7 @@
                         </div>
                     </div>
                     <p id="image-search-status" class="hidden mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-900" role="status"></p>
-                    <div id="product-grid" class="w-full">
+                    <div id="product-grid" style="display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 24px !important; width: 100% !important;" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
                         <!-- Render danh mục sản phẩm từ dữ liệu -->
                     </div>
                     <div id="no-products-msg" style="display: none;" class="text-center py-16 bg-white/80 rounded-3xl border border-dashed border-gray-300 shadow-sm animate-fade-in">
@@ -4655,6 +4657,7 @@
             }
 
             noMsg.style.display = 'none';
+            grid.style.display = 'grid';
             grid.innerHTML = items.map((p, idx) => {
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
@@ -4760,6 +4763,7 @@
                             <button onclick="addToCart(${p.id})" title="${currentLanguage === 'en' ? 'Add to AI Cash Flow Simulation' : 'Đưa vào Bảng phân tích dòng tiền cửa hàng (AI Simulated)'}" class="p-2 rounded-xl border border-emerald-500/40 text-emerald-300 bg-emerald-950/70 hover:bg-emerald-900 text-xs font-bold transition flex items-center justify-center cursor-pointer shadow-2xs hover:scale-105 active:scale-95">
                                 <i class="fa-solid fa-chart-line text-xs"></i>
                             </button>
+                        </div>
                     </div>
                 </div>
                 `;
