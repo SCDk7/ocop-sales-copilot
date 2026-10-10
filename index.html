@@ -1770,7 +1770,7 @@
                     <div class="w-9 h-9 mx-auto rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
                         <i class="fa-solid fa-network-wired"></i>
                     </div>
-                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar2">Sô Hóa Chuỗi Cung Ứng</span>
+                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar2">Số Hóa Chuỗi Cung Ứng</span>
                     <span class="block text-[10px] text-emerald-300/80 font-medium" id="i18n-intro-pillar2-sub">Kết nối Nhà vựa và Cửa hàng lẻ.</span>
                 </div>
 
@@ -2091,8 +2091,8 @@
                                 <span class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-1.5 shadow">
                                     ★ Tinh Hoa Nông Sản Việt
                                 </span>
-                                <h3 class="text-xl font-bold tracking-wide text-amber-100">National OCOP Specialties</h3>
-                                <p class="text-xs text-amber-200/90 mt-0.5 font-medium">100% Pure • Premium Export Quality</p>
+                                <h3 class="text-xl font-bold tracking-wide text-amber-100">NATIONAL OCOP PLATFORM</h3>
+                                <p class="text-xs text-amber-200/90 mt-0.5 font-medium">Hợp Nhất Dòng Tiền • Số Hóa Chuỗi Cung Ứng Đơn Vị Vùng Miền</p>
                             </div>
                         </div>
                         <div class="mt-3 bg-amber-50 p-3.5 rounded-2xl border border-amber-200 flex items-center justify-between">
@@ -2105,7 +2105,7 @@
                                     <p id="hero-product-stars" class="text-[11px] text-amber-800 font-medium"></p>
                                 </div>
                             </div>
-                            <span id="hero-product-price" class="font-extrabold text-red-600 text-xs max-w-[45%] break-words"></span>
+                            <span id="hero-product-price" class="font-extrabold text-emerald-800 text-[11px] max-w-[60%] text-right leading-tight break-words">[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]</span>
                         </div>
                     </div>
                 </div>
@@ -3565,23 +3565,23 @@
                     <div class="flex justify-between items-center">
                         <span class="text-gray-600 font-semibold flex items-center gap-1.5">
                             <i class="fa-solid fa-calculator text-blue-600"></i>
-                            <span id="i18n-cart-subtotal">Tạm tính (Tổng Doanh thu dự kiến):</span>
+                            <span id="i18n-cart-subtotal">Tổng doanh thu dự kiến (Gross Revenue):</span>
                         </span>
                         <span id="cart-subtotal" class="font-black text-slate-900 text-sm">0 ₫</span>
                     </div>
                     <div class="flex justify-between items-center text-gray-600">
                         <span class="font-medium flex items-center gap-1.5">
-                            <i class="fa-solid fa-percent text-amber-600"></i>
-                            <span id="i18n-cart-chm-label">Tiền chiết khấu hệ thống (CHM - 6%):</span>
+                            <i class="fa-solid fa-boxes-packing text-gray-500"></i>
+                            <span id="i18n-cart-cogs-label">Giá vốn hàng bán (COGS):</span>
                         </span>
-                        <span id="cart-commission" class="font-bold text-amber-700">-0 ₫</span>
+                        <span id="cart-cogs" class="font-medium text-gray-700">-0 ₫</span>
                     </div>
                     <div class="flex justify-between items-center text-gray-600">
                         <span class="font-medium flex items-center gap-1.5">
-                            <i class="fa-solid fa-boxes-packing text-gray-500"></i>
-                            <span id="i18n-cart-cogs-label">Giá vốn gốc từ HTX (COGS ước tính 62%):</span>
+                            <i class="fa-solid fa-percent text-amber-600"></i>
+                            <span id="i18n-cart-chm-label">Chi phí vận hành nền tảng (OPEX - 6%):</span>
                         </span>
-                        <span id="cart-cogs" class="font-medium text-gray-700">-0 ₫</span>
+                        <span id="cart-commission" class="font-bold text-amber-700">-0 ₫</span>
                     </div>
                     <div id="cart-voucher-row" class="hidden flex justify-between items-center text-emerald-800 font-bold">
                         <span id="cart-voucher-label"></span>
@@ -4466,7 +4466,9 @@
             const heroProduct = products.find(p => p.region === 'Khánh Hòa' && p.name.includes('Yến')) || products[0];
             if (heroProduct) {
                 document.getElementById('i18n-hero-prodname').textContent = getProductName(heroProduct);
-                document.getElementById('hero-product-price').textContent = getProductPriceLabel(heroProduct);
+                document.getElementById('hero-product-price').textContent = currentLanguage === 'en'
+                    ? '[System throughput: 1,200 units • Commission CHM: Auto-reconciled]'
+                    : '[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]';
                 document.getElementById('hero-product-stars').textContent = 'OCOP ' + getProductStarLabel(heroProduct) + (currentLanguage === 'en' ? ' stars · Shop catalogue' : ' sao · Theo danh mục');
             }
             const grid = document.getElementById('product-grid');
@@ -7557,8 +7559,8 @@ async function sendAIMessage() {
                                 <span>•</span>
                                 <span class="text-amber-600 font-bold">${item.stars}★ OCOP</span>
                             </div>
-                            <div class="text-slate-900 font-extrabold text-xs mt-1">
-                                ${item.price.toLocaleString('vi-VN')} ₫ <span class="text-[10px] text-gray-500 font-normal">/${item.packaging || 'sản phẩm'}</span>
+                            <div class="text-emerald-950 font-black text-xs mt-1">
+                                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Định vị dòng tiền:</span> ${itemTotal.toLocaleString('vi-VN')} ₫ <span class="text-[10px] text-gray-500 font-normal">(${item.packaging || 'đơn vị'})</span>
                             </div>
                         </div>
                         <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 p-1.5 transition cursor-pointer" title="Xóa khỏi mô phỏng">
@@ -7587,15 +7589,14 @@ async function sendAIMessage() {
                 `;
             }).join('');
 
-            const discount = getVoucherDiscount(subtotal);
             const totalRevenue = subtotal;
-            const commissionCHM = Math.round(totalRevenue * 0.06); // 6% cố định nền tảng & CTV
-            const cogs = Math.round(totalRevenue * 0.62); // 62% Giá vốn gốc từ HTX
-            const netProfit = Math.max(0, totalRevenue - cogs - commissionCHM - discount);
+            const cogs = Math.round(totalRevenue * 0.62); // Giá vốn hàng bán (COGS - 62%)
+            const opex = Math.round(totalRevenue * 0.06); // Chi phí vận hành nền tảng (OPEX - 6%)
+            const netProfit = Math.max(0, totalRevenue - cogs - opex);
 
             if (subtotalEl) subtotalEl.innerText = totalRevenue.toLocaleString('vi-VN') + " ₫";
-            if (commissionEl) commissionEl.innerText = "-" + commissionCHM.toLocaleString('vi-VN') + " ₫";
             if (cogsEl) cogsEl.innerText = "-" + cogs.toLocaleString('vi-VN') + " ₫";
+            if (commissionEl) commissionEl.innerText = "-" + opex.toLocaleString('vi-VN') + " ₫";
             if (totalEl) totalEl.innerText = netProfit.toLocaleString('vi-VN') + " ₫";
 
             if (activeVoucher && voucherRow) {
@@ -8701,11 +8702,11 @@ async function sendAIMessage() {
             'i18n-wishlist-title': 'Saved items',
             'i18n-cart-title': 'Store Cash Flow Analysis (AI Simulated)',
             'i18n-cart-empty': 'Simulation list is empty. Select OCOP products to begin cash flow analysis!',
-            'i18n-cart-subtotal': 'Projected Total Revenue:',
-            'i18n-cart-shipping': 'Platform & Logistics Fee:',
-            'i18n-free-shipping': 'Included in CHM',
-            'i18n-cart-total': 'Actual Net Profit (Simulated):',
-            'i18n-checkout-btn': 'Export AI Financial Report & Reconcile'
+            'i18n-cart-subtotal': 'Gross Revenue (Projected):',
+            'i18n-cart-cogs-label': 'Cost of Goods Sold (COGS):',
+            'i18n-cart-chm-label': 'Operating Expenses (OPEX - 6%):',
+            'i18n-cart-total': 'Net Profit (Real-time):',
+            'i18n-checkout-btn': 'Export AI Financial Report & Cash Flow Reconciliation'
         };
 
         const categoryLabels = {
