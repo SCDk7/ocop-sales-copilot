@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <meta name="ocop-api-base" content="">
     <title>OCOP Sales Copilot - Đặc Sản Tuyển Chọn 63 Tỉnh Thành Việt Nam</title>
-    
+    <script src="voice-engine.js?v=20261010_1"></script>
     <script src="ai-shopping.js?v=20261007_priceintent"></script>
     <script src="chat-language.js?v=20261006_3"></script>
     <link rel="stylesheet" href="assets/tailwind.css?v=ee1c8cbb8006">
@@ -3123,11 +3123,18 @@
                 </div>
 
                 <!-- Khung hiển thị âm thanh / kịch bản giọng nói AI -->
-                <div id="voice-briefing-box" class="hidden p-4 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 space-y-2 animate-fade-in shadow-xs">
-                    <div class="flex items-center justify-between font-black text-xs text-amber-900 border-b border-amber-200 pb-2">
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-microphone-lines text-amber-600"></i> BẢN TIN TÀI CHÍNH GIỌNG NÓI BÌNH DÂN (VOICE-FIRST AI):</span>
-                        <span class="text-[10px] bg-amber-200 px-2 py-0.5 rounded-full">Đa vùng miền Bắc - Trung - Nam</span>
+                <div id="voice-briefing-box" class="hidden p-4 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 space-y-3 animate-fade-in shadow-xs">
+                    <div class="flex flex-wrap items-center justify-between gap-2 font-black text-xs text-amber-900 border-b border-amber-200 pb-2">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-microphone-lines text-amber-600"></i> BẢN TIN TÀI CHÍNH GIỌNG NÓI BÌNH DÂN (VOICE-FIRST NEURAL AI):</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] text-amber-800 font-bold">Vùng miền:</span>
+                            <button type="button" id="btn-voice-region-nam" onclick="setBriefingRegion('nam')" class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-500 text-slate-900 shadow-xs cursor-pointer">Miền Nam</button>
+                            <button type="button" id="btn-voice-region-trung" onclick="setBriefingRegion('trung')" class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-100 hover:bg-amber-200 text-amber-900 cursor-pointer">Miền Trung</button>
+                            <button type="button" id="btn-voice-region-bac" onclick="setBriefingRegion('bac')" class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-100 hover:bg-amber-200 text-amber-900 cursor-pointer">Miền Bắc</button>
+                            <button type="button" onclick="stopVoiceBriefing()" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-100 hover:bg-rose-200 text-rose-800 cursor-pointer ml-1" title="Dừng đọc"><i class="fa-solid fa-stop"></i> Dừng</button>
+                        </div>
                     </div>
+                    <div id="voice-engine-status" class="text-[11px] text-amber-800 font-medium italic"></div>
                     <p id="voice-briefing-text" class="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
                         "Dạ chào cô chú chủ Hợp tác xã! Tháng này điểm bán OCOP của mình hoạt động rất khởi sắc. Tổng doanh thu đạt <strong>842 triệu 500 nghìn đồng</strong>, trong đó bà con quét mã QR mua trực tiếp tại sạp chiếm 64%. Sau khi AI bóc tách tiền vốn nhập hàng và đóng gói, <strong>tiền lời ròng thực nhận của cô chú là 269 triệu 600 nghìn đồng</strong>. Nhờ AI gộp đơn bao bì chống sốc, tiền lời của mình đã <strong>tăng thêm 18.4%</strong> so với tháng trước. Chiết khấu hoa hồng 5% cho nền tảng và 7% cho các cháu cộng tác viên đã được khấu trừ tự động minh bạch 100%, không bị sai sót một đồng nào nhé cô chú!"
                     </p>
@@ -6655,11 +6662,55 @@ async function sendAIMessage() {
                 reply.innerHTML = `
                     <img src="chat-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[90%] space-y-2 break-words">
+                        <div class="flex items-center justify-between text-[10px] text-gray-400 border-b border-gray-100 pb-1 mb-1">
+                            <span class="font-bold text-ocopGreen flex items-center gap-1"><i class="fa-solid fa-sparkles text-amber-500"></i> AI Copilot</span>
+                            <div class="flex items-center gap-1">
+                                <button type="button" class="btn-chat-speak px-2 py-0.5 rounded bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold flex items-center gap-1 cursor-pointer transition" title="Nghe giọng đọc AI Neural (3 Miền)">
+                                    <i class="fa-solid fa-volume-high text-[10px]"></i> <span>Nghe AI</span>
+                                </button>
+                            </div>
+                        </div>
                         <p class="whitespace-pre-wrap"></p>
                         <div class="ai-product-recommendations"></div>
                     </div>
                 `;
                 reply.querySelector('p').innerHTML = formatAIMessageText(result.message);
+
+                const chatSpeakBtn = reply.querySelector('.btn-chat-speak');
+                if (chatSpeakBtn) {
+                    let isChatVoicePlaying = false;
+                    chatSpeakBtn.addEventListener('click', () => {
+                        if (isChatVoicePlaying) {
+                            if (window.VoiceEngine) window.VoiceEngine.stop();
+                            chatSpeakBtn.innerHTML = '<i class="fa-solid fa-volume-high text-[10px]"></i> <span>Nghe AI</span>';
+                            isChatVoicePlaying = false;
+                            return;
+                        }
+                        if (window.VoiceEngine) {
+                            chatSpeakBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[10px]"></i> <span>Đang đọc...</span>';
+                            isChatVoicePlaying = true;
+                            window.VoiceEngine.speak(result.message, {
+                                lang: requestLanguage === 'en' ? 'en' : 'vi',
+                                region: 'nam',
+                                forceVoice: false,
+                                onStart: () => {
+                                    chatSpeakBtn.innerHTML = '<i class="fa-solid fa-stop text-rose-500 text-[10px]"></i> <span>Dừng</span>';
+                                },
+                                onEnd: () => {
+                                    chatSpeakBtn.innerHTML = '<i class="fa-solid fa-volume-high text-[10px]"></i> <span>Nghe AI</span>';
+                                    isChatVoicePlaying = false;
+                                },
+                                onFallback: () => {
+                                    chatSpeakBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-600 text-[10px]"></i> <span>Văn bản tối ưu</span>';
+                                    isChatVoicePlaying = false;
+                                    setTimeout(() => {
+                                        chatSpeakBtn.innerHTML = '<i class="fa-solid fa-volume-high text-[10px]"></i> <span>Nghe AI</span>';
+                                    }, 2000);
+                                }
+                            });
+                        }
+                    });
+                }
 
                 const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
                     .map(id => products.find(product => product.id === id))
@@ -8215,19 +8266,80 @@ async function sendAIMessage() {
             }
         }
 
+        let activeBriefingRegion = 'nam';
+
+        function setBriefingRegion(reg) {
+            activeBriefingRegion = reg;
+            const btns = {
+                nam: document.getElementById('btn-voice-region-nam'),
+                trung: document.getElementById('btn-voice-region-trung'),
+                bac: document.getElementById('btn-voice-region-bac')
+            };
+            Object.keys(btns).forEach(k => {
+                if (btns[k]) {
+                    btns[k].className = k === reg
+                        ? 'px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-500 text-slate-900 shadow-xs cursor-pointer'
+                        : 'px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-100 hover:bg-amber-200 text-amber-900 cursor-pointer';
+                }
+            });
+            playVoiceFinancialBriefing();
+        }
+
+        function stopVoiceBriefing() {
+            if (window.VoiceEngine) {
+                window.VoiceEngine.stop();
+            } else if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            const statusEl = document.getElementById('voice-engine-status');
+            if (statusEl) statusEl.textContent = 'Đã dừng phát âm thanh.';
+        }
+
         function playVoiceFinancialBriefing() {
             const box = document.getElementById('voice-briefing-box');
             if (!box) return;
             box.classList.remove('hidden');
 
             const textEl = document.getElementById('voice-briefing-text');
-            const textToSpeak = textEl ? textEl.innerText : "Chào cô chú, tổng doanh thu tháng này là 842 triệu, tiền lời ròng là 269 triệu đồng.";
+            const statusEl = document.getElementById('voice-engine-status');
+            const originalText = textEl ? (textEl.dataset.fullText || textEl.innerText) : "Chào cô chú chủ Hợp tác xã! Tháng này điểm bán OCOP của mình hoạt động rất khởi sắc. Tổng doanh thu đạt 842 triệu 500 nghìn đồng, trong đó bà con quét mã QR mua trực tiếp tại sạp chiếm 64%. Sau khi AI bóc tách tiền vốn nhập hàng và đóng gói, tiền lời ròng thực nhận của cô chú là 269 triệu 600 nghìn đồng. Nhờ AI gộp đơn bao bì chống sốc, tiền lời của mình đã tăng thêm 18.4% so với tháng trước. Chiết khấu hoa hồng 5% cho nền tảng và 7% cho các cháu cộng tác viên đã được khấu trừ tự động minh bạch 100%, không bị sai sót một đồng nào nhé cô chú!";
+            if (textEl && !textEl.dataset.fullText) {
+                textEl.dataset.fullText = originalText;
+            }
 
-            if ('speechSynthesis' in window) {
+            if (window.VoiceEngine) {
+                const regionName = activeBriefingRegion === 'nam' ? 'Miền Nam' : activeBriefingRegion === 'trung' ? 'Miền Trung' : 'Miền Bắc';
+                if (statusEl) statusEl.innerHTML = `<span class="text-amber-800 font-semibold"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải mô hình Neural Voice AI (${regionName})...</span>`;
+
+                const spoken = window.VoiceEngine.speak(originalText, {
+                    lang: 'vi',
+                    region: activeBriefingRegion,
+                    forceVoice: false, // TUYỆT ĐỐI KHÔNG ÉP GIỌNG ROBOT THÔ CỨNG
+                    onStart: (voiceSel) => {
+                        if (statusEl) statusEl.innerHTML = `<span class="text-emerald-700 font-bold"><i class="fa-solid fa-waveform-lines animate-pulse"></i> Đang phát Neural Voice (${regionName}): ${voiceSel.voice?.name || 'Giọng AI tự nhiên'}</span>`;
+                    },
+                    onEnd: () => {
+                        if (statusEl) statusEl.innerHTML = `<span class="text-emerald-700 font-semibold"><i class="fa-solid fa-check-circle"></i> Đã hoàn thành bản tin tài chính.</span>`;
+                    },
+                    onFallback: (fallbackData) => {
+                        // Cơ chế dự phòng (Fallback Mechanism): Tự động chuyển trợ lý sang chế độ văn bản kèm hiệu ứng gõ chữ mượt mà
+                        if (statusEl) statusEl.innerHTML = `<span class="text-amber-800 font-medium"><i class="fa-solid fa-font"></i> Chế độ phản hồi văn bản thông minh (Đã kích hoạt Fallback để bảo vệ âm điệu tự nhiên, loại bỏ giọng robot thô cứng)</span>`;
+                        if (textEl) {
+                            window.VoiceEngine.typewrite(textEl, originalText, {
+                                speed: 18,
+                                chunkSize: 3,
+                                onComplete: () => {
+                                    if (statusEl) statusEl.innerHTML = `<span class="text-emerald-700 font-semibold"><i class="fa-solid fa-check-circle"></i> Đã hoàn tất báo cáo tài chính.</span>`;
+                                }
+                            });
+                        }
+                    }
+                });
+            } else if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                const utterance = new SpeechSynthesisUtterance(originalText);
                 utterance.lang = 'vi-VN';
-                utterance.rate = 1.0;
+                utterance.rate = 0.95;
                 window.speechSynthesis.speak(utterance);
             }
         }
