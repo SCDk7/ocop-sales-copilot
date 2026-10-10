@@ -9,7 +9,7 @@
     <meta name="ocop-api-base" content="">
     <title>OCOP Sales Copilot - Đặc Sản Tuyển Chọn 63 Tỉnh Thành Việt Nam</title>
     
-    <script src="ai-shopping.js?v=20261007_priceintent"></script>
+<script src="ai-shopping.js?v=20261008_budgetcontext"></script>
     <script src="chat-language.js?v=20261006_3"></script>
     <link rel="stylesheet" href="assets/tailwind.css?v=ee1c8cbb8006">
     <!-- Font Awesome Icons & Google Fonts -->
@@ -1931,7 +1931,7 @@
                        autocomplete="off" aria-controls="product-grid"
                        class="site-search-input w-full pl-10 pr-20 py-2.5 text-sm rounded-full border border-emerald-200 focus:outline-none bg-emerald-50/60 shadow-sm transition">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                <button type="button" onclick="startVoiceSearch('header-search-input')" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-ocopGreen rounded-full cursor-pointer">
+                <button type="button" data-voice-search="header-search-input" aria-pressed="false" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-ocopGreen rounded-full cursor-pointer">
                     <i class="fa-solid fa-microphone"></i>
                 </button>
                 <button id="header-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-ocopGreen text-xs rounded-full">
@@ -1990,7 +1990,7 @@
                        autocomplete="off" aria-controls="product-grid"
                        class="site-search-input w-full pl-9 pr-20 py-2.5 text-sm rounded-full border border-emerald-200 focus:outline-none bg-emerald-50/60 shadow-sm">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                <button type="button" onclick="startVoiceSearch('mobile-search-input')" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-ocopGreen rounded-full cursor-pointer">
+                <button type="button" data-voice-search="mobile-search-input" aria-pressed="false" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-ocopGreen rounded-full cursor-pointer">
                     <i class="fa-solid fa-microphone"></i>
                 </button>
                 <button id="mobile-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs rounded-full">
@@ -2515,7 +2515,7 @@
                                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-700/60 text-xs"></i>
                                     <label for="product-search" class="sr-only">Tìm kiếm đặc sản theo tên hoặc vùng miền</label>
                                     <input type="search" id="product-search" oninput="scheduleProductSearch(this.value)" onkeydown="handleSearchKeydown(event)" placeholder="Tên đặc sản hoặc tỉnh thành..." autocomplete="off" aria-controls="product-grid" class="site-search-input w-full pl-9 pr-20 py-2.5 text-sm rounded-xl border border-emerald-200 focus:outline-none bg-emerald-50/50 transition">
-                                    <button type="button" onclick="startVoiceSearch('product-search')" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-ocopGreen rounded-full cursor-pointer">
+                                    <button type="button" data-voice-search="product-search" aria-pressed="false" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-ocopGreen rounded-full cursor-pointer">
                                         <i class="fa-solid fa-microphone"></i>
                                     </button>
                                     <button id="sidebar-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs cursor-pointer rounded-full">
@@ -2763,14 +2763,15 @@
                 <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
             </div>
             <div id="auth-social-login" class="flex flex-col gap-2 mb-4" aria-label="Đăng nhập nhanh">
-                <button type="button" onclick="startSocialLogin('google')" class="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 font-bold text-gray-700 hover:bg-gray-50 transition cursor-pointer">
+                <button id="auth-google-btn" type="button" onclick="startSocialLogin('google')" class="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 font-bold text-gray-700 hover:bg-gray-50 transition cursor-pointer disabled:opacity-60 disabled:cursor-wait">
                     <i class="fa-brands fa-google text-red-500"></i><span data-auth-social-label="google">Tiếp tục với Google</span>
                 </button>
-                <button type="button" onclick="startSocialLogin('facebook')" class="w-full flex items-center justify-center gap-2 border border-blue-200 rounded-xl py-2.5 font-bold text-blue-700 hover:bg-blue-50 transition cursor-pointer">
+                <button id="auth-facebook-btn" type="button" onclick="startSocialLogin('facebook')" class="w-full flex items-center justify-center gap-2 border border-blue-200 rounded-xl py-2.5 font-bold text-blue-700 hover:bg-blue-50 transition cursor-pointer disabled:opacity-60 disabled:cursor-wait">
                     <i class="fa-brands fa-facebook text-blue-600"></i><span data-auth-social-label="facebook">Tiếp tục với Facebook</span>
                 </button>
                 <div class="flex items-center gap-3 text-[10px] text-gray-400"><span class="h-px flex-1 bg-gray-200"></span><span data-auth-social-label="separator">hoặc đăng nhập bằng tài khoản</span><span class="h-px flex-1 bg-gray-200"></span></div>
             </div>
+            <p id="auth-social-status" class="hidden mb-4 rounded-xl border px-3 py-2 text-xs leading-relaxed" role="status" aria-live="polite"></p>
             <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
                 <div id="name-field">
                     <label for="auth-name" class="block font-bold text-gray-700 mb-1">Họ và tên *</label>
@@ -2942,6 +2943,7 @@
     </div>
 
     <!-- 12. FOOTER -->
+    <aside class="mx-4 sm:mx-auto max-w-5xl my-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-center"><a href="draft-order.html" class="font-bold text-ocopGreen">Draft Order →</a></aside>
     <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-24 lg:pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-6 gap-4">
@@ -3070,7 +3072,7 @@
         let aiMessageSequence = 0;
         let aiConversationHistory = [];
         let isAIRequestPending = false;
-        let activeSearchRecognition = null;
+
         let pendingAIImages = [];
         let lastAIRecommendedProductIds = [];
         let lastAIRecommendationCriteria = null;
@@ -4275,71 +4277,6 @@
             filterProductsGlobal('');
         }
 
-        function startVoiceSearch(inputId) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                showToast(currentLanguage === 'en'
-                    ? 'Voice search is not supported in this browser.'
-                    : 'Trình duyệt này chưa hỗ trợ tìm kiếm bằng giọng nói.', 'error');
-                return;
-            }
-            if (!window.isSecureContext) {
-                showToast(currentLanguage === 'en'
-                    ? 'Voice search requires HTTPS or localhost.'
-                    : 'Tìm kiếm bằng giọng nói cần kết nối HTTPS hoặc localhost.', 'error');
-                return;
-            }
-
-            if (activeSearchRecognition) activeSearchRecognition.abort();
-            const input = document.getElementById(inputId);
-            const button = input && input.parentElement.querySelector('button[onclick*="startVoiceSearch"]');
-            const recognition = new SpeechRecognition();
-            recognition.lang = currentLanguage === 'en' ? 'en-US' : 'vi-VN';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-            activeSearchRecognition = recognition;
-            if (button) {
-                button.style.color = '#dc2626';
-                button.setAttribute('aria-pressed', 'true');
-            }
-
-            recognition.onresult = event => {
-                const transcript = event.results[0][0].transcript.trim();
-                if (!transcript) return;
-                filterProductsGlobal(transcript);
-                scrollToProducts();
-            };
-            recognition.onerror = event => {
-                if (event.error === 'no-speech' || event.error === 'aborted') return;
-                const message = event.error === 'not-allowed'
-                    ? (currentLanguage === 'en' ? 'Allow microphone access to use voice search.' : 'Vui lòng cấp quyền dùng micro để tìm kiếm bằng giọng nói.')
-                    : (currentLanguage === 'en' ? 'Voice search failed. Please try again.' : 'Không thể nhận dạng giọng nói. Vui lòng thử lại.');
-                showToast(message, 'error');
-            };
-            recognition.onend = () => {
-                if (button) {
-                    button.style.color = '';
-                    button.setAttribute('aria-pressed', 'false');
-                }
-                if (activeSearchRecognition === recognition) {
-                    activeSearchRecognition = null;
-                }
-            };
-
-            try {
-                recognition.start();
-            } catch (error) {
-                activeSearchRecognition = null;
-                if (button) {
-                    button.style.color = '';
-                    button.setAttribute('aria-pressed', 'false');
-                }
-                showToast(currentLanguage === 'en'
-                    ? 'Could not start voice search. Please try again.'
-                    : 'Không thể bật tìm kiếm bằng giọng nói. Vui lòng thử lại.', 'error');
-            }
-        }
-
         async function createSearchImageDataUrl(file) {
             if (!file || !file.type.startsWith('image/')) {
                 throw new Error(currentLanguage === 'en' ? 'Choose an image file.' : 'Vui lòng chọn một tệp hình ảnh.');
@@ -4581,9 +4518,13 @@
         }
 
         function getAIEndpoint(path) {
-            if (window.location.protocol === 'file:') return `http://localhost:3000${path}`;
             const configuredApiBase = document.querySelector('meta[name="ocop-api-base"]')?.content.trim();
-            return configuredApiBase ? new URL(path, `${configuredApiBase.replace(/\/+$/, '')}/`).toString() : path;
+            if (configuredApiBase) return new URL(path, `${configuredApiBase.replace(/\/+$/, '')}/`).toString();
+            const location = window.location;
+            const localPreview = ['localhost','127.0.0.1','[::1]'].includes(location.hostname)
+                && (Number(location.port) >= 5500 && Number(location.port) <= 5599 || ['5173','8080'].includes(location.port));
+            if (location.protocol === 'file:' || localPreview) return `http://localhost:3000${path}`;
+            return path;
         }
 
         const maxAIChatImages = 10;
@@ -4810,689 +4751,6 @@
             `;
         }
 
-        const REGION_PROVINCES = {
-            "Miền Nam": ["binh phuoc","binh duong","dong nai","tay ninh","ba ria vung tau","thanh pho ho chi minh","long an","dong thap","tien giang","an giang","ben tre","vinh long","tra vinh","hau giang","kien giang","soc trang","bac lieu","ca mau","can tho"],
-"Tây Bắc": ["ha giang", "lao cai", "son la", "dien bien", "lai chau", "yen bai", "hoa binh"],
-            "Tây Nguyên": ["gia lai", "dak lak", "dak nong", "lam dong", "kon tum"],
-            "Miền Trung": ["quang nam", "quang ngai", "thua thien hue", "hue", "quang tri", "da nang", "binh dinh", "phu yen", "khanh hoa", "ninh thuan", "nghe an", "ha tinh", "quang binh", "thanh hoa", "binh thuan"],
-            "Miền Tây": ["kien giang", "phu quoc", "ben tre", "ca mau", "an giang", "long an", "soc trang", "hau giang", "can tho", "dong thap", "bac lieu", "tra vinh", "vinh long", "tien giang"],
-            "Miền Bắc": ["ha noi", "ha giang", "thai nguyen", "quang ninh", "lao cai", "nam dinh", "bac giang", "hung yen", "yen bai", "tuyen quang", "vinh phuc", "ninh binh", "bac kan", "cao bang", "lang son", "phu tho", "son la", "dien bien", "lai chau", "hoa binh", "ha nam", "hai duong", "hai phong", "thai binh", "bac ninh"]
-        };
-
-        function generateClientLocalComboReply(intent, products = [], language = "vi") {
-            const english = language === "en";
-            const { minPrice, maxPrice, exactRegion, regionKeyword } = intent;
-            const rawLower = (intent.rawText || "").toLowerCase();
-
-            let candidates = [];
-            let scopeLabel = "";
-
-            if (exactRegion) {
-                const normExact = exactRegion.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().trim();
-                candidates = products.filter(p => (p.region || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().includes(normExact));
-                scopeLabel = english ? `Specialties of ${exactRegion}` : `Đặc sản tinh hoa ${exactRegion}`;
-            } else if (regionKeyword) {
-                const provs = REGION_PROVINCES[regionKeyword] || [];
-                candidates = products.filter(p => {
-                    const normReg = (p.region || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase();
-                    const normDesc = (p.desc || p.description || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase();
-                    return provs.some(pr => normReg.includes(pr)) || normDesc.includes(regionKeyword.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase());
-                });
-                scopeLabel = english ? `${regionKeyword} Regional Set` : `Đặc sản vùng ${regionKeyword}`;
-            }
-
-            const isTet = /(tet|xuan|sum hop|sum vay|dau nam|chuc tet)/.test(rawLower);
-            const isSep = /(sep|lanh dao|doi tac|vip|doanh nghiep|sang trong|cao cap|ngoai giao)/.test(rawLower);
-            const isHealth = intent.isHealth || /(suc khoe|duong sinh|cha me|bo me|nguoi gia|nguoi lon|boi bo|de khang)/.test(rawLower);
-            const isTea = /(tra|che|dam dao|thuong tra)/.test(rawLower);
-            const isKitchen = /(gia vi|bep|nau an|mam|muoi|tieu|gao)/.test(rawLower);
-            const isSnack = /(an vat|nham nhi|banh|keo|snack)/.test(rawLower);
-            const isVegetarian = intent.isVegetarian || /(chay|an chay|thuan chay|thuc duong|vegan)/.test(rawLower);
-            const isMeetParents = /(ra mat|nha ban gai|nha ban trai|bo me vo|bo me chong|thong gia)/.test(rawLower);
-            const isExpat = /(kieu bao|nuoc ngoai|xuat ngoai|mang di|cam tay|may bay|xach tay)/.test(rawLower);
-            const isHousewarming = /(tan gia|khai truong|mung nha moi)/.test(rawLower);
-
-            let comboTitle = "";
-            if (isVegetarian) {
-                comboTitle = english ? "Peace & Harmony Pure Vegan Specialty Set" : "Bộ Quà Nông Sản Thuần Chay An Lạc";
-            } else if (isMeetParents) {
-                comboTitle = english ? "Family Introduction & Heartfelt Gift Set" : "Bộ Quà Ra Mắt Thắm Tình Hiếu Nghĩa";
-            } else if (isExpat) {
-                comboTitle = english ? "Vietnamese Heritage Carry-On Gift Set" : "Bộ Quà Tinh Hoa Hương Quê Xách Tay";
-            } else if (isHousewarming) {
-                comboTitle = english ? "Prosperity Housewarming & Grand Opening Set" : "Bộ Quà Tân Gia & Khai Trương Đại Cát";
-            } else if (scopeLabel) {
-                comboTitle = isSep || (minPrice && minPrice >= 5000000)
-                    ? (english ? `VIP Luxury ${scopeLabel} Set` : `Bộ Quà VIP Thượng Hạng ${scopeLabel}`)
-                    : (english ? `Signature ${scopeLabel} Combo` : `Combo Tinh Hoa ${scopeLabel}`);
-            } else if (isHealth) {
-                comboTitle = english ? "Longevity & Health Gift Set" : "Bộ Quà Dưỡng Sinh & Sức Khỏe Trường Thọ";
-            } else if (isSep || (minPrice && minPrice >= 5000000)) {
-                comboTitle = english ? "VIP Corporate & Executive Masterpiece Set" : "Bộ Quà VIP Doanh Nghiệp & Ngoại Giao";
-            } else if (isTea) {
-                comboTitle = english ? "Master Tea Connoisseur Set" : "Bộ Quà Thưởng Trà Đàm Đạo";
-            } else if (isKitchen) {
-                comboTitle = english ? "Authentic Vietnamese Kitchen Spice Set" : "Bộ Gia Vị Bếp Việt Đậm Đà Hương Quê";
-            } else if (isSnack) {
-                comboTitle = english ? "Vietnamese Heritage Snack Box" : "Hộp Bánh Mứt Ăn Vặt Nông Sản Việt";
-            } else if (isTet) {
-                comboTitle = english ? "Lunar New Year Reunion Gift Set" : "Bộ Quà Tết Đoàn Viên Như Ý";
-            } else if (maxPrice && maxPrice <= 500000) {
-                comboTitle = english ? "Pocket-Friendly Specialty Combo" : "Combo Đặc Sản Tiết Kiệm & Ý Nghĩa";
-            } else if (maxPrice && maxPrice <= 2000000) {
-                comboTitle = english ? "Family & Friends Specialty Gift Set" : "Bộ Quà Gia Đình & Thân Hữu Thắm Tình";
-            } else {
-                comboTitle = english ? "National OCOP 5-Star Specialty Combo" : "Combo Tinh Hoa Quốc Bảo OCOP 5 Sao";
-            }
-
-            if (isVegetarian) {
-                const isNonVeg = p => /(thit|trau|hai san|cua|tom|cha muc|nuoc mam)/i.test((p.name || '') + ' ' + (p.category || ''));
-                if (candidates.length > 0) candidates = candidates.filter(p => !isNonVeg(p));
-                if (candidates.length === 0) {
-                    candidates = products.filter(p => !isNonVeg(p) && ([2, 3, 10, 11, 16, 18, 25, 47].includes(p.id) || p.stars === 5 || p.category === 'trà' || p.category === 'bánh'));
-                }
-            } else if (isExpat) {
-                if (candidates.length === 0) {
-                    candidates = products.filter(p => [2, 3, 7, 8, 9, 10, 16, 20].includes(p.id) || /hat|tieu|ca phe|tra|keo/i.test((p.name || '') + ' ' + (p.category || '')));
-                }
-            } else if (isMeetParents) {
-                if (candidates.length === 0) {
-                    candidates = products.filter(p => [2, 3, 11, 12, 16, 18].includes(p.id) || p.stars === 5 || /tra|mat ong|banh/i.test((p.name || '') + ' ' + (p.category || '')));
-                }
-            } else if (candidates.length === 0) {
-                if (isHealth || isSep || (minPrice && minPrice >= 5000000)) {
-                    candidates = products.filter(p => p.stars === 5 || p.price >= 600000);
-                } else if (isTea) {
-                    candidates = products.filter(p => [2, 3, 47].includes(p.id) || (p.category && p.category.toLowerCase().includes("trà")));
-                } else if (isKitchen) {
-                    candidates = products.filter(p => [5, 6, 8, 14, 21].includes(p.id) || (p.category && p.category.toLowerCase().includes("gia vị")));
-                } else if (isSnack) {
-                    candidates = products.filter(p => [7, 9, 10, 11, 16, 20].includes(p.id) || (p.category && p.category.toLowerCase().includes("bánh")));
-                } else if (maxPrice && maxPrice <= 500000) {
-                    candidates = products.filter(p => p.price <= 250000);
-                } else {
-                    candidates = products.filter(p => p.stars === 5 || [1, 2, 4, 5, 10, 11, 12].includes(p.id));
-                }
-            }
-
-            if (candidates.length === 0) candidates = products.slice(0, 4);
-            candidates.sort((a, b) => (b.price || 0) - (a.price || 0));
-
-            let selected = candidates.slice(0, Math.min(candidates.length, 4));
-            let comboItems = selected.map(p => ({ product: p, quantity: 1 }));
-            let currentTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-
-            if (maxPrice && currentTotal > maxPrice) {
-                let subset = [];
-                let runningSum = 0;
-                for (const p of candidates) {
-                    if (runningSum + (p.price || 0) <= maxPrice && !subset.some(s => s.id === p.id)) {
-                        subset.push(p);
-                        runningSum += (p.price || 0);
-                        if (subset.length >= 3) break;
-                    }
-                }
-                if (subset.length > 0) {
-                    comboItems = subset.map(p => ({ product: p, quantity: 1 }));
-                    currentTotal = runningSum;
-                }
-            }
-
-            if (minPrice && currentTotal < minPrice) {
-                let loops = 0;
-                while (currentTotal < minPrice && loops < 300) {
-                    const idx = loops % comboItems.length;
-                    comboItems[idx].quantity += 1;
-                    currentTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-                    if (maxPrice && currentTotal > maxPrice) {
-                        comboItems[idx].quantity -= 1;
-                        break;
-                    }
-                    loops++;
-                }
-            }
-
-            const finalTotal = comboItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-            const productIds = comboItems.map(item => item.product.id);
-            lastAIRecommendedProductIds = productIds;
-
-            const itemsText = comboItems.map((item, idx) => {
-                const p = item.product;
-                const itemTotal = (p.price * item.quantity).toLocaleString("vi-VN");
-                const qtyStr = item.quantity > 1 ? ` (x${item.quantity})` : "";
-                const pDesc = p.desc || p.description;
-                return `${idx + 1}. **${p.name}**${qtyStr} — ${itemTotal}₫\n   • Chuẩn OCOP: ${p.stars}⭐ (${p.region})\n   • Đơn giá: ${p.price.toLocaleString("vi-VN")}₫/${p.packaging || (english ? 'unit' : 'đơn vị')}\n   • Đặc trưng: ${pDesc ? pDesc.slice(0, 95) + "..." : "Đặc sản chính gốc sản xuất hữu cơ đạt chuẩn OCOP quốc gia."}`;
-            }).join("\n\n");
-
-            let intro = english
-                ? `🎁 Here is our curated combo **${comboTitle}** tailored to your request:`
-                : `🎁 Dạ, OCOP Copilot trân trọng thiết kế **${comboTitle}** theo đúng yêu cầu và ngân sách của Anh/Chị:`;
-
-            let totalText = english
-                ? `💰 **Total Combo Value**: **${finalTotal.toLocaleString("vi-VN")}₫**`
-                : `💰 **Tổng giá trị combo**: **${finalTotal.toLocaleString("vi-VN")}₫**`;
-
-            let packagingNote = english
-                ? `✨ **Gift Presentation & Services Included**:\n• Packaged in a premium lacquer/hard wooden gift box with elegant ribbons & personalized greeting card.\n• 100% genuine cooperative products with origin traceability QR code.\n• Free nationwide express shipping with shockproof fragile packaging.\n• Corporate VAT invoices available upon request.`
-                : `✨ **Quy cách đóng gói & Dịch vụ đi kèm**:\n• Đóng hộp quà sang trọng (hộp rương gỗ/sơn mài nẹp nhung cao cấp), thắt nơ lụa & thiệp viết tay theo yêu cầu.\n• 100% sản phẩm đạt chứng nhận OCOP chuẩn sao, có tem QR Code truy xuất nguồn gốc tận nơi sản xuất.\n• Miễn phí vận chuyển hỏa tốc toàn quốc, đóng thùng xốp chống va đập tiêu chuẩn.\n• Hỗ trợ xuất hóa đơn VAT và in/khắc laser logo doanh nghiệp cho đơn quà tặng.`;
-
-            let cta = english
-                ? `👉 You can click the product cards below to add the combo directly to your cart, or message our Admin for custom corporate gift sets!`
-                : `👉 Anh/Chị có thể bấm trực tiếp các thẻ sản phẩm bên dưới để thêm ngay vào giỏ hàng hoặc inbox Admin để tùy chỉnh số lượng nhé!`;
-
-            const fullMessage = `${intro}\n\n${itemsText}\n\n${totalText}\n\n${packagingNote}\n\n${cta}`;
-
-            const chips = english
-                ? ["Add combo to cart", "Adjust budget", "Corporate gift inquiry", "Hotline: 0987.654.321"]
-                : ["Thêm combo vào giỏ", "Tùy chỉnh ngân sách", "Inbox Admin 3 (Quà Tết/Doanh nghiệp)", "Hotline: 0987.654.321"];
-
-            return {
-                text_response: fullMessage,
-                message: fullMessage,
-                suggested_products: productIds,
-                productIds: productIds,
-                dynamic_chips: chips,
-                handoffAdmin: false,
-                localFallback: true
-            };
-        }
-
-        function createLocalCatalogReply(query, hasImages = false) {
-            lastAIRecommendedProductIds = [];
-            lastAIRecommendationCriteria = null;
-            lastAIComboMarkup = null;
-            const english = currentLanguage === "en";
-
-            if (hasImages) {
-                return {
-                    message: english
-                        ? "I received your image! Please let me know what specialty details you need, or click below to contact our admin directly."
-                        : "Dạ, em đã nhận được hình ảnh của Anh/Chị! Anh/Chị muốn tìm sản phẩm tương tự hay cần nhân viên kiểm tra tình trạng hàng ạ?",
-                    productIds: [],
-                    dynamic_chips: ["Gợi ý đặc sản 5 sao", "Tư vấn quà biếu", "Liên hệ Admin"],
-                    handoffAdmin: false,
-                    localFallback: true
-                };
-            }
-
-            const rawQuery = String(query || "").trim();
-            const normalized = rawQuery.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").toLowerCase();
-            const priceIntent = AIShopping.resolve([...aiConversationHistory.filter(m => m.role === 'user'), {role:'user',text:rawQuery}], products);
-            if (priceIntent.pricePreference && !priceIntent.isCombo && !priceIntent.isComplaint && !priceIntent.isCSKH && !priceIntent.isShipping && !priceIntent.isUsage && !priceIntent.isOcopKnowledge) {
-                return {...AIShopping.recommendationReply(products,priceIntent,currentLanguage),localFallback:true};
-            }
-
-            // 1. CHUYÊN ĐỀ HỖ TRỢ KHÁCH HÀNG & KHIẾU NẠI (CS & COMPLAINTS)
-            const isComplaint = /\b(hang loi|hang bi loi|san pham bi loi|san pham loi|bi loi|bi hong|hu hong|vo nat|bi vo|bi be|mop meo|bi mop|bi dap|chay khet|het han|qua han|bi moc|am moc|doi mau|kem chat luong|thieu hang|giao thieu|giao nham|giao sai|sai hang|doi tra|tra hang|hoan tien|chua nhan duoc hang|chua nhan hang|mat tien|khieu nai|phan nan)\b|\b(loi|hong)\s+(hang|san pham|dong goi|nap|hop|chai|lo)\b|^(hang loi|loi|hong|doi tra|tra hang)$/.test(normalized);
-            if (isComplaint) {
-                return {
-                    message: english
-                        ? "I am truly sorry for the inconvenience with your order! OCOP Copilot provides a 100% replacement or full refund within 7 days for damaged or defective items.\n\n👉 Please keep the original packaging and connect directly with our Customer Care Admin below so we can resolve this right away:"
-                        : "Dạ, em rất tiếc và thành thật xin lỗi Anh/Chị về sự cố đơn hàng này ạ! OCOP Copilot cam kết 100% quyền lợi khách hàng với chính sách Đổi mới 1-1 miễn phí hoặc Hoàn tiền trong 7 ngày đối với sản phẩm lỗi do vận chuyển hoặc nhà sản xuất.\n\n👉 Anh/Chị vui lòng giữ lại bao bì, chụp ảnh sản phẩm và nhắn tin trực tiếp cho Admin phụ trách CSKH & Đổi trả dưới đây để được xử lý ngay lập tức nhé ạ:",
-                    localMarkup: getAdminContactCardsHTML(),
-                    productIds: [],
-                    dynamic_chips: ["Admin 4 - Đổi trả", "Hotline: 0987.654.321", "Chính sách đổi trả"],
-                    handoffAdmin: true,
-                    localFallback: true
-                };
-            }
-
-            // 2. CHUYÊN ĐỀ LIÊN HỆ CSKH & 4 ADMIN FACEBOOK (CSKH SUPPORT)
-            const isCSKH = /(cskh|cham soc khach hang|lien he cskh|ho tro cskh|nhan vien cskh|gap nhan vien|gap admin|nhan vien ho tro|tu van vien|tong dai|hotline|facebook|fb|inbox admin|chat admin|lien he)/.test(normalized);
-            if (isCSKH) {
-                return {
-                    message: english
-                        ? "Our Customer Support Team is ready 24/7 across 4 dedicated Facebook channels. Please select an Admin below to chat directly:"
-                        : "Dạ, đội ngũ Chăm sóc khách hàng (CSKH) OCOP luôn sẵn sàng hỗ trợ Anh/Chị 24/7 qua 4 kênh Facebook trực tiếp dưới đây ạ! Anh/Chị có thể bấm vào chuyên viên phụ trách đúng nhu cầu để inbox nhận hỗ trợ ngay nhé:",
-                    localMarkup: getAdminContactCardsHTML(),
-                    productIds: [],
-                    dynamic_chips: ["Admin 1 - Tư vấn", "Admin 4 - CSKH 24/7", "Hotline: 0987.654.321", "Chính sách đổi trả"],
-                    handoffAdmin: true,
-                    localFallback: true
-                };
-            }
-
-            // 2.1 CHUYÊN ĐỀ COMBO & HỘP QUÀ TẶNG (OMNI COMBO & GIFT SETS)
-            const isCombo = /(combo|set qua|bo qua|gio qua|hop qua|goi qua|set dac san|gift set|bundle|tron goi|phoi qua|phoi giup|thiet ke qua)/.test(normalized);
-            if (isCombo) {
-                let minPrice = null;
-                const overMatch = normalized.match(/(?:tren|hon|tu|toi thieu|lon hon|cao hon|over|above|from)\s+(\d+(?:[.,]\d+)?)\s*(k|nghin|ngan|trieu|tr|m)?/);
-                if (overMatch) {
-                    let num = parseFloat(overMatch[1].replace(',', '.'));
-                    const unit = overMatch[2];
-                    if (unit === "trieu" || unit === "tr" || unit === "m") num *= 1000000;
-                    else if (unit === "k" || unit === "nghin" || unit === "ngan" || num < 1000) num *= 1000;
-                    minPrice = Math.round(num);
-                }
-
-                let maxPrice = null;
-                if (!/(?:tren|hon|tu|toi thieu|lon hon|cao hon|over|above)\s*(\d+)\s*(trieu|tr|m|k|nghin|ngan)\b/.test(normalized)) {
-                    const underMatch = normalized.match(/(?:duoi|tam|khoang|duoi muc|gia re hon|it hon|under|below|up to|max)\s+(\d+(?:[.,]\d+)?)\s*(k|nghin|ngan|trieu|tr|m)?/) ||
-                                       normalized.match(/(\d+(?:[.,]\d+)?)\s*(trieu|tr|m|k|nghin|ngan)\b/);
-                    if (underMatch) {
-                        let num = parseFloat(underMatch[1].replace(',', '.'));
-                        const unit = underMatch[2];
-                        if (unit === "trieu" || unit === "tr" || unit === "m") num *= 1000000;
-                        else if (unit === "k" || unit === "nghin" || unit === "ngan" || num < 1000) num *= 1000;
-                        maxPrice = Math.round(num);
-                    }
-                }
-
-                const allProvinces = [...new Set(products.map(p => p.region).filter(Boolean))].sort((a, b) => b.length - a.length);
-                const exactRegion = allProvinces.find(r => {
-                    const nr = r.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase().trim();
-                    return nr.length >= 3 && normalized.includes(nr);
-                }) || null;
-
-                let regionKeyword = null;
-                if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|dien bien|lai chau/.test(normalized)) regionKeyword = "Tây Bắc";
-                else if (/mien tay|dong bang song cuu long|ben tre|ca mau|can tho|an giang|soc trang|tien giang|dong thap/.test(normalized)) regionKeyword = "Miền Tây";
-                else if (/tay nguyen|dak lak|gia lai|kon tum|lam dong|da lat|buon ma thuot/.test(normalized)) regionKeyword = "Tây Nguyên";
-                else if (/mien nam|dong nam bo/.test(normalized)) regionKeyword = "Miền Nam";
-  else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|nha trang|hue|da nang|phu yen/.test(normalized)) regionKeyword = "Miền Trung";
-                else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|mien bac/.test(normalized)) regionKeyword = "Miền Bắc";
-
-                const isHealthIntent = /(suc khoe|duong sinh|nguoi gia|nguoi lon tuoi|cha me|bo me|tre em|ba bau|mat ngu|tieu duong|giai ruou|da day|de khang|bo than|huyet ap)/.test(normalized);
-                const isVegetarianIntent = /(chay|an chay|thuan chay|thuc duong|vegan)/.test(normalized);
-
-                const intent = { isCombo: true, minPrice, maxPrice, exactRegion, regionKeyword, isHealth: isHealthIntent, isVegetarian: isVegetarianIntent, rawText: rawQuery };
-                return generateClientLocalComboReply(intent, products, english ? "en" : "vi");
-            }
-
-            // 2. CHUYÊN ĐỀ VẬN CHUYỂN, GIAO HÀNG & ĐỒNG KIỂM COD (SHIPPING & LOGISTICS)
-            const isShipping = /(ship|giao hang|van chuyen|phi ship|bao lau|nhan hang|phi van chuyen|cod|thanh toan khi nhan|hoa toc|toan quoc)/.test(normalized);
-            if (isShipping) {
-                return {
-                    message: english
-                        ? "OCOP Copilot ships nationwide with dedicated shockproof packaging for delicate regional delicacies:\n\n🚚 Delivery Times:\n• Hanoi & HCMC: Express delivery in 2–4 hours or same-day standard.\n• Nationwide: 2–3 business days.\n\n🛡️ Customer Rights:\n• Inspect goods upon arrival before payment (COD inspection).\n• Free shipping on orders from 500,000₫ or gift combos."
-                        : "Dạ, OCOP Copilot hỗ trợ giao hàng toàn quốc với quy trình đóng gói chống sốc chuyên dụng cho nông sản và đặc sản cao cấp ạ:\n\n🚚 Thời gian giao hàng:\n• Nội thành Hà Nội & TP.HCM: Hỏa tốc trong 2–4 giờ hoặc tiêu chuẩn trong ngày.\n• Các tỉnh thành khác: 2–3 ngày làm việc.\n\n🛡️ Quyền lợi khách hàng:\n• Được kiểm tra hàng trước khi thanh toán (Đồng kiểm COD).\n• Miễn phí vận chuyển cho đơn hàng từ 500.000đ hoặc các combo quà tặng.",
-                    productIds: [],
-                    dynamic_chips: ["Đồng kiểm COD", "Giao hỏa tốc 2-4h", "Combo quà 5 sao", "Hotline: 0987.654.321"],
-                    handoffAdmin: false,
-                    localFallback: true
-                };
-            }
-
-            // 3. CHUYÊN ĐỀ KIẾN THỨC CHỨNG NHẬN OCOP & TRUY XUẤT NGUỒN GỐC (OCOP STANDARDS)
-            const isOcopKnowledge = !/(goi y|tim|mua|xem|top|danh sach|co nhung|cac loai|san pham|dac san)/.test(normalized) &&
-                /(ocop la gi|y nghia.*ocop|tieu chuan.*ocop|y nghia.*sao|sao ocop la gi|the nao la 4 sao|the nao la 5 sao|truy xuat the nao|tem truy xuat|nguon goc xuat xu)/.test(normalized);
-            if (isOcopKnowledge) {
-                return {
-                    message: english
-                        ? "OCOP (One Province One Product) is a national initiative celebrating Vietnam's cultural treasures and terroir:\n\n⭐ 4-Star OCOP: Exceptional provincial standards with high market and safety verification.\n⭐⭐ 5-Star OCOP: \"National Masterpieces\" representing Vietnamese gastronomy and culture to the world.\n\n100% of products on OCOP Copilot feature anti-counterfeit QR codes traceable directly to local cooperatives!"
-                        : "Dạ, OCOP (One Province One Product - Mỗi Xã Một Sản Phẩm) là chương trình quốc gia tôn vinh nông đặc sản tinh hoa của 63 tỉnh thành Việt Nam:\n\n⭐ OCOP 4 sao: Tiêu chuẩn chất lượng xuất sắc cấp tỉnh, quy trình khép kín và an toàn tuyệt đối.\n⭐⭐ OCOP 5 sao: \"Quốc bảo ẩm thực\" - tiêu chuẩn Quốc gia đại diện cho văn hóa Việt Nam vươn tầm quốc tế.\n\n100% sản phẩm trên OCOP Copilot đều có tem truy xuất nguồn gốc QR Code tận làng nghề/hợp tác xã bản địa ạ!",
-                    productIds: [],
-                    dynamic_chips: ["⭐ Đặc sản 5 sao", "Tây Bắc", "Tây Nguyên", "Miền Tây"],
-                    handoffAdmin: false,
-                    localFallback: true
-                };
-            }
-
-            // 3.1 CHUYÊN ĐỀ ĐẶC SẢN OCOP 5 SAO QUỐC GIA (5-STAR NATIONAL MASTERPIECES)
-            const is5StarExplicit = (/(5\s*sao|nam\s*sao|hang nhat|quoc gia|quoc bao|thuong hang)/.test(normalized) &&
-                /(goi y|tim|mua|xem|top|danh sach|co nhung|dac san|san pham|tuyen chon|danh gia|gioi thieu)/.test(normalized)) ||
-                /^(5\s*sao|dac san 5 sao|ocop 5 sao|goi y 5 sao|top 5 sao|san pham 5 sao)$/.test(normalized.trim());
-
-            if (is5StarExplicit) {
-                const fiveStarItems = [492, 480, 348, 336, 392].map(id => products.find(p => p.id === id)).filter(Boolean);
-                const pIds = fiveStarItems.map(p => p.id);
-                lastAIRecommendedProductIds = pIds;
-                return {
-                    message: english
-                        ? "🌟 **Vietnam's 5-Star National OCOP Masterpieces**:\nThese supreme treasures represent the peak of Vietnamese terroir, artisanal heritage, and national pride:\n\n" +
-                          "• 🌿 **Ngoc Linh Ginseng (Kon Tum - 5★)**: 7,000,000 ₫\n  _Vietnam's sovereign botanical treasure with 52 saponins (MR2 >50%) for cellular recovery and vitality._\n\n" +
-                          "• 🕊️ **Khanh Hoa Island Bird's Nest (5★)**: 5,000,000 ₫\n  _100% natural island cave swiftlet nests rich in 18 essential amino acids and sea minerals._\n\n" +
-                          "• 🍵 **Suoi Giang Ancient Shan Tuyet Tea (Yen Bai - 5★)**: 1,800,000 ₫\n  _Harvested from 100-300-year-old wild tea trees wrapped in cloud mist above 1,500m._\n\n" +
-                          "• 🫖 **Phuc Loc Tho Tea Collection (Ha Noi - 5★)**: 2,000,000 ₫\n  _Exquisite imperial gift set encapsulating West Lake Lotus tea and traditional artisan heritage._\n\n" +
-                          "• 🐟 **Cat Hai Traditional Fish Sauce (Hai Phong - 5★)**: 400,000 ₫\n  _Naturally fermented anchovy essence with deep umami clarity and gold-standard purity._\n\n" +
-                          "👉 *Click on any product card below to explore full origin records, lab certifications, or add to cart!*"
-                        : "🌟 **Tuyển tập Quốc bảo Đặc sản OCOP 5 Sao Quốc Gia**:\n\nĐặc sản OCOP 5 sao là danh hiệu vinh danh cao quý nhất của Hội đồng đánh giá Quốc gia, đại diện cho tinh hoa nông sản và văn hóa ẩm thực Việt Nam vươn tầm thế giới:\n\n" +
-                          "• 🌿 **Sâm Ngọc Linh Kon Tum ngâm mật rừng (5 sao)** — **7.000.000 ₫ / Hộp**\n  _Quốc bảo dược liệu Việt Nam chứa 52 hợp chất Saponin quý (đặc biệt MR2 >50%), giúp đại bổ nguyên khí, tái tạo tế bào và tăng cường miễn dịch toàn diện._\n\n" +
-                          "• 🕊️ **Yến Sào Khánh Hòa tinh chế (5 sao)** — **5.000.000 ₫ / Hộp 100g**\n  _Yến đảo thiên nhiên vách đá biển sâu, giàu 18 loại axit amin và khoáng chất quý bồi bổ đường hô hấp và phục hồi sinh lực._\n\n" +
-                          "• 🍵 **Chè Shan Tuyết Suối Giàng thượng hạng (5 sao)** — **1.800.000 ₫ / Hộp**\n  _Búp chè ngậm tuyết từ cây cổ thụ 100–300 năm tuổi trên non cao Yên Bái, nước vàng óng mật ong rừng, hậu ngọt sâu lan tỏa bất tận._\n\n" +
-                          "• 🫖 **Bộ Trà Phúc Lộc Thọ (5 sao)** — **2.000.000 ₫ / Bộ**\n  _Tuyệt phẩm trà tiến vua kết tinh văn hóa ngàn năm Thăng Long Hà Nội, đóng hộp sơn mài sang trọng bậc nhất cho ngoại giao và đại lễ._\n\n" +
-                          "• 🐟 **Nước mắm Cát Hải cốt đặc biệt (5 sao)** — **400.000 ₫ / Hộp**\n  _Ủ chượp cá cơm than tươi ròng rã trên 15 tháng trong chum sành phơi nắng tự nhiên, vị mặn đượm hậu ngọt đạm cá béo ngậy._\n\n" +
-                          "👉 *Anh/Chị có thể bấm trực tiếp vào thẻ sản phẩm bên dưới để xem tem truy xuất nguồn gốc hoặc thêm vào giỏ hàng ngay nhé ạ!*",
-                    productIds: pIds,
-                    dynamic_chips: ["Sâm Ngọc Linh 5★", "Yến Sào Khánh Hòa 5★", "Chè Shan Tuyết 5★", "Bộ Trà Phúc Lộc Thọ 5★"],
-                    handoffAdmin: false,
-                    localFallback: true
-                };
-            }
-
-            // 3.2 CHUYÊN ĐỀ DANH TRÀ VIỆT NAM & THƯỞNG TRÀ THƯỢNG HẠNG (TEA SOMMELIER)
-            const isTeaExplicit = (/(tra|che|shan tuyet|danh tra|thao moc)/.test(normalized) &&
-                /(goi y|tim|mua|tu van|uong|cac loai|thuong hang|ngon|loai nao|tuyen chon)/.test(normalized)) ||
-                /^(tra|che|goi y tra|goi y che|cac loai tra|tra ngon|che ngon)$/.test(normalized.trim());
-
-            if (isTeaExplicit) {
-                const teaItems = [348, 340, 341, 344, 336].map(id => products.find(p => p.id === id)).filter(Boolean);
-                const pIds = teaItems.map(p => p.id);
-                lastAIRecommendedProductIds = pIds;
-                return {
-                    message: english
-                        ? "🍵 **Vietnamese Masterpiece Tea Sommelier Collection**:\nFrom mist-shrouded northern peaks to royal legacy blends, here are Vietnam's finest certified teas:\n\n" +
-                          "• 🏔️ **Suoi Giang Ancient Shan Tuyet Tea (5★ - Yen Bai)**: 1,800,000 ₫\n  _Centuries-old tea trees at 1,500m elevation. Golden liquor, subtle mountain smoke, long-lasting sweet throat finish._\n\n" +
-                          "• 🍃 **Phin Ho Ancient Green Tea (5★ - Ha Giang)**: 600,000 ₫\n  _Tender downy buds plucked by Dao ethnic artisans. Delicate green fragrance with refreshing crispness._\n\n" +
-                          "• 🍂 **Phin Ho Black Tea (5★ - Ha Giang)**: 700,000 ₫\n  _Full enzymatic fermentation producing deep amber tones, wild floral sweetness, and zero astringency._\n\n" +
-                          "• 🌺 **Sa Pa Mist-Sprayed Artichoke Tea (5★ - Lao Cai)**: 150,000 ₫\n  _Purifying herbal wellness infusion for liver detox and deep restful sleep._\n\n" +
-                          "• 🫖 **Phuc Loc Tho Imperial Tea Set (5★ - Ha Noi)**: 2,000,000 ₫\n  _Prestige diplomatic gift set._\n\n" +
-                          "💡 **Sommelier Brewing Secret**: Brew at 85°C–90°C (never boiling 100°C), quick 3s rinse, steep 25–35s. Shan Tuyet ancient tea endures through 8–10 aromatic infusions!"
-                        : "🍵 **Tuyển tập Đệ Nhất Danh Trà OCOP 5 Sao Việt Nam**:\n\nNói đến văn hóa trà Việt, núi cao Tây Bắc quanh năm sương mây cùng nghệ thuật sao chè thủ công bí truyền của đồng bào Dao, Mông tạo nên những tuyệt phẩm trà danh bất hư truyền:\n\n" +
-                          "• 🏔️ **Chè Shan Tuyết Suối Giàng thượng hạng (5 sao - Yên Bái)** — **1.800.000 ₫**\n  _Thu hái từ cây chè cổ thụ 100–300 năm tuổi trên non cao >1.500m. Nước vàng óng ánh mật ong rừng, thoảng hương khói lam chiều thảo mộc, hậu ngọt sâu bất tận._\n\n" +
-                          "• 🍃 **Trà xanh cổ thụ Phìn Hồ (5 sao - Hà Giang)** — **600.000 ₫**\n  _Búp trà non ngậm sương đêm phủ lớp tuyết trắng mịn, sắc nước xanh cốm thanh khiết, vị tiền chát dịu êm, bùi ngậy lắng sâu._\n\n" +
-                          "• 🍂 **Hồng trà Phìn Hồ cổ thụ (5 sao - Hà Giang)** — **700.000 ₫**\n  _Lên men tự nhiên 100%, nước trà đỏ hồng ngọc lấp lánh, hương thơm hoa quả mật ong dịu dàng, hoàn toàn không gây cồn cào ruột._\n\n" +
-                          "• 🌺 **Trà phun sương Actiso Sa Pa (5 sao - Lào Cai)** — **150.000 ₫**\n  _Dược liệu quý mát gan, thanh lọc độc tố cơ thể và mang lại giấc ngủ thư thái an lành._\n\n" +
-                          "• 🫖 **Bộ Trà Phúc Lộc Thọ (5 sao - Hà Nội)** — **2.000.000 ₫**\n  _Tuyệt phẩm trà cung đình hội tụ tinh hoa ngàn năm văn hiến Thăng Long, đóng hộp gấm sơn mài danh giá._\n\n" +
-                          "💡 **Bí quyết pha trà của Chuyên gia Sommelier**: Dùng nước sôi hạ nhiệt độ về **85°C – 90°C**, đánh thức trà nhanh trong 3 giây, hãm từ 25 – 35 giây mỗi tuần trà. Chè Shan Tuyết cổ thụ pha được 8–10 tuần nước vẫn ngọt lành thơm mát!",
-                    productIds: pIds,
-                    dynamic_chips: ["Chè Shan Tuyết Suối Giàng", "Trà Xanh Phìn Hồ", "Hồng Trà Phìn Hồ", "Nghệ thuật pha trà"],
-                    handoffAdmin: false,
-                    localFallback: true
-                };
-            }
-
-            // 3.3 CHUYÊN ĐỀ CÀ PHÊ ĐẶC SẢN NÚI CAO (SPECIALTY COFFEE)
-            const isCoffeeExplicit = (/(ca phe|coffee|robusta|arabica)/.test(normalized) &&
-                /(goi y|tim|mua|tu van|uong|loai nao|ngon|dac san)/.test(normalized)) ||
-                /^(ca phe|coffee|goi y ca phe|ca phe ngon)$/.test(normalized.trim());
-
-            if (isCoffeeExplicit) {
-                const coffeeItems = [353, 360].map(id => products.find(p => p.id === id)).filter(Boolean);
-                const pIds = coffeeItems.map(p => p.id);
-                lastAIRecommendedProductIds = pIds;
-                return {
-                    message: english
-                        ? "☕ **Highland Specialty Coffee Collection (OCOP 5-Star)**:\n\n• **Muong Ang Roasted Coffee (Dien Bien - 5★)**: 450,000 ₫ / 1kg\n  _Arabica Catimor grown at 1,000m altitude. Honey processed for vibrant citrus fruit notes and lingering chocolate sweetness._\n\n• **Bich Thao Specialty Coffee (Son La - 5★)**: 400,000 ₫ / 500g\n  _High-altitude Arabica washed processing with elegant jasmine floral aroma and gentle body._\n\n👉 *Perfect for espresso, pour-over (V60), and traditional Vietnamese Phin brewing!*"
-                        : "☕ **Tuyển tập Cà Phê Đặc Sản Núi Cao OCOP 5 Sao**:\n\nĐược chắt lọc từ những thung lũng sương mù Tây Bắc ở độ cao trên 1.000m với thổ nhưỡng đất đỏ màu mỡ:\n\n• 🏔️ **Cà phê Mường Ảng Điện Biên hạt rang cao cấp (5 sao)** — **450.000 ₫ / 1kg**\n  _Giống Arabica Catimor trứ danh sơ chế mật ong (Honey process), hương thơm nồng nàn quyến rũ, vị chua thanh thoát của trái cây chín mọng và hậu vị ngọt sô-cô-la kéo dài._\n\n• 🌿 **Cà phê Bích Thao Sơn La (5 sao)** — **400.000 ₫ / 500g**\n  _Đạt giải Cà phê đặc sản Việt Nam, hương hoa nhài thanh tao, vị ngọt đượm mật quả, phù hợp pha phin truyền thống hoặc Pour-over / Espresso thượng hạng._\n\n👉 *Anh/Chị có thể bấm vào sản phẩm bên dưới để chọn loại nguyên hạt hoặc xay mịn theo gu pha chế nhé ạ!*",
-                    productIds: pIds,
-                    dynamic_chips: ["Cà phê Mường Ảng 5★", "Cà phê Bích Thao 5★", "Quà Tây Bắc", "Pha phin truyền thống"],
-                    handoffAdmin: false,
-                    localFallback: true
-                };
-            }
-
-            // 4. CHUYÊN ĐỀ HƯỚNG DẪN THƯỞNG THỨC & PHA CHẾ (SOMMELIER GUIDANCE)
-            const isUsage = /(cach dung|cach pha|cach che bien|huong dan su dung|cach nau|cach uong|cach bao quan|pha tra|chung yen)/.test(normalized);
-            if (isUsage) {
-                if (/\b(tra|che)\b/.test(normalized)) {
-                    return {
-                        message: english
-                            ? "🍵 Sommelier brewing guide for premium Vietnamese tea:\n• Water temperature: 85°C–90°C (never boiling 100°C to preserve tender tips).\n• Warm teapot, steep for 25–35 seconds.\n• Pour completely; can be brewed 8–10 infusions with enduring lingering sweetness."
-                            : "🍵 Nghệ thuật pha trà Shan Tuyết Cổ Thụ & Trà Tân Cương chuẩn danh trà:\n\n1. Nhiệt độ nước: 85°C – 90°C (tránh dùng nước sôi 100°C làm cháy búp non).\n2. Tráng ấm & đánh thức trà: Rót nước ngập lá rồi chắt nhanh trong 3 giây.\n3. Hãm trà: Hãm từ 20 – 35 giây mỗi tuần trà. Chắt kiệt ra chén tống trước khi chia ra chén quân.\n4. Thưởng thức: Trà Shan Tuyết cổ thụ pha được 8–10 tuần nước vẫn giữ nguyên sắc nước vàng óng và hậu ngọt sâu lan tỏa.",
-                        productIds: products.filter(p => [348, 340, 341].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Chè Shan Tuyết 5★", "Hồng Trà Phìn Hồ", "Nghệ thuật pha trà"],
-                        handoffAdmin: false,
-                        localFallback: true
-                    };
-                }
-                if (/\b(yen|yen sao)\b/.test(normalized)) {
-                    return {
-                        message: english
-                            ? "🕊️ Premium Bird's Nest preparation guide:\n• Soak pure bird's nest in cool water for 25–30 minutes.\n• Double boil in a ceramic bowl over low heat for 20 minutes.\n• Add rock sugar and fresh ginger slices during the final 5 minutes for a warming tonic."
-                            : "🕊️ Hướng dẫn chưng Yến Sào Khánh Hòa giữ trọn vẹn 18 loại axit amin quý:\n\n1. Ngâm nở: Ngâm tổ yến trong nước tinh khiết 25–30 phút cho sợi tơi mềm.\n2. Chưng cách thủy: Đặt thố sứ vào nồi chưng lửa nhỏ trong 20 phút.\n3. Nêm gia vị: Cho đường phèn và vài lát gừng tươi vào 5 phút cuối để khử tính hàn.\n4. Thời điểm vàng: Dùng lúc bụng đói buổi sáng sớm hoặc 30 phút trước khi ngủ để hấp thu tối đa dinh dưỡng.",
-                        productIds: products.filter(p => p.id === 480).map(p => p.id),
-                        dynamic_chips: ["Yến Sào Khánh Hòa", "Sâm Ngọc Linh", "Bồi bổ sức khỏe"],
-                        handoffAdmin: false,
-                        localFallback: true
-                    };
-                }
-            }
-
-            // 4.1 CHUYÊN ĐỀ ĐỐI SÁNH NÔNG ĐẶC SẢN CHUYÊN SÂU (SOMMELIER COMPARATIVE ANALYSIS)
-            const isComparison = /(so sanh|khac gi|khac nhau|phan biet|nen chon|nen mua loai nao|sao lai dat hon|uu nhuoc diem|chat luong hon)/.test(normalized);
-            if (isComparison) {
-                if (/(shan tuyet|tan cuong|che|tra)/i.test(normalized)) {
-                    return {
-                        message: english
-                            ? "🍵 Sommelier Comparative Analysis: **Shan Tuyet Ancient Tea** vs. **Tan Cuong Dinh Non Tea**:\n\n• **Terroir & Origin**: Shan Tuyet grows wild on rugged peaks (>2,000m) of Ha Giang and Yen Bai with century-old trees wrapped in mist. Tan Cuong flourishes in the sunlit fertile hills of Thai Nguyen beside Cong River.\n• **Leaf Appearance**: Shan Tuyet features plump tips enveloped in pure white downy fur. Tan Cuong has tightly twisted, needle-slender dark green leaves.\n• **Aroma & Liquor**: Shan Tuyet yields honey-amber liquor with gentle smokiness and profound lingering sweet finish (infuses 8–10 times). Tan Cuong produces vibrant young-rice green liquor with pronounced initial briskness and buttery richness.\n• **Best for**: Shan Tuyet suits contemplative evenings and longevity gifts; Tan Cuong excels in morning focus and prestigious diplomatic welcomes."
-                            : "🍵 Chuyên gia Sommelier đối sánh: **Trà Shan Tuyết Cổ Thụ Hà Giang / Suối Giàng** và **Trà Đinh Nõn Tân Cương**:\n\n1. **Thổ nhưỡng & Xuất xứ**:\n   • _Shan Tuyết Cổ Thụ_: Thu hái từ những cây chè cổ thụ 100–300 năm tuổi trên đỉnh Tây Côn Lĩnh & Suối Giàng (>1.500m quanh năm mây mù tuyết phủ).\n   • _Trà Đinh Nõn Tân Cương_: Trồng tại vùng đồi sỏi đỏ trung du sông Công – Tam Đảo, tuyển chọn nghiêm ngặt 1 tôm 1 lá nõn.\n\n2. **Búp chè & Sắc nước**:\n   • _Shan Tuyết_: Búp to mập phủ lớp lông tơ tuyết trắng mịn. Nước trà vàng óng ánh mật ong rừng.\n   • _Tân Cương_: Cánh trà xoăn nhỏ tí xíu như chiếc đinh nõn. Nước trà xanh vàng trong vắt ánh cốm non.\n\n3. **Hương vị & Độ bền nước**:\n   • _Shan Tuyết_: Thoảng hương khói bếp thảo mộc, vị chát dịu êm ái, hậu ngọt sâu lan tỏa bền bỉ (pha được 8–10 tuần nước).\n   • _Tân Cương_: Hương cốm non nồng nàn, vị chát thanh sắc sảo ngay đầu lưỡi, tiền chát hậu bùi ngậy.\n\n👉 **Gợi ý chọn lựa**: Anh/Chị chọn Trà Shan Tuyết nếu thích vị êm đượm dưỡng sinh; chọn Trà Tân Cương nếu thích hương cốm rạng rỡ và vị trà đậm đà truyền thống!",
-                        productIds: products.filter(p => [348, 340].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Chè Shan Tuyết Suối Giàng", "Trà Xanh Phìn Hồ", "Nghệ thuật pha trà"],
-                        handoffAdmin: false,
-                        localFallback: true
-                    };
-                }
-                if (/(sam|ngoc linh|han quoc|trieu tien)/i.test(normalized)) {
-                    return {
-                        message: english
-                            ? "🌿 Sommelier Comparative Analysis: **Ngoc Linh Ginseng (Vietnam)** vs. **Korean Ginseng**:\n\n• **Saponin Content**: Ngoc Linh Ginseng contains 52 saponins (over 50% Majonoside-R2 / MR2) – more than double Korean Ginseng (~26 saponins).\n• **Unique Medical Benefits**: MR2 provides unmatched psychological anti-stress, anti-anxiety, and liver-protecting properties found in no other ginseng worldwide.\n• **Body Constitution Suitability**: Ngoc Linh has a gentle, harmonizing nature suitable for both high and low blood pressure when used appropriately, unlike Korean Red Ginseng which can elevate blood pressure sharply."
-                            : "🌿 Chuyên gia Sommelier đối sánh: **Sâm Ngọc Linh Kon Tum (Quốc bảo Việt Nam)** và **Nhân sâm Hàn Quốc / Triều Tiên**:\n\n1. **Hàm lượng dược chất Saponin**:\n   • _Sâm Ngọc Linh_: Chứa tới **52 hợp chất Saponin** (trong đó có 26 saponin cấu trúc mới chưa từng thấy ở các loài sâm khác trên thế giới). Đặc biệt hợp chất quý **Majonoside-R2 (MR2)** chiếm trên 50% tổng lượng saponin.\n   • _Nhân sâm Hàn Quốc_: Chứa khoảng **24 – 26 loại Saponin**.\n\n2. **Tác dụng y học độc bản của MR2**:\n   • Hợp chất MR2 trong Sâm Ngọc Linh có tác dụng giải tỏa stress tâm lý, chống trầm cảm lo âu, tăng cường miễn dịch, tái tạo tế bào gan và ức chế khối u mà nhân sâm Hàn Quốc không có.\n\n3. **Tính vị & Độ an toàn**:\n   • _Sâm Ngọc Linh_ có tính bình ấm thanh mát, dùng liều lượng điều độ thích hợp cho cả người huyết áp thấp lẫn huyết áp cao.\n   • _Hồng sâm Hàn Quốc_ có tính nhiệt ôn mạnh, người huyết áp cao cần rất cẩn trọng khi dùng.\n\n👉 **Kết luận**: Sâm Ngọc Linh xứng danh là Quốc bảo dược thảo quý giá bậc nhất thế giới, là món quà bồi bổ thượng hạng không gì sánh bằng.",
-                        productIds: products.filter(p => [492, 356].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Sâm Ngọc Linh 5★", "Sâm Lai Châu 5★", "Bồi bổ sức khỏe", "Biếu Sếp"],
-                        handoffAdmin: false,
-                        localFallback: true
-                    };
-                }
-                if (/(yen|to yen|dao|nha)/i.test(normalized)) {
-                    return {
-                        message: english
-                            ? "🕊️ Sommelier Comparative Analysis: **Natural Island Bird's Nest** vs. **Farm-raised Bird's Nest**:\n\n• **Habitat**: Island nests cling to steep cliffs in deep oceanic caves, absorbing sea minerals and marine elements for months.\n• **Texture & Aroma**: Island nests feature thicker, golden-ivory strands that remain crunchy, resilient, and distinctively fragrant after steaming.\n• **Micronutrients**: Higher mineral density (iron, calcium, zinc) from pristine limestone formations."
-                            : "🕊️ Chuyên gia Sommelier đối sánh: **Yến Sào đảo thiên nhiên Khánh Hòa** và **Yến nhà nuôi**:\n\n1. **Môi trường khai thác**:\n   • _Yến đảo thiên nhiên_: Chim yến làm tổ trên các vách đá cheo leo hang đảo biển sâu, đón gió muối và hấp thụ vi khoáng ngấm từ vách đá vôi tự nhiên.\n   • _Yến nhà nuôi_: Làm tổ trong các nhà nuôi gỗ nhân tạo, chu kỳ thu hoạch ngắn hơn.\n\n2. **Cấu trúc sợi & Hương vị khi chưng**:\n   • _Yến đảo_: Sợi to dày, màu trắng ngà ánh vàng, khi chưng nở to, sợi dai giòn sần sật và thơm ngậy đặc trưng mùi biển khơi.\n   • _Yến nhà_: Sợi mảnh, mềm xốp hơn, nhanh tan khi chưng nhiệt độ cao.\n\n3. **Dinh dưỡng vi lượng**:\n   • Yến đảo thiên nhiên chứa hàm lượng sắt, canxi, đồng, kẽm phong phú hơn từ vách đá địa chất tự nhiên.\n\n👉 **Gợi ý**: Yến Sào đảo thiên nhiên Khánh Hòa 5 sao là lựa chọn đỉnh cao để biếu tặng người lớn tuổi phục hồi sinh lực hoặc tri ân đối tác.",
-                        productIds: products.filter(p => p.id === 480).map(p => p.id),
-                        dynamic_chips: ["Yến Sào Khánh Hòa 5★", "Cách chưng yến", "Sâm Ngọc Linh", "Bồi bổ sức khỏe"],
-                        handoffAdmin: false,
-                        localFallback: true
-                    };
-                }
-                if (/(nuoc mam|mam|truyen thong|cong nghiep)/i.test(normalized)) {
-                    return {
-                        message: english
-                            ? "🐟 Sommelier Comparative Analysis: **Traditional Fish Sauce** vs. **Industrial Sauce**:\n\n• **Ingredients**: Traditional sauce uses strictly 2 natural ingredients: fresh black anchovies & sea salt, aged 12–15 months in Boi Loi wood vats.\n• **Nitrogen Protein**: Reaches pure natural 43°N protein without artificial chemical enhancers, delivering deep savory umami and shimmering amber clarity."
-                            : "🐟 Chuyên gia Sommelier đối sánh: **Nước mắm truyền thống Cát Hải / Lê Gia** và **Nước mắm công nghiệp**:\n\n1. **Thành phần & Quy trình ủ chượp**:\n   • _Truyền thống_: Chỉ 2 nguyên liệu duy nhất: Cá cơm than tươi rói và muối biển tinh khiết, ủ chượp tự nhiên 12–15 tháng trong thùng gỗ hoặc chum sành cổ truyền.\n   • _Nước mắm công nghiệp_: Sản xuất ngắn ngày bằng cách pha loãng nước mắm cốt với nước muối, chất điều vị, phẩm màu và hương liệu nhân tạo.\n\n2. **Độ đạm & Màu sắc**:\n   • _Truyền thống_: Đạt độ đạm tự nhiên cao hoàn toàn từ protein cá cơm, màu cánh gián đậm trong suốt và sóng sánh như mật.\n   • _Công nghiệp_: Độ đạm thấp (thường chỉ 10°N – 15°N).\n\n3. **Vị giác & Hậu vị**:\n   • _Truyền thống_: Vị mặn đượm ban đầu nơi đầu lưỡi nhưng ngay sau đó bùng nổ hậu vị ngọt béo ngậy sâu của đạm cá thật.\n   • _Công nghiệp_: Vị ngọt gắt nhân tạo của mì chính và chất tạo ngọt, không có hậu vị đầm ấm tự nhiên.\n\n👉 **Khuyên dùng**: Nước mắm truyền thống OCOP 5 sao là tinh túy giữ gìn mâm cơm Việt đậm đà và an lành sức khỏe.",
-                        productIds: products.filter(p => [392, 436].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Nước Mắm Cát Hải 5★", "Nước Mắm Lê Gia", "Gạo nương Điện Biên", "Bếp gia vị Việt"],
-                        handoffAdmin: false,
-                        localFallback: true
-                    };
-                }
-            }
-
-            // 4.2 CHUYÊN ĐỀ TÂM LÝ TẶNG QUÀ THEO DỊP (OCCASION & GIFT PSYCHOLOGY)
-            const isOccasionGift = /(ra mat|nha ban gai|nha ban trai|bo me vo|bo me chong|thong gia|kieu bao|nuoc ngoai|xuat ngoai|mang di|cam tay|may bay|xach tay|tan gia|khai truong|mung nha moi)/.test(normalized);
-            if (isOccasionGift) {
-                if (/(ra mat|ban gai|ban trai|bo me vo|bo me chong|thong gia)/.test(normalized)) {
-                    return {
-                        message: english
-                            ? "🎁 Gift Etiquette: Meeting In-Laws & Partner's Parents:\n\n• For Father: Premium Suoi Giang Shan Tuyet Ancient Tea 5★ for thoughtful conversation.\n• For Mother: Meo Vac Mint Honey or crunchy Gia Lai wood-roasted cashews for family wellbeing.\n• Traditional touch: Soc Trang Pia cakes or local specialty cakes to sweeten the family gathering.\n\nAll items are packaged in elegant, respectful gift boxes expressing gratitude and sincerity."
-                            : "🎁 Nghệ thuật chọn quà: **Ra mắt gia đình người yêu / Kính thăm Thông gia**:\n\nRa mắt nhà người yêu hay kính thăm thông gia là dịp đặc biệt quan trọng cần sự tinh tế, trang nhã và chân thành, không phô trương kệch cỡm nhưng phải toát lên lòng hiếu kính:\n\n• 👨‍🦳 **Kính tặng Bác trai đàm đạo**: Hộp Chè Shan Tuyết Suối Giàng thượng hạng 5 sao nước vàng óng mật ong rừng, hậu ngọt sâu bất tận.\n• 👩‍🦳 **Kính tặng Bác gái chăm sóc gia đình**: Hũ Mật ong Bạc Hà Mèo Vạc hoa cúc tím đá vôi hoặc Hạt điều Gia Lai bùi béo bổ dưỡng.\n• 🥮 **Thức quà sum vầy ngọt giọng**: Hộp Bánh pía Sóc Trăng thượng hạng 5 sao để cả gia đình cùng thưởng trà rôm rả.\n\n✨ Toàn bộ sản phẩm đều được đóng hộp quà trang nhã, kèm thiệp chúc chân tình.",
-                        productIds: products.filter(p => [348, 342, 577].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Chè Shan Tuyết Suối Giàng", "Mật ong Bạc Hà Mèo Vạc", "Bánh pía Sóc Trăng", "Combo ra mắt gia đình"],
-                        handoffAdmin: false,
-                        localFallback: true
-                    };
-                }
-                if (/(kieu bao|nuoc ngoai|xuat ngoai|mang di|cam tay|may bay|xach tay)/.test(normalized)) {
-                    return {
-                        message: english
-                            ? "✈️ Travel & Expatriate Gift Selection: Airport & Flight-Friendly Delicacies:\n\n• **Gia Lai Wood-Roasted Cashews**: Crispy, aromatic, vacuum-sealed.\n• **Muong Ang Roasted Coffee Beans**: One-way valve air-tight bags preserving fresh roasted aroma.\n• **Suoi Giang Shan Tuyet Tea**: High-altitude tea in premium sealed boxes.\n• **Dried Cinnamon Quills**: Highly fragrant export-quality cinnamon.\n\nStrictly complies with international airline customs regulations with dry, odorless vacuum sealing!"
-                            : "✈️ Tuyển chọn quà biếu: **Kiều bào & Mang đi nước ngoài (Xách tay máy bay)**:\n\nTiêu chuẩn số 1 khi mang đặc sản ra nước ngoài (Mỹ, Nhật, Úc, Châu Âu) là: Gọn nhẹ, hút chân không kín mùi, hạn dùng dài (6–12 tháng) và dễ dàng thông quan hải quan quốc tế:\n\n• 🥜 **Hạt điều rang muối Gia Lai**: Giòn rụm bùi béo, đóng hộp hút chân không sang trọng.\n• ☕ **Cà phê Mường Ảng hạt rang cao cấp**: Đóng gói túi van 1 chiều cao cấp, lưu giữ trọn hương thơm nồng nàn nguyên bản.\n• 🍵 **Chè Shan Tuyết Suối Giàng Thượng Hạng**: Đóng hộp nắp kín, giữ hương trà tuyết núi cao vẹn nguyên.\n• 🌿 **Quế ống khô bóc vỏ xuất khẩu**: Gia vị đại ngàn cay ngọt thơm nức lòng người xa xứ.\n\n⚠️ Lưu ý: Tuyệt đối không chọn các loại thực phẩm tươi sống hoặc có mùi nồng để đảm bảo quá trình kiểm dịch sân bay thuận lợi nhất ạ!",
-                        productIds: products.filter(p => [348, 497, 353, 349].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Hạt điều Gia Lai", "Cà phê Mường Ảng", "Chè Shan Tuyết", "Quế ống Yên Bái"],
-                        handoffAdmin: false,
-                        localFallback: true
-                    };
-                }
-                if (/(tan gia|khai truong|mung nha moi)/.test(normalized)) {
-                    return {
-                        message: english
-                            ? "🏡 Housewarming & Grand Opening Blessings:\n\n• **Wild Highland Honey**: Golden amber richness representing sweet prosperity.\n• **Vietnamese Kitchen Trio**: Dien Bien Rice, Cat Hai Fish Sauce, and Meo Vac Mint Honey to keep the family hearth warm and prosperous."
-                            : "🏡 Quà tặng phong thủy: **Mừng Tân Gia & Khai Trương Đại Cát**:\n\nMón quà mừng nhà mới hay khai trương mang biểu tượng của sung túc, tài lộc dồi dào và ngọn lửa gia đình luôn ấm áp:\n\n• 🍯 **Mật ong Bạc Hà Mèo Vạc**: Vàng óng sánh mịn, biểu trưng cho cuộc sống ngọt ngào, hưng vượng bền lâu.\n• 🌾 **Gạo nương Điện Biên thơm đặc sản**: Biểu tượng của sự ấm no, đủ đầy quanh năm cho gian bếp mới.\n• 🐟 **Nước mắm Cát Hải đặc biệt 5 sao**: Đậm đà bản sắc truyền thống thắp lửa hạnh phúc.\n\n✨ Đi kèm hộp quà phủ gấm hoặc rương gỗ chúc mừng Phúc Lộc Thọ!",
-                        productIds: products.filter(p => [352, 392, 342].includes(p.id)).map(p => p.id),
-                        dynamic_chips: ["Gạo nương Điện Biên", "Nước mắm Cát Hải", "Mật ong Mèo Vạc", "Combo Tân Gia Tài Lộc"],
-                        handoffAdmin: false,
-                        localFallback: true
-                    };
-                }
-            }
-
-            // 4.3 CHUYÊN ĐỀ NÔNG ĐẶC SẢN THUẦN CHAY & THỰC DƯỠNG (VEGETARIAN & PLANT-BASED)
-            const isVegetarianOnly = /(chay|an chay|thuan chay|thuc duong|khong thit|khong hai san|khong dong vat|vegan|vegetarian)/.test(normalized);
-            if (isVegetarianOnly) {
-                return {
-                    message: english
-                        ? "🌱 Pure Vegetarian & Plant-Based OCOP Specialties:\n\n• **Nourishing Nuts**: Gia Lai roasted cashews rich in plant Omega-3.\n• **Artisanal Teas**: Suoi Giang ancient Shan Tuyet tea, Phin Ho mountain green tea.\n• **Wellness & Sweet Treats**: Chi Linh single-clove black garlic (lowers cholesterol), Dien Bien mountain fragrant rice, Soc Trang vegan pia cakes.\n\n100% plant-based, natural, and certified with strict OCOP standards!"
-                        : "🌱 Bộ sưu tập đặc sản OCOP: **Thuần Chay - Thực Dưỡng - Thanh Tịnh**:\n\nDạ, OCOP Copilot có bộ sưu tập đặc sản thuần chay đạt chuẩn 4 sao và 5 sao từ thiên nhiên non nước Việt Nam, 100% nguồn gốc thực vật thanh tịnh và giàu dinh dưỡng:\n\n• 🥜 **Hạt dinh dưỡng bồi bổ**: Hạt điều rang muối Gia Lai giòn rụm bùi ngậy tự nhiên giàu Omega-3 và chất xơ thực vật.\n• 🍵 **Danh trà thanh lọc tâm trí**: Chè Shan Tuyết Suối Giàng thượng hạng, Trà Xanh Phìn Hồ cổ thụ Tây Bắc thanh tao thoát tục.\n• 🧄 **Thảo dược dưỡng sinh**: Tỏi Đen Chí Linh lên men tự nhiên dẻo ngọt bùi như ô mai, giúp ổn định huyết áp và bảo vệ tim mạch.\n• 🌾 **Lương thực truyền thống**: Gạo nương Điện Biên thơm đặc sản dẻo ngọt cơm lành.\n\n✨ Cam kết tuyệt đối không sử dụng thành phần động vật hay chất bảo quản nhân tạo!",
-                    productIds: products.filter(p => [348, 497, 399, 352].includes(p.id)).map(p => p.id),
-                    dynamic_chips: ["Hạt điều Gia Lai", "Chè Shan Tuyết", "Tỏi Đen Chí Linh", "Combo Thuần Chay"],
-                    handoffAdmin: false,
-                    localFallback: true
-                };
-            }
-
-            // 5. CHUYÊN ĐỀ SỨC KHỎE, DƯỠNG SINH & ĐỀ KHÁNG (HEALTH & WELLNESS)
-            const isHealth = /(suc khoe|duong sinh|nguoi gia|nguoi lon tuoi|cha me|bo me|tre em|ba bau|mat ngu|tieu duong|giai ruou|da day|de khang|bo than|huyet ap)/.test(normalized);
-            if (isHealth) {
-                const healthItems = [492, 480, 399, 342].map(id => products.find(p => p.id === id)).filter(Boolean);
-                return {
-                    message: english
-                        ? "For vitality, immune defense, and restorative longevity, here are Vietnam's most treasured natural 5-star elixirs:\n• Ngoc Linh Ginseng: 52 saponins for cellular rejuvenation\n• Khanh Hoa Island Bird's Nest: 18 amino acids\n• Chi Linh Black Garlic: Cardiovascular & blood pressure protection"
-                        : "Dạ, để bồi bổ sức khỏe cho đấng sinh thành, người lớn tuổi hay nâng cao đề kháng thể lực, OCOP AI trân trọng giới thiệu những quốc bảo dược liệu thiên nhiên đạt chuẩn 5 sao:\n\n• 🌿 **Sâm Ngọc Linh Kon Tum (5 sao)**: Đại bổ nguyên khí, bảo vệ tế bào gan và giải tỏa stress.\n• 🕊️ **Yến Sào Khánh Hòa Tinh Chế (5 sao)**: Bồi bổ đường hô hấp và tái tạo sinh lực.\n• 🧄 **Tỏi Đen Chí Linh (5 sao)**: Hạ mỡ máu, ổn định huyết áp và phòng ngừa tim mạch.\n• 🍯 **Mật Ong Bạc Hà Mèo Vạc (4 sao)**: Kháng khuẩn tự nhiên, làm dịu dạ dày và thanh giọng.",
-                    productIds: healthItems.map(p => p.id),
-                    dynamic_chips: ["Sâm Ngọc Linh 5★", "Yến Sào Khánh Hòa 5★", "Tỏi Đen Chí Linh", "Mật Ong Mèo Vạc"],
-                    handoffAdmin: false,
-                    localFallback: true
-                };
-            }
-
-            // 6. CHUYÊN ĐỀ PHÂN TÍCH Ý ĐỊNH TÌM KIẾM THEO NGÂN SÁCH, VÙNG MIỀN, SẢN PHẨM
-            let maxPrice = null;
-            const priceMatch = normalized.match(/(?:duoi|tam|khoang|duoi muc|gia re hon|it hon)\s+(\d+)\s*(k|nghin|ngan|trieu|tr)?/);
-            if (priceMatch) {
-                let num = parseInt(priceMatch[1], 10);
-                const unit = priceMatch[2];
-                if (unit === "trieu" || unit === "tr") num *= 1000000;
-                else if (unit === "k" || unit === "nghin" || unit === "ngan" || num < 1000) num *= 1000;
-                maxPrice = num;
-            } else if (/gia re|tiet kiem|binh dan|hoc sinh|sinh vien/.test(normalized)) {
-                maxPrice = 200000;
-            }
-
-            let minStars = null;
-            if (/5\s*sao|nam\s*sao|thuong hang|quoc gia|hang nhat|xuat sac/.test(normalized)) minStars = 5;
-            else if (/4\s*sao|bon\s*sao/.test(normalized)) minStars = 4;
-
-            const isGift = /bieu|tang|sep|doi tac|bo me|cha me|ong ba|tet|mung tho|tri an|suc khoe|ngoai giao/.test(normalized);
-
-            // Filter products
-            let matched = [...products];
-            if (maxPrice !== null) {
-                const byP = matched.filter(p => Number.isFinite(p.price) && p.price <= maxPrice);
-                if (byP.length) matched = byP;
-            }
-            if (minStars !== null) {
-                const byS = matched.filter(p => p.stars >= minStars);
-                if (byS.length) matched = byS;
-            }
-            if (isGift) {
-                const byG = matched.filter(p => p.category === "gift" || p.stars === 5 || p.price >= 500000);
-                if (byG.length) matched = byG;
-            }
-
-            // Keyword Categories
-            const productQuery = normalized
-                .replace(/\btoi\s+(?=muon|can|co|tim|mua|chon|thich|dang|se|duoc|xin|hoi|lay|xem|da\b|thieu\b|uu\b)/g, ' ')
-                .replace(/\b(?:cho|giup|voi|cua)\s+toi\b/g, ' ')
-                .replace(/^toi\s+/g, ' ');
-
-            let kwCategory = null;
-            if (/\b(tra|che|shan tuyet|dinh non|hoa vang|sen|oolong|suoi giang|moc chau)\b/.test(productQuery)) kwCategory = "trà";
-            else if (/\b(yen|yen sao|to yen)\b/.test(productQuery)) kwCategory = "yến";
-            else if (/\b(sam|sam ngoc linh)\b/.test(productQuery)) kwCategory = "sâm";
-            else if (/\b(mat ong|ong bac ha|ong hoa ca phe)\b/.test(productQuery)) kwCategory = "mật ong";
-            else if (/\b(ca phe|robusta|arabica|buon ma thuot)\b/.test(productQuery)) kwCategory = "cà phê";
-            else if (/\b(gao|st25|tam xoan|seng cu)\b/.test(productQuery)) kwCategory = "gạo";
-            else if (/\b(toi den|toi ly son|toi co don|cu toi)\b/.test(productQuery) || (/\btoi\b/.test(productQuery) && /tỏi/i.test(rawQuery))) kwCategory = "tỏi";
-            else if (/\b(nuoc mam|ca com|phu quoc|cat hai|le gia)\b/.test(productQuery)) kwCategory = "nước mắm";
-            else if (/\b(banh|keo|com|pia|dua)\b/.test(productQuery)) kwCategory = "bánh";
-            else if (/\b(hat|dieu|mac ca)\b/.test(productQuery)) kwCategory = "hạt";
-            else if (/\b(thit|trau|kho ca|cha muc)\b/.test(productQuery)) kwCategory = "đặc sản mặn";
-            else if (/\b(gia vi|que|tieu|thot not|muoi tom)\b/.test(productQuery)) kwCategory = "gia vị";
-
-            if (kwCategory) {
-                const byKw = matched.filter(p =>
-                    (p.name && p.name.toLowerCase().includes(kwCategory)) ||
-                    (p.category && p.category.toLowerCase().includes(kwCategory)) ||
-                    (p.desc && p.desc.toLowerCase().includes(kwCategory))
-                );
-                if (byKw.length) matched = byKw;
-            }
-
-            // Regions
-            let regionKw = null;
-            if (/tay bac|ha giang|sapa|lao cai|moc chau|son la|yen bai|tuyen quang/.test(normalized)) regionKw = "Tây Bắc";
-            else if (/mien tay|dong bang song cuu long|ben tre|ca mau|an giang|soc trang|dong thap|kien giang|phu quoc|hau giang/.test(normalized)) regionKw = "Miền Tây";
-            else if (/tay nguyen|dak lak|gia lai|lam dong|da lat|dak nong/.test(normalized)) regionKw = "Tây Nguyên";
-            else if (/mien trung|quang nam|quang ngai|khanh hoa|ly son|hue|quang tri|ninh thuan/.test(normalized)) regionKw = "Miền Trung";
-            else if (/ha noi|thai nguyen|vinh phuc|quang ninh|hai duong|nam dinh|hung yen|bac giang|mien bac/.test(normalized)) regionKw = "Miền Bắc";
-
-            if (regionKw) {
-                const byR = matched.filter(p =>
-                    (p.region && p.region.toLowerCase().includes(regionKw.toLowerCase())) ||
-                    (p.desc && p.desc.toLowerCase().includes(regionKw.toLowerCase()))
-                );
-                if (byR.length) matched = byR;
-            }
-
-            const topP = (matched.length ? matched : products).slice(0, 3);
-            const productIds = topP.map(p => p.id);
-            lastAIRecommendedProductIds = productIds;
-
-            let storyIntro = "Dạ, em là OCOP AI! Em trân trọng gửi đến Anh/Chị những đặc sản tinh hoa vùng miền được chứng nhận 4–5 sao OCOP xuất sắc:";
-            let dynamic_chips = ["⭐ 5 sao", "🎁 Quà biếu", "💰 Dưới 200k", "🍵 Trà"];
-
-            if (kwCategory === "trà") {
-                storyIntro = "Dạ, nói đến đệ nhất danh trà Việt Nam, núi cao Tây Bắc quanh năm sương mây và vùng chè Tân Cương, Tam Đảo tạo nên những búp trà thượng hạng với hương thơm cốm non thanh khiết và hậu vị ngọt sâu lan tỏa:";
-                dynamic_chips = ["Trà Shan Tuyết Hà Giang", "Trà Đinh Nõn Tân Cương", "Trà Hoa Vàng Tam Đảo", "Trà Sen Tây Hồ"];
-            } else if (kwCategory === "cà phê") {
-                storyIntro = "Dạ, trên vùng đất đỏ bazan Tây Nguyên màu mỡ triệu năm, hạt Cà phê Robusta Buôn Ma Thuột đậm đà nồng nàn cùng Arabica Cầu Đất thanh tao mang hương thơm quyến rũ vươn tầm quốc tế:";
-                dynamic_chips = ["Robusta Buôn Ma Thuột", "Arabica Cầu Đất", "Mật ong hoa cà phê", "Quà Tây Nguyên"];
-            } else if (kwCategory === "nước mắm") {
-                storyIntro = "Dạ, nước mắm Phú Quốc truyền thống được ủ chượp từ cá cơm than tươi rói trong thùng gỗ bời lời ròng rã trên 12 tháng, đạt độ đạm tự nhiên 43°N đậm đà sóng sánh:";
-                dynamic_chips = ["Nước Mắm Phú Quốc 43°N", "Gạo ST25 Sóc Trăng", "Tiêu đen Chư Sê", "Đặc sản Miền Tây"];
-            } else if (kwCategory === "gạo") {
-                storyIntro = "Dạ, Gạo ST25 Sóc Trăng - niềm tự hào được vinh danh Gạo ngon nhất thế giới, hạt thon dài trắng trong, khi chín dẻo thơm ngát mùi lá dứa và cốm non:";
-                dynamic_chips = ["Gạo ST25 Sóc Trăng", "Gạo Séng Cù Tây Bắc", "Nước mắm truyền thống", "Dưới 200k"];
-            } else if (kwCategory === "mật ong") {
-                storyIntro = "Dạ, Mật ong bạc hà Mèo Vạc hoa cúc dại tím đá vôi Hà Giang và Mật ong hoa cà phê Tây Nguyên là những giọt mật tinh khiết nhất chắt lọc từ thiên nhiên đại ngàn:";
-                dynamic_chips = ["Mật ong Bạc Hà Mèo Vạc", "Mật ong Hoa Cà Phê", "Sâm Ngọc Linh", "Bồi bổ sức khỏe"];
-            } else if (kwCategory === "tỏi") {
-                storyIntro = "Dạ, Tỏi Đen Cô Đơn Lý Sơn lên men tự nhiên 60 ngày từ đất đảo núi lửa, dẻo ngọt bùi như ô mai và giàu hoạt chất SAC giúp hạ mỡ máu, bảo vệ tim mạch:";
-                dynamic_chips = ["Tỏi Đen Lý Sơn 5★", "Sâm Ngọc Linh", "Yến Sào Khánh Hòa", "Quà biếu sức khỏe"];
-            } else if (isGift) {
-                storyIntro = "Dạ, để biếu tặng lãnh đạo, đối tác ngoại giao hay kính dâng cha mẹ, những tuyệt phẩm OCOP 5 sao Quốc gia như Yến Sào Khánh Hòa, Sâm Ngọc Linh, Trà Sen Tây Hồ mang trọn vẹn sự tôn quý, thịnh vượng và an khang:";
-                dynamic_chips = ["Biếu Sếp 5 sao", "Biếu Bố Mẹ", "Yến Sào Khánh Hòa", "Sâm Ngọc Linh"];
-            } else if (maxPrice !== null && maxPrice <= 300000) {
-                storyIntro = `Dạ, với mức ngân sách tiết kiệm và hợp lý (dưới ${maxPrice.toLocaleString("vi-VN")}đ), OCOP có rất nhiều thức quà mộc mạc thơm thảo từ các làng nghề truyền thống:`;
-                dynamic_chips = ["Kẹo dừa Bến Tre 65k", "Bánh cốm Hà Nội 85k", "Mật ong Gia Lai 180k", "Quế Trà Bồng 145k"];
-            } else if (regionKw) {
-                storyIntro = `Dạ, về vùng đất ${regionKw} trù phú và giàu truyền thống văn hóa, em trân trọng giới thiệu những niềm tự hào ẩm thực vang danh đất Việt:`;
-                dynamic_chips = ["Đặc sản Tây Bắc", "Đặc sản Miền Tây", "Đặc sản Tây Nguyên", "Đặc sản Miền Trung"];
-            } else if (kwCategory === "yến" || kwCategory === "sâm") {
-                storyIntro = "Dạ, đây là hai đại diện tiêu biểu cho quốc bảo dược liệu và bồi bổ sức khỏe của Việt Nam, chứa hàm lượng dưỡng chất quý hiếm đứng đầu thế giới:";
-                dynamic_chips = ["Yến Sào Đảo 5 sao", "Sâm Ngọc Linh 5 sao", "Tỏi Đen Lý Sơn", "Đông Trùng Hạ Thảo"];
-            }
-
-            const productBullets = topP.map(p => {
-                const priceFormatted = Number.isFinite(p.price) ? `${p.price.toLocaleString("vi-VN")} ₫${p.unit ? ' / ' + p.unit : ''}` : '';
-                const starsFormatted = '⭐'.repeat(p.stars || 4) + ` (${p.stars || 4} sao)`;
-                const descSnippet = p.desc || p.description || '';
-                return `• **${p.name}** — ${starsFormatted}\n  📍 *${p.region || 'Việt Nam'}* | 💰 **${priceFormatted}**\n  _${descSnippet}_`;
-            }).join('\n\n');
-
-            const composedMessage = productBullets
-                ? `${storyIntro}\n\n${productBullets}\n\n👉 *Anh/Chị có thể bấm trực tiếp vào từng thẻ sản phẩm bên dưới để xem tem truy xuất nguồn gốc hoặc thêm vào giỏ hàng ngay nhé ạ!*`
-                : storyIntro;
-
-            return {
-                message: composedMessage,
-                productIds,
-                dynamic_chips,
-                handoffAdmin: false,
-                localFallback: true
-            };
-        }
-
         function formatAIMessageText(text) {
             if (!text) return '';
             const escaped = escapeAIHtml(text);
@@ -5540,6 +4798,8 @@ async function sendAIMessage() {
             userAvatar.innerHTML = '<i class="fa-solid fa-user"></i>';
             userMessage.append(userBubble, userAvatar);
             messagesEl.append(userMessage);
+            pendingAIImages = pendingAIImages.filter(image => !messageImages.includes(image));
+            renderAIChatImagePreviews();
 
             inputEl.value = '';
             messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -5561,30 +4821,19 @@ async function sendAIMessage() {
 
             try {
                 await uploadPendingAIChatImages(messageImages);
-                let result = null;
-                try {
-                    const response = await fetch(getAIEndpoint('/api/ai/chat'), {
-                        method:'POST',headers:{'Content-Type':'application/json'},
-                        body:JSON.stringify({language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id)})
-                    });
-                    if (response.ok) {
-                        const json = await response.json().catch(()=>({}));
-                        if (json && (json.message || json.text_response)) {
-                            result = json;
-                        }
-                    }
-                } catch (netErr) {
-                    console.warn('[AI Assistant] Network fetch failed, engaging client-side intelligence fallback:', netErr);
-                }
-
-                if (!result || (!result.message && !result.text_response)) {
-                    result = createLocalCatalogReply(messageText, messageImages.length > 0);
+                const response = await fetch(getAIEndpoint('/api/ai/chat'), {
+                    method:'POST',headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({sessionId:(window.ocopMetricsSessionId ||= (()=>{try{let id=sessionStorage.getItem("ocop-consultation-session");if(!id){id=crypto.randomUUID();sessionStorage.setItem("ocop-consultation-session",id);}return id;}catch{return crypto.randomUUID();}})()),language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id)})
+                });
+                let result = await response.json().catch(()=>({}));
+                if (!response.ok || (!result.message && !result.text_response)) {
+                    throw new Error(result.message || result.error || (requestLanguage==='en'?'Cannot connect to the assistant. Please try again.':'Chưa kết nối được trợ lý. Bạn thử lại nhé.'));
                 }
                 result.message=result.text_response || result.message;
                 result.productIds=result.suggested_products || result.productIds || [];
                 const shoppingIntent = AIShopping.resolve([...aiConversationHistory, { role: 'user', text: messageText }], products);
                 const shoppingQuery = AIShopping.normalize(messageText);
-                if ((result.integrations?.gemini || result.integrations?.openai) && !messageImages.length && result.understandingStatus !== 'needs_clarification' && !shoppingIntent.isComplaint && !shoppingIntent.isCSKH && !shoppingIntent.isShipping && !shoppingIntent.isUsage && !shoppingIntent.isOcopKnowledge && shoppingIntent.maxPrice && (shoppingIntent.isCombo || shoppingIntent.isGift || /toi co|minh co|ngan sach|tai chinh|budget/.test(shoppingQuery))) {
+                if ((result.integrations?.gemini || result.integrations?.openai) && !messageImages.length && result.understandingStatus !== 'needs_clarification' && !shoppingIntent.isComplaint && !shoppingIntent.isCSKH && !shoppingIntent.isShipping && !shoppingIntent.isUsage && !shoppingIntent.isOcopKnowledge && shoppingIntent.maxPrice && (shoppingIntent.isCombo || shoppingIntent.isGift)) {
                     if (!('combo' in result)) {
                         const eligible = products.filter(product =>
                             AIShopping.regionMatches(product, shoppingIntent) &&
@@ -5612,6 +4861,14 @@ async function sendAIMessage() {
                     </div>
                 `;
                 reply.querySelector('p').innerHTML = formatAIMessageText(result.message);
+                if (Array.isArray(result.productIds) && result.productIds.length) {
+                    const draftLink = document.createElement('a');
+                    const draftIds = result.combo && (!result.combos || result.combos.length <= 1) ? result.combo.items.map(item => item.id) : result.productIds.length === 1 ? result.productIds : [];
+                    draftLink.href = 'draft-order.html' + (draftIds.length ? '?products=' + draftIds.join(',') : '');
+                    draftLink.className = 'inline-flex mt-2 rounded-xl bg-emerald-50 px-3 py-2 font-bold text-emerald-800';
+                    draftLink.textContent = requestLanguage === 'en' ? 'Create a draft order →' : 'Tạo đơn nháp →';
+                    reply.querySelector('p').after(draftLink);
+                }
 
                 const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
                     .map(id => products.find(product => product.id === id))
@@ -5708,8 +4965,6 @@ async function sendAIMessage() {
                     { role: 'user', text: messageText },
                     { role: 'assistant', text: result.message }
                 ].slice(-16);
-                pendingAIImages = pendingAIImages.filter(image => !messageImages.includes(image));
-                renderAIChatImagePreviews();
                 messagesEl.scrollTop = messagesEl.scrollHeight;
 
                 // ── Dynamic chips: refresh the chip bar with contextual suggestions ──
@@ -5751,7 +5006,12 @@ async function sendAIMessage() {
                 retryButton.type = 'button';
                 retryButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
                 retryButton.textContent = currentLanguage === 'en' ? 'Try again' : 'Thử lại';
-                retryButton.addEventListener('click', sendAIMessage);
+                retryButton.addEventListener('click', () => {
+                    if (isAIRequestPending) return;
+                    pendingAIImages = [...messageImages.filter(image => !pendingAIImages.includes(image)), ...pendingAIImages];
+                    renderAIChatImagePreviews();
+                    sendAIMessage();
+                });
                 const contactButton = document.createElement('button');
                 contactButton.type = 'button';
                 contactButton.className = 'rounded-lg border border-emerald-200 px-3 py-2 text-xs font-bold text-ocopGreen hover:bg-emerald-50';
@@ -5765,237 +5025,6 @@ async function sendAIMessage() {
                 sendButton.disabled = false;
                 sendButton.removeAttribute('aria-busy');
             }
-        }
-
-        function generateAIResponse(query) {
-            const q = normalizeSearchText(query).replace(/[^\p{L}\p{N}\s.,-]/gu, ' ').replace(/\s+/g, ' ').trim();
-            const english = currentLanguage === 'en';
-            const budget = parseAIBudget(q);
-            const budgetFloor = parseAIBudgetFloor(q);
-            const category = getAIProductCategory(q);
-            const matchingRegions = getAIRegionProducts(q);
-            const isComboRequest = isAIComboRequest(q);
-            let relevantTerms = [];
-            const requestedStars = /\b(5 sao|5 star|nam sao|top|cao cap|ban chay|danh gia cao)\b/.test(q)
-                ? 5
-                : /\b(4 sao|4 star|bon sao)\b/.test(q) ? 4 : null;
-            const isFiveStar = requestedStars === 5;
-            const isCheaperFollowUp = /\b(re hon|gia thap hon|binh dan hon|mem hon|re hon|cheaper|lower priced|less expensive)\b/.test(q);
-            const isAlternativeFollowUp = /\b(con|khac|them|lua chon khac|another|alternative|other option)\b/.test(q);
-            const aiRelevanceScores = new Map();
-
-            if (isAIAdminContactRequest(q)) {
-                return 'Xin quý khách đợi một chút, mình đang mở kênh liên hệ admin. Anh/chị chọn admin phù hợp để nhắn trao đổi trực tiếp qua Facebook nhé.';
-            }
-
-            const serviceGuidance = getAIServiceGuidance(q, english);
-            if (serviceGuidance) return serviceGuidance;
-
-            if ((isCheaperFollowUp || isAlternativeFollowUp) && !lastAIRecommendedProductIds.length) {
-                return english
-                    ? 'Which product category would you like another option for? Share a product name or budget and I will look it up.'
-                    : 'Anh/chị muốn xem lựa chọn khác cho nhóm sản phẩm nào? Có thể cho mình biết tên sản phẩm hoặc ngân sách nhé.';
-            }
-            if (/^(xin chao|chao|hello|hi|hey)\b/.test(q)) {
-                return english
-                    ? 'Hello! Are you shopping for yourself, looking for a gift, or working within a particular budget?'
-                    : 'Xin chào anh/chị! Anh/chị đang tìm đặc sản để dùng, làm quà hay theo một mức ngân sách cụ thể?';
-            }
-            if (/\b(cam on|thanks|thank you)\b/.test(q)) {
-                return english
-                    ? 'You’re welcome. Share a budget or occasion if you would like more suggestions.'
-                    : 'Rất vui được hỗ trợ anh/chị. Nếu muốn xem thêm lựa chọn, anh/chị có thể cho mình biết ngân sách hoặc dịp tặng nhé.';
-            }
-            if (isComboRequest) {
-                const comboReply = generateClientLocalComboReply({
-                    isCombo: true,
-                    minPrice: budgetFloor,
-                    maxPrice: budget,
-                    exactRegion: matchingRegions && matchingRegions.length ? matchingRegions[0].region : null,
-                    rawText: query
-                }, products, english ? 'en' : 'vi');
-                if (comboReply && comboReply.message) {
-                    const recProds = (comboReply.productIds || []).map(id => products.find(p => p.id === id)).filter(Boolean);
-                    if (recProds.length) {
-                        lastAIComboMarkup = renderAIComboRecommendations(
-                            [recProds],
-                            english ? 'Combos within your budget' : 'Gợi ý combo đặc sản',
-                            english ? 'Calculated from current catalogue prices.' : 'Tính theo giá niêm yết chuẩn OCOP.'
-                        );
-                    }
-                    return comboReply.message;
-                }
-            }
-            if (/\b(giao hang|phi ship|van chuyen|freeship|mien phi ship|shipping|delivery)\b/.test(q)) {
-                return english
-                    ? 'The site currently lists nationwide shipping as free. Please confirm coverage, availability, and delivery timing when placing your order.'
-                    : 'Website hiện hiển thị miễn phí vận chuyển toàn quốc. Anh/chị vui lòng xác nhận phạm vi áp dụng và thời gian giao khi đặt hàng.';
-            }
-            if (/\b(vat|hoa don|xuat hoa don)\b/.test(q)) {
-                return english
-                    ? 'The website indicates VAT invoices are available. Provide your invoice details when ordering and confirm them with the sales team.'
-                    : 'Website có thông tin hỗ trợ hóa đơn VAT. Anh/chị vui lòng cung cấp thông tin xuất hóa đơn khi đặt hàng và xác nhận lại với bộ phận bán hàng.';
-            }
-            if (/\b(thanh toan|vietqr|bidv|chuyen khoan|payment|pay|bank transfer)\b/.test(q)) {
-                return english
-                    ? 'The website supports VietQR via BIDV. Add items to your cart, then verify the payment amount and transfer details before confirming.'
-                    : 'Website hỗ trợ thanh toán qua VietQR BIDV. Anh/chị có thể thêm sản phẩm vào giỏ, chọn thanh toán và kiểm tra kỹ số tiền cùng nội dung chuyển khoản trước khi xác nhận.';
-            }
-
-            const exactProduct = products.find(product => {
-                const names = [product.name, product.nameEn, productNamesEn[product.id - 1]]
-                    .filter(Boolean).map(normalizeSearchText);
-                return names.some(name => q.includes(name) || (q.length >= 6 && name.includes(q)));
-            });
-            if (exactProduct) {
-                lastAIRecommendedProductIds = [exactProduct.id];
-                lastAIRecommendationCriteria = {
-                    category: exactProduct.category,
-                    terms: [],
-                    stars: null,
-                    maxPrice: null,
-                    minPrice: null,
-                    regionIds: null
-                };
-                return renderAIProductRecommendations(
-                    [exactProduct],
-                    english ? 'Product details' : 'Thông tin sản phẩm anh/chị hỏi',
-                    english ? 'View the details or add this product to your cart.' : 'Anh/chị có thể xem chi tiết hoặc thêm sản phẩm vào giỏ.'
-                );
-            }
-
-            let candidates = products.filter(product => {
-                if (category && product.category !== category) return false;
-                if (requestedStars && product.stars !== requestedStars) return false;
-                if (budget && product.price > budget) return false;
-                if (budgetFloor && product.price < budgetFloor) return false;
-                if (matchingRegions && !matchingRegions.includes(product)) return false;
-                return true;
-            });
-
-            if (isCheaperFollowUp && lastAIRecommendedProductIds.length) {
-                const previousPrices = products
-                    .filter(product => lastAIRecommendedProductIds.includes(product.id))
-                    .map(product => product.price);
-                const ceiling = Math.min(...previousPrices);
-                candidates = products.filter(product =>
-                    product.price < ceiling &&
-                    matchesAIRecommendationCriteria(product, lastAIRecommendationCriteria)
-                );
-            } else if (isAlternativeFollowUp && lastAIRecommendedProductIds.length) {
-                candidates = products.filter(product =>
-                    !lastAIRecommendedProductIds.includes(product.id) &&
-                    matchesAIRecommendationCriteria(product, lastAIRecommendationCriteria)
-                );
-            } else if (!isCheaperFollowUp && !isAlternativeFollowUp) {
-                const terms = getAIQueryTerms(q);
-                relevantTerms = terms;
-                const scored = products.map(product => {
-                    const searchable = normalizeSearchText(`${product.name} ${product.nameEn || productNamesEn[product.id - 1] || ''} ${product.region} ${product.tag} ${product.tagEn || ''} ${product.desc} ${product.descEn || ''}`)
-                        .replace(/[^\p{L}\p{N}]/gu, ' ')
-                        .split(/\s+/);
-                    const productName = normalizeSearchText(product.name).replace(/[^\p{L}\p{N}]/gu, ' ').split(/\s+/);
-                    const matchingTerms = terms.filter(term => searchable.includes(term));
-                    const score = matchingTerms.reduce((total, term) => total + (productName.includes(term) ? 3 : 1), 0);
-                    return { product, score, matchingTerms };
-                }).filter(result => candidates.includes(result.product) && result.score > 0).sort((a, b) => b.score - a.score);
-                if (scored.length) {
-                    scored.forEach(result => aiRelevanceScores.set(result.product.id, result.score));
-                    candidates = scored.slice(0, 5).map(result => result.product);
-                    relevantTerms = terms.filter(term => scored.slice(0, 3).every(result => result.matchingTerms.includes(term)));
-                }
-            }
-
-            candidates.sort((a, b) =>
-                (aiRelevanceScores.get(b.id) || 0) - (aiRelevanceScores.get(a.id) || 0) ||
-                b.stars - a.stars ||
-                b.rating - a.rating ||
-                b.reviews - a.reviews ||
-                a.price - b.price
-            );
-
-            if (candidates.length) {
-                const recommendations = candidates.slice(0, 3);
-                lastAIRecommendedProductIds = recommendations.map(product => product.id);
-                if (!isCheaperFollowUp && !isAlternativeFollowUp) {
-                    lastAIRecommendationCriteria = {
-                        category,
-                        terms: relevantTerms,
-                        stars: requestedStars,
-                        maxPrice: budget,
-                        minPrice: budgetFloor,
-                        regionIds: matchingRegions ? matchingRegions.map(product => product.id) : null
-                    };
-                }
-
-                const title = english
-                    ? (isCheaperFollowUp
-                        ? 'Options at lower prices'
-                        : isAlternativeFollowUp
-                            ? 'More options to consider'
-                            : budgetFloor && budget && category
-                                ? `${getAIProductCategoryLabel(category)} between ${budgetFloor.toLocaleString('en-US')} and ${budget.toLocaleString('en-US')} VND`
-                            : budget && category
-                                ? `${getAIProductCategoryLabel(category)} under ${budget.toLocaleString('en-US')} VND`
-                                : category
-                                    ? 'Suggestions based on your needs'
-                                    : requestedStars
-                                        ? `OCOP ${requestedStars}-star products`
-                                        : budgetFloor && budget
-                                            ? `Products between ${budgetFloor.toLocaleString('en-US')} and ${budget.toLocaleString('en-US')} VND`
-                                        : budget
-                                            ? `Products under ${budget.toLocaleString('en-US')} VND`
-                                            : 'Products matching your search')
-                    : isCheaperFollowUp
-                    ? 'Một số lựa chọn có giá thấp hơn'
-                    : isAlternativeFollowUp
-                        ? 'Một vài lựa chọn khác'
-                        : budgetFloor && budget && category
-                            ? `${getAIProductCategoryLabel(category)} trong khoảng ${budgetFloor.toLocaleString('vi-VN')}–${budget.toLocaleString('vi-VN')} ₫`
-                        : budget && category
-                            ? `${getAIProductCategoryLabel(category)} trong mức ${budget.toLocaleString('vi-VN')} ₫`
-                        : category
-                            ? 'Gợi ý theo nhu cầu của anh/chị'
-                            : requestedStars
-                                ? `Một số sản phẩm OCOP ${requestedStars} sao`
-                                : budgetFloor && budget
-                                    ? `Sản phẩm trong khoảng ${budgetFloor.toLocaleString('vi-VN')}–${budget.toLocaleString('vi-VN')} ₫`
-                                : budget
-                                    ? `Sản phẩm trong mức ${budget.toLocaleString('vi-VN')} ₫`
-                                    : 'Sản phẩm phù hợp với từ khóa anh/chị tìm';
-                const note = english
-                    ? 'Prices are shown as listed and may change. Please review product details before ordering.'
-                    : /\b(ngu ngon|mat ngu|mat gan|suc khoe|boi bo|chua|tri|benh)\b/.test(q)
-                    ? 'Lưu ý: đây là thực phẩm, không thay thế thuốc hoặc tư vấn y tế. Anh/chị nên xem kỹ thông tin sản phẩm.'
-                    : budget
-                        ? 'Giá được lấy từ danh mục hiện tại; tình trạng và ưu đãi có thể thay đổi.'
-                        : 'Anh/chị có thể xem chi tiết từng sản phẩm trước khi chọn mua.';
-                return renderAIProductRecommendations(recommendations, title, note);
-            }
-
-            if (budget || budgetFloor) {
-                return english
-                    ? `I could not find a match${budgetFloor && budget ? ` between ${budgetFloor.toLocaleString('en-US')} and ${budget.toLocaleString('en-US')} VND` : budget ? ` under ${budget.toLocaleString('en-US')} VND` : ` from ${budgetFloor.toLocaleString('en-US')} VND`}${category ? ' in this category' : ''}. Would you like to adjust your budget or try another category?`
-                    : `Mình chưa thấy sản phẩm phù hợp${budgetFloor && budget ? ` trong khoảng ${budgetFloor.toLocaleString('vi-VN')}–${budget.toLocaleString('vi-VN')} ₫` : budget ? ` dưới ${budget.toLocaleString('vi-VN')} ₫` : ` từ ${budgetFloor.toLocaleString('vi-VN')} ₫`}${category ? ' ở nhóm này' : ''}. Anh/chị muốn điều chỉnh ngân sách hoặc thử nhóm đặc sản khác không?`;
-            }
-            if (isCheaperFollowUp) {
-                return english
-                    ? 'I could not find a lower-priced option in the same category. Would you like to try another category or set a budget?'
-                    : 'Mình chưa tìm thấy lựa chọn nào rẻ hơn trong cùng nhóm từ danh mục hiện tại. Anh/chị muốn thử nhóm sản phẩm khác hoặc cho mình một mức ngân sách cụ thể không?';
-            }
-            if (isAlternativeFollowUp) {
-                return english
-                    ? 'I could not find another match in the same category. Would you like to change your budget or try another category?'
-                    : 'Mình chưa thấy thêm lựa chọn phù hợp trong cùng nhóm. Anh/chị muốn đổi ngân sách hoặc thử nhóm đặc sản khác không?';
-            }
-            if (/\b(gia|bao nhieu|con hang|ton kho)\b/.test(q)) {
-                return english
-                    ? 'Which product are you interested in? Send its name or province and I can find the listed price.'
-                    : 'Anh/chị đang quan tâm sản phẩm nào? Gửi tên đặc sản hoặc tỉnh thành, mình sẽ tìm giá đang hiển thị trong danh mục.';
-            }
-            return english
-                ? 'Search by product, province, category, OCOP star rating, or budget. For example: “gift under 500k”, “5-star tea”, or “Ca Mau specialty”.'
-                : 'Mình có thể giúp tìm theo tên sản phẩm, tỉnh thành, nhóm hàng, hạng sao hoặc ngân sách. Ví dụ: “quà biếu dưới 500k”, “trà 5 sao” hoặc “đặc sản Cà Mau”.';
         }
 
         function isAIComboRequest(query) {
@@ -6734,9 +5763,22 @@ async function sendAIMessage() {
 
         function syncAuthSocialVisibility() {
             const socialLogin = document.getElementById('auth-social-login');
-            socialLogin.classList.toggle('hidden', authTab !== 'login' || authStep !== 'form');
+            const en = currentLanguage === 'en';
+            const registering = authTab === 'register';
+            socialLogin.classList.toggle('hidden', authStep !== 'form');
+            socialLogin.setAttribute('aria-label', en
+                ? (registering ? 'Register with a social account' : 'Sign in with a social account')
+                : (registering ? 'Đăng ký bằng tài khoản xã hội' : 'Đăng nhập bằng tài khoản xã hội'));
+            document.querySelector('[data-auth-social-label="google"]').textContent = en
+                ? (registering ? 'Sign up with Google' : 'Continue with Google')
+                : (registering ? 'Đăng ký với Google' : 'Tiếp tục với Google');
+            document.querySelector('[data-auth-social-label="facebook"]').textContent = en
+                ? (registering ? 'Sign up with Facebook' : 'Continue with Facebook')
+                : (registering ? 'Đăng ký với Facebook' : 'Tiếp tục với Facebook');
+            document.querySelector('[data-auth-social-label="separator"]').textContent = en
+                ? (registering ? 'or create a shop account' : 'or sign in with your account')
+                : (registering ? 'hoặc đăng ký tài khoản cửa hàng' : 'hoặc đăng nhập bằng tài khoản');
         }
-
         function switchAuthTab(tab) {
             authTab = tab;
             const submitBtn = document.getElementById('auth-submit-btn');
@@ -6795,14 +5837,58 @@ async function sendAIMessage() {
             return result;
         }
 
-        function startSocialLogin(provider) {
-            if (!['google', 'facebook'].includes(provider)) {
-                showToast('Nhà cung cấp đăng nhập không hợp lệ.', 'error');
-                return;
-            }
-            window.location.assign(getAIEndpoint(`/api/auth/oauth/${provider}`));
+        let socialLoginPending = false;
+        function showSocialLoginStatus(message, error = false) {
+            const status = document.getElementById('auth-social-status');
+            status.textContent = message;
+            status.className = 'mb-4 rounded-xl border px-3 py-2 text-xs leading-relaxed ' +
+                (error ? 'border-red-200 bg-red-50 text-red-700' : 'border-emerald-200 bg-emerald-50 text-ocopGreen');
         }
-
+        function resetSocialLoginPending() {
+            socialLoginPending = false;
+            document.querySelectorAll('#auth-social-login button').forEach(button => {
+                button.disabled = false;
+                button.removeAttribute('aria-busy');
+            });
+        }
+        window.addEventListener('pageshow', () => {
+            resetSocialLoginPending();
+            document.getElementById('auth-social-status').classList.add('hidden');
+        });
+        async function startSocialLogin(provider) {
+            if (!['google', 'facebook'].includes(provider) || socialLoginPending) return;
+            const en = currentLanguage === 'en';
+            const name = provider === 'google' ? 'Google' : 'Facebook';
+            socialLoginPending = true;
+            document.querySelectorAll('#auth-social-login button').forEach(button => {
+                button.disabled = true;
+                button.setAttribute('aria-busy', 'true');
+            });
+            showSocialLoginStatus(en ? 'Connecting to ' + name + '…' : 'Đang kết nối với ' + name + '…');
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 8000);
+            try {
+                const response = await fetch(getAIEndpoint('/api/auth/oauth/status'), { cache: 'no-store', signal: controller.signal });
+                if (!response.ok) throw new Error('OAuth status unavailable');
+                const status = await response.json();
+                if (!status.providers?.[provider]?.configured) {
+                    showSocialLoginStatus(en
+                        ? name + ' sign-in is not connected yet. You can sign in or register with your shop account below.'
+                        : 'Đăng nhập ' + name + ' chưa được kết nối. Bạn có thể đăng nhập hoặc đăng ký bằng tài khoản cửa hàng bên dưới.', true);
+                    resetSocialLoginPending();
+                    return;
+                }
+                showSocialLoginStatus(en ? 'Opening ' + name + ' sign-in…' : 'Đang mở trang đăng nhập ' + name + '…');
+                window.location.assign(getAIEndpoint('/api/auth/oauth/' + provider));
+            } catch {
+                showSocialLoginStatus(en
+                    ? 'Could not connect to the sign-in server. Please try again.'
+                    : 'Không kết nối được máy chủ đăng nhập. Bạn kiểm tra kết nối rồi bấm thử lại nhé.', true);
+                resetSocialLoginPending();
+            } finally {
+                clearTimeout(timeout);
+            }
+        }
         async function finishSocialLogin() {
             const params = new URLSearchParams(window.location.hash.slice(1));
             const code = params.get('oauth_code');
@@ -7344,7 +6430,7 @@ async function sendAIMessage() {
                 ? 'Search OCOP products...' : 'Tìm sản phẩm OCOP...';
             document.getElementById('product-search').placeholder = currentLanguage === 'en'
                 ? 'Search by product or region...' : 'Tìm theo tên đặc sản hoặc vùng miền...';
-            document.querySelectorAll('button[onclick*="startVoiceSearch"]').forEach(button => {
+            document.querySelectorAll('button[data-voice-search]').forEach(button => {
                 const label = currentLanguage === 'en' ? 'Search by voice' : 'Tìm kiếm bằng giọng nói';
                 button.setAttribute('aria-label', label);
                 button.title = label;
@@ -7511,9 +6597,7 @@ async function sendAIMessage() {
             text('#auth-modal .text-center p', 'Manage orders and redeem offers', 'Qu\u1ea3n l\u00fd \u0111\u01a1n h\u00e0ng v\u00e0 t\u00edch \u0111i\u1ec3m \u01b0u \u0111\u00e3i');
             text('#tab-login', 'Log in', '\u0110\u0103ng nh\u1eadp');
             text('#tab-register', 'Create account', '\u0110\u0103ng k\u00fd');
-            document.querySelector('[data-auth-social-label="google"]').textContent = en ? 'Continue with Google' : 'Tiếp tục với Google';
-            document.querySelector('[data-auth-social-label="facebook"]').textContent = en ? 'Continue with Facebook' : 'Tiếp tục với Facebook';
-            document.querySelector('[data-auth-social-label="separator"]').textContent = en ? 'or sign in with your account' : 'hoặc đăng nhập bằng tài khoản';
+            syncAuthSocialVisibility();
             text('label[for="auth-name"]', 'Full name *', 'H\u1ecd v\u00e0 t\u00ean *');
             text('label[for="auth-phone"]', 'Phone number for SMS code *', 'S\u1ed1 \u0111i\u1ec7n tho\u1ea1i nh\u1eadn m\u00e3 OTP *');
             text('label[for="auth-address"]', 'Address *', '\u0110\u1ecba ch\u1ec9 *');
@@ -7633,14 +6717,48 @@ async function sendAIMessage() {
 <script src="script.js?v=20261008_scroll"></script>
 <script src="product-reviews-ui.js?v=20261007_3"></script>
 <script src="account-client.js?v=20261007_1"></script>
-<script src="chat-dictation.js?v=20261008_1"></script>
+<script src="chat-dictation.js?v=20261010_search_voice"></script>
 <script>
     window.chatDictation = ChatDictation.mount({
         input: document.getElementById('ai-chat-input'),
         button: document.getElementById('chat-voice-button'),
         status: document.getElementById('chat-voice-status'),
-        getLanguage: () => currentLanguage
+        getLanguage: () => currentLanguage,
+        transcribe: ChatDictation.createTranscriber(() => getAIEndpoint('/api/ai/transcribe'))
+    });
+    window.searchDictations = [];
+    document.getElementById('chat-voice-button').addEventListener('click', () => window.searchDictations.forEach(controller => controller.stop(true)), { capture: true });
+    document.querySelectorAll('[data-voice-search]').forEach(button => {
+        const input = document.getElementById(button.dataset.voiceSearch);
+        const status = document.createElement('span');
+        status.className = 'sr-only';
+        status.setAttribute('role', 'status');
+        button.after(status);
+        let controller;
+        button.addEventListener('click', () => {
+            window.searchDictations.forEach(other => { if (other !== controller) other.stop(true); });
+            window.chatDictation?.stop(true);
+        }, { capture: true });
+        controller = ChatDictation.mount({
+            input, button, status,
+            getLanguage: () => currentLanguage,
+            transcribe: ChatDictation.createTranscriber(() => getAIEndpoint('/api/ai/transcribe')),
+            replaceExisting: true,
+            singleUtterance: true,
+            recordingLimitMs: 15000,
+            onStatus: message => {
+                if (/Đã chuyển thành văn bản|Transcribed\./.test(message)) return;
+                showToast(message, /Không |Chưa |chưa cấp|not |failed|denied|No |Could not/i.test(message) ? 'error' : 'info');
+            },
+            onTranscript: transcript => {
+                filterProductsGlobal(transcript);
+                scrollToProducts();
+                showToast(currentLanguage === 'en' ? 'Searching: ' + transcript : 'Đang tìm: ' + transcript, 'success');
+            }
+        });
+        window.searchDictations.push(controller);
     });
 </script>
+<script src="shop-prices.js?v=20261010"></script>
 </body>
 </html>

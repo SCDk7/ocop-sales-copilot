@@ -1,0 +1,12 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="ocop-api-base" content=""><title>OCOP · Draft order</title><link rel="stylesheet" href="sales-pages.css"></head><body><main>
+<header><a href="index.html" data-vi="← Cửa hàng" data-en="← Shop"></a><button id="lang">English</button></header>
+<h1 data-vi="Tạo đơn nháp" data-en="Create a draft order"></h1>
+<p data-vi="Chọn sản phẩm, kiểm tra thông tin và xác nhận lưu yêu cầu mua. Người bán sẽ cần kiểm tra kho, phí giao và giá cuối cùng trước khi chốt đơn." data-en="Choose products, check your details and confirm your purchase request. The seller must verify inventory, shipping and final pricing before confirming the order."></p>
+<form id="draftForm"><section id="items"></section><button type="button" id="add" data-vi="+ Thêm sản phẩm" data-en="+ Add product"></button>
+<label><span data-vi="Tên người nhận" data-en="Recipient name"></span><input name="name" autocomplete="name" maxlength="120" required></label>
+<label><span data-vi="Số điện thoại" data-en="Phone number"></span><input name="phone" type="tel" autocomplete="tel" maxlength="20" required></label>
+<label><span data-vi="Địa chỉ giao hàng" data-en="Delivery address"></span><textarea name="address" autocomplete="street-address" minlength="8" maxlength="500" required></textarea></label>
+<label class="check"><input name="confirmed" type="checkbox" required><span data-vi="Tôi xác nhận thông tin và đồng ý lưu đơn nháp để người bán xử lý." data-en="I confirm these details and agree to save a draft for seller review."></span></label>
+<button type="submit" id="submit" class="primary" disabled data-vi="Xác nhận tạo đơn nháp" data-en="Confirm draft order"></button></form>
+<p id="status" role="status"></p><section id="result" hidden class="card"></section>
+</main><script src="sales-pages.js"></script><script src="draft-order.js"></script></body></html>

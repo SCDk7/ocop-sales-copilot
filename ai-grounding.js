@@ -10,8 +10,9 @@ function parseGrounding(data) {
 function relevantWikiSource(source,query) {
   const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').toLowerCase();
   const title=norm(source.title);
-  if (/moi xa mot san pham|one commune one product|\bocop\b/.test(norm(query))) {
-    return !/dang cong san|communist party/.test(title) && /moi xa mot san pham|one commune one product|\bocop\b/.test(title+' '+norm(source.extract));
+  if (/moi xa mot san pham|one (?:commune|village) one product|\bocop\b/.test(norm(query))) {
+    const topic=title+' '+norm(source.extract);
+    return !/dang cong san|communist party|community of practice|virtual community|online community/.test(topic) && /moi xa mot san pham|one (?:commune|village) one product|\bocop\b/.test(topic);
   }
   if(/dien vien|ca si|actor|actress|politician|footballer/.test(title))return false;
   const words=[...new Set(norm(query).split(/[^a-z0-9]+/).filter(w=>w.length>1&&!['toi','minh','muon','tim','kiem','nguon','goc','tu','dau','san','pham','co','cua','ve','the','what','from','about','is'].includes(w)))];

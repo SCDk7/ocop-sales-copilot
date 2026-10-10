@@ -3,6 +3,89 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const shopping = require('./ai-shopping');
+test('change-budget chip asks for a new amount and preserves Dong Nai on the next turn',()=>{
+ const products=require('./data').PRODUCTS;
+ const history=[{role:'user',text:'combo quà biếu đối tác dưới 300k chỉ chọn sản phẩm Đồng Nai'},{role:'assistant',text:'Chưa tìm được combo phù hợp.'},{role:'user',text:'Đổi ngân sách'}];
+ const intent=shopping.resolve(history,products);
+ const question=shopping.budgetClarification('Đổi ngân sách','vi',intent);
+ assert.match(question,/tổng ngân sách combo/);
+ assert.match(question,/Đồng Nai/);
+ assert.equal(shopping.budgetClarification('đổi ngân sách thành 500k','vi',intent),null);
+ assert.match(shopping.budgetClarification('Adjust budget','en',intent),/new total combo budget/);
+ history.push({role:'assistant',text:question},{role:'user',text:'500k'});
+ const updated=shopping.resolve(history,products);
+ assert.equal(updated.maxPrice,500000);
+ assert.equal(updated.exactRegion,'Đồng Nai');
+ assert.equal(updated.isCombo,true);
+});
+test('a money-only message asks single product versus combo at every budget',()=>{
+ for(const text of ['2tr','500k','15 triệu','1.500.000 đ','2000000','ngân sách 3tr','tôi có 800k']){
+  const question=shopping.budgetClarification(text);assert(question);assert.match(question,/1 món.*combo/);
+ }
+ for(const text of ['combo 2tr','1 món 2tr','trà dưới 500k','combo 7 món 15tr']) assert.equal(shopping.budgetClarification(text),null);
+ const products=require('./data').PRODUCTS;
+ const history=[{role:'user',text:'combo 3 món 1tr'},{role:'user',text:'2tr'},{role:'user',text:'1 món'}];
+ const result=shopping.resolve(history,products);assert.equal(result.maxPrice,2000000);assert.equal(result.isCombo,false);assert.equal(result.isGift,false);
+ const context={};vm.runInNewContext(fs.readFileSync('ai-shopping.js','utf8'),context);assert(context.AIShopping.budgetClarification('2tr').includes('1 món'));
+});
+
+test('a budget follow-up completes the chosen combo or single-product mode without repeating the question',()=>{
+ const products=require('./data').PRODUCTS;
+ const combo=shopping.resolve([{role:'user',text:'Hello Cho tôi một combo 300'},{role:'assistant',text:'Ngân sách bao nhiêu?'},{role:'user',text:'300k'}],products);
+ assert.equal(combo.purchaseMode,'combo');assert.equal(combo.isCombo,true);assert.equal(combo.maxPrice,300000);
+ assert.equal(shopping.budgetClarification('300k','vi',combo),null);
+ const plans=shopping.variants(products,combo);assert(plans.length);assert(plans.every(plan=>plan.total<=300000));
+ const single=shopping.resolve([{role:'user',text:'Tôi muốn 1 món'},{role:'user',text:'300k'}],products);
+ assert.equal(single.purchaseMode,'single');assert.equal(shopping.budgetClarification('300k','vi',single),null);
+ const reset=shopping.resolve([{role:'user',text:'combo 300k'},{role:'user',text:'bắt đầu lại'},{role:'user',text:'300k'}],products);
+ assert(shopping.budgetClarification('300k','vi',reset));
+});
+test('a new general five-star recommendation does not silently inherit the previous tea-only request',()=>{
+ const intent=shopping.resolve([{role:'user',text:'Gợi ý trà'},{role:'user',text:'Gợi ý đặc sản OCOP 5 sao'}],require('./data').PRODUCTS);
+ assert.equal(intent.minStars,5);assert.equal(intent.categoryOrKeyword,null);
+});
+
+test('luxury combo requests use premium catalogue labels within the stated budget',()=>{
+  const products=[{id:1,name:'Trà cao cấp hộp quà',price:1000000},{id:2,name:'Yến thượng hạng',price:1000000},{id:3,name:'Món thông thường',price:1000000}];
+  const intent=shopping.resolve([{role:'user',text:'bạn có thể gợi ý cho mình combo sang trọng tầm 2tr ko'}],products);
+  assert.equal(intent.maxPrice,2000000);assert.equal(intent.preferPremium,true);assert.equal(intent.isCombo,true);
+  const plan=shopping.closest(products,intent);assert.equal(plan.total,2000000);assert.deepEqual(plan.items.map(p=>p.id).sort(),[1,2]);
+  const alternatives=shopping.variants([...products,...Array.from({length:8},(_,i)=>({id:10+i,name:'Món thường '+i,price:250000}))],intent,1,()=>0.5);
+  assert.equal(alternatives[0].items.length,2);assert.deepEqual(alternatives[0].items.map(p=>p.id).sort(),[1,2]);
+});
+
+test('a high budget with only one feasible seven-item set displays one genuine option',()=>{
+  const products=Array.from({length:7},(_,id)=>({id:id+1,name:'Món '+(id+1),price:1000000}));
+  const intent={maxPrice:15000000,minItems:7,maxItems:7};
+  const plans=shopping.variants(products,intent,3,()=>0.5);
+  assert.equal(plans.length,1);assert.equal(plans[0].items.length,7);assert.equal(plans[0].total,7000000);
+  const reply=shopping.replyOptions(plans,intent,'vi');
+  assert.equal(reply.combos.length,1);assert.match(reply.message,/tìm được 1 combo phù hợp/);assert(!reply.message.includes('Combo 2'));assert.match(reply.message,/8\.000\.000/);
+});
+
+test('duplicate contents are removed regardless of order; equal totals do not merge different combos',()=>{
+  const a={id:1,price:100000},b={id:2,price:100000},c={id:3,price:100000};
+  const first={items:[a,b],total:200000,budget:15000000,remaining:14800000};
+  const duplicate={...first,items:[b,a]},different={...first,items:[a,c]};
+  const single=shopping.replyOptions([first,duplicate],{maxPrice:15000000},'en');
+  assert.equal(single.combos.length,1);assert.match(single.message,/1 matching combination/);
+  const distinct=shopping.replyOptions([first,duplicate,different],{maxPrice:15000000},'vi');
+  assert.equal(distinct.combos.length,2);assert.match(distinct.message,/2 combo khác nhau/);
+  const context={};vm.runInNewContext(fs.readFileSync('ai-shopping.js','utf8'),context);
+  assert.equal(context.AIShopping.replyOptions([first,duplicate],{maxPrice:15000000},'vi').combos.length,1);
+});
+
+test('strict item limits differ from inclusive bounds and never become a money budget',()=>{
+  assert.deepEqual(shopping.itemCount('ý là đưa combo 2tr những dưới 5 món'),{minItems:2,maxItems:4});
+  assert.deepEqual(shopping.itemCount('ít hơn năm món'),{minItems:2,maxItems:4});
+  assert.deepEqual(shopping.itemCount('không quá 5 món'),{minItems:2,maxItems:5});
+  assert.deepEqual(shopping.itemCount('trên 5 món'),{minItems:6,maxItems:null});
+  assert.deepEqual(shopping.itemCount('ít nhất 5 món'),{minItems:5,maxItems:null});
+  assert.deepEqual(shopping.itemCount('tối đa 2tr gồm 4 món'),{minItems:4,maxItems:4});
+  assert.deepEqual(shopping.itemCount('fewer than 5 items'),{minItems:2,maxItems:4});
+  assert.deepEqual(shopping.budget('dưới 5 món'),{});
+  assert.equal(shopping.budget('combo 2tr dưới 5 món').maxPrice,2000000);
+});
 
 test('Tây Nguyên screenshot works on both server and browser and respects follow-ups', () => {
   const products = require('./data.js').PRODUCTS;
@@ -10,7 +93,7 @@ test('Tây Nguyên screenshot works on both server and browser and respects foll
   const context = { normalizeCatalogTerm: shopping.normalize, expandChatShorthand: text => text };
   vm.createContext(context);
   vm.runInContext(source.slice(source.indexOf('function extractSearchIntents('), source.indexOf('const REGION_PROVINCES =')), context);
-  vm.runInContext(source.slice(source.indexOf('const REGION_PROVINCES ='), source.indexOf('function generateLocalComboReply')), context);
+  vm.runInContext(source.slice(source.indexOf('const REGION_PROVINCES ='), source.indexOf('function buildAIServiceUnavailable')), context);
   for (const extract of [shopping.analyze, context.extractSearchIntents]) {
     const history = [{ role: 'user', text: 'tôi muốn tìm kiếm combo ở tây nguyên tài chính 4tr' }];
     let intent = shopping.resolve(history, products, extract);
@@ -150,7 +233,7 @@ test('high-value screenshot ranks by catalogue price instead of matching cao or 
   assert.equal(context.findDirectCatalogMatches(query,PRODUCTS).length,0);
   const intent=shopping.resolve([{role:'user',text:query}],PRODUCTS,context.extractSearchIntents);
   assert.equal(intent.pricePreference,'high');assert.equal(intent.exactRegion,null);assert.equal(intent.categoryOrKeyword,null);
-  const reply=context.buildLocalFallbackReply(query,PRODUCTS,'vi');
+  const reply=require('./ai-data-reply').composeDataReply(context.filterProductsByIntent(PRODUCTS,intent),intent,'vi');
   const selected=reply.productIds.map(id=>PRODUCTS.find(p=>p.id===id));
   assert.equal(selected.length,3);assert.equal(selected[0].price,Math.max(...PRODUCTS.map(p=>p.price)));
   assert(selected.every((p,i)=>i===0||p.price<=selected[i-1].price));
@@ -180,7 +263,7 @@ test('server filters do not silently discard an impossible constraint', () => {
   const source = fs.readFileSync('server.js', 'utf8');
   const context = { normalizeCatalogTerm: shopping.normalize, findDirectCatalogMatches: () => [] };
   vm.createContext(context);
-  vm.runInContext(source.slice(source.indexOf('const REGION_PROVINCES ='), source.indexOf('function generateLocalComboReply')), context);
+  vm.runInContext(source.slice(source.indexOf('const REGION_PROVINCES ='), source.indexOf('function buildAIServiceUnavailable')), context);
   const products = [{ id: 1, name: 'Trà', region: 'Hà Giang', price: 680000, stars: 5 }];
   const intent = { exactRegion: 'Hà Giang', maxPrice: 500000, minStars: null, isCombo: true };
   assert.equal(context.filterProductsByIntent(products, intent).length, 0);

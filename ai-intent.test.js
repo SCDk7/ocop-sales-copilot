@@ -3,6 +3,41 @@ const shopping=require('./ai-shopping'),intent=require('./ai-intent');
 const {PRODUCTS}=require('./data.js');
 const semantic={task:'shopping',isCombo:true,hasExplicitItemCount:false,pricePreference:'none',maxPrice:6000000,minPrice:0,minItems:3,maxItems:3,exactRegion:'',regionKeyword:'',categoryOrKeyword:'',wikipediaQuery:'',needsClarification:false,clarification:''};
 const rng=()=>{let n=42;return()=>{n=(Math.imul(n,1664525)+1013904223)>>>0;return n/4294967296;};};
+
+test('changing Dong Nai to Southern region retains the six-item five-million request despite stale model fields',()=>{
+ const messages=[{role:'user',text:'combo 5tr 6 món khu vực đồng nai'},{role:'assistant',text:'Chưa tìm được combo phù hợp.'},{role:'user',text:'vậy khu vực miền nam,'}];
+ const resolved=intent.merge(shopping.resolve(messages,PRODUCTS),{...semantic,isCombo:false,maxPrice:6000000,exactRegion:'Đồng Nai'},messages,PRODUCTS);
+ assert.equal(resolved.maxPrice,5000000);assert.equal(resolved.minItems,6);assert.equal(resolved.maxItems,6);
+ assert.equal(resolved.isCombo,true);assert.equal(resolved.exactRegion,null);assert.deepEqual(resolved.exactRegions,[]);assert.equal(resolved.regionKeyword,'Miền Nam');
+ const eligible=PRODUCTS.filter(p=>shopping.regionMatches(p,resolved));
+ const plans=shopping.variants(eligible,resolved,3,rng());assert(plans.length>0);
+ assert(plans.every(plan=>plan.items.length===6 && plan.total<=5000000 && plan.items.every(p=>shopping.regionMatches(p,resolved))));
+});
+
+test('a money reply cannot lose the purchase mode explicitly selected in the conversation',()=>{
+ for(const [question,mode] of [['Hello cho tôi một combo 300',true],['Tôi cần 1 món',false]]){
+  const messages=[{role:'user',text:question},{role:'assistant',text:'Ngân sách bao nhiêu?'},{role:'user',text:'300k'}];
+  const result=intent.merge(shopping.resolve(messages,PRODUCTS),{...semantic,isCombo:!mode,maxPrice:0},messages,PRODUCTS);
+  assert.equal(result.isCombo,mode);assert.equal(result.maxPrice,300000);
+ }
+});
+test('choosing one product after a budget clarification cannot be changed into a combo by stale model intent',()=>{
+ const messages=[{role:'user',text:'combo 3 món 1tr'},{role:'user',text:'2tr'},{role:'user',text:'1 món'}];
+ const result=intent.merge(shopping.resolve(messages,PRODUCTS),{...semantic,maxPrice:2000000,hasExplicitItemCount:true},messages,PRODUCTS);
+ assert.equal(result.isCombo,false);assert.equal(result.isGift,false);assert.equal(result.maxPrice,2000000);
+});
+
+test('latest screenshot correction overrides a stale five-item model result and survives budget follow-ups',()=>{
+ const messages=[{role:'user',text:'combo 5 món 2tr'},{role:'user',text:'ý là đưa combo 2tr những dưới 5 món'}];
+ const local=shopping.resolve(messages,PRODUCTS);
+ const resolved=intent.merge(local,{...semantic,maxPrice:2000000,hasExplicitItemCount:true,minItems:5,maxItems:5},messages,PRODUCTS);
+ assert.equal(resolved.maxPrice,2000000);assert.equal(resolved.minItems,2);assert.equal(resolved.maxItems,4);
+ const plans=shopping.variants(PRODUCTS,resolved,3,rng());assert.equal(plans.length,3);
+ assert(plans.every(p=>p.items.length<5 && p.total<=2000000));
+ messages.push({role:'user',text:'đổi ngân sách thành 3tr'});
+ const followup=intent.merge(shopping.resolve(messages,PRODUCTS),{...semantic,maxPrice:3000000,hasExplicitItemCount:false,minItems:0,maxItems:0},messages,PRODUCTS);
+ assert.equal(followup.maxPrice,3000000);assert.equal(followup.maxItems,4);
+});
 test('combo6tr is a budget, not a default number of items; explicit corrections override model amounts',()=>{
  const messages=[{role:'user',text:'combo6tr'}];const result=intent.merge(shopping.resolve(messages,PRODUCTS),semantic,messages,PRODUCTS);
  assert.equal(result.maxPrice,6000000);assert.equal(result.minItems,null);assert.equal(result.maxItems,null);
