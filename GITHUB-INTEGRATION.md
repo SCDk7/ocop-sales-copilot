@@ -34,4 +34,4 @@ Google đã có cấu hình và nút mở được trang đăng nhập Google t�
 - Kiểm tra bấm Google/Facebook ở cả đăng nhập và đăng ký, cùng khả năng bấm lại khi mất kết nối.
 - Backend khởi động lại thành công; API đơn nháp/hội thoại quản trị yêu cầu xác thực; KPI riêng hoạt động ở cổng 3002.
 
-Bản tổng hợp được lưu trong repository cục bộ. Chưa đẩy lên GitHub hoặc triển khai bản tổng hợp lên hosting.
+Bản nâng cấp bổ sung website KPI độc lập, sửa lựa chọn combo có dấu phân cách và giữ ngân sách hiện tại. 144 kiểm tra tự động đạt. render.yaml có cấu hình cửa hàng và dịch vụ KPI riêng; /health công bố mã commit Render để đối chiếu phiên bản. Chạy node scripts/verify-deployment.cjs sau khi hosting triển khai; dịch vụ KPI dùng thêm URL riêng và --kpi. Chỉ kết luận triển khai hoàn tất sau khi nội dung và API trên hosting được kiểm tra.

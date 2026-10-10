@@ -1,36 +1,65 @@
-# Separate OCOP KPI website
+﻿# Website KPI OCOP độc lập
 
-Run from the main repository with `npm.cmd run start:kpi`, or run `npm.cmd start`
-from this folder. Local address: http://localhost:3002
+Giao diện hoàn chỉnh nằm trong **`kpi.html`**: HTML, CSS và JavaScript được đóng gói cùng một file. Website chỉ hiển thị KPI, không có giỏ hàng hoặc liên kết quay về cửa hàng.
 
-The OCOP shop remains at http://localhost:3000. This website contains only the KPI
-dashboard, with no links back to the shop or seller tools.
-It reads aggregate backend metrics through a server-side proxy and stores no shop
-accounts, orders or API keys.
+## Chạy website
 
-Configuration:
+Từ thư mục dự án chính:
 
-- `KPI_PORT`: dashboard port (default 3002).
-- `OCOP_METRICS_URL`: full backend metrics URL
-  (default http://localhost:3000/api/ai/metrics).
+```powershell
+npm.cmd run start:kpi
+```
 
-Keep the backend running for live statistics. If it is unreachable, the dashboard
-reports a connection problem and flags displayed data as stale.
+Hoặc vào riêng thư mục này:
 
-The dashboard offers today, 7-day, 30-day and retained-history filters (UTC+7),
-8 KPI cards, hourly request and product distribution charts, and CSV export.
-Charts use native SVG, without a CDN or additional chart dependency.
-Backend telemetry persists up to 90 days / 50,000 events. Configure `AI_METRICS_FILE`
-on persistent storage for production. Tracking starts with this upgrade; historical
-orders without session associations cannot establish past conversion rates.
-Draft conversion counts distinct consultation sessions with new drafts, not paid
-orders. Self-service is an estimate; RAG accuracy remains unmeasured until labelled
-evaluation is available. See the definitions in the dashboard for denominators.
-Business cards show confirmed/completed orders and seller-confirmed paid revenue
-(including shipping), with separate revenue attributed to verified chatbot sessions.
-Delivery completion does not count as payment. Automatic bank reconciliation is
-not connected; the seller records a receipt reference in the administration page.
+```powershell
+cd kpi-site
+node server.cjs
+```
 
-For separate deployment, deploy this folder as its own Node service, install its
-dependencies and set `OCOP_METRICS_URL` to the live OCOP backend metrics URL.
-This change creates a separate local website; it does not publish a new domain.
+Mở **http://localhost:3002/** hoặc **http://localhost:3002/kpi.html**.
+
+Máy chủ KPI dùng thư viện có sẵn của Node.js 22 trở lên, không cần cài Express hoặc thư viện biểu đồ. Có thể sao chép nguyên thư mục `kpi-site` sang dự án khác và chạy độc lập. Backend cửa hàng cần hoạt động để cung cấp số liệu thực; website vẫn mở được khi backend ngừng, nhưng hiển thị lỗi kết nối và không tự tạo số liệu.
+
+## File code
+
+- `kpi.html`: toàn bộ giao diện trong một file, được tạo từ các file nguồn bên dưới.
+- `public/index.html`: bố cục và nội dung Việt/Anh.
+- `public/dashboard.css`: giao diện điện thoại/máy tính.
+- `public/dashboard.js`: số liệu, biểu đồ SVG, chọn thời gian, ngôn ngữ và xuất CSV.
+- `build.cjs`: đóng gói giao diện; chạy `node build.cjs` sau khi chỉnh các file nguồn.
+- `server.cjs`: phục vụ website riêng và lấy số liệu từ backend; tự build giao diện khi khởi động.
+
+Không sửa trực tiếp `kpi.html` nếu muốn giữ thay đổi sau lần build tiếp theo. File này có thể mở để xem giao diện, nhưng số liệu trực tiếp cần chạy qua máy chủ thay vì mở bằng `file://`.
+
+## Cấu hình backend hoặc hosting
+
+Thiết lập biến môi trường trước khi chạy:
+
+```powershell
+$env:KPI_PORT = '3002'
+$env:OCOP_METRICS_URL = 'http://localhost:3000/api/ai/metrics'
+node server.cjs
+```
+
+Khi triển khai thành một dịch vụ web Node riêng, đặt `OCOP_METRICS_URL` thành API của backend đang chạy trên HTTPS. Máy chủ hỗ trợ biến `PORT` của hosting nếu chưa đặt `KPI_PORT`. Đường dẫn kiểm tra hoạt động: `/health`.
+
+`.env.example` là mẫu tên biến; server không tự đọc file `.env` của cửa hàng và không sử dụng khóa Gemini/OAuth. Chỉ dữ liệu tổng hợp được gửi tới trình duyệt. Giới hạn thời gian lấy số liệu: 5 giây. Đường dẫn ngoài website và API KPI trả 404.
+
+## Các chỉ số
+
+Có lọc hôm nay / 7 ngày / 30 ngày / lịch sử lưu giữ, 8 thẻ KPI, số liệu kinh doanh đã xác nhận, biểu đồ theo giờ, tỷ trọng sản phẩm và xuất CSV. Tự cập nhật mỗi 10 giây. Ngôn ngữ Việt/Anh được lưu riêng cho website KPI.
+
+Doanh thu chỉ tính đơn được người bán xác nhận đã thu tiền, gồm phí giao. Đơn nháp chưa phải doanh thu. Tự phục vụ là ước tính; độ chính xác RAG chưa có dữ liệu kiểm thử gán nhãn thì hiển thị chưa đo. Không tích hợp đối soát ngân hàng tự động.
+
+Backend lưu tối đa 90 ngày / 50.000 sự kiện; cần ổ đĩa bền vững khi triển khai. KPI không chứa tài khoản, nội dung chat, số điện thoại hoặc địa chỉ khách hàng.
+
+## Kiểm tra
+
+```powershell
+npm.cmd test
+```
+
+Các kiểm tra xác nhận website hoạt động độc lập, chỉ chuyển tiếp khoảng thời gian hợp lệ, trả đúng số liệu backend, không công khai file cấu hình và không tạo số liệu khi backend mất kết nối.
+
+Website này được tạo để chạy cục bộ hoặc triển khai thành dịch vụ riêng; chưa được xuất bản lên tên miền công khai.

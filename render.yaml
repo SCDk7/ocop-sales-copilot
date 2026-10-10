@@ -3,11 +3,13 @@ services:
     name: ocop-sales-copilot
     runtime: node
     plan: free
-    buildCommand: npm ci
+    buildCommand: npm ci && npm run build:css && npm run build:kpi
     startCommand: npm start
-    healthCheckPath: /
+    healthCheckPath: /health
     autoDeploy: true
     envVars:
+      - key: NODE_VERSION
+        value: 22
       - key: GEMINI_API_KEY
         sync: false
       - key: GEMINI_MODEL
@@ -20,3 +22,16 @@ services:
         sync: false
       - key: TWILIO_FROM_NUMBER
         sync: false
+  - type: web
+    name: ocop-sales-copilot-kpi
+    runtime: node
+    plan: free
+    buildCommand: node kpi-site/build.cjs
+    startCommand: node kpi-site/server.cjs
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: OCOP_METRICS_URL
+        value: https://ocop-sales-copilot.onrender.com/api/ai/metrics

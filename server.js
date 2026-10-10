@@ -48,6 +48,10 @@ function loadEnvironmentFile() {
 loadEnvironmentFile();
 
 const app = express();
+app.get('/health', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({ status: 'ok', service: 'ocop-sales-copilot', commit: process.env.RENDER_GIT_COMMIT || null });
+});
 let salesMetrics,salesConversations;
 app.use((req,res,next)=>{
   if(req.method==='POST' && ['/api/ai/chat','/api/chat','/chat'].includes(req.path)) {
