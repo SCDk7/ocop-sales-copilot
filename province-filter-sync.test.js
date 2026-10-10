@@ -102,3 +102,22 @@ test('ResetFilters cleanses state and preserves all 252 products', () => {
     assert(html.includes("window.scrollTo"), 'Must reset window scroll position');
 });
 
+test('Catalog parent wrapper and multi-column product grid layout validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+    // 1. Kiểm tra thẻ cha #catalog-layout-wrapper và các con trực tiếp #catalog-sidebar, #catalog-main-content
+    assert(html.includes('id="catalog-layout-wrapper"'), 'Parent wrapper #catalog-layout-wrapper must exist');
+    assert(html.includes('id="catalog-sidebar"'), 'Sidebar #catalog-sidebar must exist');
+    assert(html.includes('id="catalog-main-content"'), 'Right content #catalog-main-content must exist');
+
+    // 2. Kiểm tra CSS Grid cấu hình desktop: 320px 1fr, gap 32px, align-items: start
+    assert(html.includes('grid-template-columns: 320px 1fr'), 'CSS Grid must configure 320px 1fr columns');
+    assert(html.includes('#catalog-sidebar {'), 'CSS must define #catalog-sidebar styles');
+    assert(html.includes('width: 320px'), 'Sidebar width must be locked at 320px');
+
+    // 3. Kiểm tra #product-grid cấu hình 3 cột trên desktop
+    assert(html.includes('grid-template-columns: repeat(3, minmax(0, 1fr))'), 'Desktop product grid must display 3 columns');
+    assert(html.includes('#product-grid .product-card'), 'Product card sizing rules must be defined');
+    assert(html.includes('#product-grid .product-card-image-wrap'), 'Image wrap must enforce 220px height with cover');
+});
+
+

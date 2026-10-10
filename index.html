@@ -29,32 +29,82 @@
             background: #fee2e2;
             border-color: #f87171;
         }
+        /* ============================================================= */
+        /* LAYOUT TỔNG: GRID 2 CỘT (SIDEBAR 320px + KHUNG SẢN PHẨM 1fr) */
+        /* ============================================================= */
+        #catalog-layout-wrapper {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+            align-items: start !important;
+            width: 100% !important;
+        }
+        @media (min-width: 1024px) {
+            #catalog-layout-wrapper {
+                display: grid !important;
+                grid-template-columns: 320px 1fr !important;
+                gap: 32px !important;
+                align-items: start !important;
+            }
+        }
+        #catalog-sidebar {
+            width: 320px !important;
+            min-width: 320px !important;
+            max-width: 320px !important;
+            box-sizing: border-box !important;
+        }
+        #catalog-main-content {
+            min-width: 0 !important;
+            width: 100% !important;
+            align-self: start !important;
+        }
+
+        /* ============================================================= */
+        /* LƯỚI SẢN PHẨM ĐA CỘT: 3 CỘT DÀN ĐỀU ĐẸP MẮT (DESKTOP)        */
+        /* ============================================================= */
         #product-grid {
             display: grid !important;
             grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
-            gap: 1.5rem !important; /* 24px gap */
+            gap: 24px !important;
             width: 100% !important;
+            align-content: start !important;
         }
         @media (min-width: 640px) {
             #product-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 24px !important;
             }
         }
         @media (min-width: 1024px) {
             #product-grid {
                 grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                gap: 24px !important;
             }
         }
-        @media (min-width: 1536px) {
+        @media (min-width: 1600px) {
             #product-grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+                gap: 24px !important;
             }
         }
+        #product-grid > .col-span-full {
+            grid-column: 1 / -1 !important;
+            width: 100% !important;
+        }
+
+        /* FIX KÍCH THƯỚC THẺ SẢN PHẨM: TỰ ĐỘNG KHÍT CỘT, KHÔNG MÉO ẢNH */
         #product-grid .product-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            box-sizing: border-box !important;
             contain: content !important;
             content-visibility: auto !important;
-            contain-intrinsic-size: auto 460px !important;
-            align-self: stretch;
+            contain-intrinsic-size: auto 480px !important;
+            align-self: stretch !important;
             transform: translate3d(0, 0, 0);
             will-change: transform, opacity;
             border-radius: 1.5rem !important;
@@ -68,8 +118,33 @@
             border-color: rgba(234, 179, 8, 0.8) !important;
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(234, 179, 8, 0.35) !important;
         }
+        #product-grid .product-card-image-wrap {
+            position: relative !important;
+            width: 100% !important;
+            height: 220px !important;
+            overflow: hidden !important;
+            background: #020617 !important;
+            border-top-left-radius: 1.5rem !important;
+            border-top-right-radius: 1.5rem !important;
+        }
+        #product-grid .product-card-image {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            display: block !important;
+            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+        #product-grid .product-card:hover .product-card-image {
+            transform: scale(1.06) !important;
+        }
+        #product-grid .product-card-image.object-contain {
+            object-fit: contain !important;
+            padding: 0.5rem !important;
+        }
         #product-grid .product-card-footer {
-            margin-top: auto;
+            margin-top: auto !important;
+            width: 100% !important;
         }
         #product-grid .product-card-footer > div {
             min-height: 48px;
@@ -2609,9 +2684,9 @@
                 </div>
             </div>
 
-            <div class="flex flex-col lg:flex-row gap-8">
+            <div id="catalog-layout-wrapper" class="w-full">
                 <!-- SIDEBAR DANH MỤC & TIỆN ÍCH DESKTOP (STICKY SUỐT CHIỀU DÀI CUỘN TRANG) -->
-                <aside class="hidden lg:block lg:w-72 flex-shrink-0">
+                <aside id="catalog-sidebar" class="hidden lg:block w-[320px] max-w-[320px] shrink-0">
                     <div class="sticky top-24 space-y-3.5 max-h-[calc(100vh-6.5rem)] overflow-y-auto no-scrollbar pb-6">
                         <!-- 1. LIVE SHOPPERS TICKER (BÁO KHÁCH TRỰC TIẾP) -->
                         <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-950 text-emerald-100 p-3 rounded-2xl border border-emerald-500/40 shadow-sm text-xs flex items-center justify-between">
@@ -2795,13 +2870,11 @@
                                 <span>Kích Hoạt AI Financial Engine</span>
                             </button>
                         </div>
-
-                        </div>
                     </div>
                 </aside>
                 
-                <!-- LƯỚI SẢN PHẨM PHÍA BÊN PHẢI -->
-                <div class="flex-1 min-w-0">
+                <!-- LƯỚI SẢN PHẨM PHÍA BÊN PHẢI (CỘT 1fr ĐẨY LÊN TRÊN CÙNG) -->
+                <div id="catalog-main-content" class="min-w-0 w-full flex-1">
                     <!-- Header Kết Quả & Thanh Điều Khiển Lưới Sản Phẩm -->
                     <div class="flex flex-wrap items-center justify-between gap-3 mb-5 bg-gradient-to-r from-slate-900/90 via-slate-950/90 to-emerald-950/90 p-3 sm:px-4 sm:py-3 rounded-2xl border border-amber-400/40 shadow-lg text-xs font-bold text-gray-200">
                         <!-- Top Left: Khung tình trạng hệ thống -->
@@ -2851,7 +2924,7 @@
                         </div>
                     </div>
                     <p id="image-search-status" class="hidden mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-900" role="status"></p>
-                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+                    <div id="product-grid" class="w-full">
                         <!-- Render danh mục sản phẩm từ dữ liệu -->
                     </div>
                     <div id="no-products-msg" style="display: none;" class="text-center py-16 bg-white/80 rounded-3xl border border-dashed border-gray-300 shadow-sm animate-fade-in">
@@ -4694,7 +4767,7 @@
                 // Chèn banner cảm hứng giữa dòng sản phẩm khi lướt (Mid-feed Banner sau 3 hàng)
                 if (idx === 8 && items.length >= 10) {
                     cardHtml += `
-                    <div class="col-span-1 sm:col-span-2 xl:col-span-3 my-4 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-900 text-white shadow-2xl border-2 border-amber-400/40 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="col-span-full my-4 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-900 text-white shadow-2xl border-2 border-amber-400/40 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
                         <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-amber-400/15 rounded-full blur-2xl pointer-events-none"></div>
                         <div class="space-y-2.5 max-w-xl text-center md:text-left relative z-10">
                             <div class="inline-flex items-center gap-1.5 bg-amber-400 text-emerald-950 font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider shadow">
