@@ -692,6 +692,14 @@
             display: flex !important;
             flex-direction: column !important;
         }
+        #ai-chat-window.hidden,
+        #ai-chat-window[style*="display: none"],
+        #ai-chat-window[hidden] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
         #ai-chat-window.is-dragging {
             opacity: 0.96;
             cursor: move !important;
@@ -3547,7 +3555,7 @@
                         <i class="fa-brands fa-facebook-messenger text-xs text-blue-200"></i>
                         <span>CSKH FB</span>
                     </button>
-                    <button type="button" onclick="toggleAIChat()" aria-label="Đóng chat" title="Đóng chat" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" id="ai-chat-close-btn" onclick="closeAIChat()" aria-label="Đóng chat" title="Đóng chat" class="text-white/80 hover:text-white p-1 text-lg cursor-pointer transition"><i class="fa-solid fa-xmark pointer-events-none"></i></button>
                 </div>
             </div>
 
@@ -6328,25 +6336,63 @@
             }
         }
 
-        function toggleAIChat() {
+        let savedChatPosition = null;
+
+        function closeAIChat() {
             const win = document.getElementById('ai-chat-window');
             if (!win) return;
-            const isHidden = win.classList.contains('hidden');
-            if (isHidden) {
-                win.classList.remove('hidden');
-                initDraggableResizableChatbox();
-                const adminMenu = document.getElementById('admin-support-menu');
-                if (adminMenu) adminMenu.classList.add('hidden');
-                const inp = document.getElementById('ai-chat-input');
-                if (inp) setTimeout(() => inp.focus(), 120);
-                const msgBox = document.getElementById('ai-chat-messages');
-                if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
+            // Lưu lại tọa độ vị trí hiện tại và kích thước người dùng vừa kéo dãn
+            const rect = win.getBoundingClientRect();
+            savedChatPosition = {
+                left: win.style.left || `${rect.left}px`,
+                top: win.style.top || `${rect.top}px`,
+                width: win.style.width || `${rect.width}px`,
+                height: win.style.height || `${rect.height}px`
+            };
+            window.chatDictation?.stop(true);
+            win.classList.add('hidden');
+            win.style.display = 'none';
+        }
+        window.closeAIChat = closeAIChat;
+
+        function openAIChat() {
+            const win = document.getElementById('ai-chat-window');
+            if (!win) return;
+            win.classList.remove('hidden');
+            win.style.display = 'flex';
+            if (savedChatPosition) {
+                if (savedChatPosition.left) win.style.left = savedChatPosition.left;
+                if (savedChatPosition.top) win.style.top = savedChatPosition.top;
+                if (savedChatPosition.width) win.style.width = savedChatPosition.width;
+                if (savedChatPosition.height) win.style.height = savedChatPosition.height;
+                win.style.right = 'auto';
+                win.style.bottom = 'auto';
+            }
+            initDraggableResizableChatbox();
+            const adminMenu = document.getElementById('admin-support-menu');
+            if (adminMenu) adminMenu.classList.add('hidden');
+            const inp = document.getElementById('ai-chat-input');
+            if (inp) setTimeout(() => inp.focus(), 120);
+            const msgBox = document.getElementById('ai-chat-messages');
+            if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
+        }
+        window.openAIChat = openAIChat;
+
+        function toggleAIChat(forceState) {
+            const win = document.getElementById('ai-chat-window');
+            if (!win) return;
+            const isCurrentlyHidden = win.classList.contains('hidden') || win.style.display === 'none';
+            const shouldOpen = typeof forceState === 'boolean' ? forceState : isCurrentlyHidden;
+            if (shouldOpen) {
+                openAIChat();
             } else {
-                window.chatDictation?.stop(true);
-                win.classList.add('hidden');
+                closeAIChat();
             }
         }
         window.toggleAIChat = toggleAIChat;
+        window.setChatOpen = function(isOpen) {
+            return toggleAIChat(isOpen);
+        };
 
         // ==============================================================
         // DRAGGABLE & RESIZABLE CHATBOX ENGINE (2026 DIGITAL CHALLENGE)
@@ -6459,7 +6505,19 @@
                 chatWindow.style.bottom = '5.5rem';
                 chatWindow.style.width = '420px';
                 chatWindow.style.height = '540px';
+                savedChatPosition = null;
             });
+
+            // Gắn sự kiện trực tiếp cho nút đóng "X"
+            const closeBtn = document.getElementById('ai-chat-close-btn') || chatWindow.querySelector('button[aria-label="Đóng chat"]');
+            if (closeBtn && !closeBtn.dataset.closeBound) {
+                closeBtn.dataset.closeBound = 'true';
+                closeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeAIChat();
+                });
+            }
 
             // Resizing Engine hỗ trợ tương tác chuột và touch kéo góc dưới bên phải
             if (resizeHandle) {
@@ -10680,6 +10738,16 @@
         }
 
         function getProductDescription(product) {
+            if (product && (product.id === 338 || (product.name && product.name.includes('Minh Hồng')))) {
+                const descMap = {
+                    vi: "Miến dong Minh Hồng (Hoài Đức) - Sản phẩm đạt chứng nhận OCOP 4 Sao của UBND Thành phố Hà Nội. Quy trình sản xuất khép kín, chuẩn hóa vùng nguyên liệu bản địa và đồng bộ dữ liệu chuỗi cung ứng trực tiếp trên nền tảng số.",
+                    en: "Minh Hong arrowroot vermicelli (Hoai Duc) - Certified 4-Star OCOP specialty recognized by Hanoi People's Committee. Closed-loop production process standardizing indigenous raw materials and directly synchronizing supply chain data on the digital platform.",
+                    zh: "怀德明红芭蕉芋粉丝 - 荣获河内市人民委员会四星级 OCOP 认证。闭环生产工艺，标准化本土原料产区，并通过数字平台直接同步供应链数据。",
+                    ko: "호아이득 민홍 칡당면 - 하노이시 인민위원회 OCOP 4성 공식 인증 특산물. 폐쇄형 제조 공정, 고유 원재료 표준화 및 디지털 플랫폼 기반 공급망 실시간 동기화.",
+                    ja: "ホアイドック・ミンホン葛春雨 - ハノイ市人民委員会認定 4つ星 OCOP 特産品。循環型製造工程、地域原産原料の標準化、デジタルプラットフォームによるサプライチェーンデータの直接同期。"
+                };
+                return descMap[currentLanguage] || descMap.vi;
+            }
             return currentLanguage === 'en'
                 ? (product.descEn || `A regional specialty from ${product.region}, selected for its traditional character and distinctive flavor.`)
                 : product.desc;

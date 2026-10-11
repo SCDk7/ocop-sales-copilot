@@ -548,4 +548,29 @@ test('Draggable & Resizable AI Chatbox Engine validation', () => {
     assert(html.includes('background: rgba(17, 24, 39, 0.7) !important'), 'Translucent glass styling');
 });
 
+test('AI Chatbox Close Event & Product 338 Digital Alignment validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+    const dataJs = fs.readFileSync('data.js', 'utf8');
+
+    // 1. Close event handling & state persistence
+    assert(html.includes('id="ai-chat-close-btn"'), 'ai-chat-close-btn exists in HTML');
+    assert(html.includes('closeAIChat()'), 'closeAIChat function is called on close button');
+    assert(html.includes('window.closeAIChat = closeAIChat;'), 'window.closeAIChat is exported');
+    assert(html.includes('window.setChatOpen'), 'window.setChatOpen is exported');
+    assert(html.includes('#ai-chat-window.hidden') && html.includes('display: none !important;'), '#ai-chat-window.hidden overrides display flex');
+
+    // 2. Miến dong Minh Hồng description text digital business alignment
+    const newMienDongDesc = "Miến dong Minh Hồng (Hoài Đức) - Sản phẩm đạt chứng nhận OCOP 4 Sao của UBND Thành phố Hà Nội. Quy trình sản xuất khép kín, chuẩn hóa vùng nguyên liệu bản địa và đồng bộ dữ liệu chuỗi cung ứng trực tiếp trên nền tảng số.";
+    assert(dataJs.includes(newMienDongDesc), 'data.js contains official OCOP certification description for Miến dong Minh Hồng');
+    assert(html.includes(newMienDongDesc), 'index.html contains official OCOP certification description for Miến dong Minh Hồng');
+
+    // 3. Old retail boilerplate text removed for product 338
+    const { PRODUCTS } = require('./data');
+    const p338 = PRODUCTS.find(p => p.id === 338);
+    assert(p338, 'Product 338 exists');
+    assert(!p338.desc.includes('danh sách chủ shop cung cấp; áp dụng một mức giá cao nhất cho sản phẩm, giỏ hàng và combo'), 'Old retail text removed from product 338 in data.js');
+    assert.equal(p338.desc, newMienDongDesc, 'Product 338 description matches official text exactly');
+});
+
+
 
