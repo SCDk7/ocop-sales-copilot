@@ -522,3 +522,26 @@ test('2026 Digital Business Platform Alignment, AI RAG telemetry, and dark tech 
     assert(html.includes('#0d1117'), 'Obsidian dark tech background color');
 });
 
+test('Draggable & Resizable AI Chatbox Engine validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Draggable & Resizable CSS Constraints
+    assert(html.includes('resize: both !important;'), 'resize: both !important');
+    assert(html.includes('overflow: hidden !important;'), 'overflow: hidden !important');
+    assert(html.includes('min-width: 380px !important;'), 'min-width: 380px !important');
+    assert(html.includes('min-height: 500px !important;'), 'min-height: 500px !important');
+    assert(html.includes('max-width: 80vw !important;'), 'max-width: 80vw !important');
+    assert(html.includes('max-height: 85vh !important;'), 'max-height: 85vh !important');
+    assert(html.includes('will-change: top, left;'), 'will-change: top, left');
+
+    // 2. Cursors for Drag & Resize Handles
+    assert(html.includes('cursor: move !important;'), 'Header cursor move');
+    assert(html.includes('.chatbox-resize-handle') && html.includes('cursor: se-resize !important;'), 'Resize handle cursor se-resize');
+
+    // 3. Engine Function Definition & Export
+    assert(html.includes('function initDraggableResizableChatbox()'), 'initDraggableResizableChatbox defined');
+    assert(html.includes('window.initDraggableResizableChatbox = initDraggableResizableChatbox;'), 'initDraggableResizableChatbox exported to window');
+    assert(html.includes('id="ai-chat-resize-handle"'), 'ai-chat-resize-handle DOM element exists');
+});
+
+
