@@ -662,14 +662,19 @@
             overscroll-behavior: contain;
             scrollbar-color: #9bbab0 transparent;
         }
-        /* AI DIGITAL BUSINESS CHALLENGE 2026: CENTRAL NAVIGATION BAR */
+        /* AI DIGITAL BUSINESS CHALLENGE 2026: CENTRAL NAVIGATION BAR & BREATHABLE LAYOUT */
+        main.flex-1 {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 48px !important;
+        }
         .header-primary-nav {
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: nowrap !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 16px !important;
+            gap: 20px !important;
             flex-shrink: 0 !important;
         }
         @media (max-width: 1023px) {
@@ -2538,7 +2543,7 @@
         </div>
     </header>
 
-    <main class="flex-1">
+    <main class="flex-1" style="gap: 48px !important;">
         <!-- 3. HERO BANNER SECTION -->
         <section id="shop-hero" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -4081,31 +4086,31 @@
             </div>
 
             <div id="cart-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg">
-                <p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">Bảng mô phỏng đang trống. Hãy bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để phân tích!</p>
+                <p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">Bảng mô phỏng đang trống. Hãy bấm '📊 Phân Tích Dòng Tiền' trên sản phẩm để phân tích!</p>
             </div>
             <div class="p-4 border-t border-gray-200 bg-white space-y-3 shadow-lg">
                 <div class="space-y-1.5 text-xs bg-amber-50/90 p-3.5 rounded-2xl border border-amber-300 shadow-xs">
                     <div class="flex justify-between items-center">
-                        <span id="i18n-cart-subtotal" class="font-bold text-gray-700">Gross Revenue (Tổng doanh thu):</span>
+                        <span id="i18n-cart-subtotal" class="font-bold text-gray-700">Tổng doanh thu dự kiến (Gross Revenue):</span>
                         <span id="cart-subtotal" class="font-black text-gray-900 text-sm">0 ₫</span>
                     </div>
                     <div class="flex justify-between items-center text-slate-600">
-                        <span id="i18n-cart-cogs-label">COGS (Giá vốn hàng bán 62%):</span>
+                        <span id="i18n-cart-cogs-label">Giá vốn hàng bán (COGS 62%):</span>
                         <span id="cart-cogs" class="font-bold text-slate-800">0 ₫</span>
                     </div>
                     <div class="flex justify-between items-center text-slate-600">
-                        <span id="i18n-cart-chm-label">OPEX (Chi phí vận hành 7.5%):</span>
+                        <span id="i18n-cart-chm-label">Chi phí vận hành nền tảng (OPEX 7.5%):</span>
                         <span id="cart-opex" class="font-bold text-slate-800">0 ₫</span>
                     </div>
                     <div id="cart-voucher-row" class="hidden flex justify-between items-center text-emerald-800 font-bold"><span id="cart-voucher-label"></span><span id="cart-voucher-discount" class="text-red-600 font-black"></span></div>
                     <div class="flex justify-between items-center text-sm font-extrabold pt-2 border-t border-amber-300 text-emerald-900">
-                        <span id="i18n-cart-total">Net Profit (Tiền lời ròng thực nhận):</span>
+                        <span id="i18n-cart-total">Tiền lời thực tế (Net Profit):</span>
                         <span id="cart-total" class="text-emerald-700 font-black text-base">0 ₫</span>
                     </div>
                 </div>
-                <button onclick="activateO2ODispatch()" class="w-full bg-gradient-to-r from-ocopGreen via-emerald-800 to-ocopGreen text-white py-3.5 rounded-2xl font-bold text-xs sm:text-sm hover:brightness-110 active:scale-[0.99] transition shadow-lg border border-ocopGold/40 flex items-center justify-center space-x-2 cursor-pointer">
-                    <i class="fa-solid fa-map-location-dot text-ocopGold text-base"></i>
-                    <span id="i18n-checkout-btn">🗺️ KÍCH HOẠT ĐIỀU PHỐI SỐ & ĐỊNH VỊ SHOWROOM O2O</span>
+                <button onclick="activateO2ODispatch()" class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white py-3.5 rounded-2xl font-black text-xs sm:text-sm hover:brightness-110 active:scale-[0.99] transition shadow-lg border border-amber-300/40 flex items-center justify-center space-x-2 cursor-pointer">
+                    <i class="fa-solid fa-file-invoice-dollar text-amber-200 text-base"></i>
+                    <span id="i18n-checkout-btn">Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền</span>
                 </button>
             </div>
         </div>
@@ -5061,18 +5066,18 @@
             grid.style.display = 'grid';
 
             const reconcileBtnLabels = {
-                vi: '⚡ Kích Hoạt Đối Soát',
-                en: '⚡ Activate Reconciliation',
-                zh: '⚡ 激活财务对账',
-                ko: '⚡ 정산 데이터 활성화',
-                ja: '⚡ 財務決済の有効化'
+                vi: '📊 Phân Tích Dòng Tiền',
+                en: '📊 Analyze Cash Flow',
+                zh: '📊 分析现金流',
+                ko: '📊 현금 흐름 분석',
+                ja: '📊 キャッシュフロー分析'
             };
             const reconcileBtnTitles = {
-                vi: 'Kích hoạt đối soát dòng tiền và đưa sản phẩm vào Bảng phân tích AI',
-                en: 'Activate cash flow reconciliation and sync product to AI Financial Analysis',
-                zh: '激活现金流财务对账并将特产同步至 AI 财务分析看板',
-                ko: '현금 흐름 정산 데이터를 활성화하고 AI 재무 분석 대시보드에 동기화',
-                ja: 'キャッシュフロー決済を有効化し、AI財務分析ダッシュボードに同期'
+                vi: 'Phân tích dòng tiền cửa hàng và đưa sản phẩm vào Bảng đối soát AI',
+                en: 'Analyze cash flow and sync product to AI Financial Analysis',
+                zh: '分析现金流并将特产同步至 AI 财务分析看板',
+                ko: '현금 흐름을 분석하고 AI 재무 분석 대시보드에 동기화',
+                ja: 'キャッシュフローを分析し、AI財務分析ダッシュボードに同期'
             };
             const getProductSystemMetrics = (prod) => {
                 const baseVolume = 1200 + ((prod.id * 43) % 1800);
@@ -5107,7 +5112,6 @@
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
-                const isHotSeller = p.isBestSeller === true;
                 const sysMetrics = getProductSystemMetrics(p);
 
                 const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(p.id) : null;
@@ -5118,34 +5122,15 @@
                         <div class="product-card-image-wrap relative h-52 sm:h-56 overflow-hidden bg-slate-950">
                             <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full ${(p.catalogImport || p.imageIsSample) ? 'object-contain p-2' : 'object-cover'}">
 
-                            <!-- Nhãn Vùng Miền & Đạt Chuẩn OCOP -->
-                            <div class="absolute top-3 left-3 flex flex-col space-y-1.5 z-10 pointer-events-none" style="max-width:calc(100% - 110px)">
-                                <span class="bg-slate-900/90 text-amber-200 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md backdrop-blur-md border border-amber-400/40 flex items-center gap-1 w-fit">
-                                    <i class="fa-solid fa-location-dot text-amber-400 text-[9px]"></i>
-                                    <span class="truncate">${p.region}</span>
-                                </span>
+                            <!-- Nhãn Phân Hạng Sao OCOP Mạ Vàng Gold Tinh Tế -->
+                            <div class="absolute top-3 left-3 z-10 pointer-events-none">
                                 <span class="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-[0_0_12px_rgba(251,191,36,0.6)] flex items-center gap-1 border border-yellow-200 w-fit">
                                     <i class="fa-solid fa-star text-amber-950 text-[8.5px]"></i>
                                     <span>${getProductStarLabel(p)}★ ${currentLanguage === 'en' ? 'OCOP STARS' : 'SAO OCOP'}</span>
                                 </span>
                             </div>
 
-                            <!-- Nút Yêu Thích & Huy Hiệu Tiêu Biểu -->
-                            <div class="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-10">
-                                <button onclick="toggleWishlist(${p.id})" aria-label="Yêu thích" class="w-8 h-8 rounded-full bg-slate-900/90 backdrop-blur-md text-red-400 flex items-center justify-center hover:scale-110 active:scale-95 transition shadow-md cursor-pointer border border-amber-400/30 group/heart">
-                                    <i class="${isFav ? 'fa-solid text-red-500 scale-110' : 'fa-regular group-hover/heart:scale-110'} fa-heart text-xs transition-transform"></i>
-                                </button>
-                                ${isHotSeller ? `
-                                <span class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-black text-[9px] px-2 py-0.5 rounded-full shadow-md border border-yellow-300/50 flex items-center gap-1 animate-pulse">
-                                    <i class="fa-solid fa-fire text-yellow-300"></i> ${currentLanguage === 'en' ? 'BESTSELLER' : 'BÁN CHẠY'}
-                                </span>` : ''}
-                            </div>
-
-                            <!-- Tem Nguồn Gốc & Nút Xem Nhanh -->
-                            <div class="absolute bottom-3 left-3 bg-emerald-950/85 backdrop-blur-md text-emerald-300 text-[9px] font-bold px-2 py-0.5 rounded-lg border border-emerald-500/40 flex items-center gap-1 z-10 pointer-events-none">
-                                <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                                <span title="${currentLanguage === 'en' ? 'Shop commitment' : 'Cam kết của shop'}">${currentLanguage === 'en' ? '100% Authentic' : '100% Chính gốc'}</span>
-                            </div>
+                            <!-- Nút Xem Nhanh -->
                             <button onclick="openQuickView(${p.id})" class="absolute bottom-3 right-3 bg-slate-900/90 hover:bg-slate-950 text-white text-[10px] font-extrabold px-3 py-1.5 rounded-xl backdrop-blur-md transition-all flex items-center space-x-1.5 shadow-lg border border-amber-400/30 hover:scale-105 active:scale-95 cursor-pointer z-10">
                                 <i class="fa-solid fa-eye text-amber-300"></i>
                                 <span>${currentLanguage === 'en' ? 'Quick view' : 'Xem nhanh'}</span>
@@ -6478,6 +6463,7 @@
             if (!text) return '';
             const escaped = escapeAIHtml(text);
             return escaped
+                .replace(/🗺️?\s*\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="showroom-map-pill my-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold hover:shadow-sm inline-flex items-center gap-1.5 transition text-xs cursor-pointer">🗺️ $1</a>')
                 .replace(/\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-emerald-700 underline font-bold hover:text-emerald-900 inline-flex items-center gap-1">$1 🌐</a>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-emerald-950">$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em class="italic text-gray-700">$1</em>');
@@ -7916,6 +7902,67 @@
             const isCHM = /(chm|chiet khau|doi soat|hoa hong)/i.test(normalized);
             const isVolume = /(san luong|volume|throughput)/i.test(normalized);
 
+            const getHeritageStory = (prod, pId, langCode) => {
+                const stories = {
+                    525: {
+                        vi: '🌿 **Di sản văn hóa & Thổ nhưỡng bản địa**: Vùng đất đỏ bazan trù phú Long Khánh (Đồng Nai) kết hợp thổ nhưỡng rừng tự nhiên tạo nên giống khổ qua rừng thân mảnh, vị đắng thanh thuần khiết. Trà túi lọc Hiệp Vân được sấy lạnh khép kín giữ trọn dược chất bản địa, đượm nghĩa tình người nông dân đất phương Nam.',
+                        en: '🌿 **Cultural Heritage & Native Terroir**: The fertile red basalt soil of Long Khanh (Dong Nai) yields wild forest bitter melon with a pristine, soothing bittersweet flavor. Hiep Van cooperative utilizes eco cold-drying technology to preserve bioactive nutrients, honoring traditional southern heritage.',
+                        zh: '🌿 **文化遗产与地道风土**: 越南同奈省隆庆肥沃的玄武岩红土孕育了原生态野生苦瓜，汤色澄亮、微苦回甘。协云合作社采用低温冷风干燥技术，完整保留了纯正的原生态草药活性与传统风味。',
+                        ko: '🌿 **문화유산 및 로컬 떼루아**: 동나이성 롱카인의 비옥한 현무암 토양에서 자생하는 야생 여주로 맑고 깔끔한 풍미를 선사합니다. 히엡반 협동조합의 저온 건조 기술로 천연 영양소를 고스란히 담아낸 베트남 남부 전통 명차입니다.',
+                        ja: '🌿 **文化遺産と固有の風土**: ベトナム・ドンナイ省ロンカインの肥沃な玄武岩赤土が育む自生ニガウリを使用。澄んだ爽やかな苦味と奥深い甘みが特徴です。ヒエップヴァン組合の低温乾燥技術により、伝統的な薬草の栄養を凝縮しています。'
+                    },
+                    524: {
+                        vi: '🍊 **Di sản văn hóa & Thổ nhưỡng bản địa**: Nép mình bên dòng sông Đồng Nai hiền hòa, làng bưởi Tân Triều hơn 300 năm tuổi đón nhận lớp phù sa màu mỡ. Giống bưởi đường lá cam tép vàng óng, mọng nước, vị ngọt thanh tao không the đắng, biểu trưng cho sự trù phú và hào sảng phương Nam.',
+                        en: '🍊 **Cultural Heritage & Native Terroir**: Nestled along the peaceful Dong Nai River, Tan Trieu pomelo village spans over 300 years of alluvial cultivation. The golden-pulped sweet orange-leaf pomelo is succulent with a crisp, refined sweetness embodying Southern hospitality.',
+                        zh: '🍊 **文化遗产与地道风土**: 坐落于同奈河畔的三朝古柚村已有 300 余年冲积历史。橙叶蜜柚果肉晶莹金黄，清甜多汁不酸涩，承载着越南南部丰饶深厚的乡土文化底蕴。',
+                        ko: '🍊 **문화유산 및 로컬 떼루아**: 300년 역사의 탄찌에우(Tan Trieu) 자몽 마을은 동나이강 충적토의 풍부한 영양을 머금고 자랍니다. 황금빛 과육과 상큼하고 은은한 단맛이 일품인 남부의 대표적인 문화유산 특산물입니다.',
+                        ja: '🍊 **文化遺産と固有の風土**: ドンナイ川の豊かな沖積地に育まれた300年の歴史を持つタンチュウ（Tan Trieu）村のザボン。黄金色の果肉から溢れるみずみずしい上品な甘みは、南部の豊かな風土の象徴です。'
+                    },
+                    526: {
+                        vi: '🥜 **Di sản văn hóa & Thổ nhưỡng bản địa**: Thủ phủ điều Đồng Nai với công thức rang củi truyền thống, giữ trọn lớp lụa nâu và vị ngọt bùi béo ngậy nguyên bản của từng hạt điều loại 1 tuyển chọn khắt khe.',
+                        en: '🥜 **Cultural Heritage & Native Terroir**: Sourced from Vietnam’s prime cashew capital, delicately wood-roasted with sea salt to retain the whole natural skin and signature buttery crunch.',
+                        zh: '🥜 **文化遗产与地道风土**: 源自越南腰果之乡，传承古法木炭烘烤工艺，保留天然外衣与酥脆浓郁坚果风味，严选特级品质。',
+                        ko: '🥜 **문화유산 및 로컬 떼루아**: 베트남 최대 캐슈넛 주산지에서 전통 방식으로 로스팅하여 고소한 풍미와 바삭한 식감을 그대로 살린 프리미엄 특산물입니다.',
+                        ja: '🥜 **文化遺産と固有の风土**: ベトナム最高峰のカシューナッツ産地で厳選。昔ながらの直火焙煎製法で、香ばしさと濃厚なナッツ本来の旨味を閉じ込めています。'
+                    },
+                    342: {
+                        vi: '🍯 **Di sản văn hóa & Thổ nhưỡng bản địa**: Cao nguyên đá Đồng Văn hùng vĩ quanh năm sương phủ. Mỗi độ đông về, hoa bạc hà tím nở rộ giữa kẽ đá tai mèo, đàn ong bản địa chắt chiu từng giọt mật vàng chanh sóng sánh, the mát tinh khiết chỉ có ở vùng địa đầu Tổ quốc.',
+                        en: '🍯 **Cultural Heritage & Native Terroir**: Harvested in Dong Van Karst Plateau Geo-Park (Ha Giang). Wild bees forage among purple mint flowers blossoming through rocky crevices in chilly winter, creating rare lemon-gold mint honey.',
+                        zh: '🍯 **文化遗产与地道风土**: 源自河江省同文喀斯特高原。寒冬时节薄荷花于石缝中盛开，高原本土蜂群采撷酿造出稀有的柠檬金黄薄荷蜜，清香扑鼻。',
+                        ko: '🍯 **문화유산 및 로컬 떼루아**: 하장성 동반 카르스트 암석 고원의 절벽 사이에서 겨울에 피어나는 박하꽃에서 채취한 귀한 천연 꿀로, 은은한 박하향과 맑은 레몬빛이 특별합니다.',
+                        ja: '🍯 **文化遺産と固有の風土**: ハザン省ドンヴァン岩石高原の冷涼な気候の中、岩肌に咲く薄荷（ミント）の花から採集された希少なハチミツ。透明感のある黄金色と爽やかな香りが特徴です。'
+                    },
+                    336: {
+                        vi: '🏺 **Di sản văn hóa & Thổ nhưỡng bản địa**: Hơn 700 năm tinh hoa làng nghề gốm cổ Bát Tràng bên bờ sông Hồng. Từng thớ đất sét dẻo mịn được nghệ nhân vuốt nặn, nung qua ngọn lửa thiêng, tạo nên sắc men rạn và men lam kinh kỳ Thăng Long bất hủ.',
+                        en: '🏺 **Cultural Heritage & Native Terroir**: Over 700 years of artisan legacy on the Red River banks. Bat Trang ceramic masters shape refined local clay with historic crackle glaze and cobalt patterns, embodying Thang Long heritage.',
+                        zh: '🏺 **文化遗产与地道风土**: 拥有 700 多年历史的红河畔钵场古陶瓷村，工匠手工拉胚、历经烈火烧制，开片釉与青花纹饰展现着升龙皇城的深厚文化底蕴。',
+                        ko: '🏺 **문화유산 및 로컬 떼루아**: 700년 전통의 밧짱(Bat Trang) 도자기 마을에서 장인의 섬세한 손길로 빚어낸 전통 백토와 독창적인 유약 기법이 돋보이는 명품 도예품입니다.',
+                        ja: '🏺 **文化遺産と固有の風土**: 紅河沿いに700年以上続くバッチャン伝統陶芸村。熟練の陶工が土を練り上げ、伝統の窯で焼き上げたクラックル釉と藍色の文様は古都ハノイの風情を伝えます。'
+                    },
+                    360: {
+                        vi: '☕ **Di sản văn hóa & Thổ nhưỡng bản địa**: Vùng cao Sơn La mây mù bao phủ ở độ cao trên 1.000m, nơi đồng bào dân tộc Thái canh tác hữu cơ nương rẫy. Hạt Arabica trứ danh mang nốt hương hoa quả ngọt hậu và vị chua thanh tao tinh tế.',
+                        en: '☕ **Cultural Heritage & Native Terroir**: Cultivated over 1,000m altitude in misty Son La highlands by Thai ethnic farmers. Certified Arabica offering delicate acidity with complex floral and stone-fruit notes.',
+                        zh: '☕ **文化遗产与地道风土**: 产自山罗省海拔 1,000 米以上的云雾高山，由泰族同胞生态有机种植。高海拔阿拉比卡咖啡豆散发着清雅的花果芬芳与明亮柔和的果酸。',
+                        ko: '☕ **문화유산 및 로컬 떼루아**: 해발 1,000m 이상의 고산지대 손라(Son La)에서 타이족 농부들이 유기농으로 재배한 아라비카 원두로, 섬세한 산미와 풍부한 과일 향미가 특징입니다.',
+                        ja: '☕ **文化遺産と固有の風土**: ソンラ省の標高1,000mを超える高地で、タイ族の人々が有機栽培したアラビカ種コーヒー。澄んだフルーティーな酸味と奥深いアロマが魅力です。'
+                    }
+                };
+                const idKey = pId || (prod ? prod.id : 525);
+                if (stories[idKey] && stories[idKey][langCode]) return stories[idKey][langCode];
+                if (stories[idKey] && stories[idKey].vi) return stories[idKey].vi;
+                const defStories = {
+                    vi: `🌾 **Di sản văn hóa & Thổ nhưỡng bản địa**: Sản phẩm ${prod ? prod.name : 'đặc sản OCOP'} kết tinh tinh hoa đất trời và đôi bàn tay tài hoa của nghệ nhân hợp tác xã địa phương, được bảo tồn nguyên vẹn hương vị truyền thống chuẩn chứng nhận Quốc gia.`,
+                    en: `🌾 **Cultural Heritage & Native Terroir**: Sourced directly from authentic local artisanal cooperatives, preserving centuries of agrarian heritage and national OCOP standards.`,
+                    zh: `🌾 **文化遗产与地道风土**: 源自越南本土合作社与手艺工匠的传承之作，汇聚大地灵气与民族匠心，严格遵循国家 OCOP 品质认证。`,
+                    ko: `🌾 **문화유산 및 로컬 떼루아**: 베트남 63개 성·시 협동조합의 전통 장인 정신과 비옥한 토양이 빚어낸 공식 OCOP 국가 인증 특산품입니다.`,
+                    ja: `🌾 **文化遺産と固有の風土**: ベトナム各地の協同組合と職人の技が息づく特産品。大自然の恵みと伝統文化をそのまま受け継ぐ国家認証OCOP商品です。`
+                };
+                return defStories[langCode] || defStories.vi;
+            };
+
+            const heritageStory = getHeritageStory(targetProduct, targetId, l);
+            const telemetryFooter = `\n\n[HỆ THỐNG XÁC THỰC: Phân hạng OCOP chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5%]`;
+
             let msg = '';
             let chips = [];
 
@@ -7923,6 +7970,7 @@
                 chips = ['⚡ Dong Nai Net Margin', '📊 Hanoi Digital Volume', '🔄 Smart Contract CHM'];
                 if (isCHM) {
                     msg = `🔄 **CHM COMMISSION RECONCILIATION & SMART CONTRACT CLEARING**\n` +
+                          `${heritageStory}\n\n` +
                           `• **Ecosystem Model**: Automated financial clearing platform for 63 provinces.\n` +
                           `• **CHM Commission Rate**: **7.0%** (Instantly distributed via blockchain Smart Contract).\n` +
                           `• **Reconciliation Variance**: **0.00%** (Cryptographically verified against Render cloud data pipeline).\n` +
@@ -7931,9 +7979,10 @@
                           `• **Showroom Facility**: ${showroomName}\n` +
                           `• **Physical Address**: ${showroomAddress}\n` +
                           `• **OCOP Certification**: ${certText}\n` +
-                          `🌐 **Google Maps Coordinates**: [View Live Real-World Showroom on Google Maps](${mapUrl})`;
+                          `🗺️ [Xem vị trí Showroom đời thực trên Google Map](${mapUrl})` + telemetryFooter;
                 } else if (isVolume) {
                     msg = `📊 **DIGITAL VOLUME & SUPPLY CHAIN THROUGHPUT: HANOI & SPECIALTIES**\n` +
+                          `${heritageStory}\n\n` +
                           `• **Analyzed Specialty**: **${prodName}**\n` +
                           `• **System Volume**: **1,200 units** (Central Smart Contract Allocation)\n` +
                           `• **Gross Revenue**: **68,000,000 ₫**\n` +
@@ -7945,9 +7994,10 @@
                           `• **Producer / Facility**: ${showroomName}\n` +
                           `• **Real-World Address**: ${showroomAddress}\n` +
                           `• **National Certification**: ${certText}\n` +
-                          `🌐 **Google Maps Coordinates**: [Click here to view live Google Maps coordinates](${mapUrl})`;
+                          `🗺️ [Xem vị trí Showroom đời thực trên Google Map](${mapUrl})` + telemetryFooter;
                 } else {
                     msg = `📊 **OCOP 2026 DIGITAL FINANCIAL & POINT-OF-SALE DISPATCH REPORT**\n` +
+                          `${heritageStory}\n\n` +
                           `• **Analyzed Specialty**: **${prodName}**\n` +
                           `• **System Volume**: **1,200 units** (Smart Contract Automated Distribution)\n` +
                           `• **Gross Revenue**: **68,000,000 ₫**\n` +
@@ -7959,11 +8009,12 @@
                           `• **Producer**: ${showroomName}\n` +
                           `• **Physical Address**: ${showroomAddress}\n` +
                           `• **Certification**: ${certText}\n` +
-                          `🌐 **Google Maps Coordinates**: [Click here to view live Google Maps coordinates](${mapUrl})`;
+                          `🗺️ [Xem vị trí Showroom đời thực trên Google Map](${mapUrl})` + telemetryFooter;
                 }
             } else if (l === 'zh') {
                 chips = ['⚡ 同奈省净利润', '📊 河内数字调度量', '🔄 智能合约对账 (CHM)'];
                 msg = `📊 **OCOP 2026 数字财务与实体网点调度分析报告**\n` +
+                      `${heritageStory}\n\n` +
                       `• **分析特产**: **${prodName}**\n` +
                       `• **系统调度量**: **1,200 件** (智能合约自动拨付)\n` +
                       `• **总营收 (Gross Revenue)**: **68,000,000 ₫**\n` +
@@ -7975,10 +8026,11 @@
                       `• **生产主体**: ${showroomName}\n` +
                       `• **实体地址**: ${showroomAddress}\n` +
                       `• **国家认证**: ${certText}\n` +
-                      `🌐 **Google Maps 实景导航**: [点击查看实体 Google Maps 导航坐标](${mapUrl})`;
+                      `🗺️ [Xem vị trí Showroom đời thực trên Google Map](${mapUrl})` + telemetryFooter;
             } else if (l === 'ko') {
                 chips = ['⚡ 동나이성 순이익', '📊 하노이 디지털 조율량', '🔄 스마트 계약 정산 (CHM)'];
                 msg = `📊 **OCOP 2026 디지털 재무 분석 및 오프라인 매장 배정 보고서**\n` +
+                      `${heritageStory}\n\n` +
                       `• **분석 특산물**: **${prodName}**\n` +
                       `• **시스템 조율량**: **1,200개** (스마트 계약 자동 정산 완료)\n` +
                       `• **총매출 (Gross Revenue)**: **68,000,000 ₫**\n` +
@@ -7990,10 +8042,11 @@
                       `• **생산 업체**: ${showroomName}\n` +
                       `• **실제 주소**: ${showroomAddress}\n` +
                       `• **공식 인증**: ${certText}\n` +
-                      `🌐 **Google Maps 좌표**: [실제 Google Maps 위치 확인하기](${mapUrl})`;
+                      `🗺️ [Xem vị trí Showroom đời thực trên Google Map](${mapUrl})` + telemetryFooter;
             } else if (l === 'ja') {
                 chips = ['⚡ ドンナイ省純利益', '📊 ハノイデジタル流通量', '🔄 スマートコントラクト精算 (CHM)'];
                 msg = `📊 **OCOP 2026 デジタル財務分析および拠点配分レポート**\n` +
+                      `${heritageStory}\n\n` +
                       `• **分析特産品**: **${prodName}**\n` +
                       `• **システム稼働量**: **1,200点** (スマートコントラクト自動精算)\n` +
                       `• **総売上 (Gross Revenue)**: **68,000,000 ₫**\n` +
@@ -8005,11 +8058,12 @@
                       `• **生産事業者**: ${showroomName}\n` +
                       `• **実在住所**: ${showroomAddress}\n` +
                       `• **認定資格**: ${certText}\n` +
-                      `🌐 **Google Maps 座標**: [Google Maps の現地マップを開く](${mapUrl})`;
+                      `🗺️ [Xem vị trí Showroom đời thực trên Google Map](${mapUrl})` + telemetryFooter;
             } else {
                 chips = ['⚡ Biên lợi nhuận: Đồng Nai', '📊 Sản lượng số hóa: Hà Nội', '🔄 Đối soát chiết khấu (CHM)'];
                 if (isCHM) {
                     msg = `🔄 **ĐỐI SOÁT CHIẾT KHẤU (CHM) & GIẢI NGÂN HỢP ĐỒNG THÔNG MINH**\n` +
+                          `${heritageStory}\n\n` +
                           `• **Mô hình kết nối**: Trục điều phối số ba bên O2O/B2B2C cho 63 tỉnh thành.\n` +
                           `• **Tỷ lệ chiết khấu CHM**: **7.0%** (Tự động trích xuất và phân bổ qua Smart Contract).\n` +
                           `• **Độ chính xác đối soát**: **100% (Sai số 0.00%)**, đồng bộ liên tục tới data pipeline Render.\n` +
@@ -8018,9 +8072,10 @@
                           `• **Cơ sở đại diện**: ${showroomName}\n` +
                           `• **Địa chỉ đời thực**: ${showroomAddress}\n` +
                           `• **Chứng nhận pháp lý**: ${certText}\n` +
-                          `🌐 **Tọa độ Google Map**: [Nhấp vào đây để xem tọa độ Google Map thực tế](${mapUrl})`;
+                          `🗺️ [Xem vị trí Showroom đời thực trên Google Map](${mapUrl})` + telemetryFooter;
                 } else if (isVolume) {
                     msg = `📊 **SẢN LƯỢNG SỐ HÓA & THÔNG LƯỢNG ĐIỀU PHỐI: HÀ NỘI & 63 TỈNH THÀNH**\n` +
+                          `${heritageStory}\n\n` +
                           `• **Đặc sản phân tích**: **${prodName}**\n` +
                           `• **Sản lượng điều phối số**: **1,200 đơn vị** (Hợp đồng thông minh Smart Contract)\n` +
                           `• **Tổng doanh thu (Gross Revenue)**: **68,000,000 ₫**\n` +
@@ -8032,9 +8087,10 @@
                           `• **Chủ thể sản xuất**: ${showroomName}\n` +
                           `• **Địa chỉ thực tế ngoài đời**: ${showroomAddress}\n` +
                           `• **Chứng nhận OCOP**: ${certText}\n` +
-                          `🌐 **Định vị Google Maps**: [Nhấp vào đây để xem tọa độ Google Map thực tế](${mapUrl})`;
+                          `🗺️ [Xem vị trí Showroom đời thực trên Google Map](${mapUrl})` + telemetryFooter;
                 } else {
                     msg = `📊 **BÁO CÁO PHÂN TÍCH TÀI CHÍNH & ĐIỀU PHỐI ĐIỂM BÁN OCOP 2026**\n` +
+                          `${heritageStory}\n\n` +
                           `• **Đặc sản phân tích**: **${prodName}**\n` +
                           `• **Sản lượng điều phối số**: **1,200 đơn vị** (Hợp đồng thông minh Smart Contract)\n` +
                           `• **Tổng doanh thu (Gross Revenue)**: **68,000,000 ₫**\n` +
@@ -8046,7 +8102,7 @@
                           `• **Cơ sở sản xuất**: ${showroomName}\n` +
                           `• **Địa chỉ thực tế ngoài đời**: ${showroomAddress}\n` +
                           `• **Chứng nhận OCOP**: ${certText}\n` +
-                          `🌐 **Định vị Google Maps**: [Nhấp vào đây để xem tọa độ Google Map thực tế](${mapUrl})`;
+                          `🗺️ [Xem vị trí Showroom đời thực trên Google Map](${mapUrl})` + telemetryFooter;
                 }
             }
 
@@ -8998,11 +9054,11 @@
 
             if (cart.length === 0) {
                 const emptyMsgs = {
-                    vi: "Bảng mô phỏng đang trống. Hãy bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để phân tích!",
-                    en: "Simulation table is empty. Click '⚡ Activate Reconciliation' on a product to analyze!",
-                    zh: "模拟看板为空。点击特产上的 '⚡ 激活财务对账' 即可开始分析！",
-                    ko: "시뮬레이션 분석표가 비어 있습니다. 특산품의 '⚡ 정산 데이터 활성화'를 클릭하세요!",
-                    ja: "シミュレーションは空です。特産品の「⚡ 財務決済の有効化」をクリックして分析してください！"
+                    vi: "Bảng mô phỏng đang trống. Hãy bấm '📊 Phân Tích Dòng Tiền' trên sản phẩm để phân tích!",
+                    en: "Simulation table is empty. Click '📊 Analyze Cash Flow' on a product to analyze!",
+                    zh: "模拟看板为空。点击特产上的 '📊 分析现金流' 即可开始分析！",
+                    ko: "시뮬레이션 분석표가 비어 있습니다. 특산품의 '📊 현금 흐름 분석'을 클릭하세요!",
+                    ja: "シミュレーションは空です。特産品の「📊 キャッシュフロー分析」をクリックして分析してください！"
                 };
                 container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">${emptyMsgs[currentLanguage] || emptyMsgs.vi}</p>`;
                 subtotalEl.innerText = "0 ₫";
@@ -10336,13 +10392,14 @@
             'i18n-no-prod': 'No matching products found.',
             'i18n-reset-btn': 'Show all specialties (63 Provinces)',
             'i18n-wishlist-title': 'Saved items',
+            'i18n-reconcile-btn': '📊 Analyze Cash Flow',
             'i18n-cart-title': 'Store Cash Flow Analysis (AI Simulated)',
-            'i18n-cart-empty': "Simulation table is empty. Click '⚡ Activate Reconciliation' on a product to analyze!",
-            'i18n-cart-subtotal': 'Gross Revenue (Projected):',
-            'i18n-cart-cogs-label': 'COGS (Cost of Goods Sold 62%):',
-            'i18n-cart-chm-label': 'OPEX (Operating Expenses 7.5%):',
-            'i18n-cart-total': 'Net Profit (Estimated Margin +30.5%):',
-            'i18n-checkout-btn': '🗺️ ACTIVATE DIGITAL DISPATCH & O2O SHOWROOM'
+            'i18n-cart-empty': "Simulation table is empty. Click '📊 Analyze Cash Flow' on a product to analyze!",
+            'i18n-cart-subtotal': 'Gross Revenue:',
+            'i18n-cart-cogs-label': 'COGS (Cost of Goods Sold):',
+            'i18n-cart-chm-label': 'OPEX (Platform Fees):',
+            'i18n-cart-total': 'Net Profit:',
+            'i18n-checkout-btn': 'Export AI Financial Report & Cash Flow Reconciliation'
         };
 
         const I18N_DATA = {
@@ -10467,6 +10524,13 @@
             },
 
             // 5. BẢNG PHÂN TÍCH DÒNG TIỀN MÔ PHỎNG (KHỐI PHẢI TRANG ĐIỀU HÀNH)
+            'i18n-reconcile-btn': {
+                vi: '📊 Phân Tích Dòng Tiền',
+                en: '📊 Analyze Cash Flow',
+                zh: '📊 分析现金流',
+                ko: '📊 현금 흐름 분석',
+                ja: '📊 キャッシュフロー分析'
+            },
             'i18n-cart-title': {
                 vi: "Bảng Phân Tích Dòng Tiền Cửa Hàng (AI Simulated)",
                 en: "Store Cash Flow Analysis (AI Simulated)",
@@ -10475,48 +10539,48 @@
                 ja: "店舗キャッシュフロー分析ダッシュボード（AIシミュレーション）"
             },
             'i18n-cart-subtotal': {
-                vi: "Gross Revenue (Tổng doanh thu):",
-                en: "Gross Revenue (Projected):",
-                zh: "Gross Revenue (预计总收入):",
-                ko: "Gross Revenue (예상 총매출):",
-                ja: "Gross Revenue (予想総売上):"
+                vi: "Tổng doanh thu dự kiến (Gross Revenue):",
+                en: "Gross Revenue:",
+                zh: "总预期营收:",
+                ko: "총 예상 매출:",
+                ja: "総予想売上:"
             },
             'i18n-cart-cogs-label': {
-                vi: 'COGS (Giá vốn hàng bán 62%):',
-                en: 'COGS (Cost of Goods Sold 62%):',
-                zh: 'COGS (销货成本 62%):',
-                ko: 'COGS (매출원가 62%):',
-                ja: 'COGS (売上原価 62%):'
+                vi: 'Giá vốn hàng bán (COGS 62%):',
+                en: 'COGS (Cost of Goods Sold):',
+                zh: '销货成本 (COGS):',
+                ko: '매출원가 (COGS):',
+                ja: '売上原価（COGS）:'
             },
             'i18n-cart-chm-label': {
-                vi: 'OPEX (Chi phí vận hành 7.5%):',
-                en: 'OPEX (Operating Expenses 7.5%):',
-                zh: 'OPEX (平台运营成本 7.5%):',
-                ko: 'OPEX (플랫폼 운영비 7.5%):',
-                ja: 'OPEX (運営経費 7.5%):'
+                vi: 'Chi phí vận hành nền tảng (OPEX 7.5%):',
+                en: 'OPEX (Platform Fees):',
+                zh: '平台运营成本 (OPEX):',
+                ko: '플랫폼 운영비 (OPEX):',
+                ja: 'プラットフォーム運営費（OPEX）:'
             },
             'i18n-cart-total': {
-                vi: "Net Profit (Tiền lời ròng thực nhận):",
-                en: "Net Profit (Estimated Margin +30.5%):",
-                zh: "Net Profit (实际净利润 +30.5%):",
-                ko: "Net Profit (실제 순이익 +30.5%):",
-                ja: "Net Profit (実質純利益 +30.5%):"
+                vi: "Tiền lời thực tế (Net Profit):",
+                en: "Net Profit:",
+                zh: "实际净利润:",
+                ko: "실제 순이익:",
+                ja: "実際の純利益:"
             },
             'i18n-checkout-btn': {
-                vi: "🗺️ KÍCH HOẠT ĐIỀU PHỐI SỐ & ĐỊNH VỊ SHOWROOM O2O",
-                en: "🗺️ ACTIVATE DIGITAL DISPATCH & O2O SHOWROOM",
-                zh: "🗺️ 激活数字调度与 O2O 展厅定位",
-                ko: "🗺️ 디지털 배정 및 O2O 쇼룸 위치 활성화",
-                ja: "🗺️ デジタルディスパッチ＆O2Oショールーム位置の有効化"
+                vi: "Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền",
+                en: "Export AI Financial Report & Cash Flow Reconciliation",
+                zh: "导出 AI 财务报告并核对现金流",
+                ko: "AI 재무 보고서 내보내기 및 현금 흐름 정산",
+                ja: "AI財務レポートのエクスポートとキャッシュフロー照合"
             },
 
             // Bổ trợ chung
             'i18n-cart-empty': {
-                vi: "Bảng mô phỏng đang trống. Hãy bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để phân tích!",
-                en: "Simulation table is empty. Click '⚡ Activate Reconciliation' on a product to analyze!",
-                zh: "模拟看板为空。点击特产上的 '⚡ 激活财务对账' 即可开始分析！",
-                ko: "시뮬레이션 분석표가 비어 있습니다. 특산품의 '⚡ 정산 데이터 활성화'를 클릭하세요!",
-                ja: "シミュレーションは空です。特産品の「⚡ 財務決済の有効化」をクリックして分析してください！"
+                vi: "Bảng mô phỏng đang trống. Hãy bấm '📊 Phân Tích Dòng Tiền' trên sản phẩm để phân tích!",
+                en: "Simulation table is empty. Click '📊 Analyze Cash Flow' on a product to analyze!",
+                zh: "模拟看板为空。点击特产上的 '📊 分析现金流' 即可开始分析！",
+                ko: "시뮬레이션 분석표가 비어 있습니다. 특산품의 '📊 현금 흐름 분석'을 클릭하세요!",
+                ja: "シミュレーションは空です。特産品の「📊 キャッシュフロー分析」をクリックして分析してください！"
             },
             'i18n-no-prod': {
                 vi: 'Không tìm thấy sản phẩm phù hợp.',

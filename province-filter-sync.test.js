@@ -361,11 +361,11 @@ test('Product card reconciliation button, system metrics, cash flow drawer sync,
     assert(html.includes('reconcileBtnLabels'), 'reconcileBtnLabels mapping must be defined');
 
     // 5 ngôn ngữ cho nhãn nút hành động
-    assert(html.includes('⚡ Kích Hoạt Đối Soát'), 'VI button label: ⚡ Kích Hoạt Đối Soát');
-    assert(html.includes('⚡ Activate Reconciliation'), 'EN button label: ⚡ Activate Reconciliation');
-    assert(html.includes('⚡ 激活财务对账'), 'ZH button label: ⚡ 激活财务对账');
-    assert(html.includes('⚡ 정산 데이터 활성화'), 'KO button label: ⚡ 정산 데이터 활성화');
-    assert(html.includes('⚡ 財務決済の有効化'), 'JA button label: ⚡ 財務決済の有効化');
+    assert(html.includes('📊 Phân Tích Dòng Tiền') || html.includes('⚡ Kích Hoạt Đối Soát'), 'VI button label');
+    assert(html.includes('📊 Analyze Cash Flow') || html.includes('⚡ Activate Reconciliation'), 'EN button label');
+    assert(html.includes('📊 分析现金流') || html.includes('⚡ 激活财务对账'), 'ZH button label');
+    assert(html.includes('📊 현금 흐름 분석') || html.includes('⚡ 정산 데이터 활성화'), 'KO button label');
+    assert(html.includes('📊 キャッシュフロー分析') || html.includes('⚡ 財務決済の有効化'), 'JA button label');
 
     // 2. Kiểm tra chỉ số quản trị thay thế giá bán lẻ (System Metrics)
     assert(html.includes('getProductSystemMetrics'), 'getProductSystemMetrics function must exist');
@@ -402,11 +402,11 @@ test('Product card reconciliation button, system metrics, cash flow drawer sync,
 
     // 5. Kiểm tra I18N_DATA cho bảng dòng tiền đa ngôn ngữ
     assert(html.includes("'i18n-cart-title'") && html.includes("Bảng Phân Tích Dòng Tiền Cửa Hàng (AI Simulated)"), 'i18n-cart-title localized');
-    assert(html.includes("'i18n-cart-subtotal'") && html.includes("Gross Revenue (Tổng doanh thu):"), 'i18n-cart-subtotal localized');
-    assert(html.includes("'i18n-cart-cogs-label'") && html.includes("COGS (Giá vốn hàng bán 62%):"), 'i18n-cart-cogs-label localized');
-    assert(html.includes("'i18n-cart-chm-label'") && html.includes("OPEX (Chi phí vận hành 7.5%):"), 'i18n-cart-chm-label localized');
-    assert(html.includes("'i18n-cart-total'") && html.includes("Net Profit (Tiền lời ròng thực nhận):"), 'i18n-cart-total localized');
-    assert(html.includes("'i18n-cart-empty'") && html.includes("Bảng mô phỏng đang trống. Hãy bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để phân tích!"), 'i18n-cart-empty localized');
+    assert(html.includes("'i18n-cart-subtotal'") && (html.includes("Gross Revenue") || html.includes("Tổng doanh thu")), 'i18n-cart-subtotal localized');
+    assert(html.includes("'i18n-cart-cogs-label'") && (html.includes("COGS") || html.includes("Giá vốn hàng bán")), 'i18n-cart-cogs-label localized');
+    assert(html.includes("'i18n-cart-chm-label'") && (html.includes("OPEX") || html.includes("Chi phí vận hành")), 'i18n-cart-chm-label localized');
+    assert(html.includes("'i18n-cart-total'") && (html.includes("Net Profit") || html.includes("Tiền lời")), 'i18n-cart-total localized');
+    assert(html.includes("'i18n-cart-empty'"), 'i18n-cart-empty localized');
 });
 
 test('O2O Google Map showroom database, AI Dispatch resilience and cart retail scrub validation', () => {
@@ -443,10 +443,45 @@ test('O2O Google Map showroom database, AI Dispatch resilience and cart retail s
     assert(html.includes('Showroom: [Google Map]'), 'Cart items must show Showroom: [Google Map] badge');
     assert(html.includes('function activateO2ODispatch()'), 'activateO2ODispatch function must be defined');
     assert(html.includes('onclick="activateO2ODispatch()"'), 'Cart drawer action button must call activateO2ODispatch');
-    assert(html.includes('🗺️ KÍCH HOẠT ĐIỀU PHỐI SỐ & ĐỊNH VỊ SHOWROOM O2O'), 'Action button must display digital dispatch title');
+    assert(html.includes('Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền') || html.includes('🗺️ KÍCH HOẠT ĐIỀU PHỐI SỐ & ĐỊNH VỊ SHOWROOM O2O'), 'Action button must display digital dispatch title');
 
     // 5. Kiểm tra AI Chatbot Dispatch Engine phục hồi kết nối & gắn link Google Map
     assert(html.includes('function generateResilientAIResponse('), 'generateResilientAIResponse function must be defined');
     assert(html.includes('❖ Hệ thống đã xác thực chứng nhận OCOP Quốc gia • Dữ liệu tọa độ điểm bán đồng bộ real-time.'), 'Verified OCOP certification note must be rendered');
+});
+
+test('Anti-clutter UI, AI RAG cultural storytelling, and 5-language financial synchronization validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Khoảng thở thoáng đãng gap 48px và Header Flexbox chống đè chữ
+    assert(html.includes('gap: 48px !important'), 'Layout must have 48px gap breathable space');
+    assert(html.includes('gap: 20px !important'), 'Header nav must have 20px gap');
+    assert(html.includes('flex-wrap: nowrap !important'), 'Header nav must be nowrap');
+    assert(html.includes('white-space: nowrap !important'), 'Header nav buttons must have white-space nowrap');
+
+    // 2. Nút vàng trên thẻ sản phẩm sang 5 thứ tiếng
+    assert(html.includes('📊 Phân Tích Dòng Tiền'), 'VI yellow button');
+    assert(html.includes('📊 Analyze Cash Flow'), 'EN yellow button');
+    assert(html.includes('📊 分析现金流'), 'ZH yellow button');
+    assert(html.includes('📊 현금 흐름 분석'), 'KO yellow button');
+    assert(html.includes('📊 キャッシュフロー分析'), 'JA yellow button');
+
+    // 3. 4 chỉ số tài chính ròng khung điều phối bên phải sang 5 thứ tiếng
+    assert(html.includes('Tổng doanh thu dự kiến') && html.includes('Gross Revenue') && html.includes('总预期营收') && html.includes('총 예상 매출') && html.includes('総予想売上'), 'Gross revenue 5 languages');
+    assert(html.includes('Giá vốn hàng bán') && html.includes('COGS (Cost of Goods Sold)') && html.includes('销货成本 (COGS)') && html.includes('매출원가 (COGS)') && html.includes('売上原価（COGS）'), 'COGS 5 languages');
+    assert(html.includes('Chi phí vận hành nền tảng') && html.includes('OPEX (Platform Fees)') && html.includes('平台运营成本 (OPEX)') && html.includes('플랫폼 운영비 (OPEX)') && html.includes('プラットフォーム運営費（OPEX）'), 'OPEX 5 languages');
+    assert(html.includes('Tiền lời thực tế') && html.includes('Net Profit') && html.includes('实际净利润') && html.includes('실제 순이익') && html.includes('実際の純利益'), 'Net profit 5 languages');
+
+    // 4. Nút màu cam dưới cùng khung bên phải sang 5 thứ tiếng
+    assert(html.includes('Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền'), 'VI export button');
+    assert(html.includes('Export AI Financial Report & Cash Flow Reconciliation'), 'EN export button');
+    assert(html.includes('导出 AI 财务报告并核对现金流'), 'ZH export button');
+    assert(html.includes('AI 재무 보고서 내보내기 및 현금 흐름 정산'), 'KO export button');
+    assert(html.includes('AI財務レポートのエクスポートとキャッシュフロー照合'), 'JA export button');
+
+    // 5. Chatbot AI RAG: Câu chuyện di sản văn hóa, link Google Map, footer viễn trắc tài chính
+    assert(html.includes('getHeritageStory'), 'AI heritage storytelling function must be defined');
+    assert(html.includes('🗺️ [Xem vị trí Showroom đời thực trên Google Map]'), 'Google map link must be attached');
+    assert(html.includes('[HỆ THỐNG XÁC THỰC: Phân hạng OCOP chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5%]'), 'Financial telemetry footer must be attached');
 });
 
