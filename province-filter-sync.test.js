@@ -485,3 +485,40 @@ test('Anti-clutter UI, AI RAG cultural storytelling, and 5-language financial sy
     assert(html.includes('[HỆ THỐNG XÁC THỰC: Phân hạng OCOP chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5%]'), 'Financial telemetry footer must be attached');
 });
 
+test('2026 Digital Business Platform Alignment, AI RAG telemetry, and dark tech UI validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Hero Title & 4 Feature Cards
+    assert(html.includes('Bản Đồ Số OCOP,') && html.includes('Khơi Nguồn Di Sản Việt'), 'Hero Title must read Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt');
+    assert(html.includes('id="i18n-hero-feat1-title"') && html.includes('Bản Đồ Số 63 Tỉnh Thành'), 'Feature 1 title');
+    assert(html.includes('id="i18n-hero-feat2-title"') && html.includes('Kho Tri Thức Di Sản Bản Địa'), 'Feature 2 title');
+    assert(html.includes('id="i18n-hero-feat3-title"') && html.includes('Hệ Điều Hành Copilot 24/7'), 'Feature 3 title');
+    assert(html.includes('id="i18n-hero-feat4-title"') && html.includes('AI Financial Engine'), 'Feature 4 title');
+
+    // 2. 4 Supply Chain Operational Commitment Cards (Pillars) in #why-choose-us-section
+    assert(html.includes('id="i18n-why-pillar1"') && html.includes('Chuẩn Hóa Nguồn Gốc Bản Địa'), 'Pillar 1 title');
+    assert(html.includes('id="i18n-why-pillar2"') && html.includes('Số Hóa Giá Trị Bản Sắc'), 'Pillar 2 title');
+    assert(html.includes('id="i18n-why-pillar3"') && html.includes('Tối Ưu Logistics & Chuỗi Cung Ứng'), 'Pillar 3 title');
+    assert(html.includes('id="i18n-why-pillar4"') && html.includes('Hệ Điều Hành Copilot 24/7'), 'Pillar 4 title');
+
+    // Localization for the 4 commitment pillars
+    assert(html.includes('Standardizing Indigenous Traceability') && html.includes('标准化原产地追溯'), 'Pillar 1 i18n');
+    assert(html.includes('Digitalizing Cultural Identity') && html.includes('数字化本土文化价值'), 'Pillar 2 i18n');
+    assert(html.includes('Optimizing Logistics & Supply Chain') && html.includes('优化物流与供应链'), 'Pillar 3 i18n');
+
+    // 3. Data navigation bar above Catalog
+    assert(html.includes('CƠ SỞ DỮ LIỆU CHỨNG NHẬN OCOP QUỐC GIA'), 'Catalog header text');
+    assert(html.includes('🗺️ KÍCH HOẠT BẢN ĐỒ SỐ O2O'), 'Activate O2O digital map button');
+    assert(html.includes('📸 AI QUÉT CHỨNG NHẬN (OCR)'), 'AI scan certificate button');
+
+    // 4. Strategic Banner Top Bar
+    assert(html.includes('❖ HỆ THỐNG ĐIỀU PHỐI ĐẶC SẢN OCOP TOÀN QUỐC • HỖ TRỢ CHUYỂN ĐỔI SỐ 63 TỈNH THÀNH • HOTLINE ĐIỀU PHỐI TRUNG TÂM: 1900 888 688'), 'Strategic Top Bar banner');
+
+    // 5. Telemetry Footer
+    assert(html.includes('[HỆ THỐNG ĐỒNG BỘ: Phân hạng chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5% • Trạng thái đối soát CHM: Đã phân bổ qua Smart Contract]'), 'Smart contract telemetry footer');
+
+    // 6. CSS Containment & Dark Tech Theme
+    assert(html.includes('contain-intrinsic-size: 380px !important'), 'contain-intrinsic-size 380px rule');
+    assert(html.includes('#0d1117'), 'Obsidian dark tech background color');
+});
+
