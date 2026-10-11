@@ -487,8 +487,10 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #0d1117;
+            background-image: linear-gradient(180deg, #07120e 0%, #0b0f14 100%);
             color: #f1f5f9;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
         }
         .bg-ocop-ambient {
             background-color: #0d1117;
@@ -496,25 +498,30 @@
                 radial-gradient(ellipse at 12% 10%, rgba(212, 175, 55, 0.08), transparent 36rem),
                 radial-gradient(ellipse at 88% 22%, rgba(16, 185, 129, 0.08), transparent 40rem),
                 radial-gradient(ellipse at 50% 80%, rgba(6, 78, 59, 0.12), transparent 45rem),
-                linear-gradient(180deg, #0d1117 0%, #0d1b15 50%, #09130e 100%);
+                linear-gradient(180deg, #07120e 0%, #0b0f14 100%);
         }
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.88);
-            border: 1px solid rgba(234, 179, 8, 0.22);
-            box-shadow: 0 0 20px rgba(234, 179, 8, 0.07), 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+        .glass-panel,
+        .glass-card,
+        #catalog-sidebar .glass-panel,
+        #catalog-sidebar > div > div {
+            background: rgba(17, 24, 39, 0.7) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(212, 175, 55, 0.25) !important;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.08), 0 10px 30px rgba(0, 0, 0, 0.5) !important;
             color: #f1f5f9;
         }
         #product-grid .product-card {
-            background: rgba(17, 24, 39, 0.92) !important;
-            border: 1px solid rgba(234, 179, 8, 0.22) !important;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(234, 179, 8, 0.06) !important;
+            background: rgba(17, 24, 39, 0.7) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(212, 175, 55, 0.25) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.08) !important;
             transition: all 0.25s ease-in-out !important;
         }
         #product-grid .product-card:hover {
-            border-color: rgba(234, 179, 8, 0.6) !important;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(234, 179, 8, 0.2) !important;
+            border-color: rgba(212, 175, 55, 0.6) !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 175, 55, 0.2) !important;
         }
         #product-grid .product-card h3 {
             color: #f8fafc !important;
@@ -669,20 +676,26 @@
             width: 420px;
             height: 540px;
             min-width: 380px !important;
-            min-height: 500px !important;
-            max-width: 80vw !important;
+            min-height: 520px !important;
+            max-width: 85vw !important;
             max-height: 85vh !important;
             resize: both !important;
             overflow: hidden !important;
             will-change: top, left;
             transform: translate3d(0, 0, 0);
-            box-shadow: 0 24px 64px rgba(15, 56, 44, 0.28), 0 4px 14px rgba(15, 56, 44, 0.12) !important;
+            background: rgba(17, 24, 39, 0.7) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(212, 175, 55, 0.35) !important;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15), 0 24px 64px rgba(0, 0, 0, 0.6) !important;
             touch-action: none;
+            display: flex !important;
+            flex-direction: column !important;
         }
         #ai-chat-window.is-dragging {
             opacity: 0.96;
             cursor: move !important;
-            box-shadow: 0 32px 80px rgba(15, 56, 44, 0.38), 0 8px 24px rgba(15, 56, 44, 0.2) !important;
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.25), 0 32px 80px rgba(0, 0, 0, 0.7) !important;
             user-select: none !important;
         }
         #ai-chat-header,
@@ -690,10 +703,75 @@
             cursor: move !important;
             user-select: none !important;
             -webkit-user-select: none !important;
+            flex-shrink: 0 !important;
         }
         #ai-chat-header button,
         .chatbox-drag-handle button {
             cursor: pointer !important;
+        }
+        #ai-chat-window #ai-chat-messages {
+            min-height: 0 !important;
+            flex: 1 1 0% !important;
+            overflow-y: auto !important;
+            background: rgba(11, 15, 20, 0.8) !important;
+            color: #f1f5f9 !important;
+            overscroll-behavior: contain;
+            scrollbar-color: #9bbab0 transparent;
+        }
+        #ai-chat-window #ai-chat-messages .bg-white {
+            background: rgba(17, 24, 39, 0.85) !important;
+            border-color: rgba(212, 175, 55, 0.25) !important;
+            color: #e2e8f0 !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+        }
+        #ai-chat-window #ai-chat-messages .text-gray-800,
+        #ai-chat-window #ai-chat-messages .text-gray-900 {
+            color: #f1f5f9 !important;
+        }
+        #ai-chat-window #ai-chat-messages .text-gray-500,
+        #ai-chat-window #ai-chat-messages .text-gray-600 {
+            color: #94a3b8 !important;
+        }
+        #ai-chat-window #ai-chat-messages .text-ocopGreen {
+            color: #34d399 !important;
+        }
+        #ai-chat-window #ai-chat-quick-replies {
+            flex-shrink: 0 !important;
+            width: 100% !important;
+            overflow-x: auto !important;
+            background: rgba(10, 16, 13, 0.95) !important;
+            border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+        }
+        #ai-chat-window #chat-verification-bar {
+            flex-shrink: 0 !important;
+            background: rgba(15, 23, 42, 0.95) !important;
+            border-top: 1px solid rgba(16, 185, 129, 0.25) !important;
+            color: #6ee7b7 !important;
+        }
+        #ai-chat-window #ai-chat-composer {
+            flex-shrink: 0 !important;
+            background: rgba(17, 24, 39, 0.95) !important;
+            border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+        }
+        #ai-chat-window #ai-chat-composer input {
+            min-width: 0 !important;
+            flex: 1 1 0% !important;
+            background: rgba(30, 41, 59, 0.85) !important;
+            border-color: rgba(212, 175, 55, 0.35) !important;
+            color: #f8fafc !important;
+        }
+        #ai-chat-window #ai-chat-composer input:focus {
+            border-color: rgba(212, 175, 55, 0.8) !important;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25) !important;
+        }
+        #ai-chat-window #ai-chat-composer input::placeholder {
+            color: #94a3b8 !important;
+        }
+        #ai-chat-window #chat-add-image-button,
+        #ai-chat-window #chat-voice-button {
+            background: rgba(30, 41, 59, 0.85) !important;
+            border-color: rgba(212, 175, 55, 0.3) !important;
+            color: #fbbf24 !important;
         }
         #ai-chat-window::after {
             content: '';
@@ -729,10 +807,6 @@
             border-right: 2.5px solid rgba(212, 175, 55, 0.85);
             border-bottom: 2.5px solid rgba(212, 175, 55, 0.85);
             border-bottom-right-radius: 4px;
-        }
-        #ai-chat-messages {
-            overscroll-behavior: contain;
-            scrollbar-color: #9bbab0 transparent;
         }
         /* AI DIGITAL BUSINESS CHALLENGE 2026: CENTRAL NAVIGATION BAR & BREATHABLE LAYOUT */
         main.flex-1 {
@@ -4174,7 +4248,7 @@
         <div onclick="toggleWishlistDrawer()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
             <div class="p-4 bg-ocopGreen text-white flex items-center justify-between border-b border-ocopGold/30">
-                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-heart mr-2 text-red-500"></i> <span id="i18n-wishlist-title">Danh sách Yêu thích</span></h3>
+                <h3 class="font-bold text-base flex items-center"><i class="fa-solid fa-bookmark mr-2 text-amber-400"></i> <span id="i18n-wishlist-title">Danh sách Yêu thích</span></h3>
                 <button onclick="toggleWishlistDrawer()" class="text-white/80 hover:text-white p-1 cursor-pointer"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div id="wishlist-items" class="flex-1 p-4 overflow-y-auto space-y-3 bg-ocopWarmBg"></div>
@@ -6387,7 +6461,7 @@
                 chatWindow.style.height = '540px';
             });
 
-            // Resizing Engine hỗ trợ tương tác chuột kéo góc dưới bên phải
+            // Resizing Engine hỗ trợ tương tác chuột và touch kéo góc dưới bên phải
             if (resizeHandle) {
                 let isResizing = false;
                 let rStartX = 0;
@@ -6395,32 +6469,45 @@
                 let rStartWidth = 0;
                 let rStartHeight = 0;
 
-                resizeHandle.addEventListener('mousedown', (e) => {
+                function startResize(clientX, clientY) {
                     isResizing = true;
-                    rStartX = e.clientX;
-                    rStartY = e.clientY;
+                    rStartX = clientX;
+                    rStartY = clientY;
                     rStartWidth = chatWindow.offsetWidth;
                     rStartHeight = chatWindow.offsetHeight;
                     chatWindow.classList.add('is-resizing');
+                }
+
+                function moveResize(clientX, clientY) {
+                    if (!isResizing) return;
+                    const minW = 380;
+                    const minH = 520;
+                    const maxW = window.innerWidth * 0.85;
+                    const maxH = window.innerHeight * 0.85;
+
+                    const newWidth = Math.max(minW, Math.min(maxW, rStartWidth + (clientX - rStartX)));
+                    const newHeight = Math.max(minH, Math.min(maxH, rStartHeight + (clientY - rStartY)));
+
+                    chatWindow.style.width = newWidth + 'px';
+                    chatWindow.style.height = newHeight + 'px';
+                }
+
+                function endResize() {
+                    if (!isResizing) return;
+                    isResizing = false;
+                    chatWindow.classList.remove('is-resizing');
+                }
+
+                resizeHandle.addEventListener('mousedown', (e) => {
+                    startResize(e.clientX, e.clientY);
 
                     function onResizeMove(ev) {
-                        if (!isResizing) return;
-                        const minW = 380;
-                        const minH = 500;
-                        const maxW = window.innerWidth * 0.8;
-                        const maxH = window.innerHeight * 0.85;
-
-                        const newWidth = Math.max(minW, Math.min(maxW, rStartWidth + (ev.clientX - rStartX)));
-                        const newHeight = Math.max(minH, Math.min(maxH, rStartHeight + (ev.clientY - rStartY)));
-
-                        chatWindow.style.width = newWidth + 'px';
-                        chatWindow.style.height = newHeight + 'px';
+                        moveResize(ev.clientX, ev.clientY);
                         ev.preventDefault();
                     }
 
                     function onResizeUp() {
-                        isResizing = false;
-                        chatWindow.classList.remove('is-resizing');
+                        endResize();
                         document.removeEventListener('mousemove', onResizeMove);
                         document.removeEventListener('mouseup', onResizeUp);
                     }
@@ -6430,6 +6517,19 @@
                     e.preventDefault();
                     e.stopPropagation();
                 });
+
+                resizeHandle.addEventListener('touchstart', (e) => {
+                    if (e.touches.length !== 1) return;
+                    startResize(e.touches[0].clientX, e.touches[0].clientY);
+                }, { passive: true });
+
+                window.addEventListener('touchmove', (e) => {
+                    if (!isResizing || e.touches.length !== 1) return;
+                    moveResize(e.touches[0].clientX, e.touches[0].clientY);
+                }, { passive: true });
+
+                window.addEventListener('touchend', endResize, { passive: true });
+                window.addEventListener('touchcancel', endResize, { passive: true });
             }
         }
         window.initDraggableResizableChatbox = initDraggableResizableChatbox;
@@ -9600,8 +9700,8 @@
                         <div class="text-red-600 font-extrabold text-xs mt-0.5">${getProductPriceLabel(p)}</div>
                     </div>
                     <div class="flex shrink-0 items-center gap-2">
-                        <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${currentLanguage === 'en' ? `Remove ${getProductName(p)} from favorites` : `Bỏ ${getProductName(p)} khỏi yêu thích`}" title="${currentLanguage === 'en' ? 'Remove from favorites' : 'Bỏ yêu thích'}" class="flex h-10 w-10 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100 cursor-pointer">
-                            <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                        <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${currentLanguage === 'en' ? `Remove ${getProductName(p)} from favorites` : `Bỏ ${getProductName(p)} khỏi yêu thích`}" title="${currentLanguage === 'en' ? 'Remove from favorites' : 'Bỏ yêu thích'}" class="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-300 bg-amber-50 text-amber-700 transition hover:bg-amber-100 cursor-pointer">
+                            <i class="fa-solid fa-bookmark" aria-hidden="true"></i>
                         </button>
                         <button type="button" onclick="addToCart(${p.id})" aria-label="${currentLanguage === 'en' ? `Add ${getProductName(p)} to cart` : `Thêm ${getProductName(p)} vào giỏ hàng`}" title="${currentLanguage === 'en' ? 'Add to cart' : 'Thêm vào giỏ'}" class="bg-ocopGreen text-white p-2 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition cursor-pointer">
                             <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
@@ -9668,16 +9768,13 @@
                             <span class="text-lg break-words font-black text-red-600">${getProductPriceLabel(p)}</span>
                         </div>
                         <div class="flex items-stretch gap-2">
-                            <button id="quickview-wishlist-toggle" type="button" onclick="toggleWishlist(${p.id})" class="flex min-h-12 w-14 shrink-0 items-center justify-center rounded-2xl border border-amber-200 bg-white text-gray-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 cursor-pointer" aria-label="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}" aria-pressed="false" title="${currentLanguage === 'en' ? 'Add to favorites' : 'Thêm vào yêu thích'}">
-                                <i class="fa-regular fa-heart text-lg" aria-hidden="true"></i>
-                            </button>
                             <button onclick="closeQuickView(); openStoreLocator(${p.id});" class="min-h-12 flex-1 rounded-2xl bg-amber-500 hover:bg-amber-600 py-3 text-xs font-bold text-white shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer">
                                 <i class="fa-solid fa-store text-amber-100"></i>
                                 <span>${currentLanguage === 'en' ? 'Store Locations' : '🏪 Điểm Bán OCOP'}</span>
                             </button>
-                            <button onclick="addToCart(${p.id}); closeQuickView();" class="min-h-12 flex-1 rounded-2xl bg-ocopGreen py-3 text-xs font-bold text-white shadow-lg transition hover:bg-ocopGreenLight flex items-center justify-center space-x-1.5 cursor-pointer">
-                                <i class="fa-solid fa-cart-plus text-ocopGold"></i>
-                                <span>${currentLanguage === 'en' ? 'Order Online' : 'Đặt Hàng Online'}</span>
+                            <button onclick="addToCart(${p.id}); closeQuickView();" class="min-h-12 flex-1 rounded-2xl bg-emerald-800 hover:bg-emerald-700 py-3 text-xs font-bold text-white shadow-lg transition flex items-center justify-center space-x-1.5 cursor-pointer border border-emerald-400/50">
+                                <i class="fa-solid fa-chart-line text-emerald-300"></i>
+                                <span>${currentLanguage === 'en' ? '📊 Analyze Cash Flow' : '📊 Đối Soát Dòng Tiền'}</span>
                             </button>
                         </div>
                     </div>
@@ -9705,7 +9802,7 @@
                     ? 'border-red-200 bg-red-50 text-red-600'
                     : 'border-amber-200 bg-white text-gray-600 hover:border-red-200 hover:bg-red-50 hover:text-red-600'
             }`;
-            button.querySelector('i').className = `${isFavorite ? 'fa-solid' : 'fa-regular'} fa-heart text-lg`;
+            button.querySelector('i').className = `${isFavorite ? 'fa-solid' : 'fa-regular'} fa-bookmark text-lg`;
         }
 
         function closeQuickView() {
@@ -9856,9 +9953,9 @@
                         <span class="text-[11px]">Tất cả sản phẩm tại các điểm bán trên đều có <strong>Tem chống giả & QR Code OCOP</strong>.</span>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <button onclick="addToCart(${p.id}); closeStoreLocator();" class="flex-1 sm:flex-initial bg-ocopGreen hover:bg-ocopGreenLight text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer">
-                            <i class="fa-solid fa-cart-plus text-amber-300"></i>
-                            <span>Đặt online qua sàn</span>
+                        <button onclick="addToCart(${p.id}); closeStoreLocator();" class="flex-1 sm:flex-initial bg-emerald-800 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer border border-emerald-400/40">
+                            <i class="fa-solid fa-chart-line text-emerald-300"></i>
+                            <span>${currentLanguage === 'en' ? '📊 Analyze Cash Flow' : '📊 Đối Soát Dòng Tiền'}</span>
                         </button>
                         <button onclick="closeStoreLocator(); toggleAIChat();" class="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl font-black text-xs transition flex items-center justify-center gap-1 cursor-pointer">
                             <i class="fa-solid fa-comments"></i>
