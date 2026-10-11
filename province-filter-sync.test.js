@@ -572,5 +572,20 @@ test('AI Chatbox Close Event & Product 338 Digital Alignment validation', () => 
     assert.equal(p338.desc, newMienDongDesc, 'Product 338 description matches official text exactly');
 });
 
+test('Dong Nai specialty hero card, Google Map showroom links, and real OCOP alignment validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Hero right block displays real Dong Nai specialty image and info
+    assert(html.includes('images/catalog/web-latest-171.jpg'), 'Hero image must use real Dong Nai bitter melon tea image');
+    assert(html.includes('Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)'), 'Hero card title must match Dong Nai specialty');
+
+    // 2. Chatbot tea sommelier & 5-star recommendations sync with Hiep Van Dong Nai specialty
+    assert(!html.includes('• 🫖 **Bộ Trà Phúc Lộc Thọ (5 sao)**'), 'Old Phuc Loc Tho tea must be replaced in 5-star recommendations');
+    assert(html.includes('• 🍵 **Trà khổ qua rừng túi lọc Hiệp Vân (Đồng Nai - OCOP 4 Sao)**'), 'Hiep Van tea must be recommended in 5-star chat');
+
+    // 3. Product card showroom link has Google Map search link
+    assert(html.includes('storeInfo.mapUrl'), 'Product card must link showroom name to Google Maps');
+});
+
 
 

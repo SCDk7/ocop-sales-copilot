@@ -2779,7 +2779,7 @@
                 <div class="lg:col-span-5">
                     <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group hover:border-ocopGold/60 transition-all duration-500">
                         <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
-                            <img src="images/p5.jpg" alt="OCOP National Products" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                            <img src="images/catalog/web-latest-171.jpg" alt="Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5 text-white">
                                 <span id="i18n-hero-badge-tag" class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-1.5 shadow">
                                     ★ TINH HOA NÔNG SẢN VIỆT
@@ -5349,7 +5349,14 @@
                             </div>
                             <div class="flex items-center gap-1.5 text-slate-300 text-[10px] truncate" title="${storeInfo ? storeInfo.primaryStore.name + ' - ' + storeInfo.primaryStore.address : ''}">
                                 <i class="fa-solid fa-store text-emerald-400 text-[9px] shrink-0"></i>
-                                <span class="truncate font-semibold text-white">${storeInfo ? storeInfo.primaryStore.name : ('Điểm bán OCOP ' + p.region)}</span>
+                                ${storeInfo && storeInfo.mapUrl ? `
+                                <a href="${escapeAIHtml(storeInfo.mapUrl)}" target="_blank" rel="noopener noreferrer" class="truncate font-semibold text-white hover:text-amber-300 hover:underline inline-flex items-center gap-1" title="Xem vị trí Showroom trên Google Map: ${escapeAIHtml(storeInfo.primaryStore.address)}">
+                                    <span class="truncate">${escapeAIHtml(storeInfo.primaryStore.name)}</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[8px] text-amber-400 shrink-0"></i>
+                                </a>
+                                ` : `
+                                <span class="truncate font-semibold text-white">${storeInfo ? escapeAIHtml(storeInfo.primaryStore.name) : ('Điểm bán OCOP ' + p.region)}</span>
+                                `}
                             </div>
                             <div class="flex items-center justify-between text-[10px] pt-1 border-t border-amber-400/20">
                                 <span class="flex items-center gap-1 text-emerald-300 font-extrabold">
@@ -7692,7 +7699,7 @@
                 /^(5\s*sao|dac san 5 sao|ocop 5 sao|goi y 5 sao|top 5 sao|san pham 5 sao)$/.test(normalized.trim());
 
             if (is5StarExplicit) {
-                const fiveStarItems = [492, 480, 348, 336, 392].map(id => products.find(p => p.id === id)).filter(Boolean);
+                const fiveStarItems = [492, 480, 348, 525, 392].map(id => products.find(p => p.id === id)).filter(Boolean);
                 const pIds = fiveStarItems.map(p => p.id);
                 lastAIRecommendedProductIds = pIds;
                 return {
@@ -7701,18 +7708,18 @@
                           "• 🌿 **Ngoc Linh Ginseng (Kon Tum - 5★)**: 7,000,000 ₫\n  _Vietnam's sovereign botanical treasure with 52 saponins (MR2 >50%) for cellular recovery and vitality._\n\n" +
                           "• 🕊️ **Khanh Hoa Island Bird's Nest (5★)**: 5,000,000 ₫\n  _100% natural island cave swiftlet nests rich in 18 essential amino acids and sea minerals._\n\n" +
                           "• 🍵 **Suoi Giang Ancient Shan Tuyet Tea (Yen Bai - 5★)**: 1,800,000 ₫\n  _Harvested from 100-300-year-old wild tea trees wrapped in cloud mist above 1,500m._\n\n" +
-                          "• 🫖 **Phuc Loc Tho Tea Collection (Ha Noi - 5★)**: 2,000,000 ₫\n  _Exquisite imperial gift set encapsulating West Lake Lotus tea and traditional artisan heritage._\n\n" +
+                          "• 🍵 **Trà khổ qua rừng túi lọc Hiệp Vân (Dong Nai - OCOP 4★)**: 68,000 ₫\n  _Cold-dried forest bitter melon tea from Long Khanh with standardized indigenous raw materials and digital supply chain tracking._\n\n" +
                           "• 🐟 **Cat Hai Traditional Fish Sauce (Hai Phong - 5★)**: 400,000 ₫\n  _Naturally fermented anchovy essence with deep umami clarity and gold-standard purity._\n\n" +
                           "👉 *Click on any product card below to explore full origin records, lab certifications, or add to cart!*"
                         : "🌟 **Tuyển tập Quốc bảo Đặc sản OCOP 5 Sao Quốc Gia**:\n\nĐặc sản OCOP 5 sao là danh hiệu vinh danh cao quý nhất của Hội đồng đánh giá Quốc gia, đại diện cho tinh hoa nông sản và văn hóa ẩm thực Việt Nam vươn tầm thế giới:\n\n" +
                           "• 🌿 **Sâm Ngọc Linh Kon Tum ngâm mật rừng (5 sao)** — **7.000.000 ₫ / Hộp**\n  _Quốc bảo dược liệu Việt Nam chứa 52 hợp chất Saponin quý (đặc biệt MR2 >50%), giúp đại bổ nguyên khí, tái tạo tế bào và tăng cường miễn dịch toàn diện._\n\n" +
                           "• 🕊️ **Yến Sào Khánh Hòa tinh chế (5 sao)** — **5.000.000 ₫ / Hộp 100g**\n  _Yến đảo thiên nhiên vách đá biển sâu, giàu 18 loại axit amin và khoáng chất quý bồi bổ đường hô hấp và phục hồi sinh lực._\n\n" +
                           "• 🍵 **Chè Shan Tuyết Suối Giàng thượng hạng (5 sao)** — **1.800.000 ₫ / Hộp**\n  _Búp chè ngậm tuyết từ cây cổ thụ 100–300 năm tuổi trên non cao Yên Bái, nước vàng óng mật ong rừng, hậu ngọt sâu lan tỏa bất tận._\n\n" +
-                          "• 🫖 **Bộ Trà Phúc Lộc Thọ (5 sao)** — **2.000.000 ₫ / Bộ**\n  _Tuyệt phẩm trà tiến vua kết tinh văn hóa ngàn năm Thăng Long Hà Nội, đóng hộp sơn mài sang trọng bậc nhất cho ngoại giao và đại lễ._\n\n" +
+                          "• 🍵 **Trà khổ qua rừng túi lọc Hiệp Vân (Đồng Nai - OCOP 4 Sao)** — **68.000 ₫ / Hộp**\n  _Đặc sản Long Khánh từ vùng nguyên liệu chuẩn hóa, sấy lạnh khép kín giữ trọn dược chất bản địa và đồng bộ chuỗi cung ứng số._\n\n" +
                           "• 🐟 **Nước mắm Cát Hải cốt đặc biệt (5 sao)** — **400.000 ₫ / Hộp**\n  _Ủ chượp cá cơm than tươi ròng rã trên 15 tháng trong chum sành phơi nắng tự nhiên, vị mặn đượm hậu ngọt đạm cá béo ngậy._\n\n" +
                           "👉 *Anh/Chị có thể bấm trực tiếp vào thẻ sản phẩm bên dưới để xem tem truy xuất nguồn gốc hoặc thêm vào giỏ hàng ngay nhé ạ!*",
                     productIds: pIds,
-                    dynamic_chips: ["Sâm Ngọc Linh 5★", "Yến Sào Khánh Hòa 5★", "Chè Shan Tuyết 5★", "Bộ Trà Phúc Lộc Thọ 5★"],
+                    dynamic_chips: ["Sâm Ngọc Linh 5★", "Yến Sào Khánh Hòa 5★", "Chè Shan Tuyết 5★", "Trà khổ qua rừng Hiệp Vân"],
                     handoffAdmin: false,
                     localFallback: true
                 };
@@ -7724,7 +7731,7 @@
                 /^(tra|che|goi y tra|goi y che|cac loai tra|tra ngon|che ngon)$/.test(normalized.trim());
 
             if (isTeaExplicit) {
-                const teaItems = [348, 340, 341, 344, 336].map(id => products.find(p => p.id === id)).filter(Boolean);
+                const teaItems = [348, 340, 341, 344, 525].map(id => products.find(p => p.id === id)).filter(Boolean);
                 const pIds = teaItems.map(p => p.id);
                 lastAIRecommendedProductIds = pIds;
                 return {
@@ -7734,17 +7741,17 @@
                           "• 🍃 **Phin Ho Ancient Green Tea (5★ - Ha Giang)**: 600,000 ₫\n  _Tender downy buds plucked by Dao ethnic artisans. Delicate green fragrance with refreshing crispness._\n\n" +
                           "• 🍂 **Phin Ho Black Tea (5★ - Ha Giang)**: 700,000 ₫\n  _Full enzymatic fermentation producing deep amber tones, wild floral sweetness, and zero astringency._\n\n" +
                           "• 🌺 **Sa Pa Mist-Sprayed Artichoke Tea (5★ - Lao Cai)**: 150,000 ₫\n  _Purifying herbal wellness infusion for liver detox and deep restful sleep._\n\n" +
-                          "• 🫖 **Phuc Loc Tho Imperial Tea Set (5★ - Ha Noi)**: 2,000,000 ₫\n  _Prestige diplomatic gift set._\n\n" +
+                          "• 🍵 **Trà khổ qua rừng túi lọc Hiệp Vân (Dong Nai - OCOP 4★)**: 68,000 ₫\n  _Cold-dried forest bitter melon tea from Long Khanh with standardized indigenous raw materials._\n\n" +
                           "💡 **Sommelier Brewing Secret**: Brew at 85°C–90°C (never boiling 100°C), quick 3s rinse, steep 25–35s. Shan Tuyet ancient tea endures through 8–10 aromatic infusions!"
                         : "🍵 **Tuyển tập Đệ Nhất Danh Trà OCOP 5 Sao Việt Nam**:\n\nNói đến văn hóa trà Việt, núi cao Tây Bắc quanh năm sương mây cùng nghệ thuật sao chè thủ công bí truyền của đồng bào Dao, Mông tạo nên những tuyệt phẩm trà danh bất hư truyền:\n\n" +
                           "• 🏔️ **Chè Shan Tuyết Suối Giàng thượng hạng (5 sao - Yên Bái)** — **1.800.000 ₫**\n  _Thu hái từ cây chè cổ thụ 100–300 năm tuổi trên non cao >1.500m. Nước vàng óng ánh mật ong rừng, thoảng hương khói lam chiều thảo mộc, hậu ngọt sâu bất tận._\n\n" +
                           "• 🍃 **Trà xanh cổ thụ Phìn Hồ (5 sao - Hà Giang)** — **600.000 ₫**\n  _Búp trà non ngậm sương đêm phủ lớp tuyết trắng mịn, sắc nước xanh cốm thanh khiết, vị tiền chát dịu êm, bùi ngậy lắng sâu._\n\n" +
                           "• 🍂 **Hồng trà Phìn Hồ cổ thụ (5 sao - Hà Giang)** — **700.000 ₫**\n  _Lên men tự nhiên 100%, nước trà đỏ hồng ngọc lấp lánh, hương thơm hoa quả mật ong dịu dàng, hoàn toàn không gây cồn cào ruột._\n\n" +
                           "• 🌺 **Trà phun sương Actiso Sa Pa (5 sao - Lào Cai)** — **150.000 ₫**\n  _Dược liệu quý mát gan, thanh lọc độc tố cơ thể và mang lại giấc ngủ thư thái an lành._\n\n" +
-                          "• 🫖 **Bộ Trà Phúc Lộc Thọ (5 sao - Hà Nội)** — **2.000.000 ₫**\n  _Tuyệt phẩm trà cung đình hội tụ tinh hoa ngàn năm văn hiến Thăng Long, đóng hộp gấm sơn mài danh giá._\n\n" +
+                          "• 🍵 **Trà khổ qua rừng túi lọc Hiệp Vân (Đồng Nai - OCOP 4 Sao)** — **68.000 ₫**\n  _Đặc sản Long Khánh từ vùng nguyên liệu chuẩn hóa, sấy lạnh khép kín giữ trọn dược chất bản địa và đồng bộ chuỗi cung ứng số._\n\n" +
                           "💡 **Bí quyết pha trà của Chuyên gia Sommelier**: Dùng nước sôi hạ nhiệt độ về **85°C – 90°C**, đánh thức trà nhanh trong 3 giây, hãm từ 25 – 35 giây mỗi tuần trà. Chè Shan Tuyết cổ thụ pha được 8–10 tuần nước vẫn ngọt lành thơm mát!",
                     productIds: pIds,
-                    dynamic_chips: ["Chè Shan Tuyết Suối Giàng", "Trà Xanh Phìn Hồ", "Hồng Trà Phìn Hồ", "Nghệ thuật pha trà"],
+                    dynamic_chips: ["Chè Shan Tuyết Suối Giàng", "Trà Xanh Phìn Hồ", "Hồng Trà Phìn Hồ", "Trà khổ qua rừng Hiệp Vân"],
                     handoffAdmin: false,
                     localFallback: true
                 };
