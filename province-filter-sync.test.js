@@ -621,3 +621,28 @@ test('Footer layout flow, header navbar inline-flex, and Gemini API RAG integrat
     assert(html.includes('https://googleapis.com') && html.includes('gemini-1.5-flash'), 'Gemini model and URL integration');
     assert(html.includes('[HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận mục tiêu 22.5% • Trạng thái đối soát CHM: Đã phân bổ tự động qua Smart Contract]'), 'Financial smart contract telemetry footer');
 });
+
+test('AI Digital Business Challenge 2026: Gemini Cognitive & Wiki Data Engine validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    assert(html.includes('GEMINI COGNITIVE & WIKI DATA ENGINE'), 'Header comment for Gemini Cognitive & Wiki Data Engine');
+    assert(html.includes('async function getGeminiWikiResponse(userQuery)'), 'getGeminiWikiResponse function defined');
+    assert(html.includes('async function sendAIMessageExtended()'), 'sendAIMessageExtended function defined');
+    assert(html.includes('window.getGeminiWikiResponse = getGeminiWikiResponse;'), 'window.getGeminiWikiResponse exported');
+    assert(html.includes('window.sendAIMessageExtended = sendAIMessageExtended;'), 'window.sendAIMessageExtended exported');
+
+    assert(html.includes('Trà khổ qua rừng túi lọc Hiệp Vân') && html.includes('525'), 'Hiep Van Bitter melon tea entry');
+    assert(html.includes('Bưởi đường lá cam Tân Triều') && html.includes('524'), 'Tan Trieu pomelo entry');
+    assert(html.includes('Gốm sứ tâm linh dòng men rạn cổ Bát Tràng') && html.includes('336'), 'Bat Trang ceramic entry');
+    assert(html.includes('Mật ong bạc hà Cao nguyên đá Mèo Vạc') && html.includes('342'), 'Meo Vac mint honey entry');
+    assert(html.includes('Cà phê bột Arabica Specialty Sơn La') && html.includes('360'), 'Son La Arabica coffee entry');
+
+    assert(html.includes('simulatedGross = 85000 * (1 + (matchedProductId % 5))'), 'simulatedGross formula');
+    assert(html.includes("type: 'ai_consultation'"), 'Financial dispatch type ai_consultation');
+    assert(html.includes('chmCommission: Math.round(simulatedGross * 0.07)'), 'CHM commission 7%');
+    assert(html.includes('cogs: Math.round(simulatedGross * 0.62)'), 'COGS 62%');
+    assert(html.includes('opex: Math.round(simulatedGross * 0.075)'), 'OPEX 7.5%');
+    assert(html.includes('netProfit: Math.round(simulatedGross * 0.235)'), 'Net profit 23.5%');
+
+    assert(html.includes('Gemini AI × Wiki System'), 'Gemini AI x Wiki System badge');
+});
