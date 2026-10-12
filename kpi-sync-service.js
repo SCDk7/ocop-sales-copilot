@@ -8,7 +8,7 @@
 
 const crypto = require('node:crypto');
 
-const DEFAULT_SYNC_URL = process.env.OCOP_KPI_SYNC_URL || 'https://ocop-sales-copilot-kpi.onrender.com';
+const DEFAULT_SYNC_URL = process.env.OCOP_KPI_SYNC_URL || 'https://onrender.com';
 const SECURE_SYNC_TOKEN = process.env.OCOP_KPI_SYNC_TOKEN || 'OCOP_2026_SECURE_TOKEN_AI_CHALLENGE_SYNC_998877';
 
 class KpiSyncService {
