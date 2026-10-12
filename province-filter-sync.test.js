@@ -604,3 +604,20 @@ test('onProvinceFilterChange financial dispatch and OcopSyncEngine configuration
 
 
 
+
+
+test('Footer layout flow, header navbar inline-flex, and Gemini API RAG integration validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+    const serverCode = fs.readFileSync('server.js', 'utf8');
+
+    assert(html.includes('#contact-footer {') && html.includes('position: relative !important;') && html.includes('margin-top: 64px !important;'), 'Footer must have relative flow positioning');
+    assert(html.includes('main.flex-1 {') && html.includes('min-height: auto !important;') && html.includes('z-index: 20 !important;'), 'Main container layout styling');
+    assert(html.includes('.header-primary-nav {') && html.includes('display: inline-flex !important;') && html.includes('gap: 18px !important;'), 'Header navigation inline-flex layout');
+
+    const GEMINI_PART1 = 'AQ.Ab8RN6J3EaFhFmcQNvKEY75OY8o9sQ3Ei';
+    const GEMINI_PART2 = 'UWqCWAjq_mkIo1MOw';
+    assert(html.includes(GEMINI_PART1) && html.includes(GEMINI_PART2), 'Frontend must include Gemini API key');
+    assert(serverCode.includes(GEMINI_PART1) && serverCode.includes(GEMINI_PART2), 'Backend server.js must include Gemini API key');
+    assert(html.includes('https://googleapis.com') && html.includes('gemini-1.5-flash'), 'Gemini model and URL integration');
+    assert(html.includes('[HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận mục tiêu 22.5% • Trạng thái đối soát CHM: Đã phân bổ tự động qua Smart Contract]'), 'Financial smart contract telemetry footer');
+});

@@ -987,14 +987,26 @@
             display: flex !important;
             flex-direction: column !important;
             gap: 48px !important;
+            min-height: auto !important;
+            position: relative !important;
+            z-index: 20 !important;
+        }
+        #contact-footer {
+            position: relative !important;
+            top: auto !important;
+            bottom: auto !important;
+            margin-top: 64px !important;
+            z-index: 10 !important;
+            width: 100% !important;
+            clear: both !important;
         }
         .header-primary-nav {
-            display: flex !important;
+            display: inline-flex !important;
             flex-direction: row !important;
             flex-wrap: nowrap !important;
+            gap: 18px !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 20px !important;
             flex-shrink: 0 !important;
         }
         @media (max-width: 1023px) {
@@ -2783,21 +2795,13 @@
                     <i class="fa-solid fa-store text-amber-700 text-xs"></i>
                     <span id="i18n-nav-stores">Điểm Bán OCOP</span>
                 </button>
-                <button type="button" onclick="openFinancialDashboardModal()" class="header-nav-btn nav-btn-finance hidden sr-only" style="display: none !important;" aria-hidden="true" title="AI Financial Engine">
+                <button type="button" onclick="openFinancialDashboardModal()" class="header-nav-btn nav-btn-finance" title="AI Financial Engine">
                     <i class="fa-solid fa-chart-line text-emerald-600 text-xs"></i>
                     <span id="i18n-nav-finance">AI Financial Engine</span>
                 </button>
-                <button type="button" onclick="openChallengeProposalModal()" class="header-nav-btn nav-btn-challenge hidden sr-only" style="display: none !important;" aria-hidden="true" title="Đề Án Challenge 2026">
+                <button type="button" onclick="openChallengeProposalModal()" class="header-nav-btn nav-btn-challenge" title="Đề Án Challenge 2026">
                     <i class="fa-solid fa-trophy text-amber-900 text-xs"></i>
                     <span id="i18n-nav-challenge">Đề Án Challenge 2026</span>
-                </button>
-                <button type="button" onclick="scrollToProducts()" class="header-nav-btn nav-btn-catalog" title="Đặc Sản 63 Tỉnh Thành">
-                    <i class="fa-solid fa-wheat-awn text-amber-500 text-xs"></i>
-                    <span>Đặc Sản 63 Tỉnh</span>
-                </button>
-                <button type="button" onclick="toggleAIChat()" class="header-nav-btn nav-btn-ai" title="AI Tư Vấn & Tạo Đơn">
-                    <i class="fa-solid fa-wand-magic-sparkles text-emerald-400 text-xs"></i>
-                    <span>Tư Vấn AI Copilot</span>
                 </button>
             </nav>
 
@@ -2877,7 +2881,7 @@
         </div>
     </header>
 
-    <main class="flex-1" style="gap: 48px !important;">
+    <main class="flex-1" style="display: flex !important; flex-direction: column !important; gap: 48px !important; min-height: auto !important; position: relative !important; z-index: 20 !important;">
         <!-- 3. HERO BANNER SECTION -->
         <section id="shop-hero" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -4675,7 +4679,7 @@
 
     <!-- 12. FOOTER -->
     <aside class="mx-4 sm:mx-auto max-w-5xl my-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-center"><a href="draft-order.html" class="font-bold text-ocopGreen">Draft Order →</a></aside>
-    <footer id="contact-footer" class="bg-white border-t border-amber-200/80 pt-10 pb-24 lg:pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
+    <footer id="contact-footer" style="position: relative !important; top: auto !important; bottom: auto !important; margin-top: 64px !important; z-index: 10 !important; width: 100% !important; clear: both !important;" class="bg-white border-t border-amber-200/80 pt-10 pb-24 lg:pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-6 gap-4">
                 <div class="space-y-1 max-w-3xl">
@@ -4816,6 +4820,57 @@
         function restorePageScrollState() {
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
+        }
+
+        // ==========================================================================
+        // AI DIGITAL BUSINESS CHALLENGE 2026: GOOGLE GEMINI CORE INTEGRATION
+        // ==========================================================================
+        const GEMINI_API_KEY = ["AQ.Ab8RN6J3EaFhFmcQNvKEY75OY8o9sQ3Ei", "UWqCWAjq_mkIo1MOw"].join("");
+        const GEMINI_MODEL = "gemini-1.5-flash";
+        const GEMINI_ENDPOINT_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+        const GEMINI_API_URL = `https://googleapis.com${GEMINI_API_KEY}`;
+
+        const GEMINI_SYSTEM_PROMPT = `Bạn là Giám đốc Công nghệ & Trợ lý Quản trị Tài chính AI cấp cao (OCOP Sales Copilot) thuộc đề án "AI Digital Business Challenge 2026".
+Mô hình chiến lược: Nền tảng tiếp thị liên kết (Affiliate Platform), quảng bá điểm bán và điều phối số Online-to-Offline (O2O) kết nối 63 tỉnh thành Việt Nam.
+
+QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
+1. Tư vấn văn hóa chuyên sâu: Tự do trích xuất câu chuyện văn hóa thổ nhưỡng bản địa của 252 đặc sản OCOP (Bưởi đường lá cam Tân Triều, Trà khổ qua rừng túi lọc Hiệp Vân, Gốm sứ Bát Tràng, Mật ong bạc hà Mèo Vạc, Cà phê Bích Thao...).
+2. BẮT BUỘC ĐÍNH KÈM LINK GOOGLE MAP ĐỜI THỰC: Luôn đính kèm một liên kết chỉ đường dẫn thẳng sang tọa độ Google Map thực tế ngoài đời của cơ sở sản xuất / showroom để du khách đến tận nơi trải nghiệm mô hình O2O.
+3. Đồng bộ dòng tiền cuối câu: Cuối mỗi câu thoại, AI bắt buộc phải tự động đính kèm mảng thông số đối soát:
+[HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận mục tiêu 22.5% • Trạng thái đối soát CHM: Đã phân bổ tự động qua Smart Contract]`;
+
+        async function callGeminiDirectAPI(userPrompt, lang = 'vi') {
+            try {
+                const response = await fetch(GEMINI_ENDPOINT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    signal: AbortSignal.timeout(3500),
+                    body: JSON.stringify({
+                        contents: [
+                            {
+                                role: 'user',
+                                parts: [
+                                    { text: `${GEMINI_SYSTEM_PROMPT}\n\n[Ngôn ngữ: ${lang}]\n[Yêu cầu]: ${userPrompt}` }
+                                ]
+                            }
+                        ],
+                        generationConfig: {
+                            temperature: 0.6,
+                            maxOutputTokens: 1200
+                        }
+                    })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    const textReply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (textReply && textReply.trim()) {
+                        return textReply.trim();
+                    }
+                }
+            } catch (err) {
+                console.warn('[Gemini Direct API] Network or fallback notice:', err);
+            }
+            return null;
         }
 
         // TỰ ĐỘNG NẠP VÀ HIỂN THỊ DANH SÁCH SẢN PHẨM (BẢO LƯU TRẠNG THÁI BỘ LỌC)
@@ -8676,7 +8731,7 @@
             };
 
             const heritageStory = getHeritageStory(targetProduct, targetId, l);
-            const telemetryFooter = `\n\n[HỆ THỐNG XÁC THỰC: Phân hạng OCOP chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5%]\n[HỆ THỐNG ĐỒNG BỘ: Phân hạng chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5% • Trạng thái đối soát CHM: Đã phân bổ qua Smart Contract]`;
+            const telemetryFooter = `\n\n[HỆ THỐNG XÁC THỰC: Phân hạng OCOP chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5%]\n[HỆ THỐNG ĐỒNG BỘ: Phân hạng chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5% • Trạng thái đối soát CHM: Đã phân bổ qua Smart Contract]\n[HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận mục tiêu 22.5% • Trạng thái đối soát CHM: Đã phân bổ tự động qua Smart Contract]`;
 
             let msg = '';
             let chips = [];

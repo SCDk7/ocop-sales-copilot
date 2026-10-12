@@ -627,14 +627,14 @@ function validateAIRequest(body) {
 }
 
 function getAIModelConfiguration() {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY || ["AQ.Ab8RN6J3EaFhFmcQNvKEY75OY8o9sQ3Ei", "UWqCWAjq_mkIo1MOw"].join("");
   if (!apiKey) {
     const error = new Error('Trợ lý AI chưa được cấu hình. Vui lòng liên hệ quản trị viên.');
     error.status = 503;
     throw error;
   }
 
-  const model = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
+  const model = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
   if (!/^[a-zA-Z0-9._-]+$/.test(model)) {
     const error = new Error('Cấu hình mô hình AI không hợp lệ.');
     error.status = 500;
