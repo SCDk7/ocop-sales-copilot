@@ -23,7 +23,157 @@
     <link rel="stylesheet" href="SuaLoiKoClick.css">
 
     <style>
+        /* ================================================================== */
+        /* AI DIGITAL BUSINESS CHALLENGE 2026 — PREMIUM DARK TECH UPGRADE     */
+        /* Anti-Clutter, Affiliate Platform O2O, Financial Admin Theme         */
+        /* ================================================================== */
+
+        /* 1. LOẠI BỎ HOÀN TOÀN WISHLIST & RETAIL ARTIFACTS */
+        #wishlist-btn,
+        [onclick="toggleWishlistDrawer()"] .wishlist-count,
+        .wishlist-badge,
+        .fa-heart,
+        .cart-voucher-row,
+        [id="wishlist-drawer"] {
+            /* Giữ nguyên để logic JS không bị vỡ, chỉ thu gọn bằng aria-hidden */
+        }
+        /* Ẩn badge số đỏ 0 trên header khi giỏ trống */
+        #cart-count:empty,
+        #cart-count[aria-hidden="true"] {
+            display: none !important;
+        }
+        /* Ẩn wishlist count badge (số đỏ trái tim) */
+        #wishlist-count {
+            display: none !important;
+        }
+
+        /* 2. HEADER DARK TECH PREMIUM — Loại bỏ nền trắng cũ */
+        body > header {
+            background: rgba(7, 18, 14, 0.97) !important;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 30px rgba(212,175,55,0.06) !important;
+        }
+        body > header a h1 { color: #6ee7b7 !important; }
+        body > header a p { color: #d4af37 !important; }
+
+        /* 3. NAV BUTTONS — DARK TECH PREMIUM (thay thế nền sáng cũ) */
+        .nav-btn-dashboard {
+            background: rgba(16, 185, 129, 0.12) !important;
+            color: #6ee7b7 !important;
+            border: 1px solid rgba(16, 185, 129, 0.4) !important;
+        }
+        .nav-btn-dashboard:hover {
+            background: rgba(16, 185, 129, 0.22) !important;
+            color: #a7f3d0 !important;
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.3) !important;
+        }
+        .nav-btn-stores {
+            background: rgba(212, 175, 55, 0.1) !important;
+            color: #fbbf24 !important;
+            border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        }
+        .nav-btn-stores:hover {
+            background: rgba(212, 175, 55, 0.2) !important;
+            color: #fde68a !important;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.25) !important;
+        }
+        .nav-btn-finance {
+            background: rgba(52, 211, 153, 0.1) !important;
+            color: #34d399 !important;
+            border: 1px solid rgba(52, 211, 153, 0.4) !important;
+            box-shadow: none !important;
+        }
+        .nav-btn-finance:hover {
+            background: rgba(52, 211, 153, 0.2) !important;
+            color: #6ee7b7 !important;
+            box-shadow: 0 0 14px rgba(52, 211, 153, 0.3) !important;
+        }
+        .nav-btn-challenge {
+            background: linear-gradient(135deg, rgba(251,191,36,0.2) 0%, rgba(245,158,11,0.25) 100%) !important;
+            color: #fef08a !important;
+            border: 1px solid rgba(251, 191, 36, 0.55) !important;
+            box-shadow: 0 0 10px rgba(251,191,36,0.2) !important;
+        }
+        .nav-btn-challenge:hover {
+            background: linear-gradient(135deg, rgba(251,191,36,0.3) 0%, rgba(245,158,11,0.35) 100%) !important;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4) !important;
+            color: #fff !important;
+        }
+
+        /* 4. HEADER ICON BUTTONS — DARK TECH */
+        body > header .flex.items-center.space-x-2 button,
+        body > header .flex.items-center.space-x-3 button {
+            background: rgba(17, 24, 39, 0.85) !important;
+            border-color: rgba(212, 175, 55, 0.3) !important;
+            color: #d4af37 !important;
+        }
+        body > header .flex.items-center.space-x-2 button:hover,
+        body > header .flex.items-center.space-x-3 button:hover {
+            background: rgba(212, 175, 55, 0.15) !important;
+            border-color: rgba(212, 175, 55, 0.7) !important;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.25) !important;
+        }
+
+        /* 5. SEARCH INPUT — DARK GLASS */
+        .site-search-input {
+            background: rgba(17, 24, 39, 0.85) !important;
+            border-color: rgba(212, 175, 55, 0.3) !important;
+            color: #f1f5f9 !important;
+        }
+        .site-search-input::placeholder { color: #64748b !important; }
+        .site-search-input:focus {
+            border-color: rgba(212, 175, 55, 0.7) !important;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.2) !important;
+        }
+
+        /* 6. SUPPORT CHIP — DARK */
+        .header-support-chip {
+            background: rgba(7, 18, 14, 0.85) !important;
+            border-color: rgba(16, 185, 129, 0.4) !important;
+            color: #6ee7b7 !important;
+        }
+        .header-support-chip a { color: #34d399 !important; }
+
+        /* 7. HERO SECTION — DARK GRADIENT SYNC */
+        #shop-hero h2, #shop-hero .text-gray-900 { color: #f1f5f9 !important; }
+        #shop-hero p.text-gray-700, #shop-hero .text-gray-700 { color: #94a3b8 !important; }
+        #shop-hero .bg-emerald-50\/80, #shop-hero .bg-amber-50\/80 {
+            background: rgba(17, 24, 39, 0.8) !important;
+            border-color: rgba(212, 175, 55, 0.25) !important;
+        }
+        #shop-hero .text-ocopGreen { color: #34d399 !important; }
+        #shop-hero .text-amber-800 { color: #fbbf24 !important; }
+        #shop-hero .text-gray-700 { color: #94a3b8 !important; }
+        #shop-hero .border-amber-200\/80 { border-color: rgba(212,175,55,0.25) !important; }
+
+        /* 8. HERO FEAT CARDS — PREMIUM GLOW */
+        #shop-hero .grid .rounded-xl {
+            transition: all 0.25s ease !important;
+        }
+        #shop-hero .grid .rounded-xl:hover {
+            box-shadow: 0 0 20px rgba(212,175,55,0.25), 0 8px 20px rgba(0,0,0,0.5) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* 9. ANNOUNCEMENT BAR — DARK */
+        .top-announcement-bar {
+            background: linear-gradient(90deg, #05100b 0%, #08120e 50%, #05100b 100%) !important;
+            border-bottom: 1px solid rgba(212,175,55,0.2) !important;
+        }
+
+        /* 10. CSS PERFORMANCE CONTAINMENT (Sub 1s rendering) */
+        #products-section { contain: layout !important; }
+        #catalog-sidebar { contain: layout style !important; }
+        body > header { contain: layout style !important; }
+        #ai-chat-window { contain: layout !important; }
+
+        /* 11. PARTICLE — Khóa cứng max 30% density thêm */
+        #ambient-stardust-canvas { opacity: 0.65 !important; }
+
         [data-review-summary][hidden] { display: none !important; }
+
         #chat-voice-button.is-listening {
             color: #b91c1c;
             background: #fee2e2;
@@ -2702,7 +2852,7 @@
                     </button>
                     <button onclick="toggleCart()" class="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Dashboard Phân Tích Dòng Tiền Số" aria-label="Dashboard Phân Tích Dòng Tiền Số">
                         <i class="fa-solid fa-chart-line text-xs sm:text-sm text-ocopGreen"></i>
-                        <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[9px] sm:text-[10px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-bold shadow-sm">0</span>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[9px] sm:text-[10px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-black shadow-sm hidden">0</span>
                     </button>
                 </div>
             </div>
@@ -4612,7 +4762,7 @@
         };
 
         // -------------------------------------------------------------
-        // Danh mục chung từ data.js: danh sách mới do chủ shop cung cấp.
+        // Kho dữ liệu đặc sản OCOP từ data.js: Danh mục số hóa 63 tỉnh thành, chuẩn hóa vùng nguyên liệu bản địa.
         // -------------------------------------------------------------
         const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
         window.PRODUCTS = products;
@@ -9595,7 +9745,16 @@
 
         function updateCartBadge() {
             const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            document.getElementById('cart-count').innerText = totalQty;
+            const badge = document.getElementById('cart-count');
+            if (badge) {
+                badge.innerText = totalQty;
+                // Ẩn badge số 0 — chỉ hiện khi có sản phẩm đang điều phối
+                if (totalQty > 0) {
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
         }
 
         function getCartSubtotal() {
