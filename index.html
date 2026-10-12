@@ -5897,15 +5897,19 @@
 
                 if (selectedProvince) {
                     showToast(`⚡ AI Engine: Đã đồng bộ và tối ưu dữ liệu dòng tiền điểm bán tỉnh ${selectedProvince.name}!`, "success");
+                    
                     if (window.OcopSyncEngine && typeof window.OcopSyncEngine.syncFinancial === 'function') {
+                        const calculatedGross = 85000 * Math.max(1, sortedList.length);
+                        
                         window.OcopSyncEngine.syncFinancial({
                             type: 'qr_scan',
                             title: `Quét mã QR / Định vị showroom O2O tỉnh ${selectedProvince.name}`,
                             province: selectedProvince.name,
-                            grossRevenue: 85000 * Math.max(1, sortedList.length),
-                            cogs: Math.round(85000 * Math.max(1, sortedList.length) * 0.62),
-                            opex: Math.round(85000 * Math.max(1, sortedList.length) * 0.075),
-                            netProfit: Math.round(85000 * Math.max(1, sortedList.length) * 0.235)
+                            grossRevenue: calculatedGross, // Đẩy Tổng doanh thu số hóa
+                            cogs: Math.round(calculatedGross * 0.62), // Giá vốn hàng bán 62%
+                            opex: Math.round(calculatedGross * 0.075), // Chi phí vận hành nền tảng 7.5%
+                            chmCommission: Math.round(calculatedGross * 0.07), // Đẩy số Tiền lời kiếm được từ hoa hồng giới thiệu (7%)
+                            netProfit: Math.round(calculatedGross * 0.235) // Tiền lời ròng thực tế của hợp tác xã
                         });
                     }
                 } else {
@@ -12058,7 +12062,7 @@
         // AI DIGITAL BUSINESS CHALLENGE 2026: REAL-TIME DATA PIPELINE & KPI SYNC
         // ==========================================================================
         window.OcopSyncEngine = {
-            targetUrl: 'https://ocop-sales-copilot-kpi.onrender.com',
+            targetUrl: 'https://onrender.com',
             token: 'OCOP_2026_SECURE_TOKEN_AI_CHALLENGE_SYNC_998877',
 
             async syncFinancial(data = {}) {

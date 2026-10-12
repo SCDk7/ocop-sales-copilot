@@ -587,5 +587,20 @@ test('Dong Nai specialty hero card, Google Map showroom links, and real OCOP ali
     assert(html.includes('storeInfo.mapUrl'), 'Product card must link showroom name to Google Maps');
 });
 
+test('onProvinceFilterChange financial dispatch and OcopSyncEngine configuration validation', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Validate onProvinceFilterChange calculates gross and dispatches chmCommission
+    assert(html.includes('const calculatedGross = 85000 * Math.max(1, sortedList.length);'), 'calculatedGross formula');
+    assert(html.includes('grossRevenue: calculatedGross'), 'grossRevenue dispatched');
+    assert(html.includes('chmCommission: Math.round(calculatedGross * 0.07)'), 'chmCommission 7% dispatched');
+    assert(html.includes('netProfit: Math.round(calculatedGross * 0.235)'), 'netProfit 23.5% dispatched');
+
+    // 2. Validate OcopSyncEngine targetUrl and secure token
+    assert(html.includes("targetUrl: 'https://onrender.com'"), 'OcopSyncEngine targetUrl must be https://onrender.com');
+    assert(html.includes("token: 'OCOP_2026_SECURE_TOKEN_AI_CHALLENGE_SYNC_998877'"), 'OcopSyncEngine secure token');
+    assert(html.includes("'x-ocop-sync-token': this.token"), 'fetch headers include x-ocop-sync-token');
+});
+
 
 
