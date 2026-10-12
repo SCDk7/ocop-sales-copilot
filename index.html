@@ -992,6 +992,13 @@
             position: relative !important;
             z-index: 20 !important;
         }
+        main.flex-1,
+        #catalog-layout-wrapper {
+            height: auto !important;
+            min-height: auto !important;
+            position: relative !important;
+            z-index: 30 !important;
+        }
         #contact-footer {
             position: relative !important;
             top: auto !important;
@@ -1003,18 +1010,49 @@
             clear: both !important;
             display: block !important;
         }
-        body.catalog-browsing aside.max-w-5xl,
-        aside:has(a[href="draft-order.html"]),
-        aside.draft-order-aside {
+        #contact-footer, 
+        body footer#contact-footer,
+        footer {
+            position: relative !important;
+            top: auto !important;
+            bottom: auto !important;
+            left: auto !important;
+            right: auto !important;
+            margin-top: 80px !important;
+            margin-bottom: 0 !important;
+            z-index: 10 !important;
+            width: 100% !important;
+            clear: both !important;
+            display: block !important;
+            transform: none !important;
+        }
+        aside:has(a[href="draft-order.html"]) {
             position: relative !important;
             top: auto !important;
             bottom: auto !important;
             margin-top: 40px !important;
             margin-bottom: 24px !important;
-            z-index: 25 !important;
+            z-index: 20 !important;
             display: block !important;
             width: 100% !important;
             max-width: 80rem !important;
+        }
+        aside:has(a[href="draft-order.html"]),
+        body.catalog-browsing aside.max-w-5xl,
+        .catalog-browsing aside,
+        aside.draft-order-aside {
+            position: relative !important;
+            top: auto !important;
+            bottom: auto !important;
+            left: auto !important;
+            right: auto !important;
+            margin-top: 48px !important;
+            margin-bottom: 24px !important;
+            z-index: 20 !important;
+            display: block !important;
+            width: 100% !important;
+            max-width: 74rem !important; /* Đồng bộ khít với max-w-7xl toàn trang */
+            transform: none !important;
         }
         .header-primary-nav {
             display: inline-flex !important;
@@ -3648,8 +3686,8 @@
                             </div>
                         </div>
 
-                        <!-- 4. KHỐI TRỢ LÝ AI FINANCIAL (QUẢN TRỊ DÒNG TIỀN REAL-TIME) - HIDDEN FROM UI -->
-                        <div class="hidden sr-only" style="display: none !important;" aria-hidden="true">
+                        <!-- 4. KHỐI TRỢ LÝ AI FINANCIAL (QUẢN TRỊ DÒNG TIỀN REAL-TIME) -->
+                        <div class="glass-panel p-3.5 rounded-2xl border border-amber-400/30 shadow-md space-y-2 bg-slate-900/80">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-black uppercase tracking-wider bg-amber-400/20 text-amber-300 px-2.5 py-1 rounded-full border border-amber-400/40 flex items-center gap-1.5">
                                     <i class="fa-solid fa-calculator text-amber-400"></i> <span id="i18n-ai-financial-badge">TRỢ LÝ AI FINANCIAL</span>
@@ -3660,7 +3698,7 @@
                                 Tự động tính toán Doanh thu, Tiền lời, Chiết khấu (CHM) thời gian thực cho từng danh mục được chọn.
                             </p>
                             <span id="i18n-ai-financial-full" class="sr-only">TRỢ LÝ AI FINANCIAL — Tự động tính toán Doanh thu, Tiền lời, Chiết khấu (CHM) thời gian thực.</span>
-                            <button type="button" onclick="openFinancialDashboardModal()">
+                            <button type="button" onclick="openFinancialDashboardModal()" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 shadow transition cursor-pointer">
                                 <i class="fa-solid fa-chart-line text-emerald-950 text-xs"></i>
                                 <span id="i18n-ai-financial-btn">Kích Hoạt AI Financial Engine</span>
                             </button>
@@ -4694,8 +4732,8 @@
     </div>
 
     <!-- 12. FOOTER -->
-    <aside class="draft-order-aside mx-4 sm:mx-auto max-w-5xl my-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-center" style="position: relative !important; top: auto !important; bottom: auto !important; margin-top: 40px !important; margin-bottom: 24px !important; z-index: 25 !important; display: block !important; width: 100% !important; max-width: 80rem !important;"><a href="draft-order.html" class="font-bold text-ocopGreen">Draft Order →</a></aside>
-    <footer id="contact-footer" style="position: relative !important; top: auto !important; bottom: auto !important; margin-top: 64px !important; margin-bottom: 0 !important; z-index: 10 !important; width: 100% !important; clear: both !important; display: block !important;" class="bg-white border-t border-amber-200/80 pt-10 pb-24 lg:pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
+    <aside class="draft-order-aside mx-4 sm:mx-auto max-w-5xl my-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-center" style="position: relative !important; top: auto !important; bottom: auto !important; left: auto !important; right: auto !important; margin-top: 48px !important; margin-bottom: 24px !important; z-index: 20 !important; display: block !important; width: 100% !important; max-width: 74rem !important; transform: none !important;"><a href="draft-order.html" class="font-bold text-ocopGreen">Draft Order →</a></aside>
+    <footer id="contact-footer" style="position: relative !important; top: auto !important; bottom: auto !important; left: auto !important; right: auto !important; margin-top: 80px !important; margin-bottom: 0 !important; z-index: 10 !important; width: 100% !important; clear: both !important; display: block !important; transform: none !important;" class="bg-white border-t border-amber-200/80 pt-10 pb-24 lg:pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-6 gap-4">
                 <div class="space-y-1 max-w-3xl">
@@ -5889,30 +5927,18 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         </div>
                     </div>
 
-                    <!-- Footer Thẻ: Giá Niêm Yết & Nút Thêm Giỏ Hàng Trực Tiếp -->
+                    <!-- Footer Thẻ: Chỉ Số Quản Trị Vĩ Mô & Nút Phân Tích Dòng Tiền Vàng -->
                     <div class="product-card-footer px-3 py-2.5 border-t border-amber-400/20 flex items-center justify-between gap-2 bg-slate-950/80">
                         <div class="min-w-0 flex-1 space-y-0.5">
-                            <div class="text-sm font-black text-amber-300 truncate tracking-tight flex items-center gap-1.5">
-                                <span class="text-[11px] text-amber-400/80 font-bold">Giá:</span>
-                                <span class="text-emerald-400 font-extrabold text-sm">${Number(p.price).toLocaleString('vi-VN')} đ</span>
-                            </div>
-                            <div class="text-[10px] text-slate-400 flex items-center gap-1">
-                                <i class="fa-solid fa-shield-halved text-amber-400 text-[9px]"></i>
-                                <span>Chuẩn OCOP Quốc Gia</span>
-                            </div>
-                            <!-- Test requirement anchor for system metrics -->
-                            <div class="hidden sr-only" style="display: none !important;" aria-hidden="true">
+                            <div class="text-xs font-black text-amber-300 truncate tracking-tight">
                                 <span>${sysMetrics.volume}</span>
+                            </div>
+                            <div class="text-[11px] font-black text-emerald-400 truncate flex items-center gap-1">
                                 <span>${sysMetrics.margin}</span>
                             </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                            <button type="button" onclick="addToCart(${p.id})" class="bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black text-xs px-3 py-2 rounded-xl shadow-md flex items-center space-x-1.5 transition-all hover:scale-105 active:scale-95 cursor-pointer border border-emerald-400">
-                                <i class="fa-solid fa-cart-plus text-xs"></i>
-                                <span class="whitespace-nowrap">Thêm Giỏ</span>
-                            </button>
-                            <!-- Test requirement anchor for reconciliation call -->
-                            <button type="button" style="display: none !important;" class="hidden sr-only" onclick="activateProductReconciliation(${p.id})" title="${reconcileBtnTitles[currentLanguage] || reconcileBtnTitles.vi}">
+                            <button type="button" onclick="activateProductReconciliation(${p.id})" title="${reconcileBtnTitles[currentLanguage] || reconcileBtnTitles.vi}" class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-xs px-3 py-2 rounded-xl shadow-md flex items-center space-x-1.5 transition-all hover:scale-105 active:scale-95 cursor-pointer border border-yellow-200">
                                 <span class="whitespace-nowrap">${reconcileBtnLabels[currentLanguage] || reconcileBtnLabels.vi}</span>
                             </button>
                         </div>
