@@ -610,8 +610,8 @@ test('Footer layout flow, header navbar inline-flex, and Gemini API RAG integrat
     const html = fs.readFileSync('index.html', 'utf8');
     const serverCode = fs.readFileSync('server.js', 'utf8');
 
-    assert(html.includes('#contact-footer {') && html.includes('position: relative !important;') && html.includes('margin-top: 64px !important;'), 'Footer must have relative flow positioning');
-    assert(html.includes('main.flex-1 {') && html.includes('min-height: auto !important;') && html.includes('z-index: 20 !important;'), 'Main container layout styling');
+    assert(html.includes('#contact-footer {') && html.includes('position: relative !important;') && html.includes('margin-top: 64px !important;') && html.includes('display: block !important;'), 'Footer must have relative flow positioning and display block');
+    assert(html.includes('main.flex-1 {') && html.includes('min-height: auto !important;') && html.includes('height: auto !important;') && html.includes('z-index: 20 !important;'), 'Main container layout styling with height auto');
     assert(html.includes('.header-primary-nav {') && html.includes('display: inline-flex !important;') && html.includes('gap: 18px !important;'), 'Header navigation inline-flex layout');
 
     const GEMINI_PART1 = 'AQ.Ab8RN6J3EaFhFmcQNvKEY75OY8o9sQ3Ei';
