@@ -208,6 +208,36 @@
             width: 100% !important;
             align-self: start !important;
         }
+        #products-section,
+        #catalog-layout-wrapper,
+        #catalog-sidebar,
+        #catalog-main-content,
+        #product-grid {
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+        }
+
+        @media (max-width: 767px) {
+            #catalog-layout-wrapper,
+            #catalog-main-content,
+            #products-section,
+            #product-grid {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            #catalog-layout-wrapper {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            #catalog-sidebar {
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: 100% !important;
+            }
+            #product-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
 
         /* ============================================================= */
         /* LƯỚI SẢN PHẨM ĐA CỘT: 3 CỘT DÀN ĐỀU ĐẸP MẮT (DESKTOP)        */
