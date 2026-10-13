@@ -879,11 +879,11 @@
             overflow: hidden !important;
             will-change: top, left;
             transform: translate3d(0, 0, 0);
-            background: rgba(17, 24, 39, 0.7) !important;
+            background: #f8fafc !important;
             backdrop-filter: blur(12px) !important;
             -webkit-backdrop-filter: blur(12px) !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15), 0 24px 64px rgba(0, 0, 0, 0.6) !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.12), 0 24px 64px rgba(0, 0, 0, 0.35) !important;
             touch-action: none;
             display: flex !important;
             flex-direction: column !important;
@@ -917,65 +917,94 @@
             min-height: 0 !important;
             flex: 1 1 0% !important;
             overflow-y: auto !important;
-            background: rgba(11, 15, 20, 0.8) !important;
-            color: #f1f5f9 !important;
+            background: #edf5f1 !important;
+            color: #1f2937 !important;
             overscroll-behavior: contain;
-            scrollbar-color: #9bbab0 transparent;
+            scrollbar-color: #8bb7a6 #dce9e3;
         }
         #ai-chat-window #ai-chat-messages .bg-white {
-            background: rgba(17, 24, 39, 0.85) !important;
-            border-color: rgba(212, 175, 55, 0.25) !important;
-            color: #e2e8f0 !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+            background: #ffffff !important;
+            border-color: rgba(15, 56, 44, 0.14) !important;
+            color: #1f2937 !important;
+            box-shadow: 0 4px 16px rgba(15, 56, 44, 0.08) !important;
         }
         #ai-chat-window #ai-chat-messages .text-gray-800,
         #ai-chat-window #ai-chat-messages .text-gray-900 {
-            color: #f1f5f9 !important;
+            color: #1f2937 !important;
         }
         #ai-chat-window #ai-chat-messages .text-gray-500,
         #ai-chat-window #ai-chat-messages .text-gray-600 {
-            color: #94a3b8 !important;
+            color: #64748b !important;
         }
         #ai-chat-window #ai-chat-messages .text-ocopGreen {
-            color: #34d399 !important;
+            color: #047857 !important;
         }
         #ai-chat-window #ai-chat-quick-replies {
             flex-shrink: 0 !important;
             width: 100% !important;
             overflow-x: auto !important;
-            background: rgba(10, 16, 13, 0.95) !important;
-            border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+            background: #f8fafc !important;
+            border-top: 1px solid rgba(15, 56, 44, 0.14) !important;
+            scrollbar-width: thin !important;
+            scrollbar-color: #8bb7a6 #dce9e3 !important;
         }
         #ai-chat-window #chat-verification-bar {
             flex-shrink: 0 !important;
-            background: rgba(15, 23, 42, 0.95) !important;
+            background: #dcfce7 !important;
             border-top: 1px solid rgba(16, 185, 129, 0.25) !important;
-            color: #6ee7b7 !important;
+            color: #065f46 !important;
         }
         #ai-chat-window #ai-chat-composer {
             flex-shrink: 0 !important;
-            background: rgba(17, 24, 39, 0.95) !important;
-            border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+            background: #ffffff !important;
+            border-top: 1px solid rgba(15, 56, 44, 0.14) !important;
         }
         #ai-chat-window #ai-chat-composer input {
             min-width: 0 !important;
             flex: 1 1 0% !important;
-            background: rgba(30, 41, 59, 0.85) !important;
-            border-color: rgba(212, 175, 55, 0.35) !important;
-            color: #f8fafc !important;
+            background: #f8fafc !important;
+            border-color: rgba(15, 56, 44, 0.2) !important;
+            color: #1f2937 !important;
         }
         #ai-chat-window #ai-chat-composer input:focus {
-            border-color: rgba(212, 175, 55, 0.8) !important;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25) !important;
+            border-color: rgba(16, 185, 129, 0.75) !important;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.18) !important;
         }
         #ai-chat-window #ai-chat-composer input::placeholder {
-            color: #94a3b8 !important;
+            color: #64748b !important;
         }
         #ai-chat-window #chat-add-image-button,
         #ai-chat-window #chat-voice-button {
-            background: rgba(30, 41, 59, 0.85) !important;
-            border-color: rgba(212, 175, 55, 0.3) !important;
-            color: #fbbf24 !important;
+            background: #ecfdf5 !important;
+            border-color: rgba(16, 185, 129, 0.25) !important;
+            color: #047857 !important;
+        }
+        #ai-chat-window .quick-reply-pill {
+            background: #ffffff !important;
+            border-color: rgba(15, 56, 44, 0.18) !important;
+            color: #14532d !important;
+            box-shadow: 0 1px 3px rgba(15, 56, 44, 0.08) !important;
+        }
+        #ai-chat-window .quick-reply-pill:hover,
+        #ai-chat-window .quick-reply-pill:focus-visible {
+            background: #fef3c7 !important;
+            border-color: rgba(212, 175, 55, 0.75) !important;
+            color: #713f12 !important;
+        }
+        #ai-chat-window #ai-chat-quick-replies::-webkit-scrollbar {
+            height: 7px !important;
+            display: block !important;
+        }
+        #ai-chat-window #ai-chat-quick-replies::-webkit-scrollbar-track {
+            background: #dce9e3 !important;
+            border-radius: 9999px !important;
+        }
+        #ai-chat-window #ai-chat-quick-replies::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, #0f9f6e, #d4af37) !important;
+            border-radius: 9999px !important;
+        }
+        #ai-chat-window #ai-chat-quick-replies::-webkit-scrollbar-thumb:hover {
+            background: #0f766e !important;
         }
         #ai-chat-window::after {
             content: '';
@@ -3867,17 +3896,16 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
             <!-- THANH TRƯỢT NGANG ĐỀ XUẤT COMBO, TỈNH THÀNH, MÓN ĂN CHO AI -->
-            <div class="relative bg-[#0a100d] border-t border-amber-400/20 px-1 py-1.5 select-none">
-                <div class="flex items-center justify-between px-2 pb-1 text-[10px] font-black text-amber-300">
+            <div class="relative bg-emerald-50 border-t border-emerald-100 px-1 py-1.5 select-none">
+                <div class="flex items-center justify-between px-2 pb-1 text-[10px] font-black text-emerald-800">
                     <span class="flex items-center gap-1">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
                         <span>GỢI Ý TÌM KIẾM NHANH (COMBO • TỈNH THÀNH • MÓN ĂN)</span>
                     </span>
                     <div class="flex items-center gap-1">
-                        <button type="button" onclick="scrollAICarousel(-180)" class="w-5 h-5 rounded bg-slate-800 text-amber-300 hover:bg-amber-400 hover:text-slate-950 flex items-center justify-center cursor-pointer transition text-[9px]" title="Cuộn sang trái">◀</button>
-                        <button type="button" onclick="scrollAICarousel(180)" class="w-5 h-5 rounded bg-slate-800 text-amber-300 hover:bg-amber-400 hover:text-slate-950 flex items-center justify-center cursor-pointer transition text-[9px]" title="Cuộn sang phải">▶</button>
+                        <button type="button" onclick="scrollAICarousel(-180)" aria-label="Cuộn gợi ý sang trái" class="w-7 h-7 rounded-lg bg-white text-emerald-800 hover:bg-amber-100 border border-emerald-200 flex items-center justify-center cursor-pointer transition text-[10px]" title="Cuộn sang trái">◀</button>
+                        <button type="button" onclick="scrollAICarousel(180)" aria-label="Cuộn gợi ý sang phải" class="w-7 h-7 rounded-lg bg-white text-emerald-800 hover:bg-amber-100 border border-emerald-200 flex items-center justify-center cursor-pointer transition text-[10px]" title="Cuộn sang phải">▶</button>
                     </div>
                 </div>
                 <div id="ai-chat-quick-replies" class="quick-replies-carousel p-1.5 flex items-center gap-2 overflow-x-auto text-[11px] font-bold">
@@ -3924,12 +3952,6 @@
                     <button type="button" onclick="sendQuickPrompt('Tra cứu đơn hàng')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-sky-300">🚚 Tra cứu đơn hàng</button>
                     <button type="button" onclick="sendQuickPrompt('Giao hàng có vấn đề - liên hệ CSKH')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-rose-300">📞 Hỗ trợ CSKH 24/7</button>
                 </div>
-=======
-            <div id="ai-chat-quick-replies" class="quick-replies-carousel p-2 bg-[#0a100d] border-t border-amber-400/20 flex items-center gap-2 overflow-x-auto text-[11px] font-bold">
-                <button type="button" onclick="sendQuickPrompt('Biên lợi nhuận: Đồng Nai')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">⚡ Biên lợi nhuận: Đồng Nai</button>
-                <button type="button" onclick="sendQuickPrompt('Sản lượng số hóa: Hà Nội')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">📊 Sản lượng số hóa: Hà Nội</button>
-                <button type="button" onclick="sendQuickPrompt('Đối soát chiết khấu (CHM)')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">🔄 Đối soát chiết khấu (CHM)</button>
->>>>>>> 8cb9d5e393500736db10d001923226e3125fc36e
             </div>
 
             <!-- Dòng ghi chú xác thực cuối chat -->
@@ -3954,8 +3976,9 @@
             <!-- Handle co giãn kích thước trực quan góc dưới bên phải -->
             <div id="ai-chat-resize-handle" class="chatbox-resize-handle" title="Kéo để thay đổi kích thước"></div>
         </div>
+            </div>
 
-        <button id="ai-chat-toggle-btn" type="button" onclick="toggleAIChat()" aria-label="Mở trò chuyện với trợ lý AI OCOP" class="relative z-10 group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer pointer-events-auto">
+            <button id="ai-chat-toggle-btn" type="button" onclick="toggleAIChat()" aria-label="Mở trò chuyện với trợ lý AI OCOP" class="relative z-10 group bg-gradient-to-tr from-ocopGreen via-ocopGreenLight to-amber-600 text-ocopGold w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-ocopGold hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer pointer-events-auto">
             <img src="chat-avatar.jpg" alt="Mở trò chuyện với trợ lý AI OCOP" class="w-full h-full rounded-full object-cover p-0.5 pointer-events-none">
             <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-white uppercase shadow animate-pulse pointer-events-none">AI</span>
             <span class="absolute right-full mr-3 bg-ocopGreenDark/95 text-amber-200 text-[11px] font-semibold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-xl border border-ocopGold/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">Hỏi OCOP AI tư vấn ✨</span>
@@ -6920,6 +6943,13 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         // -------------------------------------------------------------
         // TRỢ LÝ AI CHATBOT ENGINE
         // -------------------------------------------------------------
+        function scrollAICarousel(distance) {
+            const carousel = document.getElementById('ai-chat-quick-replies');
+            if (!carousel) return;
+            carousel.scrollBy({ left: distance, behavior: 'smooth' });
+        }
+        window.scrollAICarousel = scrollAICarousel;
+
         function setAIChatWidgetVisibility(visible) {
             const widget = document.getElementById('ai-chat-widget');
             const intro = document.getElementById('ocop-intro-overlay');
