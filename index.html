@@ -214,7 +214,12 @@
         #catalog-main-content,
         #product-grid {
             max-width: 100% !important;
-            overflow-x: hidden !important;
+            overflow-x: clip !important;
+        }
+        @media (min-width: 1024px) {
+            #catalog-sidebar {
+                align-self: stretch !important;
+            }
         }
 
         @media (max-width: 767px) {
