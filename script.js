@@ -54,7 +54,7 @@ function addProductToCart(productIdOrName) {
         else appCart.push({ ...product, quantity: 1 });
     }
     updateCartUI();
-    showSingleToast(`Đã thêm "${product.name}" vào giỏ hàng thành công!`);
+    showSingleToast(`Đã nạp "${product.name}" vào bảng phân tích dòng tiền!`);
     return product;
 }
 

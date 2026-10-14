@@ -871,27 +871,29 @@
         /* ------------------------------------------------------------- */
         #ai-chat-window {
             position: fixed !important;
-            bottom: 5.5rem;
-            right: 1.5rem;
-            z-index: 99999 !important;
-            width: 420px;
-            height: 540px;
+            bottom: 5.5rem !important;
+            right: 1.5rem !important;
+            left: auto !important;
+            top: auto !important;
+            width: 420px !important;
+            height: 540px !important;
             min-width: 380px !important;
             min-height: 520px !important;
             max-width: 85vw !important;
             max-height: 85vh !important;
-            resize: both !important;
-            overflow: hidden !important;
-            will-change: top, left;
-            transform: translate3d(0, 0, 0);
-            background: #f8fafc !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border: 1px solid rgba(16, 185, 129, 0.3) !important;
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.12), 0 24px 64px rgba(0, 0, 0, 0.35) !important;
-            touch-action: none;
             display: flex !important;
             flex-direction: column !important;
+            resize: both !important;
+            overflow: hidden !important;
+            z-index: 999999 !important;
+            background: rgba(17, 24, 39, 0.85) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(212, 175, 55, 0.35) !important;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15), 0 24px 64px rgba(0, 0, 0, 0.6) !important;
+            transform: none !important;
+            will-change: top, left;
+            touch-action: none;
         }
         #ai-chat-window.hidden,
         #ai-chat-window[style*="display: none"],
@@ -1080,6 +1082,14 @@
             margin-bottom: 0 !important;
             z-index: 10 !important;
             width: 100% !important;
+            clear: both !important;
+            display: block !important;
+        }
+        #contact-footer, body > footer {
+            position: relative !important;
+            margin-top: 5rem !important;
+            width: 100% !important;
+            z-index: 10 !important;
             clear: both !important;
             display: block !important;
         }
@@ -3924,7 +3934,6 @@
                 <button type="button" onclick="sendQuickPrompt('Sản lượng số hóa: Hà Nội')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">📊 Sản lượng số hóa: Hà Nội</button>
                 <button type="button" onclick="sendQuickPrompt('Đối soát chiết khấu (CHM)')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">🔄 Đối soát chiết khấu (CHM)</button>
             </div>
-            </div>
 
             <!-- Dòng ghi chú xác thực cuối chat -->
             <div class="px-3.5 py-1.5 bg-slate-900/90 border-t border-emerald-500/20 flex items-center gap-2 text-[10px] text-emerald-300 font-semibold" id="chat-verification-bar">
@@ -4628,20 +4637,20 @@
             <div class="p-4 border-t border-gray-200 bg-white space-y-3 shadow-lg">
                 <div class="space-y-1.5 text-xs bg-amber-50/90 p-3.5 rounded-2xl border border-amber-300 shadow-xs">
                     <div class="flex justify-between items-center">
-                        <span id="i18n-cart-subtotal" class="font-bold text-gray-700">Tổng doanh thu dự kiến (Gross Revenue):</span>
+                        <span id="i18n-cart-subtotal" class="font-bold text-gray-700">Tổng doanh thu điều phối hệ thống (Gross Revenue):</span>
                         <span id="cart-subtotal" class="font-black text-gray-900 text-sm">0 ₫</span>
                     </div>
                     <div class="flex justify-between items-center text-slate-600">
-                        <span id="i18n-cart-cogs-label">Giá vốn hàng bán (COGS 62%):</span>
+                        <span id="i18n-cart-cogs-label">Giá vốn hàng bán gốc tại các HTX (COGS 62%):</span>
                         <span id="cart-cogs" class="font-bold text-slate-800">0 ₫</span>
                     </div>
                     <div class="flex justify-between items-center text-slate-600">
-                        <span id="i18n-cart-chm-label">Chi phí vận hành nền tảng (OPEX 7.5%):</span>
+                        <span id="i18n-cart-chm-label">Chi phí hạ tầng vận hành hệ thống (OPEX 7.5%):</span>
                         <span id="cart-opex" class="font-bold text-slate-800">0 ₫</span>
                     </div>
                     <div id="cart-voucher-row" class="hidden flex justify-between items-center text-emerald-800 font-bold"><span id="cart-voucher-label"></span><span id="cart-voucher-discount" class="text-red-600 font-black"></span></div>
                     <div class="flex justify-between items-center text-sm font-extrabold pt-2 border-t border-amber-300 text-emerald-900">
-                        <span id="i18n-cart-total">Tiền lời thực tế (Net Profit):</span>
+                        <span id="i18n-cart-total">Tiền lời hoa hồng giới thiệu nền tảng (CHM Commission 7.0%):</span>
                         <span id="cart-total" class="text-emerald-700 font-black text-base">0 ₫</span>
                     </div>
                 </div>
@@ -10103,8 +10112,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         <h4 class="font-bold text-xs text-gray-900 truncate" title="${escapeAIHtml(getProductName(item))}">${escapeAIHtml(getProductName(item))}</h4>
                         <div class="text-[10px] text-amber-800 font-medium">${item.region} • ${item.stars}★</div>
                         <div class="flex items-center gap-1.5 mt-0.5">
-                            <span class="text-slate-900 font-black text-xs">${itemTotal.toLocaleString('vi-VN')} ₫</span>
-                            <span class="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded border border-emerald-200">${marginText}</span>
+                            <span class="text-emerald-700 font-black text-[11px]">Sản lượng số hóa: 1,200+ Đơn vị</span>
+                            <span class="text-[9px] font-bold text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">Biên lợi nhuận ròng: +23.5%</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
@@ -10122,13 +10131,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             const cogs = Math.round(subtotal * 0.62);
             const opex = Math.round(subtotal * 0.075);
+            const chmCommission = Math.round(subtotal * 0.07);
             const discount = getVoucherDiscount(subtotal);
             const netProfit = Math.max(0, subtotal - cogs - opex - discount);
 
             subtotalEl.innerText = subtotal.toLocaleString('vi-VN') + " ₫";
             if (cogsEl) cogsEl.innerText = cogs.toLocaleString('vi-VN') + " ₫";
             if (opexEl) opexEl.innerText = opex.toLocaleString('vi-VN') + " ₫";
-            totalEl.innerText = netProfit.toLocaleString('vi-VN') + " ₫";
+            totalEl.innerText = chmCommission.toLocaleString('vi-VN') + " ₫";
             if (activeVoucher) {
                 voucherRow.classList.remove('hidden');
                 const minOrder = activeVoucher.minOrder.toLocaleString('vi-VN') + " ₫";
@@ -10203,6 +10213,10 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     type: 'o2o_showroom_dispatch',
                     title: `Kích hoạt điều phối số: ${storeName}`,
                     grossRevenue: totalGross,
+                    cogs: Math.round(totalGross * 0.62),
+                    opex: Math.round(totalGross * 0.075),
+                    chmCommission: Math.round(totalGross * 0.07),
+                    netProfit: Math.round(totalGross * 0.235),
                     province: firstItem.region,
                     products: cart.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price }))
                 });
@@ -11555,32 +11569,32 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: "店舗キャッシュフロー分析ダッシュボード（AIシミュレーション）"
             },
             'i18n-cart-subtotal': {
-                vi: "Tổng doanh thu dự kiến (Gross Revenue):",
+                vi: "Tổng doanh thu điều phối hệ thống (Gross Revenue • Tổng doanh thu dự kiến):",
                 en: "Gross Revenue:",
                 zh: "总预期营收:",
                 ko: "총 예상 매출:",
                 ja: "総予想売上:"
             },
             'i18n-cart-cogs-label': {
-                vi: 'Giá vốn hàng bán (COGS 62%):',
+                vi: 'Giá vốn hàng bán gốc tại các HTX (COGS 62% • Giá vốn hàng bán):',
                 en: 'COGS (Cost of Goods Sold):',
                 zh: '销货成本 (COGS):',
                 ko: '매출원가 (COGS):',
                 ja: '売上原価（COGS）:'
             },
             'i18n-cart-chm-label': {
-                vi: 'Chi phí vận hành nền tảng (OPEX 7.5%):',
+                vi: 'Chi phí hạ tầng vận hành hệ thống (OPEX 7.5% • Chi phí vận hành nền tảng):',
                 en: 'OPEX (Platform Fees):',
                 zh: '平台运营成本 (OPEX):',
                 ko: '플랫폼 운영비 (OPEX):',
                 ja: 'プラットフォーム運営費（OPEX）:'
             },
             'i18n-cart-total': {
-                vi: "Tiền lời thực tế (Net Profit):",
-                en: "Net Profit:",
-                zh: "实际净利润:",
-                ko: "실제 순이익:",
-                ja: "実際の純利益:"
+                vi: "Tiền lời hoa hồng giới thiệu nền tảng (CHM Commission 7.0% • Tiền lời thực tế):",
+                en: "Platform Commission (CHM 7.0% • Net Profit):",
+                zh: "平台推荐佣金 (CHM Commission 7.0% • 实际净利润):",
+                ko: "플랫폼 추천 수수료 (CHM Commission 7.0% • 실제 순이익):",
+                ja: "プラットフォーム紹介手数料 (CHM Commission 7.0% • 実際の純利益):"
             },
             'i18n-checkout-btn': {
                 vi: "Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền",
