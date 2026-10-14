@@ -2584,6 +2584,85 @@
         .animate-marquee-flow:hover {
             animation-play-state: paused;
         }
+
+        /* ============================================================== */
+        /* FLOATING COMMAND DOCK (BAN GIÁM KHẢO DIGITAL FEST 2026)        */
+        /* ============================================================== */
+        #judge-quick-access-bar {
+            position: fixed !important;
+            bottom: 1.25rem !important;
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            z-index: 9995 !important;
+            max-width: calc(100vw - 1.5rem) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            pointer-events: auto !important;
+        }
+        body:has(#ocop-intro-overlay:not(.hidden)) #judge-quick-access-bar {
+            display: none !important;
+        }
+        #judge-dock-content::-webkit-scrollbar {
+            display: none !important;
+        }
+
+        /* Đồng bộ toàn bộ thẻ con bên trong Modal & Drawer sang Dark Tech */
+        #ai-financial-modal .bg-white,
+        #ai-challenge-proposal-modal .bg-white,
+        #ocop-store-modal .bg-white,
+        #ocop-all-stores-modal .bg-white,
+        #quickview-modal .bg-white,
+        #cart-drawer .bg-white,
+        #orders-drawer .bg-white {
+            background: rgba(15, 34, 26, 0.92) !important;
+            border-color: rgba(212, 175, 55, 0.28) !important;
+            color: #f1f5f9 !important;
+        }
+
+        #ai-financial-modal .bg-amber-50, #ai-financial-modal .bg-amber-50\/80, #ai-financial-modal .bg-amber-50\/40,
+        #ai-financial-modal .bg-emerald-50, #ai-financial-modal .bg-blue-50, #ai-financial-modal .bg-purple-50,
+        #ai-challenge-proposal-modal .bg-amber-50, #ai-challenge-proposal-modal .bg-amber-50\/90, #ai-challenge-proposal-modal .bg-amber-50\/80, #ai-challenge-proposal-modal .bg-amber-50\/50,
+        #ai-challenge-proposal-modal .bg-emerald-50, #ai-challenge-proposal-modal .bg-emerald-50\/50,
+        #ai-challenge-proposal-modal .bg-blue-50\/50, #ai-challenge-proposal-modal .bg-purple-50\/50, #ai-challenge-proposal-modal .bg-rose-50\/50,
+        #cart-drawer .bg-amber-50\/90, #cart-drawer .bg-ocopWarmBg, #orders-drawer .bg-ocopWarmBg {
+            background: rgba(7, 20, 15, 0.88) !important;
+            border-color: rgba(212, 175, 55, 0.3) !important;
+            color: #f1f5f9 !important;
+        }
+
+        /* Sửa màu chữ các tiêu đề phụ và bảng trong Modal cho nổi bật trên nền tối */
+        #ai-financial-modal .text-amber-950, #ai-financial-modal .text-amber-900, #ai-financial-modal .text-amber-800,
+        #ai-challenge-proposal-modal .text-amber-950, #ai-challenge-proposal-modal .text-amber-900, #ai-challenge-proposal-modal .text-amber-800 {
+            color: #fbbf24 !important;
+        }
+        #ai-financial-modal .text-emerald-900, #ai-financial-modal .text-emerald-800, #ai-financial-modal .text-ocopGreen,
+        #ai-challenge-proposal-modal .text-emerald-900, #ai-challenge-proposal-modal .text-ocopGreen,
+        #cart-drawer .text-emerald-900, #cart-drawer .text-emerald-700 {
+            color: #34d399 !important;
+        }
+        #ai-financial-modal .text-blue-900, #ai-financial-modal .text-blue-800, #ai-financial-modal .text-blue-700,
+        #ai-challenge-proposal-modal .text-blue-900, #ai-challenge-proposal-modal .text-blue-800 {
+            color: #38bdf8 !important;
+        }
+        #ai-financial-modal .text-purple-900, #ai-financial-modal .text-purple-800, #ai-financial-modal .text-purple-700,
+        #ai-challenge-proposal-modal .text-purple-900, #ai-challenge-proposal-modal .text-purple-800 {
+            color: #c084fc !important;
+        }
+        #ai-challenge-proposal-modal .text-rose-800 {
+            color: #fb7185 !important;
+        }
+        #ai-financial-modal thead, #ai-challenge-proposal-modal thead {
+            background: rgba(212, 175, 55, 0.15) !important;
+            color: #fde047 !important;
+        }
+        #ai-financial-modal tbody tr:hover, #ai-challenge-proposal-modal tbody tr:hover {
+            background: rgba(16, 185, 129, 0.12) !important;
+        }
+        #ai-challenge-proposal-modal .text-gray-700, #ai-financial-modal .text-gray-700 {
+            color: #cbd5e1 !important;
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
@@ -4121,39 +4200,39 @@
     <!-- ============================================================== -->
     <!-- FLOATING JUDGE BAR (CHẾ ĐỘ BAN GIÁM KHẢO DIGITAL FEST 2026) -->
     <!-- ============================================================== -->
-    <div id="judge-quick-access-bar" class="fixed bottom-20 md:bottom-6 left-3 sm:left-6 z-[99990] flex items-center select-none" style="filter: drop-shadow(0 12px 28px rgba(0,0,0,0.75));">
+    <div id="judge-quick-access-bar" class="select-none" style="filter: drop-shadow(0 12px 28px rgba(0,0,0,0.75));">
         <!-- Nút toggle thu nhỏ / mở rộng -->
         <button type="button" onclick="toggleJudgeDock()" id="judge-dock-toggle-btn" class="w-10 h-10 rounded-full flex items-center justify-center font-black text-xs transition cursor-pointer shrink-0 z-10" style="background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #0f172a; border: 2px solid #fef08a; box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);" title="Thu nhỏ / Mở rộng Chế độ Ban Giám Khảo">
             <i id="judge-dock-icon" class="fa-solid fa-gavel"></i>
         </button>
 
         <!-- Khung các nút chức năng của BGK -->
-        <div id="judge-dock-content" class="ml-2 flex items-center gap-1.5 p-1.5 rounded-2xl transition-all duration-300" style="background: rgba(8, 24, 18, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.45); box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
-            <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-400/15 border border-amber-400/30 text-[10px] font-black uppercase text-amber-300 tracking-wider">
+        <div id="judge-dock-content" class="ml-2 flex items-center gap-1.5 p-1.5 rounded-2xl transition-all duration-300" style="background: rgba(8, 24, 18, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.45); box-shadow: 0 8px 32px rgba(0,0,0,0.6); overflow-x: auto; max-width: calc(100vw - 4.5rem); scrollbar-width: none;">
+            <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-400/15 border border-amber-400/30 text-[10px] font-black uppercase text-amber-300 tracking-wider shrink-0">
                 <i class="fa-solid fa-trophy text-amber-400"></i>
                 <span>BGK 2026</span>
             </div>
 
             <!-- Nút 1: Hồ Sơ Đề Án B2B2C -->
-            <button type="button" onclick="openChallengeProposalModal()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 hover:text-emerald-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+            <button type="button" onclick="openChallengeProposalModal()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 hover:text-emerald-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-file-shield text-amber-400"></i>
                 <span>1. Đề Án B2B2C</span>
             </button>
 
             <!-- Nút 2: Mô Phỏng Dòng Tiền AI -->
-            <button type="button" onclick="openFinancialDashboardModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/35 border border-amber-400/40 text-amber-200 hover:text-amber-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+            <button type="button" onclick="openFinancialDashboardModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/35 border border-amber-400/40 text-amber-200 hover:text-amber-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-chart-line text-emerald-400"></i>
                 <span>2. Dòng Tiền AI</span>
             </button>
 
             <!-- Nút 3: Nghe AI Báo Cáo Nông Dân -->
-            <button type="button" onclick="playVoiceFinancialBriefing()" class="px-2.5 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/35 border border-purple-400/40 text-purple-200 hover:text-purple-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+            <button type="button" onclick="openFinancialDashboardModal(); setTimeout(() => playVoiceFinancialBriefing(), 250);" class="px-2.5 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/35 border border-purple-400/40 text-purple-200 hover:text-purple-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-microphone-lines text-purple-400 animate-pulse"></i>
                 <span>3. Voice Báo Cáo</span>
             </button>
 
             <!-- Nút 4: Test O2O Đồng Nai -->
-            <button type="button" onclick="testO2ODongNai()" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[11px] font-black hover:scale-105 transition flex items-center gap-1.5 cursor-pointer shadow-md whitespace-nowrap">
+            <button type="button" onclick="testO2ODongNai()" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[11px] font-black hover:scale-105 transition flex items-center gap-1.5 cursor-pointer shadow-md whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-map-pin text-rose-700"></i>
                 <span>4. Test O2O Đồng Nai</span>
             </button>
@@ -10971,12 +11050,20 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     if (icon) icon.className = 'fa-solid fa-gavel';
                 } else {
                     content.classList.add('hidden');
-                    if (icon) icon.className = 'fa-solid fa-chevron-right';
+                    if (icon) icon.className = 'fa-solid fa-gavel';
                 }
             }
         }
 
         function testO2ODongNai() {
+            const introOverlay = document.getElementById('ocop-intro-overlay');
+            if (introOverlay && !introOverlay.classList.contains('hidden')) {
+                if (typeof enterOcopMarket === 'function') {
+                    enterOcopMarket('all');
+                } else {
+                    introOverlay.classList.add('hidden');
+                }
+            }
             const provSelect = document.getElementById('province-select');
             if (provSelect) {
                 provSelect.value = 'Đồng Nai';
@@ -10991,7 +11078,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 prodSection.scrollIntoView({ behavior: 'smooth' });
             }
             if (typeof showToast === 'function') {
-                showToast('🎯 [Demo BGK]: Đã kích hoạt hệ sinh thái O2O & đối soát chuỗi cung ứng Tỉnh Đồng Nai (Trà khổ qua rừng Hiệp Vân, Bưởi Tân Triều)!', 'success');
+                showToast('Đang hiển thị Hệ sinh thái Đặc sản OCOP Tỉnh Đồng Nai (Trà khổ qua Hiệp Vân, Bưởi Tân Triều)', 'success');
             }
         }
 
