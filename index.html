@@ -208,6 +208,41 @@
             width: 100% !important;
             align-self: start !important;
         }
+        #products-section,
+        #catalog-layout-wrapper,
+        #catalog-sidebar,
+        #catalog-main-content,
+        #product-grid {
+            max-width: 100% !important;
+            overflow-x: clip !important;
+        }
+        @media (min-width: 1024px) {
+            #catalog-sidebar {
+                align-self: stretch !important;
+            }
+        }
+
+        @media (max-width: 767px) {
+            #catalog-layout-wrapper,
+            #catalog-main-content,
+            #products-section,
+            #product-grid {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            #catalog-layout-wrapper {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            #catalog-sidebar {
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: 100% !important;
+            }
+            #product-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
 
         /* ============================================================= */
         /* LƯỚI SẢN PHẨM ĐA CỘT: 3 CỘT DÀN ĐỀU ĐẸP MẮT (DESKTOP)        */
@@ -849,11 +884,11 @@
             overflow: hidden !important;
             will-change: top, left;
             transform: translate3d(0, 0, 0);
-            background: rgba(17, 24, 39, 0.7) !important;
+            background: #f8fafc !important;
             backdrop-filter: blur(12px) !important;
             -webkit-backdrop-filter: blur(12px) !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15), 0 24px 64px rgba(0, 0, 0, 0.6) !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.12), 0 24px 64px rgba(0, 0, 0, 0.35) !important;
             touch-action: none;
             display: flex !important;
             flex-direction: column !important;
@@ -887,65 +922,94 @@
             min-height: 0 !important;
             flex: 1 1 0% !important;
             overflow-y: auto !important;
-            background: rgba(11, 15, 20, 0.8) !important;
-            color: #f1f5f9 !important;
+            background: #edf5f1 !important;
+            color: #1f2937 !important;
             overscroll-behavior: contain;
-            scrollbar-color: #9bbab0 transparent;
+            scrollbar-color: #8bb7a6 #dce9e3;
         }
         #ai-chat-window #ai-chat-messages .bg-white {
-            background: rgba(17, 24, 39, 0.85) !important;
-            border-color: rgba(212, 175, 55, 0.25) !important;
-            color: #e2e8f0 !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+            background: #ffffff !important;
+            border-color: rgba(15, 56, 44, 0.14) !important;
+            color: #1f2937 !important;
+            box-shadow: 0 4px 16px rgba(15, 56, 44, 0.08) !important;
         }
         #ai-chat-window #ai-chat-messages .text-gray-800,
         #ai-chat-window #ai-chat-messages .text-gray-900 {
-            color: #f1f5f9 !important;
+            color: #1f2937 !important;
         }
         #ai-chat-window #ai-chat-messages .text-gray-500,
         #ai-chat-window #ai-chat-messages .text-gray-600 {
-            color: #94a3b8 !important;
+            color: #64748b !important;
         }
         #ai-chat-window #ai-chat-messages .text-ocopGreen {
-            color: #34d399 !important;
+            color: #047857 !important;
         }
         #ai-chat-window #ai-chat-quick-replies {
             flex-shrink: 0 !important;
             width: 100% !important;
             overflow-x: auto !important;
-            background: rgba(10, 16, 13, 0.95) !important;
-            border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+            background: #f8fafc !important;
+            border-top: 1px solid rgba(15, 56, 44, 0.14) !important;
+            scrollbar-width: thin !important;
+            scrollbar-color: #8bb7a6 #dce9e3 !important;
         }
         #ai-chat-window #chat-verification-bar {
             flex-shrink: 0 !important;
-            background: rgba(15, 23, 42, 0.95) !important;
+            background: #dcfce7 !important;
             border-top: 1px solid rgba(16, 185, 129, 0.25) !important;
-            color: #6ee7b7 !important;
+            color: #065f46 !important;
         }
         #ai-chat-window #ai-chat-composer {
             flex-shrink: 0 !important;
-            background: rgba(17, 24, 39, 0.95) !important;
-            border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+            background: #ffffff !important;
+            border-top: 1px solid rgba(15, 56, 44, 0.14) !important;
         }
         #ai-chat-window #ai-chat-composer input {
             min-width: 0 !important;
             flex: 1 1 0% !important;
-            background: rgba(30, 41, 59, 0.85) !important;
-            border-color: rgba(212, 175, 55, 0.35) !important;
-            color: #f8fafc !important;
+            background: #f8fafc !important;
+            border-color: rgba(15, 56, 44, 0.2) !important;
+            color: #1f2937 !important;
         }
         #ai-chat-window #ai-chat-composer input:focus {
-            border-color: rgba(212, 175, 55, 0.8) !important;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25) !important;
+            border-color: rgba(16, 185, 129, 0.75) !important;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.18) !important;
         }
         #ai-chat-window #ai-chat-composer input::placeholder {
-            color: #94a3b8 !important;
+            color: #64748b !important;
         }
         #ai-chat-window #chat-add-image-button,
         #ai-chat-window #chat-voice-button {
-            background: rgba(30, 41, 59, 0.85) !important;
-            border-color: rgba(212, 175, 55, 0.3) !important;
-            color: #fbbf24 !important;
+            background: #ecfdf5 !important;
+            border-color: rgba(16, 185, 129, 0.25) !important;
+            color: #047857 !important;
+        }
+        #ai-chat-window .quick-reply-pill {
+            background: #ffffff !important;
+            border-color: rgba(15, 56, 44, 0.18) !important;
+            color: #14532d !important;
+            box-shadow: 0 1px 3px rgba(15, 56, 44, 0.08) !important;
+        }
+        #ai-chat-window .quick-reply-pill:hover,
+        #ai-chat-window .quick-reply-pill:focus-visible {
+            background: #fef3c7 !important;
+            border-color: rgba(212, 175, 55, 0.75) !important;
+            color: #713f12 !important;
+        }
+        #ai-chat-window #ai-chat-quick-replies::-webkit-scrollbar {
+            height: 7px !important;
+            display: block !important;
+        }
+        #ai-chat-window #ai-chat-quick-replies::-webkit-scrollbar-track {
+            background: #dce9e3 !important;
+            border-radius: 9999px !important;
+        }
+        #ai-chat-window #ai-chat-quick-replies::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, #0f9f6e, #d4af37) !important;
+            border-radius: 9999px !important;
+        }
+        #ai-chat-window #ai-chat-quick-replies::-webkit-scrollbar-thumb:hover {
+            background: #0f766e !important;
         }
         #ai-chat-window::after {
             content: '';
@@ -2612,7 +2676,8 @@
                 </div>
                 <button type="button" id="intro-language-btn" onclick="toggleLanguage()" class="hidden" aria-hidden="true" tabindex="-1">VI</button>
                 <button id="intro-skip-button" onclick="enterOcopMarket('all')" class="intro-mega-btn px-4 py-1.5 rounded-full text-xs font-black transition flex items-center space-x-1.5 shadow-md cursor-pointer">
-                    <span id="i18n-intro-skip">Bảng Quản Trị (Dashboard) -></span>
+                    <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+                    <span id="i18n-intro-skip">Khám phá đặc sản 63 tỉnh thành →</span>
                 </button>
             </div>
         </div>
@@ -3858,6 +3923,7 @@
                 <button type="button" onclick="sendQuickPrompt('Biên lợi nhuận: Đồng Nai')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">⚡ Biên lợi nhuận: Đồng Nai</button>
                 <button type="button" onclick="sendQuickPrompt('Sản lượng số hóa: Hà Nội')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">📊 Sản lượng số hóa: Hà Nội</button>
                 <button type="button" onclick="sendQuickPrompt('Đối soát chiết khấu (CHM)')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">🔄 Đối soát chiết khấu (CHM)</button>
+            </div>
             </div>
 
             <!-- Dòng ghi chú xác thực cuối chat -->
@@ -6847,6 +6913,13 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         // -------------------------------------------------------------
         // TRỢ LÝ AI CHATBOT ENGINE
         // -------------------------------------------------------------
+        function scrollAICarousel(distance) {
+            const carousel = document.getElementById('ai-chat-quick-replies');
+            if (!carousel) return;
+            carousel.scrollBy({ left: distance, behavior: 'smooth' });
+        }
+        window.scrollAICarousel = scrollAICarousel;
+
         function setAIChatWidgetVisibility(visible) {
             const widget = document.getElementById('ai-chat-widget');
             const intro = document.getElementById('ocop-intro-overlay');
@@ -11675,13 +11748,13 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: 'OCOP SALES COPILOT - デジタルオペレーティングシステム＆AI財務管理プラットフォーム'
             },
 
-            // 3.B Nút vàng góc phải (Sửa văn phong)
+            // 3.B Nút vàng góc phải
             'i18n-intro-skip': {
-                vi: 'Bảng Quản Trị (Dashboard) ->',
-                en: 'Management Dashboard ->',
-                zh: '管理控制台 ->',
-                ko: '관리 대시보드 ->',
-                ja: '管理ダッシュボード ->'
+                vi: 'Khám phá đặc sản 63 tỉnh thành →',
+                en: 'Explore 63 provinces specialties →',
+                zh: '探索63省特产 →',
+                ko: '63개 성·시 특산물 탐색 →',
+                ja: '63省・市特産品を探索 →'
             },
 
             // 4 thẻ cam kết vận hành (Pillars)
