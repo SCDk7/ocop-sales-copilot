@@ -118,9 +118,10 @@ function renderChatProducts(bubbleEl, productIds) {
                 <div class="min-w-0 pr-2">
                     <p class="font-bold text-gray-900 truncate">${prod.name}</p>
                     <p class="text-[10px] text-amber-700 font-semibold">${prod.stars || 5}⭐ OCOP • ${prod.region || ''} • ${(prod.price || 0).toLocaleString('vi-VN')}đ</p>
+                    <p class="text-[9px] text-emerald-700 font-bold mt-0.5">[Sản lượng số hóa: 1.200 đơn vị • Biên lợi nhuận: +23.5%]</p>
                 </div>
-                <button type="button" onclick="addProductToCart(${prod.id})" class="px-2.5 py-1 bg-ocopGreen text-white text-[10px] font-bold rounded-lg hover:bg-ocopGreenLight transition shrink-0 cursor-pointer">
-                    + Thêm giỏ
+                <button type="button" onclick="activateProductReconciliation(${prod.id})" class="px-2.5 py-1 bg-amber-400 text-slate-950 font-black text-[10px] rounded-lg hover:bg-amber-300 transition shrink-0 cursor-pointer shadow-sm">
+                    📊 Phân Tích Dòng Tiền
                 </button>
             </div>
         `;
@@ -234,15 +235,15 @@ async function sendChatMessage(customPrompt) {
 function getLocalCatalogFallbackText(query) {
     const q = query.toLowerCase();
     if (q.includes('trà') || q.includes('chè')) {
-        return 'Dạ, vùng cao Tây Bắc và Thái Nguyên nổi tiếng với các dòng trà thượng hạng như Trà Shan Tuyết Cổ Thụ Hà Giang và Trà Đinh Nõn Tân Cương. Em xin gợi ý các loại trà chuẩn 5 sao bên dưới để Anh/Chị tham khảo ạ!';
+        return 'Dạ, vùng cao Tây Bắc và Thái Nguyên nổi tiếng với các dòng trà thượng hạng như Trà Shan Tuyết Cổ Thụ Hà Giang và Trà Đinh Nõn Tân Cương. Em xin gửi thông số dòng tiền và điều phối điểm bán O2O của các đặc sản OCOP bên dưới ạ!';
     }
-    if (q.includes('200k') || q.includes('dưới')) {
-        return 'Dạ, với mức ngân sách tiết kiệm, OCOP có rất nhiều thức quà tuyệt vời như Mật ong hoa cà phê Tây Nguyên (180.000đ) hay Bơ Sáp Đắk Lắk (120.000đ). Anh/Chị xem ngay danh sách gợi ý dưới đây nhé!';
+    if (q.includes('lợi nhuận') || q.includes('dòng tiền') || q.includes('tài chính')) {
+        return 'Dạ, hệ thống OCOP Copilot đã tự động đồng bộ dòng tiền với biên lợi nhuận gộp 38% (COGS 62%), chiết khấu liên kết CHM 7% và lợi nhuận ròng mục tiêu 23.5%. Anh/Chị có thể kích hoạt mô phỏng chi tiết ngay bên dưới!';
     }
-    if (q.includes('quà biếu') || q.includes('quà')) {
-        return 'Dạ, để làm quà biếu trang trọng, Yến Sào Khánh Hòa Thượng Hạng hoặc Sâm Ngọc Linh Quảng Nam là sự lựa chọn đẳng cấp hàng đầu, kết tinh trọn vẹn giá trị sức khỏe và tinh hoa truyền thống.';
+    if (q.includes('điểm bán') || q.includes('showroom') || q.includes('o2o')) {
+        return 'Dạ, mạng lưới Showroom O2O liên kết đang vận hành tại các trục giao thương trọng điểm. Hệ thống đã đồng bộ tọa độ số hóa điểm bán thực tế kèm vị trí Google Maps!';
     }
-    return 'Dạ, em là OCOP AI! Em xin giới thiệu các sản phẩm OCOP tiêu biểu được chứng nhận 4-5 sao vùng miền, mang trọn hương vị thiên nhiên và nghệ thuật ẩm thực truyền thống. Anh/Chị hãy nhấn chọn để thêm vào giỏ hàng nhé!';
+    return 'Dạ, em là Trợ lý Điều hành Số & Quản trị Tài chính OCOP! Em sẵn sàng phân tích dòng tiền, điều phối sản lượng O2O và đối soát chiết khấu liên kết cho 252 đặc sản OCOP 63 tỉnh thành!';
 }
 
 function getLocalMatchingProductIds(query) {

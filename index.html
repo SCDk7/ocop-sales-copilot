@@ -983,7 +983,15 @@
             border-bottom-right-radius: 4px;
         }
         /* AI DIGITAL BUSINESS CHALLENGE 2026: CENTRAL NAVIGATION BAR & BREATHABLE LAYOUT */
+        body {
+            display: flex !important;
+            flex-direction: column !important;
+            min-height: 100vh !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+        }
         main.flex-1 {
+            flex: 1 0 auto !important;
             display: flex !important;
             flex-direction: column !important;
             gap: 48px !important;
@@ -991,6 +999,7 @@
             height: auto !important;
             position: relative !important;
             z-index: 20 !important;
+            overflow: visible !important;
         }
         main.flex-1,
         #catalog-layout-wrapper {
@@ -1013,18 +1022,25 @@
         #contact-footer, 
         body footer#contact-footer,
         footer {
+            flex-shrink: 0 !important;
             position: relative !important;
             top: auto !important;
             bottom: auto !important;
             left: auto !important;
             right: auto !important;
+            transform: none !important;
             margin-top: 80px !important;
             margin-bottom: 0 !important;
-            z-index: 10 !important;
             width: 100% !important;
+            z-index: 10 !important;
             clear: both !important;
             display: block !important;
-            transform: none !important;
+            background: #07120e !important;
+            color: #cbd5e1 !important;
+            border-top: 1px solid rgba(212, 175, 55, 0.3) !important;
+        }
+        #contact-footer h5, #contact-footer h6, #contact-footer span, #contact-footer a {
+            color: #f8fafc !important;
         }
         aside:has(a[href="draft-order.html"]) {
             position: relative !important;
@@ -1054,6 +1070,7 @@
             max-width: 74rem !important; /* Đồng bộ khít với max-w-7xl toàn trang */
             transform: none !important;
         }
+
         .header-primary-nav {
             display: inline-flex !important;
             flex-direction: row !important;
@@ -3830,76 +3847,17 @@
                 <div class="flex items-start space-x-2">
                     <img src="chat-avatar.jpg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
-                        <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào anh/chị! Trợ lý AI Copilot sẵn sàng phân tích doanh thu, chiết khấu và dòng tiền đặc sản.</p>
+                        <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào! Trợ lý AI Copilot sẵn sàng định vị Showroom O2O và phân tích doanh thu, tiền lời, chiết khấu (CHM).</p>
                         <p class="mt-1.5" id="chat-guidance">Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.</p>
                         <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">❖ Hệ thống đã xác thực chứng nhận OCOP Quốc gia • Dữ liệu tọa độ điểm bán đồng bộ real-time.</p>
                     </div>
                 </div>
             </div>
 
-<<<<<<< HEAD
-            <!-- THANH TRƯỢT NGANG ĐỀ XUẤT COMBO, TỈNH THÀNH, MÓN ĂN CHO AI -->
-            <div class="relative bg-[#0a100d] border-t border-amber-400/20 px-1 py-1.5 select-none">
-                <div class="flex items-center justify-between px-2 pb-1 text-[10px] font-black text-amber-300">
-                    <span class="flex items-center gap-1">
-                        <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
-                        <span>GỢI Ý TÌM KIẾM NHANH (COMBO • TỈNH THÀNH • MÓN ĂN)</span>
-                    </span>
-                    <div class="flex items-center gap-1">
-                        <button type="button" onclick="scrollAICarousel(-180)" class="w-5 h-5 rounded bg-slate-800 text-amber-300 hover:bg-amber-400 hover:text-slate-950 flex items-center justify-center cursor-pointer transition text-[9px]" title="Cuộn sang trái">◀</button>
-                        <button type="button" onclick="scrollAICarousel(180)" class="w-5 h-5 rounded bg-slate-800 text-amber-300 hover:bg-amber-400 hover:text-slate-950 flex items-center justify-center cursor-pointer transition text-[9px]" title="Cuộn sang phải">▶</button>
-                    </div>
-                </div>
-                <div id="ai-chat-quick-replies" class="quick-replies-carousel p-1.5 flex items-center gap-2 overflow-x-auto text-[11px] font-bold">
-                    <!-- Hidden container to strictly satisfy test assertions -->
-                    <div class="hidden sr-only" style="display: none !important;" aria-hidden="true">
-                        <button type="button" onclick="sendQuickPrompt('Biên lợi nhuận: Đồng Nai')">⚡ Biên lợi nhuận: Đồng Nai</button>
-                        <button type="button" onclick="sendQuickPrompt('Sản lượng số hóa: Hà Nội')">📊 Sản lượng số hóa: Hà Nội</button>
-                        <button type="button" onclick="sendQuickPrompt('Đối soát chiết khấu (CHM)')">🔄 Đối soát chiết khấu (CHM)</button>
-                    </div>
-
-                    <!-- 1. GỢI Ý COMBO THEO GIÁ -->
-                    <button type="button" onclick="sendQuickPrompt('Tư vấn combo 200k')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-amber-300">🎁 Combo 200k (3 món)</button>
-                    <button type="button" onclick="sendQuickPrompt('Tư vấn combo 300k')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-amber-300">🎁 Combo 300k (Tiết kiệm)</button>
-                    <button type="button" onclick="sendQuickPrompt('Tư vấn combo 500k')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-amber-300">🎁 Combo 500k (Quà biếu)</button>
-                    <button type="button" onclick="sendQuickPrompt('Tư vấn combo 1 triệu')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-yellow-300">🎁 Combo 1 triệu (Cao cấp)</button>
-                    <button type="button" onclick="sendQuickPrompt('Tư vấn quà biếu OCOP 5 sao')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-yellow-300">⭐ Quà biếu OCOP 5 Sao</button>
-
-                    <!-- 2. GỢI Ý THEO TỈNH THÀNH / PHỐ -->
-                    <button type="button" onclick="sendQuickPrompt('Đặc sản Đồng Nai')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-emerald-300">📍 Đặc sản Đồng Nai</button>
-                    <button type="button" onclick="sendQuickPrompt('Đặc sản Bến Tre')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-emerald-300">📍 Đặc sản Bến Tre</button>
-                    <button type="button" onclick="sendQuickPrompt('Đặc sản Hà Nội')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-emerald-300">📍 Đặc sản Hà Nội</button>
-                    <button type="button" onclick="sendQuickPrompt('Đặc sản Lâm Đồng')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-emerald-300">📍 Đặc sản Lâm Đồng</button>
-                    <button type="button" onclick="sendQuickPrompt('Đặc sản Đắk Lắk')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-emerald-300">📍 Đặc sản Đắk Lắk</button>
-                    <button type="button" onclick="sendQuickPrompt('Đặc sản Cà Mau')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-emerald-300">📍 Đặc sản Cà Mau</button>
-                    <button type="button" onclick="sendQuickPrompt('Đặc sản Hà Giang')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-emerald-300">📍 Đặc sản Hà Giang</button>
-                    <button type="button" onclick="sendQuickPrompt('Đặc sản Sơn La')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-emerald-300">📍 Đặc sản Sơn La</button>
-                    <button type="button" onclick="sendQuickPrompt('Đặc sản Bình Phước')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-emerald-300">📍 Đặc sản Bình Phước</button>
-
-                    <!-- 3. GỢI Ý MÓN ĂN & ĐẶC SẢN NỔI TIẾNG -->
-                    <button type="button" onclick="sendQuickPrompt('Trà Shan Tuyết cổ thụ')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-teal-300">🍵 Trà Shan Tuyết</button>
-                    <button type="button" onclick="sendQuickPrompt('Cà phê Cầu Đất Arabica')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-teal-300">☕ Cà phê Cầu Đất</button>
-                    <button type="button" onclick="sendQuickPrompt('Hạt điều rang muối')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-teal-300">🥜 Hạt điều rang muối</button>
-                    <button type="button" onclick="sendQuickPrompt('Mật ong rừng U Minh')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-teal-300">🍯 Mật ong U Minh</button>
-                    <button type="button" onclick="sendQuickPrompt('Kẹo dừa sáp Bến Tre')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-teal-300">🥥 Kẹo dừa sáp</button>
-                    <button type="button" onclick="sendQuickPrompt('Bưởi đường lá cam Tân Triều')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-teal-300">🍈 Bưởi Tân Triều</button>
-                    <button type="button" onclick="sendQuickPrompt('Thịt trâu gác bếp')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-teal-300">🥩 Thịt trâu gác bếp</button>
-                    <button type="button" onclick="sendQuickPrompt('Muối tôm Tây Ninh')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-teal-300">🌶️ Muối tôm Tây Ninh</button>
-                    <button type="button" onclick="sendQuickPrompt('Gạo ST25 Sóc Trăng')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-teal-300">🍚 Gạo ST25</button>
-
-                    <!-- 4. NGHIỆP VỤ BÁN HÀNG & CSKH -->
-                    <button type="button" onclick="sendQuickPrompt('Tạo đơn hàng')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-yellow-300">📦 Tạo đơn hàng</button>
-                    <button type="button" onclick="sendQuickPrompt('Thanh toán mã VietQR')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-sky-300">💳 Thanh toán VietQR</button>
-                    <button type="button" onclick="sendQuickPrompt('Thanh toán COD nhận hàng')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-green-300">💵 Thanh toán COD</button>
-                    <button type="button" onclick="sendQuickPrompt('Tra cứu đơn hàng')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-sky-300">🚚 Tra cứu đơn hàng</button>
-                    <button type="button" onclick="sendQuickPrompt('Giao hàng có vấn đề - liên hệ CSKH')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer text-rose-300">📞 Hỗ trợ CSKH 24/7</button>
-                </div>
-=======
             <div id="ai-chat-quick-replies" class="quick-replies-carousel p-2 bg-[#0a100d] border-t border-amber-400/20 flex items-center gap-2 overflow-x-auto text-[11px] font-bold">
                 <button type="button" onclick="sendQuickPrompt('Biên lợi nhuận: Đồng Nai')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">⚡ Biên lợi nhuận: Đồng Nai</button>
                 <button type="button" onclick="sendQuickPrompt('Sản lượng số hóa: Hà Nội')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">📊 Sản lượng số hóa: Hà Nội</button>
                 <button type="button" onclick="sendQuickPrompt('Đối soát chiết khấu (CHM)')" class="chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer">🔄 Đối soát chiết khấu (CHM)</button>
->>>>>>> 8cb9d5e393500736db10d001923226e3125fc36e
             </div>
 
             <!-- Dòng ghi chú xác thực cuối chat -->
@@ -4732,24 +4690,23 @@
     </div>
 
     <!-- 12. FOOTER -->
-    <aside class="draft-order-aside mx-4 sm:mx-auto max-w-5xl my-8 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-center" style="position: relative !important; top: auto !important; bottom: auto !important; left: auto !important; right: auto !important; margin-top: 48px !important; margin-bottom: 24px !important; z-index: 20 !important; display: block !important; width: 100% !important; max-width: 74rem !important; transform: none !important;"><a href="draft-order.html" class="font-bold text-ocopGreen">Draft Order →</a></aside>
-    <footer id="contact-footer" style="position: relative !important; top: auto !important; bottom: auto !important; left: auto !important; right: auto !important; margin-top: 80px !important; margin-bottom: 0 !important; z-index: 10 !important; width: 100% !important; clear: both !important; display: block !important; transform: none !important;" class="bg-white border-t border-amber-200/80 pt-10 pb-24 lg:pb-6 text-gray-700 text-xs mt-16 relative z-10 shadow-inner">
+    <footer id="contact-footer" style="position: relative !important; top: auto !important; bottom: auto !important; left: auto !important; right: auto !important; margin-top: 80px !important; margin-bottom: 0 !important; z-index: 10 !important; width: 100% !important; clear: both !important; display: block !important; transform: none !important; background: #07120e !important; color: #cbd5e1 !important; border-top: 1px solid rgba(212, 175, 55, 0.3) !important;" class="bg-[#07120e] border-t border-amber-400/30 pt-10 pb-24 lg:pb-6 text-slate-300 text-xs mt-20 relative z-10 shadow-2xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-100 pb-6 gap-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-amber-400/20 pb-6 gap-4">
                 <div class="space-y-1 max-w-3xl">
-                    <h5 class="font-bold text-gray-900 text-xs">Bản quyền của Hệ Thống OCOP Sales Copilot Việt Nam</h5>
-                    <p class="text-[11px] text-gray-500 leading-relaxed">
+                    <h5 class="font-extrabold text-amber-300 text-xs">Bản quyền của Hệ Thống OCOP Sales Copilot Việt Nam</h5>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">
                         Giấy chứng nhận ĐKKD & Xúc tiến thương mại OCOP Quốc Gia số: 0312461711 do Sở KH&ĐT TP.HCM cấp. <br>
                         Trụ sở chính: 496 - 496A - 496B Nguyễn Thị Minh Khai, Phường 2, Quận 3, TP.HCM & Hệ thống Trung tâm OCOP Toàn Quốc.
                     </p>
                 </div>
 
                 <div class="flex-shrink-0">
-                    <div class="border-2 border-[#0072bc] rounded-xl px-3.5 py-1.5 flex items-center space-x-2 bg-blue-50/50 shadow-sm">
-                        <i class="fa-solid fa-circle-check text-[#0072bc] text-xl"></i>
+                    <div class="border-2 border-amber-400/50 rounded-xl px-3.5 py-1.5 flex items-center space-x-2 bg-slate-900/80 shadow-sm">
+                        <i class="fa-solid fa-circle-check text-amber-400 text-xl"></i>
                         <div>
-                            <span class="block text-[9px] font-bold text-[#0072bc] uppercase leading-none">ĐÃ THÔNG BÁO</span>
-                            <span class="block text-[11px] font-extrabold text-[#0072bc] uppercase leading-tight">BỘ CÔNG THƯƠNG</span>
+                            <span class="block text-[9px] font-bold text-amber-300 uppercase leading-none">ĐÃ THÔNG BÁO</span>
+                            <span class="block text-[11px] font-extrabold text-amber-400 uppercase leading-tight">BỘ CÔNG THƯƠNG</span>
                         </div>
                     </div>
                 </div>
@@ -4757,43 +4714,43 @@
 
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-2">
                 <div class="md:col-span-4 space-y-3">
-                    <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">Thông tin liên hệ</h6>
-                    <ul class="space-y-2.5 text-gray-600">
+                    <h6 class="font-extrabold text-amber-300 text-xs uppercase tracking-wider text-ocopGreen">Thông tin liên hệ</h6>
+                    <ul class="space-y-2.5 text-slate-300">
                         <li class="flex items-start space-x-2">
-                            <i class="fa-solid fa-location-dot text-amber-700 mt-0.5 text-sm"></i>
+                            <i class="fa-solid fa-location-dot text-amber-400 mt-0.5 text-sm"></i>
                             <span>496 Nguyễn Thị Minh Khai, Phường 2, Quận 3, TP.HCM</span>
                         </li>
                         <li class="flex items-center space-x-2">
-                            <i class="fa-solid fa-phone text-amber-700 text-xs"></i>
-                            <span class="font-bold text-gray-800">Hotline: 1900 888 688 (Miễn phí)</span>
+                            <i class="fa-solid fa-phone text-amber-400 text-xs"></i>
+                            <span class="font-bold text-white">Hotline: 1900 888 688 (Miễn phí)</span>
                         </li>
                         <li class="flex items-center space-x-2">
-                            <i class="fa-solid fa-envelope text-amber-700 text-xs"></i>
-                            <span class="text-ocopGreen font-semibold">support@ocopsalescopilot.vn</span>
+                            <i class="fa-solid fa-envelope text-amber-400 text-xs"></i>
+                            <span class="text-amber-300 font-semibold">support@ocopsalescopilot.vn</span>
                         </li>
                     </ul>
                 </div>
                 <div class="md:col-span-4 space-y-3">
-                    <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">HỖ TRỢ KHÁCH HÀNG</h6>
-                    <ul class="space-y-2 text-gray-600">
-                        <li><a href="#" class="hover:text-ocopGreen transition">Chính Sách Giao Hàng Toàn Quốc</a></li>
-                        <li><a href="#" class="hover:text-ocopGreen transition">Chính Sách Đổi Trả 100%</a></li>
-                        <li><a href="#" class="hover:text-ocopGreen transition">Hướng Dẫn Thanh Toán VietQR</a></li>
+                    <h6 class="font-extrabold text-amber-300 text-xs uppercase tracking-wider text-ocopGreen">HỖ TRỢ KHÁCH HÀNG</h6>
+                    <ul class="space-y-2 text-slate-300">
+                        <li><a href="#" class="hover:text-amber-300 transition">Chính Sách Giao Hàng Toàn Quốc</a></li>
+                        <li><a href="#" class="hover:text-amber-300 transition">Chính Sách Đổi Trả 100%</a></li>
+                        <li><a href="#" class="hover:text-amber-300 transition">Hướng Dẫn Thanh Toán VietQR</a></li>
                     </ul>
                 </div>
                 <div class="md:col-span-4 space-y-3">
-                    <h6 class="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-ocopGreen">VỀ OCOP SALES COPILOT AI</h6>
-                    <p class="text-gray-500 leading-relaxed text-[11px]">
+                    <h6 class="font-extrabold text-amber-300 text-xs uppercase tracking-wider text-ocopGreen">VỀ OCOP SALES COPILOT AI</h6>
+                    <p class="text-slate-400 leading-relaxed text-[11px]">
                         Nền tảng xúc tiến thương mại nông sản số 1 Việt Nam. Kết nối trực tiếp các sản phẩm OCOP chuẩn 4-5 sao từ vùng sản xuất đến người tiêu dùng cả nước.
                     </p>
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-gray-400 text-[11px] gap-2">
+            <div class="pt-6 border-t border-amber-400/20 flex flex-col sm:flex-row items-center justify-between text-slate-400 text-[11px] gap-2">
                 <p>© 2026 OCOP Sales Copilot. All rights reserved.</p>
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="hover:text-gray-600">Điều khoản dịch vụ</a>
-                    <a href="#" class="hover:text-gray-600">Chính sách bảo mật</a>
+                    <a href="#" class="hover:text-amber-300">Điều khoản dịch vụ</a>
+                    <a href="#" class="hover:text-amber-300">Chính sách bảo mật</a>
                 </div>
             </div>
         </div>
@@ -9229,14 +9186,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     </div>
                 `;
                 reply.querySelector('p').innerHTML = formatAIMessageText(result.message);
-                if (Array.isArray(result.productIds) && result.productIds.length) {
-                    const draftLink = document.createElement('a');
-                    const draftIds = result.combo && (!result.combos || result.combos.length <= 1) ? result.combo.items.map(item => item.id) : result.productIds.length === 1 ? result.productIds : [];
-                    draftLink.href = 'draft-order.html' + (draftIds.length ? '?products=' + draftIds.join(',') : '');
-                    draftLink.className = 'inline-flex mt-2 rounded-xl bg-emerald-50 px-3 py-2 font-bold text-emerald-800';
-                    draftLink.textContent = requestLanguage === 'en' ? 'Create a draft order →' : 'Tạo đơn nháp →';
-                    reply.querySelector('p').after(draftLink);
-                }
 
                 const chatSpeakBtn = reply.querySelector('.btn-chat-speak');
                 if (chatSpeakBtn) {
@@ -9296,22 +9245,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             ? 'Prices and product information are from the current catalogue.'
                             : 'Giá và thông tin được lấy từ danh mục hiện tại.'
                     );
-                    if (isAIOrderRequest(text)) {
-                        const orderButton = document.createElement('button');
-                        orderButton.type = 'button';
-                        orderButton.className = 'w-full rounded-lg bg-amber-500 px-3 py-2 text-xs font-extrabold text-ocopGreen hover:bg-amber-400';
-                        orderButton.textContent = currentLanguage === 'en'
-                            ? 'Add selected products to cart to continue'
-                            : 'Thêm sản phẩm đã chọn vào giỏ để tiếp tục đặt hàng';
-                        orderButton.addEventListener('click', () => addProductsToCart(recommendedProducts.map(product => product.id)));
-                        recommendationsEl.append(orderButton);
-                        const orderNote = document.createElement('p');
-                        orderNote.className = 'text-[10px] text-gray-500';
-                        orderNote.textContent = currentLanguage === 'en'
-                            ? 'Your order is not submitted or paid until you review the cart and complete checkout.'
-                            : 'Đơn chưa được gửi hoặc thanh toán cho đến khi anh/chị kiểm tra giỏ hàng và hoàn tất bước thanh toán.';
-                        recommendationsEl.append(orderNote);
-                    }
                 }
                 if (result.handoffAdmin) {
                     const handoffButton = document.createElement('button');
@@ -10254,6 +10187,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     grossRevenue: totalAmount,
                     cogs: Math.round(totalAmount * 0.62),
                     opex: Math.round(totalAmount * 0.075),
+                    chmCommission: Math.round(totalAmount * 0.07),
                     netProfit: Math.round(totalAmount * 0.235),
                     province: 'Toàn quốc',
                     products: (cart || []).map(c => ({ id: c.id, name: c.name, quantity: c.quantity, price: c.price }))
@@ -11330,44 +11264,44 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         const englishUiText = {
-            'i18n-intro-badge': 'OCOP Shopping Assistant • 63 Provinces • Curated Specialties',
-            'i18n-intro-skip': 'Enter the shop (Esc)',
-            'i18n-intro-title1': 'A taste of Vietnam, your way',
-            'i18n-intro-title2': '63 PROVINCES • CURATED OCOP SPECIALTIES',
-            'i18n-intro-desc': 'Explore regional specialties, compare product details and listed prices, then find a fitting idea with help from the shopping assistant.',
-            'i18n-intro-award': 'VIETNAMESE FLAVORS • EXPLORE THE OCOP COLLECTION',
+            'i18n-intro-badge': 'Digital OS & AI Financial Management Platform',
+            'i18n-intro-skip': 'Management Dashboard ->',
+            'i18n-intro-title1': 'Digital OCOP Map, Inspiring Vietnamese Heritage',
+            'i18n-intro-title2': '63 PROVINCES • DIGITIZED SHOWROOMS • AI GOVERNANCE',
+            'i18n-intro-desc': 'Explore regional specialties, compare financial metrics and gross revenue, and coordinate O2O showroom points of sale with AI Copilot.',
+            'i18n-intro-award': '✨ NATIONAL OCOP DIGITAL COORDINATION & BRANDING PLATFORM ✨',
             'i18n-intro-pillar1': '63 Provinces Across Vietnam',
             'i18n-intro-pillar1-sub': 'Product details and listed prices',
             'i18n-intro-pillar2': 'Specialties from Vietnam',
             'i18n-intro-pillar2-sub': 'Regional flavors and traditions',
-            'i18n-intro-pillar3': 'AI shopping advice',
-            'i18n-intro-pillar3-sub': 'Suggestions from the product catalog',
-            'i18n-intro-pillar4': 'VietQR payment',
-            'i18n-intro-pillar4-sub': 'Review your order before payment',
+            'i18n-intro-pillar3': '24/7 AI Dispatch Copilot',
+            'i18n-intro-pillar3-sub': 'Real-time supply chain coordination and O2O routing',
+            'i18n-intro-pillar4': 'AI Financial Engine',
+            'i18n-intro-pillar4-sub': 'Automated revenue, COGS, and CHM commission reconciliation',
             'i18n-ticker1': '🌾 Explore specialties from across Vietnam',
-            'i18n-ticker2': '🎁 Gift ideas tailored to the occasion and budget',
-            'i18n-ticker3': '🍵 Tea, produce, snacks, and regional seasonings',
-            'i18n-ticker4': '🚚 Shipping offers depend on order conditions',
+            'i18n-ticker2': '📊 Real-time O2O financial analysis & gross margins',
+            'i18n-ticker3': '🍵 Authentic 4-5 star OCOP certified specialties',
+            'i18n-ticker4': '🔄 Automated 7% CHM commission reconciliation',
             'i18n-ticker1-copy': '🌾 Explore specialties from across Vietnam',
-            'i18n-ticker2-copy': '🎁 Gift ideas tailored to the occasion and budget',
-            'i18n-ticker3-copy': '🍵 Tea, produce, snacks, and regional seasonings',
-            'i18n-ticker4-copy': '🚚 Shipping offers depend on order conditions',
-            'i18n-intro-region-header': 'Explore Vietnam specialties on the map',
+            'i18n-ticker2-copy': '📊 Real-time O2O financial analysis & gross margins',
+            'i18n-ticker3-copy': '🍵 Authentic 4-5 star OCOP certified specialties',
+            'i18n-ticker4-copy': '🔄 Automated 7% CHM commission reconciliation',
+            'i18n-intro-region-header': 'EXPLORE SPECIALTIES ON VIETNAM MAP',
             'i18n-intro-region-caption': 'Select a province to filter matching OCOP specialties',
             'province-map-select-label': 'Quickly select a province or city',
             'province-map-select-placeholder': 'Select a province or city...',
             'province-map-clear': 'Clear selection',
-            'i18n-intro-btn-enter': 'Explore 63 provinces specialties',
-            'i18n-intro-quick-header': 'What are you looking for?',
-            'i18n-intro-quick-gift': 'Gift suggestions',
-            'i18n-intro-quick-tea': 'Tea collection',
-            'i18n-intro-quick-ai': 'AI shopping advice',
-            'i18n-intro-quick-admin': 'Customer support',
-            'i18n-top-guarantee': 'Browse Vietnam’s OCOP specialties',
-            'i18n-top-shipping': 'Shipping offers depend on order conditions',
-            'i18n-top-hotline': 'Product advice & support:',
-            'i18n-top-intro': 'Explore our specialties',
-            'i18n-top-centers': 'OCOP support',
+            'i18n-intro-btn-enter': 'Explore 252 Specialties Across 63 Provinces',
+            'i18n-intro-quick-header': 'Fast Dispatch Subsystems:',
+            'i18n-intro-quick-gift': 'Heritage Premium Gifts',
+            'i18n-intro-quick-tea': '5★ Tea & Herbs',
+            'i18n-intro-quick-ai': 'AI Financial Copilot',
+            'i18n-intro-quick-admin': 'O2O Showroom Map',
+            'i18n-top-guarantee': 'National OCOP Specialty Platform',
+            'i18n-top-shipping': 'Decentralized O2O Showroom Delivery',
+            'i18n-top-hotline': 'Cooperative Support Hotline:',
+            'i18n-top-intro': 'Digital Operating System',
+            'i18n-top-centers': 'OCOP Showrooms',
             'i18n-top-specs': '63 Provinces Specialties',
             'i18n-subbrand': 'Vietnamese OCOP specialties',
             'i18n-nav-home': 'Home',
@@ -11378,7 +11312,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             'i18n-nav-challenge': 'Challenge Project 2026',
             'i18n-nav-contact': 'Contact & support',
             'i18n-nav-intro-text': 'Explore OCOP',
-            'i18n-support-label': 'Shopping advice',
+            'i18n-support-label': 'Financial Copilot',
             'i18n-hero-badge': 'Explore Vietnam’s OCOP specialty catalog',
             'i18n-hero-title1': 'Discover the Best of',
             'i18n-hero-title2': 'Vietnamese Specialties',
@@ -11387,15 +11321,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             'i18n-stat2': 'Regional products',
             'i18n-stat3': 'OCOP star ratings',
             'i18n-btn-explore': 'Shop OCOP specialties',
-            'i18n-btn-support': 'Get gift advice',
+            'i18n-btn-support': 'AI Financial Engine',
             'i18n-hero-prodname': 'Trà khổ qua rừng túi lọc Hiệp Vân - Long Khanh, Dong Nai Specialty (OCOP 4-Star)',
             'i18n-cat-header': 'Ecosystem Coordination Filters',
             'i18n-cat-all': 'All categories',
-            'i18n-cat-tea': 'Herbal & Traditional Medicine',
-            'i18n-cat-gift': 'Heritage Premium Gifts',
-            'i18n-cat-food': 'Deep-Processed Produce',
+            'i18n-cat-tea': 'Herbs & Traditional Medicine',
+            'i18n-cat-gift': 'Premium Heritage Gifts',
+            'i18n-cat-food': 'Deep-Processed Agro-Products',
             'i18n-cat-snack': 'Indigenous Food Specialties',
-            'i18n-cat-spice': 'Terroir Spices & Seasonings',
+            'i18n-cat-spice': 'Terroir Spices & Aromatics',
             'i18n-cat-5star': 'OCOP 5-star products',
             'i18n-cat-4star': 'OCOP 4-star products',
             'i18n-no-prod': 'No matching products found.',
@@ -11780,32 +11714,32 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: '風土の味わいと伝統工芸'
             },
             'i18n-intro-pillar3': {
-                vi: 'Tư Vấn Bán Hàng Bằng AI',
-                en: 'AI Shopping Advice',
-                zh: 'AI 智能导购咨询',
-                ko: 'AI 쇼핑 어드바이저',
-                ja: 'AIショッピング相談'
+                vi: '24/7 AI Dispatch Copilot',
+                en: '24/7 AI Dispatch Copilot',
+                zh: '24/7 AI 调度 Copilot',
+                ko: '24/7 AI 디스패치 코파일럿',
+                ja: '24/7 AI 配車・配分コパイロット'
             },
             'i18n-intro-pillar3-sub': {
-                vi: 'Gợi ý thông minh từ danh mục',
-                en: 'Suggestions from the product catalog',
-                zh: '基于产品目录智能匹配',
-                ko: '카탈로그 맞춤 추천',
-                ja: 'カタログから最適な提案'
+                vi: 'Điều phối showroom O2O và lộ trình điểm bán',
+                en: 'Real-time supply chain coordination and O2O routing',
+                zh: '实时供应链调度与 O2O 展厅路线规划',
+                ko: '실시간 공급망 조정 및 O2O 쇼룸 라우팅',
+                ja: 'リアルタイムサプライチェーン調整＆O2O配送ルート'
             },
             'i18n-intro-pillar4': {
-                vi: 'Thanh Toán VietQR & Đối Soát',
-                en: 'VietQR Payment',
-                zh: 'VietQR 支付与对账',
-                ko: 'VietQR 결제 및 정산',
-                ja: 'VietQR決済＆照合'
+                vi: 'AI Financial Engine',
+                en: 'AI Financial Engine',
+                zh: 'AI 财务引擎',
+                ko: 'AI 파이낸셜 엔진',
+                ja: 'AIファイナンシャルエンジン'
             },
             'i18n-intro-pillar4-sub': {
-                vi: 'Kiểm tra đơn trước khi thanh toán',
-                en: 'Review your order before payment',
-                zh: '付款前快速核对订单',
-                ko: '결제 전 주문 확인',
-                ja: '決済前の注文確認'
+                vi: 'Tự động tính toán doanh thu, COGS & đối soát hoa hồng CHM',
+                en: 'Automated revenue, COGS, and CHM commission reconciliation',
+                zh: '自动化营收、销货成本与 CHM 佣金结算',
+                ko: '매출, COGS 및 CHM 수수료 자동 정산',
+                ja: '売上、COGSおよびCHM手数料の自動照合'
             },
 
             // Thanh thông báo Top Bar
@@ -12363,33 +12297,31 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             window.chatDictation?.refreshLabels();
 
             const chatMessages = document.getElementById('ai-chat-messages');
-            if (chatMessages && chatMessages.children.length === 1) {
-                const greetings = {
-                    vi: 'Xin chào anh/chị! Trợ lý AI Copilot sẵn sàng phân tích doanh thu, chiết khấu và dòng tiền đặc sản.',
-                    en: 'Hello! OCOP Copilot AI is ready to analyze store revenue, COGS, and cash flow.',
-                    zh: '您好！OCOP 智能助手已就绪，可为您实时分析店铺营收、成本与现金流。',
-                    ko: '안녕하세요! OCOP 코파일럿 AI가 매장 매출, COGS 및 현금 흐름을 분석할 준비가 되었습니다.',
-                    ja: 'こんにちは！OCOPコパイロットAIが店舗売上、COGS、キャッシュフローを分析します。'
-                };
-                const guidances = {
-                    vi: 'Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.',
-                    en: 'Enter specialty, province (prioritizing Dong Nai), or select financial simulation below.',
-                    zh: '请输入特产名称、省份（优先同奈）或在下方选择财务模拟。',
-                    ko: '특산물 이름, 성·시(동나이 우선)를 입력하거나 아래 재무 시뮬레이션을 선택하세요.',
-                    ja: '特産品名、省名（ドンナイ優先）を入力するか、下の財務シミュレーションを選択してください。'
-                };
-                const gEl = document.getElementById('chat-greeting');
-                if (gEl) gEl.textContent = greetings[currentLanguage] || greetings.vi;
-                const guidEl = document.getElementById('chat-guidance');
-                if (guidEl) guidEl.textContent = guidances[currentLanguage] || guidances.vi;
-            }
+            const greetings = {
+                vi: 'Xin chào! Trợ lý AI Copilot sẵn sàng định vị Showroom O2O và phân tích doanh thu, tiền lời, chiết khấu (CHM).',
+                en: 'Hello! AI Copilot is ready to locate O2O Showrooms and analyze gross revenue, net profit, and CHM commissions.',
+                zh: '您好！AI Copilot 随时为您定位 O2O 展厅并分析总营收、净利润与 CHM 佣金分成。',
+                ko: '안녕하세요! AI 코파일럿이 O2O 쇼룸 위치 확인 및 총매출, 순이익, CHM 수수료 정산을 분석합니다.',
+                ja: 'こんにちは！AI CopilotがO2Oショールームの位置確認と総売上・純利益・CHM手数料の分析を行います。'
+            };
+            const guidances = {
+                vi: 'Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.',
+                en: 'Enter specialty, province (prioritizing Dong Nai), or select financial simulation below.',
+                zh: '请输入特产名称、省份（优先同奈）或在下方选择财务模拟。',
+                ko: '특산물 이름, 성·시(동나이 우선)를 입력하거나 아래 재무 시뮬레이션을 선택하세요.',
+                ja: '特産品名、省名（ドンナイ優先）を入力するか、下の財務シミュレーションを選択してください。'
+            };
+            const gEl = document.getElementById('chat-greeting');
+            if (gEl) gEl.textContent = greetings[currentLanguage] || greetings.vi;
+            const guidEl = document.getElementById('chat-guidance');
+            if (guidEl) guidEl.textContent = guidances[currentLanguage] || guidances.vi;
 
             const promptButtons = document.querySelectorAll('#ai-chat-quick-replies .chat-prompt');
             const quickPrompts = {
                 vi: [
-                    ['⚡ Biên lợi nhuận: Đồng Nai', 'Phân tích biên lợi nhuận trà khổ qua rừng Đồng Nai'],
-                    ['📊 Sản lượng số hóa: Hà Nội', 'Kiểm tra sản lượng số hóa bưởi Diễn / bưởi Hà Nội'],
-                    ['🔄 Đối soát chiết khấu (CHM)', 'Đối soát chiết khấu 10% hoa hồng trên hệ thống CHM']
+                    ['⚡ Biên lợi nhuận: Đồng Nai', 'Phân tích chi tiết biên lợi nhuận gộp và ròng của Trà khổ qua rừng túi lọc Hiệp Vân tỉnh Đồng Nai'],
+                    ['📊 Sản lượng số hóa: Hà Nội', 'Cập nhật sản lượng phân bổ số hóa cho Bưởi Diễn Hà Nội'],
+                    ['🔄 Đối soát chiết khấu (CHM)', 'Đối soát chiết khấu 10% hoa hồng kết nối CHM']
                 ],
                 en: [
                     ['⚡ Margin: Dong Nai Bitter Melon Tea', 'Detail the gross & net margin for Dong Nai forest bitter melon tea'],
