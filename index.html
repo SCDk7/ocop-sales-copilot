@@ -6260,9 +6260,9 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 addButton.type = 'button';
                 addButton.className = 'province-product-add-button rounded-lg bg-[#0f382c] px-2.5 py-2 text-[10px] font-extrabold text-white transition hover:bg-[#165b46]';
                 addButton.setAttribute('aria-label', currentLanguage === 'en'
-                    ? `Add ${getProductName(product)} to cart`
-                    : `Thêm ${getProductName(product)} vào giỏ hàng`);
-                addButton.textContent = currentLanguage === 'en' ? 'Add' : 'Thêm';
+                    ? `Reconcile ${getProductName(product)}`
+                    : `Đối soát ${getProductName(product)}`);
+                addButton.textContent = currentLanguage === 'en' ? 'Reconcile' : 'Đối soát';
                 addButton.addEventListener('click', () => addToCart(product.id));
 
                 card.append(detailsButton, addButton);
@@ -7450,7 +7450,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <img src="admin1.jpg" alt="Admin 1" class="w-8 h-8 rounded-lg object-cover border border-blue-200 flex-shrink-0 group-hover:scale-105 transition">
                             <div class="flex-1 min-w-0">
                                 <div class="text-[11px] font-extrabold text-gray-800 group-hover:text-blue-700 truncate">Admin 1 - Hoàng Bình</div>
-                                <div class="text-[9px] text-gray-500 truncate">Tư vấn đặc sản OCOP &amp; Đặt hàng</div>
+                                <div class="text-[9px] text-gray-500 truncate">Tư vấn đặc sản OCOP &amp; Điều phối O2O</div>
                             </div>
                             <span class="text-[10px] text-blue-600 font-bold px-2 py-0.5 rounded-md bg-blue-50 group-hover:bg-blue-600 group-hover:text-white transition flex-shrink-0">Inbox FB</span>
                         </a>
@@ -7459,7 +7459,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <img src="admin2.jpg" alt="Admin 2" class="w-8 h-8 rounded-lg object-cover border border-blue-200 flex-shrink-0 group-hover:scale-105 transition">
                             <div class="flex-1 min-w-0">
                                 <div class="text-[11px] font-extrabold text-gray-800 group-hover:text-blue-700 truncate">Admin 2 - Thảo Nguyên</div>
-                                <div class="text-[9px] text-gray-500 truncate">Hỗ trợ đơn hàng &amp; Vận chuyển COD</div>
+                                <div class="text-[9px] text-gray-500 truncate">Hỗ trợ đối soát dòng tiền &amp; Logistics 63 tỉnh thành</div>
                             </div>
                             <span class="text-[10px] text-blue-600 font-bold px-2 py-0.5 rounded-md bg-blue-50 group-hover:bg-blue-600 group-hover:text-white transition flex-shrink-0">Inbox FB</span>
                         </a>
@@ -7468,7 +7468,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <img src="admin3.jpg" alt="Admin 3" class="w-8 h-8 rounded-lg object-cover border border-blue-200 flex-shrink-0 group-hover:scale-105 transition">
                             <div class="flex-1 min-w-0">
                                 <div class="text-[11px] font-extrabold text-gray-800 group-hover:text-blue-700 truncate">Admin 3 - Phúc Nguyễn</div>
-                                <div class="text-[9px] text-gray-500 truncate">Báo giá sỉ &amp; Hộp quà doanh nghiệp</div>
+                                <div class="text-[9px] text-gray-500 truncate">Điều phối chuỗi cung ứng &amp; Hộp quà doanh nghiệp</div>
                             </div>
                             <span class="text-[10px] text-blue-600 font-bold px-2 py-0.5 rounded-md bg-blue-50 group-hover:bg-blue-600 group-hover:text-white transition flex-shrink-0">Inbox FB</span>
                         </a>
@@ -7477,7 +7477,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <img src="admin4.jpg" alt="Admin 4" class="w-8 h-8 rounded-lg object-cover border border-blue-200 flex-shrink-0 group-hover:scale-105 transition">
                             <div class="flex-1 min-w-0">
                                 <div class="text-[11px] font-extrabold text-gray-800 group-hover:text-blue-700 truncate">Admin 4 - Thiện Bảo</div>
-                                <div class="text-[9px] text-emerald-700 font-bold truncate">Chăm sóc khách hàng &amp; Đổi trả 1-1</div>
+                                <div class="text-[9px] text-emerald-700 font-bold truncate">Chăm sóc đối tác HTX &amp; Hỗ trợ kỹ thuật AI</div>
                             </div>
                             <span class="text-[10px] text-blue-600 font-bold px-2 py-0.5 rounded-md bg-blue-50 group-hover:bg-blue-600 group-hover:text-white transition flex-shrink-0">Inbox FB</span>
                         </a>
@@ -7661,22 +7661,22 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 : `🎁 Dạ, OCOP Copilot trân trọng thiết kế **${comboTitle}** theo đúng yêu cầu và ngân sách của Anh/Chị:`;
 
             let totalText = english
-                ? `💰 **Total Combo Value**: **${finalTotal.toLocaleString("vi-VN")}₫**`
-                : `💰 **Tổng giá trị combo**: **${finalTotal.toLocaleString("vi-VN")}₫**`;
+                ? `💰 **Coordinated Combo Gross Volume**: **${finalTotal.toLocaleString("vi-VN")}₫**`
+                : `💰 **Quy mô định mức điều phối combo**: **${finalTotal.toLocaleString("vi-VN")}₫**`;
 
             let packagingNote = english
-                ? `✨ **Gift Presentation & Services Included**:\n• Packaged in a premium lacquer/hard wooden gift box with elegant ribbons & personalized greeting card.\n• 100% genuine cooperative products with origin traceability QR code.\n• Free nationwide express shipping with shockproof fragile packaging.\n• Corporate VAT invoices available upon request.`
-                : `✨ **Quy cách đóng gói & Dịch vụ đi kèm**:\n• Đóng hộp quà sang trọng (hộp rương gỗ/sơn mài nẹp nhung cao cấp), thắt nơ lụa & thiệp viết tay theo yêu cầu.\n• 100% sản phẩm đạt chứng nhận OCOP chuẩn sao, có tem QR Code truy xuất nguồn gốc tận nơi sản xuất.\n• Miễn phí vận chuyển hỏa tốc toàn quốc, đóng thùng xốp chống va đập tiêu chuẩn.\n• Hỗ trợ xuất hóa đơn VAT và in/khắc laser logo doanh nghiệp cho đơn quà tặng.`;
+                ? `✨ **Supply Chain Standard & Fulfillment Specifications**:\n• Packaged in official cultural heritage standard box with tamper-evident seal.\n• 100% genuine cooperative products with origin traceability QR code.\n• Cold-chain multi-province express logistics.\n• Transparent Smart Contract settlement and VAT compliance.`
+                : `✨ **Tiêu chuẩn số hóa & Quy chuẩn chuỗi cung ứng**:\n• Đóng hộp quà di sản chuẩn hóa, tem QR Code truy xuất nguồn gốc tận nơi sản xuất HTX.\n• Kết nối vận chuyển tối ưu logistics liên tỉnh 63 tỉnh thành.\n• Tự động đối soát hoa hồng 7% CHM và xuất báo cáo tài chính qua Smart Contract.`;
 
             let cta = english
-                ? `👉 You can click the product cards below to add the combo directly to your cart, or message our Admin for custom corporate gift sets!`
-                : `👉 Anh/Chị có thể bấm trực tiếp các thẻ sản phẩm bên dưới để thêm ngay vào giỏ hàng hoặc inbox Admin để tùy chỉnh số lượng nhé!`;
+                ? `👉 You can click the cards below to analyze cash flows or locate official O2O Showrooms!`
+                : `👉 Anh/Chị có thể bấm trực tiếp các thẻ sản phẩm bên dưới để phân tích dòng tiền đối soát hoặc định vị Showroom O2O nhé!`;
 
             const fullMessage = `${intro}\n\n${itemsText}\n\n${totalText}\n\n${packagingNote}\n\n${cta}`;
 
             const chips = english
-                ? ["Add combo to cart", "Adjust budget", "Corporate gift inquiry", "Hotline: 0987.654.321"]
-                : ["Thêm combo vào giỏ", "Tùy chỉnh ngân sách", "Inbox Admin 3 (Quà Tết/Doanh nghiệp)", "Hotline: 0987.654.321"];
+                ? ["Analyze combo cash flow", "Adjust budget", "Supply chain inquiry", "Hotline: 1900 888 688"]
+                : ["Phân tích dòng tiền combo", "Tùy chỉnh ngân sách", "Đối soát chuỗi cung ứng", "Hotline: 1900 888 688"];
 
             return {
                 text_response: fullMessage,
@@ -8316,7 +8316,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                           "• 🍵 **Chè Shan Tuyết Suối Giàng thượng hạng (5 sao)** — **1.800.000 ₫ / Hộp**\n  _Búp chè ngậm tuyết từ cây cổ thụ 100–300 năm tuổi trên non cao Yên Bái, nước vàng óng mật ong rừng, hậu ngọt sâu lan tỏa bất tận._\n\n" +
                           "• 🍵 **Trà khổ qua rừng túi lọc Hiệp Vân (Đồng Nai - OCOP 4 Sao)** — **68.000 ₫ / Hộp**\n  _Đặc sản Long Khánh từ vùng nguyên liệu chuẩn hóa, sấy lạnh khép kín giữ trọn dược chất bản địa và đồng bộ chuỗi cung ứng số._\n\n" +
                           "• 🐟 **Nước mắm Cát Hải cốt đặc biệt (5 sao)** — **400.000 ₫ / Hộp**\n  _Ủ chượp cá cơm than tươi ròng rã trên 15 tháng trong chum sành phơi nắng tự nhiên, vị mặn đượm hậu ngọt đạm cá béo ngậy._\n\n" +
-                          "👉 *Anh/Chị có thể bấm trực tiếp vào thẻ sản phẩm bên dưới để xem tem truy xuất nguồn gốc hoặc thêm vào giỏ hàng ngay nhé ạ!*",
+                          "👉 *Anh/Chị có thể bấm trực tiếp vào thẻ sản phẩm bên dưới để xem tem truy xuất nguồn gốc hoặc bấm phân tích dòng tiền đối soát nhé ạ!*",
                     productIds: pIds,
                     dynamic_chips: ["Sâm Ngọc Linh 5★", "Yến Sào Khánh Hòa 5★", "Chè Shan Tuyết 5★", "Trà khổ qua rừng Hiệp Vân"],
                     handoffAdmin: false,
@@ -8645,7 +8645,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             }).join('\n\n');
 
             const composedMessage = productBullets
-                ? `${storyIntro}\n\n${productBullets}\n\n👉 *Anh/Chị có thể bấm trực tiếp vào từng thẻ sản phẩm bên dưới để xem tem truy xuất nguồn gốc hoặc thêm vào giỏ hàng ngay nhé ạ!*`
+                ? `${storyIntro}\n\n${productBullets}\n\n👉 *Anh/Chị có thể bấm trực tiếp vào từng thẻ sản phẩm bên dưới để xem tem truy xuất nguồn gốc hoặc bấm phân tích dòng tiền đối soát nhé ạ!*`
                 : storyIntro;
 
             return {
@@ -8718,18 +8718,18 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             }
             if (/\b(giao hang|phi ship|van chuyen|freeship|mien phi ship|shipping|delivery)\b/.test(q)) {
                 return english
-                    ? 'The site currently lists nationwide shipping as free. Please confirm coverage, availability, and delivery timing when placing your order.'
-                    : 'Website hiện hiển thị miễn phí vận chuyển toàn quốc. Anh/chị vui lòng xác nhận phạm vi áp dụng và thời gian giao khi đặt hàng.';
+                    ? 'The platform coordinates nationwide cold-chain logistics across all 63 provinces. You can track supply chain routing and O2O Showroom locations.'
+                    : 'Hệ thống hỗ trợ điều phối logistics liên tỉnh 63 tỉnh thành tối ưu chi phí. Anh/chị có thể kiểm tra lộ trình chuỗi cung ứng hoặc định vị Showroom O2O gần nhất.';
             }
             if (/\b(vat|hoa don|xuat hoa don)\b/.test(q)) {
                 return english
-                    ? 'The website indicates VAT invoices are available. Provide your invoice details when ordering and confirm them with the sales team.'
-                    : 'Website có thông tin hỗ trợ hóa đơn VAT. Anh/chị vui lòng cung cấp thông tin xuất hóa đơn khi đặt hàng và xác nhận lại với bộ phận bán hàng.';
+                    ? 'The platform supports transparent VAT compliance and Smart Contract audit logs. Financial records are synced in real time.'
+                    : 'Nền tảng hỗ trợ xuất hóa đơn VAT và đối soát dữ liệu chuỗi cung ứng qua Smart Contract minh bạch, chuẩn hóa kế toán tài chính.';
             }
             if (/\b(thanh toan|vietqr|bidv|chuyen khoan|payment|pay|bank transfer)\b/.test(q)) {
                 return english
-                    ? 'The website supports VietQR via BIDV. Add items to your cart, then verify the payment amount and transfer details before confirming.'
-                    : 'Website hỗ trợ thanh toán qua VietQR BIDV. Anh/chị có thể thêm sản phẩm vào giỏ, chọn thanh toán và kiểm tra kỹ số tiền cùng nội dung chuyển khoản trước khi xác nhận.';
+                    ? 'The platform coordinates B2B2C smart settlements and 7% CHM commission reconciliation. You can analyze cash flows or locate official showrooms.'
+                    : 'Hệ thống vận hành theo mô hình điều phối B2B2C và đối soát dòng tiền hoa hồng 7% (CHM Commission). Anh/chị có thể kích hoạt phân tích dòng tiền hoặc định vị showroom thực tế.';
             }
 
             const exactProduct = products.find(product => {
@@ -8750,7 +8750,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 return renderAIProductRecommendations(
                     [exactProduct],
                     english ? 'Product details' : 'Thông tin sản phẩm anh/chị hỏi',
-                    english ? 'View the details or add this product to your cart.' : 'Anh/chị có thể xem chi tiết hoặc thêm sản phẩm vào giỏ.'
+                    english ? 'View the details, explore O2O Showroom, or analyze cash flow.' : 'Anh/chị có thể xem chi tiết điểm bán O2O hoặc bấm phân tích dòng tiền đối soát.'
                 );
             }
 
@@ -9316,8 +9316,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         Array.isArray(result.combos) ? result.combos.map(plan => plan.items.map(item => products.find(p => p.id === item.id)).filter(Boolean)) : [recommendedProducts],
                         currentLanguage === 'en' ? 'Combo ideas' : 'Gợi ý combo đặc sản',
                         currentLanguage === 'en'
-                            ? 'The total uses current catalogue prices; review the items before adding them to your cart.'
-                            : 'Tổng tiền tính theo giá danh mục hiện tại; anh/chị vui lòng kiểm tra combo trước khi thêm vào giỏ.'
+                            ? 'The metrics use current coordination data; review the items before activating dispatch.'
+                            : 'Dữ liệu tính theo thông lượng điều phối; anh/chị vui lòng kiểm tra chuỗi cung ứng trước khi phân tích dòng tiền.'
                     );
                 } else if (recommendedProducts.length) {
                     recommendationsEl.innerHTML = renderAIProductRecommendations(
@@ -9537,7 +9537,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 payment: 'Anh/chị vui lòng chưa thanh toán lại ngay. Hãy kiểm tra trạng thái giao dịch trong ứng dụng ngân hàng/ví và lưu biên lai hoặc mã giao dịch để nhân viên đối soát đơn. Không chia sẻ mật khẩu, mã PIN hay mã OTP.',
                 delivery: 'Anh/chị vui lòng kiểm tra xác nhận đơn và thông tin theo dõi vận chuyển (nếu có). Chuẩn bị mã đơn rồi liên hệ nhân viên để kiểm tra tình trạng giao và hướng xử lý. Thời gian giao có thể thay đổi nên chatbot chưa thể xác nhận ngày nhận khi chưa kiểm tra vận đơn.',
                 order: 'Chatbot hiện không truy cập được dữ liệu đơn hàng trực tiếp. Anh/chị vui lòng liên hệ nhân viên, cung cấp mã đơn và yêu cầu cần kiểm tra; nhân viên sẽ xác nhận đơn còn có thể chỉnh sửa hoặc hủy hay không.',
-                purchase: 'Anh/chị vui lòng kiểm tra các trường bắt buộc, tải lại trang và thử thêm sản phẩm vào giỏ một lần. Nếu đã gửi thanh toán, đừng thanh toán lại trước khi được đối soát. Nếu lỗi vẫn tiếp diễn, hãy liên hệ nhân viên để được hỗ trợ.'
+                purchase: 'Anh/chị vui lòng kiểm tra các trường bắt buộc, tải lại trang và thử nạp sản phẩm vào bảng phân tích dòng tiền một lần. Nếu cần đối soát thêm, hãy liên hệ nhân viên để được hỗ trợ tức thì.'
             }[issue.type];
             const contactLabel = 'Liên hệ admin trực tiếp';
             return `<p>${escapeAIHtml(guidance)}</p><button onclick="connectCustomerToAdmin()" class="rounded-lg bg-ocopGreen px-3 py-2 text-[10px] font-bold text-white hover:bg-ocopGreenLight">${contactLabel}</button>`;
@@ -10358,8 +10358,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${currentLanguage === 'en' ? `Remove ${getProductName(p)} from favorites` : `Bỏ ${getProductName(p)} khỏi yêu thích`}" title="${currentLanguage === 'en' ? 'Remove from favorites' : 'Bỏ yêu thích'}" class="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-300 bg-amber-50 text-amber-700 transition hover:bg-amber-100 cursor-pointer">
                             <i class="fa-solid fa-bookmark" aria-hidden="true"></i>
                         </button>
-                        <button type="button" onclick="addToCart(${p.id})" aria-label="${currentLanguage === 'en' ? `Add ${getProductName(p)} to cart` : `Thêm ${getProductName(p)} vào giỏ hàng`}" title="${currentLanguage === 'en' ? 'Add to cart' : 'Thêm vào giỏ'}" class="bg-ocopGreen text-white p-2 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition cursor-pointer">
-                            <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                        <button type="button" onclick="addToCart(${p.id})" aria-label="${currentLanguage === 'en' ? `Reconcile ${getProductName(p)}` : `Đối soát ${getProductName(p)}`}" title="${currentLanguage === 'en' ? 'Reconcile cash flow' : 'Phân tích dòng tiền'}" class="bg-ocopGreen text-white p-2 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition cursor-pointer">
+                            <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
