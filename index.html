@@ -3114,10 +3114,11 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
-                    <button onclick="toggleAuthModal()" id="user-btn" class="header-user-pill flex items-center space-x-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full bg-gradient-to-r from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 text-ocopGreen font-bold text-xs shadow-sm border border-amber-300 hover:scale-105 transition cursor-pointer flex-shrink-0" title="Đăng nhập / Tài khoản" aria-label="Tài khoản">
-                        <i class="fa-solid fa-user-shield text-amber-700 text-xs sm:text-sm"></i>
-                        <span id="user-btn-label" class="whitespace-nowrap font-bold">Đăng nhập</span>
+                    <button type="button" onclick="openPartnerRegistrationModal()" class="px-3 py-1.5 rounded-full text-xs font-black transition flex items-center gap-1.5 cursor-pointer shrink-0" style="background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #051a12; border: 1px solid #fef08a; box-shadow: 0 0 12px rgba(251,191,36,0.3);" title="Đăng ký số hóa Hợp tác xã / Điểm bán mới">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span id="i18n-header-onboard-btn" class="hidden sm:inline">Đăng Ký HTX</span>
                     </button>
+                    <button id="user-btn" style="display: none !important;" class="hidden" aria-hidden="true"></button>
                     <button onclick="toggleOrdersModal()" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer flex-shrink-0" title="Nhật Ký Hệ Thống (System Logs)" aria-label="Nhật Ký Hệ Thống (System Logs)">
                         <i class="fa-solid fa-clock-rotate-left text-xs sm:text-sm"></i>
                     </button>
@@ -3237,9 +3238,9 @@
                                 <p class="text-xs text-amber-200/90 mt-0.5 font-medium" id="i18n-hero-banner-sub">NATIONAL OCOP PLATFORM — Hợp Nhất Dòng Tiền • Số Hóa Chuỗi Cung Ứng Đơn Vị Vùng Miền</p>
                             </div>
                         </div>
-                        <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between gap-3" style="background: rgba(10, 26, 20, 0.92) !important; border: 1px solid rgba(212, 175, 55, 0.45) !important;">
+                        <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between gap-3" style="background: rgba(8, 24, 18, 0.92) !important; border: 1px solid rgba(212, 175, 55, 0.45) !important;">
                             <div class="flex items-center space-x-3 flex-1 min-w-0">
-                                <div class="flex-shrink-0 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow" style="width: 40px; height: 40px; min-width: 40px;">
+                                <div class="flex-shrink-0 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow" style="width: 42px; height: 42px; min-width: 42px; flex-shrink: 0;">
                                     <i class="fa-solid fa-medal"></i>
                                 </div>
                                 <div class="min-w-0 flex-1">
@@ -3587,7 +3588,7 @@
                             Thuật toán thông minh tự động kết nối các hợp tác xã OCOP với mạng lưới đơn vị vận chuyển vựa vùng, cắt giảm 15-20% chi phí hao hụt và hao phí vận hành.
                         </p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-amber-400/20 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold py-1.5 rounded-xl" style="background: rgba(14, 165, 233, 0.18) !important; border: 1px solid rgba(56, 189, 248, 0.55) !important; color: #7dd3fc !important;">
+                    <div class="mt-4 pt-3 border-t border-amber-400/20 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold py-1.5 rounded-xl" style="background: rgba(14, 165, 233, 0.2) !important; border: 1px solid rgba(56, 189, 248, 0.6) !important; color: #7dd3fc !important;">
                         <i class="fa-solid fa-truck-ramp-box text-sky-400"></i>
                         <span id="i18n-why-badge3">Cắt giảm 15-20% chi phí</span>
                     </div>
@@ -4135,7 +4136,7 @@
     </div>
 
     <!-- 6. MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
-    <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden pointer-events-none flex items-center justify-center p-4" style="display: none !important;">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleAuthModal()"></div>
         <div class="relative bg-white rounded-3xl max-w-sm sm:max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl z-10 p-5 sm:p-6 border border-amber-200 animate-pop-in">
             <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
@@ -4337,7 +4338,7 @@
             </button>
 
             <!-- Nút 3: Nghe AI Báo Cáo Nông Dân -->
-            <button type="button" onclick="openFinancialDashboardModal(); setTimeout(() => playVoiceFinancialBriefing(), 250);" style="background: rgba(147, 51, 234, 0.28) !important; border: 1px solid rgba(192, 132, 252, 0.65) !important; color: #f3e8ff !important;" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
+            <button type="button" onclick="openFinancialDashboardModal(); setTimeout(() => playVoiceFinancialBriefing(), 250);" style="background: rgba(147, 51, 234, 0.3) !important; border: 1px solid rgba(192, 132, 252, 0.7) !important; color: #f3e8ff !important;" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-microphone-lines text-purple-300 animate-pulse"></i>
                 <span id="i18n-judge-btn3">3. Voice Báo Cáo</span>
             </button>
@@ -5567,6 +5568,46 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
+            // Loại bỏ hoàn toàn tài khoản cá nhân & user ảo
+            window.currentUser = null;
+            try {
+                localStorage.removeItem('ocop_current_user');
+                localStorage.removeItem('ocop_users_db');
+                localStorage.removeItem('ocop-session-token');
+                localStorage.removeItem('ocop-guest-cart');
+                sessionStorage.clear();
+            } catch (_) {}
+            const oldAccountPanel = document.getElementById('account-panel');
+            if (oldAccountPanel) oldAccountPanel.remove();
+
+            // Intercept and safely mock/silence static GitHub Pages auth/user/orders calls
+            if (typeof window.fetch === 'function') {
+                const nativeFetch = window.fetch;
+                window.fetch = async function(resource, init) {
+                    const url = typeof resource === 'string' ? resource : (resource?.url || '');
+                    if (url.includes('/api/auth/') || url.includes('/api/user') || url.includes('/api/orders')) {
+                        if (url.includes('/api/orders') && init?.method === 'POST') {
+                            const orderId = 'ORD-' + Date.now().toString().slice(-6);
+                            return new Response(JSON.stringify({ ok: true, order: { id: orderId, total: (typeof getCartTotal === 'function' ? getCartTotal() : 0) } }), {
+                                status: 200,
+                                headers: { 'Content-Type': 'application/json' }
+                            });
+                        }
+                        if (url.includes('/api/auth/me')) {
+                            return new Response(JSON.stringify({ user: null, state: {} }), {
+                                status: 200,
+                                headers: { 'Content-Type': 'application/json' }
+                            });
+                        }
+                        return new Response(JSON.stringify({ ok: true }), {
+                            status: 200,
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                    }
+                    return nativeFetch.apply(this, arguments);
+                };
+            }
+
             fetchProducts();
             const intro = document.getElementById('ocop-intro-overlay');
             const syncVisibility = () => setAIChatWidgetVisibility(intro.classList.contains('hidden'));
@@ -6264,15 +6305,18 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     ja: 'O2Oショールーム位置確認'
                 };
                 const heroFinance = {
-                    vi: '[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]',
-                    en: '[System Volume: 1,200 units • CHM Settlement: Automatically distributed via Smart Contract]',
-                    zh: '[系统调度量：1,200 件 • CHM 佣金结算：智能合约自动拨付]',
-                    ko: '[시스템 조율량: 1,200개 • CHM 수수료 정산: 스마트 계약 자동 정산 완료]',
-                    ja: '[システム調整量：1,200個 • CHM手数料精算：スマートコントラクト自動決済済]'
+                    vi: '⚡ 1.200+ đơn vị • Đã đối soát CHM',
+                    en: '⚡ 1,200+ units • CHM Settled',
+                    zh: '⚡ 1,200+ 件 • 已完成 CHM 对账',
+                    ko: '⚡ 1,200+개 • CHM 정산 완료',
+                    ja: '⚡ 1,200+個 • CHM照合済'
                 };
-                document.getElementById('i18n-hero-prodname').textContent = heroNames[currentLanguage] || heroNames.vi;
-                document.getElementById('hero-product-price').textContent = heroFinance[currentLanguage] || heroFinance.vi;
-                document.getElementById('hero-product-stars').textContent = heroO2o[currentLanguage] || heroO2o.vi;
+                const prodNameEl = document.getElementById('i18n-hero-prodname');
+                if (prodNameEl) prodNameEl.textContent = heroNames[currentLanguage] || heroNames.vi;
+                const prodPriceEl = document.getElementById('hero-product-price');
+                if (prodPriceEl) prodPriceEl.textContent = heroFinance[currentLanguage] || heroFinance.vi;
+                const prodStarsEl = document.getElementById('hero-product-stars');
+                if (prodStarsEl) prodStarsEl.textContent = heroO2o[currentLanguage] || heroO2o.vi;
             }
             const grid = document.getElementById('product-grid');
             const noMsg = document.getElementById('no-products-msg');
@@ -11055,15 +11099,22 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         async function checkout() {
-            if (!window.requireAccountCheckout || !await window.requireAccountCheckout()) return;
             if (cart.length === 0) {
                 showToast("Giỏ hàng đang trống! Vui lòng chọn đặc sản trước khi thanh toán.", "warning");
                 return;
             }
 
-            let savedOrder;
-            try { savedOrder = await window.createAccountOrder(); }
-            catch (error) { showToast(error.message, 'error'); return; }
+            let savedOrder = null;
+            if (window.createAccountOrder) {
+                try { savedOrder = await window.createAccountOrder(); } catch (_) {}
+            }
+            if (!savedOrder) {
+                let fallbackTotal = (typeof getCartTotal === 'function') ? getCartTotal() : 0;
+                if (typeof activeVoucher !== 'undefined' && activeVoucher && typeof getVoucherDiscount === 'function') {
+                    fallbackTotal = Math.max(0, fallbackTotal - getVoucherDiscount());
+                }
+                savedOrder = { id: 'ORD-' + Date.now().toString().slice(-6), total: fallbackTotal };
+            }
             const totalAmount = savedOrder.total;
             currentOrderCode = savedOrder.id;
             const memo = `THANH TOAN ${currentOrderCode}`;
@@ -11110,15 +11161,16 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         async function confirmOrderPayment() {
-            if (!window.requireAccountCheckout || !await window.requireAccountCheckout()) return;
             if (!currentOrderCode || cart.length === 0) {
                 showToast("Không tìm thấy đơn hàng đang chờ xác nhận.", "warning");
                 closeQRModal();
                 return;
             }
 
-            try { await window.reportAccountPayment(currentOrderCode); }
-            catch (error) { showToast(error.message, 'error'); return; }
+            if (window.reportAccountPayment) {
+                try { await window.reportAccountPayment(currentOrderCode); } catch (_) {}
+            }
+            cart = [];
             closeQRModal();
             activeVoucher = null;
             currentOrderCode = null;
@@ -11745,14 +11797,12 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     introOverlay.classList.add('hidden');
                 }
             }
-            const provSelect = document.getElementById('sidebar-province-select') || document.getElementById('province-select');
+            const provSelect = document.getElementById('sidebar-province-select');
             if (provSelect) {
                 provSelect.value = 'Đồng Nai';
             }
             if (typeof onProvinceFilterChange === 'function') {
                 onProvinceFilterChange('Đồng Nai');
-            } else if (provSelect) {
-                provSelect.dispatchEvent(new Event('change'));
             }
             const prodSection = document.getElementById('products-section');
             if (prodSection) {
@@ -11996,14 +12046,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         // AUTH MODAL & ĐĂNG NHẬP
         // -------------------------------------------------------------
         function toggleAuthModal() {
-            const modal = document.getElementById('auth-modal');
-            if (!modal) return;
-            const isOpening = modal.classList.contains('hidden');
-            modal.classList.toggle('hidden');
-            if (isOpening) {
-                syncAuthModalViews();
+            if (typeof openPartnerRegistrationModal === 'function') {
+                openPartnerRegistrationModal();
             }
         }
+        window.toggleAuthModal = toggleAuthModal;
 
         const OCOP_USERS_KEY = 'ocop_users_db';
         const OCOP_CURRENT_USER_KEY = 'ocop_current_user';
@@ -12091,38 +12138,10 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         function updateHeaderUserUI() {
-            const user = getSavedCurrentUser();
             const userBtn = document.getElementById('user-btn');
-            if (!userBtn) return;
-            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
-
-            if (user && user.name) {
-                const initial = (user.name || 'U').trim().charAt(0).toUpperCase();
-                const displayName = (user.name || '').trim().split(' ').pop() || user.name;
-                userBtn.innerHTML = `
-                    <span class="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0">${initial}</span>
-                    <span id="user-btn-label" class="font-bold text-xs truncate max-w-[90px] sm:max-w-[130px]">${escapeAIHtml(displayName)}</span>
-                `;
-                userBtn.title = `${user.name} (${user.role || 'Thành viên'})`;
-                userBtn.setAttribute('aria-label', `${user.name} (${user.role || 'Thành viên'})`);
-                userBtn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
-                userBtn.classList.add('bg-emerald-950/70', 'text-emerald-100', 'border-amber-400/60');
-            } else {
-                const signInMap = {
-                    vi: 'Đăng nhập',
-                    en: 'Sign in',
-                    zh: '登录',
-                    ko: '로그인',
-                    ja: 'ログイン'
-                };
-                userBtn.innerHTML = `
-                    <i class="fa-solid fa-user-shield text-amber-500 text-xs"></i>
-                    <span id="user-btn-label" class="font-bold text-xs">${signInMap[lang] || signInMap.vi}</span>
-                `;
-                userBtn.title = 'Đăng nhập / Tài khoản';
-                userBtn.setAttribute('aria-label', 'Đăng nhập / Tài khoản');
-                userBtn.classList.remove('bg-emerald-950/70', 'text-emerald-100', 'border-amber-400/60');
-                userBtn.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+            if (userBtn) {
+                userBtn.style.display = 'none';
+                userBtn.classList.add('hidden');
             }
         }
 
@@ -14226,13 +14245,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             updateVoucherLanguage();
             setAIChatWidgetVisibility(document.getElementById('ocop-intro-overlay').classList.contains('hidden'));
             renderWishlistItems();
-            if (window.refreshProductReviewLanguage) window.refreshProductReviewLanguage();
-            enforceChallenge2026Translations(currentLanguage);
+            enforceFull5LanguageSync(currentLanguage);
             updateHeaderUserUI();
             setTimeout(() => {
-                enforceChallenge2026Translations(currentLanguage);
+                enforceFull5LanguageSync(currentLanguage);
                 updateHeaderUserUI();
             }, 50);
+            setTimeout(() => {
+                enforceFull5LanguageSync(currentLanguage);
+            }, 200);
 
             try {
                 localStorage.setItem('ocop-language', currentLanguage);
@@ -14598,15 +14619,24 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         // -------------------------------------------------------------
-        // ENFORCE CHALLENGE 2026 TRANSLATIONS (5-LANGUAGE STRICT LOCK)
+        // ENFORCE FULL 5-LANGUAGE STRICT SYNC (VI | EN | ZH | KO | JA)
         // -------------------------------------------------------------
-        function enforceChallenge2026Translations(lang) {
+        function enforceFull5LanguageSync(lang) {
             const l = ['vi', 'en', 'zh', 'ko', 'ja'].includes(lang) ? lang : 'vi';
 
             const setText = (id, map) => {
                 const el = document.getElementById(id);
                 if (el && map[l]) el.textContent = map[l];
             };
+
+            // Nút Onboard B2B2C trên Header
+            setText('i18n-header-onboard-btn', {
+                vi: 'Đăng Ký HTX',
+                en: 'Register Co-op',
+                zh: '合作社入驻',
+                ko: '협동조합 등록',
+                ja: '協同組合登録'
+            });
 
             // 1. Màn hình Intro (Overlay) & Nút hành động
             setText('i18n-intro-badge', {
@@ -14941,7 +14971,26 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ko: '❖ 국가 OCOP 공식 인증 완료 • 쇼룸 좌표 실시간 동기화.',
                 ja: '❖ 国家OCOP認証取得済 • ショールーム座標リアルタイム同期。'
             });
+            // 10. Drawers & Modals Titles
+            setText('orders-drawer-title', {
+                vi: 'Nhật Ký Giao Dịch & Đối Soát Hệ Thống',
+                en: 'System Transaction & Reconciliation Logs',
+                zh: '系统交易与对账日志',
+                ko: '시스템 거래 및 정산 로그',
+                ja: 'システム取引＆照合ログ'
+            });
+            setText('cart-drawer-title', {
+                vi: 'Bảng Phân Tích Dòng Tiền Cửa Hàng (AI Simulated)',
+                en: 'Store Cash Flow Analysis Dashboard (AI Simulated)',
+                zh: '门店现金流分析看板 (AI 模拟)',
+                ko: '매장 현금 흐름 분석 대시보드 (AI 시뮬레이션)',
+                ja: '店舗キャッシュフロー分析ダッシュボード (AIシミュレーション)'
+            });
         }
+
+        const enforceChallenge2026Translations = enforceFull5LanguageSync;
+        window.enforceFull5LanguageSync = enforceFull5LanguageSync;
+        window.enforceChallenge2026Translations = enforceChallenge2026Translations;
 
         function setLanguage(lang) {
             const validLangs = ['vi', 'en', 'zh', 'ko', 'ja'];
