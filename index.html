@@ -2730,7 +2730,7 @@
     <!-- NÚT LÊN ĐẦU TRANG SIÊU MƯỢT (BACK TO TOP) -->
     <button id="back-to-top-btn" onclick="scrollToTopSmooth()" aria-label="Lên đầu trang" title="Lên đầu trang" class="fixed bottom-6 left-6 z-[999] opacity-0 pointer-events-none translate-y-6 transition-all duration-300 bg-gradient-to-r from-ocopGreen via-emerald-700 to-teal-800 text-white px-3.5 py-2.5 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 flex items-center space-x-2 border border-ocopGold/50 cursor-pointer group">
         <i class="fa-solid fa-arrow-up text-amber-300 group-hover:-translate-y-1 transition-transform"></i>
-        <span class="text-xs font-black tracking-wide hidden sm:inline">Lên đầu trang</span>
+        <span id="i18n-back-to-top" class="text-xs font-black tracking-wide hidden sm:inline">Lên đầu trang</span>
     </button>
 
     <!-- TOAST NOTIFICATION CONTAINER -->
@@ -2948,19 +2948,19 @@
                     <!-- Nút 1 (Xanh lá - Trái): ĐIỀU HƯỚNG SHOWROOM O2O -->
                     <button id="btn-intro-action-showroom" onclick="enterOcopMarket('all', () => openAllStoresModal())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white border border-emerald-400/50 shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Định vị cửa hàng vật lý và showroom O2O">
                         <i class="fa-solid fa-store text-emerald-300 text-sm group-hover:scale-110 transition-transform"></i>
-                        <span class="tracking-wide">ĐIỀU HƯỚNG SHOWROOM O2O</span>
+                        <span id="i18n-btn-intro-showroom" class="tracking-wide">ĐIỀU HƯỚNG SHOWROOM O2O</span>
                     </button>
 
                     <!-- Nút 2 (Đỏ rượu/Nâu - Giữa): QUẢN TRỊ DÒNG TIỀN AI -->
                     <button id="btn-intro-action-finance" onclick="enterOcopMarket('all', () => openFinancialDashboardModal())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-amber-700 via-rose-900 to-amber-900 hover:from-amber-600 hover:to-rose-800 text-amber-100 border border-amber-400/60 shadow-[0_0_22px_rgba(217,119,6,0.45)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Mở bảng điều khiển tài chính AI Financial Engine">
                         <i class="fa-solid fa-chart-line text-amber-300 text-sm group-hover:scale-110 transition-transform"></i>
-                        <span class="tracking-wide">QUẢN TRỊ DÒNG TIỀN AI</span>
+                        <span id="i18n-btn-intro-finance" class="tracking-wide">QUẢN TRỊ DÒNG TIỀN AI</span>
                     </button>
 
                     <!-- Nút 3 (Xanh dương - Phải): TRUY XUẤT NGUỒN GỐC & MAP -->
                     <button id="btn-intro-action-trace" onclick="enterOcopMarket('all', () => scrollToProducts())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white border border-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.35)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Xem chứng nhận 4-5 sao và bản đồ chuỗi cung ứng">
                         <i class="fa-solid fa-certificate text-cyan-300 text-sm group-hover:scale-110 transition-transform"></i>
-                        <span class="tracking-wide">TRUY XUẤT NGUỒN GỐC & MAP</span>
+                        <span id="i18n-btn-intro-trace" class="tracking-wide">TRUY XUẤT NGUỒN GỐC & MAP</span>
                     </button>
                 </div>
 
@@ -2999,7 +2999,7 @@
         <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full pt-3 border-t border-amber-400/25 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-200/70 gap-2">
             <div class="flex items-center space-x-2">
                 <i class="fa-solid fa-shield-halved text-yellow-400 text-sm"></i>
-                <span>Chứng nhận Xúc tiến Thương mại OCOP Quốc Gia số 0312461711 • Cam kết 100% chính hãng</span>
+                <span id="i18n-intro-footer-note1">Chứng nhận Xúc tiến Thương mại OCOP Quốc Gia số 0312461711 • Cam kết 100% chính hãng</span>
             </div>
             <span>Ấn phím <kbd class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-[10px]">Esc</kbd> hoặc nút Khám phá để truy cập Trung tâm Điều phối Hệ sinh thái OCOP</span>
         </div>
@@ -3220,7 +3220,7 @@
                         </button>
                         <button type="button" onclick="toggleAIChat()" class="bg-slate-900 text-amber-300 font-black px-4 sm:px-5 py-3 rounded-2xl shadow-lg hover:bg-slate-800 hover:text-white hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-amber-400/40 hover:-translate-y-0.5 cursor-pointer">
                             <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-base"></i>
-                            <span>Trợ Lý Tư Vấn Combo OCOP</span>
+                            <span id="i18n-hero-btn-copilot">Trợ Lý Tư Vấn Combo OCOP</span>
                         </button>
                     </div>
                 </div>
@@ -3236,17 +3236,17 @@
                                 <p class="text-xs text-amber-200/90 mt-0.5 font-medium" id="i18n-hero-banner-sub">NATIONAL OCOP PLATFORM — Hợp Nhất Dòng Tiền • Số Hóa Chuỗi Cung Ứng Đơn Vị Vùng Miền</p>
                             </div>
                         </div>
-                        <div class="mt-3 bg-amber-50 p-3.5 rounded-2xl border border-amber-200 flex items-center justify-between">
+                        <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between" style="background: rgba(10, 26, 20, 0.92) !important; border: 1px solid rgba(212, 175, 55, 0.45) !important;">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow">
                                     <i class="fa-solid fa-medal"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-xs text-gray-900" id="i18n-hero-prodname">Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)</h4>
-                                    <p id="hero-product-stars" class="text-[11px] text-amber-800 font-medium">Điểm Bán O2O • Định Vị</p>
+                                    <h4 class="font-bold text-xs" style="color: #fef08a !important;" id="i18n-hero-prodname">Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)</h4>
+                                    <p id="hero-product-stars" class="text-[11px] font-medium" style="color: #fbbf24 !important;">Điểm Bán O2O • Định Vị</p>
                                 </div>
                             </div>
-                            <span id="hero-product-price" class="font-extrabold text-emerald-800 text-[11px] max-w-[60%] text-right leading-tight break-words">[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]</span>
+                            <span id="hero-product-price" class="font-extrabold text-[11px] max-w-[60%] text-right leading-tight break-words" style="color: #34d399 !important;">[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]</span>
                         </div>
                     </div>
                 </div>
@@ -3378,23 +3378,23 @@
                     <div class="space-y-2 max-w-xl text-center lg:text-left">
                         <div class="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/30">
                             <i class="fa-solid fa-microchip"></i>
-                            <span>Công Nghệ Độc Quyền</span>
+                            <span id="i18n-eco-badge">Công Nghệ Độc Quyền</span>
                         </div>
-                        <h4 class="text-xl sm:text-2xl font-black text-amber-100">
+                        <h4 id="i18n-eco-title" class="text-xl sm:text-2xl font-black text-amber-100">
                             AI Financial Engine: Tự Động Hóa Quản Trị Dòng Tiền 3 Luồng
                         </h4>
-                        <p class="text-xs text-amber-200/90 leading-relaxed font-medium">
+                        <p id="i18n-eco-desc" class="text-xs text-amber-200/90 leading-relaxed font-medium">
                             Tự động đo lường <strong>Doanh thu thời gian thực</strong>, bóc tách <strong>Chi phí vốn COGS</strong> để tính <strong>Tiền lời ròng</strong> và phân bổ <strong>Chiết khấu hoa hồng minh bạch</strong> giúp giải phóng gánh nặng sổ sách cho các Hợp tác xã bản địa.
                         </p>
                     </div>
                     <div class="flex flex-wrap items-center justify-center gap-3 shrink-0">
                         <button type="button" onclick="openFinancialDashboardModal()" class="py-3 px-5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-xl hover:scale-105 transition flex items-center gap-2 cursor-pointer">
                             <i class="fa-solid fa-chart-line text-base"></i>
-                            <span>Mở Bảng Quản Trị Tài Chính AI</span>
+                            <span id="i18n-eco-btn-fin">Mở Bảng Quản Trị Tài Chính AI</span>
                         </button>
                         <button type="button" onclick="openChallengeProposalModal()" class="py-3 px-5 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-black text-xs sm:text-sm border border-amber-300/50 shadow transition flex items-center gap-2 cursor-pointer">
                             <i class="fa-solid fa-file-lines text-amber-300 text-base"></i>
-                            <span>Xem Thuyết Minh Đề Án 2026</span>
+                            <span id="i18n-eco-btn-proposal">Xem Thuyết Minh Đề Án 2026</span>
                         </button>
                     </div>
                 </div>
@@ -3480,7 +3480,7 @@
                     </div>
                     <div class="mt-4 pt-3 border-t border-amber-400/20 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-emerald-400 bg-emerald-500/10 py-1.5 rounded-xl border border-emerald-400/30">
                         <i class="fa-solid fa-certificate text-emerald-400"></i>
-                        <span>Pháp lý chuẩn 100%</span>
+                        <span id="i18n-why-badge1">Pháp lý chuẩn 100%</span>
                     </div>
                 </div>
 
@@ -3539,7 +3539,7 @@
                     </div>
                     <div class="mt-4 pt-3 border-t border-amber-400/20 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-amber-300 bg-amber-500/10 py-1.5 rounded-xl border border-amber-400/30">
                         <i class="fa-solid fa-book-open text-amber-400"></i>
-                        <span>Di sản & Văn hóa số</span>
+                        <span id="i18n-why-badge2">Di sản & Văn hóa số</span>
                     </div>
                 </div>
 
@@ -3586,9 +3586,9 @@
                             Thuật toán thông minh tự động kết nối các hợp tác xã OCOP với mạng lưới đơn vị vận chuyển vựa vùng, cắt giảm 15-20% chi phí hao hụt và hao phí vận hành.
                         </p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-amber-400/20 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-sky-400 bg-sky-500/10 py-1.5 rounded-xl border border-sky-400/30">
+                    <div class="mt-4 pt-3 border-t border-amber-400/20 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold py-1.5 rounded-xl" style="background: rgba(14, 165, 233, 0.18) !important; border: 1px solid rgba(56, 189, 248, 0.55) !important; color: #7dd3fc !important;">
                         <i class="fa-solid fa-truck-ramp-box text-sky-400"></i>
-                        <span>Cắt giảm 15-20% chi phí</span>
+                        <span id="i18n-why-badge3">Cắt giảm 15-20% chi phí</span>
                     </div>
                 </div>
 
@@ -3645,7 +3645,7 @@
                     </div>
                     <div class="mt-4 pt-3 border-t border-amber-400/20 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold text-emerald-400 bg-emerald-500/10 py-1.5 rounded-xl border border-emerald-400/30">
                         <i class="fa-solid fa-chart-line text-emerald-400"></i>
-                        <span>AI Financial Copilot 24/7</span>
+                        <span id="i18n-why-badge4">AI Financial Copilot 24/7</span>
                     </div>
                 </div>
             </div>
@@ -3694,7 +3694,7 @@
             <div class="mb-6 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-950 text-amber-200 py-2.5 px-4 shadow-md border border-amber-400/30 flex items-center gap-3">
                 <span class="flex items-center gap-1.5 bg-amber-400 text-emerald-950 font-black text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0 shadow-sm animate-pulse">
                     <i class="fa-solid fa-store text-red-600"></i>
-                    <span>ĐIỂM BÁN OCOP</span>
+                    <span id="i18n-marquee-label">ĐIỂM BÁN OCOP</span>
                 </span>
                 <div class="overflow-hidden flex-1 relative whitespace-nowrap">
                     <div class="animate-marquee-flow text-xs font-bold space-x-8 inline-flex items-center">
@@ -3729,9 +3729,9 @@
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                                 </span>
-                                <span>68 Điểm bán & HTX đang đồng bộ dòng tiền (Real-time)</span>
+                                <span id="i18n-sidebar-realtime">68 Điểm bán & HTX đang đồng bộ dòng tiền (Real-time)</span>
                             </span>
-                            <span class="text-[9px] bg-emerald-800 text-amber-300 font-black px-2 py-0.5 rounded-full uppercase tracking-wider">Trực tiếp</span>
+                            <span id="i18n-sidebar-live-badge" class="text-[9px] bg-emerald-800 text-amber-300 font-black px-2 py-0.5 rounded-full uppercase tracking-wider">Trực tiếp</span>
                         </div>
 
                         <!-- 2. HỘP LỌC NHANH 3 MIỀN (BẮC - TRUNG - NAM) -->
@@ -3739,7 +3739,7 @@
                             <div class="text-[11px] font-black text-amber-300 uppercase flex items-center justify-between">
                                 <span class="flex items-center gap-1.5">
                                     <i class="fa-solid fa-map-location-dot text-amber-400"></i>
-                                    <span>Khám Phá 3 Miền</span>
+                                    <span id="i18n-macro-region-title">Khám Phá 3 Miền</span>
                                 </span>
                                 <span id="macro-region-hint" class="text-[10px] text-slate-400 font-normal">Số sản phẩm</span>
                             </div>
@@ -3761,14 +3761,14 @@
                             <div class="text-[11px] font-black text-amber-300 uppercase flex items-center justify-between">
                                 <span class="flex items-center gap-1.5">
                                     <i class="fa-solid fa-location-dot text-amber-400"></i>
-                                    <span>Bộ Lọc 63 Tỉnh Thành</span>
+                                    <span id="i18n-sidebar-prov-title">Bộ Lọc 63 Tỉnh Thành</span>
                                 </span>
                                 <span class="text-[9px] bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">OCOP O2O</span>
                             </div>
                             <div class="relative">
                                 <label for="sidebar-province-select" class="sr-only">Lọc theo tỉnh thành</label>
                                 <select id="sidebar-province-select" onchange="onProvinceFilterChange(this.value, event)" class="w-full bg-slate-900 border border-amber-400/40 text-amber-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400 cursor-pointer shadow-inner font-bold">
-                                    <option value="">-- Tất cả 63 Tỉnh Thành --</option>
+                                    <option value="" id="i18n-opt-all-provinces">-- Tất cả 63 Tỉnh Thành --</option>
                                     <optgroup label="⭐ Tỉnh Thành Tiêu Biểu (Ưu tiên Đồng Nai)">
                                         <option value="Đồng Nai">⭐ Đồng Nai (Bưởi Tân Triều, Trà khổ qua Hiệp Vân)</option>
                                         <option value="Hà Nội">Hà Nội (Gốm Bát Tràng, Trà sen Tây Hồ)</option>
@@ -3910,11 +3910,11 @@
                         <div class="glass-panel p-4 rounded-2xl border border-amber-400/40 shadow-lg space-y-3 relative overflow-hidden bg-gradient-to-br from-slate-900/90 via-slate-950/90 to-emerald-950/90">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-400/40 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> <span>AI THIẾT KẾ GÓI QUÀ B2B & TỐI ƯU NGÂN SÁCH</span>
+                                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> <span id="i18n-b2b-box-title">AI THIẾT KẾ GÓI QUÀ B2B & TỐI ƯU NGÂN SÁCH</span>
                                 </span>
                                 <span class="text-[9px] font-black text-amber-300 uppercase bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-500/30">AI Copilot</span>
                             </div>
-                            <p class="text-[11px] text-slate-300 font-medium leading-relaxed">
+                            <p class="text-[11px] text-slate-300 font-medium leading-relaxed" id="i18n-b2b-box-desc">
                                 Chọn mức ngân sách mục tiêu, AI tự động cấu hình danh mục đặc sản OCOP tối ưu giá trị và biên lợi nhuận!
                             </p>
                             <div class="grid grid-cols-2 gap-1.5 text-[11px] font-extrabold">
@@ -3933,7 +3933,7 @@
                             </div>
                             <button type="button" onclick="toggleAIChat()" class="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs py-2 px-3 rounded-xl transition-all shadow-md hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer border border-emerald-400/50">
                                 <i class="fa-solid fa-headset text-amber-300 text-xs"></i>
-                                <span>Mở Chatbot AI Tư Vấn 24/7</span>
+                                <span id="i18n-b2b-box-btn">Mở Chatbot AI Tư Vấn 24/7</span>
                             </button>
                         </div>
                     </div>
@@ -3961,10 +3961,10 @@
                                 CƠ SỞ DỮ LIỆU CHỨNG NHẬN OCOP QUỐC GIA
                             </span>
                             <button type="button" onclick="openAllStoresModal()" class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 px-3.5 py-1.5 rounded-xl border border-yellow-200 flex items-center gap-1.5 font-black text-xs shadow-[0_0_15px_rgba(234,179,8,0.25)] hover:scale-105 active:scale-95 transition cursor-pointer">
-                                <span>🗺️ KÍCH HOẠT BẢN ĐỒ SỐ O2O</span>
+                                <span id="i18n-toolbar-btn-map">🗺️ KÍCH HOẠT BẢN ĐỒ SỐ O2O</span>
                             </button>
                             <button type="button" id="image-search-button" onclick="document.getElementById('image-search-file').click()" aria-label="Tìm sản phẩm bằng hình ảnh OCR" title="AI quét hình ảnh chứng nhận OCOP và tìm sản phẩm tương ứng" class="bg-slate-800/90 hover:bg-slate-800 text-amber-200 hover:text-white px-3 py-1.5 rounded-xl border border-amber-400/40 flex items-center gap-1.5 font-black text-xs transition cursor-pointer shadow-sm hover:scale-105 active:scale-95">
-                                <span>📸 AI QUÉT CHỨNG NHẬN (OCR)</span>
+                                <span id="i18n-toolbar-btn-ocr">📸 AI QUÉT CHỨNG NHẬN (OCR)</span>
                             </button>
                         </div>
 
@@ -3974,18 +3974,18 @@
                                 <i class="fa-solid fa-arrow-down-short-wide text-amber-400 text-[11px]"></i>
                                 <label for="product-sort-select" class="sr-only">Sắp xếp sản phẩm</label>
                                 <select id="product-sort-select" onchange="changeProductSort(this.value)" class="bg-[#0d1b15] text-amber-200 font-extrabold text-xs focus:outline-none cursor-pointer pr-1 border-none">
-                                    <option value="default" class="bg-[#0d1b15] text-amber-200 font-bold">Sắp xếp: Mặc định</option>
-                                    <option value="price-asc" class="bg-[#0d1b15] text-amber-200 font-bold">Biên lợi nhuận: Tăng dần</option>
-                                    <option value="price-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Biên lợi nhuận: Giảm dần</option>
-                                    <option value="rating-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Sản lượng số hóa: Cao nhất</option>
-                                    <option value="stars-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Phân hạng: Ưu tiên OCOP 5 Sao</option>
+                                    <option value="default" id="i18n-sort-default" class="bg-[#0d1b15] text-amber-200 font-bold">Sắp xếp: Mặc định</option>
+                                    <option value="price-asc" id="i18n-sort-margin-asc" class="bg-[#0d1b15] text-amber-200 font-bold">Biên lợi nhuận: Tăng dần</option>
+                                    <option value="price-desc" id="i18n-sort-margin-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Biên lợi nhuận: Giảm dần</option>
+                                    <option value="rating-desc" id="i18n-sort-volume" class="bg-[#0d1b15] text-amber-200 font-bold">Sản lượng số hóa: Cao nhất</option>
+                                    <option value="stars-desc" id="i18n-sort-stars" class="bg-[#0d1b15] text-amber-200 font-bold">Phân hạng: Ưu tiên OCOP 5 Sao</option>
                                 </select>
                             </div>
 
                             <input type="file" id="image-search-file" accept="image/*" class="hidden" onchange="searchProductsByImage(this.files[0])">
                             <button onclick="resetFilters()" title="Đặt lại bộ lọc" class="bg-slate-800 hover:bg-slate-700 text-amber-300 px-2.5 py-1.5 rounded-xl border border-amber-400/40 flex items-center space-x-1.5 font-extrabold transition cursor-pointer shadow-2xs group">
                                 <i class="fa-solid fa-rotate-right group-hover:rotate-180 transition-transform duration-500"></i>
-                                <span>Đặt lại</span>
+                                <span id="i18n-toolbar-btn-reset">Đặt lại</span>
                             </button>
                         </div>
                     </div>
@@ -4210,31 +4210,31 @@
         <div id="judge-dock-content" class="ml-2 flex items-center gap-1.5 p-1.5 rounded-2xl transition-all duration-300" style="background: rgba(8, 24, 18, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.45); box-shadow: 0 8px 32px rgba(0,0,0,0.6); overflow-x: auto; max-width: calc(100vw - 4.5rem); scrollbar-width: none;">
             <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-400/15 border border-amber-400/30 text-[10px] font-black uppercase text-amber-300 tracking-wider shrink-0">
                 <i class="fa-solid fa-trophy text-amber-400"></i>
-                <span>BGK 2026</span>
+                <span id="i18n-judge-badge">BGK 2026</span>
             </div>
 
             <!-- Nút 1: Hồ Sơ Đề Án B2B2C -->
             <button type="button" onclick="openChallengeProposalModal()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 hover:text-emerald-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-file-shield text-amber-400"></i>
-                <span>1. Đề Án B2B2C</span>
+                <span id="i18n-judge-btn1">1. Đề Án B2B2C</span>
             </button>
 
             <!-- Nút 2: Mô Phỏng Dòng Tiền AI -->
             <button type="button" onclick="openFinancialDashboardModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/35 border border-amber-400/40 text-amber-200 hover:text-amber-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-chart-line text-emerald-400"></i>
-                <span>2. Dòng Tiền AI</span>
+                <span id="i18n-judge-btn2">2. Dòng Tiền AI</span>
             </button>
 
             <!-- Nút 3: Nghe AI Báo Cáo Nông Dân -->
-            <button type="button" onclick="openFinancialDashboardModal(); setTimeout(() => playVoiceFinancialBriefing(), 250);" class="px-2.5 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/35 border border-purple-400/40 text-purple-200 hover:text-purple-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
-                <i class="fa-solid fa-microphone-lines text-purple-400 animate-pulse"></i>
-                <span>3. Voice Báo Cáo</span>
+            <button type="button" onclick="openFinancialDashboardModal(); setTimeout(() => playVoiceFinancialBriefing(), 250);" style="background: rgba(147, 51, 234, 0.28) !important; border: 1px solid rgba(192, 132, 252, 0.65) !important; color: #f3e8ff !important;" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
+                <i class="fa-solid fa-microphone-lines text-purple-300 animate-pulse"></i>
+                <span id="i18n-judge-btn3">3. Voice Báo Cáo</span>
             </button>
 
             <!-- Nút 4: Test O2O Đồng Nai -->
             <button type="button" onclick="testO2ODongNai()" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[11px] font-black hover:scale-105 transition flex items-center gap-1.5 cursor-pointer shadow-md whitespace-nowrap shrink-0">
                 <i class="fa-solid fa-map-pin text-rose-700"></i>
-                <span>4. Test O2O Đồng Nai</span>
+                <span id="i18n-judge-btn4">4. Test O2O Đồng Nai</span>
             </button>
         </div>
     </div>
@@ -5157,6 +5157,11 @@
         let lastAIComboMarkup = null;
         let ordersHistory = [];
 
+        function preservePageScrollState() {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        }
+
         function restorePageScrollState() {
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
@@ -5794,10 +5799,23 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const icon = document.getElementById('intro-sound-icon');
             const button = document.getElementById('intro-sound-btn');
             if (!status || !icon || !button) return;
-            const english = currentLanguage === 'en';
+            const musicOnMap = {
+                vi: 'Nhạc: Bật',
+                en: 'Music: On',
+                zh: '音乐: 开启',
+                ko: '음악: 켜짐',
+                ja: '音楽: オン'
+            };
+            const musicOffMap = {
+                vi: 'Nhạc: Tắt',
+                en: 'Music: Off',
+                zh: '音乐: 关闭',
+                ko: '음악: 꺼짐',
+                ja: '音楽: オフ'
+            };
             status.textContent = introMusicOn
-                ? (english ? 'Music: On' : 'Nhạc: Bật')
-                : (english ? 'Music: Off' : 'Nhạc: Tắt');
+                ? (musicOnMap[currentLanguage] || musicOnMap.vi)
+                : (musicOffMap[currentLanguage] || musicOffMap.vi);
             icon.className = introMusicOn
                 ? 'fa-solid fa-volume-high text-amber-300'
                 : 'fa-solid fa-volume-xmark text-gray-400';
@@ -5862,9 +5880,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 updateIntroMusicButton();
             } catch (error) {
                 console.error('Unable to start intro music:', error);
-                showToast(currentLanguage === 'en'
-                    ? 'Music could not be started in this browser.'
-                    : 'Không thể phát nhạc trên trình duyệt này.', 'warning');
+                const musicErrMap = {
+                    vi: 'Không thể phát nhạc trên trình duyệt này.',
+                    en: 'Music could not be started in this browser.',
+                    zh: '此浏览器无法播放音乐。',
+                    ko: '이 브라우저에서 음악을 재생할 수 없습니다.',
+                    ja: 'このブラウザでは音楽を再生できません。'
+                };
+                showToast(musicErrMap[currentLanguage] || musicErrMap.vi, 'warning');
             }
         }
 
@@ -5935,9 +5958,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             playChimeSound();
 
             updateVoucherLanguage();
-            showToast(currentLanguage === 'en'
-                ? `You received ${voucher.code}: VND ${voucher.discount.toLocaleString('en-US')} off orders from VND ${voucher.minOrder.toLocaleString('en-US')}.`
-                : `Bạn nhận được ${voucher.code}: giảm ${voucher.discount.toLocaleString('vi-VN')}đ cho đơn từ ${voucher.minOrder.toLocaleString('vi-VN')}đ.`, 'success');
+            const voucherRecMsgs = {
+                vi: `Bạn nhận được ${voucher.code}: giảm ${voucher.discount.toLocaleString('vi-VN')}đ cho đơn từ ${voucher.minOrder.toLocaleString('vi-VN')}đ.`,
+                en: `You received ${voucher.code}: VND ${voucher.discount.toLocaleString('en-US')} off orders from VND ${voucher.minOrder.toLocaleString('en-US')}.`,
+                zh: `恭喜获得 ${voucher.code}：满 ${voucher.minOrder.toLocaleString('zh-CN')}₫ 立减 ${voucher.discount.toLocaleString('zh-CN')}₫。`,
+                ko: `축하합니다! ${voucher.code} 수령: ${voucher.minOrder.toLocaleString('ko-KR')}₫ 이상 주문 시 ${voucher.discount.toLocaleString('ko-KR')}₫ 할인.`,
+                ja: `おめでとうございます！${voucher.code} 獲得：${voucher.minOrder.toLocaleString('ja-JP')}₫ 以上で ${voucher.discount.toLocaleString('ja-JP')}₫ 割引。`
+            };
+            showToast(voucherRecMsgs[currentLanguage] || voucherRecMsgs.vi, 'success');
         }
 
         function scrollToProducts() {
@@ -5986,17 +6014,32 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         function updateMacroRegionCounts() {
-            const english = currentLanguage === 'en';
-            const labels = { bac: english ? 'North' : 'Bắc', trung: english ? 'Central' : 'Trung', nam: english ? 'South' : 'Nam' };
+            const labelsMap = {
+                bac: { vi: 'Bắc', en: 'North', zh: '北部', ko: '북부', ja: '北部' },
+                trung: { vi: 'Trung', en: 'Central', zh: '中部', ko: '중부', ja: '中部' },
+                nam: { vi: 'Nam', en: 'South', zh: '南部', ko: '남부', ja: '南部' }
+            };
             const icons = { bac: '🏔️', trung: '🌊', nam: '🌴' };
             document.querySelectorAll('[data-macro-region]').forEach(button => {
                 const macro = button.dataset.macroRegion;
                 const count = products.filter(product => productMatchesMacroRegion(product, macro)).length;
-                button.textContent = `${icons[macro]} ${labels[macro]} (${count})`;
-                button.title = english ? `${count} products in this region. Click again to clear.` : `${count} sản phẩm thuộc miền này. Bấm lần nữa để bỏ lọc.`;
+                const regionName = (labelsMap[macro] && labelsMap[macro][currentLanguage]) || (labelsMap[macro] ? labelsMap[macro].vi : macro);
+                button.textContent = `${icons[macro]} ${regionName} (${count})`;
+                const titleMap = {
+                    vi: `${count} sản phẩm thuộc miền này. Bấm lần nữa để bỏ lọc.`,
+                    en: `${count} products in this region. Click again to clear.`,
+                    zh: `该地区共有 ${count} 个产品。再次点击以清除筛选。`,
+                    ko: `이 지역에 ${count}개 제품이 있습니다. 다시 클릭하여 필터를 해제하세요.`,
+                    ja: `この地域には ${count} 個の製品があります。もう一度クリックすると解除されます。`
+                };
+                button.title = titleMap[currentLanguage] || titleMap.vi;
                 button.setAttribute('aria-pressed', String(currentMacroRegion === macro));
             });
-            document.getElementById('macro-region-hint').textContent = english ? 'Products' : 'Số sản phẩm';
+            const hintElem = document.getElementById('macro-region-hint');
+            if (hintElem) {
+                const hintMap = { vi: 'Số sản phẩm', en: 'Products', zh: '产品数量', ko: '제품 수', ja: '製品数' };
+                hintElem.textContent = hintMap[currentLanguage] || hintMap.vi;
+            }
         }
 
         function filterByMacroRegion(macro, btn, event = null) {
@@ -6008,13 +6051,32 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             if (currentMacroRegion === macro) {
                 currentMacroRegion = null;
                 btns.forEach(b => b.classList.remove('bg-ocopGreen', 'text-white'));
-                showToast(currentLanguage === 'en' ? 'Showing products from all regions' : 'Hiển thị đặc sản tất cả các miền', "info");
+                const allRegionsMap = {
+                    vi: 'Hiển thị đặc sản tất cả các miền',
+                    en: 'Showing products from all regions',
+                    zh: '显示所有地区特产',
+                    ko: '모든 지역의 특산품 표시 중',
+                    ja: '全地域の特産品を表示中'
+                };
+                showToast(allRegionsMap[currentLanguage] || allRegionsMap.vi, "info");
             } else {
                 currentMacroRegion = macro;
                 btns.forEach(b => b.classList.remove('bg-ocopGreen', 'text-white'));
                 if (btn) btn.classList.add('bg-ocopGreen', 'text-white');
-                const name = macro === 'bac' ? 'Miền Bắc' : (macro === 'trung' ? 'Miền Trung' : 'Miền Nam');
-                showToast("Đang lọc đặc sản " + name, "success");
+                const regionFilterMap = {
+                    bac: { vi: 'Miền Bắc', en: 'Northern Region', zh: '北部地区', ko: '북부 지역', ja: '北部地域' },
+                    trung: { vi: 'Miền Trung', en: 'Central Region', zh: '中部地区', ko: '중부 지역', ja: '中部地域' },
+                    nam: { vi: 'Miền Nam', en: 'Southern Region', zh: '南部地区', ko: '남부 지역', ja: '南部地域' }
+                };
+                const toastFilterMap = {
+                    vi: 'Đang lọc đặc sản ',
+                    en: 'Filtering specialties for ',
+                    zh: '正在筛选特产：',
+                    ko: '특산품 필터링 중: ',
+                    ja: '特産品を絞り込み中: '
+                };
+                const regName = (regionFilterMap[macro] && regionFilterMap[macro][currentLanguage]) || (regionFilterMap[macro] ? regionFilterMap[macro].vi : macro);
+                showToast((toastFilterMap[currentLanguage] || toastFilterMap.vi) + regName, "success");
             }
 
             // Giải quyết xung đột: nếu province đã chọn không thuộc miền mới, bỏ chọn province
@@ -6160,6 +6222,57 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 return metricsMap[currentLanguage] || metricsMap.vi;
             };
 
+            const starLabels = { vi: 'SAO OCOP', en: 'OCOP STARS', zh: 'OCOP 星级', ko: 'OCOP 등급', ja: 'OCOP 星評価' };
+            const qvLabels = { vi: 'Xem nhanh', en: 'Quick view', zh: '快速预览', ko: '빠른 보기', ja: 'クイックビュー' };
+            const getLocalizedProductTag = (prod, lang) => {
+                if (lang === 'vi') return prod.tag || 'Đặc sản OCOP';
+                if (prod.tag === 'Danh mục mới') {
+                    const newCatMap = { en: 'Featured Catalog', zh: '精选目录', ko: '추천 카탈로그', ja: '注目カタログ' };
+                    return newCatMap[lang] || newCatMap.en;
+                }
+                if (prod.tagEn) {
+                    const tagMap = {
+                        'High Mountain Wild Honey': { zh: '高山野生蜂蜜', ko: '고산 야생 꿀', ja: '高山野生蜂蜜' },
+                        'Ancient Shan Tuyet Tea': { zh: '古树雪山茶', ko: '고대 산뚜옛 차', ja: '古代シャンティエット茶' },
+                        'Specialty Highland Coffee': { zh: '高原特种咖啡', ko: '고원 스페셜티 커피', ja: '高原スペシャルティコーヒー' },
+                        'Heritage Bat Trang Ceramic': { zh: '传统钵场陶瓷', ko: '전통 밧짱 도자기', ja: '伝統バッチャン焼き' },
+                        'OCOP Specialty': { zh: 'OCOP 特产', ko: 'OCOP 특산품', ja: 'OCOP特産品' }
+                    };
+                    if (tagMap[prod.tagEn] && tagMap[prod.tagEn][lang]) return tagMap[prod.tagEn][lang];
+                    return prod.tagEn;
+                }
+                const fallbackTag = { vi: 'Đặc sản OCOP', en: 'OCOP Specialty', zh: 'OCOP 特产', ko: 'OCOP 특산품', ja: 'OCOP特産品' };
+                return fallbackTag[lang] || 'Đặc sản OCOP';
+            };
+            const midBannerTitles = {
+                vi: 'HỆ ĐIỀU HÀNH CHUỖI CUNG ỨNG SỐ OCOP 4.0',
+                en: 'DIGITAL OCOP 4.0 SUPPLY CHAIN OPERATING SYSTEM',
+                zh: '数字 OCOP 4.0 供应链操作系统',
+                ko: '디지털 OCOP 4.0 공급망 운영 체제',
+                ja: 'デジタル OCOP 4.0 サプライチェーンOS'
+            };
+            const midBannerDescs = {
+                vi: 'Tự động hóa kết nối O2O từ Hợp tác xã bản địa đến Showroom toàn quốc & Đối soát hoa hồng CHM bằng AI. Minh bạch hóa dòng tiền và tối ưu biên lợi nhuận ròng thời gian thực.',
+                en: 'Automating O2O integration from local cooperatives to nationwide showrooms & AI commission reconciliation (CHM). Real-time cash flow transparency and net margin optimization.',
+                zh: '实现从本土合作社到全国展厅的 O2O 自动化连接及 AI 佣金对账 (CHM)。实时透明化现金流并优化净利润率。',
+                ko: '로컬 협동조합에서 전국 쇼룸까지 O2O 연결 자동화 및 AI 수수료 정산 (CHM). 실시간 현금 흐름 투명성 및 순이익률 최적화.',
+                ja: '地域協同組合から全国ショールームへのO2O連携とAI手数料照合（CHM）を自動化。リアルタイムのキャッシュフロー透明化と純利益率を最適化。'
+            };
+            const midBannerBtnFin = {
+                vi: 'Mở Bảng Quản Trị Dòng Tiền AI',
+                en: 'Open AI Cash Flow Dashboard',
+                zh: '打开 AI 现金流看板',
+                ko: 'AI 현금 흐름 대시보드 열기',
+                ja: 'AIキャッシュフロー管理を開く'
+            };
+            const midBannerBtnCopilot = {
+                vi: 'Mở Trợ Lý AI Copilot',
+                en: 'Open AI Copilot Assistant',
+                zh: '打开 AI Copilot 助手',
+                ko: 'AI 코파일럿 어시스턴트 열기',
+                ja: 'AI Copilot アシスタントを開く'
+            };
+
             grid.innerHTML = items.map((p, idx) => {
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
@@ -6178,14 +6291,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <div class="absolute top-3 left-3 z-10 pointer-events-none">
                                 <span class="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow-[0_0_12px_rgba(251,191,36,0.6)] flex items-center gap-1 border border-yellow-200 w-fit">
                                     <i class="fa-solid fa-star text-amber-950 text-[8.5px]"></i>
-                                    <span>${getProductStarLabel(p)}★ ${currentLanguage === 'en' ? 'OCOP STARS' : 'SAO OCOP'}</span>
+                                    <span>${getProductStarLabel(p)}★ ${starLabels[currentLanguage] || starLabels.vi}</span>
                                 </span>
                             </div>
 
                             <!-- Nút Xem Nhanh -->
                             <button onclick="openQuickView(${p.id})" class="absolute bottom-3 right-3 bg-slate-900/90 hover:bg-slate-950 text-white text-[10px] font-extrabold px-3 py-1.5 rounded-xl backdrop-blur-md transition-all flex items-center space-x-1.5 shadow-lg border border-amber-400/30 hover:scale-105 active:scale-95 cursor-pointer z-10">
                                 <i class="fa-solid fa-eye text-amber-300"></i>
-                                <span>${currentLanguage === 'en' ? 'Quick view' : 'Xem nhanh'}</span>
+                                <span>${qvLabels[currentLanguage] || qvLabels.vi}</span>
                             </button>
                         </div>
 
@@ -6197,7 +6310,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                     <button type="button" data-review-product-id="${p.id}" onclick="openQuickView(${p.id})" class="text-left hover:underline cursor-pointer">${getProductReviewLabel(p)}</button>
                                 </span>
                                 <span class="bg-amber-400/20 text-amber-300 font-extrabold px-2 py-0.5 rounded-lg text-[10px] border border-amber-400/30">
-                                    ${currentLanguage === 'en' ? (p.tagEn || 'OCOP specialty') : p.tag}
+                                    ${getLocalizedProductTag(p, currentLanguage)}
                                 </span>
                             </div>
                             <h3 class="font-extrabold text-sm text-white group-hover:text-amber-300 transition-colors duration-200 line-clamp-2 leading-snug">${productName}</h3>
@@ -6253,27 +6366,31 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
                 // Chèn banner cảm hứng giữa dòng sản phẩm khi lướt (Mid-feed Banner sau 3 hàng)
                 if (idx === 8 && items.length >= 10) {
+                    const bTitle = midBannerTitles[currentLanguage] || midBannerTitles.vi;
+                    const bDesc = midBannerDescs[currentLanguage] || midBannerDescs.vi;
+                    const bFin = midBannerBtnFin[currentLanguage] || midBannerBtnFin.vi;
+                    const bCopilot = midBannerBtnCopilot[currentLanguage] || midBannerBtnCopilot.vi;
                     cardHtml += `
                     <div class="col-span-full my-4 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-emerald-950 via-slate-950 to-emerald-900 text-white shadow-2xl border-2 border-amber-400/40 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
                         <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-amber-400/15 rounded-full blur-2xl pointer-events-none"></div>
                         <div class="space-y-2.5 max-w-xl text-center md:text-left relative z-10">
                             <div class="inline-flex items-center gap-1.5 bg-amber-400 text-emerald-950 font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider shadow">
                                 <i class="fa-solid fa-award text-amber-900"></i>
-                                <span>HỆ ĐIỀU HÀNH CHUỖI CUNG ỨNG SỐ OCOP 4.0</span>
+                                <span>${bTitle}</span>
                             </div>
-                            <h3 class="text-xl sm:text-2xl font-black text-amber-100 tracking-tight">HỆ ĐIỀU HÀNH CHUỖI CUNG ỨNG SỐ OCOP 4.0</h3>
+                            <h3 class="text-xl sm:text-2xl font-black text-amber-100 tracking-tight">${bTitle}</h3>
                             <p class="text-xs text-emerald-100/85 leading-relaxed font-medium">
-                                Tự động hóa kết nối O2O từ Hợp tác xã bản địa đến Showroom toàn quốc & Đối soát hoa hồng CHM bằng AI. Minh bạch hóa dòng tiền và tối ưu biên lợi nhuận ròng thời gian thực.
+                                ${bDesc}
                             </p>
                         </div>
                         <div class="flex items-center gap-3 shrink-0 relative z-10 flex-wrap justify-center">
                             <button onclick="openFinancialDashboardModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-5 py-3 rounded-2xl font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition flex items-center space-x-2 cursor-pointer border border-emerald-400/50">
                                 <i class="fa-solid fa-chart-line text-amber-300"></i>
-                                <span>Mở Bảng Quản Trị Dòng Tiền AI</span>
+                                <span>${bFin}</span>
                             </button>
                             <button onclick="toggleAIChat()" class="bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-yellow-300 hover:to-amber-500 text-slate-950 px-5 py-3 rounded-2xl font-black text-xs shadow-lg hover:scale-105 active:scale-95 transition flex items-center space-x-2 cursor-pointer border border-yellow-200">
                                 <i class="fa-solid fa-wand-magic-sparkles text-amber-900"></i>
-                                <span>Mở Trợ Lý AI Copilot</span>
+                                <span>${bCopilot}</span>
                             </button>
                         </div>
                     </div>
@@ -6442,15 +6559,25 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             clearButton.disabled = !selectedProvince;
             renderProvinceProducts();
             if (!selectedProvince) {
-                status.textContent = currentLanguage === 'en'
-                    ? 'Select a province to filter matching OCOP specialties.'
-                    : 'Chọn tỉnh/thành để lọc đặc sản OCOP tương ứng.';
+                const selectProvMap = {
+                    vi: 'Chọn tỉnh/thành để lọc đặc sản OCOP tương ứng.',
+                    en: 'Select a province to filter matching OCOP specialties.',
+                    zh: '选择省/市以筛选对应的 OCOP 特产。',
+                    ko: '해당 OCOP 특산품을 필터링할 성/시를 선택하세요.',
+                    ja: '該当する OCOP 特産品を絞り込むには省・市を選択してください。'
+                };
+                status.textContent = selectProvMap[currentLanguage] || selectProvMap.vi;
                 return;
             }
 
-            status.textContent = currentLanguage === 'en'
-                ? `${selectedProvince.name} (${selectedProvince.id}) · ${productCount} matching products`
-                : `${selectedProvince.name} (${selectedProvince.id}) · ${productCount} sản phẩm phù hợp`;
+            const matchingMap = {
+                vi: 'sản phẩm phù hợp',
+                en: 'matching products',
+                zh: '个符合条件的产品',
+                ko: '개 일치하는 제품',
+                ja: '件の一致する製品'
+            };
+            status.textContent = `${selectedProvince.name} (${selectedProvince.id}) · ${productCount} ${matchingMap[currentLanguage] || matchingMap.vi}`;
         }
 
         function renderProvinceProducts() {
@@ -6472,17 +6599,29 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 normalizeProvinceName(product.region) === normalizeProvinceName(selectedProvince.name)
             );
             panel.classList.remove('hidden');
-            title.textContent = currentLanguage === 'en'
-                ? `Specialties from ${selectedProvince.name}`
-                : `Đặc sản ${selectedProvince.name}`;
-            count.textContent = currentLanguage === 'en'
-                ? `${provinceProducts.length} products`
-                : `${provinceProducts.length} sản phẩm`;
+            const provTitleMap = {
+                vi: `Đặc sản ${selectedProvince.name}`,
+                en: `Specialties from ${selectedProvince.name}`,
+                zh: `${selectedProvince.name} 特产`,
+                ko: `${selectedProvince.name} 특산품`,
+                ja: `${selectedProvince.name} の特産品`
+            };
+            title.textContent = provTitleMap[currentLanguage] || provTitleMap.vi;
+            const provCountMap = {
+                vi: 'sản phẩm',
+                en: 'products',
+                zh: '件产品',
+                ko: '개 제품',
+                ja: '件の製品'
+            };
+            count.textContent = `${provinceProducts.length} ${provCountMap[currentLanguage] || provCountMap.vi}`;
             grid.classList.toggle('is-hidden', provinceProductsHidden);
             toggle.setAttribute('aria-expanded', String(!provinceProductsHidden));
+            const showLabels = { vi: 'Hiện', en: 'Show', zh: '显示', ko: '보기', ja: '表示' };
+            const hideLabels = { vi: 'Ẩn', en: 'Hide', zh: '隐藏', ko: '숨기기', ja: '非表示' };
             toggleLabel.textContent = provinceProductsHidden
-                ? (currentLanguage === 'en' ? 'Show' : 'Hiện')
-                : (currentLanguage === 'en' ? 'Hide' : 'Ẩn');
+                ? (showLabels[currentLanguage] || showLabels.vi)
+                : (hideLabels[currentLanguage] || hideLabels.vi);
             toggle.querySelector('i').className = provinceProductsHidden
                 ? 'fa-solid fa-eye mr-1'
                 : 'fa-solid fa-eye-slash mr-1';
@@ -6490,9 +6629,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             if (provinceProducts.length === 0) {
                 const emptyMessage = document.createElement('p');
                 emptyMessage.className = 'col-span-full m-0 py-3 text-xs text-[#718075]';
-                emptyMessage.textContent = currentLanguage === 'en'
-                    ? 'There are no products from this province in the current catalog.'
-                    : 'Chưa có sản phẩm OCOP từ tỉnh/thành này trong danh mục hiện tại.';
+                const provEmptyMap = {
+                    vi: 'Chưa có sản phẩm OCOP từ tỉnh/thành này trong danh mục hiện tại.',
+                    en: 'There are no products from this province in the current catalog.',
+                    zh: '当前目录中暂无该省/市的 OCOP 产品。',
+                    ko: '현재 카탈로그에 이 성/시의 OCOP 제품이 없습니다.',
+                    ja: '現在のカタログにはこの省・市の OCOP 製品はありません。'
+                };
+                emptyMessage.textContent = provEmptyMap[currentLanguage] || provEmptyMap.vi;
                 grid.replaceChildren(emptyMessage);
                 return;
             }
@@ -6508,9 +6652,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 const detailsButton = document.createElement('button');
                 detailsButton.type = 'button';
                 detailsButton.className = 'province-product-link';
-                detailsButton.setAttribute('aria-label', currentLanguage === 'en'
-                    ? `View details for ${getProductName(product)}`
-                    : `Xem chi tiết ${getProductName(product)}`);
+                const viewDetailsMap = {
+                    vi: 'Xem chi tiết ',
+                    en: 'View details for ',
+                    zh: '查看详情 ',
+                    ko: '상세 정보 보기: ',
+                    ja: '詳細を見る: '
+                };
+                detailsButton.setAttribute('aria-label', (viewDetailsMap[currentLanguage] || viewDetailsMap.vi) + getProductName(product));
                 detailsButton.addEventListener('click', event => {
                     event.stopPropagation();
                     openProvinceProductDetails(product.id);
@@ -6536,10 +6685,22 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 const addButton = document.createElement('button');
                 addButton.type = 'button';
                 addButton.className = 'province-product-add-button rounded-lg bg-[#0f382c] px-2.5 py-2 text-[10px] font-extrabold text-white transition hover:bg-[#165b46]';
-                addButton.setAttribute('aria-label', currentLanguage === 'en'
-                    ? `Reconcile ${getProductName(product)}`
-                    : `Đối soát ${getProductName(product)}`);
-                addButton.textContent = currentLanguage === 'en' ? 'Reconcile' : 'Đối soát';
+                const reconcileAriaMap = {
+                    vi: 'Đối soát ',
+                    en: 'Reconcile ',
+                    zh: '对账 ',
+                    ko: '정산: ',
+                    ja: '照合: '
+                };
+                const reconcileTextMap = {
+                    vi: 'Đối soát',
+                    en: 'Reconcile',
+                    zh: '对账',
+                    ko: '정산',
+                    ja: '照合'
+                };
+                addButton.setAttribute('aria-label', (reconcileAriaMap[currentLanguage] || reconcileAriaMap.vi) + getProductName(product));
+                addButton.textContent = reconcileTextMap[currentLanguage] || reconcileTextMap.vi;
                 addButton.addEventListener('click', () => addToCart(product.id));
 
                 card.append(detailsButton, addButton);
@@ -6834,9 +6995,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         async function initializeProvinceMap() {
             const status = document.getElementById('province-selection-status');
             if (!window.L) {
-                status.textContent = currentLanguage === 'en'
-                    ? 'The map library could not be loaded. Refresh the page to try again.'
-                    : 'Không tải được thư viện bản đồ. Vui lòng tải lại trang.';
+                const mapErrMap = {
+                    vi: 'Không tải được thư viện bản đồ. Vui lòng tải lại trang.',
+                    en: 'The map library could not be loaded. Refresh the page to try again.',
+                    zh: '无法加载地图库。请刷新页面重试。',
+                    ko: '지도 라이브러리를 로드할 수 없습니다. 페이지를 새로고침하세요.',
+                    ja: '地図ライブラリを読み込めませんでした。ページを更新してください。'
+                };
+                status.textContent = mapErrMap[currentLanguage] || mapErrMap.vi;
                 console.error('Leaflet is unavailable; the province map could not be initialized.');
                 return;
             }
@@ -6901,10 +7067,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     scrollWheelZoom: false,
                     zoomControl: true
                 });
+                const layerLabels = {
+                    vi: { 'Vệ tinh': satelliteLayer, 'Địa lý': geographicLayer },
+                    en: { Satellite: satelliteLayer, Geographic: geographicLayer },
+                    zh: { '卫星图': satelliteLayer, '地理图': geographicLayer },
+                    ko: { '위성 지도': satelliteLayer, '지리 지도': geographicLayer },
+                    ja: { '衛星写真': satelliteLayer, '地理地図': geographicLayer }
+                };
                 L.control.layers(
-                    currentLanguage === 'en'
-                        ? { Satellite: satelliteLayer, Geographic: geographicLayer }
-                        : { 'Vệ tinh': satelliteLayer, 'Địa lý': geographicLayer },
+                    layerLabels[currentLanguage] || layerLabels.vi,
                     null,
                     { collapsed: true }
                 ).addTo(provinceMap);
@@ -6948,12 +7119,26 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         fillOpacity: 1
                     }),
                     onEachFeature: (feature, layer) => {
-                        const name = currentLanguage === 'en'
+                        const name = (currentLanguage !== 'vi' && feature.properties.nameEn)
                             ? feature.properties.nameEn
                             : feature.properties.name;
+                        const outlineDescMap = {
+                            vi: 'Đường viền địa hình đảo · Natural Earth',
+                            en: 'Physical island outlines · Natural Earth',
+                            zh: '岛屿地形轮廓 · Natural Earth',
+                            ko: '도서 지형 윤곽 · Natural Earth',
+                            ja: '島嶼地形の輪郭 · Natural Earth'
+                        };
+                        const refDescMap = {
+                            vi: 'Điểm tham chiếu đặt nhãn địa lý',
+                            en: 'Geographic label reference point',
+                            zh: '地理标签参考点',
+                            ko: '지리 라벨 기준점',
+                            ja: '地理ラベルの参照点'
+                        };
                         if (feature.properties.kind === 'outline') {
                             layer.bindPopup(
-                                `<strong>${name}</strong><br><span>${currentLanguage === 'en' ? 'Physical island outlines · Natural Earth' : 'Đường viền địa hình đảo · Natural Earth'}</span>`
+                                `<strong>${name}</strong><br><span>${outlineDescMap[currentLanguage] || outlineDescMap.vi}</span>`
                             );
                             layer.on('click', () => provinceMap.fitBounds(layer.getBounds(), { padding: [32, 32], maxZoom: 10 }));
                             return;
@@ -6964,7 +7149,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             className: 'province-island-label',
                             offset: [8, 0]
                         });
-                        layer.bindPopup(`<strong>${name}</strong><br><span>${currentLanguage === 'en' ? 'Geographic label reference point' : 'Điểm tham chiếu đặt nhãn địa lý'}</span>`);
+                        layer.bindPopup(`<strong>${name}</strong><br><span>${refDescMap[currentLanguage] || refDescMap.vi}</span>`);
                         const islandBounds = islandBoundsById.get(feature.properties.id);
                         if (islandBounds) {
                             layer.on('click', () => provinceMap.fitBounds(islandBounds, { padding: [32, 32], maxZoom: 10 }));
@@ -6980,9 +7165,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 updateProvinceSelectionStatus();
             } catch (error) {
                 console.error('Unable to initialize the Vietnam province map:', error);
-                status.textContent = currentLanguage === 'en'
-                    ? 'The province map could not be loaded. Check your connection and refresh the page.'
-                    : 'Không thể tải bản đồ tỉnh/thành. Vui lòng kiểm tra kết nối và tải lại trang.';
+                const mapLoadErrMap = {
+                    vi: 'Không thể tải bản đồ tỉnh/thành. Vui lòng kiểm tra kết nối và tải lại trang.',
+                    en: 'The province map could not be loaded. Check your connection and refresh the page.',
+                    zh: '无法加载省市地图。请检查网络连接并刷新页面。',
+                    ko: '성/시 지도를 로드할 수 없습니다. 연결 상태를 확인하고 페이지를 새로고침하세요.',
+                    ja: '省・市地図を読み込めませんでした。通信環境を確認し、ページを更新してください。'
+                };
+                status.textContent = mapLoadErrMap[currentLanguage] || mapLoadErrMap.vi;
             }
         }
 
@@ -7005,13 +7195,25 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         async function createSearchImageDataUrl(file) {
+            const noImgMsg = {
+                vi: 'Vui lòng chọn một tệp hình ảnh.',
+                en: 'Choose an image file.',
+                zh: '请选择一个图片文件。',
+                ko: '이미지 파일을 선택하세요.',
+                ja: '画像ファイルを選択してください。'
+            };
             if (!file || !file.type.startsWith('image/')) {
-                throw new Error(currentLanguage === 'en' ? 'Choose an image file.' : 'Vui lòng chọn một tệp hình ảnh.');
+                throw new Error(noImgMsg[currentLanguage] || noImgMsg.vi);
             }
+            const tooLargeMsg = {
+                vi: 'Ảnh quá lớn. Vui lòng chọn ảnh dưới 10 MB.',
+                en: 'The selected image is too large. Choose an image under 10 MB.',
+                zh: '所选图片过大。请选择小于 10 MB 的图片。',
+                ko: '선택한 이미지가 너무 큽니다. 10 MB 이하의 이미지를 선택하세요.',
+                ja: '選択した画像が大きすぎます。10MB未満の画像を選択してください。'
+            };
             if (file.size > 10 * 1024 * 1024) {
-                throw new Error(currentLanguage === 'en'
-                    ? 'The selected image is too large. Choose an image under 10 MB.'
-                    : 'Ảnh quá lớn. Vui lòng chọn ảnh dưới 10 MB.');
+                throw new Error(tooLargeMsg[currentLanguage] || tooLargeMsg.vi);
             }
 
             const objectUrl = URL.createObjectURL(file);
@@ -7023,17 +7225,29 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     await Promise.race([
                         image.decode(),
                         new Promise((resolve, reject) => {
+                            const decodeErrMsg = {
+                                vi: 'Không thể đọc ảnh đã chọn.',
+                                en: 'The selected image could not be decoded.',
+                                zh: '无法解析所选图片。',
+                                ko: '선택한 이미지를 해석할 수 없습니다.',
+                                ja: '選択した画像をデコードできませんでした。'
+                            };
                             decodeTimer = window.setTimeout(() => reject(new Error(
-                                currentLanguage === 'en'
-                                    ? 'The selected image could not be decoded.'
-                                    : 'Không thể đọc ảnh đã chọn.'
+                                decodeErrMsg[currentLanguage] || decodeErrMsg.vi
                             )), 10000);
                         })
                     ]);
                 } finally {
                     window.clearTimeout(decodeTimer);
                 }
-                if (!image.naturalWidth || !image.naturalHeight) throw new Error('Ảnh không đọc được.');
+                const unreadableMsg = {
+                    vi: 'Ảnh không đọc được.',
+                    en: 'The image could not be read.',
+                    zh: '无法读取图片。',
+                    ko: '이미지를 읽을 수 없습니다.',
+                    ja: '画像を読み込めません。'
+                };
+                if (!image.naturalWidth || !image.naturalHeight) throw new Error(unreadableMsg[currentLanguage] || unreadableMsg.vi);
 
                 const maxDimension = 1024;
                 const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
@@ -7041,15 +7255,27 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
                 canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
                 const context = canvas.getContext('2d');
-                if (!context) throw new Error('Không thể xử lý ảnh trên trình duyệt này.');
+                const canvasErrMsg = {
+                    vi: 'Không thể xử lý ảnh trên trình duyệt này.',
+                    en: 'Cannot process images in this browser.',
+                    zh: '在此浏览器中无法处理图片。',
+                    ko: '이 브라우저에서 이미지를 처리할 수 없습니다.',
+                    ja: 'このブラウザでは画像を処理できません。'
+                };
+                if (!context) throw new Error(canvasErrMsg[currentLanguage] || canvasErrMsg.vi);
                 context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
                 let dataUrl = canvas.toDataURL('image/jpeg', 0.82);
                 if (dataUrl.length > 1.3 * 1024 * 1024) dataUrl = canvas.toDataURL('image/jpeg', 0.62);
                 if (dataUrl.length > 1.3 * 1024 * 1024) {
-                    throw new Error(currentLanguage === 'en'
-                        ? 'Could not compress this image enough. Choose a smaller image.'
-                        : 'Không thể nén ảnh đủ nhỏ. Vui lòng chọn ảnh có kích thước nhỏ hơn.');
+                    const compressErrMsg = {
+                        vi: 'Không thể nén ảnh đủ nhỏ. Vui lòng chọn ảnh có kích thước nhỏ hơn.',
+                        en: 'Could not compress this image enough. Choose a smaller image.',
+                        zh: '无法将图片压缩到足够小。请选择较小的图片。',
+                        ko: '이미지를 충분히 압축할 수 없습니다. 더 작은 이미지를 선택하세요.',
+                        ja: '画像を十分に圧縮できませんでした。より小さい画像を選択してください。'
+                    };
+                    throw new Error(compressErrMsg[currentLanguage] || compressErrMsg.vi);
                 }
                 return dataUrl;
             } finally {
@@ -7093,10 +7319,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     })
                 });
                 const result = await response.json().catch(() => ({}));
+                const searchUnavailableMsg = {
+                    vi: 'Tìm kiếm bằng hình ảnh hiện chưa khả dụng.',
+                    en: 'Image search is temporarily unavailable.',
+                    zh: '图片搜索暂不可用。',
+                    ko: '이미지 검색을 일시적으로 사용할 수 없습니다.',
+                    ja: '画像検索は現在ご利用いただけません。'
+                };
                 if (!response.ok) {
-                    throw new Error(result.error || (currentLanguage === 'en'
-                        ? 'Image search is temporarily unavailable.'
-                        : 'Tìm kiếm bằng hình ảnh hiện chưa khả dụng.'));
+                    throw new Error(result.error || (searchUnavailableMsg[currentLanguage] || searchUnavailableMsg.vi));
                 }
 
                 const recommendedProducts = (Array.isArray(result.productIds) ? result.productIds : [])
@@ -7113,9 +7344,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 status.classList.remove('hidden');
                 scrollToProducts();
             } catch (error) {
-                showToast(error.message || (currentLanguage === 'en'
-                    ? 'Image search failed. Please try again.'
-                    : 'Tìm kiếm bằng hình ảnh thất bại. Vui lòng thử lại.'), 'error');
+                const searchFailedMsg = {
+                    vi: 'Tìm kiếm bằng hình ảnh thất bại. Vui lòng thử lại.',
+                    en: 'Image search failed. Please try again.',
+                    zh: '图片搜索失败。请重试。',
+                    ko: '이미지 검색에 실패했습니다. 다시 시도해 주세요.',
+                    ja: '画像検索に失敗しました。もう一度お試しください。'
+                };
+                showToast(error.message || (searchFailedMsg[currentLanguage] || searchFailedMsg.vi), 'error');
             } finally {
                 if (searchButton) searchButton.disabled = false;
                 if (fileInput) {
@@ -7556,9 +7792,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             previews.replaceChildren();
             previews.hidden = pendingAIImages.length === 0;
             hint.hidden = pendingAIImages.length === 0;
-            hint.textContent = currentLanguage === 'en'
-                ? 'Paste, drop, or upload up to 10 images (100 MB each).'
-                : 'Dán, kéo-thả hoặc tải tối đa 10 ảnh (100 MB mỗi ảnh).';
+            const hintMap = {
+                vi: 'Dán, kéo-thả hoặc tải tối đa 10 ảnh (100 MB mỗi ảnh).',
+                en: 'Paste, drop, or upload up to 10 images (100 MB each).',
+                zh: '粘贴、拖放或上传最多 10 张图片（每张不超过 100 MB）。',
+                ko: '최대 10장의 이미지를 붙여넣거나 드래그하거나 업로드하세요 (각 100MB 이하).',
+                ja: '最大10枚の画像を貼り付け、ドラッグ＆ドロップ、またはアップロード（各100MB以下）。'
+            };
+            hint.textContent = hintMap[currentLanguage] || hintMap.vi;
 
             pendingAIImages.forEach((image, index) => {
                 const wrapper = document.createElement('div');
@@ -7570,7 +7811,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 const remove = document.createElement('button');
                 remove.type = 'button';
                 remove.className = 'absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white shadow';
-                remove.setAttribute('aria-label', currentLanguage === 'en' ? 'Remove image' : 'Xóa ảnh');
+                const removeLabelMap = {
+                    vi: 'Xóa ảnh',
+                    en: 'Remove image',
+                    zh: '删除图片',
+                    ko: '이미지 삭제',
+                    ja: '画像を削除'
+                };
+                remove.setAttribute('aria-label', removeLabelMap[currentLanguage] || removeLabelMap.vi);
                 remove.innerHTML = '&times;';
                 remove.addEventListener('click', () => {
                     URL.revokeObjectURL(image.previewUrl);
@@ -7586,21 +7834,36 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const imageFiles = [...fileList].filter(file => file.type.startsWith('image/'));
             if (!imageFiles.length) return;
             if (imageFiles.some(file => !supportedAIChatImageTypes.has(file.type))) {
-                showToast(currentLanguage === 'en'
-                    ? 'Supported images: JPEG, PNG, WebP, HEIC, and HEIF.'
-                    : 'Hỗ trợ ảnh JPEG, PNG, WebP, HEIC và HEIF.', 'error');
+                const formatMap = {
+                    vi: 'Hỗ trợ ảnh JPEG, PNG, WebP, HEIC và HEIF.',
+                    en: 'Supported images: JPEG, PNG, WebP, HEIC, and HEIF.',
+                    zh: '支持的图片格式：JPEG、PNG、WebP、HEIC 和 HEIF。',
+                    ko: '지원 형식: JPEG, PNG, WebP, HEIC 및 HEIF.',
+                    ja: '対応形式：JPEG、PNG、WebP、HEIC、HEIF。'
+                };
+                showToast(formatMap[currentLanguage] || formatMap.vi, 'error');
                 return;
             }
             if (imageFiles.some(file => file.size === 0 || file.size > maxAIChatImageBytes)) {
-                showToast(currentLanguage === 'en'
-                    ? 'Each image must be 100 MB or smaller.'
-                    : 'Mỗi ảnh phải có dung lượng không quá 100 MB.', 'error');
+                const sizeMap = {
+                    vi: 'Mỗi ảnh phải có dung lượng không quá 100 MB.',
+                    en: 'Each image must be 100 MB or smaller.',
+                    zh: '每张图片大小不得超过 100 MB。',
+                    ko: '각 이미지 크기는 100MB 이하이어야 합니다.',
+                    ja: '各画像は100MB以下である必要があります。'
+                };
+                showToast(sizeMap[currentLanguage] || sizeMap.vi, 'error');
                 return;
             }
             if (pendingAIImages.length + imageFiles.length > maxAIChatImages) {
-                showToast(currentLanguage === 'en'
-                    ? 'Attach up to 10 images per message.'
-                    : 'Mỗi tin nhắn đính kèm tối đa 10 ảnh.', 'error');
+                const maxCountMap = {
+                    vi: 'Mỗi tin nhắn đính kèm tối đa 10 ảnh.',
+                    en: 'Attach up to 10 images per message.',
+                    zh: '每条消息最多可附加 10 张图片。',
+                    ko: '메시지당 최대 10장의 이미지를 첨부할 수 있습니다.',
+                    ja: '1件のメッセージに添付できる画像は最大10枚です。'
+                };
+                showToast(maxCountMap[currentLanguage] || maxCountMap.vi, 'error');
                 return;
             }
 
@@ -7627,14 +7890,24 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 });
                 const result = await response.json().catch(() => ({}));
                 if (!response.ok) {
-                    throw new Error(result.error || (currentLanguage === 'en'
-                        ? 'Unable to save the images.'
-                        : 'Không thể lưu ảnh.'));
+                    const saveErrMap = {
+                        vi: 'Không thể lưu ảnh.',
+                        en: 'Unable to save the images.',
+                        zh: '无法保存图片。',
+                        ko: '이미지를 저장할 수 없습니다.',
+                        ja: '画像を保存できません。'
+                    };
+                    throw new Error(result.error || (saveErrMap[currentLanguage] || saveErrMap.vi));
                 }
                 if (!result.image || typeof result.image.id !== 'string') {
-                    throw new Error(currentLanguage === 'en'
-                        ? 'The server returned an invalid image upload response.'
-                        : 'Máy chủ trả về kết quả tải ảnh không hợp lệ.');
+                    const respErrMap = {
+                        vi: 'Máy chủ trả về kết quả tải ảnh không hợp lệ.',
+                        en: 'The server returned an invalid image upload response.',
+                        zh: '服务器返回了无效的图片上传响应。',
+                        ko: '서버가 유효하지 않은 이미지 업로드 응답을 반환했습니다.',
+                        ja: 'サーバーが無効な画像アップロード応答を返しました。'
+                    };
+                    throw new Error(respErrMap[currentLanguage] || respErrMap.vi);
                 }
                 image.id = result.image.id;
             }
@@ -7672,22 +7945,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         const aiCatalogSyncIntervalMs = 10 * 60 * 1000;
 
-        function getAIProductPayload() {
-            return products.map(product => ({
-                id: product.id,
-                name: product.name,
-                nameEn: product.nameEn || productNamesEn[product.id - 1] || '',
-                region: product.region,
-                category: product.category,
-                stars: product.stars,
-                price: product.price,
-                rating: product.rating,
-                tag: product.tag,
-                description: getProductDescription(product),
-                priceMin: product.priceMin, priceMax: product.priceMax, priceIsReference: product.priceIsReference,
-                packaging: product.packaging, packagingEn: product.packagingEn, starsMin: product.starsMin, starsMax: product.starsMax, macroRegion: product.macroRegion
-            }));
-        }
 
         async function syncAIWebsiteCatalog() {
             try {
@@ -9430,9 +9687,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const messagesEl = document.getElementById('ai-chat-messages');
             const text = inputEl.value.trim();
             const messageImages = pendingAIImages.slice();
-            const messageText = text || (currentLanguage === 'en'
-                ? 'Please review the attached product image and help me.'
-                : 'Vui lòng xem ảnh sản phẩm tôi gửi và hỗ trợ giúp tôi.');
+            const fallbackMsgMap = {
+                vi: 'Vui lòng xem ảnh sản phẩm tôi gửi và hỗ trợ giúp tôi.',
+                en: 'Please review the attached product image and help me.',
+                zh: '请查看我发送的特产照片并提供协助。',
+                ko: '보내드린 제품 사진을 확인하고 안내해주세요.',
+                ja: '添付した商品の画像を確認の上、ご案内をお願いします。'
+            };
+            const messageText = text || (fallbackMsgMap[currentLanguage] || fallbackMsgMap.vi);
 
             if ((!text && !messageImages.length) || isAIRequestPending) return;
             window.chatDictation?.stop(true);
@@ -9470,15 +9732,31 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
             // Giả lập AI đang gõ
+            const checkingImgMap = {
+                vi: 'Đang kiểm tra ảnh và đối chiếu danh mục trước khi trả lời...',
+                en: 'Checking the image and matching the catalogue before replying...',
+                zh: '正在比对图像并核验特产名录…',
+                ko: '이미지를 확인하고 공인 카탈로그와 대조 중…',
+                ja: '画像を確認しカタログと照合中…'
+            };
+            const findingOptMap = {
+                vi: 'Đang tìm lựa chọn phù hợp...',
+                en: 'Finding suitable options...',
+                zh: '正在寻找合适方案…',
+                ko: '적합한 항목을 찾는 중…',
+                ja: '最適な選択肢を検索中…'
+            };
+            const loadingText = messageImages.length
+                ? (checkingImgMap[currentLanguage] || checkingImgMap.vi)
+                : (findingOptMap[currentLanguage] || findingOptMap.vi);
+
             const loadingId = 'ai-loading-' + ++aiMessageSequence;
             messagesEl.insertAdjacentHTML('beforeend', `
                 <div id="${loadingId}" class="flex items-start space-x-2">
                     <img src="chat-avatar.jpg" alt="" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3 rounded-2xl border border-amber-200 text-gray-500 text-xs shadow-sm flex items-center space-x-1.5">
                         <i class="fa-solid fa-spinner fa-spin text-ocopGreen"></i>
-                        <span>${messageImages.length
-                            ? currentLanguage === 'en' ? 'Checking the image and matching the catalogue before replying...' : 'Đang kiểm tra ảnh và đối chiếu danh mục trước khi trả lời...'
-                            : currentLanguage === 'en' ? 'Finding suitable options...' : 'Đang tìm lựa chọn phù hợp...'}</span>
+                        <span>${loadingText}</span>
                     </div>
                 </div>
             `);
@@ -9589,20 +9867,44 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 if (result.localMarkup) {
                     recommendationsEl.innerHTML = result.localMarkup;
                 } else if (recommendedProducts.length && (result.combo || isAIComboRequest(text))) {
+                    const comboIdeasMap = {
+                        vi: 'Gợi ý combo đặc sản',
+                        en: 'Combo ideas',
+                        zh: '特色组合建议',
+                        ko: '특산품 세트 추천',
+                        ja: '特産品コンボ提案'
+                    };
+                    const comboNotesMap = {
+                        vi: 'Dữ liệu tính theo thông lượng điều phối; anh/chị vui lòng kiểm tra chuỗi cung ứng trước khi phân tích dòng tiền.',
+                        en: 'The metrics use current coordination data; review the items before activating dispatch.',
+                        zh: '数据按当前数字化调配量计算；在分析现金流前请核对供应链数据。',
+                        ko: '데이터는 현재 디지털 조율량 기준이며 현금 흐름 분석 전 공급망을 확인하세요.',
+                        ja: 'データは現在のデジタル調整量に基づいています。キャッシュフロー分析前にサプライチェーンを確認してください。'
+                    };
                     recommendationsEl.innerHTML = renderAIComboRecommendations(
                         Array.isArray(result.combos) ? result.combos.map(plan => plan.items.map(item => products.find(p => p.id === item.id)).filter(Boolean)) : [recommendedProducts],
-                        currentLanguage === 'en' ? 'Combo ideas' : 'Gợi ý combo đặc sản',
-                        currentLanguage === 'en'
-                            ? 'The metrics use current coordination data; review the items before activating dispatch.'
-                            : 'Dữ liệu tính theo thông lượng điều phối; anh/chị vui lòng kiểm tra chuỗi cung ứng trước khi phân tích dòng tiền.'
+                        comboIdeasMap[currentLanguage] || comboIdeasMap.vi,
+                        comboNotesMap[currentLanguage] || comboNotesMap.vi
                     );
                 } else if (recommendedProducts.length) {
+                    const recProdMap = {
+                        vi: 'Sản phẩm gợi ý',
+                        en: 'Recommended products',
+                        zh: '推荐特产',
+                        ko: '추천 제품',
+                        ja: 'おすすめ商品'
+                    };
+                    const recNoteMap = {
+                        vi: 'Giá và thông tin được lấy từ danh mục hiện tại.',
+                        en: 'Prices and product information are from the current catalogue.',
+                        zh: '特产信息与价格来源于国家认证名录。',
+                        ko: '가격 및 제품 정보는 현재 공인 목록 기준입니다.',
+                        ja: '価格および特産品情報は現在の認定カタログに基づいています。'
+                    };
                     recommendationsEl.innerHTML = renderAIProductRecommendations(
                         recommendedProducts,
-                        currentLanguage === 'en' ? 'Recommended products' : 'Sản phẩm gợi ý',
-                        currentLanguage === 'en'
-                            ? 'Prices and product information are from the current catalogue.'
-                            : 'Giá và thông tin được lấy từ danh mục hiện tại.'
+                        recProdMap[currentLanguage] || recProdMap.vi,
+                        recNoteMap[currentLanguage] || recNoteMap.vi
                     );
                 }
                 if (result.handoffAdmin) {
@@ -9610,7 +9912,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     handoffButton.type = 'button';
                     handoffButton.dataset.adminContact = 'true';
                     handoffButton.className = 'rounded-lg bg-ocopGreen px-3 py-2 text-xs font-bold text-white hover:bg-ocopGreenLight';
-                    handoffButton.textContent = currentLanguage === 'en' ? 'Open admin contacts' : 'Mở liên hệ admin';
+                    const handoffTextMap = {
+                        vi: 'Mở liên hệ admin',
+                        en: 'Open admin contacts',
+                        zh: '联系管理员',
+                        ko: '관리자 문의',
+                        ja: '管理者へ問い合わせ'
+                    };
+                    handoffButton.textContent = handoffTextMap[currentLanguage] || handoffTextMap.vi;
                     handoffButton.addEventListener('click', toggleAdminSupport);
                     const existingAdminButton = reply.querySelector('button[data-admin-contact="true"]');
                     if (!existingAdminButton) {
@@ -9919,22 +10228,51 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         function getAIProductCategoryLabel(category) {
-            if (currentLanguage === 'en') {
-                return {
-                    gift: 'Gift ideas',
-                    tea: 'Tea',
-                    snack: 'Snacks',
-                    spice: 'Seasonings',
-                    food: 'Regional specialties'
-                }[category] || 'Products';
-            }
-            return {
-                gift: 'Quà tặng phù hợp',
-                tea: 'Trà',
-                snack: 'Bánh và món ăn vặt',
-                spice: 'Gia vị và nước chấm',
-                food: 'Đặc sản'
-            }[category] || 'Sản phẩm';
+            const catMap = {
+                gift: {
+                    vi: 'Quà tặng phù hợp',
+                    en: 'Gift ideas',
+                    zh: '精选伴手礼',
+                    ko: '맞춤형 선물',
+                    ja: '厳選ギフト'
+                },
+                tea: {
+                    vi: 'Trà',
+                    en: 'Tea',
+                    zh: '原生态茶饮',
+                    ko: '차(Tea)',
+                    ja: '銘茶'
+                },
+                snack: {
+                    vi: 'Bánh và món ăn vặt',
+                    en: 'Snacks',
+                    zh: '特色茶点与零食',
+                    ko: '스낵 및 다과',
+                    ja: '菓子・おつまみ'
+                },
+                spice: {
+                    vi: 'Gia vị và nước chấm',
+                    en: 'Seasonings',
+                    zh: '地方传统调味',
+                    ko: '조미료 및 양념',
+                    ja: '調味料・たれ'
+                },
+                food: {
+                    vi: 'Đặc sản',
+                    en: 'Regional specialties',
+                    zh: '优质农产特产',
+                    ko: '지역 특산품',
+                    ja: '地域特産品'
+                }
+            };
+            const defaultMap = {
+                vi: 'Sản phẩm',
+                en: 'Products',
+                zh: '特色产品',
+                ko: '제품',
+                ja: '特産品'
+            };
+            return (catMap[category] && (catMap[category][currentLanguage] || catMap[category].vi)) || (defaultMap[currentLanguage] || defaultMap.vi);
         }
 
         function matchesAIRecommendationCriteria(product, criteria) {
@@ -10129,9 +10467,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     </article>
                 `;
             }).join('');
-            const checkoutNote = currentLanguage === 'en'
-                ? 'Cash flow simulation automatically reconciles store revenue, COGS, and CHM commission.'
-                : 'Mô phỏng tự động tính toán doanh thu dự kiến và đối soát chiết khấu CHM cho cửa hàng.';
+            const checkoutNoteMap = {
+                vi: 'Mô phỏng tự động tính toán doanh thu dự kiến và đối soát chiết khấu CHM cho cửa hàng.',
+                en: 'Cash flow simulation automatically reconciles store revenue, COGS, and CHM commission.',
+                zh: '模拟系统自动测算预期营收、销售成本及门店运营佣金分账。',
+                ko: '시뮬레이션이 매장 예상 매출, 매출원가 및 CHM 수수료를 자동 정산합니다.',
+                ja: 'シミュレーションが店舗の予想売上、売上原価、CHM 手数料を自動照合します。'
+            };
+            const checkoutNote = checkoutNoteMap[currentLanguage] || checkoutNoteMap.vi;
             return `<p class="font-bold text-ocopGreen text-xs">${escapeAIHtml(title)}</p><div class="space-y-2.5 mt-2">${bundleCards}</div><p class="text-[10px] text-gray-500 mt-1">${escapeAIHtml(note)}</p><p class="text-[10px] text-emerald-600 mt-0.5">${checkoutNote}</p>`;
         }
 
@@ -10249,9 +10592,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             updateCartBadge();
             renderCartItems();
-            showToast(currentLanguage === 'en'
-                ? `Added "${getProductName(prod)}" to AI Cash Flow Simulation.`
-                : `Đã đưa "${prod.name}" vào Bảng phân tích dòng tiền cửa hàng (AI Simulated)!`, "success");
+            const toastMap = {
+                vi: `Đã đưa "${prod.name}" vào Bảng phân tích dòng tiền cửa hàng (AI Simulated)!`,
+                en: `Added "${getProductName(prod)}" to AI Cash Flow Simulation.`,
+                zh: `已将 "${getProductName(prod)}" 加入 AI 门店现金流模拟看板！`,
+                ko: `"${getProductName(prod)}" 특산품을 AI 현금 흐름 시뮬레이션에 추가했습니다!`,
+                ja: `「${getProductName(prod)}」を AI キャッシュフローシミュレーションに追加しました！`
+            };
+            showToast(toastMap[currentLanguage] || toastMap.vi, "success");
         }
 
         function addProductsToCart(productIds) {
@@ -10259,9 +10607,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 .map(productId => products.find(product => product.id === productId))
                 .filter(Boolean);
             if (!selectedProducts.length) {
-                showToast(currentLanguage === 'en'
-                    ? 'No valid products were selected.'
-                    : 'Không có sản phẩm hợp lệ để đưa vào phân tích dòng tiền.', 'error');
+                const noProdMap = {
+                    vi: 'Không có sản phẩm hợp lệ để đưa vào phân tích dòng tiền.',
+                    en: 'No valid products were selected.',
+                    zh: '没有选择用于现金流分析的有效产品。',
+                    ko: '현금 흐름 분석에 추가할 유효한 제품이 없습니다.',
+                    ja: 'キャッシュフロー分析に追加する有効な特産品が選択されていません。'
+                };
+                showToast(noProdMap[currentLanguage] || noProdMap.vi, 'error');
                 return;
             }
 
@@ -10282,9 +10635,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             });
             updateCartBadge();
             renderCartItems();
-            showToast(currentLanguage === 'en'
-                ? `Added ${selectedProducts.length} product(s) to AI Cash Flow Analysis.`
-                : `Đã đưa ${selectedProducts.length} sản phẩm OCOP vào Bảng phân tích dòng tiền AI Simulated!`, 'success');
+            const addManyMap = {
+                vi: `Đã đưa ${selectedProducts.length} sản phẩm OCOP vào Bảng phân tích dòng tiền AI Simulated!`,
+                en: `Added ${selectedProducts.length} product(s) to AI Cash Flow Analysis.`,
+                zh: `已将 ${selectedProducts.length} 个 OCOP 特产同步至 AI 现金流模拟看板！`,
+                ko: `${selectedProducts.length}개의 OCOP 제품을 AI 현금 흐름 분석표에 추가했습니다!`,
+                ja: `${selectedProducts.length} 個の OCOP 特産品を AI キャッシュフロー分析に追加しました！`
+            };
+            showToast(addManyMap[currentLanguage] || addManyMap.vi, 'success');
             if (document.getElementById('cart-drawer').classList.contains('hidden')) toggleCart();
         }
 
@@ -10292,9 +10650,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             cart = cart.filter(i => i.id !== productId);
             updateCartBadge();
             renderCartItems();
-            showToast(currentLanguage === 'en'
-                ? 'Removed product from AI simulation.'
-                : 'Đã xóa sản phẩm khỏi bảng mô phỏng dòng tiền.', 'info');
+            const removeMap = {
+                vi: 'Đã xóa sản phẩm khỏi bảng mô phỏng dòng tiền.',
+                en: 'Removed product from AI simulation.',
+                zh: '已从现金流模拟看板中移除该特产。',
+                ko: '현금 흐름 시뮬레이션에서 제품을 제거했습니다.',
+                ja: 'キャッシュフローシミュレーションから特産品を削除しました。'
+            };
+            showToast(removeMap[currentLanguage] || removeMap.vi, 'info');
         }
 
         function updateCartQty(productId, delta) {
@@ -10373,6 +10736,35 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             };
             const marginText = netMarginBadge[currentLanguage] || netMarginBadge.vi;
 
+            const cartVolumeBadge = {
+                vi: 'Sản lượng số hóa: 1,200+ Đơn vị',
+                en: 'Digitized Volume: 1,200+ Units',
+                zh: '数字化统筹量: 1,200+ 件',
+                ko: '디지털 조율량: 1,200+ 개',
+                ja: 'デジタル調整量: 1,200+ ユニット'
+            };
+            const cartMarginBadge = {
+                vi: 'Biên lợi nhuận ròng: +23.5%',
+                en: 'Net Profit Margin: +23.5%',
+                zh: '净利润率: +23.5%',
+                ko: '순이익률: +23.5%',
+                ja: '純利益率: +23.5%'
+            };
+            const cartRemoveTitle = {
+                vi: 'Xóa khỏi đối soát',
+                en: 'Remove from reconciliation',
+                zh: '从对账中移除',
+                ko: '정산에서 제거',
+                ja: '照合から削除'
+            };
+            const showroomTitle = {
+                vi: 'Xem vị trí Showroom trên Google Map: ',
+                en: 'View Showroom location on Google Maps: ',
+                zh: '在谷歌地图上查看展厅位置: ',
+                ko: 'Google 지도에서 쇼룸 위치 보기: ',
+                ja: 'Google マップでショールームの場所を表示: '
+            };
+
             container.innerHTML = cart.map(item => {
                 const itemTotal = item.price * item.qty;
                 subtotal += itemTotal;
@@ -10389,16 +10781,16 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         <h4 class="font-bold text-xs text-gray-900 truncate" title="${escapeAIHtml(getProductName(item))}">${escapeAIHtml(getProductName(item))}</h4>
                         <div class="text-[10px] text-amber-800 font-medium">${item.region} • ${item.stars}★</div>
                         <div class="flex items-center gap-1.5 mt-0.5">
-                            <span class="text-emerald-700 font-black text-[11px]">Sản lượng số hóa: 1,200+ Đơn vị</span>
-                            <span class="text-[9px] font-bold text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">Biên lợi nhuận ròng: +23.5%</span>
+                            <span class="text-emerald-700 font-black text-[11px]">${cartVolumeBadge[currentLanguage] || cartVolumeBadge.vi}</span>
+                            <span class="text-[9px] font-bold text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">${cartMarginBadge[currentLanguage] || cartMarginBadge.vi}</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                        <a href="${escapeAIHtml(mapUrl)}" target="_blank" rel="noopener noreferrer" class="showroom-link inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] font-bold transition shadow-xs cursor-pointer" title="Xem vị trí Showroom trên Google Map: ${escapeAIHtml(storeAddress)}">
+                        <a href="${escapeAIHtml(mapUrl)}" target="_blank" rel="noopener noreferrer" class="showroom-link inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] font-bold transition shadow-xs cursor-pointer" title="${(showroomTitle[currentLanguage] || showroomTitle.vi) + escapeAIHtml(storeAddress)}">
                             <span class="whitespace-nowrap">Showroom: [Google Map]</span>
                             <span class="text-xs">🌐</span>
                         </a>
-                        <button onclick="removeFromCart(${item.id})" class="w-6 h-6 rounded-lg bg-gray-100 hover:bg-red-50 text-gray-400 hover:text-red-500 flex items-center justify-center transition cursor-pointer" title="Xóa khỏi đối soát">
+                        <button onclick="removeFromCart(${item.id})" class="w-6 h-6 rounded-lg bg-gray-100 hover:bg-red-50 text-gray-400 hover:text-red-500 flex items-center justify-center transition cursor-pointer" title="${cartRemoveTitle[currentLanguage] || cartRemoveTitle.vi}">
                             <i class="fa-solid fa-xmark text-xs"></i>
                         </button>
                     </div>
@@ -10434,26 +10826,50 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             if (!input) return;
             const code = input.value.trim().toUpperCase();
             if (!code) {
-                showToast(currentLanguage === 'en' ? "Please enter a voucher code!" : "Vui lòng nhập mã giảm giá!", "warning");
+                const reqCodeMap = {
+                    vi: "Vui lòng nhập mã giảm giá!",
+                    en: "Please enter a voucher code!",
+                    zh: "请输入优惠码！",
+                    ko: "할인 코드를 입력하세요!",
+                    ja: "クーポンコードを入力してください！"
+                };
+                showToast(reqCodeMap[currentLanguage] || reqCodeMap.vi, "warning");
                 return;
             }
             const found = luckyVoucherOffers.find(v => v.code.toUpperCase() === code);
             if (!found) {
-                showToast(currentLanguage === 'en' ? `Voucher "${code}" is invalid or expired!` : `Mã ưu đãi "${code}" không tồn tại hoặc đã hết hạn!`, "error");
+                const invCodeMap = {
+                    vi: `Mã ưu đãi "${code}" không tồn tại hoặc đã hết hạn!`,
+                    en: `Voucher "${code}" is invalid or expired!`,
+                    zh: `优惠码 "${code}" 无效或已过期！`,
+                    ko: `할인 코드 "${code}"가 유효하지 않거나 만료되었습니다!`,
+                    ja: `クーポン「${code}」は無効または期限切れです！`
+                };
+                showToast(invCodeMap[currentLanguage] || invCodeMap.vi, "error");
                 return;
             }
             const subtotal = getCartSubtotal();
             if (subtotal < found.minOrder) {
-                showToast(currentLanguage === 'en'
-                    ? `Voucher "${found.code}" requires minimum order of ${found.minOrder.toLocaleString('en-US')}₫.`
-                    : `Mã "${found.code}" yêu cầu đơn tối thiểu ${found.minOrder.toLocaleString('vi-VN')}₫ (Hiện tại: ${subtotal.toLocaleString('vi-VN')}₫).`, "warning");
+                const minReqMap = {
+                    vi: `Mã "${found.code}" yêu cầu đơn tối thiểu ${found.minOrder.toLocaleString('vi-VN')}₫ (Hiện tại: ${subtotal.toLocaleString('vi-VN')}₫).`,
+                    en: `Voucher "${found.code}" requires minimum order of ${found.minOrder.toLocaleString('en-US')}₫.`,
+                    zh: `优惠码 "${found.code}" 最低订单金额需达 ${found.minOrder.toLocaleString('zh-CN')}₫。`,
+                    ko: `할인 코드 "${found.code}"는 최소 주문 금액 ${found.minOrder.toLocaleString('ko-KR')}₫ 이상 필요합니다.`,
+                    ja: `クーポン「${found.code}」は最低注文金額 ${found.minOrder.toLocaleString('ja-JP')}₫ が必要です。`
+                };
+                showToast(minReqMap[currentLanguage] || minReqMap.vi, "warning");
                 return;
             }
             activeVoucher = found;
             renderCartItems();
-            showToast(currentLanguage === 'en'
-                ? `Voucher "${found.code}" applied: -${found.discount.toLocaleString('en-US')}₫!`
-                : `Áp dụng thành công mã "${found.code}": Giảm ${found.discount.toLocaleString('vi-VN')}₫!`, "success");
+            const appSuccessMap = {
+                vi: `Áp dụng thành công mã "${found.code}": Giảm ${found.discount.toLocaleString('vi-VN')}₫!`,
+                en: `Voucher "${found.code}" applied: -${found.discount.toLocaleString('en-US')}₫!`,
+                zh: `成功使用优惠码 "${found.code}": 立减 ${found.discount.toLocaleString('zh-CN')}₫！`,
+                ko: `할인 코드 "${found.code}" 적용 성공: -${found.discount.toLocaleString('ko-KR')}₫!`,
+                ja: `クーポン「${found.code}」適用完了: -${found.discount.toLocaleString('ja-JP')}₫！`
+            };
+            showToast(appSuccessMap[currentLanguage] || appSuccessMap.vi, "success");
         }
 
         function removeVoucher() {
@@ -10463,14 +10879,26 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const input = document.getElementById('cart-voucher-input');
             if (input) input.value = '';
             renderCartItems();
-            showToast(currentLanguage === 'en' ? `Removed voucher ${code}.` : `Đã gỡ mã ưu đãi ${code}.`, "info");
+            const remVouchMap = {
+                vi: `Đã gỡ mã ưu đãi ${code}.`,
+                en: `Removed voucher ${code}.`,
+                zh: `已移除优惠码 ${code}。`,
+                ko: `할인 코드 ${code}를 제거했습니다.`,
+                ja: `クーポン ${code} を解除しました。`
+            };
+            showToast(remVouchMap[currentLanguage] || remVouchMap.vi, "info");
         }
 
         async function activateO2ODispatch() {
             if (!cart || cart.length === 0) {
-                showToast(currentLanguage === 'en'
-                    ? "Cash flow simulation table is empty! Please click '⚡ Activate Reconciliation' on a product."
-                    : "Bảng dòng tiền đang trống! Vui lòng bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để điều phối.", "warning");
+                const emptyDispatchMap = {
+                    vi: "Bảng dòng tiền đang trống! Vui lòng bấm '⚡ Kích Hoạt Đối Soát' trên sản phẩm để điều phối.",
+                    en: "Cash flow simulation table is empty! Please click '⚡ Activate Reconciliation' on a product.",
+                    zh: "现金流模拟看板为空！请点击特产上的 '⚡ 激活财务对账' 进行调配。",
+                    ko: "현금 흐름 분석표가 비어 있습니다! 특산품의 '⚡ 정산 데이터 활성화'를 클릭하세요.",
+                    ja: "キャッシュフロー分析表が空です！特産品の「⚡ 財務決済の有効化」をクリックしてください。"
+                };
+                showToast(emptyDispatchMap[currentLanguage] || emptyDispatchMap.vi, "warning");
                 return;
             }
 
@@ -10499,10 +10927,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 });
             }
 
-            const dispatchMsg = currentLanguage === 'en'
-                ? `🗺️ Digital dispatch activated for ${cart.length} OCOP points! Synced O2O Showroom: ${storeName}`
-                : `🗺️ Đã kích hoạt điều phối số ${cart.length} điểm bán OCOP! Định vị Showroom: ${storeName}`;
-            showToast(dispatchMsg, "success");
+            const dispatchMsgMap = {
+                vi: `🗺️ Đã kích hoạt điều phối số ${cart.length} điểm bán OCOP! Định vị Showroom: ${storeName}`,
+                en: `🗺️ Digital dispatch activated for ${cart.length} OCOP points! Synced O2O Showroom: ${storeName}`,
+                zh: `🗺️ 已激活 ${cart.length} 个 OCOP 网点的数字化调配！同步实体展厅: ${storeName}`,
+                ko: `🗺️ ${cart.length}개 OCOP 판매처의 디지털 조율 활성화! 동기화된 쇼룸: ${storeName}`,
+                ja: `🗺️ ${cart.length} か所の OCOP 拠点のデジタル調整が有効化されました！ショールーム: ${storeName}`
+            };
+            showToast(dispatchMsgMap[currentLanguage] || dispatchMsgMap.vi, "success");
 
             if (mapUrl) {
                 setTimeout(() => {
@@ -10595,12 +11027,26 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         function toggleWishlist(productId) {
             const idx = wishlist.indexOf(productId);
+            const removeMsgs = {
+                vi: 'Đã xóa khỏi danh sách yêu thích',
+                en: 'Removed from your saved items.',
+                zh: '已从收藏夹中移除',
+                ko: '즐겨찾기에서 제거되었습니다.',
+                ja: 'お気に入りから削除しました。'
+            };
+            const addMsgs = {
+                vi: 'Đã thêm vào danh sách yêu thích!',
+                en: 'Added to your saved items.',
+                zh: '已添加到收藏夹！',
+                ko: '즐겨찾기에 추가되었습니다!',
+                ja: 'お気に入りに追加しました！'
+            };
             if (idx > -1) {
                 wishlist.splice(idx, 1);
-                showToast(currentLanguage === 'en' ? 'Removed from your saved items.' : "Đã xóa khỏi danh sách yêu thích", "info");
+                showToast(removeMsgs[currentLanguage] || removeMsgs.vi, "info");
             } else {
                 wishlist.push(productId);
-                showToast(currentLanguage === 'en' ? 'Added to your saved items.' : "Đã thêm vào danh sách yêu thích!", "success");
+                showToast(addMsgs[currentLanguage] || addMsgs.vi, "success");
             }
 
             updateWishlistBadge();
@@ -10618,29 +11064,72 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         function renderWishlistItems() {
             const container = document.getElementById('wishlist-items');
             if (wishlist.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${currentLanguage === 'en' ? 'No saved specialties yet.' : 'Chưa có đặc sản yêu thích nào.'}</p>`;
+                const emptyWishlistMsgs = {
+                    vi: 'Chưa có đặc sản yêu thích nào.',
+                    en: 'No saved specialties yet.',
+                    zh: '暂无收藏的特色产品。',
+                    ko: '아직 저장된 특산품이 없습니다.',
+                    ja: 'お気に入りの特産品はまだありません。'
+                };
+                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${emptyWishlistMsgs[currentLanguage] || emptyWishlistMsgs.vi}</p>`;
                 return;
             }
 
             const favProducts = products.filter(p => wishlist.includes(p.id));
-            container.innerHTML = favProducts.map(p => `
+            const removeLabels = {
+                vi: name => `Bỏ ${name} khỏi yêu thích`,
+                en: name => `Remove ${name} from favorites`,
+                zh: name => `从收藏夹移除 ${name}`,
+                ko: name => `즐겨찾기에서 ${name} 제거`,
+                ja: name => `お気に入りから ${name} を削除`
+            };
+            const removeTitles = {
+                vi: 'Bỏ yêu thích',
+                en: 'Remove from favorites',
+                zh: '从收藏夹中移除',
+                ko: '즐겨찾기 해제',
+                ja: 'お気に入り解除'
+            };
+            const reconcileLabels = {
+                vi: name => `Đối soát ${name}`,
+                en: name => `Reconcile ${name}`,
+                zh: name => `对账 ${name}`,
+                ko: name => `${name} 정산`,
+                ja: name => `${name} 財務照合`
+            };
+            const reconcileTitles = {
+                vi: 'Phân tích dòng tiền',
+                en: 'Reconcile cash flow',
+                zh: '分析现金流',
+                ko: '현금 흐름 분석',
+                ja: 'キャッシュフロー分析'
+            };
+
+            container.innerHTML = favProducts.map(p => {
+                const prodName = getProductName(p);
+                const remLabel = (removeLabels[currentLanguage] || removeLabels.vi)(prodName);
+                const remTitle = removeTitles[currentLanguage] || removeTitles.vi;
+                const recLabel = (reconcileLabels[currentLanguage] || reconcileLabels.vi)(prodName);
+                const recTitle = reconcileTitles[currentLanguage] || reconcileTitles.vi;
+                return `
                 <div class="bg-white p-3 rounded-2xl border border-amber-200 flex items-center justify-between gap-3 shadow-xs">
                     <img src="${p.img}" class="w-14 h-14 object-cover rounded-xl border border-amber-100 flex-shrink-0">
                     <div class="flex-1 min-w-0">
-                        <h4 class="font-bold text-xs text-gray-900 truncate">${getProductName(p)}</h4>
+                        <h4 class="font-bold text-xs text-gray-900 truncate">${prodName}</h4>
                         <span class="text-[10px] text-amber-800">${p.region} • ${p.stars}★</span>
                         <div class="text-red-600 font-extrabold text-xs mt-0.5">${getProductPriceLabel(p)}</div>
                     </div>
                     <div class="flex shrink-0 items-center gap-2">
-                        <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${currentLanguage === 'en' ? `Remove ${getProductName(p)} from favorites` : `Bỏ ${getProductName(p)} khỏi yêu thích`}" title="${currentLanguage === 'en' ? 'Remove from favorites' : 'Bỏ yêu thích'}" class="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-300 bg-amber-50 text-amber-700 transition hover:bg-amber-100 cursor-pointer">
+                        <button type="button" onclick="toggleWishlist(${p.id})" aria-label="${remLabel}" title="${remTitle}" class="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-300 bg-amber-50 text-amber-700 transition hover:bg-amber-100 cursor-pointer">
                             <i class="fa-solid fa-bookmark" aria-hidden="true"></i>
                         </button>
-                        <button type="button" onclick="addToCart(${p.id})" aria-label="${currentLanguage === 'en' ? `Reconcile ${getProductName(p)}` : `Đối soát ${getProductName(p)}`}" title="${currentLanguage === 'en' ? 'Reconcile cash flow' : 'Phân tích dòng tiền'}" class="bg-ocopGreen text-white p-2 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition cursor-pointer">
+                        <button type="button" onclick="addToCart(${p.id})" aria-label="${recLabel}" title="${recTitle}" class="bg-ocopGreen text-white p-2 rounded-xl text-xs font-bold hover:bg-ocopGreenLight transition cursor-pointer">
                             <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         // -------------------------------------------------------------
@@ -10652,11 +11141,60 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             const store = window.OcopStores ? window.OcopStores.getOcopStoreInfo(productId) : null;
             const container = document.getElementById('quickview-content');
+
+            const starSuffixMap = { vi: 'SAO', en: 'STARS', zh: '星级', ko: '성급', ja: 'つ星' };
+            const coopLabelMap = {
+                vi: 'Hợp tác xã / Cơ sở sản xuất chứng nhận:',
+                en: 'Certified OCOP Cooperative / Producer:',
+                zh: '认证 OCOP 合作社 / 生产主体：',
+                ko: '인증 OCOP 협동조합 / 생산자:',
+                ja: '認定 OCOP 協同組合 / 生産者:'
+            };
+            const storeDetailsBtnMap = {
+                vi: 'Tra Cứu Chi Tiết Điểm Bán & Chỉ Đường Maps',
+                en: 'View Store Details & Google Maps',
+                zh: '查询展厅详情与地图导航',
+                ko: '매장 상세 조회 및 지도 길찾기',
+                ja: '店舗詳細照会と地図ルート案内'
+            };
+            const imgIllustrativeMap = {
+                vi: 'Ảnh minh họa theo tên món; thương hiệu, bao bì và hình thức thực tế có thể khác.',
+                en: 'Illustrative photo selected by product name; actual brand, packaging and appearance may differ.',
+                zh: '根据特产名称匹配的示意图；实际品牌、包装与外观可能有所不同。',
+                ko: '제품명에 따른 예시 이미지이며 실제 브랜드, 포장 및 외형은 다를 수 있습니다.',
+                ja: '品名に応じたイメージ写真です。実際のブランド・パッケージ・外観とは異なる場合があります。'
+            };
+            const imgSampleMap = {
+                vi: 'Ảnh mẫu sản phẩm; quy cách bán theo mô tả ở trên.',
+                en: 'Sample product image; sold pack size is specified above.',
+                zh: '样品实拍图；销售规格以上述描述为准。',
+                ko: '샘플 제품 이미지이며 포장 규격은 위 설명을 참조하세요.',
+                ja: 'サンプル画像です。販売規格は上記の説明をご確認ください。'
+            };
+            const storeLocBtnMap = {
+                vi: '🏪 Điểm Bán OCOP',
+                en: '🏪 Store Locations',
+                zh: '🏪 OCOP 实体展厅',
+                ko: '🏪 OCOP 오프라인 쇼룸',
+                ja: '🏪 OCOP ショールーム'
+            };
+            const cashFlowBtnMap = {
+                vi: '📊 Đối Soát Dòng Tiền',
+                en: '📊 Analyze Cash Flow',
+                zh: '📊 分析现金流',
+                ko: '📊 현금 흐름 분석',
+                ja: '📊 キャッシュフロー分析'
+            };
+
+            const sampleImgText = p.imageIsSample
+                ? `<p class="text-[11px] text-gray-500">${p.imageIllustrative ? (imgIllustrativeMap[currentLanguage] || imgIllustrativeMap.vi) : (imgSampleMap[currentLanguage] || imgSampleMap.vi)}</p>`
+                : '';
+
             container.innerHTML = `
                 <div class="h-64 md:h-full bg-amber-100 relative">
                     <img src="${p.img}" alt="${getProductName(p)}" decoding="async" class="w-full h-full ${(p.catalogImport || p.imageIsSample) ? 'object-contain p-3' : 'object-cover'}">
                     <span class="absolute top-3 left-3 bg-ocopGreen text-ocopGold font-black text-xs px-3 py-1 rounded-full uppercase shadow">
-                        OCOP ${getProductStarLabel(p)} ${currentLanguage === 'en' ? 'STARS' : 'SAO'}
+                        OCOP ${getProductStarLabel(p)} ${starSuffixMap[currentLanguage] || starSuffixMap.vi}
                     </span>
                 </div>
                 <div class="p-6 space-y-4 flex flex-col justify-between">
@@ -10673,7 +11211,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <div class="flex items-center justify-between font-bold text-ocopGreen">
                                 <span class="flex items-center gap-1.5">
                                     <i class="fa-solid fa-award text-amber-600"></i>
-                                    <span>${currentLanguage === 'en' ? 'Certified OCOP Cooperative / Producer:' : 'Hợp tác xã / Cơ sở sản xuất chứng nhận:'}</span>
+                                    <span>${coopLabelMap[currentLanguage] || coopLabelMap.vi}</span>
                                 </span>
                                 <span class="text-[10px] bg-ocopGold text-amber-950 px-2 py-0.5 rounded-full font-black">${store.stars}★ OCOP</span>
                             </div>
@@ -10688,11 +11226,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             </div>
                             <button type="button" onclick="closeQuickView(); openStoreLocator(${p.id});" class="mt-2 w-full py-2 px-3 rounded-xl bg-ocopGold hover:bg-amber-400 text-amber-950 font-black text-xs shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
                                 <i class="fa-solid fa-map-location-dot text-sm"></i>
-                                <span>${currentLanguage === 'en' ? 'View Store Details & Google Maps' : 'Tra Cứu Chi Tiết Điểm Bán & Chỉ Đường Maps'}</span>
+                                <span>${storeDetailsBtnMap[currentLanguage] || storeDetailsBtnMap.vi}</span>
                             </button>
                         </div>
                         ` : ''}
-                        ${p.imageIsSample ? `<p class="text-[11px] text-gray-500">${p.imageIllustrative ? (currentLanguage === 'en' ? 'Illustrative photo selected by product name; actual brand, packaging and appearance may differ.' : 'Ảnh minh họa theo tên món; thương hiệu, bao bì và hình thức thực tế có thể khác.') : (currentLanguage === 'en' ? 'Sample product image; sold pack size is specified above.' : 'Ảnh mẫu sản phẩm; quy cách bán theo mô tả ở trên.')}</p>` : ''}
+                        ${sampleImgText}
                     </div>
                     <div class="space-y-3 pt-3 border-t border-gray-100">
                         <div class="flex flex-col gap-1">
@@ -10702,11 +11240,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         <div class="flex items-stretch gap-2">
                             <button onclick="closeQuickView(); openStoreLocator(${p.id});" class="min-h-12 flex-1 rounded-2xl bg-amber-500 hover:bg-amber-600 py-3 text-xs font-bold text-white shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer">
                                 <i class="fa-solid fa-store text-amber-100"></i>
-                                <span>${currentLanguage === 'en' ? 'Store Locations' : '🏪 Điểm Bán OCOP'}</span>
+                                <span>${storeLocBtnMap[currentLanguage] || storeLocBtnMap.vi}</span>
                             </button>
                             <button onclick="addToCart(${p.id}); closeQuickView();" class="min-h-12 flex-1 rounded-2xl bg-emerald-800 hover:bg-emerald-700 py-3 text-xs font-bold text-white shadow-lg transition flex items-center justify-center space-x-1.5 cursor-pointer border border-emerald-400/50">
                                 <i class="fa-solid fa-chart-line text-emerald-300"></i>
-                                <span>${currentLanguage === 'en' ? '📊 Analyze Cash Flow' : '📊 Đối Soát Dòng Tiền'}</span>
+                                <span>${cashFlowBtnMap[currentLanguage] || cashFlowBtnMap.vi}</span>
                             </button>
                         </div>
                     </div>
@@ -10723,9 +11261,23 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             if (!button) return;
 
             const isFavorite = wishlist.includes(productId);
-            const label = currentLanguage === 'en'
-                ? (isFavorite ? 'Remove from favorites' : 'Add to favorites')
-                : (isFavorite ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích');
+            const favRemoveMap = {
+                vi: 'Xóa khỏi yêu thích',
+                en: 'Remove from favorites',
+                zh: '从收藏夹中移除',
+                ko: '즐겨찾기에서 제거',
+                ja: 'お気に入りから削除'
+            };
+            const favAddMap = {
+                vi: 'Thêm vào yêu thích',
+                en: 'Add to favorites',
+                zh: '添加到收藏夹',
+                ko: '즐겨찾기에 추가',
+                ja: 'お気に入りに追加'
+            };
+            const label = isFavorite
+                ? (favRemoveMap[currentLanguage] || favRemoveMap.vi)
+                : (favAddMap[currentLanguage] || favAddMap.vi);
             button.setAttribute('aria-label', label);
             button.setAttribute('title', label);
             button.setAttribute('aria-pressed', String(isFavorite));
@@ -10882,16 +11434,34 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                     <div class="flex items-center gap-2 text-gray-700">
                         <i class="fa-solid fa-qrcode text-xl text-emerald-800"></i>
-                        <span class="text-[11px]">Tất cả sản phẩm tại các điểm bán trên đều có <strong>Tem chống giả & QR Code OCOP</strong>.</span>
+                        <span class="text-[11px]">${({
+                            vi: 'Tất cả sản phẩm tại các điểm bán trên đều có <strong>Tem chống giả & QR Code OCOP</strong>.',
+                            en: 'All products at these outlets are authenticated with <strong>Anti-counterfeit & OCOP QR Codes</strong>.',
+                            zh: '上述各展厅在售产品均配有 <strong>防伪标签与国家 OCOP 二维码</strong>。',
+                            ko: '위 매장의 모든 제품에는 <strong>위조 방지 씰 및 OCOP QR 코드</strong>가 부착되어 있습니다.',
+                            ja: '上記取扱店の全商品に<strong>偽造防止シールおよび OCOP QR コード</strong>が付与されています。'
+                        })[currentLanguage] || 'Tất cả sản phẩm tại các điểm bán trên đều có <strong>Tem chống giả & QR Code OCOP</strong>.'}</span>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <button onclick="addToCart(${p.id}); closeStoreLocator();" class="flex-1 sm:flex-initial bg-emerald-800 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer border border-emerald-400/40">
                             <i class="fa-solid fa-chart-line text-emerald-300"></i>
-                            <span>${currentLanguage === 'en' ? '📊 Analyze Cash Flow' : '📊 Đối Soát Dòng Tiền'}</span>
+                            <span>${({
+                                vi: '📊 Đối Soát Dòng Tiền',
+                                en: '📊 Analyze Cash Flow',
+                                zh: '📊 分析现金流',
+                                ko: '📊 현금 흐름 분석',
+                                ja: '📊 キャッシュフロー分析'
+                            })[currentLanguage] || '📊 Đối Soát Dòng Tiền'}</span>
                         </button>
                         <button onclick="closeStoreLocator(); toggleAIChat();" class="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl font-black text-xs transition flex items-center justify-center gap-1 cursor-pointer">
                             <i class="fa-solid fa-comments"></i>
-                            <span>Hỏi AI điểm bán</span>
+                            <span>${({
+                                vi: 'Hỏi AI điểm bán',
+                                en: 'Ask AI Showroom',
+                                zh: '向 AI 咨询展厅',
+                                ko: 'AI 매장 문의',
+                                ja: 'AI 店舗案内'
+                            })[currentLanguage] || 'Hỏi AI điểm bán'}</span>
                         </button>
                     </div>
                 </div>
@@ -11064,21 +11634,29 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     introOverlay.classList.add('hidden');
                 }
             }
-            const provSelect = document.getElementById('province-select');
+            const provSelect = document.getElementById('sidebar-province-select') || document.getElementById('province-select');
             if (provSelect) {
                 provSelect.value = 'Đồng Nai';
-                if (typeof onProvinceFilterChange === 'function') {
-                    onProvinceFilterChange('Đồng Nai');
-                } else {
-                    provSelect.dispatchEvent(new Event('change'));
-                }
+            }
+            if (typeof onProvinceFilterChange === 'function') {
+                onProvinceFilterChange('Đồng Nai');
+            } else if (provSelect) {
+                provSelect.dispatchEvent(new Event('change'));
             }
             const prodSection = document.getElementById('products-section');
             if (prodSection) {
                 prodSection.scrollIntoView({ behavior: 'smooth' });
             }
             if (typeof showToast === 'function') {
-                showToast('Đang hiển thị Hệ sinh thái Đặc sản OCOP Tỉnh Đồng Nai (Trà khổ qua Hiệp Vân, Bưởi Tân Triều)', 'success');
+                const toastMsg = {
+                    vi: 'Đang hiển thị Hệ sinh thái Đặc sản OCOP Tỉnh Đồng Nai (Trà khổ qua Hiệp Vân, Bưởi Tân Triều)',
+                    en: 'Displaying Dong Nai OCOP Specialties Ecosystem (Hiep Van Bitter Melon Tea, Tan Trieu Pomelo)',
+                    zh: '正在展示同奈省OCOP特产生态系统（协云苦瓜茶、新朝柚子）',
+                    ko: '동나이성 OCOP 특산품 생태계 표시 중 (히엡반 여주차, 떤찌에우 자몽)',
+                    ja: 'ドンナイ省OCOP特産品エコシステムを表示中（ヒエップヴァン苦瓜茶、タントリエウ文旦）'
+                };
+                const lang = (typeof currentLanguage !== 'undefined' && toastMsg[currentLanguage]) ? currentLanguage : 'vi';
+                showToast(toastMsg[lang], 'success');
             }
         }
 
@@ -11314,21 +11892,82 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         function syncAuthSocialVisibility() {
             const socialLogin = document.getElementById('auth-social-login');
-            const en = currentLanguage === 'en';
+            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
             const registering = authTab === 'register';
             socialLogin.classList.toggle('hidden', authStep !== 'form');
-            socialLogin.setAttribute('aria-label', en
-                ? (registering ? 'Register with a social account' : 'Sign in with a social account')
-                : (registering ? 'Đăng ký bằng tài khoản xã hội' : 'Đăng nhập bằng tài khoản xã hội'));
-            document.querySelector('[data-auth-social-label="google"]').textContent = en
-                ? (registering ? 'Sign up with Google' : 'Continue with Google')
-                : (registering ? 'Đăng ký với Google' : 'Tiếp tục với Google');
-            document.querySelector('[data-auth-social-label="facebook"]').textContent = en
-                ? (registering ? 'Sign up with Facebook' : 'Continue with Facebook')
-                : (registering ? 'Đăng ký với Facebook' : 'Tiếp tục với Facebook');
-            document.querySelector('[data-auth-social-label="separator"]').textContent = en
-                ? (registering ? 'or create a shop account' : 'or sign in with your account')
-                : (registering ? 'hoặc đăng ký tài khoản cửa hàng' : 'hoặc đăng nhập bằng tài khoản');
+            const ariaLabelMap = {
+                register: {
+                    vi: 'Đăng ký bằng tài khoản xã hội',
+                    en: 'Register with a social account',
+                    zh: '使用社交账号注册',
+                    ko: '소셜 계정으로 가입',
+                    ja: 'ソーシャルアカウントで登録'
+                },
+                login: {
+                    vi: 'Đăng nhập bằng tài khoản xã hội',
+                    en: 'Sign in with a social account',
+                    zh: '使用社交账号登录',
+                    ko: '소셜 계정으로 로그인',
+                    ja: 'ソーシャルアカウントでログイン'
+                }
+            };
+            const googleLabelMap = {
+                register: {
+                    vi: 'Đăng ký với Google',
+                    en: 'Sign up with Google',
+                    zh: '使用 Google 注册',
+                    ko: 'Google로 가입',
+                    ja: 'Google で登録'
+                },
+                login: {
+                    vi: 'Tiếp tục với Google',
+                    en: 'Continue with Google',
+                    zh: '使用 Google 继续',
+                    ko: 'Google로 계속',
+                    ja: 'Google で続行'
+                }
+            };
+            const fbLabelMap = {
+                register: {
+                    vi: 'Đăng ký với Facebook',
+                    en: 'Sign up with Facebook',
+                    zh: '使用 Facebook 注册',
+                    ko: 'Facebook으로 가입',
+                    ja: 'Facebook で登録'
+                },
+                login: {
+                    vi: 'Tiếp tục với Facebook',
+                    en: 'Continue with Facebook',
+                    zh: '使用 Facebook 继续',
+                    ko: 'Facebook으로 계속',
+                    ja: 'Facebook で続行'
+                }
+            };
+            const sepLabelMap = {
+                register: {
+                    vi: 'hoặc đăng ký tài khoản cửa hàng',
+                    en: 'or create a shop account',
+                    zh: '或注册展厅管理账号',
+                    ko: '또는 매장 계정 생성',
+                    ja: 'またはショップアカウント作成'
+                },
+                login: {
+                    vi: 'hoặc đăng nhập bằng tài khoản',
+                    en: 'or sign in with your account',
+                    zh: '或使用已有账号登录',
+                    ko: '또는 기존 계정으로 로그인',
+                    ja: 'またはアカウントでログイン'
+                }
+            };
+
+            const mode = registering ? 'register' : 'login';
+            socialLogin.setAttribute('aria-label', ariaLabelMap[mode][lang]);
+            const gEl = document.querySelector('[data-auth-social-label="google"]');
+            if (gEl) gEl.textContent = googleLabelMap[mode][lang];
+            const fbEl = document.querySelector('[data-auth-social-label="facebook"]');
+            if (fbEl) fbEl.textContent = fbLabelMap[mode][lang];
+            const sepEl = document.querySelector('[data-auth-social-label="separator"]');
+            if (sepEl) sepEl.textContent = sepLabelMap[mode][lang];
         }
         function switchAuthTab(tab) {
             authTab = tab;
@@ -11408,14 +12047,21 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         });
         async function startSocialLogin(provider) {
             if (!['google', 'facebook'].includes(provider) || socialLoginPending) return;
-            const en = currentLanguage === 'en';
+            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
             const name = provider === 'google' ? 'Google' : 'Facebook';
             socialLoginPending = true;
             document.querySelectorAll('#auth-social-login button').forEach(button => {
                 button.disabled = true;
                 button.setAttribute('aria-busy', 'true');
             });
-            showSocialLoginStatus(en ? 'Connecting to ' + name + '…' : 'Đang kết nối với ' + name + '…');
+            const connectingMap = {
+                vi: 'Đang kết nối với ' + name + '…',
+                en: 'Connecting to ' + name + '…',
+                zh: '正在连接 ' + name + '…',
+                ko: name + '에 연결 중…',
+                ja: name + ' に接続中…'
+            };
+            showSocialLoginStatus(connectingMap[lang] || connectingMap.vi);
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 8000);
             try {
@@ -11423,18 +12069,35 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 if (!response.ok) throw new Error('OAuth status unavailable');
                 const status = await response.json();
                 if (!status.providers?.[provider]?.configured) {
-                    showSocialLoginStatus(en
-                        ? name + ' sign-in is not connected yet. You can sign in or register with your shop account below.'
-                        : 'Đăng nhập ' + name + ' chưa được kết nối. Bạn có thể đăng nhập hoặc đăng ký bằng tài khoản cửa hàng bên dưới.', true);
+                    const notConnMap = {
+                        vi: 'Đăng nhập ' + name + ' chưa được kết nối. Bạn có thể đăng nhập hoặc đăng ký bằng tài khoản cửa hàng bên dưới.',
+                        en: name + ' sign-in is not connected yet. You can sign in or register with your shop account below.',
+                        zh: name + ' 登录尚未接入。您可以通过下方的展厅账户登录或注册。',
+                        ko: name + ' 로그인이 아직 연동되지 않았습니다. 아래 매장 계정으로 로그인 또는 가입하세요.',
+                        ja: name + ' ログインはまだ連携されていません。下のアカウントでログインまたは登録してください。'
+                    };
+                    showSocialLoginStatus(notConnMap[lang] || notConnMap.vi, true);
                     resetSocialLoginPending();
                     return;
                 }
-                showSocialLoginStatus(en ? 'Opening ' + name + ' sign-in…' : 'Đang mở trang đăng nhập ' + name + '…');
+                const openingMap = {
+                    vi: 'Đang mở trang đăng nhập ' + name + '…',
+                    en: 'Opening ' + name + ' sign-in…',
+                    zh: '正在打开 ' + name + ' 登录页面…',
+                    ko: name + ' 로그인 페이지 여는 중…',
+                    ja: name + ' ログイン画面を開いています…'
+                };
+                showSocialLoginStatus(openingMap[lang] || openingMap.vi);
                 window.location.assign(getAIEndpoint('/api/auth/oauth/' + provider));
             } catch {
-                showSocialLoginStatus(en
-                    ? 'Could not connect to the sign-in server. Please try again.'
-                    : 'Không kết nối được máy chủ đăng nhập. Bạn kiểm tra kết nối rồi bấm thử lại nhé.', true);
+                const connErrMap = {
+                    vi: 'Không kết nối được máy chủ đăng nhập. Bạn kiểm tra kết nối rồi bấm thử lại nhé.',
+                    en: 'Could not connect to the sign-in server. Please try again.',
+                    zh: '无法连接到登录服务器，请检查网络后重试。',
+                    ko: '로그인 서버에 연결할 수 없습니다. 네트워크 확인 후 다시 시도해주세요.',
+                    ja: 'ログインサーバーに接続できませんでした。通信環境を確認して再試行してください。'
+                };
+                showSocialLoginStatus(connErrMap[lang] || connErrMap.vi, true);
                 resetSocialLoginPending();
             } finally {
                 clearTimeout(timeout);
@@ -11446,14 +12109,24 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const error = params.get('oauth_error');
             if (!code && !error) return;
 
+            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
             window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
             if (error) {
-                const message = error === 'cancelled'
-                    ? 'Bạn đã hủy đăng nhập xã hội.'
-                    : 'Đăng nhập xã hội không thành công. Vui lòng thử lại.';
-                showToast(currentLanguage === 'en'
-                    ? (error === 'cancelled' ? 'Social sign-in was cancelled.' : 'Social sign-in failed. Please try again.')
-                    : message, 'error');
+                const cancelMap = {
+                    vi: 'Bạn đã hủy đăng nhập xã hội.',
+                    en: 'Social sign-in was cancelled.',
+                    zh: '您已取消社交账号登录。',
+                    ko: '소셜 로그인을 취소했습니다.',
+                    ja: 'ソーシャルログインをキャンセルしました。'
+                };
+                const failMap = {
+                    vi: 'Đăng nhập xã hội không thành công. Vui lòng thử lại.',
+                    en: 'Social sign-in failed. Please try again.',
+                    zh: '社交账号登录失败，请重试。',
+                    ko: '소셜 로그인에 실패했습니다. 다시 시도해주세요.',
+                    ja: 'ソーシャルログインに失敗しました。もう一度お試しください。'
+                };
+                showToast(error === 'cancelled' ? (cancelMap[lang] || cancelMap.vi) : (failMap[lang] || failMap.vi), 'error');
                 return;
             }
 
@@ -11462,13 +12135,23 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 const result = await requestAuth('/api/auth/oauth/exchange', { code });
                 currentUser = result.user;
                 await window.acceptAccountLogin(result);
-                showToast(currentLanguage === 'en'
-                    ? `Welcome ${currentUser.name}! You are signed in.`
-                    : `Xin chào ${currentUser.name}! Bạn đã đăng nhập thành công.`, 'success');
+                const welcomeMap = {
+                    vi: `Xin chào ${currentUser.name}! Bạn đã đăng nhập thành công.`,
+                    en: `Welcome ${currentUser.name}! You are signed in.`,
+                    zh: `欢迎 ${currentUser.name}！登录成功。`,
+                    ko: `환영합니다 ${currentUser.name}님! 로그인되었습니다.`,
+                    ja: `ようこそ ${currentUser.name} 様！ログインしました。`
+                };
+                showToast(welcomeMap[lang] || welcomeMap.vi, 'success');
             } catch (error) {
-                showToast(error.message || (currentLanguage === 'en'
-                    ? 'Social sign-in failed. Please try again.'
-                    : 'Đăng nhập xã hội không thành công. Vui lòng thử lại.'), 'error');
+                const failMap = {
+                    vi: 'Đăng nhập xã hội không thành công. Vui lòng thử lại.',
+                    en: 'Social sign-in failed. Please try again.',
+                    zh: '社交账号登录失败，请重试。',
+                    ko: '소셜 로그인에 실패했습니다. 다시 시도해주세요.',
+                    ja: 'ソーシャルログインに失敗しました。もう一度お試しください。'
+                };
+                showToast(error.message || (failMap[lang] || failMap.vi), 'error');
             }
         }
 
@@ -11566,26 +12249,86 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         function renderOrdersHistory() {
             const container = document.getElementById('orders-container');
             if (ordersHistory.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${currentLanguage === 'en' ? 'You have no orders yet.' : 'Bạn chưa có đơn hàng nào.'}</p>`;
+                const emptyOrdersMap = {
+                    vi: 'Bạn chưa có đơn hàng nào.',
+                    en: 'You have no orders yet.',
+                    zh: '您目前没有任何订单。',
+                    ko: '아직 주문 내역이 없습니다.',
+                    ja: 'まだ注文履歴はありません。'
+                };
+                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs">${emptyOrdersMap[currentLanguage] || emptyOrdersMap.vi}</p>`;
                 return;
             }
 
-            container.innerHTML = ordersHistory.map(o => `
+            const orderLabelMap = {
+                vi: 'Mã đơn',
+                en: 'Order',
+                zh: '订单号',
+                ko: '주문 번호',
+                ja: '注文番号'
+            };
+            const orderStatusMap = {
+                'Chờ thanh toán': {
+                    vi: 'Chờ thanh toán',
+                    en: 'Awaiting payment',
+                    zh: '待支付',
+                    ko: '결제 대기',
+                    ja: '支払い待ち'
+                },
+                'Chờ xác nhận BIDV': {
+                    vi: 'Chờ xác nhận BIDV',
+                    en: 'Awaiting BIDV confirmation',
+                    zh: '待 BIDV 银行确认',
+                    ko: 'BIDV 확인 대기',
+                    ja: 'BIDV確認待ち'
+                }
+            };
+            const dateLabelMap = {
+                vi: 'Ngày đặt:',
+                en: 'Order date:',
+                zh: '下单日期：',
+                ko: '주문일:',
+                ja: '注文日:'
+            };
+            const prodsLabelMap = {
+                vi: 'Sản phẩm:',
+                en: 'Products:',
+                zh: '商品清单：',
+                ko: '제품:',
+                ja: '商品:'
+            };
+            const totalLabelMap = {
+                vi: 'Tổng tiền:',
+                en: 'Total:',
+                zh: '总计金额：',
+                ko: '총액:',
+                ja: '合計:'
+            };
+
+            container.innerHTML = ordersHistory.map(o => {
+                const statusText = (orderStatusMap[o.status] && orderStatusMap[o.status][currentLanguage]) || o.status;
+                const orderLabel = orderLabelMap[currentLanguage] || orderLabelMap.vi;
+                const dateLabel = dateLabelMap[currentLanguage] || dateLabelMap.vi;
+                const prodsLabel = prodsLabelMap[currentLanguage] || prodsLabelMap.vi;
+                const totalLabel = totalLabelMap[currentLanguage] || totalLabelMap.vi;
+
+                return `
                 <div class="bg-white p-3.5 rounded-2xl border border-amber-200 space-y-2 shadow-xs">
                     <div class="flex flex-wrap gap-2 justify-between items-center text-xs font-extrabold text-ocopGreen border-b border-gray-100 pb-2">
-                        <span class="break-all">${currentLanguage === 'en' ? 'Order' : 'Mã đơn'}: #${o.id}</span>
-                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px]">${currentLanguage === 'en' ? ({'Chờ thanh toán':'Awaiting payment','Chờ xác nhận BIDV':'Awaiting BIDV confirmation'}[o.status] || o.status) : o.status}</span>
+                        <span class="break-all">${orderLabel}: #${o.id}</span>
+                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px]">${statusText}</span>
                     </div>
                     <div class="text-xs text-gray-600 space-y-1">
-                        <p><b>${currentLanguage === 'en' ? 'Order date:' : 'Ngày đặt:'}</b> ${o.date}</p>
-                        <p><b>${currentLanguage === 'en' ? 'Products:' : 'Sản phẩm:'}</b> ${o.items.join(', ')}</p>
+                        <p><b>${dateLabel}</b> ${o.date}</p>
+                        <p><b>${prodsLabel}</b> ${o.items.join(', ')}</p>
                     </div>
                     <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-xs">
-                        <span class="text-gray-500 font-bold">${currentLanguage === 'en' ? 'Total:' : 'Tổng tiền:'}</span>
+                        <span class="text-gray-500 font-bold">${totalLabel}</span>
                         <span class="text-red-600 font-black text-sm">${o.total.toLocaleString('vi-VN')} ₫</span>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         // -------------------------------------------------------------
@@ -11676,7 +12419,24 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         function getProductPriceLabel(product) {
             const money = value => Number(value).toLocaleString('vi-VN');
             const price = Number(product.priceMax) || Number(product.price) || 0;
-            return money(price) + ' ₫' + (product.packaging ? ' / ' + (currentLanguage === 'en' ? product.packagingEn || product.packaging : product.packaging) : '');
+            if (!product.packaging) return money(price) + ' ₫';
+            if (currentLanguage === 'vi') return money(price) + ' ₫ / ' + product.packaging;
+            const unitMap = {
+                'chiếc': { en: 'piece', zh: '件', ko: '개', ja: '個' },
+                'hộp': { en: 'box', zh: '盒', ko: '상자', ja: '箱' },
+                'gói': { en: 'pack', zh: '包', ko: '팩', ja: 'パック' },
+                'chai': { en: 'bottle', zh: '瓶', ko: '병', ja: '本' },
+                'lọ': { en: 'jar', zh: '罐', ko: '병', ja: '瓶' },
+                'kg': { en: 'kg', zh: '公斤', ko: 'kg', ja: 'kg' },
+                'bộ': { en: 'set', zh: '套', ko: '세트', ja: 'セット' },
+                'túi': { en: 'bag', zh: '袋', ko: '봉지', ja: '袋' },
+                'bình': { en: 'pitcher', zh: '壶', ko: '병', ja: '瓶' },
+                'hũ': { en: 'jar', zh: '坛', ko: '단지', ja: '壺' },
+                'thùng': { en: 'carton', zh: '箱', ko: '상자', ja: '箱' }
+            };
+            const rawUnit = (product.packaging || '').toLowerCase().trim();
+            const localizedPackaging = (unitMap[rawUnit] && unitMap[rawUnit][currentLanguage]) || product.packagingEn || product.packaging;
+            return money(price) + ' ₫ / ' + localizedPackaging;
         }
 
         function getProductName(product) {
@@ -11731,11 +12491,13 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 rating = (46 + seed % 5) / 10;
                 reviews = 120 + (seed >>> 8) % 861;
             }
-            return rating.toFixed(1) + ' (' + reviews + ' ' + (currentLanguage === 'en' ? 'reviews' : 'đánh giá') + ')';
+            const revLabels = { vi: 'đánh giá', en: 'reviews', zh: '条评价', ko: '개 리뷰', ja: '件のレビュー' };
+            return rating.toFixed(1) + ' (' + reviews + ' ' + (revLabels[currentLanguage] || revLabels.vi) + ')';
         }
 
         function getProductDescription(product) {
-            if (product && (product.id === 338 || (product.name && product.name.includes('Minh Hồng')))) {
+            if (!product) return '';
+            if (product.id === 338 || (product.name && product.name.includes('Minh Hồng'))) {
                 const descMap = {
                     vi: "Miến dong Minh Hồng (Hoài Đức) - Sản phẩm đạt chứng nhận OCOP 4 Sao của UBND Thành phố Hà Nội. Quy trình sản xuất khép kín, chuẩn hóa vùng nguyên liệu bản địa và đồng bộ dữ liệu chuỗi cung ứng trực tiếp trên nền tảng số.",
                     en: "Minh Hong arrowroot vermicelli (Hoai Duc) - Certified 4-Star OCOP specialty recognized by Hanoi People's Committee. Closed-loop production process standardizing indigenous raw materials and directly synchronizing supply chain data on the digital platform.",
@@ -11745,9 +12507,39 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 };
                 return descMap[currentLanguage] || descMap.vi;
             }
-            return currentLanguage === 'en'
-                ? (product.descEn || `A regional specialty from ${product.region}, selected for its traditional character and distinctive flavor.`)
-                : product.desc;
+            if (currentLanguage === 'vi') {
+                return product.desc || '';
+            }
+            if (currentLanguage === 'en' && product.descEn) {
+                return product.descEn;
+            }
+            const unitMap = {
+                'chiếc': { en: 'piece', zh: '件', ko: '개', ja: '個' },
+                'hộp': { en: 'box', zh: '盒', ko: '상자', ja: '箱' },
+                'gói': { en: 'pack', zh: '包', ko: '팩', ja: 'パック' },
+                'chai': { en: 'bottle', zh: '瓶', ko: '병', ja: '本' },
+                'lọ': { en: 'jar', zh: '罐', ko: '병', ja: '瓶' },
+                'kg': { en: 'kg', zh: '公斤', ko: 'kg', ja: 'kg' },
+                'bộ': { en: 'set', zh: '套', ko: '세트', ja: 'セット' },
+                'túi': { en: 'bag', zh: '袋', ko: '봉지', ja: '袋' },
+                'bình': { en: 'pitcher', zh: '壶', ko: '병', ja: '瓶' },
+                'hũ': { en: 'jar', zh: '坛', ko: '단지', ja: '壺' },
+                'thùng': { en: 'carton', zh: '箱', ko: '상자', ja: '箱' }
+            };
+            const rawUnit = (product.packaging || '').toLowerCase().trim();
+            const transUnit = unitMap[rawUnit] || { en: product.packagingEn || rawUnit || 'unit', zh: rawUnit || '件', ko: rawUnit || '단위', ja: rawUnit || '単位' };
+            const pName = getProductName(product);
+            const pRegion = product.region || '';
+            if (currentLanguage === 'zh') {
+                return `${pName} – ${pRegion}。计价规格：${transUnit.zh}。价格与星级依据官方 OCOP 认证供应商标准，全渠道统一最高定价。`;
+            }
+            if (currentLanguage === 'ko') {
+                return `${pName} – ${pRegion}. 가격 책정 단위: ${transUnit.ko}. 가격 및 OCOP 성급은 공식 인증 공급업체 기준을 준수하며 단일 최고가 적용.`;
+            }
+            if (currentLanguage === 'ja') {
+                return `${pName} – ${pRegion}。価格算定規格：${transUnit.ja}。価格および星評価は公式 OCOP 認証供給者基準に準拠し、統一最高価格を適用。`;
+            }
+            return product.descEn || `${pName} – ${pRegion}. Pricing unit: ${transUnit.en}. Price and star tier aligned with official OCOP verified supplier data; unified single tier pricing.`;
         }
 
         const englishUiText = {
@@ -12470,6 +13262,285 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 zh: '2026 挑战赛方案',
                 ko: '2026 챌린지 프로젝트',
                 ja: '2026 チャレンジプロジェクト'
+            },
+
+            // Nút Hero AI Copilot
+            'i18n-hero-btn-copilot': {
+                vi: 'Trợ Lý Tư Vấn Combo OCOP',
+                en: 'AI OCOP Combo Advisor',
+                zh: 'AI OCOP 特色组合顾问',
+                ko: 'AI OCOP 세트 추천 어시스턴트',
+                ja: 'AI OCOP コンボ相談アシスタント'
+            },
+
+            // Thanh BGK 2026 (Judge Bar)
+            'i18n-judge-badge': {
+                vi: 'BGK 2026',
+                en: 'JURY 2026',
+                zh: '评委 2026',
+                ko: '심사위원 2026',
+                ja: '審査員 2026'
+            },
+            'i18n-judge-btn1': {
+                vi: '1. Đề Án B2B2C',
+                en: '1. B2B2C Project',
+                zh: '1. B2B2C 商业方案',
+                ko: '1. B2B2C 프로젝트',
+                ja: '1. B2B2C 提案書'
+            },
+            'i18n-judge-btn2': {
+                vi: '2. Dòng Tiền AI',
+                en: '2. AI Cash Flow',
+                zh: '2. AI 现金流',
+                ko: '2. AI 현금 흐름',
+                ja: '2. AI キャッシュフロー'
+            },
+            'i18n-judge-btn3': {
+                vi: '3. Voice Báo Cáo',
+                en: '3. Voice Report',
+                zh: '3. 语音汇报',
+                ko: '3. 음성 보고서',
+                ja: '3. 音声レポート'
+            },
+            'i18n-judge-btn4': {
+                vi: '4. Test O2O Đồng Nai',
+                en: '4. Test O2O Dong Nai',
+                zh: '4. 测试同奈 O2O',
+                ko: '4. 동나이 O2O 테스트',
+                ja: '4. ドンナイ O2O テスト'
+            },
+
+            // Section 3.5 Why choose us badges
+            'i18n-why-badge1': {
+                vi: 'Pháp lý chuẩn 100%',
+                en: '100% Certified Legal',
+                zh: '100% 合规认证',
+                ko: '100% 공인 규격 인증',
+                ja: '100% 公的認証準拠'
+            },
+            'i18n-why-badge2': {
+                vi: 'Di sản & Văn hóa số',
+                en: 'Digital Heritage & Culture',
+                zh: '数字文化与遗产',
+                ko: '디지털 문화유산',
+                ja: 'デジタル文化遺産'
+            },
+            'i18n-why-badge3': {
+                vi: 'Cắt giảm 15-20% chi phí',
+                en: 'Cut 15-20% Costs',
+                zh: '削减 15-20% 成本',
+                ko: '비용 15-20% 절감',
+                ja: 'コスト15〜20％削減'
+            },
+            'i18n-why-badge4': {
+                vi: 'AI Financial Copilot 24/7',
+                en: '24/7 AI Financial Copilot',
+                zh: '24/7 AI 财务 Copilot',
+                ko: '24/7 AI 재무 코파일럿',
+                ja: '24/7 AI 財務コパイロット'
+            },
+
+            // Intro action buttons & footer note
+            'i18n-btn-intro-showroom': {
+                vi: 'ĐIỀU HƯỚNG SHOWROOM O2O',
+                en: 'NAVIGATE O2O SHOWROOMS',
+                zh: '导航 O2O 实体展厅',
+                ko: 'O2O 오프라인 쇼룸 탐색',
+                ja: 'O2O ショールーム案内'
+            },
+            'i18n-btn-intro-finance': {
+                vi: 'QUẢN TRỊ DÒNG TIỀN AI',
+                en: 'AI CASH FLOW MANAGEMENT',
+                zh: 'AI 现金流智能化管控',
+                ko: 'AI 현금 흐름 관리',
+                ja: 'AI キャッシュフロー管理'
+            },
+            'i18n-btn-intro-trace': {
+                vi: 'TRUY XUẤT NGUỒN GỐC & MAP',
+                en: 'ORIGIN TRACEABILITY & MAP',
+                zh: '产地数字溯源与地图',
+                ko: '원산지 추적 및 지도',
+                ja: '産地追跡＆デジタルマップ'
+            },
+            'i18n-intro-footer-note1': {
+                vi: 'Chứng nhận Xúc tiến Thương mại OCOP Quốc Gia số 0312461711 • Cam kết 100% chính hãng',
+                en: 'National OCOP Trade Promotion Certificate No. 0312461711 • 100% Authentic Guarantee',
+                zh: '国家 OCOP 贸易促进认证编号 0312461711 • 100% 正品保障',
+                ko: '국가 OCOP 무역진흥 인증번호 0312461711 • 100% 정품 보장',
+                ja: '国家 OCOP 貿易促進認証番号 0312461711 • 100% 公式正規品保証'
+            },
+
+            // Marquee
+            'i18n-marquee-label': {
+                vi: 'ĐIỂM BÁN OCOP',
+                en: 'OCOP SHOWROOM',
+                zh: 'OCOP 实体展厅',
+                ko: 'OCOP 오프라인 쇼룸',
+                ja: 'OCOP ショールーム'
+            },
+
+            // Sidebar realtime & macro region
+            'i18n-sidebar-realtime': {
+                vi: '68 Điểm bán & HTX đang đồng bộ dòng tiền (Real-time)',
+                en: '68 Showrooms & Cooperatives syncing cash flow (Real-time)',
+                zh: '68 家展厅与合作社正在实时同步现金流',
+                ko: '68개 쇼룸 및 협동조합 실시간 현금 흐름 동기화 중',
+                ja: '68 か所のショールーム＆協同組合がキャッシュフローをリアルタイム同期中'
+            },
+            'i18n-sidebar-live-badge': {
+                vi: 'Trực tiếp',
+                en: 'Live',
+                zh: '直播',
+                ko: '라이브',
+                ja: 'ライブ'
+            },
+            'i18n-macro-region-title': {
+                vi: 'Khám Phá 3 Miền',
+                en: 'Explore 3 Macro Regions',
+                zh: '探索三大地域',
+                ko: '3대 권역 탐색',
+                ja: '3大地域を探索'
+            },
+            'i18n-sidebar-prov-title': {
+                vi: 'Bộ Lọc 63 Tỉnh Thành',
+                en: '63 Provinces Filter',
+                zh: '63 省筛选器',
+                ko: '63개 성·시 필터',
+                ja: '63省・市フィルター'
+            },
+            'i18n-opt-all-provinces': {
+                vi: '-- Tất cả 63 Tỉnh Thành --',
+                en: '-- All 63 Provinces & Cities --',
+                zh: '-- 全部 63 省市 --',
+                ko: '-- 전체 63개 성·시 --',
+                ja: '-- 全 63 省・市 --'
+            },
+
+            // Sidebar B2B combo box
+            'i18n-b2b-box-title': {
+                vi: 'AI THIẾT KẾ GÓI QUÀ B2B & TỐI ƯU NGÂN SÁCH',
+                en: 'AI B2B GIFT BOX DESIGN & BUDGET OPTIMIZATION',
+                zh: 'AI B2B 礼品套装定制与预算优化',
+                ko: 'AI B2B 선물 세트 구성 및 예산 최적화',
+                ja: 'AI B2B ギフト設計＆予算最適化'
+            },
+            'i18n-b2b-box-desc': {
+                vi: 'Chọn mức ngân sách mục tiêu, AI tự động cấu hình danh mục đặc sản OCOP tối ưu giá trị và biên lợi nhuận!',
+                en: 'Select your budget target, AI automatically configures OCOP specialties maximizing value and profit margins!',
+                zh: '选择目标预算，AI 自动配置兼顾文化价值与利润率的 OCOP 特产组合！',
+                ko: '목표 예산을 선택하면 AI가 가치와 마진을 극대화한 OCOP 특산품 구성을 자동 제안합니다!',
+                ja: '予算を選択すると、AIが価値と利益率を最大化するOCOP特产品セットを自動構成します！'
+            },
+            'i18n-b2b-box-btn': {
+                vi: 'Mở Chatbot AI Tư Vấn 24/7',
+                en: 'Open 24/7 AI Chatbot Advisor',
+                zh: '开启 24/7 AI 咨询顾问',
+                ko: '24/7 AI 챗봇 상담 열기',
+                ja: '24/7 AI チャット相談を開く'
+            },
+
+            // Toolbar
+            'i18n-toolbar-btn-map': {
+                vi: '🗺️ KÍCH HOẠT BẢN ĐỒ SỐ O2O',
+                en: '🗺️ ACTIVATE O2O DIGITAL MAP',
+                zh: '🗺️ 激活 O2O 数字地图',
+                ko: '🗺️ O2O 디지털 지도 활성화',
+                ja: '🗺️ O2O デジタルマップ起動'
+            },
+            'i18n-toolbar-btn-ocr': {
+                vi: '📸 AI QUÉT CHỨNG NHẬN (OCR)',
+                en: '📸 AI CERTIFICATE SCAN (OCR)',
+                zh: '📸 AI 证书扫描 (OCR)',
+                ko: '📸 AI 인증서 스캔 (OCR)',
+                ja: '📸 AI 認証スキャン (OCR)'
+            },
+            'i18n-sort-default': {
+                vi: 'Sắp xếp: Mặc định',
+                en: 'Sort: Default',
+                zh: '排序：默认',
+                ko: '정렬: 기본값',
+                ja: '並び替え: デフォルト'
+            },
+            'i18n-sort-margin-asc': {
+                vi: 'Biên lợi nhuận: Tăng dần',
+                en: 'Profit Margin: Low to High',
+                zh: '净利润率：从低到高',
+                ko: '순이익률: 낮은순',
+                ja: '利益率: 低い順'
+            },
+            'i18n-sort-margin-desc': {
+                vi: 'Biên lợi nhuận: Giảm dần',
+                en: 'Profit Margin: High to Low',
+                zh: '净利润率：从高到低',
+                ko: '순이익률: 높은순',
+                ja: '利益率: 高い順'
+            },
+            'i18n-sort-volume': {
+                vi: 'Sản lượng số hóa: Cao nhất',
+                en: 'Digital Volume: Highest',
+                zh: '数字化统筹量：最高',
+                ko: '디지털 조율량: 최고순',
+                ja: 'デジタル調整量: 最多順'
+            },
+            'i18n-sort-stars': {
+                vi: 'Phân hạng: Ưu tiên OCOP 5 Sao',
+                en: 'Tier: Priority OCOP 5-Star',
+                zh: '认证等级：优先 5 星',
+                ko: '등급: OCOP 5성 우선',
+                ja: '等級: OCOP 5つ星優先'
+            },
+            'i18n-toolbar-btn-reset': {
+                vi: 'Đặt lại',
+                en: 'Reset',
+                zh: '重置',
+                ko: '초기화',
+                ja: 'リセット'
+            },
+
+            // Back to top
+            'i18n-back-to-top': {
+                vi: 'Lên đầu trang',
+                en: 'Back to top',
+                zh: '回到顶部',
+                ko: '맨 위로',
+                ja: 'トップへ戻る'
+            },
+
+            // Section 3.2 B2B2C Eco Banner
+            'i18n-eco-badge': {
+                vi: 'Công Nghệ Độc Quyền',
+                en: 'Proprietary Technology',
+                zh: '独家专有技术',
+                ko: '독점 특허 기술',
+                ja: '独自専売技術'
+            },
+            'i18n-eco-title': {
+                vi: 'AI Financial Engine: Tự Động Hóa Quản Trị Dòng Tiền 3 Luồng',
+                en: 'AI Financial Engine: 3-Stream Automated Cash Flow Management',
+                zh: 'AI 财务引擎：三流合一自动化现金流管理',
+                ko: 'AI 재무 엔진: 3개 흐름 자동화 현금 관리',
+                ja: 'AI 財務エンジン：3ストリーム自動キャッシュフロー管理'
+            },
+            'i18n-eco-desc': {
+                vi: 'Tự động đo lường Doanh thu thời gian thực, bóc tách Chi phí vốn COGS để tính Tiền lời ròng và phân bổ Chiết khấu hoa hồng minh bạch giúp giải phóng gánh nặng sổ sách cho các Hợp tác xã bản địa.',
+                en: 'Automating real-time Gross Revenue measurement, stripping COGS capital expenditure to calculate Net Profit and allocating transparent Commission splits to relieve bookkeeping burden for local cooperatives.',
+                zh: '实时自动测算总营业收入，剥离 COGS 销货成本以精确计算净利润，并透明化分配分销佣金，切实减轻本土合作社的记账负担。',
+                ko: '실시간 총매출을 자동 측정하고, COGS 원가를 분리하여 순이익을 산출하며, 투명한 수수료 배분을 통해 지역 협동조합의 회계 부담을 해소합니다.',
+                ja: 'リアルタイム総売上を自動計測し、COGS原価を分離して純利益を算出、透明性の高い手数料分配により地域協同組合の帳簿負担を解消します。'
+            },
+            'i18n-eco-btn-fin': {
+                vi: 'Mở Bảng Quản Trị Tài Chính AI',
+                en: 'Open AI Financial Dashboard',
+                zh: '打开 AI 财务看板',
+                ko: 'AI 재무 대시보드 열기',
+                ja: 'AI 財務ダッシュボードを開く'
+            },
+            'i18n-eco-btn-proposal': {
+                vi: 'Xem Thuyết Minh Đề Án 2026',
+                en: 'View 2026 Project Proposal',
+                zh: '查看 2026 挑战赛方案说明',
+                ko: '2026 프로젝트 제안서 보기',
+                ja: '2026 提案書解説を見る'
             }
         };
 
@@ -12531,34 +13602,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             });
 
             if (document.getElementById('i18n-stat-count')) document.getElementById('i18n-stat-count').textContent = `${products.length}+`;
-            if (document.getElementById('i18n-intro-title2')) document.getElementById('i18n-intro-title2').textContent = currentLanguage === 'en'
-                ? '63 PROVINCES • DIGITIZED STORES • AI GOVERNANCE'
-                : '63 TỈNH THÀNH • SỐ HÓA ĐIỂM BÁN • AI QUẢN TRỊ';
-            if (document.getElementById('i18n-intro-pillar1')) document.getElementById('i18n-intro-pillar1').textContent = currentLanguage === 'en'
-                ? '63-Province Digital Map'
-                : 'Bản Đồ Số 63 Tỉnh Thành';
-            if (document.getElementById('i18n-intro-badge')) document.getElementById('i18n-intro-badge').textContent = currentLanguage === 'en'
-                ? 'Digital OS & AI Financial Assistant for Vietnamese Specialties'
-                : 'Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam';
-            const enterBtn = document.getElementById('i18n-intro-btn-enter');
-            if (enterBtn) {
-                enterBtn.textContent = currentLanguage === 'en'
-                    ? 'Explore 63 provinces specialties'
-                    : 'Khám phá đặc sản 63 tỉnh thành';
-            }
-            if (document.getElementById('i18n-top-specs')) document.getElementById('i18n-top-specs').textContent = currentLanguage === 'en'
-                ? '63 Provinces Specialties' : 'Đặc sản 63 Tỉnh Thành';
-            if (document.getElementById('i18n-nav-products')) document.getElementById('i18n-nav-products').textContent = currentLanguage === 'en'
-                ? 'Shop 63 Provinces Specialties' : 'Danh mục Đặc sản 63 Tỉnh Thành';
-            if (document.getElementById('i18n-hero-title2')) document.getElementById('i18n-hero-title2').textContent = currentLanguage === 'en'
-                ? 'Vietnamese Specialties' : 'Đặc Sản Tuyển Chọn 63 Tỉnh Thành';
-            if (document.getElementById('i18n-hero-desc')) document.getElementById('i18n-hero-desc').textContent = currentLanguage === 'en'
-                ? 'Explore curated Vietnamese specialties across all 63 provinces by region, with interactive map, product descriptions, listed prices, and customer ratings in one place.'
-                : 'Khám phá các sản phẩm OCOP tuyển chọn trọn vẹn từ 63 tỉnh thành Việt Nam, với bản đồ tương tác, thông tin vùng miền và đánh giá khách hàng.';
-            if (document.getElementById('i18n-btn-explore')) document.getElementById('i18n-btn-explore').textContent = currentLanguage === 'en'
-                ? 'Shop OCOP specialties' : 'Khám phá Đặc Sản OCOP';
-            if (document.getElementById('i18n-reset-btn')) document.getElementById('i18n-reset-btn').textContent = currentLanguage === 'en'
-                ? 'Show all specialties (63 Provinces)' : 'Xem toàn bộ đặc sản 63 tỉnh thành';
         }
 
         let originalUiText = null;
@@ -12612,19 +13655,50 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         function updateVoucherLanguage() {
             if (!activeVoucher) return;
-            const english = currentLanguage === 'en';
-            const amount = activeVoucher.discount.toLocaleString(english ? 'en-US' : 'vi-VN');
-            const minimum = activeVoucher.minOrder.toLocaleString(english ? 'en-US' : 'vi-VN');
-            document.querySelector('#btn-draw-gift span').textContent = english ? 'Voucher received' : 'Đã nhận lộc vàng';
-            document.getElementById('lucky-gift-description').textContent = english
-                ? `VND ${amount} off orders from VND ${minimum}. One voucher per order; offers cannot be combined.`
-                : `Giảm ${amount}đ cho đơn từ ${minimum}đ. Một mã mỗi đơn, không cộng dồn ưu đãi.`;
+            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
+            const amount = activeVoucher.discount.toLocaleString('vi-VN');
+            const minimum = activeVoucher.minOrder.toLocaleString('vi-VN');
+
+            const btnDrawText = {
+                vi: 'Đã nhận lộc vàng',
+                en: 'Voucher received',
+                zh: '已领取优惠礼金',
+                ko: '할인 쿠폰 받음',
+                ja: 'クーポン受取済み'
+            };
+            const btnEl = document.querySelector('#btn-draw-gift span');
+            if (btnEl) btnEl.textContent = btnDrawText[lang] || btnDrawText.vi;
+
+            const descText = {
+                vi: `Giảm ${amount}đ cho đơn từ ${minimum}đ. Một mã mỗi đơn, không cộng dồn ưu đãi.`,
+                en: `VND ${amount} off orders from VND ${minimum}. One voucher per order; offers cannot be combined.`,
+                zh: `订单满 ${minimum}₫ 立减 ${amount}₫。每单限用一张，不叠加其他优惠。`,
+                ko: `${minimum}₫ 이상 주문 시 ${amount}₫ 할인. 주문당 1회 사용 가능, 중복 적용 불가.`,
+                ja: `${minimum}₫ 以上のご注文で ${amount}₫ 割引。1回のご注文につき1枚限り、併用不可。`
+            };
+            const descEl = document.getElementById('lucky-gift-description');
+            if (descEl) descEl.textContent = descText[lang] || descText.vi;
+
             if (cart.length) {
                 const discount = getVoucherDiscount();
-                document.getElementById('cart-voucher-label').textContent = english
-                    ? `${activeVoucher.code}: ${discount ? 'applied' : `minimum order VND ${minimum}`}`
-                    : `${activeVoucher.code}: ${discount ? 'đã áp dụng' : `đơn từ ${minimum}đ`}`;
-                document.getElementById('cart-voucher-discount').textContent = discount ? `-${amount} ${english ? 'VND' : '₫'}` : english ? 'Minimum not reached' : 'Chưa đủ điều kiện';
+                const cartLabelMap = {
+                    vi: `${activeVoucher.code}: ${discount ? 'đã áp dụng' : `đơn từ ${minimum}đ`}`,
+                    en: `${activeVoucher.code}: ${discount ? 'applied' : `minimum order VND ${minimum}`}`,
+                    zh: `${activeVoucher.code}: ${discount ? '已应用' : `需满 ${minimum}₫`}`,
+                    ko: `${activeVoucher.code}: ${discount ? '적용됨' : `${minimum}₫ 이상 주문 시`}`,
+                    ja: `${activeVoucher.code}: ${discount ? '適用済み' : `${minimum}₫ 以上`}`
+                };
+                const cartDiscMap = {
+                    vi: discount ? `-${amount} ₫` : 'Chưa đủ điều kiện',
+                    en: discount ? `-${amount} VND` : 'Minimum not reached',
+                    zh: discount ? `-${amount} ₫` : '未达到最低门槛',
+                    ko: discount ? `-${amount} ₫` : '최소 금액 미달',
+                    ja: discount ? `-${amount} ₫` : '条件未達成'
+                };
+                const vLabelEl = document.getElementById('cart-voucher-label');
+                if (vLabelEl) vLabelEl.textContent = cartLabelMap[lang] || cartLabelMap.vi;
+                const vDiscEl = document.getElementById('cart-voucher-discount');
+                if (vDiscEl) vDiscEl.textContent = cartDiscMap[lang] || cartDiscMap.vi;
             }
         }
 
@@ -12756,8 +13830,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             const imageSearchButton = document.getElementById('image-search-button');
             if (imageSearchButton) {
-                const imgText = { vi: 'Tìm bằng ảnh', en: 'Search by image', zh: '图片搜索', ko: '이미지 검색', ja: '画像検索' };
-                imageSearchButton.querySelector('span').textContent = imgText[currentLanguage] || imgText.vi;
+                const imgText = {
+                    vi: '📸 AI QUÉT CHỨNG NHẬN (OCR)',
+                    en: '📸 AI CERTIFICATE SCAN (OCR)',
+                    zh: '📸 AI 证书扫描 (OCR)',
+                    ko: '📸 AI 인증서 스캔 (OCR)',
+                    ja: '📸 AI 認証スキャン (OCR)'
+                };
+                const span = imageSearchButton.querySelector('span');
+                if (span) span.textContent = imgText[currentLanguage] || imgText.vi;
             }
 
             // 5. Chat input & quick replies
@@ -12862,100 +13943,268 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         const remainingAttributes = new WeakMap();
 
         function translateRemainingPageText() {
-            const english = currentLanguage === 'en';
-            const labels = [
-                ['#intro-lucky-card .tracking-wide', 'AI Lucky Draw ? Take your chance'],
-                ['#intro-lucky-card > div:first-child > div > div > p', 'Draw a voucher based on your order value. Offers cannot be combined.'],
-                ['#btn-draw-gift span', 'Draw a lucky voucher'],
-                ['#intro-gift-result .text-amber-300', 'VOUCHER CODE:'],
-                ['#intro-gift-result button span', 'Copy code'],
-                ['#province-map-clear', 'Clear selection'],
-                ['#admin-support-menu h4', 'Direct support on Facebook'],
-                ['#admin-support-menu h4 + p', 'Choose an admin to open a message'],
-                ['#admin-support-menu .flex-1 > span:first-child', 'OCOP product advice', 'Order support', 'Wholesale pricing & gifts', 'Customer care'],
-                ['#admin-support-menu .flex-1 > span:nth-child(2)', 'Online', 'Online', 'Online', 'Online'],
-                ['#orders-drawer h3', 'System Transaction & Audit Logs'],
-                ['#contact-footer h5', 'OCOP Sales Copilot Vietnam ? all rights reserved'],
-                ['#contact-footer h6', 'Contact information', 'Digital Ecosystem Architecture', 'About OCOP Sales Copilot AI'],
-                ['#contact-footer .md\\:col-span-4:first-child li:nth-child(2) span', 'Hotline: 1900 888 688 (toll-free)'],
-                ['#contact-footer .md\\:col-span-4:nth-child(2) li a', 'Automated CHM Commission Reconciliation', 'OCOP 3-5 Star Legal Verification Standard', 'Lightweight MVP Onboarding Portal (2-3h)', 'API Documentation & O2O Digital Map'],
-                ['#contact-footer .md\\:col-span-4:nth-child(3) p', 'A platform connecting Vietnam?s leading agricultural products directly with consumers nationwide, featuring certified 4- and 5-star OCOP specialties.'],
-                ['#contact-footer a[href="#"]', 'Terms of service', 'Privacy policy']
+            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
+
+            const i18nMapping = [
+                {
+                    selector: '#intro-lucky-card .tracking-wide',
+                    texts: {
+                        vi: '⚡ TỐI ƯU HÓA VẬN HÀNH • KÍCH HOẠT LIGHTWEIGHT MVP CHO HTX TRONG 2 GIỜ',
+                        en: '⚡ OPERATION OPTIMIZATION • ACTIVATE LIGHTWEIGHT MVP FOR COOPERATIVES IN 2 HOURS',
+                        zh: '⚡ 运营优化 • 2小时内为合作社启动轻量级 MVP',
+                        ko: '⚡ 운영 최적화 • 2시간 내 협동조합용 경량 MVP 활성화',
+                        ja: '⚡ 運用最適化 • 2時間以内に協同組合向け軽量MVPを有効化'
+                    }
+                },
+                {
+                    selector: '#intro-lucky-card > div:first-child > div > div > p',
+                    texts: {
+                        vi: 'Số hóa danh mục điểm bán OCOP chỉ 2-3 giờ • Kết nối cỗ máy dòng tiền AI',
+                        en: 'Digitize OCOP store catalog in 2-3 hours • Connect to AI cash flow engine',
+                        zh: '2-3小时内数字化OCOP销售网点目录 • 连接AI现金流引擎',
+                        ko: '2-3시간 내 OCOP 매장 카탈로그 디지털화 • AI 현금 흐름 엔진 연결',
+                        ja: '2〜3時間でOCOP拠点カタログをデジタル化 • AIキャッシュフローエンジンに接続'
+                    }
+                },
+                {
+                    selector: '#btn-draw-gift span',
+                    texts: {
+                        vi: '⚡ Đăng Ký Điểm Bán Mới',
+                        en: '⚡ Register New Showroom',
+                        zh: '⚡ 注册新销售网点',
+                        ko: '⚡ 신규 매장 등록',
+                        ja: '⚡ 新規拠点を登録'
+                    }
+                },
+                {
+                    selector: '#province-map-clear',
+                    texts: {
+                        vi: 'Xóa lựa chọn',
+                        en: 'Clear selection',
+                        zh: '清除选择',
+                        ko: '선택 초기화',
+                        ja: '選択をクリア'
+                    }
+                },
+                {
+                    selector: '#admin-support-menu h4',
+                    texts: {
+                        vi: 'Hội Đồng Điều Phối & Cố Vấn Chuyển Đổi Số Dự Án (Core Team)',
+                        en: 'Project Digital Transformation Advisory & Coordination Council (Core Team)',
+                        zh: '项目数字化转型咨询与协调委员会（核心团队）',
+                        ko: '프로젝트 디지털 전환 자문 및 조율 위원회 (핵심 팀)',
+                        ja: 'プロジェクトDX諮問・調整評議会（コアチーム）'
+                    }
+                },
+                {
+                    selector: '#admin-support-menu h4 + p',
+                    texts: {
+                        vi: 'Chọn thành viên cố vấn để kết nối trực tiếp',
+                        en: 'Select an advisory member for direct connection',
+                        zh: '选择咨询成员进行直接对接',
+                        ko: '자문위원을 선택하여 직접 문의',
+                        ja: '諮問メンバーを選択して直接接続'
+                    }
+                },
+                {
+                    selector: '#orders-drawer h3',
+                    texts: {
+                        vi: 'Nhật Ký Giao Dịch & Đối Soát Hệ Thống',
+                        en: 'System Transaction & Audit Logs',
+                        zh: '系统交易与对账日志',
+                        ko: '시스템 거래 및 정산 로그',
+                        ja: 'システム取引＆照合ログ'
+                    }
+                },
+                {
+                    selector: '#contact-footer h5',
+                    texts: {
+                        vi: '© 2026 OCOP Sales Copilot Việt Nam — Bản quyền thuộc về Đề án AI Digital Business Challenge 2026',
+                        en: '© 2026 OCOP Sales Copilot Vietnam — All rights reserved (AI Digital Business Challenge 2026)',
+                        zh: '© 2026 OCOP Sales Copilot 越南 — 版权所有（2026 AI 数字商业挑战赛）',
+                        ko: '© 2026 OCOP Sales Copilot 베트남 — All rights reserved (AI 디지털 비즈니스 챌린지 2026)',
+                        ja: '© 2026 OCOP Sales Copilot ベトナム — All rights reserved (AIデジタルビジネスチャレンジ2026)'
+                    }
+                }
             ];
-            labels.forEach(([selector, ...translations]) => {
-                document.querySelectorAll(selector).forEach((element, index) => {
-                    const textNode = [...element.childNodes].reverse().find(node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim());
-                    if (!textNode) return;
-                    if (!remainingTextNodes.has(textNode)) remainingTextNodes.set(textNode, textNode.nodeValue);
-                    if (english && translations[index]) textNode.nodeValue = textNode.nodeValue.replace(textNode.nodeValue.trim(), translations[index]);
-                    else if (!english) textNode.nodeValue = remainingTextNodes.get(textNode);
-                });
+
+            i18nMapping.forEach(({ selector, texts }) => {
+                const el = document.querySelector(selector);
+                if (el) el.textContent = texts[lang] || texts.vi;
+            });
+
+            // 4 Cố vấn Facebook
+            const adminSpans = document.querySelectorAll('#admin-support-menu .flex-1 > span:first-child');
+            const adminTitles = [
+                {
+                    vi: 'Admin 1 — Giám đốc Dự án & Kiến trúc AI',
+                    en: 'Admin 1 — Project Director & AI Architect',
+                    zh: 'Admin 1 — 项目总监兼AI架构师',
+                    ko: 'Admin 1 — 프로젝트 총괄 및 AI 아키텍트',
+                    ja: 'Admin 1 — プロジェクト総括＆AIアーキテクト'
+                },
+                {
+                    vi: 'Admin 2 — Điều phối Chuỗi cung ứng O2O',
+                    en: 'Admin 2 — O2O Supply Chain Coordinator',
+                    zh: 'Admin 2 — O2O供应链协调员',
+                    ko: 'Admin 2 — O2O 공급망 코디네이터',
+                    ja: 'Admin 2 — O2Oサプライチェーン調整員'
+                },
+                {
+                    vi: 'Admin 3 — Quản trị Tài chính & Đối soát CHM',
+                    en: 'Admin 3 — Financial Governance & CHM Reconciliation',
+                    zh: 'Admin 3 — 财务治理与CHM对账',
+                    ko: 'Admin 3 — 재무 거버넌스 및 CHM 정산',
+                    ja: 'Admin 3 — 財務ガバナンス＆CHM照合'
+                },
+                {
+                    vi: 'Admin 4 — Phát triển Mạng lưới HTX 63 Tỉnh thành',
+                    en: 'Admin 4 — 63-Province Cooperative Network Developer',
+                    zh: 'Admin 4 — 63省合作社网络拓展',
+                    ko: 'Admin 4 — 63개 성·시 협동조합 네트워크 개발',
+                    ja: 'Admin 4 — 63省・市協同組合ネットワーク開発'
+                }
+            ];
+            adminSpans.forEach((span, idx) => {
+                if (adminTitles[idx]) {
+                    span.textContent = adminTitles[idx][lang] || adminTitles[idx].vi;
+                }
+            });
+
+            const activeStatusLabels = {
+                vi: 'Đang hoạt động',
+                en: 'Active',
+                zh: '在线',
+                ko: '활동 중',
+                ja: 'オンライン'
+            };
+            document.querySelectorAll('#admin-support-menu .flex-1 > span:nth-child(2)').forEach(span => {
+                span.innerHTML = `<i class="fa-solid fa-circle text-[7px] mr-1"></i>${activeStatusLabels[lang] || activeStatusLabels.vi}`;
             });
 
             const attributes = [
-                ['#user-btn', 'title', 'Sign in / Account'],
-                ['#user-btn', 'aria-label', 'Sign in / Account'],
-                ['#site-language-btn', 'title', 'Switch language'],
-                ['#header-search-clear', 'title', 'Clear search'],
-                ['#header-search-clear', 'aria-label', 'Clear search'],
-                ['#mobile-search-clear', 'title', 'Clear search'],
-                ['#mobile-search-clear', 'aria-label', 'Clear search'],
-                ['#sidebar-search-clear', 'title', 'Clear search'],
-                ['#sidebar-search-clear', 'aria-label', 'Clear search'],
-                ['#chat-add-image-button', 'title', 'Add an image (paste or drag and drop)'],
-                ['#chat-add-image-button', 'aria-label', 'Add image'],
-                ['#chat-send-button', 'aria-label', 'Send message']
+                ['#user-btn', 'title', { vi: 'Đăng nhập / Tài khoản', en: 'Sign in / Account', zh: '登录 / 账户', ko: '로그인 / 계정', ja: 'ログイン / アカウント' }],
+                ['#user-btn', 'aria-label', { vi: 'Đăng nhập / Tài khoản', en: 'Sign in / Account', zh: '登录 / 账户', ko: '로그인 / 계정', ja: 'ログイン / アカウント' }],
+                ['#site-language-btn', 'title', { vi: 'Chuyển đổi ngôn ngữ', en: 'Switch language', zh: '切换语言', ko: '언어 전환', ja: '言語切替' }],
+                ['#header-search-clear', 'title', { vi: 'Xóa tìm kiếm', en: 'Clear search', zh: '清除搜索', ko: '검색어 삭제', ja: '検索をクリア' }],
+                ['#header-search-clear', 'aria-label', { vi: 'Xóa tìm kiếm', en: 'Clear search', zh: '清除搜索', ko: '검색어 삭제', ja: '検索をクリア' }],
+                ['#mobile-search-clear', 'title', { vi: 'Xóa tìm kiếm', en: 'Clear search', zh: '清除搜索', ko: '검색어 삭제', ja: '検索をクリア' }],
+                ['#mobile-search-clear', 'aria-label', { vi: 'Xóa tìm kiếm', en: 'Clear search', zh: '清除搜索', ko: '검색어 삭제', ja: '検索をクリア' }],
+                ['#sidebar-search-clear', 'title', { vi: 'Xóa tìm kiếm', en: 'Clear search', zh: '清除搜索', ko: '검색어 삭제', ja: '検索をクリア' }],
+                ['#sidebar-search-clear', 'aria-label', { vi: 'Xóa tìm kiếm', en: 'Clear search', zh: '清除搜索', ko: '검색어 삭제', ja: '検索をクリア' }],
+                ['#chat-add-image-button', 'title', { vi: 'Thêm ảnh (dán Ctrl+V hoặc kéo thả)', en: 'Add an image (paste or drag and drop)', zh: '添加图片（粘贴或拖放）', ko: '이미지 추가 (붙여넣기 또는 드래그 앤 드롭)', ja: '画像を追加（貼り付けまたはドラッグ＆ドロップ）' }],
+                ['#chat-add-image-button', 'aria-label', { vi: 'Thêm ảnh', en: 'Add image', zh: '添加图片', ko: '이미지 추가', ja: '画像を追加' }],
+                ['#chat-send-button', 'aria-label', { vi: 'Gửi tin nhắn', en: 'Send message', zh: '发送消息', ko: '메시지 전송', ja: 'メッセージ送信' }]
             ];
-            attributes.forEach(([selector, name, value]) => {
+            attributes.forEach(([selector, name, valMap]) => {
                 const element = document.querySelector(selector);
-                if (!element) return;
-                let saved = remainingAttributes.get(element);
-                if (!saved) {
-                    saved = {};
-                    remainingAttributes.set(element, saved);
+                if (element) {
+                    element.setAttribute(name, valMap[lang] || valMap.vi);
                 }
-                if (!(name in saved)) saved[name] = element.getAttribute(name);
-                if (english) element.setAttribute(name, value);
-                else if (saved[name] === null) element.removeAttribute(name);
-                else element.setAttribute(name, saved[name]);
             });
 
-            const footerParagraph = document.querySelector('#contact-footer .md\\:col-span-4:first-child > ul li:nth-child(1) span');
-            if (footerParagraph) {
-                if (!remainingTextNodes.has(footerParagraph)) remainingTextNodes.set(footerParagraph, footerParagraph.textContent);
-                footerParagraph.textContent = english ? '496 Nguyen Thi Minh Khai St, Ward 2, District 3, Ho Chi Minh City' : remainingTextNodes.get(footerParagraph);
+            const footerAddress = document.querySelector('#contact-footer .md\\:col-span-4:first-child > ul li:nth-child(1) span');
+            if (footerAddress) {
+                const addrMap = {
+                    vi: '496 Nguyễn Thị Minh Khai, Phường 2, Quận 3, TP. Hồ Chí Minh',
+                    en: '496 Nguyen Thi Minh Khai St, Ward 2, District 3, Ho Chi Minh City',
+                    zh: '胡志明市第3郡第2坊阮氏明开路496号',
+                    ko: '호치민시 3군 2동 응우옌티민카이 496번지',
+                    ja: 'ホーチミン市3区第2街区グエン・ティ・ミン・カイ通り496番地'
+                };
+                footerAddress.textContent = addrMap[lang] || addrMap.vi;
             }
         }
 
         function translateAuthUi() {
-            const en = currentLanguage === 'en';
-            const text = (selector, english, vietnamese) => {
-                const element = document.querySelector(selector);
-                if (element) element.textContent = en ? english : vietnamese;
+            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
+            const authTitleMap = {
+                login: {
+                    vi: 'Cổng Định Danh Đối Tác HTX & Quản Trị Viên Hệ Sinh Thái',
+                    en: 'Cooperative Partner & Ecosystem Administrator Portal',
+                    zh: '合作社伙伴与生态系统管理员门户',
+                    ko: '협동조합 파트너 및 생태계 관리자 포털',
+                    ja: '協同組合パートナー＆エコシステム管理者ポータル'
+                },
+                register: {
+                    vi: 'Đăng Ký Đối Tác HTX & Điểm Bán Mới',
+                    en: 'Register Cooperative Partner & New Showroom',
+                    zh: '注册合作社伙伴与新展厅',
+                    ko: '협동조합 파트너 및 신규 매장 등록',
+                    ja: '協同組合パートナー＆新規拠点登録'
+                },
+                otp: {
+                    vi: 'Xác Nhận Số Điện Thoại (OTP)',
+                    en: 'Verify Your Phone (OTP)',
+                    zh: '验证手机号码 (OTP)',
+                    ko: '전화번호 인증 (OTP)',
+                    ja: '電話番号認証 (OTP)'
+                }
             };
-            const placeholder = (selector, english, vietnamese) => {
-                const element = document.querySelector(selector);
-                if (element) element.placeholder = en ? english : vietnamese;
+            const authDescMap = {
+                vi: 'Cổng Định Danh Đối Tác HTX & Quản Trị Viên Hệ Sinh Thái',
+                en: 'Cooperative Partner & Ecosystem Administrator Portal',
+                zh: '合作社伙伴与生态系统管理员门户',
+                ko: '협동조합 파트너 및 생태계 관리자 포털',
+                ja: '協同組合パートナー＆エコシステム管理者ポータル'
             };
-            text('#auth-title', authStep === 'otp' ? 'Verify your phone' : authTab === 'register' ? 'Create your OCOP account' : 'Account login', authStep === 'otp' ? 'X\u00e1c nh\u1eadn s\u1ed1 \u0111i\u1ec7n tho\u1ea1i' : authTab === 'register' ? '\u0110\u0103ng k\u00fd t\u00e0i kho\u1ea3n OCOP' : '\u0110\u0103ng nh\u1eadp t\u00e0i kho\u1ea3n');
-            text('#auth-modal .text-center p', 'Manage orders and redeem offers', 'Qu\u1ea3n l\u00fd \u0111\u01a1n h\u00e0ng v\u00e0 t\u00edch \u0111i\u1ec3m \u01b0u \u0111\u00e3i');
-            text('#tab-login', 'Log in', '\u0110\u0103ng nh\u1eadp');
-            text('#tab-register', 'Create account', '\u0110\u0103ng k\u00fd');
+            const currentTab = authStep === 'otp' ? 'otp' : authTab;
+            const titleEl = document.getElementById('auth-title');
+            if (titleEl) titleEl.textContent = (authTitleMap[currentTab] && authTitleMap[currentTab][lang]) || authTitleMap.login[lang];
+            const descEl = document.querySelector('#auth-modal .text-center p');
+            if (descEl) descEl.textContent = authDescMap[lang] || authDescMap.vi;
+
+            const tabLoginMap = { vi: 'Đăng Nhập', en: 'Log in', zh: '登录', ko: '로그인', ja: 'ログイン' };
+            const tabRegisterMap = { vi: 'Đăng Ký', en: 'Register', zh: '注册', ko: '회원가입', ja: '新規登録' };
+            const tabLogin = document.getElementById('tab-login');
+            if (tabLogin) tabLogin.textContent = tabLoginMap[lang] || tabLoginMap.vi;
+            const tabRegister = document.getElementById('tab-register');
+            if (tabRegister) tabRegister.textContent = tabRegisterMap[lang] || tabRegisterMap.vi;
+
             syncAuthSocialVisibility();
-            text('label[for="auth-name"]', 'Full name *', 'H\u1ecd v\u00e0 t\u00ean *');
-            text('label[for="auth-phone"]', 'Phone number for SMS code *', 'S\u1ed1 \u0111i\u1ec7n tho\u1ea1i nh\u1eadn m\u00e3 OTP *');
-            text('label[for="auth-address"]', 'Address *', '\u0110\u1ecba ch\u1ec9 *');
-            text('label[for="auth-email"]', 'Email (optional)', 'Gmail / Email (kh\u00f4ng b\u1eaft bu\u1ed9c)');
-            text('label[for="auth-password"]', 'Password *', 'M\u1eadt kh\u1ea9u *');
-            text('label[for="auth-password-confirm"]', 'Confirm password *', 'X\u00e1c nh\u1eadn l\u1ea1i m\u1eadt kh\u1ea9u *');
-            text('label[for="auth-otp"]', 'SMS code *', 'M\u00e3 OTP *');
-            text('#otp-section button', 'Resend code', 'G\u1eedi l\u1ea1i m\u00e3 OTP');
-            placeholder('#auth-name', 'Nguyen Van A', 'Nguy\u1ec5n V\u0103n A');
-            placeholder('#auth-address', 'Street, ward, city or province', 'S\u1ed1 nh\u00e0, \u0111\u01b0\u1eddng, ph\u01b0\u1eddng/x\u00e3, t\u1ec9nh/th\u00e0nh ph\u1ed1');
-            placeholder('#auth-password', 'At least 8 characters', 'T\u1ed1i thi\u1ec3u 8 k\u00fd t\u1ef1');
-            placeholder('#auth-password-confirm', 'Enter your password again', 'Nh\u1eadp l\u1ea1i m\u1eadt kh\u1ea9u');
-            placeholder('#auth-otp', 'Enter the 6-digit code', 'Nh\u1eadp m\u00e3 g\u1ed3m 6 ch\u1eef s\u1ed1');
-            text('#auth-submit-btn', authStep === 'otp' ? 'Verify and create account' : authTab === 'register' ? 'Create account' : 'Log in', authStep === 'otp' ? 'X\u00e1c nh\u1eadn OTP v\u00e0 t\u1ea1o t\u00e0i kho\u1ea3n' : authTab === 'register' ? 'T\u1ea1o t\u00e0i kho\u1ea3n m\u1edbi' : '\u0110\u0103ng nh\u1eadp');
+
+            const labelsMap = {
+                'auth-name': { vi: 'Họ và tên *', en: 'Full name *', zh: '姓名 *', ko: '성명 *', ja: '氏名 *' },
+                'auth-phone': { vi: 'Số điện thoại nhận mã OTP *', en: 'Phone number for SMS code *', zh: '接收短信验证码的手机号 *', ko: 'SMS 인증번호 수신 전화번호 *', ja: 'SMSコード受信用電話番号 *' },
+                'auth-address': { vi: 'Địa chỉ *', en: 'Address *', zh: '地址 *', ko: '주소 *', ja: '住所 *' },
+                'auth-email': { vi: 'Gmail / Email (không bắt buộc)', en: 'Email (optional)', zh: '电子邮箱（选填）', ko: '이메일 (선택 사항)', ja: 'メールアドレス（任意）' },
+                'auth-password': { vi: 'Mật khẩu *', en: 'Password *', zh: '密码 *', ko: '비밀번호 *', ja: 'パスワード *' },
+                'auth-password-confirm': { vi: 'Xác nhận lại mật khẩu *', en: 'Confirm password *', zh: '确认密码 *', ko: '비밀번호 확인 *', ja: 'パスワード確認 *' },
+                'auth-otp': { vi: 'Mã OTP *', en: 'SMS code *', zh: '短信验证码 *', ko: '인증 코드 *', ja: '認証コード *' }
+            };
+            Object.keys(labelsMap).forEach(forId => {
+                const label = document.querySelector(`label[for="${forId}"]`);
+                if (label) label.textContent = labelsMap[forId][lang] || labelsMap[forId].vi;
+            });
+
+            const resendBtn = document.querySelector('#otp-section button');
+            if (resendBtn) {
+                const resendMap = { vi: 'Gửi lại mã OTP', en: 'Resend code', zh: '重新发送验证码', ko: '코드 재전송', ja: 'コード再送信' };
+                resendBtn.textContent = resendMap[lang] || resendMap.vi;
+            }
+
+            const placeholdersMap = {
+                '#auth-name': { vi: 'Nguyễn Văn A', en: 'Nguyen Van A', zh: '阮文安', ko: '응우옌 반 A', ja: 'グエン・ヴァン・A' },
+                '#auth-address': { vi: 'Số nhà, đường, phường/xã, tỉnh/thành phố', en: 'Street, ward, city or province', zh: '门牌号、街道、坊/乡、省/市', ko: '도로명, 동/읍/면, 성/시', ja: '番地、通り、区/街区、省/市' },
+                '#auth-password': { vi: 'Tối thiểu 8 ký tự', en: 'At least 8 characters', zh: '至少 8 个字符', ko: '최소 8자 이상', ja: '8文字以上' },
+                '#auth-password-confirm': { vi: 'Nhập lại mật khẩu', en: 'Enter your password again', zh: '再次输入密码', ko: '비밀번호 재입력', ja: 'パスワードを再入力' },
+                '#auth-otp': { vi: 'Nhập mã gồm 6 chữ số', en: 'Enter the 6-digit code', zh: '输入 6 位验证码', ko: '6자리 인증번호 입력', ja: '6桁のコードを入力' }
+            };
+            Object.keys(placeholdersMap).forEach(sel => {
+                const el = document.querySelector(sel);
+                if (el) el.placeholder = placeholdersMap[sel][lang] || placeholdersMap[sel].vi;
+            });
+
+            const submitBtn = document.getElementById('auth-submit-btn');
+            if (submitBtn) {
+                const submitMap = {
+                    otp: { vi: 'Xác nhận OTP và tạo tài khoản', en: 'Verify and create account', zh: '验证并创建账号', ko: '인증 및 계정 생성', ja: '認証してアカウント作成' },
+                    register: { vi: 'Tạo tài khoản mới', en: 'Create account', zh: '创建新账号', ko: '새 계정 생성', ja: 'アカウント作成' },
+                    login: { vi: 'Đăng nhập', en: 'Log in', zh: '登录', ko: '로그인', ja: 'ログイン' }
+                };
+                submitBtn.textContent = (submitMap[currentTab] && submitMap[currentTab][lang]) || submitMap.login[lang];
+            }
+
             const form = document.getElementById('auth-form');
             if (form && !form.dataset.localizedValidation) {
                 form.dataset.localizedValidation = 'true';
@@ -12964,14 +14213,22 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     if (!(field instanceof HTMLInputElement)) return;
                     const validity = field.validity;
                     let message = '';
-                    if (validity.valueMissing) message = currentLanguage === 'en' ? 'Please fill out this field.' : 'Vui l\u00f2ng nh\u1eadp th\u00f4ng tin n\u00e0y.';
-                    else if (validity.typeMismatch) message = currentLanguage === 'en' ? 'Please enter a valid value.' : 'Vui l\u00f2ng nh\u1eadp \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng.';
-                    else if (validity.tooShort) message = currentLanguage === 'en' ? `Please enter at least ${field.minLength} characters.` : `Vui l\u00f2ng nh\u1eadp \u00edt nh\u1ea5t ${field.minLength} k\u00fd t\u1ef1.`;
-                    else if (validity.patternMismatch) message = currentLanguage === 'en' ? 'Please check the required format.' : 'Vui l\u00f2ng ki\u1ec3m tra \u0111\u00fang \u0111\u1ecbnh d\u1ea1ng.';
+                    const messages = {
+                        missing: { vi: 'Vui lòng nhập thông tin này.', en: 'Please fill out this field.', zh: '请填写此字段。', ko: '이 필드를 입력해 주세요.', ja: 'この項目を入力してください。' },
+                        mismatch: { vi: 'Vui lòng nhập đúng định dạng.', en: 'Please enter a valid value.', zh: '请输入有效值。', ko: '올바른 형식으로 입력해 주세요.', ja: '有効な値を入力してください。' },
+                        short: { vi: `Vui lòng nhập ít nhất ${field.minLength} ký tự.`, en: `Please enter at least ${field.minLength} characters.`, zh: `请输入至少 ${field.minLength} 个字符。`, ko: `최소 ${field.minLength}자 이상 입력해 주세요.`, ja: `少なくとも ${field.minLength} 文字入力してください。` },
+                        pattern: { vi: 'Vui lòng kiểm tra đúng định dạng.', en: 'Please check the required format.', zh: '请检查所需格式。', ko: '필수 형식을 확인해 주세요.', ja: '指定された形式を確認してください。' }
+                    };
+                    const curL = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
+                    if (validity.valueMissing) message = messages.missing[curL];
+                    else if (validity.typeMismatch) message = messages.mismatch[curL];
+                    else if (validity.tooShort) message = messages.short[curL];
+                    else if (validity.patternMismatch) message = messages.pattern[curL];
                     field.setCustomValidity(message);
                 }, true);
                 form.addEventListener('input', event => {
-                    if (event.target instanceof HTMLInputElement) event.target.setCustomValidity('');
+                    const field = event.target;
+                    if (field instanceof HTMLInputElement) field.setCustomValidity('');
                 });
             }
             if (window.OcopSyncEngine && typeof window.OcopSyncEngine.syncGlobalState === 'function') {
@@ -13081,15 +14338,17 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     }).catch(() => {});
 
                     // Non-blocking dispatch to central cloud dashboard
-                    fetch(this.targetUrl + '/api/sync/financial', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-ocop-sync-token': this.token
-                        },
-                        body: JSON.stringify(record),
-                        signal: AbortSignal.timeout(3500)
-                    }).catch(() => {});
+                    if (this.targetUrl && this.targetUrl !== 'https://onrender.com') {
+                        fetch(this.targetUrl + '/api/sync/financial', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-ocop-sync-token': this.token
+                            },
+                            body: JSON.stringify(record),
+                            signal: AbortSignal.timeout(3500)
+                        }).catch(() => {});
+                    }
                 } catch (e) {
                     console.warn('OcopSyncEngine financial sync notice:', e);
                 }
@@ -13107,15 +14366,17 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         body: JSON.stringify(statePayload)
                     }).catch(() => {});
 
-                    fetch(this.targetUrl + '/api/sync/global-state', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'x-ocop-sync-token': this.token
-                        },
-                        body: JSON.stringify(statePayload),
-                        signal: AbortSignal.timeout(3500)
-                    }).catch(() => {});
+                    if (this.targetUrl && this.targetUrl !== 'https://onrender.com') {
+                        fetch(this.targetUrl + '/api/sync/global-state', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-ocop-sync-token': this.token
+                            },
+                            body: JSON.stringify(statePayload),
+                            signal: AbortSignal.timeout(3500)
+                        }).catch(() => {});
+                    }
                 } catch (e) {}
             }
         };
@@ -13231,7 +14492,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             onTranscript: transcript => {
                 filterProductsGlobal(transcript);
                 scrollToProducts();
-                showToast(currentLanguage === 'en' ? 'Searching: ' + transcript : 'Đang tìm: ' + transcript, 'success');
+                const searchToastMap = {
+                    vi: 'Đang tìm: ' + transcript,
+                    en: 'Searching: ' + transcript,
+                    zh: '正在搜索：' + transcript,
+                    ko: '검색 중: ' + transcript,
+                    ja: '検索中: ' + transcript
+                };
+                showToast(searchToastMap[currentLanguage] || searchToastMap.vi, 'success');
             }
         });
         window.searchDictations.push(controller);
