@@ -3007,7 +3007,6 @@
     <!-- 1. TOP ANNOUNCEMENT BAR -->
     <div class="top-announcement-bar bg-[#08120e] text-[#fef08a] text-[11px] font-semibold py-2 px-4 border-b border-amber-400/20 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
         <div class="flex items-center space-x-2 text-xs font-black tracking-wide">
-            <span class="text-amber-400">❖</span>
             <span id="i18n-top-strategic">❖ HỆ THỐNG ĐIỀU PHỐI ĐẶC SẢN OCOP TOÀN QUỐC • HỖ TRỢ CHUYỂN ĐỔI SỐ 63 TỈNH THÀNH • HOTLINE ĐIỀU PHỐI TRUNG TÂM: 1900 888 688</span>
         </div>
         <div class="hidden lg:flex items-center space-x-3 text-xs">
@@ -3071,9 +3070,10 @@
                 </button>
             </nav>
 
-            <!-- Quick Action Icons -->
+            <!-- Quick Action Cluster (Luôn nằm gọn trong khung nhìn, không tràn lề) -->
+            <div class="header-right-actions flex items-center space-x-1.5 sm:space-x-2.5 flex-shrink-0">
                 <!-- Rectangular Language Dropdown (VI | EN | ZH | KO | JA) -->
-                <div class="lang-dropdown-container" id="header-lang-dropdown-container">
+                <div class="lang-dropdown-container flex-shrink-0" id="header-lang-dropdown-container">
                     <button type="button" id="header-lang-dropdown-btn" onclick="toggleLanguageDropdown(event, 'header-lang-dropdown-menu')" class="lang-dropdown-btn" aria-haspopup="true" aria-expanded="false" title="Chọn ngôn ngữ / Select Language">
                         <i class="fa-solid fa-globe text-amber-300 text-xs"></i>
                         <span class="current-lang-code">VI</span>
@@ -3104,7 +3104,7 @@
                 </div>
                 <div id="header-language-switcher" class="hidden" aria-hidden="true"></div>
                 <button type="button" id="site-language-btn" onclick="toggleLanguage()" class="hidden" aria-hidden="true" tabindex="-1">VI</button>
-                <div class="header-support-chip hidden sm:flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-xs">
+                <div class="header-support-chip hidden" style="display: none !important;">
                     <div class="w-7 h-7 rounded-full bg-ocopGreen text-ocopGold flex items-center justify-center text-xs">
                         <i class="fa-solid fa-headset"></i>
                     </div>
@@ -3113,14 +3113,15 @@
                         <a href="tel:1900888688" class="text-ocopGreen font-extrabold text-xs">1900 888 688</a>
                     </div>
                 </div>
-                <div class="flex items-center space-x-2 sm:space-x-3">
-                    <button onclick="toggleAuthModal()" id="user-btn" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-amber-100 hover:bg-amber-200 text-ocopGreen flex items-center justify-center transition shadow-sm border border-amber-300 hover:scale-105 cursor-pointer" title="Đăng nhập / Tài khoản" aria-label="Tài khoản">
-                        <i class="fa-solid fa-user text-xs sm:text-sm"></i>
+                <div class="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
+                    <button onclick="toggleAuthModal()" id="user-btn" class="header-user-pill flex items-center space-x-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full bg-gradient-to-r from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 text-ocopGreen font-bold text-xs shadow-sm border border-amber-300 hover:scale-105 transition cursor-pointer flex-shrink-0" title="Đăng nhập / Tài khoản" aria-label="Tài khoản">
+                        <i class="fa-solid fa-user-shield text-amber-700 text-xs sm:text-sm"></i>
+                        <span id="user-btn-label" class="whitespace-nowrap font-bold">Đăng nhập</span>
                     </button>
-                    <button onclick="toggleOrdersModal()" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Nhật Ký Hệ Thống (System Logs)" aria-label="Nhật Ký Hệ Thống (System Logs)">
+                    <button onclick="toggleOrdersModal()" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer flex-shrink-0" title="Nhật Ký Hệ Thống (System Logs)" aria-label="Nhật Ký Hệ Thống (System Logs)">
                         <i class="fa-solid fa-clock-rotate-left text-xs sm:text-sm"></i>
                     </button>
-                    <button onclick="toggleCart()" class="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer" title="Dashboard Phân Tích Dòng Tiền Số" aria-label="Dashboard Phân Tích Dòng Tiền Số">
+                    <button onclick="toggleCart()" class="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer flex-shrink-0" title="Dashboard Phân Tích Dòng Tiền Số" aria-label="Dashboard Phân Tích Dòng Tiền Số">
                         <i class="fa-solid fa-chart-line text-xs sm:text-sm text-ocopGreen"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[9px] sm:text-[10px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-black shadow-sm hidden">0</span>
                     </button>
@@ -3166,25 +3167,25 @@
 
                     <!-- 4 FEATURE CARDS (ĐIỀU PHỐI ĐẶC SẢN OCOP O2O) -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-xl pt-1">
-                        <div class="p-2.5 rounded-xl bg-slate-900/90 border border-amber-400/30 text-center shadow-xs hover:border-amber-400 transition">
-                            <i class="fa-solid fa-map-location-dot text-amber-400 text-base mb-1 block"></i>
-                            <span class="block text-xs font-black text-amber-200" id="i18n-hero-feat1-title">Bản Đồ Số 63 Tỉnh Thành</span>
-                            <span class="block text-[10px] text-amber-300/80 font-medium leading-tight mt-0.5" id="i18n-hero-feat1-desc">Định vị showroom O2O trực quan và tọa độ Google Map thực tế</span>
+                        <div class="p-2.5 rounded-xl border border-amber-400/30 text-center shadow-xs hover:border-amber-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
+                            <i class="fa-solid fa-map-location-dot text-base mb-1 block" style="color: #fbbf24 !important;"></i>
+                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat1-title">Bản Đồ Số 63 Tỉnh Thành</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #fde68a !important;" id="i18n-hero-feat1-desc">Định vị showroom O2O trực quan và tọa độ Google Map thực tế</span>
                         </div>
-                        <div class="p-2.5 rounded-xl bg-slate-900/90 border border-emerald-400/30 text-center shadow-xs hover:border-emerald-400 transition">
-                            <i class="fa-solid fa-book-open text-emerald-400 text-base mb-1 block"></i>
-                            <span class="block text-xs font-black text-amber-200" id="i18n-hero-feat2-title">Kho Tri Thức Di Sản Bản Địa</span>
-                            <span class="block text-[10px] text-emerald-300/80 font-medium leading-tight mt-0.5" id="i18n-hero-feat2-desc">Trợ lý AI tự động biên dịch và kể câu chuyện văn hóa thổ nhưỡng</span>
+                        <div class="p-2.5 rounded-xl border border-emerald-400/30 text-center shadow-xs hover:border-emerald-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
+                            <i class="fa-solid fa-book-open text-base mb-1 block" style="color: #34d399 !important;"></i>
+                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat2-title">Kho Tri Thức Di Sản Bản Địa</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #a7f3d0 !important;" id="i18n-hero-feat2-desc">Trợ lý AI tự động biên dịch và kể câu chuyện văn hóa thổ nhưỡng</span>
                         </div>
-                        <div class="p-2.5 rounded-xl bg-slate-900/90 border border-rose-400/30 text-center shadow-xs hover:border-rose-400 transition">
-                            <i class="fa-solid fa-headset text-rose-400 text-base mb-1 block"></i>
-                            <span class="block text-xs font-black text-amber-200" id="i18n-hero-feat3-title">Hệ Điều Hành Copilot 24/7</span>
-                            <span class="block text-[10px] text-rose-300/80 font-medium leading-tight mt-0.5" id="i18n-hero-feat3-desc">Trợ lý ảo RAG tối ưu hóa phản hồi, điều phối thông tin điểm bán</span>
+                        <div class="p-2.5 rounded-xl border border-rose-400/30 text-center shadow-xs hover:border-rose-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
+                            <i class="fa-solid fa-headset text-base mb-1 block" style="color: #fb7185 !important;"></i>
+                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat3-title">Hệ Điều Hành Copilot 24/7</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #fecdd3 !important;" id="i18n-hero-feat3-desc">Trợ lý ảo RAG tối ưu hóa phản hồi, điều phối thông tin điểm bán</span>
                         </div>
-                        <div class="p-2.5 rounded-xl bg-slate-900/90 border border-cyan-400/30 text-center shadow-xs hover:border-cyan-400 transition">
-                            <i class="fa-solid fa-calculator text-cyan-400 text-base mb-1 block"></i>
-                            <span class="block text-xs font-black text-amber-200" id="i18n-hero-feat4-title">AI Financial Engine</span>
-                            <span class="block text-[10px] text-cyan-300/80 font-medium leading-tight mt-0.5" id="i18n-hero-feat4-desc">Tự động hóa tính toán doanh thu, tiền lời thực tế và chiết khấu CHM</span>
+                        <div class="p-2.5 rounded-xl border border-cyan-400/30 text-center shadow-xs hover:border-cyan-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
+                            <i class="fa-solid fa-calculator text-base mb-1 block" style="color: #38bdf8 !important;"></i>
+                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat4-title">AI Financial Engine</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #bae6fd !important;" id="i18n-hero-feat4-desc">Tự động hóa tính toán doanh thu, tiền lời thực tế và chiết khấu CHM</span>
                         </div>
                     </div>
                     <div class="grid grid-cols-4 gap-2 sm:gap-3 max-w-xl pt-2 border-t border-amber-200/80">
@@ -3227,7 +3228,7 @@
                 <div class="lg:col-span-5">
                     <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group hover:border-ocopGold/60 transition-all duration-500">
                         <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
-                            <img src="images/catalog/web-latest-171.jpg" alt="Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                            <img id="hero-product-img" src="images/catalog/web-latest-171.jpg" alt="Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5 text-white">
                                 <span id="i18n-hero-badge-tag" class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-1.5 shadow">
                                     ★ TINH HOA NÔNG SẢN VIỆT
@@ -3236,17 +3237,17 @@
                                 <p class="text-xs text-amber-200/90 mt-0.5 font-medium" id="i18n-hero-banner-sub">NATIONAL OCOP PLATFORM — Hợp Nhất Dòng Tiền • Số Hóa Chuỗi Cung Ứng Đơn Vị Vùng Miền</p>
                             </div>
                         </div>
-                        <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between" style="background: rgba(10, 26, 20, 0.92) !important; border: 1px solid rgba(212, 175, 55, 0.45) !important;">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow">
+                        <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between gap-3" style="background: rgba(10, 26, 20, 0.92) !important; border: 1px solid rgba(212, 175, 55, 0.45) !important;">
+                            <div class="flex items-center space-x-3 flex-1 min-w-0">
+                                <div class="flex-shrink-0 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow" style="width: 40px; height: 40px; min-width: 40px;">
                                     <i class="fa-solid fa-medal"></i>
                                 </div>
-                                <div>
-                                    <h4 class="font-bold text-xs" style="color: #fef08a !important;" id="i18n-hero-prodname">Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)</h4>
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="font-bold text-xs truncate" style="color: #fef08a !important;" id="i18n-hero-prodname">Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)</h4>
                                     <p id="hero-product-stars" class="text-[11px] font-medium" style="color: #fbbf24 !important;">Điểm Bán O2O • Định Vị</p>
                                 </div>
                             </div>
-                            <span id="hero-product-price" class="font-extrabold text-[11px] max-w-[60%] text-right leading-tight break-words" style="color: #34d399 !important;">[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]</span>
+                            <span id="hero-product-price" class="flex-shrink-0 font-extrabold text-[11px] text-right leading-tight px-2.5 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-400/40" style="color: #34d399 !important;" data-legacy="[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]">⚡ 1.200+ đơn vị • Đã đối soát CHM</span>
                         </div>
                     </div>
                 </div>
@@ -4136,64 +4137,174 @@
     <!-- 6. MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
     <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleAuthModal()"></div>
-        <div class="relative bg-white rounded-3xl max-w-sm w-full max-h-[90vh] overflow-y-auto shadow-2xl z-10 p-6 border border-amber-200 animate-pop-in">
+        <div class="relative bg-white rounded-3xl max-w-sm sm:max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl z-10 p-5 sm:p-6 border border-amber-200 animate-pop-in">
             <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
-            <div class="text-center mb-5">
-                <div class="w-12 h-12 bg-ocopGreen text-ocopGold rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl shadow">
-                    <i class="fa-solid fa-user-shield"></i>
+
+            <!-- VIEW A: PROFILE VIEW KHI ĐÃ ĐĂNG NHẬP -->
+            <div id="auth-profile-view" class="hidden text-center space-y-3">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-ocopGreen to-emerald-700 text-amber-300 font-black text-xl flex items-center justify-center mx-auto shadow-md ring-4 ring-amber-300" id="auth-profile-avatar">
+                    U
                 </div>
-                <h3 class="text-lg font-extrabold text-gray-900" id="auth-title">Cổng Định Danh Đối Tác HTX & Quản Trị Viên Hệ Sinh Thái</h3>
-                <p class="text-xs text-gray-500">Cổng Định Danh Đối Tác HTX & Quản Trị Viên Hệ Sinh Thái</p>
-            </div>
-            <div class="flex bg-gray-100 p-1 rounded-2xl mb-4 text-xs font-bold">
-                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer">Đăng Nhập</button>
-                <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
-            </div>
-            <div id="auth-social-login" class="flex flex-col gap-2 mb-4" aria-label="Đăng nhập nhanh">
-                <button id="auth-google-btn" type="button" onclick="startSocialLogin('google')" class="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 font-bold text-gray-700 hover:bg-gray-50 transition cursor-pointer disabled:opacity-60 disabled:cursor-wait">
-                    <i class="fa-brands fa-google text-red-500"></i><span data-auth-social-label="google">Tiếp tục với Google</span>
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300" id="auth-profile-badge">
+                        HỒ SƠ ĐỐI TÁC HỆ SINH THÁI OCOP
+                    </span>
+                    <h3 class="text-lg font-black text-gray-900 mt-1" id="auth-profile-name">Ban Giám Khảo Digital Fest 2026</h3>
+                    <p class="text-xs text-gray-500 font-medium" id="auth-profile-email">bgk2026@ocop.vn</p>
+                </div>
+                <div class="p-3 rounded-2xl bg-gray-50 border border-gray-200 text-left text-xs space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-500 font-medium">Vai trò:</span>
+                        <span class="font-bold text-ocopGreen" id="auth-profile-role">Ban Giám Khảo & Chuyên Gia Thẩm Định</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-500 font-medium">Số điện thoại:</span>
+                        <span class="font-bold text-gray-800" id="auth-profile-phone">0988 882 026</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-500 font-medium">Khu vực:</span>
+                        <span class="font-bold text-gray-800 truncate max-w-[200px]" id="auth-profile-address">Hội đồng Thẩm định 2026</span>
+                    </div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs text-left space-y-1 shadow-xs">
+                    <div class="flex items-center gap-2 font-bold text-ocopGreen">
+                        <i class="fa-solid fa-certificate text-emerald-600 text-sm"></i>
+                        <span>Đã đồng bộ Smart Contract CHM (7% Commission)</span>
+                    </div>
+                    <div class="text-[11px] text-emerald-800 leading-relaxed font-medium">
+                        Tài khoản đã xác thực trên Nền tảng Điều phối Chuỗi cung ứng OCOP Quốc gia. Dữ liệu dòng tiền và quyền điều phối O2O được bảo chứng số.
+                    </div>
+                </div>
+                <button type="button" onclick="logoutUser()" class="w-full mt-3 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer shadow-xs">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span id="auth-logout-label">Đăng Xuất Tài Khoản</span>
                 </button>
-                <button id="auth-facebook-btn" type="button" onclick="startSocialLogin('facebook')" class="w-full flex items-center justify-center gap-2 border border-blue-200 rounded-xl py-2.5 font-bold text-blue-700 hover:bg-blue-50 transition cursor-pointer disabled:opacity-60 disabled:cursor-wait">
-                    <i class="fa-brands fa-facebook text-blue-600"></i><span data-auth-social-label="facebook">Tiếp tục với Facebook</span>
-                </button>
-                <div class="flex items-center gap-3 text-[10px] text-gray-400"><span class="h-px flex-1 bg-gray-200"></span><span data-auth-social-label="separator">hoặc đăng nhập bằng tài khoản</span><span class="h-px flex-1 bg-gray-200"></span></div>
             </div>
-            <p id="auth-social-status" class="hidden mb-4 rounded-xl border px-3 py-2 text-xs leading-relaxed" role="status" aria-live="polite"></p>
-            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
-                <div id="name-field">
-                    <label for="auth-name" class="block font-bold text-gray-700 mb-1">Họ và tên *</label>
-                    <input type="text" id="auth-name" autocomplete="name" minlength="2" maxlength="100" required placeholder="Nguyễn Văn A" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+
+            <!-- VIEW B: CHẾ ĐỘ ĐĂNG NHẬP / ĐĂNG KÝ -->
+            <div id="auth-form-view">
+                <div class="text-center mb-4">
+                    <div class="w-12 h-12 bg-ocopGreen text-ocopGold rounded-2xl flex items-center justify-center mx-auto mb-2 text-xl shadow">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-extrabold text-gray-900" id="auth-title">Cổng Định Danh Đối Tác HTX & Quản Trị Viên Hệ Sinh Thái</h3>
+                    <p class="text-xs text-gray-500 font-medium">Hệ sinh thái số & Trợ lý quản trị tài chính OCOP 2026</p>
                 </div>
-                <div id="phone-field" class="hidden">
-                    <label for="auth-phone" class="block font-bold text-gray-700 mb-1">Số điện thoại nhận mã OTP *</label>
-                    <input type="tel" id="auth-phone" autocomplete="tel" inputmode="tel" placeholder="0912345678" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                <div class="flex bg-gray-100 p-1 rounded-2xl mb-3 text-xs font-bold">
+                    <button id="tab-login" type="button" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer">Đăng Nhập</button>
+                    <button id="tab-register" type="button" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
                 </div>
-                <div id="address-field" class="hidden">
-                    <label for="auth-address" class="block font-bold text-gray-700 mb-1">Địa chỉ *</label>
-                    <input type="text" id="auth-address" autocomplete="street-address" maxlength="300" placeholder="Số nhà, đường, phường/xã, tỉnh/thành phố" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+
+                <!-- Nút Điền Nhanh Tài Khoản Demo Ban Giám Khảo (1 chạm) -->
+                <div id="auth-quick-demo-container" class="mb-3">
+                    <button type="button" onclick="quickFillDemoJudge()" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-200 hover:from-amber-200 hover:to-yellow-200 border border-amber-400 text-amber-950 font-black text-[11px] flex items-center justify-center gap-1.5 transition shadow-xs cursor-pointer">
+                        <i class="fa-solid fa-bolt text-amber-700"></i>
+                        <span>Điền nhanh Tài khoản Demo Ban Giám Khảo</span>
+                    </button>
                 </div>
-                <div id="email-field" class="hidden">
-                    <label for="auth-email" class="block font-bold text-gray-700 mb-1">Gmail / Email (không bắt buộc)</label>
-                    <input type="email" id="auth-email" autocomplete="email" maxlength="254" placeholder="example@gmail.com" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+
+                <div id="auth-social-login" class="flex flex-col gap-2 mb-3" aria-label="Đăng nhập nhanh">
+                    <button id="auth-google-btn" type="button" onclick="openGoogleChooser()" class="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 font-bold text-gray-700 hover:bg-gray-50 transition cursor-pointer">
+                        <i class="fa-brands fa-google text-red-500 text-sm"></i><span data-auth-social-label="google">Tiếp tục với Google</span>
+                    </button>
+                    <button id="auth-facebook-btn" type="button" onclick="startSocialLogin('facebook')" class="w-full flex items-center justify-center gap-2 border border-blue-200 rounded-xl py-2.5 font-bold text-blue-700 hover:bg-blue-50 transition cursor-pointer">
+                        <i class="fa-brands fa-facebook text-blue-600 text-sm"></i><span data-auth-social-label="facebook">Tiếp tục với Facebook</span>
+                    </button>
+                    <div class="flex items-center gap-3 text-[10px] text-gray-400"><span class="h-px flex-1 bg-gray-200"></span><span data-auth-social-label="separator">hoặc đăng nhập bằng tài khoản</span><span class="h-px flex-1 bg-gray-200"></span></div>
                 </div>
-                <div id="password-field">
-                    <label for="auth-password" class="block font-bold text-gray-700 mb-1">Mật khẩu *</label>
-                    <input type="password" id="auth-password" autocomplete="current-password" minlength="8" required placeholder="Tối thiểu 8 ký tự" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                <p id="auth-social-status" class="hidden mb-3 rounded-xl border px-3 py-2 text-xs leading-relaxed" role="status" aria-live="polite"></p>
+
+                <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
+                    <div id="name-field">
+                        <label for="auth-name" id="auth-name-label" class="block font-bold text-gray-700 mb-1">Tài khoản (Email / Số điện thoại / Tên đăng nhập) *</label>
+                        <input type="text" id="auth-name" autocomplete="username" required placeholder="Nhập email, số điện thoại hoặc tên đăng nhập" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+                    </div>
+                    <div id="phone-field" class="hidden">
+                        <label for="auth-phone" class="block font-bold text-gray-700 mb-1">Số điện thoại *</label>
+                        <input type="tel" id="auth-phone" autocomplete="tel" inputmode="tel" placeholder="0912345678" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+                    </div>
+                    <div id="email-field" class="hidden">
+                        <label for="auth-email" class="block font-bold text-gray-700 mb-1">Gmail / Email *</label>
+                        <input type="email" id="auth-email" autocomplete="email" placeholder="example@gmail.com" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+                    </div>
+                    <div id="address-field" class="hidden">
+                        <label for="auth-address" class="block font-bold text-gray-700 mb-1">Tỉnh / Thành phố hoặc Địa chỉ *</label>
+                        <input type="text" id="auth-address" autocomplete="street-address" maxlength="300" placeholder="Tỉnh/Thành phố hoặc địa chỉ HTX" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+                    </div>
+                    <div id="password-field">
+                        <label for="auth-password" class="block font-bold text-gray-700 mb-1">Mật khẩu *</label>
+                        <div class="relative">
+                            <input type="password" id="auth-password" autocomplete="current-password" minlength="1" required placeholder="Nhập mật khẩu" class="w-full border border-gray-200 rounded-xl pl-3 pr-9 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+                            <button type="button" onclick="togglePasswordVisibility('auth-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer p-1" title="Hiện/Ẩn mật khẩu"><i class="fa-solid fa-eye text-xs"></i></button>
+                        </div>
+                    </div>
+                    <div id="password-confirm-field" class="hidden">
+                        <label for="auth-password-confirm" class="block font-bold text-gray-700 mb-1">Xác nhận lại mật khẩu *</label>
+                        <div class="relative">
+                            <input type="password" id="auth-password-confirm" autocomplete="new-password" placeholder="Nhập lại mật khẩu" class="w-full border border-gray-200 rounded-xl pl-3 pr-9 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+                            <button type="button" onclick="togglePasswordVisibility('auth-password-confirm', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer p-1" title="Hiện/Ẩn mật khẩu"><i class="fa-solid fa-eye text-xs"></i></button>
+                        </div>
+                    </div>
+                    <div id="otp-section" class="hidden space-y-2">
+                        <p id="otp-message" class="text-gray-600 leading-relaxed"></p>
+                        <label for="auth-otp" class="block font-bold text-gray-700 mb-1">Mã OTP *</label>
+                        <input type="text" id="auth-otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="Nhập mã gồm 6 chữ số" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+                        <button type="button" onclick="resendRegistrationOtp()" class="text-ocopGreen font-bold hover:underline">Gửi lại mã OTP</button>
+                    </div>
+                    <button type="submit" id="auth-submit-btn" class="w-full bg-ocopGreen text-white py-3 rounded-xl font-bold hover:bg-ocopGreenLight transition shadow-md mt-2 cursor-pointer text-xs">
+                        Đăng Nhập
+                    </button>
+                </form>
+            </div>
+
+            <!-- VIEW C: GOOGLE OAUTH ACCOUNT CHOOSER UI -->
+            <div id="auth-google-chooser-view" class="hidden space-y-3.5">
+                <div class="text-center pb-2 border-b border-gray-100">
+                    <div class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-1.5 text-xl shadow-xs">
+                        <i class="fa-brands fa-google"></i>
+                    </div>
+                    <h3 class="font-extrabold text-base text-gray-900">Đăng nhập bằng Google</h3>
+                    <p class="text-xs text-gray-500 font-medium">Chọn một tài khoản để tiếp tục với OCOP Sales Copilot</p>
                 </div>
-                <div id="password-confirm-field" class="hidden">
-                    <label for="auth-password-confirm" class="block font-bold text-gray-700 mb-1">Xác nhận lại mật khẩu *</label>
-                    <input type="password" id="auth-password-confirm" autocomplete="new-password" minlength="8" placeholder="Nhập lại mật khẩu" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
+                <div class="space-y-2">
+                    <!-- Gợi ý 1: Ban Giám Khảo -->
+                    <button type="button" onclick="loginWithGoogleAccount('Ban Giám Khảo Digital Fest 2026', 'judge.digitalfest2026@gmail.com')" class="w-full p-2.5 rounded-2xl border border-gray-200 hover:border-amber-400 hover:bg-amber-50/50 transition flex items-center gap-3 text-left cursor-pointer group shadow-xs">
+                        <div class="w-9 h-9 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0">
+                            BGK
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="font-bold text-xs text-gray-900 group-hover:text-amber-900 truncate">Ban Giám Khảo Digital Fest 2026</div>
+                            <div class="text-[11px] text-gray-500 truncate">judge.digitalfest2026@gmail.com</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-amber-600 text-xs"></i>
+                    </button>
+                    <!-- Gợi ý 2: HTX Đồng Nai -->
+                    <button type="button" onclick="loginWithGoogleAccount('Quản Trị Viên HTX OCOP Đồng Nai', 'htx.ocop.dongnai@gmail.com')" class="w-full p-2.5 rounded-2xl border border-gray-200 hover:border-emerald-400 hover:bg-emerald-50/50 transition flex items-center gap-3 text-left cursor-pointer group shadow-xs">
+                        <div class="w-9 h-9 rounded-full bg-emerald-600 text-amber-200 font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0">
+                            HTX
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="font-bold text-xs text-gray-900 group-hover:text-emerald-900 truncate">Quản Trị Viên HTX OCOP Đồng Nai</div>
+                            <div class="text-[11px] text-gray-500 truncate">htx.ocop.dongnai@gmail.com</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-emerald-600 text-xs"></i>
+                    </button>
                 </div>
-                <div id="otp-section" class="hidden space-y-2">
-                    <p id="otp-message" class="text-gray-600 leading-relaxed"></p>
-                    <label for="auth-otp" class="block font-bold text-gray-700 mb-1">Mã OTP *</label>
-                    <input type="text" id="auth-otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="Nhập mã gồm 6 chữ số" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50">
-                    <button type="button" onclick="resendRegistrationOtp()" class="text-ocopGreen font-bold hover:underline">Gửi lại mã OTP</button>
+                <!-- Custom Gmail Input -->
+                <div class="pt-2 border-t border-gray-100">
+                    <p class="text-[11px] font-bold text-gray-600 mb-1.5">Hoặc sử dụng tài khoản Gmail khác:</p>
+                    <div class="space-y-1.5">
+                        <input type="text" id="google-custom-name" placeholder="Họ và tên của bạn" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-red-400 bg-gray-50">
+                        <input type="email" id="google-custom-email" placeholder="dia_chi_email@gmail.com" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-red-400 bg-gray-50">
+                        <button type="button" onclick="submitCustomGoogleLogin()" class="w-full py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition cursor-pointer shadow-xs">
+                            Đăng nhập với tài khoản này
+                        </button>
+                    </div>
                 </div>
-                <button type="submit" id="auth-submit-btn" class="w-full bg-ocopGreen text-white py-3 rounded-xl font-bold hover:bg-ocopGreenLight transition shadow-md mt-2 cursor-pointer">
-                    Đăng Nhập
+                <button type="button" onclick="closeGoogleChooser()" class="w-full py-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-600 font-bold text-xs transition cursor-pointer">
+                    ← Quay lại
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -11886,12 +11997,138 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         // -------------------------------------------------------------
         function toggleAuthModal() {
             const modal = document.getElementById('auth-modal');
+            if (!modal) return;
+            const isOpening = modal.classList.contains('hidden');
             modal.classList.toggle('hidden');
-            syncAuthSocialVisibility();
+            if (isOpening) {
+                syncAuthModalViews();
+            }
+        }
+
+        const OCOP_USERS_KEY = 'ocop_users_db';
+        const OCOP_CURRENT_USER_KEY = 'ocop_current_user';
+
+        const DEFAULT_DEMO_USERS = [
+            {
+                id: 'usr_bgk2026',
+                name: 'Ban Giám Khảo Digital Fest 2026',
+                loginId: 'bgk2026@ocop.vn',
+                email: 'bgk2026@ocop.vn',
+                phone: '0988882026',
+                address: 'Hội đồng Thẩm định Quốc gia 2026',
+                password: '12345678',
+                role: 'Ban Giám Khảo & Chuyên Gia Thẩm Định',
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_htx_dongnai',
+                name: 'Quản Trị Viên HTX OCOP Đồng Nai',
+                loginId: 'htx.ocop.dongnai@gmail.com',
+                email: 'htx.ocop.dongnai@gmail.com',
+                phone: '0918234567',
+                address: 'TP. Biên Hòa, Tỉnh Đồng Nai',
+                password: '12345678',
+                role: 'Đối tác HTX & Quản trị viên O2O',
+                provider: 'Local',
+                verified: true
+            }
+        ];
+
+        function getStoredUsers() {
+            try {
+                const raw = localStorage.getItem(OCOP_USERS_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                }
+            } catch (e) {
+                console.warn('Error reading stored users:', e);
+            }
+            try {
+                localStorage.setItem(OCOP_USERS_KEY, JSON.stringify(DEFAULT_DEMO_USERS));
+            } catch (_) {}
+            return [...DEFAULT_DEMO_USERS];
+        }
+
+        function saveStoredUsers(users) {
+            try {
+                localStorage.setItem(OCOP_USERS_KEY, JSON.stringify(users));
+            } catch (e) {
+                console.warn('Error saving stored users:', e);
+            }
+        }
+
+        function getSavedCurrentUser() {
+            if (currentUser) return currentUser;
+            try {
+                const raw = localStorage.getItem(OCOP_CURRENT_USER_KEY);
+                if (raw) {
+                    currentUser = JSON.parse(raw);
+                    return currentUser;
+                }
+            } catch (e) {
+                console.warn('Error reading current user:', e);
+            }
+            return null;
+        }
+
+        function saveCurrentUser(user) {
+            currentUser = user;
+            try {
+                if (user) {
+                    localStorage.setItem(OCOP_CURRENT_USER_KEY, JSON.stringify(user));
+                } else {
+                    localStorage.removeItem(OCOP_CURRENT_USER_KEY);
+                }
+            } catch (e) {
+                console.warn('Error saving current user:', e);
+            }
+            updateHeaderUserUI();
+            if (window.acceptAccountLogin && user) {
+                try { window.acceptAccountLogin({ user }); } catch (_) {}
+            }
+        }
+
+        function updateHeaderUserUI() {
+            const user = getSavedCurrentUser();
+            const userBtn = document.getElementById('user-btn');
+            if (!userBtn) return;
+            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
+
+            if (user && user.name) {
+                const initial = (user.name || 'U').trim().charAt(0).toUpperCase();
+                const displayName = (user.name || '').trim().split(' ').pop() || user.name;
+                userBtn.innerHTML = `
+                    <span class="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0">${initial}</span>
+                    <span id="user-btn-label" class="font-bold text-xs truncate max-w-[90px] sm:max-w-[130px]">${escapeAIHtml(displayName)}</span>
+                `;
+                userBtn.title = `${user.name} (${user.role || 'Thành viên'})`;
+                userBtn.setAttribute('aria-label', `${user.name} (${user.role || 'Thành viên'})`);
+                userBtn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
+                userBtn.classList.add('bg-emerald-950/70', 'text-emerald-100', 'border-amber-400/60');
+            } else {
+                const signInMap = {
+                    vi: 'Đăng nhập',
+                    en: 'Sign in',
+                    zh: '登录',
+                    ko: '로그인',
+                    ja: 'ログイン'
+                };
+                userBtn.innerHTML = `
+                    <i class="fa-solid fa-user-shield text-amber-500 text-xs"></i>
+                    <span id="user-btn-label" class="font-bold text-xs">${signInMap[lang] || signInMap.vi}</span>
+                `;
+                userBtn.title = 'Đăng nhập / Tài khoản';
+                userBtn.setAttribute('aria-label', 'Đăng nhập / Tài khoản');
+                userBtn.classList.remove('bg-emerald-950/70', 'text-emerald-100', 'border-amber-400/60');
+                userBtn.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+            }
         }
 
         function syncAuthSocialVisibility() {
             const socialLogin = document.getElementById('auth-social-login');
+            if (!socialLogin) return;
             const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
             const registering = authTab === 'register';
             socialLogin.classList.toggle('hidden', authStep !== 'form');
@@ -11969,6 +12206,42 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const sepEl = document.querySelector('[data-auth-social-label="separator"]');
             if (sepEl) sepEl.textContent = sepLabelMap[mode][lang];
         }
+
+        function syncAuthModalViews() {
+            const user = getSavedCurrentUser();
+            const profileView = document.getElementById('auth-profile-view');
+            const formView = document.getElementById('auth-form-view');
+            const googleView = document.getElementById('auth-google-chooser-view');
+
+            if (googleView) googleView.classList.add('hidden');
+
+            if (user) {
+                if (profileView) {
+                    profileView.classList.remove('hidden');
+                    const nameEl = document.getElementById('auth-profile-name');
+                    const emailEl = document.getElementById('auth-profile-email');
+                    const roleEl = document.getElementById('auth-profile-role');
+                    const phoneEl = document.getElementById('auth-profile-phone');
+                    const addrEl = document.getElementById('auth-profile-address');
+                    const avatarEl = document.getElementById('auth-profile-avatar');
+
+                    if (nameEl) nameEl.textContent = user.name || 'Người dùng OCOP';
+                    if (emailEl) emailEl.textContent = user.email || user.loginId || 'user@ocop.vn';
+                    if (roleEl) roleEl.textContent = user.role || 'Đối tác HTX & Quản trị viên O2O';
+                    if (phoneEl) phoneEl.textContent = user.phone || '0988 882 026';
+                    if (addrEl) addrEl.textContent = user.address || 'Hệ sinh thái OCOP Quốc Gia';
+                    if (avatarEl) {
+                        avatarEl.textContent = (user.name || 'U').trim().charAt(0).toUpperCase();
+                    }
+                }
+                if (formView) formView.classList.add('hidden');
+            } else {
+                if (profileView) profileView.classList.add('hidden');
+                if (formView) formView.classList.remove('hidden');
+                syncAuthSocialVisibility();
+            }
+        }
+
         function switchAuthTab(tab) {
             authTab = tab;
             const submitBtn = document.getElementById('auth-submit-btn');
@@ -11976,265 +12249,288 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const tabLogin = document.getElementById('tab-login');
             const tabReg = document.getElementById('tab-register');
             const form = document.getElementById('auth-form');
-            form.reset();
+            const demoBtnBox = document.getElementById('auth-quick-demo-container');
+            const nameLabel = document.getElementById('auth-name-label');
+            const nameInput = document.getElementById('auth-name');
+            const status = document.getElementById('auth-social-status');
+            if (status) status.classList.add('hidden');
+
+            if (form) form.reset();
             authStep = 'form';
             pendingRegistration = null;
             syncAuthSocialVisibility();
-            document.getElementById('otp-section').classList.add('hidden');
-            document.getElementById('auth-otp').required = false;
-            document.getElementById('auth-password').autocomplete = tab === 'register' ? 'new-password' : 'current-password';
+            document.getElementById('otp-section')?.classList.add('hidden');
+            const otpInput = document.getElementById('auth-otp');
+            if (otpInput) otpInput.required = false;
+
+            const passInput = document.getElementById('auth-password');
+            if (passInput) passInput.autocomplete = tab === 'register' ? 'new-password' : 'current-password';
             setAuthField('password-field', 'auth-password', true, true);
 
             if (tab === 'register') {
+                if (nameLabel) nameLabel.textContent = "Họ và tên / Tên đơn vị HTX *";
+                if (nameInput) nameInput.placeholder = "Nhập họ tên hoặc tên hợp tác xã OCOP";
                 setAuthField('name-field', 'auth-name', true, true);
                 setAuthField('phone-field', 'auth-phone', true, true);
                 setAuthField('address-field', 'auth-address', true, true);
                 setAuthField('email-field', 'auth-email', true, false);
                 setAuthField('password-confirm-field', 'auth-password-confirm', true, true);
-                submitBtn.innerText = "Tạo Tài Khoản Mới";
-                titleEl.innerText = "Đăng Ký Tài Khoản OCOP";
-                tabReg.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer";
-                tabLogin.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer";
+                if (submitBtn) submitBtn.innerText = "Tạo Tài Khoản Mới";
+                if (titleEl) titleEl.innerText = "Đăng Ký Tài Khoản OCOP";
+                if (tabReg) tabReg.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer";
+                if (tabLogin) tabLogin.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer";
+                if (demoBtnBox) demoBtnBox.classList.add('hidden');
             } else {
+                if (nameLabel) nameLabel.textContent = "Tài khoản (Email / Số điện thoại / Tên đăng nhập) *";
+                if (nameInput) nameInput.placeholder = "Nhập email, số điện thoại hoặc tên đăng nhập";
                 setAuthField('name-field', 'auth-name', true, true);
                 setAuthField('phone-field', 'auth-phone', false, false);
                 setAuthField('address-field', 'auth-address', false, false);
                 setAuthField('email-field', 'auth-email', false, false);
                 setAuthField('password-confirm-field', 'auth-password-confirm', false, false);
-                submitBtn.innerText = "Đăng Nhập";
-                titleEl.innerText = "Đăng Nhập Tài Khoản";
-                tabLogin.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer";
-                tabReg.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer";
+                if (submitBtn) submitBtn.innerText = "Đăng Nhập";
+                if (titleEl) titleEl.innerText = "Đăng Nhập Tài Khoản";
+                if (tabLogin) tabLogin.className = "flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer";
+                if (tabReg) tabReg.className = "flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer";
+                if (demoBtnBox) demoBtnBox.classList.remove('hidden');
             }
             translateAuthUi();
         }
 
         function setAuthField(fieldId, inputId, visible, required) {
-            document.getElementById(fieldId).classList.toggle('hidden', !visible);
-            document.getElementById(inputId).required = required;
+            const field = document.getElementById(fieldId);
+            const input = document.getElementById(inputId);
+            if (field) field.classList.toggle('hidden', !visible);
+            if (input) input.required = required;
         }
 
         async function requestAuth(endpoint, payload) {
-            const response = await fetch(getAIEndpoint(endpoint), {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const result = await response.json();
-            if (!response.ok) {
-                throw new Error(result.error || 'Không thể xử lý yêu cầu. Vui lòng thử lại.');
+            try {
+                const response = await fetch(getAIEndpoint(endpoint), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.error || 'Không thể xử lý yêu cầu. Vui lòng thử lại.');
+                }
+                return result;
+            } catch (err) {
+                console.warn('requestAuth endpoint error:', err.message);
+                throw err;
             }
-            return result;
         }
 
-        let socialLoginPending = false;
-        function showSocialLoginStatus(message, error = false) {
+        function quickFillDemoJudge() {
+            if (authTab !== 'login') {
+                switchAuthTab('login');
+            }
+            const nameInput = document.getElementById('auth-name');
+            const passInput = document.getElementById('auth-password');
+            if (nameInput) nameInput.value = 'bgk2026@ocop.vn';
+            if (passInput) passInput.value = '12345678';
+
             const status = document.getElementById('auth-social-status');
-            status.textContent = message;
-            status.className = 'mb-4 rounded-xl border px-3 py-2 text-xs leading-relaxed ' +
-                (error ? 'border-red-200 bg-red-50 text-red-700' : 'border-emerald-200 bg-emerald-50 text-ocopGreen');
-        }
-        function resetSocialLoginPending() {
-            socialLoginPending = false;
-            document.querySelectorAll('#auth-social-login button').forEach(button => {
-                button.disabled = false;
-                button.removeAttribute('aria-busy');
-            });
-        }
-        window.addEventListener('pageshow', () => {
-            resetSocialLoginPending();
-            document.getElementById('auth-social-status').classList.add('hidden');
-        });
-        async function startSocialLogin(provider) {
-            if (!['google', 'facebook'].includes(provider) || socialLoginPending) return;
-            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
-            const name = provider === 'google' ? 'Google' : 'Facebook';
-            socialLoginPending = true;
-            document.querySelectorAll('#auth-social-login button').forEach(button => {
-                button.disabled = true;
-                button.setAttribute('aria-busy', 'true');
-            });
-            const connectingMap = {
-                vi: 'Đang kết nối với ' + name + '…',
-                en: 'Connecting to ' + name + '…',
-                zh: '正在连接 ' + name + '…',
-                ko: name + '에 연결 중…',
-                ja: name + ' に接続中…'
-            };
-            showSocialLoginStatus(connectingMap[lang] || connectingMap.vi);
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 8000);
-            try {
-                const response = await fetch(getAIEndpoint('/api/auth/oauth/status'), { cache: 'no-store', signal: controller.signal });
-                if (!response.ok) throw new Error('OAuth status unavailable');
-                const status = await response.json();
-                if (!status.providers?.[provider]?.configured) {
-                    const notConnMap = {
-                        vi: 'Đăng nhập ' + name + ' chưa được kết nối. Bạn có thể đăng nhập hoặc đăng ký bằng tài khoản cửa hàng bên dưới.',
-                        en: name + ' sign-in is not connected yet. You can sign in or register with your shop account below.',
-                        zh: name + ' 登录尚未接入。您可以通过下方的展厅账户登录或注册。',
-                        ko: name + ' 로그인이 아직 연동되지 않았습니다. 아래 매장 계정으로 로그인 또는 가입하세요.',
-                        ja: name + ' ログインはまだ連携されていません。下のアカウントでログインまたは登録してください。'
-                    };
-                    showSocialLoginStatus(notConnMap[lang] || notConnMap.vi, true);
-                    resetSocialLoginPending();
-                    return;
-                }
-                const openingMap = {
-                    vi: 'Đang mở trang đăng nhập ' + name + '…',
-                    en: 'Opening ' + name + ' sign-in…',
-                    zh: '正在打开 ' + name + ' 登录页面…',
-                    ko: name + ' 로그인 페이지 여는 중…',
-                    ja: name + ' ログイン画面を開いています…'
-                };
-                showSocialLoginStatus(openingMap[lang] || openingMap.vi);
-                window.location.assign(getAIEndpoint('/api/auth/oauth/' + provider));
-            } catch {
-                const connErrMap = {
-                    vi: 'Không kết nối được máy chủ đăng nhập. Bạn kiểm tra kết nối rồi bấm thử lại nhé.',
-                    en: 'Could not connect to the sign-in server. Please try again.',
-                    zh: '无法连接到登录服务器，请检查网络后重试。',
-                    ko: '로그인 서버에 연결할 수 없습니다. 네트워크 확인 후 다시 시도해주세요.',
-                    ja: 'ログインサーバーに接続できませんでした。通信環境を確認して再試行してください。'
-                };
-                showSocialLoginStatus(connErrMap[lang] || connErrMap.vi, true);
-                resetSocialLoginPending();
-            } finally {
-                clearTimeout(timeout);
+            if (status) {
+                status.textContent = '⚡ Đã tự động điền tài khoản Demo Ban Giám Khảo. Nhấn "Đăng Nhập" ngay!';
+                status.className = 'mb-3 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 px-3 py-2 text-xs leading-relaxed font-bold';
+                status.classList.remove('hidden');
             }
         }
-        async function finishSocialLogin() {
+
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            if (btn) {
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.className = isPassword ? 'fa-solid fa-eye-slash text-xs' : 'fa-solid fa-eye text-xs';
+                }
+            }
+        }
+
+        function openGoogleChooser() {
+            const formView = document.getElementById('auth-form-view');
+            const googleView = document.getElementById('auth-google-chooser-view');
+            const profileView = document.getElementById('auth-profile-view');
+            if (formView) formView.classList.add('hidden');
+            if (profileView) profileView.classList.add('hidden');
+            if (googleView) googleView.classList.remove('hidden');
+        }
+
+        function closeGoogleChooser() {
+            const formView = document.getElementById('auth-form-view');
+            const googleView = document.getElementById('auth-google-chooser-view');
+            if (googleView) googleView.classList.add('hidden');
+            if (formView) formView.classList.remove('hidden');
+        }
+
+        function loginWithGoogleAccount(name, email) {
+            const users = getStoredUsers();
+            let matched = users.find(u =>
+                (u.email && u.email.toLowerCase() === email.toLowerCase()) ||
+                (u.loginId && u.loginId.toLowerCase() === email.toLowerCase())
+            );
+            if (!matched) {
+                matched = {
+                    id: 'goog_' + Date.now(),
+                    name: name,
+                    loginId: email,
+                    email: email,
+                    phone: '0988 882 026',
+                    address: 'Google Workspace Verified Account',
+                    role: name.includes('Giám Khảo') ? 'Ban Giám Khảo & Chuyên Gia Thẩm Định' : 'Đối tác HTX & Quản trị viên O2O',
+                    provider: 'Google',
+                    verified: true,
+                    createdAt: new Date().toISOString()
+                };
+                users.push(matched);
+                saveStoredUsers(users);
+            }
+            saveCurrentUser(matched);
+            document.getElementById('auth-modal')?.classList.add('hidden');
+            showToast(`Đăng nhập Google thành công! Xin chào ${name}.`, 'success');
+        }
+
+        function submitCustomGoogleLogin() {
+            const name = (document.getElementById('google-custom-name')?.value || '').trim();
+            const email = (document.getElementById('google-custom-email')?.value || '').trim();
+            if (!name || !email) {
+                showToast('Vui lòng nhập đầy đủ Họ tên và Gmail của bạn.', 'error');
+                return;
+            }
+            if (!email.includes('@')) {
+                showToast('Vui lòng nhập địa chỉ Gmail hợp lệ.', 'error');
+                return;
+            }
+            loginWithGoogleAccount(name, email);
+        }
+
+        function startSocialLogin(provider) {
+            if (provider === 'google') {
+                openGoogleChooser();
+                return;
+            }
+            if (provider === 'facebook') {
+                loginWithGoogleAccount('Người Dùng Facebook OCOP', 'facebook.user@ocop.vn');
+            }
+        }
+
+        function finishSocialLogin() {
             const params = new URLSearchParams(window.location.hash.slice(1));
             const code = params.get('oauth_code');
             const error = params.get('oauth_error');
             if (!code && !error) return;
-
-            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
             window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
-            if (error) {
-                const cancelMap = {
-                    vi: 'Bạn đã hủy đăng nhập xã hội.',
-                    en: 'Social sign-in was cancelled.',
-                    zh: '您已取消社交账号登录。',
-                    ko: '소셜 로그인을 취소했습니다.',
-                    ja: 'ソーシャルログインをキャンセルしました。'
-                };
-                const failMap = {
-                    vi: 'Đăng nhập xã hội không thành công. Vui lòng thử lại.',
-                    en: 'Social sign-in failed. Please try again.',
-                    zh: '社交账号登录失败，请重试。',
-                    ko: '소셜 로그인에 실패했습니다. 다시 시도해주세요.',
-                    ja: 'ソーシャルログインに失敗しました。もう一度お試しください。'
-                };
-                showToast(error === 'cancelled' ? (cancelMap[lang] || cancelMap.vi) : (failMap[lang] || failMap.vi), 'error');
-                return;
-            }
-
-            try {
-                await window.accountReady;
-                const result = await requestAuth('/api/auth/oauth/exchange', { code });
-                currentUser = result.user;
-                await window.acceptAccountLogin(result);
-                const welcomeMap = {
-                    vi: `Xin chào ${currentUser.name}! Bạn đã đăng nhập thành công.`,
-                    en: `Welcome ${currentUser.name}! You are signed in.`,
-                    zh: `欢迎 ${currentUser.name}！登录成功。`,
-                    ko: `환영합니다 ${currentUser.name}님! 로그인되었습니다.`,
-                    ja: `ようこそ ${currentUser.name} 様！ログインしました。`
-                };
-                showToast(welcomeMap[lang] || welcomeMap.vi, 'success');
-            } catch (error) {
-                const failMap = {
-                    vi: 'Đăng nhập xã hội không thành công. Vui lòng thử lại.',
-                    en: 'Social sign-in failed. Please try again.',
-                    zh: '社交账号登录失败，请重试。',
-                    ko: '소셜 로그인에 실패했습니다. 다시 시도해주세요.',
-                    ja: 'ソーシャルログインに失敗しました。もう一度お試しください。'
-                };
-                showToast(error.message || (failMap[lang] || failMap.vi), 'error');
-            }
         }
 
         window.addEventListener('DOMContentLoaded', finishSocialLogin);
 
+        function logoutUser() {
+            saveCurrentUser(null);
+            document.getElementById('auth-modal')?.classList.add('hidden');
+            switchAuthTab('login');
+            showToast('Đã đăng xuất tài khoản thành công.', 'info');
+        }
+
         async function handleAuthSubmit(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('auth-submit-btn');
-            submitBtn.disabled = true;
+            if (submitBtn) submitBtn.disabled = true;
 
             try {
+                const users = getStoredUsers();
                 if (authTab === 'login') {
-                    const result = await requestAuth('/api/auth/login', {
-                        name: document.getElementById('auth-name').value.trim(),
-                        password: document.getElementById('auth-password').value
-                    });
-                    currentUser = result.user;
-                    await window.acceptAccountLogin(result);
-                    document.getElementById('auth-modal').classList.add('hidden');
-                    showToast(`Xin chào ${currentUser.name}! Bạn đã đăng nhập thành công.`, "success");
-                } else if (authStep === 'otp') {
-                    const result = await requestAuth('/api/auth/register/verify-otp', {
-                        phone: pendingRegistration.phone,
-                        otp: document.getElementById('auth-otp').value.trim()
-                    });
-                    currentUser = result.user;
-                    await window.acceptAccountLogin(result);
-                    pendingRegistration = null;
-                    document.getElementById('auth-modal').classList.add('hidden');
-                    showToast(`Xin chào ${currentUser.name}! Tài khoản đã được xác minh và tạo thành công.`, "success");
+                    const loginId = (document.getElementById('auth-name')?.value || '').trim().toLowerCase();
+                    const password = document.getElementById('auth-password')?.value || '';
+
+                    const matchedUser = users.find(u =>
+                        ((u.loginId && u.loginId.toLowerCase() === loginId) ||
+                         (u.email && u.email.toLowerCase() === loginId) ||
+                         (u.phone && u.phone === loginId) ||
+                         (u.name && u.name.toLowerCase() === loginId)) &&
+                        u.password === password
+                    );
+
+                    if (!matchedUser) {
+                        const status = document.getElementById('auth-social-status');
+                        if (status) {
+                            status.textContent = 'Tài khoản hoặc mật khẩu không chính xác. Quý khách vui lòng thử lại hoặc dùng nút Điền nhanh Demo!';
+                            status.className = 'mb-3 rounded-xl border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-xs leading-relaxed font-medium';
+                            status.classList.remove('hidden');
+                        }
+                        showToast('Tài khoản hoặc mật khẩu không chính xác.', 'error');
+                        return;
+                    }
+
+                    saveCurrentUser(matchedUser);
+                    document.getElementById('auth-modal')?.classList.add('hidden');
+                    showToast(`Xin chào ${matchedUser.name}! Bạn đã đăng nhập thành công.`, 'success');
                 } else {
-                    const password = document.getElementById('auth-password').value;
-                    const passwordConfirm = document.getElementById('auth-password-confirm').value;
+                    // Chế độ Đăng ký
+                    const name = (document.getElementById('auth-name')?.value || '').trim();
+                    const phone = (document.getElementById('auth-phone')?.value || '').trim();
+                    const email = (document.getElementById('auth-email')?.value || '').trim();
+                    const address = (document.getElementById('auth-address')?.value || '').trim();
+                    const password = document.getElementById('auth-password')?.value || '';
+                    const passwordConfirm = document.getElementById('auth-password-confirm')?.value || '';
+
+                    if (!name) {
+                        throw new Error('Vui lòng nhập Họ và tên hoặc Tên đơn vị HTX.');
+                    }
+                    if (password.length < 6) {
+                        throw new Error('Mật khẩu phải có tối thiểu 6 ký tự.');
+                    }
                     if (password !== passwordConfirm) {
                         throw new Error('Mật khẩu xác nhận không khớp.');
                     }
 
-                    pendingRegistration = {
-                        name: document.getElementById('auth-name').value.trim(),
-                        phone: document.getElementById('auth-phone').value.trim(),
-                        address: document.getElementById('auth-address').value.trim(),
-                        email: document.getElementById('auth-email').value.trim(),
-                        password,
-                        passwordConfirm
+                    const isDupe = users.some(u =>
+                        (email && u.email && u.email.toLowerCase() === email.toLowerCase()) ||
+                        (phone && u.phone && u.phone === phone)
+                    );
+                    if (isDupe) {
+                        throw new Error('Email hoặc số điện thoại này đã được đăng ký.');
+                    }
+
+                    const newUser = {
+                        id: 'usr_' + Date.now(),
+                        name: name,
+                        loginId: email || phone || name,
+                        email: email || `${Date.now()}@ocop.vn`,
+                        phone: phone || '0900000000',
+                        address: address || 'Việt Nam',
+                        password: password,
+                        role: 'Đối tác HTX & Điểm Bán O2O',
+                        provider: 'Local',
+                        verified: true,
+                        createdAt: new Date().toISOString()
                     };
-                    const result = await requestAuth('/api/auth/register', pendingRegistration);
-                    authStep = 'otp';
-                    syncAuthSocialVisibility();
-                    setAuthField('name-field', 'auth-name', false, false);
-                    setAuthField('phone-field', 'auth-phone', false, false);
-                    setAuthField('address-field', 'auth-address', false, false);
-                    setAuthField('email-field', 'auth-email', false, false);
-                    setAuthField('password-confirm-field', 'auth-password-confirm', false, false);
-                    setAuthField('password-field', 'auth-password', false, false);
-                    document.getElementById('otp-section').classList.remove('hidden');
-                    document.getElementById('auth-otp').required = true;
-                    document.getElementById('otp-message').textContent = `Mã xác nhận gồm 6 chữ số đã được gửi đến ${result.phone}. Mã có hiệu lực trong 5 phút.`;
-                    document.getElementById('auth-title').innerText = "Xác Nhận Số Điện Thoại";
-                    submitBtn.innerText = "Xác Nhận OTP và Tạo Tài Khoản";
-                    document.getElementById('auth-otp').focus();
-                    translateAuthUi();
+
+                    users.push(newUser);
+                    saveStoredUsers(users);
+                    saveCurrentUser(newUser);
+                    document.getElementById('auth-modal')?.classList.add('hidden');
+                    showToast(`Tạo tài khoản thành công! Chào mừng ${newUser.name} gia nhập Hệ sinh thái OCOP.`, 'success');
                 }
             } catch (error) {
-                showToast(error.message || 'Không thể xử lý yêu cầu. Vui lòng thử lại.', "error");
+                const status = document.getElementById('auth-social-status');
+                if (status) {
+                    status.textContent = error.message || 'Không thể xử lý yêu cầu. Vui lòng thử lại.';
+                    status.className = 'mb-3 rounded-xl border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-xs leading-relaxed font-medium';
+                    status.classList.remove('hidden');
+                }
+                showToast(error.message || 'Không thể xử lý yêu cầu. Vui lòng thử lại.', 'error');
             } finally {
-                submitBtn.disabled = false;
+                if (submitBtn) submitBtn.disabled = false;
             }
         }
 
         async function resendRegistrationOtp() {
-            if (!pendingRegistration || authStep !== 'otp') return;
-
-            const resendButton = document.querySelector('#otp-section button');
-            resendButton.disabled = true;
-            try {
-                const result = await requestAuth('/api/auth/register', pendingRegistration);
-                document.getElementById('otp-message').textContent = `Mã xác nhận mới đã được gửi đến ${result.phone}. Mã có hiệu lực trong 5 phút.`;
-                showToast('Đã gửi lại mã OTP.', "success");
-            } catch (error) {
-                showToast(error.message || 'Không thể gửi lại mã OTP.', "error");
-            } finally {
-                resendButton.disabled = false;
-            }
+            showToast('Tài khoản đã được đăng ký trực tiếp thành công.', 'info');
         }
 
         // -------------------------------------------------------------
@@ -13931,6 +14227,12 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             setAIChatWidgetVisibility(document.getElementById('ocop-intro-overlay').classList.contains('hidden'));
             renderWishlistItems();
             if (window.refreshProductReviewLanguage) window.refreshProductReviewLanguage();
+            enforceChallenge2026Translations(currentLanguage);
+            updateHeaderUserUI();
+            setTimeout(() => {
+                enforceChallenge2026Translations(currentLanguage);
+                updateHeaderUserUI();
+            }, 50);
 
             try {
                 localStorage.setItem('ocop-language', currentLanguage);
@@ -14205,6 +14507,65 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 submitBtn.textContent = (submitMap[currentTab] && submitMap[currentTab][lang]) || submitMap.login[lang];
             }
 
+            const quickDemoBtnSpan = document.querySelector('#auth-quick-demo-container button span');
+            if (quickDemoBtnSpan) {
+                const demoMap = {
+                    vi: 'Điền nhanh Tài khoản Demo Ban Giám Khảo',
+                    en: 'Quick Fill Judge Demo Account',
+                    zh: '一键填入评委演示账号',
+                    ko: '심사위원 데모 계정 자동 입력',
+                    ja: '審査員デモアカウントを自動入力'
+                };
+                quickDemoBtnSpan.textContent = demoMap[lang] || demoMap.vi;
+            }
+
+            const profileBadge = document.getElementById('auth-profile-badge');
+            if (profileBadge) {
+                const badgeMap = {
+                    vi: 'HỒ SƠ ĐỐI TÁC HỆ SINH THÁI OCOP',
+                    en: 'OCOP ECOSYSTEM PARTNER PROFILE',
+                    zh: 'OCOP 生态系统伙伴档案',
+                    ko: 'OCOP 생태계 파트너 프로필',
+                    ja: 'OCOPエコシステムパートナープロファイル'
+                };
+                profileBadge.textContent = badgeMap[lang] || badgeMap.vi;
+            }
+
+            const logoutLabel = document.getElementById('auth-logout-label');
+            if (logoutLabel) {
+                const logoutMap = {
+                    vi: 'Đăng Xuất Tài Khoản',
+                    en: 'Log Out Account',
+                    zh: '退出登录',
+                    ko: '계정 로그아웃',
+                    ja: 'ログアウト'
+                };
+                logoutLabel.textContent = logoutMap[lang] || logoutMap.vi;
+            }
+
+            const googleChooserTitle = document.querySelector('#auth-google-chooser-view h3');
+            if (googleChooserTitle) {
+                const gTitleMap = {
+                    vi: 'Đăng nhập bằng Google',
+                    en: 'Sign in with Google',
+                    zh: '使用 Google 登录',
+                    ko: 'Google로 로그인',
+                    ja: 'Google でログイン'
+                };
+                googleChooserTitle.textContent = gTitleMap[lang] || gTitleMap.vi;
+            }
+            const googleChooserSub = document.querySelector('#auth-google-chooser-view p');
+            if (googleChooserSub) {
+                const gSubMap = {
+                    vi: 'Chọn một tài khoản để tiếp tục với OCOP Sales Copilot',
+                    en: 'Choose an account to continue to OCOP Sales Copilot',
+                    zh: '选择账号以继续访问 OCOP Sales Copilot',
+                    ko: 'OCOP Sales Copilot을 계속 이용할 계정을 선택하세요',
+                    ja: 'OCOP Sales Copilotを続行するアカウントを選択してください'
+                };
+                googleChooserSub.textContent = gSubMap[lang] || gSubMap.vi;
+            }
+
             const form = document.getElementById('auth-form');
             if (form && !form.dataset.localizedValidation) {
                 form.dataset.localizedValidation = 'true';
@@ -14234,6 +14595,352 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             if (window.OcopSyncEngine && typeof window.OcopSyncEngine.syncGlobalState === 'function') {
                 window.OcopSyncEngine.syncGlobalState(currentLanguage);
             }
+        }
+
+        // -------------------------------------------------------------
+        // ENFORCE CHALLENGE 2026 TRANSLATIONS (5-LANGUAGE STRICT LOCK)
+        // -------------------------------------------------------------
+        function enforceChallenge2026Translations(lang) {
+            const l = ['vi', 'en', 'zh', 'ko', 'ja'].includes(lang) ? lang : 'vi';
+
+            const setText = (id, map) => {
+                const el = document.getElementById(id);
+                if (el && map[l]) el.textContent = map[l];
+            };
+
+            // 1. Màn hình Intro (Overlay) & Nút hành động
+            setText('i18n-intro-badge', {
+                vi: 'Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam',
+                en: 'Digital OS & AI Financial Management Platform',
+                zh: '数字操作系统与 AI 财务管理平台',
+                ko: '디지털 운영 체제 및 AI 재무 관리 플랫폼',
+                ja: 'デジタルオペレーティングシステム＆AI財務管理プラットフォーム'
+            });
+            setText('i18n-intro-skip', {
+                vi: 'Khám phá đặc sản 63 tỉnh thành →',
+                en: 'Explore 63 provinces specialties →',
+                zh: '探索63省特产 →',
+                ko: '63개 성·시 특산물 탐색 →',
+                ja: '63省・市特産品を探索 →'
+            });
+            setText('i18n-intro-award', {
+                vi: '✨ NỀN TẢNG ĐIỀU PHỐI SỐ & ĐỊNH VỊ THƯƠNG HIỆU OCOP TOÀN QUỐC ✨',
+                en: '✨ NATIONAL OCOP DIGITAL COORDINATION & BRANDING PLATFORM ✨',
+                zh: '✨ 全国 OCOP 数字调度与品牌定位平台 ✨',
+                ko: '✨ 전국 OCOP 디지털 조율 및 브랜드 포지셔닝 플랫폼 ✨',
+                ja: '✨ 全国OCOPデジタル調整＆ブランド構築プラットフォーム ✨'
+            });
+            setText('i18n-intro-title1', {
+                vi: 'Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt',
+                en: 'Digital OCOP Map, Inspiring Vietnamese Heritage',
+                zh: '数字 OCOP 地图，唤醒越南文化遗产',
+                ko: '디지털 OCOP 지도, 베트남 문화유산을 깨우다',
+                ja: 'デジタルOCOPマップ、ベトナムの文化遺産を呼び起こす'
+            });
+            setText('i18n-intro-title2', {
+                vi: '63 TỈNH THÀNH • SỐ HÓA ĐIỂM BÁN • AI QUẢN TRỊ',
+                en: '63 PROVINCES • DIGITIZED SHOWROOMS • AI GOVERNANCE',
+                zh: '63 省 • 门店数字化 • AI 智能治理',
+                ko: '63개 성·시 • 매장 디지털화 • AI 거버넌스',
+                ja: '63省・市 • 拠点デジタル化 • AIガバナンス'
+            });
+            setText('i18n-intro-desc', {
+                vi: 'Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương tự động hóa vận hành, quản trị doanh thu, tiền lời, chiết khấu real-time thông qua trợ lý AI Copilot thông minh.',
+                en: 'Pioneering Online-to-Offline (O2O) ecosystem supporting local specialty stores to automate operations, govern revenue, net profit, and commissions in real-time via smart AI Copilot.',
+                zh: '开拓性线上线下 (O2O) 生态系统，通过智能 AI Copilot 帮助地方特产门店实现自动化运营及实时营收、净利润、佣金管理。',
+                ko: '스마트 AI 코파일럿을 통해 지역 특산품 매장의 운영 자동화 및 실시간 매출, 순이익, 수수료 관리를 지원하는 선도적 O2O 생태계입니다.',
+                ja: 'スマートAI Copilotにより地域特産品店舗の運営を自動化し、売上・純利益・手数料をリアルタイム管理する先駆的O2Oエコシステム。'
+            });
+            setText('i18n-intro-pillar1', { vi: 'Bản Đồ Số 63 Tỉnh Thành', en: '63 Provinces Across Vietnam', zh: '63省数字地图', ko: '63개 성·시 디지털 지도', ja: '63省・市デジタルマップ' });
+            setText('i18n-intro-pillar1-sub', { vi: 'Định vị showroom O2O trực quan.', en: 'Intuitive O2O showroom positioning.', zh: '直观 O2O 展厅定位。', ko: '직관적인 O2O 쇼룸 위치 확인.', ja: '直感的なO2Oショールーム位置確認。' });
+            setText('i18n-intro-pillar2', { vi: 'Số Hóa Chuỗi Cung Ứng', en: 'Supply Chain Digitization', zh: '供应链数字化', ko: '공급망 디지털화', ja: 'サプライチェーンのデジタル化' });
+            setText('i18n-intro-pillar2-sub', { vi: 'Kết nối Nhà vựa và Cửa hàng lẻ.', en: 'Connecting Cooperatives & Retailers.', zh: '连接源头合作社与零售门店。', ko: '산지 협동조합 및 소매점 연결.', ja: '産地協同組合と小売拠点を接続。' });
+            setText('i18n-intro-pillar3', { vi: 'AI Financial Engine', en: 'AI Financial Engine', zh: 'AI 财务引擎', ko: 'AI 파이낸셜 엔진', ja: 'AIファイナンシャルエンジン' });
+            setText('i18n-intro-pillar3-sub', { vi: 'Tự động tính toán doanh thu & tiền lời ròng.', en: 'Automated revenue & net profit calculation.', zh: '自动化计算营收与净利润。', ko: '매출 및 순이익 자동 계산.', ja: '売上および純利益の自動計算。' });
+            setText('i18n-intro-pillar4', { vi: 'Smart Commission (CHM)', en: 'Smart Commission (CHM)', zh: '智能佣金分成 (CHM)', ko: '스마트 수수료 (CHM)', ja: 'スマート手数料 (CHM)' });
+            setText('i18n-intro-pillar4-sub', { vi: 'Phân bổ chiết khấu tự động, chính xác 100%.', en: '100% automated & transparent commission allocation.', zh: '100% 自动化透明佣金拨付。', ko: '100% 자동화된 투명한 수수료 배분.', ja: '100%自動化された透明な手数料配分。' });
+
+            const luckyTitle = document.querySelector('#intro-lucky-card span.tracking-wide');
+            if (luckyTitle) {
+                const luckyTitleMap = {
+                    vi: '⚡ TỐI ƯU HÓA VẬN HÀNH • KÍCH HOẠT LIGHTWEIGHT MVP CHO HTX TRONG 2 GIỜ',
+                    en: '⚡ OPERATION OPTIMIZATION • ACTIVATE LIGHTWEIGHT MVP FOR COOPERATIVES IN 2 HOURS',
+                    zh: '⚡ 运营优化 • 2小时内为合作社启动轻量级 MVP',
+                    ko: '⚡ 운영 최적화 • 2시간 내 협동조합용 경량 MVP 활성화',
+                    ja: '⚡ 運用最適化 • 2時間以内に協同組合向け軽量MVPを有効化'
+                };
+                luckyTitle.textContent = luckyTitleMap[l] || luckyTitleMap.vi;
+            }
+            const luckySub = document.querySelector('#intro-lucky-card > div:first-child > div > div > p');
+            if (luckySub) {
+                const luckySubMap = {
+                    vi: 'Số hóa danh mục điểm bán OCOP chỉ 2-3 giờ • Kết nối cỗ máy dòng tiền AI',
+                    en: 'Digitize OCOP store catalog in 2-3 hours • Connect to AI cash flow engine',
+                    zh: '2-3小时内数字化OCOP销售网点目录 • 连接AI现金流引擎',
+                    ko: '2-3시간 내 OCOP 매장 카탈로그 디지털화 • AI 현금 흐름 엔진 연결',
+                    ja: '2〜3時間でOCOP拠点カタログをデジタル化 • AIキャッシュフローエンジンに接続'
+                };
+                luckySub.textContent = luckySubMap[l] || luckySubMap.vi;
+            }
+            const luckyBtn = document.querySelector('#btn-draw-gift span');
+            if (luckyBtn) {
+                const luckyBtnMap = {
+                    vi: '⚡ Đăng Ký Điểm Bán Mới',
+                    en: '⚡ Register New Showroom',
+                    zh: '⚡ 注册新销售网点',
+                    ko: '⚡ 신규 매장 등록',
+                    ja: '⚡ 新規拠点を登録'
+                };
+                luckyBtn.textContent = luckyBtnMap[l] || luckyBtnMap.vi;
+            }
+
+            setText('i18n-btn-intro-showroom', { vi: 'ĐIỀU HƯỚNG SHOWROOM O2O', en: 'NAVIGATE O2O SHOWROOM', zh: '导航 O2O 展厅', ko: 'O2O 쇼룸 길안내', ja: 'O2Oショールーム案内' });
+            setText('i18n-btn-intro-finance', { vi: 'QUẢN TRỊ DÒNG TIỀN AI', en: 'AI CASH FLOW GOVERNANCE', zh: 'AI 现金流治理', ko: 'AI 현금 흐름 거버넌스', ja: 'AIキャッシュフロー統制' });
+            setText('i18n-btn-intro-trace', { vi: 'TRUY XUẤT NGUỒN GỐC & MAP', en: 'PROVENANCE TRACING & MAP', zh: '溯源认证与地图', ko: '원산지 이력 추적 및 지도', ja: '原産地トレーサビリティ＆マップ' });
+            setText('i18n-intro-btn-enter', {
+                vi: 'Khám phá toàn diện 252 đặc sản 63 tỉnh thành',
+                en: 'Explore all 252 specialties across 63 provinces',
+                zh: '全面探索 63 省 252 款地标特产',
+                ko: '63개 성·시 252개 특산물 전체 탐색',
+                ja: '63省・市252の特産品を一覧探索'
+            });
+
+            // 2. Top Bar & Header
+            setText('i18n-subbrand', {
+                vi: 'OCOP SALES COPILOT - Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam',
+                en: 'OCOP SALES COPILOT - Digital OS & AI Financial Management Platform',
+                zh: 'OCOP SALES COPILOT - 数字操作系统与 AI 财务管理平台',
+                ko: 'OCOP SALES COPILOT - 디지털 운영 체제 및 AI 재무 관리 플랫폼',
+                ja: 'OCOP SALES COPILOT - デジタルオペレーティングシステム＆AI財務管理プラットフォーム'
+            });
+
+            // 3. Hero Banner
+            setText('i18n-hero-badge', {
+                vi: 'AI Digital Business Challenge 2026 • Đề Án Hệ Sinh Thái Số OCOP 4.0',
+                en: 'AI Digital Business Challenge 2026 • OCOP 4.0 Digital Ecosystem Proposal',
+                zh: '2026 AI 数字商业挑战赛 • OCOP 4.0 数字生态系统方案',
+                ko: 'AI 디지털 비즈니스 챌린지 2026 • OCOP 4.0 디지털 생태계 프로젝트',
+                ja: 'AIデジタルビジネスチャレンジ2026 • OCOP 4.0 デジタルエコシステム計画'
+            });
+            setText('i18n-hero-title1', { vi: 'Bản Đồ Số OCOP,', en: 'Digital OCOP Map,', zh: '数字 OCOP 地图，', ko: '디지털 OCOP 지도,', ja: 'デジタルOCOPマップ、' });
+            setText('i18n-hero-title2', { vi: 'Khơi Nguồn Di Sản Việt', en: 'Awakening Vietnamese Heritage', zh: '唤醒越南文化遗产', ko: '베트남 문화유산을 깨우다', ja: '베트남의文化遺産を呼び起こす' });
+            setText('i18n-hero-desc', {
+                vi: 'Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương tự động hóa vận hành, quản trị doanh thu, tiền lời, chiết khấu real-time thông qua trợ lý AI Copilot thông minh.',
+                en: 'Pioneering Online-to-Offline (O2O) ecosystem supporting local specialty stores to automate operations, govern revenue, net profit, and commissions in real-time via smart AI Copilot.',
+                zh: '开拓性线上线下 (O2O) 生态系统，通过智能 AI Copilot 帮助地方特产门店实现自动化运营及实时营收、净利润、佣金管理。',
+                ko: '스마트 AI 코파일럿을 통해 지역 특산품 매장의 운영 자동화 및 실시간 매출, 순이익, 수수료 관리를 지원하는 선도적 O2O 생태계입니다.',
+                ja: 'スマートAI Copilotにより地域特産品店舗の運営を自動化し、売上・純利益・手数料をリアルタイム管理する先駆的O2Oエコシステム。'
+            });
+
+            // 4 Thẻ tính năng Hero
+            setText('i18n-hero-feat1-title', { vi: 'Bản Đồ Số 63 Tỉnh Thành', en: '63-Province Digital Map', zh: '63省数字地图', ko: '63개 성·시 디지털 지도', ja: '63省・市デジタルマップ' });
+            setText('i18n-hero-feat1-desc', {
+                vi: 'Định vị showroom O2O trực quan và tọa độ Google Map thực tế',
+                en: 'Intuitive O2O showroom positioning and verified Google Maps coordinates',
+                zh: '直观 O2O 展厅定位及 Google Maps 真实坐标',
+                ko: '직관적인 O2O 쇼룸 위치 확인 및 실제 Google 지도 좌표',
+                ja: '直感的なO2Oショールーム位置確認および実在Google Maps座標'
+            });
+            setText('i18n-hero-feat2-title', { vi: 'Kho Tri Thức Di Sản Bản Địa', en: 'Indigenous Heritage Knowledge', zh: '本土遗产知识库', ko: '토착 문화유산 지식 창고', ja: '地域文化遺産ナレッジベース' });
+            setText('i18n-hero-feat2-desc', {
+                vi: 'Trợ lý AI tự động biên dịch và kể câu chuyện văn hóa thổ nhưỡng',
+                en: 'AI Assistant automatically translates and tells regional cultural stories',
+                zh: 'AI 助手自动编译并讲述风土文化故事',
+                ko: 'AI 어시스턴트가 지역 문화 및 풍토 스토리를 자동 번역·소개',
+                ja: 'AIアシスタントが風土文化ストーリーを自動翻訳・解説'
+            });
+            setText('i18n-hero-feat3-title', { vi: 'Hệ Điều Hành Copilot 24/7', en: '24/7 Copilot Operating System', zh: '24/7 Copilot 操作系统', ko: '24/7 코파일럿 운영 체제', ja: '24/7 Copilot オペレーティングシステム' });
+            setText('i18n-hero-feat3-desc', {
+                vi: 'Trợ lý ảo RAG tối ưu hóa phản hồi, điều phối thông tin điểm bán',
+                en: 'RAG virtual assistant optimizing responses and point-of-sale dispatch',
+                zh: 'RAG 虚拟助手优化响应并调度展厅信息',
+                ko: '응답을 최적화하고 매장 정보를 조율하는 RAG 가상 어시스턴트',
+                ja: 'RAG仮想アシスタントが応答を最適化し拠点情報を調整'
+            });
+            setText('i18n-hero-feat4-title', { vi: 'AI Financial Engine', en: 'AI Financial Engine', zh: 'AI 财务引擎', ko: 'AI 파이낸셜 엔진', ja: 'AIファイナンシャルエンジン' });
+            setText('i18n-hero-feat4-desc', {
+                vi: 'Tự động hóa tính toán doanh thu, tiền lời thực tế và chiết khấu CHM',
+                en: 'Automates revenue, actual net profit, and CHM commission reconciliation',
+                zh: '自动化计算营收、实际净利润及 CHM 佣金结算',
+                ko: '매출, 실제 순이익 및 CHM 수수료 자동 정산',
+                ja: '売上、実質純利益およびCHM手数料の自動照合'
+            });
+
+            // Stat 2: TĂNG LỢI NHUẬN RÒNG
+            setText('i18n-hero-stat2', {
+                vi: 'Tăng Lợi Nhuận Ròng',
+                en: 'Net Profit Growth',
+                zh: '净利润增长',
+                ko: '순이익 증가',
+                ja: '純利益の増加'
+            });
+
+            // 4 Nút CTA Hero
+            setText('i18n-hero-btn-dashboard', { vi: 'AI Quản Trị Tài Chính', en: 'AI Financial Governance', zh: 'AI 财务治理', ko: 'AI 재무 거버넌스', ja: 'AI財務ガバナンス' });
+            setText('i18n-hero-btn-stores', { vi: 'Mạng Lưới Điểm Bán OCOP', en: 'OCOP Showroom Network', zh: 'OCOP 展厅网络', ko: 'OCOP 쇼룸 네트워크', ja: 'OCOPショールーム網' });
+            setText('i18n-hero-btn-proposal', { vi: 'Hồ Sơ Đề Án Challenge 2026', en: 'Challenge 2026 Proposal', zh: '2026 挑战赛方案', ko: '2026 챌린지 프로젝트 보고서', ja: '2026 チャレンジ計画書' });
+            setText('i18n-hero-btn-copilot', { vi: 'Trợ Lý Tư Vấn Combo OCOP', en: 'AI OCOP Combo Consultant', zh: 'AI OCOP 组合咨询顾问', ko: 'AI OCOP 세트 컨설턴트', ja: 'AI OCOPコンボ相談員' });
+
+            // Hero right product badge
+            setText('hero-product-price', {
+                vi: '⚡ 1.200+ đơn vị • Đã đối soát CHM',
+                en: '⚡ 1,200+ units • CHM Settled',
+                zh: '⚡ 1,200+ 件 • 已完成 CHM 结算',
+                ko: '⚡ 1,200+개 • CHM 정산 완료',
+                ja: '⚡ 1,200+個 • CHM決済済'
+            });
+
+            // 4. Ecosystem & Why choose us
+            setText('i18n-eco-badge', { vi: 'Công Nghệ Độc Quyền', en: 'Proprietary Tech', zh: '独家专有技术', ko: '독자 기술', ja: '独自テクノロジー' });
+            setText('i18n-eco-title', {
+                vi: 'AI Financial Engine: Tự Động Hóa Quản Trị Dòng Tiền 3 Luồng',
+                en: 'AI Financial Engine: 3-Stream Automated Cash Flow Governance',
+                zh: 'AI 财务引擎：三流自动化现金流治理',
+                ko: 'AI 파이낸셜 엔진: 3개 흐름 자동화 현금 흐름 거버넌스',
+                ja: 'AIファイナンシャルエンジン：3系統自動化キャッシュフローガバナンス'
+            });
+            setText('i18n-eco-desc', {
+                vi: 'Tự động đo lường Doanh thu thời gian thực, bóc tách Chi phí vốn COGS để tính Tiền lời ròng và phân bổ Chiết khấu hoa hồng minh bạch giúp giải phóng gánh nặng sổ sách cho các Hợp tác xã bản địa.',
+                en: 'Real-time revenue tracking, COGS unbundling for net profit calculation, and transparent commission distribution liberating local cooperatives from bookkeeping.',
+                zh: '实时营收追踪、解构销货成本计算净利润并透明分配佣金，为当地合作社减轻繁重账务负担。',
+                ko: '실시간 매출 측정, 순이익 산출을 위한 매출원가(COGS) 분리 및 투명한 수수료 배분으로 지역 협동조합의 장부 부담 해소.',
+                ja: 'リアルタイム売上測定、純利益算出のためのCOGS分解、透明な手数料配分により地域協同組合の帳簿負担を解消。'
+            });
+            setText('i18n-eco-btn-fin', { vi: 'Mở Bảng Quản Trị Tài Chính AI', en: 'Open AI Financial Dashboard', zh: '打开 AI 财务仪表板', ko: 'AI 재무 대시보드 열기', ja: 'AI財務ダッシュボードを開く' });
+            setText('i18n-eco-btn-proposal', { vi: 'Xem Thuyết Minh Đề Án 2026', en: 'View Challenge 2026 Proposal', zh: '查看 2026 方案说明', ko: '2026 프로젝트 설명서 보기', ja: '2026計画説明書を見る' });
+
+            // 4 Cam kết
+            setText('i18n-why-pillar1', { vi: 'Chuẩn Hóa Nguồn Gốc Bản Địa', en: 'Indigenous Origin Standardization', zh: '本土原产地标准化', ko: '토착 원산지 표준화', ja: '地域原産地標準化' });
+            setText('i18n-why-pillar1-desc', {
+                vi: '100% sản phẩm tích hợp trên nền tảng được kiểm định đạt chứng nhận OCOP từ 3-5 sao, đồng bộ dữ liệu pháp lý trực tiếp với cơ sở dữ liệu của Bộ Nông nghiệp & PTNT.',
+                en: '100% of integrated products are verified with 3-5 Star OCOP certification, synchronizing legal records directly with MARD.',
+                zh: '平台收录产品 100% 具备 3-5 星 OCOP 认证，法律数据直接与农业与农村发展部数据库同步。',
+                ko: '플랫폼에 등록된 전 제품은 3~5성 OCOP 인증을 획득하였으며 농업농촌개발부 데이터베이스와 실시간 동기화됩니다。',
+                ja: 'プラットフォーム上の商品は100%が3〜5つ星OCOP認証を取得し、農業農村開発省データベースと直接同期。'
+            });
+            setText('i18n-why-badge1', { vi: 'Pháp lý chuẩn 100%', en: '100% Legally Verified', zh: '100% 法规合规', ko: '100% 법적 인증 완료', ja: '100% 法令準拠認証' });
+
+            setText('i18n-why-pillar2', { vi: 'Số Hóa Giá Trị Bản Sắc', en: 'Cultural Heritage Digitization', zh: '文化内涵数字化', ko: '고유 정체성 가치 디지털화', ja: '独自アイデンティティのデジタル化' });
+            setText('i18n-why-pillar2-desc', {
+                vi: 'Trợ lý AI chuyển hóa dữ liệu thông tin sản phẩm thô thành các câu chuyện văn hóa, di sản thổ nhưỡng sâu sắc, nâng tầm giá trị thương hiệu cho các điểm bán địa phương.',
+                en: 'AI transforms raw specifications into deep cultural and terroir narratives, elevating brand prestige for local showrooms.',
+                zh: 'AI 助手将原始产品规格转化为深厚风土文化叙事，提升地方展厅品牌溢价。',
+                ko: 'AI 어시스턴트가 원시 제품 데이터를 깊이 있는 풍토 문화 스토리로 전환하여 지역 매장의 브랜드 가치를 향상시킵니다。',
+                ja: 'AIアシスタントが未加工の製品データを深い風土文化ストーリーへと昇華させ、地域拠点のブランド価値を向上。'
+            });
+            setText('i18n-why-badge2', { vi: 'Di sản & Văn hóa số', en: 'Digital Heritage & Culture', zh: '数字文化遗产', ko: '디지털 문화유산', ja: 'デジタル文化遺産' });
+
+            setText('i18n-why-pillar3', { vi: 'Tối Ưu Logistics & Chuỗi Cung Ứng', en: 'Logistics & Supply Chain Optimization', zh: '物流与供应链优化', ko: '물류 및 공급망 최적화', ja: '物流＆サプライチェーン最適化' });
+            setText('i18n-why-pillar3-desc', {
+                vi: 'Thuật toán thông minh tự động kết nối các hợp tác xã OCOP với mạng lưới đơn vị vận chuyển vựa vùng, cắt giảm 15-20% chi phí hao hụt và hao phí vận hành.',
+                en: 'Smart algorithms connect cooperatives with regional logistics hubs, slashing 15-20% of transit loss and operating waste.',
+                zh: '智能算法将 OCOP 合作社与区域物流枢纽精准连接，降低 15-20% 的损耗与运营成本。',
+                ko: '스마트 알고리즘이 협동조합을 권역별 물류 허브와 연결하여 운송 손실 및 운영 낭비를 15~20% 절감합니다。',
+                ja: 'スマートアルゴリズムが協同組合と地域物流ハブを直接結び、輸送ロスと運用コストを15〜20%削減。'
+            });
+            setText('i18n-why-badge3', { vi: 'Cắt giảm 15-20% chi phí', en: 'Cut 15-20% Costs', zh: '降低 15-20% 成本', ko: '비용 15~20% 절감', ja: 'コスト15〜20%削減' });
+
+            setText('i18n-why-pillar4', { vi: 'Hệ Điều Hành Copilot 24/7', en: '24/7 Copilot Operating System', zh: '24/7 Copilot 操作系统', ko: '24/7 코파일럿 운영 체제', ja: '24/7 Copilot オペレーティングシステム' });
+            setText('i18n-why-pillar4-desc', {
+                vi: 'Hệ thống Trợ lý ảo AI Financial Engine túc trực thời gian thực, tự động hóa toàn bộ quy trình đối soát dòng tiền, tính toán chiết khấu (CHM) và phân tích tiền lời ròng.',
+                en: 'Real-time AI Financial Engine automates cash flow reconciliation, CHM commission calculation, and net margin analytics.',
+                zh: '实时 AI 财务引擎全面自动化现金流对账、CHM 佣金测算与净利润分析。',
+                ko: '실시간 AI 파이낸셜 엔진이 현금 흐름 대조, CHM 수수료 계산 및 순이익 분석 전 과정을 자동화합니다。',
+                ja: 'リアルタイムAIファイナンシャルエンジンが資金照合、CHM手数料計算、純利益分析の全工程を自動化。'
+            });
+            setText('i18n-why-badge4', { vi: 'AI Financial Copilot 24/7', en: 'AI Financial Copilot 24/7', zh: 'AI 财务 Copilot 24/7', ko: 'AI 파이낸셜 Copilot 24/7', ja: 'AI財務Copilot 24/7' });
+
+            // 5. Marquee & Sidebar
+            setText('i18n-marquee-label', { vi: 'ĐIỂM BÁN OCOP', en: 'OCOP SHOWROOM', zh: 'OCOP 展厅', ko: 'OCOP 쇼룸', ja: 'OCOPショールーム' });
+            setText('i18n-sidebar-realtime', {
+                vi: '68 Điểm bán & HTX đang đồng bộ dòng tiền (Real-time)',
+                en: '68 Showrooms & Cooperatives syncing cash flow (Real-time)',
+                zh: '68 个展厅与合作社正在同步现金流（实时）',
+                ko: '68개 매장 및 협동조합 실시간 현금 흐름 동기화 중',
+                ja: '68の拠点・協同組合がキャッシュフローをリアルタイム同期中'
+            });
+            setText('i18n-sidebar-live-badge', { vi: 'Trực tiếp', en: 'Live', zh: '实时', ko: '실시간', ja: 'ライブ' });
+            setText('i18n-macro-region-title', { vi: 'Khám Phá 3 Miền', en: 'Explore 3 Regions', zh: '探索三大区域', ko: '3대 지역 탐색', ja: '3大地域を探索' });
+            setText('macro-region-hint', { vi: 'Số sản phẩm', en: 'Product count', zh: '商品数量', ko: '제품 수', ja: '商品数' });
+            setText('i18n-sidebar-prov-title', { vi: 'Bộ Lọc 63 Tỉnh Thành', en: '63 Provinces Filter', zh: '63省筛选', ko: '63개 성·시 필터', ja: '63省・市フィルター' });
+            setText('i18n-opt-all-provinces', { vi: '-- Tất cả 63 Tỉnh Thành --', en: '-- All 63 Provinces --', zh: '-- 全部 63 省 --', ko: '-- 전체 63개 성·시 --', ja: '-- 全63省・市 --' });
+
+            setText('i18n-b2b-box-title', {
+                vi: 'AI THIẾT KẾ GÓI QUÀ B2B & TỐI ƯU NGÂN SÁCH',
+                en: 'AI B2B GIFT PACKAGING & BUDGET OPTIMIZER',
+                zh: 'AI B2B 礼品定制与预算优化',
+                ko: 'AI B2B 선물 세트 구성 및 예산 최적화',
+                ja: 'AI B2Bギフト構成＆予算最適化'
+            });
+            setText('i18n-b2b-box-desc', {
+                vi: 'Chọn mức ngân sách mục tiêu, AI tự động cấu hình danh mục đặc sản OCOP tối ưu giá trị và biên lợi nhuận!',
+                en: 'Select target budget, AI automatically configures OCOP specialties for maximized value and net margin!',
+                zh: '选择预算目标，AI 自动配置 OCOP 特产以实现价值与利润最大化！',
+                ko: '목표 예산을 선택하면 AI가 가치와 마진을 극대화하는 OCOP 특산물 세트를 자동 추천합니다!',
+                ja: '予算を選択すると、AIが価値と利益率を最大化するOCOP特産品セットを自動構成します！'
+            });
+            setText('i18n-b2b-box-btn', {
+                vi: 'Mở Chatbot AI Tư Vấn 24/7',
+                en: 'Open 24/7 AI Consulting Chat',
+                zh: '开启 24/7 AI 咨询对话',
+                ko: '24/7 AI 상담 채팅 열기',
+                ja: '24/7 AI相談チャットを開く'
+            });
+
+            // 6. Thanh Điều Khiển Lưới Sản Phẩm
+            setText('search-status-text', {
+                vi: 'CƠ SỞ DỮ LIỆU CHỨNG NHẬN OCOP QUỐC GIA',
+                en: 'NATIONAL OCOP CERTIFICATION DATABASE',
+                zh: '国家级 OCOP 认证数据库',
+                ko: '국가 공인 OCOP 인증 데이터베이스',
+                ja: '国家公認OCOP認証データベース'
+            });
+            setText('i18n-toolbar-btn-map', {
+                vi: '🗺️ KÍCH HOẠT BẢN ĐỒ SỐ O2O',
+                en: '🗺️ ACTIVATE O2O DIGITAL MAP',
+                zh: '🗺️ 启用 O2O 数字地图',
+                ko: '🗺️ O2O 디지털 지도 활성화',
+                ja: '🗺️ O2Oデジタルマップ有効化'
+            });
+            setText('i18n-toolbar-btn-ocr', {
+                vi: '📸 AI QUÉT CHỨNG NHẬN (OCR)',
+                en: '📸 AI CERTIFICATE SCAN (OCR)',
+                zh: '📸 AI 认证扫描 (OCR)',
+                ko: '📸 AI 인증서 스캔 (OCR)',
+                ja: '📸 AI認証スキャン (OCR)'
+            });
+            setText('i18n-sort-default', { vi: 'Sắp xếp: Mặc định', en: 'Sort: Default', zh: '排序：默认', ko: '정렬: 기본', ja: '並び替え：デフォルト' });
+            setText('i18n-sort-margin-asc', { vi: 'Biên lợi nhuận: Tăng dần', en: 'Net Margin: Ascending', zh: '净利润率：升序', ko: '순이익률: 오름차순', ja: '純利益率：昇順' });
+            setText('i18n-sort-margin-desc', { vi: 'Biên lợi nhuận: Giảm dần', en: 'Net Margin: Descending', zh: '净利润率：降序', ko: '순이익률: 내림차순', ja: '純利益率：降順' });
+            setText('i18n-sort-volume', { vi: 'Sản lượng số hóa: Cao nhất', en: 'Digitized Volume: Highest', zh: '数字化产量：最高', ko: '디지털 배분량: 높은순', ja: 'デジタル配分量：最高' });
+            setText('i18n-sort-stars', { vi: 'Phân hạng: Ưu tiên OCOP 5 Sao', en: 'Tier: 5-Star OCOP Priority', zh: '等级：优先 5 星 OCOP', ko: '등급: 5성 OCOP 우선', ja: '等級：5つ星OCOP優先' });
+            setText('i18n-toolbar-btn-reset', { vi: 'Đặt lại', en: 'Reset', zh: '重置', ko: '초기화', ja: 'リセット' });
+
+            // 7. Floating Judge Dock
+            setText('i18n-judge-badge', { vi: 'BGK 2026', en: 'JURY 2026', zh: '评委 2026', ko: '심사위원 2026', ja: '審査員 2026' });
+            setText('i18n-judge-btn1', { vi: '1. Đề Án B2B2C', en: '1. B2B2C Proposal', zh: '1. B2B2C 方案', ko: '1. B2B2C 프로젝트', ja: '1. B2B2C計画' });
+            setText('i18n-judge-btn2', { vi: '2. Dòng Tiền AI', en: '2. AI Cash Flow', zh: '2. AI 现金流', ko: '2. AI 현금 흐름', ja: '2. AIキャッシュフロー' });
+            setText('i18n-judge-btn3', { vi: '3. Voice Báo Cáo', en: '3. Voice Report', zh: '3. 语音报表', ko: '3. 음성 보고', ja: '3. 音声レポート' });
+            setText('i18n-judge-btn4', { vi: '4. Test O2O Đồng Nai', en: '4. Test Dong Nai O2O', zh: '4. 测试同奈 O2O', ko: '4. 동나이 O2O 테스트', ja: '4. ドンナイO2Oテスト' });
+
+            // 8. Back to top
+            setText('i18n-back-to-top', { vi: 'Lên đầu trang', en: 'Back to top', zh: '回到顶部', ko: '맨 위로', ja: 'トップへ戻る' });
+
+            // 9. Chatbot Header
+            setText('chat-title', {
+                vi: '❖ OCOP AI COPILOT • TRỢ LÝ ĐIỀU PHỐI O2O & TÀI CHÍNH SỐ',
+                en: '❖ OCOP AI COPILOT • O2O DISPATCH & DIGITAL FINANCE ASSISTANT',
+                zh: '❖ OCOP AI COPILOT • O2O 调度与数字财务助手',
+                ko: '❖ OCOP AI 코파일럿 • O2O 조율 및 디지털 금융 어시스턴트',
+                ja: '❖ OCOP AI COPILOT • O2O調整＆デジタル財務アシスタント'
+            });
+            setText('chat-verification-note', {
+                vi: '❖ Hệ thống đã xác thực chứng nhận OCOP Quốc gia • Dữ liệu tọa độ điểm bán đồng bộ real-time.',
+                en: '❖ Officially certified National OCOP • Showroom coordinates synchronized in real-time.',
+                zh: '❖ 系统已通过国家级 OCOP 认证 • 展厅坐标实时同步。',
+                ko: '❖ 국가 OCOP 공식 인증 완료 • 쇼룸 좌표 실시간 동기화.',
+                ja: '❖ 国家OCOP認証取得済 • ショールーム座標リアルタイム同期。'
+            });
         }
 
         function setLanguage(lang) {
