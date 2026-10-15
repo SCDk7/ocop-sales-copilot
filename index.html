@@ -2585,29 +2585,6 @@
             animation-play-state: paused;
         }
 
-        /* ============================================================== */
-        /* FLOATING COMMAND DOCK (BAN GIÁM KHẢO DIGITAL FEST 2026)        */
-        /* ============================================================== */
-        #judge-quick-access-bar {
-            position: fixed !important;
-            bottom: 1.25rem !important;
-            left: 50% !important;
-            right: auto !important;
-            transform: translateX(-50%) !important;
-            z-index: 9995 !important;
-            max-width: calc(100vw - 1.5rem) !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            pointer-events: auto !important;
-        }
-        body:has(#ocop-intro-overlay:not(.hidden)) #judge-quick-access-bar {
-            display: none !important;
-        }
-        #judge-dock-content::-webkit-scrollbar {
-            display: none !important;
-        }
-
         /* Đồng bộ toàn bộ thẻ con bên trong Modal & Drawer sang Dark Tech */
         #ai-financial-modal .bg-white,
         #ai-challenge-proposal-modal .bg-white,
@@ -3407,8 +3384,8 @@
         <section id="why-choose-us-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">
             <!-- Header section với cánh trang trí hoa văn vàng -->
             <div class="text-center max-w-3xl mx-auto mb-10">
-                <div class="inline-flex items-center space-x-2 text-xs font-black tracking-widest text-amber-700 uppercase bg-amber-100/70 border border-amber-300 px-3.5 py-1 rounded-full mb-3 shadow-xs">
-                    <i class="fa-solid fa-award text-amber-600"></i>
+                <div class="inline-flex items-center space-x-2 text-xs font-black tracking-widest text-amber-300 uppercase bg-amber-400/15 border border-amber-400/35 px-3.5 py-1 rounded-full mb-3 shadow-xs">
+                    <i class="fa-solid fa-award text-amber-400"></i>
                     <span>CHUỖI CUNG ỨNG SỐ OCOP 4.0</span>
                 </div>
                 <h2 class="text-2xl sm:text-3xl font-black text-amber-100 tracking-tight flex items-center justify-center gap-3" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 0 18px rgba(251, 191, 36, 0.18);">
@@ -4150,13 +4127,13 @@
                     <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300" id="auth-profile-badge">
                         HỒ SƠ ĐỐI TÁC HỆ SINH THÁI OCOP
                     </span>
-                    <h3 class="text-lg font-black text-gray-900 mt-1" id="auth-profile-name">Ban Giám Khảo Digital Fest 2026</h3>
-                    <p class="text-xs text-gray-500 font-medium" id="auth-profile-email">bgk2026@ocop.vn</p>
+                    <h3 class="text-lg font-black text-gray-900 mt-1" id="auth-profile-name">Đối Tác Doanh Nghiệp OCOP</h3>
+                    <p class="text-xs text-gray-500 font-medium" id="auth-profile-email">doitac@ocop.vn</p>
                 </div>
                 <div class="p-3 rounded-2xl bg-gray-50 border border-gray-200 text-left text-xs space-y-2">
                     <div class="flex items-center justify-between">
                         <span class="text-gray-500 font-medium">Vai trò:</span>
-                        <span class="font-bold text-ocopGreen" id="auth-profile-role">Ban Giám Khảo & Chuyên Gia Thẩm Định</span>
+                        <span class="font-bold text-ocopGreen" id="auth-profile-role">Đối Tác Phân Phối & Quản Trị Showroom</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-gray-500 font-medium">Số điện thoại:</span>
@@ -4164,7 +4141,7 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-gray-500 font-medium">Khu vực:</span>
-                        <span class="font-bold text-gray-800 truncate max-w-[200px]" id="auth-profile-address">Hội đồng Thẩm định 2026</span>
+                        <span class="font-bold text-gray-800 truncate max-w-[200px]" id="auth-profile-address">Mạng Lưới Showroom OCOP Toàn Quốc</span>
                     </div>
                 </div>
                 <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs text-left space-y-1 shadow-xs">
@@ -4194,14 +4171,6 @@
                 <div class="flex bg-gray-100 p-1 rounded-2xl mb-3 text-xs font-bold">
                     <button id="tab-login" type="button" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer">Đăng Nhập</button>
                     <button id="tab-register" type="button" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
-                </div>
-
-                <!-- Nút Điền Nhanh Tài Khoản Demo Ban Giám Khảo (1 chạm) -->
-                <div id="auth-quick-demo-container" class="mb-3">
-                    <button type="button" onclick="quickFillDemoJudge()" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-200 hover:from-amber-200 hover:to-yellow-200 border border-amber-400 text-amber-950 font-black text-[11px] flex items-center justify-center gap-1.5 transition shadow-xs cursor-pointer">
-                        <i class="fa-solid fa-bolt text-amber-700"></i>
-                        <span>Điền nhanh Tài khoản Demo Ban Giám Khảo</span>
-                    </button>
                 </div>
 
                 <div id="auth-social-login" class="flex flex-col gap-2 mb-3" aria-label="Đăng nhập nhanh">
@@ -4268,14 +4237,14 @@
                     <p class="text-xs text-gray-500 font-medium">Chọn một tài khoản để tiếp tục với OCOP Sales Copilot</p>
                 </div>
                 <div class="space-y-2">
-                    <!-- Gợi ý 1: Ban Giám Khảo -->
-                    <button type="button" onclick="loginWithGoogleAccount('Ban Giám Khảo Digital Fest 2026', 'judge.digitalfest2026@gmail.com')" class="w-full p-2.5 rounded-2xl border border-gray-200 hover:border-amber-400 hover:bg-amber-50/50 transition flex items-center gap-3 text-left cursor-pointer group shadow-xs">
+                    <!-- Gợi ý 1: Đối tác Xúc tiến thương mại -->
+                    <button type="button" onclick="loginWithGoogleAccount('Trung Tâm Xúc Tiến Thương Mại OCOP', 'xuctienthuongmai.ocop@gmail.com')" class="w-full p-2.5 rounded-2xl border border-gray-200 hover:border-amber-400 hover:bg-amber-50/50 transition flex items-center gap-3 text-left cursor-pointer group shadow-xs">
                         <div class="w-9 h-9 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0">
-                            BGK
+                            XTTM
                         </div>
                         <div class="min-w-0 flex-1">
-                            <div class="font-bold text-xs text-gray-900 group-hover:text-amber-900 truncate">Ban Giám Khảo Digital Fest 2026</div>
-                            <div class="text-[11px] text-gray-500 truncate">judge.digitalfest2026@gmail.com</div>
+                            <div class="font-bold text-xs text-gray-900 group-hover:text-amber-900 truncate">Trung Tâm Xúc Tiến Thương Mại OCOP</div>
+                            <div class="text-[11px] text-gray-500 truncate">xuctienthuongmai.ocop@gmail.com</div>
                         </div>
                         <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-amber-600 text-xs"></i>
                     </button>
@@ -4309,47 +4278,7 @@
         </div>
     </div>
 
-    <!-- ============================================================== -->
-    <!-- FLOATING JUDGE BAR (CHẾ ĐỘ BAN GIÁM KHẢO DIGITAL FEST 2026) -->
-    <!-- ============================================================== -->
-    <div id="judge-quick-access-bar" class="select-none" style="filter: drop-shadow(0 12px 28px rgba(0,0,0,0.75));">
-        <!-- Nút toggle thu nhỏ / mở rộng -->
-        <button type="button" onclick="toggleJudgeDock()" id="judge-dock-toggle-btn" class="w-10 h-10 rounded-full flex items-center justify-center font-black text-xs transition cursor-pointer shrink-0 z-10" style="background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #0f172a; border: 2px solid #fef08a; box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);" title="Thu nhỏ / Mở rộng Chế độ Ban Giám Khảo">
-            <i id="judge-dock-icon" class="fa-solid fa-gavel"></i>
-        </button>
 
-        <!-- Khung các nút chức năng của BGK -->
-        <div id="judge-dock-content" class="ml-2 flex items-center gap-1.5 p-1.5 rounded-2xl transition-all duration-300" style="background: rgba(8, 24, 18, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.45); box-shadow: 0 8px 32px rgba(0,0,0,0.6); overflow-x: auto; max-width: calc(100vw - 4.5rem); scrollbar-width: none;">
-            <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-400/15 border border-amber-400/30 text-[10px] font-black uppercase text-amber-300 tracking-wider shrink-0">
-                <i class="fa-solid fa-trophy text-amber-400"></i>
-                <span id="i18n-judge-badge">BGK 2026</span>
-            </div>
-
-            <!-- Nút 1: Hồ Sơ Đề Án B2B2C -->
-            <button type="button" onclick="openChallengeProposalModal()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 hover:text-emerald-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
-                <i class="fa-solid fa-file-shield text-amber-400"></i>
-                <span id="i18n-judge-btn1">1. Đề Án B2B2C</span>
-            </button>
-
-            <!-- Nút 2: Mô Phỏng Dòng Tiền AI -->
-            <button type="button" onclick="openFinancialDashboardModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/35 border border-amber-400/40 text-amber-200 hover:text-amber-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
-                <i class="fa-solid fa-chart-line text-emerald-400"></i>
-                <span id="i18n-judge-btn2">2. Dòng Tiền AI</span>
-            </button>
-
-            <!-- Nút 3: Nghe AI Báo Cáo Nông Dân -->
-            <button type="button" onclick="openFinancialDashboardModal(); setTimeout(() => playVoiceFinancialBriefing(), 250);" style="background: rgba(147, 51, 234, 0.3) !important; border: 1px solid rgba(192, 132, 252, 0.7) !important; color: #f3e8ff !important;" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
-                <i class="fa-solid fa-microphone-lines text-purple-300 animate-pulse"></i>
-                <span id="i18n-judge-btn3">3. Voice Báo Cáo</span>
-            </button>
-
-            <!-- Nút 4: Test O2O Đồng Nai -->
-            <button type="button" onclick="testO2ODongNai()" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[11px] font-black hover:scale-105 transition flex items-center gap-1.5 cursor-pointer shadow-md whitespace-nowrap shrink-0">
-                <i class="fa-solid fa-map-pin text-rose-700"></i>
-                <span id="i18n-judge-btn4">4. Test O2O Đồng Nai</span>
-            </button>
-        </div>
-    </div>
 
     <!-- 7. DRAWER NHẬT KÝ ĐỐI SOÁT & GIAO DỊCH HỆ THỐNG -->
     <div id="orders-drawer" class="fixed inset-0 z-50 hidden">
@@ -8858,7 +8787,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                           "• **AI Knowledge RAG Accuracy**: >95% accuracy for OCOP origin, provincial decree certifications, and store addresses.\n" +
                           "• **Average Response Latency**: Sub-3-second response (< 1.6s benchmark) across web, mobile, and voice channels."
                         : "🎯 **Hệ Thống Chỉ Số Đánh Giá Hiệu Quả (KPIs & Metrics) • AI Challenge 2026**:\n\n" +
-                          "Dạ, đề án cam kết 5 chỉ số đo lường hiệu quả định lượng nghiêm ngặt trước Ban giám khảo:\n\n" +
+                          "Dạ, hệ sinh thái cam kết 5 chỉ số đo lường hiệu quả định lượng nghiêm ngặt của Nền tảng số:\n\n" +
                           "• 🏆 **Tổng giá trị giao dịch hệ thống (GMV)**: Mục tiêu tăng trưởng **35% mỗi quý**, đo lường toàn bộ dòng tiền qua mạng lưới showroom O2O và pre-order (hiện mô phỏng 842.500.000 ₫/tháng).\n" +
                           "• 📈 **Mức tăng trưởng tiền lời ròng (Profit Margin Growth)**: Tăng thêm **+15% đến +20% tiền lời** cho các chủ cửa hàng đối tác nhờ AI cắt giảm chi phí trung gian (hiện đạt **+18.4%**).\n" +
                           "• 🛡️ **Độ chính xác báo cáo tài chính AI**: Cam kết **100% với sai số 0.00%** trong tính toán Doanh thu, Tiền lời và Chiết khấu hoa hồng.\n" +
@@ -11771,22 +11700,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             restorePageScrollState();
         }
 
-        // FLOATING JUDGE BAR CONTROLLER
-        let isJudgeDockExpanded = true;
-        function toggleJudgeDock() {
-            isJudgeDockExpanded = !isJudgeDockExpanded;
-            const content = document.getElementById('judge-dock-content');
-            const icon = document.getElementById('judge-dock-icon');
-            if (content) {
-                if (isJudgeDockExpanded) {
-                    content.classList.remove('hidden');
-                    if (icon) icon.className = 'fa-solid fa-gavel';
-                } else {
-                    content.classList.add('hidden');
-                    if (icon) icon.className = 'fa-solid fa-gavel';
-                }
-            }
-        }
+        function toggleJudgeDock() {}
 
         function testO2ODongNai() {
             const introOverlay = document.getElementById('ocop-intro-overlay');
@@ -12057,14 +11971,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         const DEFAULT_DEMO_USERS = [
             {
-                id: 'usr_bgk2026',
-                name: 'Ban Giám Khảo Digital Fest 2026',
-                loginId: 'bgk2026@ocop.vn',
-                email: 'bgk2026@ocop.vn',
+                id: 'usr_xttm2026',
+                name: 'Trung Tâm Xúc Tiến Thương Mại OCOP',
+                loginId: 'doitac@ocop.vn',
+                email: 'doitac@ocop.vn',
                 phone: '0988882026',
-                address: 'Hội đồng Thẩm định Quốc gia 2026',
+                address: 'Mạng Lưới Showroom OCOP Toàn Quốc',
                 password: '12345678',
-                role: 'Ban Giám Khảo & Chuyên Gia Thẩm Định',
+                role: 'Đối Tác Phân Phối & Quản Trị Showroom',
                 provider: 'Local',
                 verified: true
             },
@@ -12341,22 +12255,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             }
         }
 
-        function quickFillDemoJudge() {
-            if (authTab !== 'login') {
-                switchAuthTab('login');
-            }
-            const nameInput = document.getElementById('auth-name');
-            const passInput = document.getElementById('auth-password');
-            if (nameInput) nameInput.value = 'bgk2026@ocop.vn';
-            if (passInput) passInput.value = '12345678';
-
-            const status = document.getElementById('auth-social-status');
-            if (status) {
-                status.textContent = '⚡ Đã tự động điền tài khoản Demo Ban Giám Khảo. Nhấn "Đăng Nhập" ngay!';
-                status.className = 'mb-3 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 px-3 py-2 text-xs leading-relaxed font-bold';
-                status.classList.remove('hidden');
-            }
-        }
+        function quickFillDemoJudge() {}
 
         function togglePasswordVisibility(inputId, btn) {
             const input = document.getElementById(inputId);
@@ -12400,8 +12299,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     loginId: email,
                     email: email,
                     phone: '0988 882 026',
-                    address: 'Google Workspace Verified Account',
-                    role: name.includes('Giám Khảo') ? 'Ban Giám Khảo & Chuyên Gia Thẩm Định' : 'Đối tác HTX & Quản trị viên O2O',
+                    address: 'Mạng Lưới Showroom OCOP Toàn Quốc',
+                    role: 'Đối tác HTX & Quản trị viên O2O',
                     provider: 'Google',
                     verified: true,
                     createdAt: new Date().toISOString()
@@ -13588,42 +13487,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: 'AI OCOP コンボ相談アシスタント'
             },
 
-            // Thanh BGK 2026 (Judge Bar)
-            'i18n-judge-badge': {
-                vi: 'BGK 2026',
-                en: 'JURY 2026',
-                zh: '评委 2026',
-                ko: '심사위원 2026',
-                ja: '審査員 2026'
-            },
-            'i18n-judge-btn1': {
-                vi: '1. Đề Án B2B2C',
-                en: '1. B2B2C Project',
-                zh: '1. B2B2C 商业方案',
-                ko: '1. B2B2C 프로젝트',
-                ja: '1. B2B2C 提案書'
-            },
-            'i18n-judge-btn2': {
-                vi: '2. Dòng Tiền AI',
-                en: '2. AI Cash Flow',
-                zh: '2. AI 现金流',
-                ko: '2. AI 현금 흐름',
-                ja: '2. AI キャッシュフロー'
-            },
-            'i18n-judge-btn3': {
-                vi: '3. Voice Báo Cáo',
-                en: '3. Voice Report',
-                zh: '3. 语音汇报',
-                ko: '3. 음성 보고서',
-                ja: '3. 音声レポート'
-            },
-            'i18n-judge-btn4': {
-                vi: '4. Test O2O Đồng Nai',
-                en: '4. Test O2O Dong Nai',
-                zh: '4. 测试同奈 O2O',
-                ko: '4. 동나이 O2O 테스트',
-                ja: '4. ドンナイ O2O テスト'
-            },
 
             // Section 3.5 Why choose us badges
             'i18n-why-badge1': {
@@ -14528,17 +14391,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 submitBtn.textContent = (submitMap[currentTab] && submitMap[currentTab][lang]) || submitMap.login[lang];
             }
 
-            const quickDemoBtnSpan = document.querySelector('#auth-quick-demo-container button span');
-            if (quickDemoBtnSpan) {
-                const demoMap = {
-                    vi: 'Điền nhanh Tài khoản Demo Ban Giám Khảo',
-                    en: 'Quick Fill Judge Demo Account',
-                    zh: '一键填入评委演示账号',
-                    ko: '심사위원 데모 계정 자동 입력',
-                    ja: '審査員デモアカウントを自動入力'
-                };
-                quickDemoBtnSpan.textContent = demoMap[lang] || demoMap.vi;
-            }
 
             const profileBadge = document.getElementById('auth-profile-badge');
             if (profileBadge) {
@@ -14945,15 +14797,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             setText('i18n-sort-volume', { vi: 'Sản lượng số hóa: Cao nhất', en: 'Digitized Volume: Highest', zh: '数字化产量：最高', ko: '디지털 배분량: 높은순', ja: 'デジタル配分量：最高' });
             setText('i18n-sort-stars', { vi: 'Phân hạng: Ưu tiên OCOP 5 Sao', en: 'Tier: 5-Star OCOP Priority', zh: '等级：优先 5 星 OCOP', ko: '등급: 5성 OCOP 우선', ja: '等級：5つ星OCOP優先' });
             setText('i18n-toolbar-btn-reset', { vi: 'Đặt lại', en: 'Reset', zh: '重置', ko: '초기화', ja: 'リセット' });
-
-            // 7. Floating Judge Dock
-            setText('i18n-judge-badge', { vi: 'BGK 2026', en: 'JURY 2026', zh: '评委 2026', ko: '심사위원 2026', ja: '審査員 2026' });
-            setText('i18n-judge-btn1', { vi: '1. Đề Án B2B2C', en: '1. B2B2C Proposal', zh: '1. B2B2C 方案', ko: '1. B2B2C 프로젝트', ja: '1. B2B2C計画' });
-            setText('i18n-judge-btn2', { vi: '2. Dòng Tiền AI', en: '2. AI Cash Flow', zh: '2. AI 现金流', ko: '2. AI 현금 흐름', ja: '2. AIキャッシュフロー' });
-            setText('i18n-judge-btn3', { vi: '3. Voice Báo Cáo', en: '3. Voice Report', zh: '3. 语音报表', ko: '3. 음성 보고', ja: '3. 音声レポート' });
-            setText('i18n-judge-btn4', { vi: '4. Test O2O Đồng Nai', en: '4. Test Dong Nai O2O', zh: '4. 测试同奈 O2O', ko: '4. 동나이 O2O 테스트', ja: '4. ドンナイO2Oテスト' });
-
-            // 8. Back to top
+            // 7. Back to top
             setText('i18n-back-to-top', { vi: 'Lên đầu trang', en: 'Back to top', zh: '回到顶部', ko: '맨 위로', ja: 'トップへ戻る' });
 
             // 9. Chatbot Header
