@@ -2640,6 +2640,115 @@
         #ai-challenge-proposal-modal .text-gray-700, #ai-financial-modal .text-gray-700 {
             color: #cbd5e1 !important;
         }
+
+        /* ============================================================== */
+        /* OCOP STORE MODAL & NATIONAL DIRECTORY THEME: DEEP EMERALD OBSIDIAN */
+        /* ============================================================== */
+        #ocop-all-stores-modal .bg-white,
+        #ocop-store-modal .bg-white,
+        #ocop-all-stores-body,
+        #ocop-store-modal-body {
+            background: #061510 !important;
+            color: #f8fafc !important;
+            background-image: none !important;
+        }
+
+        #ocop-all-stores-body .bg-white,
+        #ocop-store-modal-body .bg-white {
+            background: #0b221a !important;
+            border-color: rgba(212, 175, 55, 0.3) !important;
+        }
+
+        /* Tiêu đề Trung tâm & Cửa hàng: Vàng Hoàng Kim sáng hoặc Trắng Ngọc */
+        #ocop-all-stores-modal h4,
+        #ocop-all-stores-modal h5,
+        #ocop-store-modal h4,
+        #ocop-store-modal h5,
+        #ocop-all-stores-body h4,
+        #ocop-all-stores-body h5,
+        #ocop-store-modal-body h4,
+        #ocop-store-modal-body h5,
+        #ocop-all-stores-body .text-gray-900,
+        #ocop-all-stores-body .text-gray-800,
+        #ocop-store-modal-body .text-gray-900,
+        #ocop-store-modal-body .text-gray-800,
+        #ocop-all-stores-body .text-ocopGreen,
+        #ocop-store-modal-body .text-ocopGreen {
+            color: #fde047 !important;
+        }
+
+        /* Tiêu đề phân mục: Vàng Hoàng Kim */
+        #ocop-all-stores-body .section-heading,
+        #ocop-all-stores-body h4:not(.store-card-title),
+        #ocop-store-modal-body h4:not(.store-card-title) {
+            color: #fbbf24 !important;
+        }
+
+        /* Địa chỉ cửa hàng: Xám Bạc Sáng */
+        #ocop-all-stores-body .text-gray-600,
+        #ocop-all-stores-body .text-gray-700,
+        #ocop-store-modal-body .text-gray-600,
+        #ocop-store-modal-body .text-gray-700,
+        #ocop-all-stores-body p,
+        #ocop-store-modal-body p {
+            color: #e2e8f0 !important;
+        }
+
+        /* Hotline & Nút Google Maps: Xanh Ngọc Lục Bảo sáng */
+        #ocop-all-stores-body .text-emerald-700,
+        #ocop-all-stores-body .text-emerald-800,
+        #ocop-store-modal-body .text-emerald-700,
+        #ocop-store-modal-body .text-emerald-800,
+        #ocop-all-stores-body a[href*="maps"],
+        #ocop-store-modal-body a[href*="maps"] {
+            color: #34d399 !important;
+            transition: all 0.2s ease !important;
+        }
+
+        #ocop-all-stores-body a[href*="maps"]:hover,
+        #ocop-store-modal-body a[href*="maps"]:hover {
+            border-color: #fbbf24 !important;
+            box-shadow: 0 0 16px rgba(251, 191, 36, 0.45) !important;
+            color: #ffffff !important;
+        }
+
+        /* 63 nút bấm Tỉnh/Thành phố ở cuối Modal */
+        #ocop-all-stores-body button,
+        #ocop-all-stores-body .province-store-btn {
+            background: rgba(14, 38, 29, 0.95) !important;
+            border: 1px solid rgba(212, 175, 55, 0.38) !important;
+            color: #fef08a !important;
+            font-weight: 800 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+            transition: all 0.2s ease !important;
+        }
+        #ocop-all-stores-body button span,
+        #ocop-all-stores-body button div,
+        #ocop-all-stores-body button i {
+            color: #fef08a !important;
+        }
+        #ocop-all-stores-body button:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.28), rgba(16, 185, 129, 0.28)) !important;
+            border-color: #fbbf24 !important;
+            color: #ffffff !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 0 16px rgba(251, 191, 36, 0.35) !important;
+        }
+        #ocop-all-stores-body button:hover span,
+        #ocop-all-stores-body button:hover div,
+        #ocop-all-stores-body button:hover i {
+            color: #ffffff !important;
+        }
+
+        /* Ô tìm kiếm trong #ocop-all-stores-modal */
+        #ocop-all-stores-modal input#store-modal-search {
+            background: #0b221a !important;
+            border: 1px solid rgba(212, 175, 55, 0.45) !important;
+            color: #ffffff !important;
+        }
+        #ocop-all-stores-modal input#store-modal-search::placeholder {
+            color: #94a3b8 !important;
+        }
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
@@ -4304,7 +4413,7 @@
     <!-- 8.1 MODAL CHI TIẾT ĐIỂM BÁN & CỬA HÀNG OCOP CỦA SẢN PHẨM -->
     <div id="ocop-store-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4">
         <div class="absolute inset-0 bg-black/65 backdrop-blur-sm" onclick="closeStoreLocator()"></div>
-        <div class="relative bg-white rounded-3xl max-w-3xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+        <div class="relative rounded-3xl max-w-3xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="background: #061510 !important; color: #f8fafc !important; max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
             <!-- Header Modal -->
             <div class="p-4 bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-900 text-white rounded-t-3xl flex items-center justify-between border-b border-amber-400/40 relative">
                 <div class="flex items-center space-x-2.5">
@@ -4323,14 +4432,14 @@
                 </button>
             </div>
             <!-- Nội dung chi tiết cửa hàng (render động) -->
-            <div id="ocop-store-modal-body" class="p-4 sm:p-6 space-y-5 bg-gradient-to-b from-amber-50/30 to-white"></div>
+            <div id="ocop-store-modal-body" class="p-4 sm:p-6 space-y-5" style="background: #061510 !important; color: #f8fafc !important;"></div>
         </div>
     </div>
 
     <!-- 8.2 MODAL BẢN ĐỒ & DANH BẠ ĐIỂM BÁN OCOP TOÀN QUỐC -->
     <div id="ocop-all-stores-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4">
         <div class="absolute inset-0 bg-black/65 backdrop-blur-sm" onclick="closeAllStoresModal()"></div>
-        <div class="relative bg-white rounded-3xl max-w-4xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+        <div class="relative rounded-3xl max-w-4xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="background: #061510 !important; color: #f8fafc !important; max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
             <div class="p-4 bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-900 text-white rounded-t-3xl flex items-center justify-between border-b border-amber-400/40">
                 <div class="flex items-center space-x-2.5">
                     <span class="w-9 h-9 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md">
@@ -4347,7 +4456,7 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <div class="p-4 sm:p-6 space-y-5 bg-gradient-to-b from-amber-50/20 to-white" id="ocop-all-stores-body"></div>
+            <div class="p-4 sm:p-6 space-y-5" style="background: #061510 !important; color: #f8fafc !important;" id="ocop-all-stores-body"></div>
         </div>
     </div>
 
@@ -5151,6 +5260,12 @@
         // -------------------------------------------------------------
         const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
         window.PRODUCTS = products;
+
+        // Chuẩn hóa & Ghi đè trực tiếp getOcopStoreInfo bằng resolveAccurateStoreForProduct
+        if (window.OcopStores && typeof window.OcopStores.resolveAccurateStoreForProduct === 'function') {
+            window.resolveAccurateStoreForProduct = window.OcopStores.resolveAccurateStoreForProduct;
+            window.OcopStores.getOcopStoreInfo = window.OcopStores.resolveAccurateStoreForProduct;
+        }
 
         // Biến trạng thái toàn cục
         let cart = [];
@@ -6419,12 +6534,20 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 `}
                             </div>
                             <div class="flex items-center justify-between text-[10px] pt-1 border-t border-amber-400/20">
-                                <span class="flex items-center gap-1 text-emerald-300 font-extrabold">
+                                <span class="flex items-center gap-1 text-emerald-300 font-extrabold truncate">
                                     <i class="fa-solid fa-phone text-[9px]"></i> ${storeInfo ? storeInfo.hotline : 'Hotline cơ sở'}
                                 </span>
-                                <span class="text-[9px] font-black uppercase text-amber-300 bg-amber-400/20 px-1.5 py-0.5 rounded border border-amber-400/30">
-                                    ${p.region}
-                                </span>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    ${storeInfo && storeInfo.mapUrl ? `
+                                    <a href="${escapeAIHtml(storeInfo.mapUrl)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold transition hover:scale-105" style="background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.45);" title="Mở chỉ đường Google Maps đến điểm bán sản phẩm này">
+                                        <i class="fa-solid fa-location-dot text-amber-400"></i>
+                                        <span>Google Maps</span>
+                                    </a>
+                                    ` : ''}
+                                    <span class="text-[9px] font-black uppercase text-amber-300 bg-amber-400/20 px-1.5 py-0.5 rounded border border-amber-400/30">
+                                        ${p.region}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -11404,42 +11527,42 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             body.innerHTML = `
                 <!-- Thông tin tóm tắt sản phẩm -->
-                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-white border border-amber-200/90 shadow-sm">
-                    <img src="${p.img}" alt="${productName}" class="w-24 h-24 object-contain rounded-xl bg-amber-50/50 p-1.5 border border-amber-200 shrink-0">
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-[#0b221a] border border-amber-400/40 shadow-sm text-white">
+                    <img src="${p.img}" alt="${productName}" class="w-24 h-24 object-contain rounded-xl bg-slate-950/80 p-1.5 border border-amber-400/30 shrink-0">
                     <div class="space-y-1.5 text-center sm:text-left flex-1 min-w-0">
                         <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
                             <span class="bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow">
                                 ⭐ OCOP ${starsLabel} SAO
                             </span>
-                            <span class="bg-emerald-100 text-emerald-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-300">
+                            <span class="bg-emerald-950 text-emerald-300 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-500/40">
                                 📍 ${p.region}
                             </span>
-                            <span class="bg-blue-50 text-blue-900 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-blue-200">
+                            <span class="bg-blue-950 text-blue-300 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-blue-500/40">
                                 🛡️ 100% Chính gốc
                             </span>
                         </div>
-                        <h4 class="font-black text-base text-gray-900 leading-snug">${productName}</h4>
+                        <h4 class="font-black text-base text-[#fde047] leading-snug">${productName}</h4>
                         <div class="flex items-center justify-center sm:justify-start gap-3 text-xs">
-                            <span class="font-black text-red-600 text-base">${priceLabel}</span>
-                            <span class="text-gray-500 font-medium">Quy cách: <strong>${p.packaging || 'hộp'}</strong></span>
+                            <span class="font-black text-red-400 text-base">${priceLabel}</span>
+                            <span class="text-slate-300 font-medium">Quy cách: <strong class="text-white">${p.packaging || 'hộp'}</strong></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Khối Chủ thể Sản Xuất & Chứng Nhận Pháp Lý -->
-                <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-950 to-teal-950 text-white space-y-2.5 shadow-md border border-emerald-400/30">
-                    <div class="flex items-center justify-between border-b border-emerald-700/50 pb-2">
-                        <span class="text-xs font-black uppercase text-amber-300 flex items-center gap-1.5 tracking-wider">
+                <div class="p-4 rounded-2xl bg-[#0b221a] text-white space-y-2.5 shadow-md border border-amber-400/30">
+                    <div class="flex items-center justify-between border-b border-emerald-800/60 pb-2">
+                        <span class="text-xs font-black uppercase text-[#fbbf24] flex items-center gap-1.5 tracking-wider">
                             <i class="fa-solid fa-landmark text-amber-400"></i> CHỦ THỂ SẢN XUẤT ĐẠT CHỨNG NHẬN OCOP
                         </span>
-                        <span class="bg-amber-400 text-emerald-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                        <span class="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
                             Chủ thể OCOP
                         </span>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                         <div>
                             <span class="text-emerald-300/80 block text-[10.5px]">Đơn vị / Hợp tác xã:</span>
-                            <strong class="text-white text-sm font-black">${store.producerName}</strong>
+                            <strong class="text-[#fde047] text-sm font-black">${store.producerName}</strong>
                         </div>
                         <div>
                             <span class="text-emerald-300/80 block text-[10.5px]">Số Quyết định OCOP:</span>
@@ -11447,7 +11570,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         </div>
                         <div class="md:col-span-2">
                             <span class="text-emerald-300/80 block text-[10.5px]">Địa chỉ cơ sở / Vùng nguyên liệu:</span>
-                            <span class="text-emerald-100 font-medium">${store.producerAddress}</span>
+                            <span class="text-[#e2e8f0] font-medium">${store.producerAddress}</span>
                         </div>
                     </div>
                 </div>
@@ -11455,37 +11578,37 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 <!-- Danh sách Cửa hàng & Showroom Phân phối Chính Thức -->
                 <div class="space-y-3">
                     <div class="flex items-center justify-between">
-                        <h4 class="font-black text-xs sm:text-sm text-gray-900 uppercase flex items-center gap-1.5">
-                            <i class="fa-solid fa-location-dot text-red-600"></i> CÁC CỬA HÀNG & ĐIỂM BÁN CHÍNH THỨC
+                        <h4 class="font-black text-xs sm:text-sm text-[#fbbf24] uppercase flex items-center gap-1.5 tracking-wider">
+                            <i class="fa-solid fa-location-dot text-amber-400"></i> CÁC CỬA HÀNG & ĐIỂM BÁN CHÍNH THỨC
                         </h4>
-                        <span class="text-[10px] text-gray-500 font-bold">Điểm bán đạt chuẩn</span>
+                        <span class="text-[10px] text-amber-300/80 font-bold">Điểm bán đạt chuẩn</span>
                     </div>
 
                     <!-- Điểm 1: Showroom chính của cơ sở tại Tỉnh -->
-                    <div class="p-4 rounded-2xl bg-white border-2 border-amber-300 shadow-sm space-y-2 hover:border-amber-500 transition">
+                    <div class="p-4 rounded-2xl bg-[#0b221a] border-2 border-amber-400/60 shadow-md space-y-2 hover:border-amber-400 transition">
                         <div class="flex flex-wrap items-center justify-between gap-1">
                             <div class="flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-amber-500 text-white font-black text-xs flex items-center justify-center">1</span>
-                                <strong class="text-sm font-black text-gray-900">${store.primaryStore.name}</strong>
+                                <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center">1</span>
+                                <strong class="text-sm font-black text-[#fde047]">${store.primaryStore.name}</strong>
                             </div>
-                            <span class="bg-emerald-100 text-emerald-900 text-[10px] font-black px-2 py-0.5 rounded-full">
+                            <span class="bg-emerald-950 text-amber-300 border border-emerald-500/40 text-[10px] font-black px-2 py-0.5 rounded-full">
                                 Showroom Trực tiếp tại ${store.region}
                             </span>
                         </div>
-                        <p class="text-xs text-gray-700 flex items-start gap-1.5">
-                            <i class="fa-solid fa-location-dot text-amber-600 mt-0.5 text-xs"></i>
-                            <span><strong>Địa chỉ:</strong> ${store.primaryStore.address}</span>
+                        <p class="text-xs text-[#e2e8f0] flex items-start gap-1.5">
+                            <i class="fa-solid fa-location-dot text-amber-400 mt-0.5 text-xs"></i>
+                            <span><strong class="text-white">Địa chỉ:</strong> ${store.primaryStore.address}</span>
                         </p>
-                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-gray-100">
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-emerald-900/60">
                             <div class="flex items-center gap-3">
-                                <span class="text-gray-500"><i class="fa-regular fa-clock text-gray-400"></i> ${store.primaryStore.hours || '07:30 - 21:00'}</span>
-                                <span class="text-emerald-800 font-bold"><i class="fa-solid fa-phone text-emerald-600"></i> ${store.primaryStore.phone}</span>
+                                <span class="text-slate-300"><i class="fa-regular fa-clock text-amber-400"></i> ${store.primaryStore.hours || '07:30 - 21:00'}</span>
+                                <span class="text-[#34d399] font-bold"><i class="fa-solid fa-phone text-emerald-400"></i> ${store.primaryStore.phone}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <a href="${store.mapUrl}" target="_blank" rel="noopener noreferrer" class="bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-[11px] px-3 py-1.5 rounded-xl shadow-xs flex items-center gap-1 transition">
+                                <a href="${store.mapUrl}" target="_blank" rel="noopener noreferrer" class="bg-emerald-700 hover:bg-emerald-600 text-white font-extrabold text-[11px] px-3 py-1.5 rounded-xl shadow-xs flex items-center gap-1 border border-emerald-400/40 hover:border-amber-400 transition" title="Chỉ đường Google Maps">
                                     <i class="fa-solid fa-diamond-turn-right text-amber-300"></i> Chỉ đường Google Maps
                                 </a>
-                                <a href="tel:${store.primaryStore.phone.replace(/[^0-9]/g, '')}" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-black text-[11px] px-3 py-1.5 rounded-xl border border-amber-300 flex items-center gap-1 transition">
+                                <a href="tel:${store.primaryStore.phone.replace(/[^0-9]/g, '')}" class="bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 font-black text-[11px] px-3 py-1.5 rounded-xl border border-amber-400/40 flex items-center gap-1 transition">
                                     <i class="fa-solid fa-phone"></i> Gọi hotline
                                 </a>
                             </div>
@@ -11494,26 +11617,26 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
                     <!-- Điểm 2 & 3: Các điểm bán OCOP liên kết tại Hà Nội / TP.HCM -->
                     ${Array.isArray(store.outlets) && store.outlets.length ? store.outlets.map((outlet, idx) => `
-                        <div class="p-3.5 rounded-2xl bg-white border border-gray-200 shadow-2xs space-y-1.5 hover:border-emerald-300 transition">
+                        <div class="p-3.5 rounded-2xl bg-[#0b221a] border border-emerald-800/60 shadow-2xs space-y-1.5 hover:border-amber-400/40 transition">
                             <div class="flex flex-wrap items-center justify-between gap-1">
                                 <div class="flex items-center gap-2">
-                                    <span class="w-5 h-5 rounded-full bg-emerald-800 text-white font-bold text-[10px] flex items-center justify-center">${idx + 2}</span>
-                                    <strong class="text-xs font-black text-gray-900">${outlet.name}</strong>
+                                    <span class="w-5 h-5 rounded-full bg-emerald-800 text-amber-300 font-bold text-[10px] flex items-center justify-center">${idx + 2}</span>
+                                    <strong class="text-xs font-black text-white">${outlet.name}</strong>
                                 </div>
-                                <span class="text-[9.5px] font-extrabold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">Điểm bán OCOP liên kết</span>
+                                <span class="text-[9.5px] font-extrabold text-amber-300/80 bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-700/40">Điểm bán OCOP liên kết</span>
                             </div>
-                            <p class="text-xs text-gray-600 flex items-start gap-1.5">
-                                <i class="fa-solid fa-location-arrow text-emerald-600 mt-0.5 text-[11px]"></i>
+                            <p class="text-xs text-[#e2e8f0] flex items-start gap-1.5">
+                                <i class="fa-solid fa-location-arrow text-emerald-400 mt-0.5 text-[11px]"></i>
                                 <span>${outlet.address}</span>
                             </p>
-                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-1.5 border-t border-gray-100">
-                                <span class="text-emerald-800 font-bold text-[11px]"><i class="fa-solid fa-phone text-emerald-600 text-[10px]"></i> ${outlet.phone}</span>
+                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-1.5 border-t border-emerald-900/60">
+                                <span class="text-[#34d399] font-bold text-[11px]"><i class="fa-solid fa-phone text-emerald-400 text-[10px]"></i> ${outlet.phone}</span>
                                 <div class="flex items-center gap-1.5">
-                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(outlet.name + ' ' + outlet.address)}" target="_blank" rel="noopener noreferrer" class="text-emerald-800 hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(outlet.name + ' ' + outlet.address)}" target="_blank" rel="noopener noreferrer" class="text-[#34d399] hover:text-white hover:underline font-extrabold text-[11px] flex items-center gap-1">
                                         <i class="fa-solid fa-map-location-dot"></i> Bản đồ
                                     </a>
-                                    <span class="text-gray-300">|</span>
-                                    <a href="tel:${outlet.phone.replace(/[^0-9]/g, '')}" class="text-amber-800 hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                    <span class="text-slate-500">|</span>
+                                    <a href="tel:${outlet.phone.replace(/[^0-9]/g, '')}" class="text-amber-300 hover:text-amber-200 hover:underline font-extrabold text-[11px] flex items-center gap-1">
                                         <i class="fa-solid fa-phone"></i> Gọi ngay
                                     </a>
                                 </div>
@@ -11523,16 +11646,16 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 </div>
 
                 <!-- Footer Modal: Hướng dẫn & Đặt mua trực tiếp -->
-                <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                    <div class="flex items-center gap-2 text-gray-700">
-                        <i class="fa-solid fa-qrcode text-xl text-emerald-800"></i>
-                        <span class="text-[11px]">${({
-                            vi: 'Tất cả sản phẩm tại các điểm bán trên đều có <strong>Tem chống giả & QR Code OCOP</strong>.',
-                            en: 'All products at these outlets are authenticated with <strong>Anti-counterfeit & OCOP QR Codes</strong>.',
-                            zh: '上述各展厅在售产品均配有 <strong>防伪标签与国家 OCOP 二维码</strong>。',
-                            ko: '위 매장의 모든 제품에는 <strong>위조 방지 씰 및 OCOP QR 코드</strong>가 부착되어 있습니다.',
-                            ja: '上記取扱店の全商品に<strong>偽造防止シールおよび OCOP QR コード</strong>が付与されています。'
-                        })[currentLanguage] || 'Tất cả sản phẩm tại các điểm bán trên đều có <strong>Tem chống giả & QR Code OCOP</strong>.'}</span>
+                <div class="p-3.5 rounded-2xl bg-[#0b221a] border border-amber-400/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                    <div class="flex items-center gap-2 text-slate-200">
+                        <i class="fa-solid fa-qrcode text-xl text-amber-400"></i>
+                        <span class="text-[11px] text-slate-200">${({
+                            vi: 'Tất cả sản phẩm tại các điểm bán trên đều có <strong class="text-amber-300">Tem chống giả & QR Code OCOP</strong>.',
+                            en: 'All products at these outlets are authenticated with <strong class="text-amber-300">Anti-counterfeit & OCOP QR Codes</strong>.',
+                            zh: '上述各展厅在售产品均配有 <strong class="text-amber-300">防伪标签与国家 OCOP 二维码</strong>。',
+                            ko: '위 매장의 모든 제품에는 <strong class="text-amber-300">위조 방지 씰 및 OCOP QR 코드</strong>가 부착되어 있습니다.',
+                            ja: '上記取扱店の全商品に<strong class="text-amber-300">偽造防止シールおよび OCOP QR コード</strong>が付与されています。'
+                        })[currentLanguage] || 'Tất cả sản phẩm tại các điểm bán trên đều có <strong class="text-amber-300">Tem chống giả & QR Code OCOP</strong>.'}</span>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <button onclick="addToCart(${p.id}); closeStoreLocator();" class="flex-1 sm:flex-initial bg-emerald-800 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer border border-emerald-400/40">
@@ -11545,7 +11668,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 ja: '📊 キャッシュフロー分析'
                             })[currentLanguage] || '📊 Đối Soát Dòng Tiền'}</span>
                         </button>
-                        <button onclick="closeStoreLocator(); toggleAIChat();" class="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl font-black text-xs transition flex items-center justify-center gap-1 cursor-pointer">
+                        <button onclick="closeStoreLocator(); toggleAIChat();" class="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-400 text-slate-950 px-3.5 py-2 rounded-xl font-black text-xs transition flex items-center justify-center gap-1 cursor-pointer">
                             <i class="fa-solid fa-comments"></i>
                             <span>${({
                                 vi: 'Hỏi AI điểm bán',
@@ -11592,31 +11715,31 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
                     <!-- Ô tra cứu điểm bán theo tỉnh -->
                     <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="store-modal-search" oninput="filterStoresInModal(this.value)" placeholder="Nhập tên tỉnh thành hoặc tên đặc sản để tìm cửa hàng OCOP..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-amber-300 bg-white text-xs font-bold text-gray-800 focus:outline-none focus:ring-2 focus:ring-ocopGreen shadow-2xs">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-400"></i>
+                        <input type="text" id="store-modal-search" oninput="filterStoresInModal(this.value)" placeholder="Nhập tên tỉnh thành hoặc tên đặc sản để tìm cửa hàng OCOP..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-amber-400/50 bg-[#0b221a] text-xs font-bold text-white placeholder-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-amber-400 shadow-inner">
                     </div>
 
                     <!-- Các Trung tâm OCOP Quốc Gia Trọng Điểm -->
                     <div class="space-y-2.5">
-                        <h4 class="font-black text-xs text-gray-900 uppercase flex items-center gap-1.5">
-                            <i class="fa-solid fa-star text-amber-500"></i> CÁC TRUNG TÂM OCOP TRỌNG ĐIỂM QUỐC GIA (HÀ NỘI - ĐÀ NẴNG - TP.HCM)
+                        <h4 class="font-black text-xs text-[#fbbf24] uppercase flex items-center gap-1.5 tracking-wider">
+                            <i class="fa-solid fa-star text-amber-400"></i> ★ CÁC TRUNG TÂM OCOP TRỌNG ĐIỂM QUỐC GIA (HÀ NỘI - ĐÀ NẴNG - TP.HCM)
                         </h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="major-centers-grid">
                             ${majorCenters.map(c => `
-                                <div class="p-3.5 rounded-2xl bg-white border border-amber-200 shadow-2xs space-y-1.5 hover:shadow-md transition">
+                                <div class="p-3.5 rounded-2xl bg-[#0b221a] border border-amber-400/30 shadow-md space-y-1.5 hover:border-amber-400 transition">
                                     <div class="flex items-center justify-between">
-                                        <span class="bg-emerald-950 text-amber-300 font-black text-[10px] px-2 py-0.5 rounded-full uppercase">${c.city}</span>
-                                        <span class="text-[10px] text-gray-500"><i class="fa-regular fa-clock"></i> ${c.hours}</span>
+                                        <span class="bg-emerald-950 text-amber-300 font-black text-[10px] px-2 py-0.5 rounded-full uppercase border border-emerald-500/40">${c.city}</span>
+                                        <span class="text-[10px] text-slate-300"><i class="fa-regular fa-clock text-amber-400"></i> ${c.hours}</span>
                                     </div>
-                                    <h5 class="font-black text-xs text-gray-900">${c.name}</h5>
-                                    <p class="text-xs text-gray-600 flex items-start gap-1">
-                                        <i class="fa-solid fa-location-dot text-amber-600 text-[11px] mt-0.5"></i>
+                                    <h5 class="font-black text-xs text-[#fde047]">${c.name}</h5>
+                                    <p class="text-xs text-[#e2e8f0] flex items-start gap-1">
+                                        <i class="fa-solid fa-location-dot text-amber-400 text-[11px] mt-0.5"></i>
                                         <span>${c.address}</span>
                                     </p>
-                                    <div class="flex items-center justify-between pt-1.5 border-t border-gray-100 text-xs">
-                                        <span class="text-emerald-800 font-bold"><i class="fa-solid fa-phone text-emerald-600"></i> ${c.hotline}</span>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.name + ' ' + c.address)}" target="_blank" rel="noopener noreferrer" class="text-emerald-700 hover:underline font-extrabold text-[11px] flex items-center gap-1">
-                                            <i class="fa-solid fa-diamond-turn-right text-amber-500"></i> Google Maps
+                                    <div class="flex items-center justify-between pt-1.5 border-t border-emerald-800/60 text-xs">
+                                        <span class="text-[#34d399] font-bold"><i class="fa-solid fa-phone text-emerald-400"></i> ${c.hotline}</span>
+                                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.name + ' ' + c.address)}" target="_blank" rel="noopener noreferrer" class="text-[#34d399] hover:text-white font-extrabold text-[11px] flex items-center gap-1 border border-emerald-500/40 px-2 py-0.5 rounded-lg bg-emerald-950/60 hover:border-amber-400 transition" title="Chỉ đường Google Maps">
+                                            <i class="fa-solid fa-diamond-turn-right text-amber-400"></i> Google Maps
                                         </a>
                                     </div>
                                 </div>
@@ -11625,19 +11748,19 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     </div>
 
                     <!-- Danh sách Điểm Bán OCOP Theo 63 Tỉnh Thành -->
-                    <div class="space-y-2.5 pt-2 border-t border-gray-200">
+                    <div class="space-y-2.5 pt-2 border-t border-emerald-800/60">
                         <div class="flex items-center justify-between">
-                            <h4 class="font-black text-xs text-gray-900 uppercase flex items-center gap-1.5">
-                                <i class="fa-solid fa-building-flag text-emerald-800"></i> ĐIỂM BÁN & HỢP TÁC XÃ THEO TỈNH THÀNH (BẤM ĐỂ XEM)
+                            <h4 class="font-black text-xs text-[#fbbf24] uppercase flex items-center gap-1.5 tracking-wider">
+                                <i class="fa-solid fa-building-flag text-emerald-400"></i> ĐIỂM BÁN & HỢP TÁC XÃ THEO TỈNH THÀNH (BẤM ĐỂ XEM)
                             </h4>
-                            <span class="text-[10px] text-gray-500 font-bold" id="store-prov-count">${provinces.length} Tỉnh thành</span>
+                            <span class="text-[10px] text-amber-300/80 font-bold" id="store-prov-count">${provinces.length} Tỉnh thành</span>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2" id="store-provinces-list">
                             ${provinces.map(prov => {
                                 return `
-                                    <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
-                                        <span class="font-bold text-xs text-gray-800 group-hover:text-ocopGreen">${prov}</span>
-                                        <i class="fa-solid fa-chevron-right text-[10px] text-gray-400 group-hover:text-amber-600"></i>
+                                    <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="province-store-btn p-2.5 rounded-xl border text-left transition flex items-center justify-between group cursor-pointer">
+                                        <span class="font-extrabold text-xs text-[#fef08a] group-hover:text-white">${prov}</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-amber-400 group-hover:translate-x-0.5 transition-transform"></i>
                                     </button>
                                 `;
                             }).join('')}
@@ -11673,11 +11796,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             if (countEl) countEl.textContent = `${filtered.length} Tỉnh thành`;
             listEl.innerHTML = filtered.length ? filtered.map(prov => `
-                <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
-                    <span class="font-bold text-xs text-gray-800 group-hover:text-ocopGreen">${prov}</span>
-                    <i class="fa-solid fa-chevron-right text-[10px] text-gray-400 group-hover:text-amber-600"></i>
+                <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="province-store-btn p-2.5 rounded-xl border text-left transition flex items-center justify-between group cursor-pointer">
+                    <span class="font-extrabold text-xs text-[#fef08a] group-hover:text-white">${prov}</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-amber-400 group-hover:translate-x-0.5 transition-transform"></i>
                 </button>
-            `).join('') : '<p class="col-span-full text-center text-xs text-gray-500 py-4">Không tìm thấy tỉnh thành hoặc đặc sản phù hợp.</p>';
+            `).join('') : '<p class="col-span-full text-center text-xs text-amber-300/70 py-4">Không tìm thấy tỉnh thành hoặc đặc sản phù hợp.</p>';
         }
 
         // -------------------------------------------------------------
@@ -15107,5 +15230,4 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 </script>
 <script src="shop-prices.js?v=20261010"></script>
 </body>
-
 </html>
