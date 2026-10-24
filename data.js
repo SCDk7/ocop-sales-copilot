@@ -9075,9 +9075,11 @@ const PRODUCTS = [
 ];
 
 const CONFIG = {
-  "BANK_BIN": "970418",
-  "ACC_NUM": "8808661371",
-  "ACC_NAME": "HOANG NGUYEN THANH BINH"
+  "PLATFORM_NAME": "OCOP Sales Copilot",
+  "CHALLENGE": "AI Digital Business Challenge 2026",
+  "MODEL": "B2B2C & O2O",
+  "HOTLINE": "1900 888 688",
+  "SUPPORT_EMAIL": "banbientap@ocopvietnam.gov.vn"
 };
 
 if (typeof module !== 'undefined' && module.exports) {

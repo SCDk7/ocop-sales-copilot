@@ -1,4 +1,4 @@
-// ==============================================================
+﻿// ==============================================================
 // OCOP STORES & CERTIFIED OUTLETS DIRECTORY
 // Cổng thông tin & Mạng lưới Cửa hàng, Hợp tác xã đạt chuẩn OCOP 63 Tỉnh Thành
 // ==============================================================
@@ -7468,8 +7468,10 @@
     const districtFacility = extractDistrictOrFacility(p);
     const accurateMapUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(cleanName + ' OCOP ' + p.region);
 
+    // Flagship products: always use locked real-world store data directly
+    const FLAGSHIP_IDS = new Set([524, 525, 526, 336, 337, 338, 342, 360]);
     const refStore = OCOP_STORE_MAP[p.id];
-    if (refStore && isStoreDirectMatch(p, refStore)) {
+    if (refStore && (FLAGSHIP_IDS.has(p.id) || isStoreDirectMatch(p, refStore))) {
       return {
         ...refStore,
         id: p.id,
@@ -7604,3 +7606,4 @@
     MAJOR_OCOP_CENTERS: MAJOR_OCOP_CENTERS
   };
 }));
+
