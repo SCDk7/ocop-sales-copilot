@@ -2585,6 +2585,29 @@
             animation-play-state: paused;
         }
 
+        /* ============================================================== */
+        /* FLOATING COMMAND DOCK (BAN GIÁM KHẢO DIGITAL FEST 2026)        */
+        /* ============================================================== */
+        #judge-quick-access-bar {
+            position: fixed !important;
+            bottom: 1.25rem !important;
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            z-index: 9995 !important;
+            max-width: calc(100vw - 1.5rem) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            pointer-events: auto !important;
+        }
+        body:has(#ocop-intro-overlay:not(.hidden)) #judge-quick-access-bar {
+            display: none !important;
+        }
+        #judge-dock-content::-webkit-scrollbar {
+            display: none !important;
+        }
+
         /* Đồng bộ toàn bộ thẻ con bên trong Modal & Drawer sang Dark Tech */
         #ai-financial-modal .bg-white,
         #ai-challenge-proposal-modal .bg-white,
@@ -2639,115 +2662,6 @@
         }
         #ai-challenge-proposal-modal .text-gray-700, #ai-financial-modal .text-gray-700 {
             color: #cbd5e1 !important;
-        }
-
-        /* ============================================================== */
-        /* OCOP STORE MODAL & NATIONAL DIRECTORY THEME: DEEP EMERALD OBSIDIAN */
-        /* ============================================================== */
-        #ocop-all-stores-modal .bg-white,
-        #ocop-store-modal .bg-white,
-        #ocop-all-stores-body,
-        #ocop-store-modal-body {
-            background: #061510 !important;
-            color: #f8fafc !important;
-            background-image: none !important;
-        }
-
-        #ocop-all-stores-body .bg-white,
-        #ocop-store-modal-body .bg-white {
-            background: #0b221a !important;
-            border-color: rgba(212, 175, 55, 0.3) !important;
-        }
-
-        /* Tiêu đề Trung tâm & Cửa hàng: Vàng Hoàng Kim sáng hoặc Trắng Ngọc */
-        #ocop-all-stores-modal h4,
-        #ocop-all-stores-modal h5,
-        #ocop-store-modal h4,
-        #ocop-store-modal h5,
-        #ocop-all-stores-body h4,
-        #ocop-all-stores-body h5,
-        #ocop-store-modal-body h4,
-        #ocop-store-modal-body h5,
-        #ocop-all-stores-body .text-gray-900,
-        #ocop-all-stores-body .text-gray-800,
-        #ocop-store-modal-body .text-gray-900,
-        #ocop-store-modal-body .text-gray-800,
-        #ocop-all-stores-body .text-ocopGreen,
-        #ocop-store-modal-body .text-ocopGreen {
-            color: #fde047 !important;
-        }
-
-        /* Tiêu đề phân mục: Vàng Hoàng Kim */
-        #ocop-all-stores-body .section-heading,
-        #ocop-all-stores-body h4:not(.store-card-title),
-        #ocop-store-modal-body h4:not(.store-card-title) {
-            color: #fbbf24 !important;
-        }
-
-        /* Địa chỉ cửa hàng: Xám Bạc Sáng */
-        #ocop-all-stores-body .text-gray-600,
-        #ocop-all-stores-body .text-gray-700,
-        #ocop-store-modal-body .text-gray-600,
-        #ocop-store-modal-body .text-gray-700,
-        #ocop-all-stores-body p,
-        #ocop-store-modal-body p {
-            color: #e2e8f0 !important;
-        }
-
-        /* Hotline & Nút Google Maps: Xanh Ngọc Lục Bảo sáng */
-        #ocop-all-stores-body .text-emerald-700,
-        #ocop-all-stores-body .text-emerald-800,
-        #ocop-store-modal-body .text-emerald-700,
-        #ocop-store-modal-body .text-emerald-800,
-        #ocop-all-stores-body a[href*="maps"],
-        #ocop-store-modal-body a[href*="maps"] {
-            color: #34d399 !important;
-            transition: all 0.2s ease !important;
-        }
-
-        #ocop-all-stores-body a[href*="maps"]:hover,
-        #ocop-store-modal-body a[href*="maps"]:hover {
-            border-color: #fbbf24 !important;
-            box-shadow: 0 0 16px rgba(251, 191, 36, 0.45) !important;
-            color: #ffffff !important;
-        }
-
-        /* 63 nút bấm Tỉnh/Thành phố ở cuối Modal */
-        #ocop-all-stores-body button,
-        #ocop-all-stores-body .province-store-btn {
-            background: rgba(14, 38, 29, 0.95) !important;
-            border: 1px solid rgba(212, 175, 55, 0.38) !important;
-            color: #fef08a !important;
-            font-weight: 800 !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-            transition: all 0.2s ease !important;
-        }
-        #ocop-all-stores-body button span,
-        #ocop-all-stores-body button div,
-        #ocop-all-stores-body button i {
-            color: #fef08a !important;
-        }
-        #ocop-all-stores-body button:hover {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.28), rgba(16, 185, 129, 0.28)) !important;
-            border-color: #fbbf24 !important;
-            color: #ffffff !important;
-            transform: translateY(-2px) !important;
-            box-shadow: 0 0 16px rgba(251, 191, 36, 0.35) !important;
-        }
-        #ocop-all-stores-body button:hover span,
-        #ocop-all-stores-body button:hover div,
-        #ocop-all-stores-body button:hover i {
-            color: #ffffff !important;
-        }
-
-        /* Ô tìm kiếm trong #ocop-all-stores-modal */
-        #ocop-all-stores-modal input#store-modal-search {
-            background: #0b221a !important;
-            border: 1px solid rgba(212, 175, 55, 0.45) !important;
-            color: #ffffff !important;
-        }
-        #ocop-all-stores-modal input#store-modal-search::placeholder {
-            color: #94a3b8 !important;
         }
     </style>
 </head>
@@ -3200,11 +3114,10 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
-                    <button type="button" onclick="openPartnerRegistrationModal()" class="px-3 py-1.5 rounded-full text-xs font-black transition flex items-center gap-1.5 cursor-pointer shrink-0" style="background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #051a12; border: 1px solid #fef08a; box-shadow: 0 0 12px rgba(251,191,36,0.3);" title="Đăng ký số hóa Hợp tác xã / Điểm bán mới">
-                        <i class="fa-solid fa-bolt"></i>
-                        <span id="i18n-header-onboard-btn" class="hidden sm:inline">Đăng Ký HTX</span>
+                    <button onclick="toggleAuthModal()" id="user-btn" class="header-user-pill flex items-center space-x-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full bg-gradient-to-r from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 text-ocopGreen font-bold text-xs shadow-sm border border-amber-300 hover:scale-105 transition cursor-pointer flex-shrink-0" title="Đăng nhập / Tài khoản" aria-label="Tài khoản">
+                        <i class="fa-solid fa-user-shield text-amber-700 text-xs sm:text-sm"></i>
+                        <span id="user-btn-label" class="whitespace-nowrap font-bold">Đăng nhập</span>
                     </button>
-                    <button id="user-btn" style="display: none !important;" class="hidden" aria-hidden="true"></button>
                     <button onclick="toggleOrdersModal()" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-50 hover:bg-emerald-100 text-ocopGreen flex items-center justify-center transition shadow-sm border border-emerald-200 hover:scale-105 cursor-pointer flex-shrink-0" title="Nhật Ký Hệ Thống (System Logs)" aria-label="Nhật Ký Hệ Thống (System Logs)">
                         <i class="fa-solid fa-clock-rotate-left text-xs sm:text-sm"></i>
                     </button>
@@ -3324,9 +3237,9 @@
                                 <p class="text-xs text-amber-200/90 mt-0.5 font-medium" id="i18n-hero-banner-sub">NATIONAL OCOP PLATFORM — Hợp Nhất Dòng Tiền • Số Hóa Chuỗi Cung Ứng Đơn Vị Vùng Miền</p>
                             </div>
                         </div>
-                        <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between gap-3" style="background: rgba(8, 24, 18, 0.92) !important; border: 1px solid rgba(212, 175, 55, 0.45) !important;">
+                        <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between gap-3" style="background: rgba(10, 26, 20, 0.92) !important; border: 1px solid rgba(212, 175, 55, 0.45) !important;">
                             <div class="flex items-center space-x-3 flex-1 min-w-0">
-                                <div class="flex-shrink-0 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow" style="width: 42px; height: 42px; min-width: 42px; flex-shrink: 0;">
+                                <div class="flex-shrink-0 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow" style="width: 40px; height: 40px; min-width: 40px;">
                                     <i class="fa-solid fa-medal"></i>
                                 </div>
                                 <div class="min-w-0 flex-1">
@@ -3493,8 +3406,8 @@
         <section id="why-choose-us-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">
             <!-- Header section với cánh trang trí hoa văn vàng -->
             <div class="text-center max-w-3xl mx-auto mb-10">
-                <div class="inline-flex items-center space-x-2 text-xs font-black tracking-widest text-amber-300 uppercase bg-amber-400/15 border border-amber-400/35 px-3.5 py-1 rounded-full mb-3 shadow-xs">
-                    <i class="fa-solid fa-award text-amber-400"></i>
+                <div class="inline-flex items-center space-x-2 text-xs font-black tracking-widest text-amber-700 uppercase bg-amber-100/70 border border-amber-300 px-3.5 py-1 rounded-full mb-3 shadow-xs">
+                    <i class="fa-solid fa-award text-amber-600"></i>
                     <span>CHUỖI CUNG ỨNG SỐ OCOP 4.0</span>
                 </div>
                 <h2 class="text-2xl sm:text-3xl font-black text-amber-100 tracking-tight flex items-center justify-center gap-3" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 0 18px rgba(251, 191, 36, 0.18);">
@@ -3674,7 +3587,7 @@
                             Thuật toán thông minh tự động kết nối các hợp tác xã OCOP với mạng lưới đơn vị vận chuyển vựa vùng, cắt giảm 15-20% chi phí hao hụt và hao phí vận hành.
                         </p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-amber-400/20 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold py-1.5 rounded-xl" style="background: rgba(14, 165, 233, 0.2) !important; border: 1px solid rgba(56, 189, 248, 0.6) !important; color: #7dd3fc !important;">
+                    <div class="mt-4 pt-3 border-t border-amber-400/20 w-full flex items-center justify-center gap-1.5 text-[11px] font-extrabold py-1.5 rounded-xl" style="background: rgba(14, 165, 233, 0.18) !important; border: 1px solid rgba(56, 189, 248, 0.55) !important; color: #7dd3fc !important;">
                         <i class="fa-solid fa-truck-ramp-box text-sky-400"></i>
                         <span id="i18n-why-badge3">Cắt giảm 15-20% chi phí</span>
                     </div>
@@ -4222,7 +4135,7 @@
     </div>
 
     <!-- 6. MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
-    <div id="auth-modal" class="fixed inset-0 z-50 hidden pointer-events-none flex items-center justify-center p-4" style="display: none !important;">
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleAuthModal()"></div>
         <div class="relative bg-white rounded-3xl max-w-sm sm:max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl z-10 p-5 sm:p-6 border border-amber-200 animate-pop-in">
             <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
@@ -4236,13 +4149,13 @@
                     <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300" id="auth-profile-badge">
                         HỒ SƠ ĐỐI TÁC HỆ SINH THÁI OCOP
                     </span>
-                    <h3 class="text-lg font-black text-gray-900 mt-1" id="auth-profile-name">Đối Tác Doanh Nghiệp OCOP</h3>
-                    <p class="text-xs text-gray-500 font-medium" id="auth-profile-email">doitac@ocop.vn</p>
+                    <h3 class="text-lg font-black text-gray-900 mt-1" id="auth-profile-name">Ban Giám Khảo Digital Fest 2026</h3>
+                    <p class="text-xs text-gray-500 font-medium" id="auth-profile-email">bgk2026@ocop.vn</p>
                 </div>
                 <div class="p-3 rounded-2xl bg-gray-50 border border-gray-200 text-left text-xs space-y-2">
                     <div class="flex items-center justify-between">
                         <span class="text-gray-500 font-medium">Vai trò:</span>
-                        <span class="font-bold text-ocopGreen" id="auth-profile-role">Đối Tác Phân Phối & Quản Trị Showroom</span>
+                        <span class="font-bold text-ocopGreen" id="auth-profile-role">Ban Giám Khảo & Chuyên Gia Thẩm Định</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-gray-500 font-medium">Số điện thoại:</span>
@@ -4250,7 +4163,7 @@
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-gray-500 font-medium">Khu vực:</span>
-                        <span class="font-bold text-gray-800 truncate max-w-[200px]" id="auth-profile-address">Mạng Lưới Showroom OCOP Toàn Quốc</span>
+                        <span class="font-bold text-gray-800 truncate max-w-[200px]" id="auth-profile-address">Hội đồng Thẩm định 2026</span>
                     </div>
                 </div>
                 <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs text-left space-y-1 shadow-xs">
@@ -4280,6 +4193,14 @@
                 <div class="flex bg-gray-100 p-1 rounded-2xl mb-3 text-xs font-bold">
                     <button id="tab-login" type="button" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-xl bg-white text-ocopGreen shadow-xs font-bold cursor-pointer">Đăng Nhập</button>
                     <button id="tab-register" type="button" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
+                </div>
+
+                <!-- Nút Điền Nhanh Tài Khoản Demo Ban Giám Khảo (1 chạm) -->
+                <div id="auth-quick-demo-container" class="mb-3">
+                    <button type="button" onclick="quickFillDemoJudge()" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-200 hover:from-amber-200 hover:to-yellow-200 border border-amber-400 text-amber-950 font-black text-[11px] flex items-center justify-center gap-1.5 transition shadow-xs cursor-pointer">
+                        <i class="fa-solid fa-bolt text-amber-700"></i>
+                        <span>Điền nhanh Tài khoản Demo Ban Giám Khảo</span>
+                    </button>
                 </div>
 
                 <div id="auth-social-login" class="flex flex-col gap-2 mb-3" aria-label="Đăng nhập nhanh">
@@ -4346,14 +4267,14 @@
                     <p class="text-xs text-gray-500 font-medium">Chọn một tài khoản để tiếp tục với OCOP Sales Copilot</p>
                 </div>
                 <div class="space-y-2">
-                    <!-- Gợi ý 1: Đối tác Xúc tiến thương mại -->
-                    <button type="button" onclick="loginWithGoogleAccount('Trung Tâm Xúc Tiến Thương Mại OCOP', 'xuctienthuongmai.ocop@gmail.com')" class="w-full p-2.5 rounded-2xl border border-gray-200 hover:border-amber-400 hover:bg-amber-50/50 transition flex items-center gap-3 text-left cursor-pointer group shadow-xs">
+                    <!-- Gợi ý 1: Ban Giám Khảo -->
+                    <button type="button" onclick="loginWithGoogleAccount('Ban Giám Khảo Digital Fest 2026', 'judge.digitalfest2026@gmail.com')" class="w-full p-2.5 rounded-2xl border border-gray-200 hover:border-amber-400 hover:bg-amber-50/50 transition flex items-center gap-3 text-left cursor-pointer group shadow-xs">
                         <div class="w-9 h-9 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0">
-                            XTTM
+                            BGK
                         </div>
                         <div class="min-w-0 flex-1">
-                            <div class="font-bold text-xs text-gray-900 group-hover:text-amber-900 truncate">Trung Tâm Xúc Tiến Thương Mại OCOP</div>
-                            <div class="text-[11px] text-gray-500 truncate">xuctienthuongmai.ocop@gmail.com</div>
+                            <div class="font-bold text-xs text-gray-900 group-hover:text-amber-900 truncate">Ban Giám Khảo Digital Fest 2026</div>
+                            <div class="text-[11px] text-gray-500 truncate">judge.digitalfest2026@gmail.com</div>
                         </div>
                         <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-amber-600 text-xs"></i>
                     </button>
@@ -4387,7 +4308,47 @@
         </div>
     </div>
 
+    <!-- ============================================================== -->
+    <!-- FLOATING JUDGE BAR (CHẾ ĐỘ BAN GIÁM KHẢO DIGITAL FEST 2026) -->
+    <!-- ============================================================== -->
+    <div id="judge-quick-access-bar" class="select-none" style="filter: drop-shadow(0 12px 28px rgba(0,0,0,0.75));">
+        <!-- Nút toggle thu nhỏ / mở rộng -->
+        <button type="button" onclick="toggleJudgeDock()" id="judge-dock-toggle-btn" class="w-10 h-10 rounded-full flex items-center justify-center font-black text-xs transition cursor-pointer shrink-0 z-10" style="background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #0f172a; border: 2px solid #fef08a; box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);" title="Thu nhỏ / Mở rộng Chế độ Ban Giám Khảo">
+            <i id="judge-dock-icon" class="fa-solid fa-gavel"></i>
+        </button>
 
+        <!-- Khung các nút chức năng của BGK -->
+        <div id="judge-dock-content" class="ml-2 flex items-center gap-1.5 p-1.5 rounded-2xl transition-all duration-300" style="background: rgba(8, 24, 18, 0.92); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.45); box-shadow: 0 8px 32px rgba(0,0,0,0.6); overflow-x: auto; max-width: calc(100vw - 4.5rem); scrollbar-width: none;">
+            <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-400/15 border border-amber-400/30 text-[10px] font-black uppercase text-amber-300 tracking-wider shrink-0">
+                <i class="fa-solid fa-trophy text-amber-400"></i>
+                <span id="i18n-judge-badge">BGK 2026</span>
+            </div>
+
+            <!-- Nút 1: Hồ Sơ Đề Án B2B2C -->
+            <button type="button" onclick="openChallengeProposalModal()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/35 border border-emerald-400/40 text-emerald-200 hover:text-emerald-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
+                <i class="fa-solid fa-file-shield text-amber-400"></i>
+                <span id="i18n-judge-btn1">1. Đề Án B2B2C</span>
+            </button>
+
+            <!-- Nút 2: Mô Phỏng Dòng Tiền AI -->
+            <button type="button" onclick="openFinancialDashboardModal()" class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/35 border border-amber-400/40 text-amber-200 hover:text-amber-100 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
+                <i class="fa-solid fa-chart-line text-emerald-400"></i>
+                <span id="i18n-judge-btn2">2. Dòng Tiền AI</span>
+            </button>
+
+            <!-- Nút 3: Nghe AI Báo Cáo Nông Dân -->
+            <button type="button" onclick="openFinancialDashboardModal(); setTimeout(() => playVoiceFinancialBriefing(), 250);" style="background: rgba(147, 51, 234, 0.28) !important; border: 1px solid rgba(192, 132, 252, 0.65) !important; color: #f3e8ff !important;" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0">
+                <i class="fa-solid fa-microphone-lines text-purple-300 animate-pulse"></i>
+                <span id="i18n-judge-btn3">3. Voice Báo Cáo</span>
+            </button>
+
+            <!-- Nút 4: Test O2O Đồng Nai -->
+            <button type="button" onclick="testO2ODongNai()" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[11px] font-black hover:scale-105 transition flex items-center gap-1.5 cursor-pointer shadow-md whitespace-nowrap shrink-0">
+                <i class="fa-solid fa-map-pin text-rose-700"></i>
+                <span id="i18n-judge-btn4">4. Test O2O Đồng Nai</span>
+            </button>
+        </div>
+    </div>
 
     <!-- 7. DRAWER NHẬT KÝ ĐỐI SOÁT & GIAO DỊCH HỆ THỐNG -->
     <div id="orders-drawer" class="fixed inset-0 z-50 hidden">
@@ -4413,7 +4374,7 @@
     <!-- 8.1 MODAL CHI TIẾT ĐIỂM BÁN & CỬA HÀNG OCOP CỦA SẢN PHẨM -->
     <div id="ocop-store-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4">
         <div class="absolute inset-0 bg-black/65 backdrop-blur-sm" onclick="closeStoreLocator()"></div>
-        <div class="relative rounded-3xl max-w-3xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="background: #061510 !important; color: #f8fafc !important; max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+        <div class="relative bg-white rounded-3xl max-w-3xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
             <!-- Header Modal -->
             <div class="p-4 bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-900 text-white rounded-t-3xl flex items-center justify-between border-b border-amber-400/40 relative">
                 <div class="flex items-center space-x-2.5">
@@ -4432,14 +4393,14 @@
                 </button>
             </div>
             <!-- Nội dung chi tiết cửa hàng (render động) -->
-            <div id="ocop-store-modal-body" class="p-4 sm:p-6 space-y-5" style="background: #061510 !important; color: #f8fafc !important;"></div>
+            <div id="ocop-store-modal-body" class="p-4 sm:p-6 space-y-5 bg-gradient-to-b from-amber-50/30 to-white"></div>
         </div>
     </div>
 
     <!-- 8.2 MODAL BẢN ĐỒ & DANH BẠ ĐIỂM BÁN OCOP TOÀN QUỐC -->
     <div id="ocop-all-stores-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4">
         <div class="absolute inset-0 bg-black/65 backdrop-blur-sm" onclick="closeAllStoresModal()"></div>
-        <div class="relative rounded-3xl max-w-4xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="background: #061510 !important; color: #f8fafc !important; max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+        <div class="relative bg-white rounded-3xl max-w-4xl w-full shadow-2xl z-10 border-2 border-amber-300 animate-pop-in flex flex-col" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
             <div class="p-4 bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-900 text-white rounded-t-3xl flex items-center justify-between border-b border-amber-400/40">
                 <div class="flex items-center space-x-2.5">
                     <span class="w-9 h-9 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md">
@@ -4456,7 +4417,7 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <div class="p-4 sm:p-6 space-y-5" style="background: #061510 !important; color: #f8fafc !important;" id="ocop-all-stores-body"></div>
+            <div class="p-4 sm:p-6 space-y-5 bg-gradient-to-b from-amber-50/20 to-white" id="ocop-all-stores-body"></div>
         </div>
     </div>
 
@@ -5261,12 +5222,6 @@
         const products = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
         window.PRODUCTS = products;
 
-        // Chuẩn hóa & Ghi đè trực tiếp getOcopStoreInfo bằng resolveAccurateStoreForProduct
-        if (window.OcopStores && typeof window.OcopStores.resolveAccurateStoreForProduct === 'function') {
-            window.resolveAccurateStoreForProduct = window.OcopStores.resolveAccurateStoreForProduct;
-            window.OcopStores.getOcopStoreInfo = window.OcopStores.resolveAccurateStoreForProduct;
-        }
-
         // Biến trạng thái toàn cục
         let cart = [];
         let wishlist = [];
@@ -5612,46 +5567,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
-            // Loại bỏ hoàn toàn tài khoản cá nhân & user ảo
-            window.currentUser = null;
-            try {
-                localStorage.removeItem('ocop_current_user');
-                localStorage.removeItem('ocop_users_db');
-                localStorage.removeItem('ocop-session-token');
-                localStorage.removeItem('ocop-guest-cart');
-                sessionStorage.clear();
-            } catch (_) {}
-            const oldAccountPanel = document.getElementById('account-panel');
-            if (oldAccountPanel) oldAccountPanel.remove();
-
-            // Intercept and safely mock/silence static GitHub Pages auth/user/orders calls
-            if (typeof window.fetch === 'function') {
-                const nativeFetch = window.fetch;
-                window.fetch = async function(resource, init) {
-                    const url = typeof resource === 'string' ? resource : (resource?.url || '');
-                    if (url.includes('/api/auth/') || url.includes('/api/user') || url.includes('/api/orders')) {
-                        if (url.includes('/api/orders') && init?.method === 'POST') {
-                            const orderId = 'ORD-' + Date.now().toString().slice(-6);
-                            return new Response(JSON.stringify({ ok: true, order: { id: orderId, total: (typeof getCartTotal === 'function' ? getCartTotal() : 0) } }), {
-                                status: 200,
-                                headers: { 'Content-Type': 'application/json' }
-                            });
-                        }
-                        if (url.includes('/api/auth/me')) {
-                            return new Response(JSON.stringify({ user: null, state: {} }), {
-                                status: 200,
-                                headers: { 'Content-Type': 'application/json' }
-                            });
-                        }
-                        return new Response(JSON.stringify({ ok: true }), {
-                            status: 200,
-                            headers: { 'Content-Type': 'application/json' }
-                        });
-                    }
-                    return nativeFetch.apply(this, arguments);
-                };
-            }
-
             fetchProducts();
             const intro = document.getElementById('ocop-intro-overlay');
             const syncVisibility = () => setAIChatWidgetVisibility(intro.classList.contains('hidden'));
@@ -6349,18 +6264,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     ja: 'O2Oショールーム位置確認'
                 };
                 const heroFinance = {
-                    vi: '⚡ 1.200+ đơn vị • Đã đối soát CHM',
-                    en: '⚡ 1,200+ units • CHM Settled',
-                    zh: '⚡ 1,200+ 件 • 已完成 CHM 对账',
-                    ko: '⚡ 1,200+개 • CHM 정산 완료',
-                    ja: '⚡ 1,200+個 • CHM照合済'
+                    vi: '[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]',
+                    en: '[System Volume: 1,200 units • CHM Settlement: Automatically distributed via Smart Contract]',
+                    zh: '[系统调度量：1,200 件 • CHM 佣金结算：智能合约自动拨付]',
+                    ko: '[시스템 조율량: 1,200개 • CHM 수수료 정산: 스마트 계약 자동 정산 완료]',
+                    ja: '[システム調整量：1,200個 • CHM手数料精算：スマートコントラクト自動決済済]'
                 };
-                const prodNameEl = document.getElementById('i18n-hero-prodname');
-                if (prodNameEl) prodNameEl.textContent = heroNames[currentLanguage] || heroNames.vi;
-                const prodPriceEl = document.getElementById('hero-product-price');
-                if (prodPriceEl) prodPriceEl.textContent = heroFinance[currentLanguage] || heroFinance.vi;
-                const prodStarsEl = document.getElementById('hero-product-stars');
-                if (prodStarsEl) prodStarsEl.textContent = heroO2o[currentLanguage] || heroO2o.vi;
+                document.getElementById('i18n-hero-prodname').textContent = heroNames[currentLanguage] || heroNames.vi;
+                document.getElementById('hero-product-price').textContent = heroFinance[currentLanguage] || heroFinance.vi;
+                document.getElementById('hero-product-stars').textContent = heroO2o[currentLanguage] || heroO2o.vi;
             }
             const grid = document.getElementById('product-grid');
             const noMsg = document.getElementById('no-products-msg');
@@ -6534,20 +6446,12 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 `}
                             </div>
                             <div class="flex items-center justify-between text-[10px] pt-1 border-t border-amber-400/20">
-                                <span class="flex items-center gap-1 text-emerald-300 font-extrabold truncate">
+                                <span class="flex items-center gap-1 text-emerald-300 font-extrabold">
                                     <i class="fa-solid fa-phone text-[9px]"></i> ${storeInfo ? storeInfo.hotline : 'Hotline cơ sở'}
                                 </span>
-                                <div class="flex items-center gap-1.5 shrink-0">
-                                    ${storeInfo && storeInfo.mapUrl ? `
-                                    <a href="${escapeAIHtml(storeInfo.mapUrl)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold transition hover:scale-105" style="background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.45);" title="Mở chỉ đường Google Maps đến điểm bán sản phẩm này">
-                                        <i class="fa-solid fa-location-dot text-amber-400"></i>
-                                        <span>Google Maps</span>
-                                    </a>
-                                    ` : ''}
-                                    <span class="text-[9px] font-black uppercase text-amber-300 bg-amber-400/20 px-1.5 py-0.5 rounded border border-amber-400/30">
-                                        ${p.region}
-                                    </span>
-                                </div>
+                                <span class="text-[9px] font-black uppercase text-amber-300 bg-amber-400/20 px-1.5 py-0.5 rounded border border-amber-400/30">
+                                    ${p.region}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -8910,7 +8814,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                           "• **AI Knowledge RAG Accuracy**: >95% accuracy for OCOP origin, provincial decree certifications, and store addresses.\n" +
                           "• **Average Response Latency**: Sub-3-second response (< 1.6s benchmark) across web, mobile, and voice channels."
                         : "🎯 **Hệ Thống Chỉ Số Đánh Giá Hiệu Quả (KPIs & Metrics) • AI Challenge 2026**:\n\n" +
-                          "Dạ, hệ sinh thái cam kết 5 chỉ số đo lường hiệu quả định lượng nghiêm ngặt của Nền tảng số:\n\n" +
+                          "Dạ, đề án cam kết 5 chỉ số đo lường hiệu quả định lượng nghiêm ngặt trước Ban giám khảo:\n\n" +
                           "• 🏆 **Tổng giá trị giao dịch hệ thống (GMV)**: Mục tiêu tăng trưởng **35% mỗi quý**, đo lường toàn bộ dòng tiền qua mạng lưới showroom O2O và pre-order (hiện mô phỏng 842.500.000 ₫/tháng).\n" +
                           "• 📈 **Mức tăng trưởng tiền lời ròng (Profit Margin Growth)**: Tăng thêm **+15% đến +20% tiền lời** cho các chủ cửa hàng đối tác nhờ AI cắt giảm chi phí trung gian (hiện đạt **+18.4%**).\n" +
                           "• 🛡️ **Độ chính xác báo cáo tài chính AI**: Cam kết **100% với sai số 0.00%** trong tính toán Doanh thu, Tiền lời và Chiết khấu hoa hồng.\n" +
@@ -11151,22 +11055,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         async function checkout() {
+            if (!window.requireAccountCheckout || !await window.requireAccountCheckout()) return;
             if (cart.length === 0) {
                 showToast("Giỏ hàng đang trống! Vui lòng chọn đặc sản trước khi thanh toán.", "warning");
                 return;
             }
 
-            let savedOrder = null;
-            if (window.createAccountOrder) {
-                try { savedOrder = await window.createAccountOrder(); } catch (_) {}
-            }
-            if (!savedOrder) {
-                let fallbackTotal = (typeof getCartTotal === 'function') ? getCartTotal() : 0;
-                if (typeof activeVoucher !== 'undefined' && activeVoucher && typeof getVoucherDiscount === 'function') {
-                    fallbackTotal = Math.max(0, fallbackTotal - getVoucherDiscount());
-                }
-                savedOrder = { id: 'ORD-' + Date.now().toString().slice(-6), total: fallbackTotal };
-            }
+            let savedOrder;
+            try { savedOrder = await window.createAccountOrder(); }
+            catch (error) { showToast(error.message, 'error'); return; }
             const totalAmount = savedOrder.total;
             currentOrderCode = savedOrder.id;
             const memo = `THANH TOAN ${currentOrderCode}`;
@@ -11213,16 +11110,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         async function confirmOrderPayment() {
+            if (!window.requireAccountCheckout || !await window.requireAccountCheckout()) return;
             if (!currentOrderCode || cart.length === 0) {
                 showToast("Không tìm thấy đơn hàng đang chờ xác nhận.", "warning");
                 closeQRModal();
                 return;
             }
 
-            if (window.reportAccountPayment) {
-                try { await window.reportAccountPayment(currentOrderCode); } catch (_) {}
-            }
-            cart = [];
+            try { await window.reportAccountPayment(currentOrderCode); }
+            catch (error) { showToast(error.message, 'error'); return; }
             closeQRModal();
             activeVoucher = null;
             currentOrderCode = null;
@@ -11527,42 +11423,42 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             body.innerHTML = `
                 <!-- Thông tin tóm tắt sản phẩm -->
-                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-[#0b221a] border border-amber-400/40 shadow-sm text-white">
-                    <img src="${p.img}" alt="${productName}" class="w-24 h-24 object-contain rounded-xl bg-slate-950/80 p-1.5 border border-amber-400/30 shrink-0">
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-white border border-amber-200/90 shadow-sm">
+                    <img src="${p.img}" alt="${productName}" class="w-24 h-24 object-contain rounded-xl bg-amber-50/50 p-1.5 border border-amber-200 shrink-0">
                     <div class="space-y-1.5 text-center sm:text-left flex-1 min-w-0">
                         <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
                             <span class="bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow">
                                 ⭐ OCOP ${starsLabel} SAO
                             </span>
-                            <span class="bg-emerald-950 text-emerald-300 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-500/40">
+                            <span class="bg-emerald-100 text-emerald-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-300">
                                 📍 ${p.region}
                             </span>
-                            <span class="bg-blue-950 text-blue-300 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-blue-500/40">
+                            <span class="bg-blue-50 text-blue-900 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-blue-200">
                                 🛡️ 100% Chính gốc
                             </span>
                         </div>
-                        <h4 class="font-black text-base text-[#fde047] leading-snug">${productName}</h4>
+                        <h4 class="font-black text-base text-gray-900 leading-snug">${productName}</h4>
                         <div class="flex items-center justify-center sm:justify-start gap-3 text-xs">
-                            <span class="font-black text-red-400 text-base">${priceLabel}</span>
-                            <span class="text-slate-300 font-medium">Quy cách: <strong class="text-white">${p.packaging || 'hộp'}</strong></span>
+                            <span class="font-black text-red-600 text-base">${priceLabel}</span>
+                            <span class="text-gray-500 font-medium">Quy cách: <strong>${p.packaging || 'hộp'}</strong></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Khối Chủ thể Sản Xuất & Chứng Nhận Pháp Lý -->
-                <div class="p-4 rounded-2xl bg-[#0b221a] text-white space-y-2.5 shadow-md border border-amber-400/30">
-                    <div class="flex items-center justify-between border-b border-emerald-800/60 pb-2">
-                        <span class="text-xs font-black uppercase text-[#fbbf24] flex items-center gap-1.5 tracking-wider">
+                <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-950 to-teal-950 text-white space-y-2.5 shadow-md border border-emerald-400/30">
+                    <div class="flex items-center justify-between border-b border-emerald-700/50 pb-2">
+                        <span class="text-xs font-black uppercase text-amber-300 flex items-center gap-1.5 tracking-wider">
                             <i class="fa-solid fa-landmark text-amber-400"></i> CHỦ THỂ SẢN XUẤT ĐẠT CHỨNG NHẬN OCOP
                         </span>
-                        <span class="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                        <span class="bg-amber-400 text-emerald-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
                             Chủ thể OCOP
                         </span>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                         <div>
                             <span class="text-emerald-300/80 block text-[10.5px]">Đơn vị / Hợp tác xã:</span>
-                            <strong class="text-[#fde047] text-sm font-black">${store.producerName}</strong>
+                            <strong class="text-white text-sm font-black">${store.producerName}</strong>
                         </div>
                         <div>
                             <span class="text-emerald-300/80 block text-[10.5px]">Số Quyết định OCOP:</span>
@@ -11570,7 +11466,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         </div>
                         <div class="md:col-span-2">
                             <span class="text-emerald-300/80 block text-[10.5px]">Địa chỉ cơ sở / Vùng nguyên liệu:</span>
-                            <span class="text-[#e2e8f0] font-medium">${store.producerAddress}</span>
+                            <span class="text-emerald-100 font-medium">${store.producerAddress}</span>
                         </div>
                     </div>
                 </div>
@@ -11578,37 +11474,37 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 <!-- Danh sách Cửa hàng & Showroom Phân phối Chính Thức -->
                 <div class="space-y-3">
                     <div class="flex items-center justify-between">
-                        <h4 class="font-black text-xs sm:text-sm text-[#fbbf24] uppercase flex items-center gap-1.5 tracking-wider">
-                            <i class="fa-solid fa-location-dot text-amber-400"></i> CÁC CỬA HÀNG & ĐIỂM BÁN CHÍNH THỨC
+                        <h4 class="font-black text-xs sm:text-sm text-gray-900 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-location-dot text-red-600"></i> CÁC CỬA HÀNG & ĐIỂM BÁN CHÍNH THỨC
                         </h4>
-                        <span class="text-[10px] text-amber-300/80 font-bold">Điểm bán đạt chuẩn</span>
+                        <span class="text-[10px] text-gray-500 font-bold">Điểm bán đạt chuẩn</span>
                     </div>
 
                     <!-- Điểm 1: Showroom chính của cơ sở tại Tỉnh -->
-                    <div class="p-4 rounded-2xl bg-[#0b221a] border-2 border-amber-400/60 shadow-md space-y-2 hover:border-amber-400 transition">
+                    <div class="p-4 rounded-2xl bg-white border-2 border-amber-300 shadow-sm space-y-2 hover:border-amber-500 transition">
                         <div class="flex flex-wrap items-center justify-between gap-1">
                             <div class="flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center">1</span>
-                                <strong class="text-sm font-black text-[#fde047]">${store.primaryStore.name}</strong>
+                                <span class="w-6 h-6 rounded-full bg-amber-500 text-white font-black text-xs flex items-center justify-center">1</span>
+                                <strong class="text-sm font-black text-gray-900">${store.primaryStore.name}</strong>
                             </div>
-                            <span class="bg-emerald-950 text-amber-300 border border-emerald-500/40 text-[10px] font-black px-2 py-0.5 rounded-full">
+                            <span class="bg-emerald-100 text-emerald-900 text-[10px] font-black px-2 py-0.5 rounded-full">
                                 Showroom Trực tiếp tại ${store.region}
                             </span>
                         </div>
-                        <p class="text-xs text-[#e2e8f0] flex items-start gap-1.5">
-                            <i class="fa-solid fa-location-dot text-amber-400 mt-0.5 text-xs"></i>
-                            <span><strong class="text-white">Địa chỉ:</strong> ${store.primaryStore.address}</span>
+                        <p class="text-xs text-gray-700 flex items-start gap-1.5">
+                            <i class="fa-solid fa-location-dot text-amber-600 mt-0.5 text-xs"></i>
+                            <span><strong>Địa chỉ:</strong> ${store.primaryStore.address}</span>
                         </p>
-                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-emerald-900/60">
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-gray-100">
                             <div class="flex items-center gap-3">
-                                <span class="text-slate-300"><i class="fa-regular fa-clock text-amber-400"></i> ${store.primaryStore.hours || '07:30 - 21:00'}</span>
-                                <span class="text-[#34d399] font-bold"><i class="fa-solid fa-phone text-emerald-400"></i> ${store.primaryStore.phone}</span>
+                                <span class="text-gray-500"><i class="fa-regular fa-clock text-gray-400"></i> ${store.primaryStore.hours || '07:30 - 21:00'}</span>
+                                <span class="text-emerald-800 font-bold"><i class="fa-solid fa-phone text-emerald-600"></i> ${store.primaryStore.phone}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <a href="${store.mapUrl}" target="_blank" rel="noopener noreferrer" class="bg-emerald-700 hover:bg-emerald-600 text-white font-extrabold text-[11px] px-3 py-1.5 rounded-xl shadow-xs flex items-center gap-1 border border-emerald-400/40 hover:border-amber-400 transition" title="Chỉ đường Google Maps">
+                                <a href="${store.mapUrl}" target="_blank" rel="noopener noreferrer" class="bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-[11px] px-3 py-1.5 rounded-xl shadow-xs flex items-center gap-1 transition">
                                     <i class="fa-solid fa-diamond-turn-right text-amber-300"></i> Chỉ đường Google Maps
                                 </a>
-                                <a href="tel:${store.primaryStore.phone.replace(/[^0-9]/g, '')}" class="bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 font-black text-[11px] px-3 py-1.5 rounded-xl border border-amber-400/40 flex items-center gap-1 transition">
+                                <a href="tel:${store.primaryStore.phone.replace(/[^0-9]/g, '')}" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-black text-[11px] px-3 py-1.5 rounded-xl border border-amber-300 flex items-center gap-1 transition">
                                     <i class="fa-solid fa-phone"></i> Gọi hotline
                                 </a>
                             </div>
@@ -11617,26 +11513,26 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
                     <!-- Điểm 2 & 3: Các điểm bán OCOP liên kết tại Hà Nội / TP.HCM -->
                     ${Array.isArray(store.outlets) && store.outlets.length ? store.outlets.map((outlet, idx) => `
-                        <div class="p-3.5 rounded-2xl bg-[#0b221a] border border-emerald-800/60 shadow-2xs space-y-1.5 hover:border-amber-400/40 transition">
+                        <div class="p-3.5 rounded-2xl bg-white border border-gray-200 shadow-2xs space-y-1.5 hover:border-emerald-300 transition">
                             <div class="flex flex-wrap items-center justify-between gap-1">
                                 <div class="flex items-center gap-2">
-                                    <span class="w-5 h-5 rounded-full bg-emerald-800 text-amber-300 font-bold text-[10px] flex items-center justify-center">${idx + 2}</span>
-                                    <strong class="text-xs font-black text-white">${outlet.name}</strong>
+                                    <span class="w-5 h-5 rounded-full bg-emerald-800 text-white font-bold text-[10px] flex items-center justify-center">${idx + 2}</span>
+                                    <strong class="text-xs font-black text-gray-900">${outlet.name}</strong>
                                 </div>
-                                <span class="text-[9.5px] font-extrabold text-amber-300/80 bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-700/40">Điểm bán OCOP liên kết</span>
+                                <span class="text-[9.5px] font-extrabold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">Điểm bán OCOP liên kết</span>
                             </div>
-                            <p class="text-xs text-[#e2e8f0] flex items-start gap-1.5">
-                                <i class="fa-solid fa-location-arrow text-emerald-400 mt-0.5 text-[11px]"></i>
+                            <p class="text-xs text-gray-600 flex items-start gap-1.5">
+                                <i class="fa-solid fa-location-arrow text-emerald-600 mt-0.5 text-[11px]"></i>
                                 <span>${outlet.address}</span>
                             </p>
-                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-1.5 border-t border-emerald-900/60">
-                                <span class="text-[#34d399] font-bold text-[11px]"><i class="fa-solid fa-phone text-emerald-400 text-[10px]"></i> ${outlet.phone}</span>
+                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-1.5 border-t border-gray-100">
+                                <span class="text-emerald-800 font-bold text-[11px]"><i class="fa-solid fa-phone text-emerald-600 text-[10px]"></i> ${outlet.phone}</span>
                                 <div class="flex items-center gap-1.5">
-                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(outlet.name + ' ' + outlet.address)}" target="_blank" rel="noopener noreferrer" class="text-[#34d399] hover:text-white hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(outlet.name + ' ' + outlet.address)}" target="_blank" rel="noopener noreferrer" class="text-emerald-800 hover:underline font-extrabold text-[11px] flex items-center gap-1">
                                         <i class="fa-solid fa-map-location-dot"></i> Bản đồ
                                     </a>
-                                    <span class="text-slate-500">|</span>
-                                    <a href="tel:${outlet.phone.replace(/[^0-9]/g, '')}" class="text-amber-300 hover:text-amber-200 hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                    <span class="text-gray-300">|</span>
+                                    <a href="tel:${outlet.phone.replace(/[^0-9]/g, '')}" class="text-amber-800 hover:underline font-extrabold text-[11px] flex items-center gap-1">
                                         <i class="fa-solid fa-phone"></i> Gọi ngay
                                     </a>
                                 </div>
@@ -11646,16 +11542,16 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 </div>
 
                 <!-- Footer Modal: Hướng dẫn & Đặt mua trực tiếp -->
-                <div class="p-3.5 rounded-2xl bg-[#0b221a] border border-amber-400/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                    <div class="flex items-center gap-2 text-slate-200">
-                        <i class="fa-solid fa-qrcode text-xl text-amber-400"></i>
-                        <span class="text-[11px] text-slate-200">${({
-                            vi: 'Tất cả sản phẩm tại các điểm bán trên đều có <strong class="text-amber-300">Tem chống giả & QR Code OCOP</strong>.',
-                            en: 'All products at these outlets are authenticated with <strong class="text-amber-300">Anti-counterfeit & OCOP QR Codes</strong>.',
-                            zh: '上述各展厅在售产品均配有 <strong class="text-amber-300">防伪标签与国家 OCOP 二维码</strong>。',
-                            ko: '위 매장의 모든 제품에는 <strong class="text-amber-300">위조 방지 씰 및 OCOP QR 코드</strong>가 부착되어 있습니다.',
-                            ja: '上記取扱店の全商品に<strong class="text-amber-300">偽造防止シールおよび OCOP QR コード</strong>が付与されています。'
-                        })[currentLanguage] || 'Tất cả sản phẩm tại các điểm bán trên đều có <strong class="text-amber-300">Tem chống giả & QR Code OCOP</strong>.'}</span>
+                <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                    <div class="flex items-center gap-2 text-gray-700">
+                        <i class="fa-solid fa-qrcode text-xl text-emerald-800"></i>
+                        <span class="text-[11px]">${({
+                            vi: 'Tất cả sản phẩm tại các điểm bán trên đều có <strong>Tem chống giả & QR Code OCOP</strong>.',
+                            en: 'All products at these outlets are authenticated with <strong>Anti-counterfeit & OCOP QR Codes</strong>.',
+                            zh: '上述各展厅在售产品均配有 <strong>防伪标签与国家 OCOP 二维码</strong>。',
+                            ko: '위 매장의 모든 제품에는 <strong>위조 방지 씰 및 OCOP QR 코드</strong>가 부착되어 있습니다.',
+                            ja: '上記取扱店の全商品に<strong>偽造防止シールおよび OCOP QR コード</strong>が付与されています。'
+                        })[currentLanguage] || 'Tất cả sản phẩm tại các điểm bán trên đều có <strong>Tem chống giả & QR Code OCOP</strong>.'}</span>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <button onclick="addToCart(${p.id}); closeStoreLocator();" class="flex-1 sm:flex-initial bg-emerald-800 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer border border-emerald-400/40">
@@ -11668,7 +11564,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 ja: '📊 キャッシュフロー分析'
                             })[currentLanguage] || '📊 Đối Soát Dòng Tiền'}</span>
                         </button>
-                        <button onclick="closeStoreLocator(); toggleAIChat();" class="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-400 text-slate-950 px-3.5 py-2 rounded-xl font-black text-xs transition flex items-center justify-center gap-1 cursor-pointer">
+                        <button onclick="closeStoreLocator(); toggleAIChat();" class="flex-1 sm:flex-initial bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl font-black text-xs transition flex items-center justify-center gap-1 cursor-pointer">
                             <i class="fa-solid fa-comments"></i>
                             <span>${({
                                 vi: 'Hỏi AI điểm bán',
@@ -11715,31 +11611,31 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
                     <!-- Ô tra cứu điểm bán theo tỉnh -->
                     <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-400"></i>
-                        <input type="text" id="store-modal-search" oninput="filterStoresInModal(this.value)" placeholder="Nhập tên tỉnh thành hoặc tên đặc sản để tìm cửa hàng OCOP..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-amber-400/50 bg-[#0b221a] text-xs font-bold text-white placeholder-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-amber-400 shadow-inner">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="store-modal-search" oninput="filterStoresInModal(this.value)" placeholder="Nhập tên tỉnh thành hoặc tên đặc sản để tìm cửa hàng OCOP..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-amber-300 bg-white text-xs font-bold text-gray-800 focus:outline-none focus:ring-2 focus:ring-ocopGreen shadow-2xs">
                     </div>
 
                     <!-- Các Trung tâm OCOP Quốc Gia Trọng Điểm -->
                     <div class="space-y-2.5">
-                        <h4 class="font-black text-xs text-[#fbbf24] uppercase flex items-center gap-1.5 tracking-wider">
-                            <i class="fa-solid fa-star text-amber-400"></i> ★ CÁC TRUNG TÂM OCOP TRỌNG ĐIỂM QUỐC GIA (HÀ NỘI - ĐÀ NẴNG - TP.HCM)
+                        <h4 class="font-black text-xs text-gray-900 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-star text-amber-500"></i> CÁC TRUNG TÂM OCOP TRỌNG ĐIỂM QUỐC GIA (HÀ NỘI - ĐÀ NẴNG - TP.HCM)
                         </h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="major-centers-grid">
                             ${majorCenters.map(c => `
-                                <div class="p-3.5 rounded-2xl bg-[#0b221a] border border-amber-400/30 shadow-md space-y-1.5 hover:border-amber-400 transition">
+                                <div class="p-3.5 rounded-2xl bg-white border border-amber-200 shadow-2xs space-y-1.5 hover:shadow-md transition">
                                     <div class="flex items-center justify-between">
-                                        <span class="bg-emerald-950 text-amber-300 font-black text-[10px] px-2 py-0.5 rounded-full uppercase border border-emerald-500/40">${c.city}</span>
-                                        <span class="text-[10px] text-slate-300"><i class="fa-regular fa-clock text-amber-400"></i> ${c.hours}</span>
+                                        <span class="bg-emerald-950 text-amber-300 font-black text-[10px] px-2 py-0.5 rounded-full uppercase">${c.city}</span>
+                                        <span class="text-[10px] text-gray-500"><i class="fa-regular fa-clock"></i> ${c.hours}</span>
                                     </div>
-                                    <h5 class="font-black text-xs text-[#fde047]">${c.name}</h5>
-                                    <p class="text-xs text-[#e2e8f0] flex items-start gap-1">
-                                        <i class="fa-solid fa-location-dot text-amber-400 text-[11px] mt-0.5"></i>
+                                    <h5 class="font-black text-xs text-gray-900">${c.name}</h5>
+                                    <p class="text-xs text-gray-600 flex items-start gap-1">
+                                        <i class="fa-solid fa-location-dot text-amber-600 text-[11px] mt-0.5"></i>
                                         <span>${c.address}</span>
                                     </p>
-                                    <div class="flex items-center justify-between pt-1.5 border-t border-emerald-800/60 text-xs">
-                                        <span class="text-[#34d399] font-bold"><i class="fa-solid fa-phone text-emerald-400"></i> ${c.hotline}</span>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.name + ' ' + c.address)}" target="_blank" rel="noopener noreferrer" class="text-[#34d399] hover:text-white font-extrabold text-[11px] flex items-center gap-1 border border-emerald-500/40 px-2 py-0.5 rounded-lg bg-emerald-950/60 hover:border-amber-400 transition" title="Chỉ đường Google Maps">
-                                            <i class="fa-solid fa-diamond-turn-right text-amber-400"></i> Google Maps
+                                    <div class="flex items-center justify-between pt-1.5 border-t border-gray-100 text-xs">
+                                        <span class="text-emerald-800 font-bold"><i class="fa-solid fa-phone text-emerald-600"></i> ${c.hotline}</span>
+                                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.name + ' ' + c.address)}" target="_blank" rel="noopener noreferrer" class="text-emerald-700 hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                            <i class="fa-solid fa-diamond-turn-right text-amber-500"></i> Google Maps
                                         </a>
                                     </div>
                                 </div>
@@ -11748,19 +11644,19 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     </div>
 
                     <!-- Danh sách Điểm Bán OCOP Theo 63 Tỉnh Thành -->
-                    <div class="space-y-2.5 pt-2 border-t border-emerald-800/60">
+                    <div class="space-y-2.5 pt-2 border-t border-gray-200">
                         <div class="flex items-center justify-between">
-                            <h4 class="font-black text-xs text-[#fbbf24] uppercase flex items-center gap-1.5 tracking-wider">
-                                <i class="fa-solid fa-building-flag text-emerald-400"></i> ĐIỂM BÁN & HỢP TÁC XÃ THEO TỈNH THÀNH (BẤM ĐỂ XEM)
+                            <h4 class="font-black text-xs text-gray-900 uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-building-flag text-emerald-800"></i> ĐIỂM BÁN & HỢP TÁC XÃ THEO TỈNH THÀNH (BẤM ĐỂ XEM)
                             </h4>
-                            <span class="text-[10px] text-amber-300/80 font-bold" id="store-prov-count">${provinces.length} Tỉnh thành</span>
+                            <span class="text-[10px] text-gray-500 font-bold" id="store-prov-count">${provinces.length} Tỉnh thành</span>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2" id="store-provinces-list">
                             ${provinces.map(prov => {
                                 return `
-                                    <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="province-store-btn p-2.5 rounded-xl border text-left transition flex items-center justify-between group cursor-pointer">
-                                        <span class="font-extrabold text-xs text-[#fef08a] group-hover:text-white">${prov}</span>
-                                        <i class="fa-solid fa-chevron-right text-[10px] text-amber-400 group-hover:translate-x-0.5 transition-transform"></i>
+                                    <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
+                                        <span class="font-bold text-xs text-gray-800 group-hover:text-ocopGreen">${prov}</span>
+                                        <i class="fa-solid fa-chevron-right text-[10px] text-gray-400 group-hover:text-amber-600"></i>
                                     </button>
                                 `;
                             }).join('')}
@@ -11796,11 +11692,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             if (countEl) countEl.textContent = `${filtered.length} Tỉnh thành`;
             listEl.innerHTML = filtered.length ? filtered.map(prov => `
-                <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="province-store-btn p-2.5 rounded-xl border text-left transition flex items-center justify-between group cursor-pointer">
-                    <span class="font-extrabold text-xs text-[#fef08a] group-hover:text-white">${prov}</span>
-                    <i class="fa-solid fa-chevron-right text-[10px] text-amber-400 group-hover:translate-x-0.5 transition-transform"></i>
+                <button onclick="closeAllStoresModal(); onProvinceFilterChange('${prov}', event);" class="p-2.5 rounded-xl bg-white border border-gray-200 hover:border-amber-400 hover:bg-amber-50/70 text-left transition flex items-center justify-between shadow-2xs group cursor-pointer">
+                    <span class="font-bold text-xs text-gray-800 group-hover:text-ocopGreen">${prov}</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-gray-400 group-hover:text-amber-600"></i>
                 </button>
-            `).join('') : '<p class="col-span-full text-center text-xs text-amber-300/70 py-4">Không tìm thấy tỉnh thành hoặc đặc sản phù hợp.</p>';
+            `).join('') : '<p class="col-span-full text-center text-xs text-gray-500 py-4">Không tìm thấy tỉnh thành hoặc đặc sản phù hợp.</p>';
         }
 
         // -------------------------------------------------------------
@@ -11823,7 +11719,22 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             restorePageScrollState();
         }
 
-        function toggleJudgeDock() {}
+        // FLOATING JUDGE BAR CONTROLLER
+        let isJudgeDockExpanded = true;
+        function toggleJudgeDock() {
+            isJudgeDockExpanded = !isJudgeDockExpanded;
+            const content = document.getElementById('judge-dock-content');
+            const icon = document.getElementById('judge-dock-icon');
+            if (content) {
+                if (isJudgeDockExpanded) {
+                    content.classList.remove('hidden');
+                    if (icon) icon.className = 'fa-solid fa-gavel';
+                } else {
+                    content.classList.add('hidden');
+                    if (icon) icon.className = 'fa-solid fa-gavel';
+                }
+            }
+        }
 
         function testO2ODongNai() {
             const introOverlay = document.getElementById('ocop-intro-overlay');
@@ -11834,12 +11745,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     introOverlay.classList.add('hidden');
                 }
             }
-            const provSelect = document.getElementById('sidebar-province-select');
+            const provSelect = document.getElementById('sidebar-province-select') || document.getElementById('province-select');
             if (provSelect) {
                 provSelect.value = 'Đồng Nai';
             }
             if (typeof onProvinceFilterChange === 'function') {
                 onProvinceFilterChange('Đồng Nai');
+            } else if (provSelect) {
+                provSelect.dispatchEvent(new Event('change'));
             }
             const prodSection = document.getElementById('products-section');
             if (prodSection) {
@@ -12083,25 +11996,28 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         // AUTH MODAL & ĐĂNG NHẬP
         // -------------------------------------------------------------
         function toggleAuthModal() {
-            if (typeof openPartnerRegistrationModal === 'function') {
-                openPartnerRegistrationModal();
+            const modal = document.getElementById('auth-modal');
+            if (!modal) return;
+            const isOpening = modal.classList.contains('hidden');
+            modal.classList.toggle('hidden');
+            if (isOpening) {
+                syncAuthModalViews();
             }
         }
-        window.toggleAuthModal = toggleAuthModal;
 
         const OCOP_USERS_KEY = 'ocop_users_db';
         const OCOP_CURRENT_USER_KEY = 'ocop_current_user';
 
         const DEFAULT_DEMO_USERS = [
             {
-                id: 'usr_xttm2026',
-                name: 'Trung Tâm Xúc Tiến Thương Mại OCOP',
-                loginId: 'doitac@ocop.vn',
-                email: 'doitac@ocop.vn',
+                id: 'usr_bgk2026',
+                name: 'Ban Giám Khảo Digital Fest 2026',
+                loginId: 'bgk2026@ocop.vn',
+                email: 'bgk2026@ocop.vn',
                 phone: '0988882026',
-                address: 'Mạng Lưới Showroom OCOP Toàn Quốc',
+                address: 'Hội đồng Thẩm định Quốc gia 2026',
                 password: '12345678',
-                role: 'Đối Tác Phân Phối & Quản Trị Showroom',
+                role: 'Ban Giám Khảo & Chuyên Gia Thẩm Định',
                 provider: 'Local',
                 verified: true
             },
@@ -12175,10 +12091,38 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         function updateHeaderUserUI() {
+            const user = getSavedCurrentUser();
             const userBtn = document.getElementById('user-btn');
-            if (userBtn) {
-                userBtn.style.display = 'none';
-                userBtn.classList.add('hidden');
+            if (!userBtn) return;
+            const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
+
+            if (user && user.name) {
+                const initial = (user.name || 'U').trim().charAt(0).toUpperCase();
+                const displayName = (user.name || '').trim().split(' ').pop() || user.name;
+                userBtn.innerHTML = `
+                    <span class="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0">${initial}</span>
+                    <span id="user-btn-label" class="font-bold text-xs truncate max-w-[90px] sm:max-w-[130px]">${escapeAIHtml(displayName)}</span>
+                `;
+                userBtn.title = `${user.name} (${user.role || 'Thành viên'})`;
+                userBtn.setAttribute('aria-label', `${user.name} (${user.role || 'Thành viên'})`);
+                userBtn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
+                userBtn.classList.add('bg-emerald-950/70', 'text-emerald-100', 'border-amber-400/60');
+            } else {
+                const signInMap = {
+                    vi: 'Đăng nhập',
+                    en: 'Sign in',
+                    zh: '登录',
+                    ko: '로그인',
+                    ja: 'ログイン'
+                };
+                userBtn.innerHTML = `
+                    <i class="fa-solid fa-user-shield text-amber-500 text-xs"></i>
+                    <span id="user-btn-label" class="font-bold text-xs">${signInMap[lang] || signInMap.vi}</span>
+                `;
+                userBtn.title = 'Đăng nhập / Tài khoản';
+                userBtn.setAttribute('aria-label', 'Đăng nhập / Tài khoản');
+                userBtn.classList.remove('bg-emerald-950/70', 'text-emerald-100', 'border-amber-400/60');
+                userBtn.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
             }
         }
 
@@ -12378,7 +12322,22 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             }
         }
 
-        function quickFillDemoJudge() {}
+        function quickFillDemoJudge() {
+            if (authTab !== 'login') {
+                switchAuthTab('login');
+            }
+            const nameInput = document.getElementById('auth-name');
+            const passInput = document.getElementById('auth-password');
+            if (nameInput) nameInput.value = 'bgk2026@ocop.vn';
+            if (passInput) passInput.value = '12345678';
+
+            const status = document.getElementById('auth-social-status');
+            if (status) {
+                status.textContent = '⚡ Đã tự động điền tài khoản Demo Ban Giám Khảo. Nhấn "Đăng Nhập" ngay!';
+                status.className = 'mb-3 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 px-3 py-2 text-xs leading-relaxed font-bold';
+                status.classList.remove('hidden');
+            }
+        }
 
         function togglePasswordVisibility(inputId, btn) {
             const input = document.getElementById(inputId);
@@ -12422,8 +12381,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     loginId: email,
                     email: email,
                     phone: '0988 882 026',
-                    address: 'Mạng Lưới Showroom OCOP Toàn Quốc',
-                    role: 'Đối tác HTX & Quản trị viên O2O',
+                    address: 'Google Workspace Verified Account',
+                    role: name.includes('Giám Khảo') ? 'Ban Giám Khảo & Chuyên Gia Thẩm Định' : 'Đối tác HTX & Quản trị viên O2O',
                     provider: 'Google',
                     verified: true,
                     createdAt: new Date().toISOString()
@@ -13610,6 +13569,42 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: 'AI OCOP コンボ相談アシスタント'
             },
 
+            // Thanh BGK 2026 (Judge Bar)
+            'i18n-judge-badge': {
+                vi: 'BGK 2026',
+                en: 'JURY 2026',
+                zh: '评委 2026',
+                ko: '심사위원 2026',
+                ja: '審査員 2026'
+            },
+            'i18n-judge-btn1': {
+                vi: '1. Đề Án B2B2C',
+                en: '1. B2B2C Project',
+                zh: '1. B2B2C 商业方案',
+                ko: '1. B2B2C 프로젝트',
+                ja: '1. B2B2C 提案書'
+            },
+            'i18n-judge-btn2': {
+                vi: '2. Dòng Tiền AI',
+                en: '2. AI Cash Flow',
+                zh: '2. AI 现金流',
+                ko: '2. AI 현금 흐름',
+                ja: '2. AI キャッシュフロー'
+            },
+            'i18n-judge-btn3': {
+                vi: '3. Voice Báo Cáo',
+                en: '3. Voice Report',
+                zh: '3. 语音汇报',
+                ko: '3. 음성 보고서',
+                ja: '3. 音声レポート'
+            },
+            'i18n-judge-btn4': {
+                vi: '4. Test O2O Đồng Nai',
+                en: '4. Test O2O Dong Nai',
+                zh: '4. 测试同奈 O2O',
+                ko: '4. 동나이 O2O 테스트',
+                ja: '4. ドンナイ O2O テスト'
+            },
 
             // Section 3.5 Why choose us badges
             'i18n-why-badge1': {
@@ -14231,15 +14226,13 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             updateVoucherLanguage();
             setAIChatWidgetVisibility(document.getElementById('ocop-intro-overlay').classList.contains('hidden'));
             renderWishlistItems();
-            enforceFull5LanguageSync(currentLanguage);
+            if (window.refreshProductReviewLanguage) window.refreshProductReviewLanguage();
+            enforceChallenge2026Translations(currentLanguage);
             updateHeaderUserUI();
             setTimeout(() => {
-                enforceFull5LanguageSync(currentLanguage);
+                enforceChallenge2026Translations(currentLanguage);
                 updateHeaderUserUI();
             }, 50);
-            setTimeout(() => {
-                enforceFull5LanguageSync(currentLanguage);
-            }, 200);
 
             try {
                 localStorage.setItem('ocop-language', currentLanguage);
@@ -14514,6 +14507,17 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 submitBtn.textContent = (submitMap[currentTab] && submitMap[currentTab][lang]) || submitMap.login[lang];
             }
 
+            const quickDemoBtnSpan = document.querySelector('#auth-quick-demo-container button span');
+            if (quickDemoBtnSpan) {
+                const demoMap = {
+                    vi: 'Điền nhanh Tài khoản Demo Ban Giám Khảo',
+                    en: 'Quick Fill Judge Demo Account',
+                    zh: '一键填入评委演示账号',
+                    ko: '심사위원 데모 계정 자동 입력',
+                    ja: '審査員デモアカウントを自動入力'
+                };
+                quickDemoBtnSpan.textContent = demoMap[lang] || demoMap.vi;
+            }
 
             const profileBadge = document.getElementById('auth-profile-badge');
             if (profileBadge) {
@@ -14594,24 +14598,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         // -------------------------------------------------------------
-        // ENFORCE FULL 5-LANGUAGE STRICT SYNC (VI | EN | ZH | KO | JA)
+        // ENFORCE CHALLENGE 2026 TRANSLATIONS (5-LANGUAGE STRICT LOCK)
         // -------------------------------------------------------------
-        function enforceFull5LanguageSync(lang) {
+        function enforceChallenge2026Translations(lang) {
             const l = ['vi', 'en', 'zh', 'ko', 'ja'].includes(lang) ? lang : 'vi';
 
             const setText = (id, map) => {
                 const el = document.getElementById(id);
                 if (el && map[l]) el.textContent = map[l];
             };
-
-            // Nút Onboard B2B2C trên Header
-            setText('i18n-header-onboard-btn', {
-                vi: 'Đăng Ký HTX',
-                en: 'Register Co-op',
-                zh: '合作社入驻',
-                ko: '협동조합 등록',
-                ja: '協同組合登録'
-            });
 
             // 1. Màn hình Intro (Overlay) & Nút hành động
             setText('i18n-intro-badge', {
@@ -14920,7 +14915,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             setText('i18n-sort-volume', { vi: 'Sản lượng số hóa: Cao nhất', en: 'Digitized Volume: Highest', zh: '数字化产量：最高', ko: '디지털 배분량: 높은순', ja: 'デジタル配分量：最高' });
             setText('i18n-sort-stars', { vi: 'Phân hạng: Ưu tiên OCOP 5 Sao', en: 'Tier: 5-Star OCOP Priority', zh: '等级：优先 5 星 OCOP', ko: '등급: 5성 OCOP 우선', ja: '等級：5つ星OCOP優先' });
             setText('i18n-toolbar-btn-reset', { vi: 'Đặt lại', en: 'Reset', zh: '重置', ko: '초기화', ja: 'リセット' });
-            // 7. Back to top
+
+            // 7. Floating Judge Dock
+            setText('i18n-judge-badge', { vi: 'BGK 2026', en: 'JURY 2026', zh: '评委 2026', ko: '심사위원 2026', ja: '審査員 2026' });
+            setText('i18n-judge-btn1', { vi: '1. Đề Án B2B2C', en: '1. B2B2C Proposal', zh: '1. B2B2C 方案', ko: '1. B2B2C 프로젝트', ja: '1. B2B2C計画' });
+            setText('i18n-judge-btn2', { vi: '2. Dòng Tiền AI', en: '2. AI Cash Flow', zh: '2. AI 现金流', ko: '2. AI 현금 흐름', ja: '2. AIキャッシュフロー' });
+            setText('i18n-judge-btn3', { vi: '3. Voice Báo Cáo', en: '3. Voice Report', zh: '3. 语音报表', ko: '3. 음성 보고', ja: '3. 音声レポート' });
+            setText('i18n-judge-btn4', { vi: '4. Test O2O Đồng Nai', en: '4. Test Dong Nai O2O', zh: '4. 测试同奈 O2O', ko: '4. 동나이 O2O 테스트', ja: '4. ドンナイO2Oテスト' });
+
+            // 8. Back to top
             setText('i18n-back-to-top', { vi: 'Lên đầu trang', en: 'Back to top', zh: '回到顶部', ko: '맨 위로', ja: 'トップへ戻る' });
 
             // 9. Chatbot Header
@@ -14938,26 +14941,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ko: '❖ 국가 OCOP 공식 인증 완료 • 쇼룸 좌표 실시간 동기화.',
                 ja: '❖ 国家OCOP認証取得済 • ショールーム座標リアルタイム同期。'
             });
-            // 10. Drawers & Modals Titles
-            setText('orders-drawer-title', {
-                vi: 'Nhật Ký Giao Dịch & Đối Soát Hệ Thống',
-                en: 'System Transaction & Reconciliation Logs',
-                zh: '系统交易与对账日志',
-                ko: '시스템 거래 및 정산 로그',
-                ja: 'システム取引＆照合ログ'
-            });
-            setText('cart-drawer-title', {
-                vi: 'Bảng Phân Tích Dòng Tiền Cửa Hàng (AI Simulated)',
-                en: 'Store Cash Flow Analysis Dashboard (AI Simulated)',
-                zh: '门店现金流分析看板 (AI 模拟)',
-                ko: '매장 현금 흐름 분석 대시보드 (AI 시뮬레이션)',
-                ja: '店舗キャッシュフロー分析ダッシュボード (AIシミュレーション)'
-            });
         }
-
-        const enforceChallenge2026Translations = enforceFull5LanguageSync;
-        window.enforceFull5LanguageSync = enforceFull5LanguageSync;
-        window.enforceChallenge2026Translations = enforceChallenge2026Translations;
 
         function setLanguage(lang) {
             const validLangs = ['vi', 'en', 'zh', 'ko', 'ja'];
