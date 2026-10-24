@@ -28,22 +28,11 @@
         /* Anti-Clutter, Affiliate Platform O2O, Financial Admin Theme         */
         /* ================================================================== */
 
-        /* 1. LOẠI BỎ HOÀN TOÀN WISHLIST & RETAIL ARTIFACTS */
-        #wishlist-btn,
-        [onclick="toggleWishlistDrawer()"] .wishlist-count,
-        .wishlist-badge,
-        .fa-heart,
-        .cart-voucher-row,
-        [id="wishlist-drawer"] {
-            /* Giữ nguyên để logic JS không bị vỡ, chỉ thu gọn bằng aria-hidden */
-        }
-        /* Ẩn badge số đỏ 0 trên header khi giỏ trống */
-        #cart-count:empty,
-        #cart-count[aria-hidden="true"] {
+        /* 1. B2B2C ARTIFACTS OPTIMIZATION */
+        #wishlist-btn, .wishlist-badge, #wishlist-drawer, #orders-drawer, #qr-modal, #wishlist-count {
             display: none !important;
         }
-        /* Ẩn wishlist count badge (số đỏ trái tim) */
-        #wishlist-count {
+        #cart-count:empty, #cart-count[aria-hidden="true"] {
             display: none !important;
         }
 
@@ -310,7 +299,7 @@
             width: 100% !important;
             height: 220px !important;
             overflow: hidden !important;
-            background: #020617 !important;
+            background: radial-gradient(circle, #164e3b 0%, #092c20 100%) !important;
             border-top-left-radius: 1.5rem !important;
             border-top-right-radius: 1.5rem !important;
         }
@@ -649,7 +638,7 @@
         }
 
         #product-grid .product-card * { will-change: auto !important; }
-        #scroll-ambient-background { display: none; }
+        #scroll-ambient-background { display: block !important; z-index: 1 !important; opacity: 1 !important; }
         body.catalog-browsing > main *,
         body.catalog-browsing > main *::before,
         body.catalog-browsing > main *::after,
@@ -685,44 +674,44 @@
         html {
             overflow-x: clip;
         }
-        body {
+        /* Dark Tech Base: #0d1117, linear-gradient(180deg, #07120e 0%, #0b0f14 100%) */
+        body, .bg-ocop-ambient {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0d1117;
-            background-image: linear-gradient(180deg, #07120e 0%, #0b0f14 100%);
-            color: #f1f5f9;
+            background-color: #06261b !important;
+            background-image:
+                radial-gradient(circle at 12% 18%, rgba(251, 191, 36, 0.25) 0%, transparent 40rem),
+                radial-gradient(circle at 88% 22%, rgba(16, 185, 129, 0.28) 0%, transparent 42rem),
+                radial-gradient(circle at 50% 60%, rgba(245, 158, 11, 0.16) 0%, transparent 48rem),
+                linear-gradient(160deg, #052218 0%, #0a3828 50%, #062319 100%) !important;
+            color: #f8fafc !important;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
         }
-        .bg-ocop-ambient {
-            background-color: #0d1117;
-            background-image:
-                radial-gradient(ellipse at 12% 10%, rgba(212, 175, 55, 0.08), transparent 36rem),
-                radial-gradient(ellipse at 88% 22%, rgba(16, 185, 129, 0.08), transparent 40rem),
-                radial-gradient(ellipse at 50% 80%, rgba(6, 78, 59, 0.12), transparent 45rem),
-                linear-gradient(180deg, #07120e 0%, #0b0f14 100%);
-        }
+        /* Translucent glass styling: background: rgba(17, 24, 39, 0.7) !important; */
         .glass-panel,
         .glass-card,
         #catalog-sidebar .glass-panel,
-        #catalog-sidebar > div > div {
-            background: rgba(17, 24, 39, 0.7) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border: 1px solid rgba(212, 175, 55, 0.25) !important;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.08), 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-            color: #f1f5f9;
+        #catalog-sidebar > div > div,
+        .why-us-card {
+            background: linear-gradient(155deg, rgba(12, 54, 39, 0.88) 0%, rgba(7, 34, 25, 0.92) 100%) !important;
+            border: 1px solid rgba(251, 191, 36, 0.42) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.15), 0 12px 35px rgba(0, 0, 0, 0.6) !important;
+            color: #f8fafc;
         }
         #product-grid .product-card {
-            background: rgba(17, 24, 39, 0.7) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border: 1px solid rgba(212, 175, 55, 0.25) !important;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.08) !important;
+            background: linear-gradient(165deg, rgba(14, 62, 45, 0.92) 0%, rgba(8, 38, 28, 0.96) 100%) !important;
+            backdrop-filter: blur(14px) !important;
+            -webkit-backdrop-filter: blur(14px) !important;
+            border: 1.5px solid rgba(251, 191, 36, 0.45) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(251, 191, 36, 0.15) !important;
             transition: all 0.25s ease-in-out !important;
         }
         #product-grid .product-card:hover {
-            border-color: rgba(212, 175, 55, 0.6) !important;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 175, 55, 0.2) !important;
+            border-color: #fde047 !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(251, 191, 36, 0.45) !important;
+            transform: translateY(-6px) scale(1.015);
         }
         #product-grid .product-card h3 {
             color: #f8fafc !important;
@@ -835,13 +824,7 @@
         .safe-bottom {
             padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
         }
-        15% { transform: scale(1.04) rotate(-3deg); }
-            30% { transform: scale(1.04) rotate(3deg); }
-            45% { transform: scale(1) rotate(0deg); }
-        }
-        .lucky-card-pulse {
-            animation: luckyWiggle 3.5s ease-in-out infinite;
-        }
+
         .cat-side-btn.active {
             background-color: #0F382C;
             border-color: #D4AF37;
@@ -1320,8 +1303,7 @@
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.35), inset 0 0 15px rgba(212, 175, 55, 0.15);
             animation: none;
         }
-        50% { transform: scale(1.02); box-shadow: 0 0 35px rgba(212, 175, 55, 0.7); }
-        }
+
         .intro-mega-btn {
             background: linear-gradient(110deg, #F5D061 0%, #FFDF00 25%, #E6B800 50%, #FFEA79 75%, #D4AF37 100%);
             background-size: 200% auto;
@@ -1629,14 +1611,7 @@
                 min-height: 280px;
             }
         }
-        15% { transform: scale(1.12) rotate(-5deg); }
-            30% { transform: scale(1.12) rotate(5deg); }
-            45% { transform: scale(1.05) rotate(-3deg); }
-            60% { transform: scale(1) rotate(0deg); }
-        }
-        .gift-wobble-anim {
-            animation: giftHeartbeat 3.2s ease-in-out infinite;
-        }
+
         /* ==============================================================
            THEME HOÀNG KIM & NGỌC BÍCH - OCOP LUXURY HERITAGE DESIGN
            ============================================================== */
@@ -2141,12 +2116,13 @@
             isolation: isolate;
             overflow: hidden;
             padding: clamp(1.25rem, 3vw, 2.75rem);
-            border: 1px solid rgba(212, 175, 55, 0.35);
+            border: 2px solid rgba(251, 191, 36, 0.55) !important;
             border-radius: 2rem;
             background:
-                radial-gradient(ellipse at 95% 0%, rgba(212, 175, 55, 0.15), transparent 30rem),
-                linear-gradient(135deg, rgba(7, 18, 14, 0.95), rgba(11, 25, 20, 0.98));
-            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
+                radial-gradient(circle at 85% 15%, rgba(251, 191, 36, 0.32), transparent 32rem),
+                radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.28), transparent 32rem),
+                linear-gradient(135deg, rgba(10, 52, 38, 0.95), rgba(6, 34, 24, 0.97)) !important;
+            box-shadow: 0 0 45px rgba(251, 191, 36, 0.25), 0 25px 60px rgba(0, 0, 0, 0.75) !important;
         }
         #shop-hero > div > div:first-child { position: relative; z-index: 1; }
         #shop-hero > div > div:last-child { position: relative; z-index: 1; }
@@ -2314,9 +2290,7 @@
         }
         body:has(#ocop-intro-overlay:not(.hidden)) #ai-chat-widget,
         #ai-chat-widget[hidden], #intro-voucher-description { display: none !important; }
-        #ocop-intro-overlay #lucky-gift-code { color: #000 !important; background: #ecd788; }
-        #ocop-intro-overlay #lucky-gift-description { color: #f4edce !important; overflow-wrap: anywhere; }
-        #ocop-intro-overlay #intro-gift-result { background: #143c2e; }
+
         @media (max-width: 767px) {
             input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
             select, textarea { font-size: 16px !important; }
@@ -2326,9 +2300,7 @@
             #ocop-intro-overlay #intro-lucky-card { min-width: 0; max-width: 100%; }
             #ocop-intro-overlay .intro-pillars > div { height: auto; min-height: 4.5rem; }
             #ocop-intro-overlay #intro-gift-result { align-items: stretch; gap: 12px; }
-            #ocop-intro-overlay #intro-gift-result > div { justify-content: flex-start; flex-wrap: wrap; }
-            #ocop-intro-overlay #lucky-gift-description { text-align: left; justify-content: flex-start; line-height: 1.6; }
-            #ocop-intro-overlay #btn-draw-gift { min-height: 44px; width: 100%; }
+
             #ocop-intro-overlay .province-map { min-height: 240px; height: min(50svh, 380px); }
             #ocop-intro-overlay .province-map-select { max-width: 100%; width: 100%; }
             #ai-chat-window { width: calc(100vw - 24px); max-height: calc(100dvh - 100px); }
@@ -2363,23 +2335,7 @@
         /* ============================================================== */
         /* HOẠT ẢNH MINH HỌA VÌ SAO CHỌN ĐẶC SẢN OCOP (IMAGE 3) */
         /* ============================================================== */
-        50% { transform: translateY(-22px) rotate(15deg); }
-        }
-        50% { transform: translateY(-28px) rotate(-18deg); }
-        }
-        50% { transform: translateY(-25px) rotate(22deg); }
-        }
-        50% { transform: translateY(-20px) rotate(-14deg); }
-        }
-        50% { transform: translateY(-14px) scale(1.08); opacity: 0.95; }
-            100% { transform: translateY(-26px) scale(1.2); opacity: 0; }
-        }
-        50% { transform: translateY(-8px) scale(1.03); }
-        }
-        50% { transform: translateY(-10px) scale(1.05); }
-        }
-        50% { transform: translateY(-8px) scale(1.06); }
-        }
+
         .why-us-card {
             background: rgba(10, 26, 20, 0.85);
             border: 1px solid rgba(212, 175, 55, 0.35);
@@ -2417,30 +2373,41 @@
         #ocop-store-modal .relative.bg-white,
         #ocop-all-stores-modal .relative.bg-white,
         #ai-financial-modal .relative.bg-white,
-        #ai-challenge-proposal-modal .relative.bg-white,
-        
+        #ai-challenge-proposal-modal .relative.bg-white {
+            background: linear-gradient(160deg, #071e16 0%, #05140f 100%) !important;
+            border: 1px solid rgba(251, 191, 36, 0.45) !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(251, 191, 36, 0.2) !important;
+            color: #f8fafc !important;
+        }
+
         #auth-modal h3, #quickview-modal h3, #ocop-store-modal h3, #ocop-all-stores-modal h3,
-        #ai-financial-modal h3, #ai-challenge-proposal-modal h3, 
+        #ai-financial-modal h3, #ai-challenge-proposal-modal h3 {
+            color: #fef08a !important;
+        }
+
         #auth-modal .text-gray-900, #auth-modal .text-gray-800, #auth-modal label,
         #quickview-modal .text-gray-900, #quickview-modal .text-gray-800,
         #ocop-store-modal .text-gray-900, #ocop-store-modal .text-gray-800,
         #ai-financial-modal .text-gray-900, #ai-financial-modal .text-gray-800,
-        #ai-challenge-proposal-modal .text-gray-900, #ai-challenge-proposal-modal .text-gray-800,
-        
+        #ai-challenge-proposal-modal .text-gray-900, #ai-challenge-proposal-modal .text-gray-800 {
+            color: #f1f5f9 !important;
+        }
+
         #auth-modal .text-gray-500, #auth-modal .text-gray-600, #auth-modal .text-gray-700,
         #quickview-modal .text-gray-500, #quickview-modal .text-gray-600,
         #ocop-store-modal .text-gray-500, #ocop-store-modal .text-gray-600,
         #ai-financial-modal .text-gray-500, #ai-financial-modal .text-gray-600,
-        #ai-challenge-proposal-modal .text-gray-500, #ai-challenge-proposal-modal .text-gray-600,
-        
+        #ai-challenge-proposal-modal .text-gray-500, #ai-challenge-proposal-modal .text-gray-600 {
+            color: #cbd5e1 !important;
+        }
+
         #auth-modal input, #auth-modal select, #auth-modal textarea,
         #quickview-modal input, #quickview-modal select,
         #ocop-store-modal input,
-        #qr-modal input,
         #ai-financial-modal input:not([type="range"]) {
             background: rgba(17, 24, 39, 0.8) !important;
-            border-color: rgba(212, 175, 55, 0.25) !important;
-            color: #f1f5f9 !important;
+            border-color: rgba(251, 191, 36, 0.3) !important;
+            color: #f8fafc !important;
         }
         #auth-modal .bg-gray-100, #auth-modal .bg-gray-50,
         #quickview-modal .bg-gray-50, #quickview-modal .bg-gray-100,
@@ -2573,8 +2540,11 @@
         #ai-financial-modal .bg-emerald-50, #ai-financial-modal .bg-blue-50, #ai-financial-modal .bg-purple-50,
         #ai-challenge-proposal-modal .bg-amber-50, #ai-challenge-proposal-modal .bg-amber-50\/90, #ai-challenge-proposal-modal .bg-amber-50\/80, #ai-challenge-proposal-modal .bg-amber-50\/50,
         #ai-challenge-proposal-modal .bg-emerald-50, #ai-challenge-proposal-modal .bg-emerald-50\/50,
-        #ai-challenge-proposal-modal .bg-blue-50\/50, #ai-challenge-proposal-modal .bg-purple-50\/50, #ai-challenge-proposal-modal .bg-rose-50\/50,
-        
+        #ai-challenge-proposal-modal .bg-blue-50\/50, #ai-challenge-proposal-modal .bg-purple-50\/50, #ai-challenge-proposal-modal .bg-rose-50\/50 {
+            background-color: rgba(15, 23, 42, 0.85) !important;
+            border-color: rgba(251, 191, 36, 0.3) !important;
+            color: #f8fafc !important;
+        }
 
         /* Sửa màu chữ các tiêu đề phụ và bảng trong Modal cho nổi bật trên nền tối */
         #ai-financial-modal .text-amber-950, #ai-financial-modal .text-amber-900, #ai-financial-modal .text-amber-800,
@@ -2582,7 +2552,9 @@
             color: #fbbf24 !important;
         }
         #ai-financial-modal .text-emerald-900, #ai-financial-modal .text-emerald-800, #ai-financial-modal .text-ocopGreen,
-        #ai-challenge-proposal-modal .text-emerald-900, #ai-challenge-proposal-modal .text-ocopGreen,
+        #ai-challenge-proposal-modal .text-emerald-900, #ai-challenge-proposal-modal .text-ocopGreen {
+            color: #34d399 !important;
+        }
         
         #ai-financial-modal .text-blue-900, #ai-financial-modal .text-blue-800, #ai-financial-modal .text-blue-700,
         #ai-challenge-proposal-modal .text-blue-900, #ai-challenge-proposal-modal .text-blue-800 {
@@ -2596,13 +2568,21 @@
             color: #fb7185 !important;
         }
         #ai-financial-modal thead, #ai-challenge-proposal-modal thead {
-            background: rgba(212, 175, 55, 0.15) !important;
+            background: rgba(251, 191, 36, 0.18) !important;
             color: #fde047 !important;
         }
         #ai-financial-modal tbody tr:hover, #ai-challenge-proposal-modal tbody tr:hover {
-            background: rgba(16, 185, 129, 0.12) !important;
+            background: rgba(16, 185, 129, 0.15) !important;
         }
         #ai-challenge-proposal-modal .text-gray-700, #ai-financial-modal .text-gray-700 {
+            color: #cbd5e1 !important;
+        }
+        #ai-financial-modal .text-gray-900, #ai-challenge-proposal-modal .text-gray-900,
+        #ocop-store-modal .text-gray-900, #quickview-modal .text-gray-900 {
+            color: #f8fafc !important;
+        }
+        #ai-financial-modal .text-gray-500, #ai-challenge-proposal-modal .text-gray-500,
+        #ocop-store-modal .text-gray-500, #quickview-modal .text-gray-500 {
             color: #cbd5e1 !important;
         }
     </style>
@@ -2622,7 +2602,7 @@
         <div class="absolute -bottom-24 right-1/4 w-96 h-96 rounded-full bg-yellow-400/10 blur-3xl animate-aura-breathe" style="animation-delay: 1.5s;"></div>
 
         <!-- Họa tiết Trống Đồng Đông Sơn khổng lồ xoay chậm bên sườn trái (Cultural Watermark) -->
-        <div class="absolute -left-64 top-1/4 w-[580px] h-[580px] opacity-[0.035] text-amber-900 animate-spin-ultra-slow select-none">
+        <div class="absolute -left-64 top-1/4 w-[580px] h-[580px] opacity-[0.09] text-amber-400 animate-spin-ultra-slow select-none">
             <svg viewBox="0 0 200 200" class="w-full h-full fill-current">
                 <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" stroke-width="2" />
                 <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" />
@@ -2636,7 +2616,7 @@
         </div>
 
         <!-- Họa tiết Hoa Sen khổng lồ bên sườn phải (Lotus Watermark) -->
-        <div class="absolute -right-52 top-1/2 w-[520px] h-[520px] opacity-[0.035] text-emerald-900 animate-spin-ultra-slow-rev select-none">
+        <div class="absolute -right-52 top-1/2 w-[520px] h-[520px] opacity-[0.09] text-emerald-400 animate-spin-ultra-slow-rev select-none">
             <svg viewBox="0 0 200 200" class="w-full h-full fill-current">
                 <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" />
                 <path d="M100,30 C120,65 140,85 150,110 C140,140 110,160 100,170 C90,160 60,140 50,110 C60,85 80,65 100,30 Z" fill="none" stroke="currentColor" stroke-width="2" />
@@ -2884,21 +2864,21 @@
             <div class="intro-actions w-full max-w-3xl space-y-3.5 pt-1">
                 <!-- 3 Nút Hành Động Phía Dưới -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 w-full">
-                    <!-- Nút 1 (Xanh lá - Trái): ĐIỀU HƯỚNG SHOWROOM O2O -->
-                    <button id="btn-intro-action-showroom" onclick="enterOcopMarket('all', () => openAllStoresModal())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white border border-emerald-400/50 shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Định vị cửa hàng vật lý và showroom O2O">
-                        <i class="fa-solid fa-store text-emerald-300 text-sm group-hover:scale-110 transition-transform"></i>
-                        <span id="i18n-btn-intro-showroom" class="tracking-wide">ĐIỀU HƯỚNG SHOWROOM O2O</span>
+                    <!-- Nút 1 (Ngọc Bích Sáng - Trái): KHÁM PHÁ SHOWROOM O2O -->
+                    <button id="btn-intro-action-showroom" onclick="enterOcopMarket('all', () => openAllStoresModal())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white border border-amber-400/40 shadow-[0_0_22px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Mở danh bạ showroom O2O toàn quốc">
+                        <i class="fa-solid fa-store text-amber-300 text-sm group-hover:scale-110 transition-transform"></i>
+                        <span id="i18n-btn-intro-showroom" class="tracking-wide">KHÁM PHÁ SHOWROOM O2O</span>
                     </button>
 
-                    <!-- Nút 2 (Đỏ rượu/Nâu - Giữa): QUẢN TRỊ DÒNG TIỀN AI -->
-                    <button id="btn-intro-action-finance" onclick="enterOcopMarket('all', () => openFinancialDashboardModal())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-amber-700 via-rose-900 to-amber-900 hover:from-amber-600 hover:to-rose-800 text-amber-100 border border-amber-400/60 shadow-[0_0_22px_rgba(217,119,6,0.45)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Mở bảng điều khiển tài chính AI Financial Engine">
-                        <i class="fa-solid fa-chart-line text-amber-300 text-sm group-hover:scale-110 transition-transform"></i>
+                    <!-- Nút 2 (Hoàng Kim Vương Giả - Giữa / Tâm Điểm): QUẢN TRỊ DÒNG TIỀN AI -->
+                    <button id="btn-intro-action-finance" onclick="enterOcopMarket('all', () => openFinancialDashboardModal())" class="group relative px-4 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 border border-yellow-200 shadow-[0_0_28px_rgba(251,191,36,0.65)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Khởi chạy Bảng Quản Trị Tài Chính B2B2C & Giọng Nói 3 Miền">
+                        <i class="fa-solid fa-chart-line text-slate-950 text-sm group-hover:scale-110 transition-transform"></i>
                         <span id="i18n-btn-intro-finance" class="tracking-wide">QUẢN TRỊ DÒNG TIỀN AI</span>
                     </button>
 
-                    <!-- Nút 3 (Xanh dương - Phải): TRUY XUẤT NGUỒN GỐC & MAP -->
-                    <button id="btn-intro-action-trace" onclick="enterOcopMarket('all', () => scrollToProducts())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white border border-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.35)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Xem chứng nhận 4-5 sao và bản đồ chuỗi cung ứng">
-                        <i class="fa-solid fa-certificate text-cyan-300 text-sm group-hover:scale-110 transition-transform"></i>
+                    <!-- Nút 3 (Ngọc Bích Đậm Hoàng Gia - Phải): TRUY XUẤT NGUỒN GỐC & MAP -->
+                    <button id="btn-intro-action-trace" onclick="enterOcopMarket('all', () => scrollToProducts())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-emerald-800 via-teal-800 to-emerald-900 hover:from-emerald-700 hover:to-teal-700 text-amber-200 border border-amber-400/60 shadow-[0_0_22px_rgba(16,185,129,0.35)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Xem chứng nhận 4-5 sao và bản đồ chuỗi cung ứng">
+                        <i class="fa-solid fa-certificate text-amber-300 text-sm group-hover:scale-110 transition-transform"></i>
                         <span id="i18n-btn-intro-trace" class="tracking-wide">TRUY XUẤT NGUỒN GỐC & MAP</span>
                     </button>
                 </div>
@@ -3080,16 +3060,16 @@
         <section id="shop-hero" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-100 to-amber-200 text-amber-950 border border-amber-400 px-4 py-1.5 rounded-full text-xs font-black shadow-xs">
-                        <i class="fa-solid fa-trophy text-amber-700 text-sm"></i>
-                        <span id="i18n-hero-badge">AI Digital Business Challenge 2026 • Đề Án Hệ Sinh Thái Số OCOP 4.0</span>
+                    <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-400/25 via-emerald-400/20 to-amber-400/25 border border-amber-400/50 px-4 py-1.5 rounded-full text-xs font-black text-amber-300 w-fit mb-1 shadow-md">
+                        <i class="fa-solid fa-award text-amber-400"></i>
+                        <span id="i18n-hero-badge">🌟 Không Gian Triển Lãm & Xúc Tiến Thương Mại Đặc Sản OCOP Quốc Gia</span>
                     </div>
-                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-[1.15]">
-                        <span id="i18n-hero-title1">Bản Đồ Số OCOP,</span> <br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-ocopGreen via-emerald-700 to-amber-700" id="i18n-hero-title2">Khơi Nguồn Di Sản Việt</span>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.15]" data-title="Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt">
+                        <span id="i18n-hero-title1" data-legacy="Bản Đồ Số OCOP,">Tinh Hoa Đặc Sản Việt,</span> <br>
+                        <span id="i18n-hero-title2" data-legacy="Khơi Nguồn Di Sản Việt" style="background: linear-gradient(90deg, #fde047 0%, #fbbf24 45%, #34d399 100%) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;">Vươn Tầm Thương Hiệu Số 63 Tỉnh Thành</span>
                     </h2>
-                    <p class="text-gray-700 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc">
-                        Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương tự động hóa vận hành, quản trị doanh thu, tiền lời, chiết khấu real-time thông qua trợ lý AI Copilot thông minh.
+                    <p class="text-emerald-100/90 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc">
+                        Khám phá 252 đặc sản OCOP 4-5 Sao chuẩn vị bản địa. Kết nối trực tiếp du khách & doanh nghiệp B2B tới tận vườn, hợp tác xã và hệ thống Showroom O2O chính hãng trên toàn quốc.
                     </p>
 
                     <!-- 4 FEATURE CARDS (ĐIỀU PHỐI ĐẶC SẢN OCOP O2O) -->
@@ -3116,21 +3096,21 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-4 gap-2 sm:gap-3 max-w-xl pt-2 border-t border-amber-200/80">
-                        <div class="p-2 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-center">
-                            <span class="block text-base sm:text-xl font-black text-ocopGreen">0%</span>
-                            <span class="text-[9px] sm:text-[10px] text-gray-700 font-bold leading-tight" id="i18n-hero-stat1">Sai Số Tài Chính</span>
+                        <div class="p-2 rounded-xl bg-emerald-950/80 border border-amber-400/40 text-center shadow-md">
+                            <span class="block text-base sm:text-xl font-black text-amber-300">252+</span>
+                            <span class="text-[9px] sm:text-[10px] text-amber-100 font-bold leading-tight" id="i18n-hero-stat1" data-legacy="Sai Số Tài Chính">Tuyệt Phẩm Đặc Sản</span>
                         </div>
-                        <div class="p-2 rounded-xl bg-amber-50/80 border border-amber-200/80 text-center">
-                            <span class="block text-base sm:text-xl font-black text-amber-800">+18.4%</span>
-                            <span class="text-[9px] sm:text-[10px] text-gray-700 font-bold leading-tight" id="i18n-hero-stat2" data-legacy="Tăng Tiền Lời">Tăng Lợi Nhuận Ròng</span>
+                        <div class="p-2 rounded-xl bg-emerald-950/80 border border-emerald-400/40 text-center shadow-md">
+                            <span class="block text-base sm:text-xl font-black text-emerald-300">63</span>
+                            <span class="text-[9px] sm:text-[10px] text-emerald-100 font-bold leading-tight" id="i18n-hero-stat2" data-legacy="Tăng Tiền Lời">Tỉnh Thành Hội Tụ</span>
                         </div>
-                        <div class="p-2 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-center">
-                            <span class="block text-base sm:text-xl font-black text-ocopGreen">&gt;95%</span>
-                            <span class="text-[9px] sm:text-[10px] text-gray-700 font-bold leading-tight" id="i18n-hero-stat3">Độ Chuẩn RAG AI</span>
+                        <div class="p-2 rounded-xl bg-emerald-950/80 border border-amber-400/40 text-center shadow-md">
+                            <span class="block text-base sm:text-xl font-black text-amber-300">500+</span>
+                            <span class="text-[9px] sm:text-[10px] text-amber-100 font-bold leading-tight" id="i18n-hero-stat3" data-legacy="Độ Chuẩn RAG AI">Showroom & HTX O2O</span>
                         </div>
-                        <div class="p-2 rounded-xl bg-amber-50/80 border border-amber-200/80 text-center">
-                            <span class="block text-base sm:text-xl font-black text-amber-800">&lt;3s</span>
-                            <span class="text-[9px] sm:text-[10px] text-gray-700 font-bold leading-tight" id="i18n-hero-stat4">Tốc Độ Phản Hồi</span>
+                        <div class="p-2 rounded-xl bg-emerald-950/80 border border-yellow-400/40 text-center shadow-md">
+                            <span class="block text-base sm:text-xl font-black text-yellow-300">4★ - 5★</span>
+                            <span class="text-[9px] sm:text-[10px] text-yellow-100 font-bold leading-tight" id="i18n-hero-stat4" data-legacy="Tốc Độ Phản Hồi">Chuẩn OCOP Quốc Gia</span>
                         </div>
                     </div>
                     <div class="flex flex-wrap items-center justify-start gap-2.5 sm:gap-3 pt-3">
@@ -3174,7 +3154,7 @@
                                     <p id="hero-product-stars" class="text-[11px] font-medium" style="color: #fbbf24 !important;">Điểm Bán O2O • Định Vị</p>
                                 </div>
                             </div>
-                            <span id="hero-product-price" class="flex-shrink-0 font-extrabold text-[11px] text-right leading-tight px-2.5 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-400/40" style="color: #34d399 !important;">★ OCOP 4 Sao Đồng Nai • 100% Thảo Dược Tự Nhiên</span>
+                            <span id="hero-product-price" class="flex-shrink-0 font-extrabold text-[11px] text-right leading-tight px-2.5 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-400/40" style="color: #34d399 !important;">★ OCOP 4 Sao Đồng Nai • 100% Thảo Dược Tự Nhiên • Đã Xác Thực Điểm Bán O2O</span>
                         </div>
                     </div>
                 </div>
@@ -3902,11 +3882,11 @@
                                 <i class="fa-solid fa-arrow-down-short-wide text-amber-400 text-[11px]"></i>
                                 <label for="product-sort-select" class="sr-only">Sắp xếp sản phẩm</label>
                                 <select id="product-sort-select" onchange="changeProductSort(this.value)" class="bg-[#0d1b15] text-amber-200 font-extrabold text-xs focus:outline-none cursor-pointer pr-1 border-none">
-                                    <option value="default" id="i18n-sort-default" class="bg-[#0d1b15] text-amber-200 font-bold">Đặc sản tiêu biểu</option>
+                                    <option value="default" id="i18n-sort-default" class="bg-[#0d1b15] text-amber-200 font-bold">Đặc sản tiêu biểu toàn quốc</option>
                                     <option value="stars-desc" id="i18n-sort-stars" class="bg-[#0d1b15] text-amber-200 font-bold">Chứng nhận OCOP 5 Sao → 4 Sao</option>
-                                    <option value="rating-desc" id="i18n-sort-volume" class="bg-[#0d1b15] text-amber-200 font-bold">Được quan tâm nhất</option>
-                                    <option value="price-asc" id="i18n-sort-margin-asc" class="bg-[#0d1b15] text-amber-200 font-bold">Giá tham khảo: Thấp → Cao</option>
-                                    <option value="price-desc" id="i18n-sort-margin-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Giá tham khảo: Cao → Thấp</option>
+                                    <option value="rating-desc" id="i18n-sort-volume" class="bg-[#0d1b15] text-amber-200 font-bold">Được du khách & B2B quan tâm nhất</option>
+                                    <option value="price-asc" id="i18n-sort-margin-asc" class="bg-[#0d1b15] text-amber-200 font-bold">Giá tham khảo tại HTX: Thấp → Cao</option>
+                                    <option value="price-desc" id="i18n-sort-margin-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Giá tham khảo tại HTX: Cao → Thấp</option>
                                 </select>
                             </div>
 
@@ -3960,8 +3940,8 @@
                 <div class="flex items-start space-x-2">
                     <img src="chat-avatar.jpg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
-                        <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào! Trợ lý AI Copilot sẵn sàng định vị Showroom O2O và phân tích doanh thu, tiền lời, chiết khấu (CHM).</p>
-                        <p class="mt-1.5" id="chat-guidance">Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.</p>
+                        <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào! Tôi là AI OCOP Sales Copilot — Đại sứ Văn hóa số hóa 252 đặc sản OCOP 63 tỉnh thành, tư vấn quà tặng B2B, chỉ đường Showroom O2O và Trợ lý Quản trị Tài chính AI cho HTX.</p>
+                        <p class="mt-1.5" id="chat-guidance">Anh/chị có thể nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn các đề xuất tư vấn & đối soát bên dưới nhé.</p>
                         <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">❖ Hệ thống đã xác thực chứng nhận OCOP Quốc gia • Dữ liệu tọa độ điểm bán đồng bộ real-time.</p>
                     </div>
                 </div>
@@ -5396,64 +5376,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         // -------------------------------------------------------------
         // HIỆU ỨNG PHÁO HOA CONFETTI VÀNG KIM KHI BỐC QUÀ
         // -------------------------------------------------------------
-        function triggerGoldConfetti() {
-            const canvas = document.getElementById('intro-confetti-canvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const confetti = [];
-            const colors = ['#FFDF00', '#F5D061', '#10B981', '#FFFFFF', '#FFA500'];
-            const count = 48;
-
-            for (let i = 0; i < count; i++) {
-                confetti.push({
-                    x: canvas.width / 2 + (Math.random() - 0.5) * 260,
-                    y: canvas.height * 0.52 + (Math.random() - 0.5) * 60,
-                    w: Math.random() * 8 + 5,
-                    h: Math.random() * 9 + 5,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    vx: (Math.random() - 0.5) * 16,
-                    vy: -Math.random() * 14 - 5,
-                    rotation: Math.random() * 360,
-                    vr: (Math.random() - 0.5) * 12,
-                    gravity: 0.38,
-                    alpha: 1
-                });
-            }
-
-            function renderConfetti() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let alive = false;
-
-                confetti.forEach(c => {
-                    c.x += c.vx;
-                    c.y += c.vy;
-                    c.vy += c.gravity;
-                    c.rotation += c.vr;
-                    c.alpha -= 0.012;
-
-                    if (c.alpha > 0) {
-                        alive = true;
-                        ctx.save();
-                        ctx.translate(c.x, c.y);
-                        ctx.rotate((c.rotation * Math.PI) / 180);
-                        ctx.fillStyle = c.color;
-                        ctx.globalAlpha = Math.max(0, c.alpha);
-                        ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
-                        ctx.restore();
-                    }
-                });
-
-                if (alive) {
-                    requestAnimationFrame(renderConfetti);
-                } else {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }
-            }
-            renderConfetti();
-        }
+        function triggerGoldConfetti() {}
 
         // -------------------------------------------------------------
         // ĐỘNG CƠ HẠT BỤI SAO VÀNG KIM & ĐOM ĐÓM HOÀNG GIA SỐNG ĐỘNG (LIVING STARDUST)
@@ -5785,35 +5708,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             }, 460);
         }
 
-        function openLuckyGift() {
-            if (activeVoucher) return;
-            const resultEl = document.getElementById('intro-gift-result');
-            const btnEl = document.getElementById('btn-draw-gift');
-            const voucher = luckyVoucherOffers[Math.floor(Math.random() * luckyVoucherOffers.length)];
-            activeVoucher = voucher;
-            resultEl.classList.remove('hidden');
-            document.getElementById('lucky-gift-code').innerText = voucher.code;
-            document.getElementById('lucky-gift-description').innerHTML =
-                `<i class="fa-solid fa-circle-check mr-1.5 text-emerald-700 text-sm"></i>Giảm ${voucher.discount.toLocaleString('vi-VN')}đ cho đơn từ ${voucher.minOrder.toLocaleString('vi-VN')}đ. Áp dụng một lần, không cộng dồn ưu đãi.`;
-            btnEl.innerHTML = `<i class="fa-solid fa-check-double text-ocopGreen"></i><span>Đã Nhận Lộc Vàng</span>`;
-            btnEl.disabled = true;
-            btnEl.classList.add('opacity-80', 'cursor-not-allowed');
-            renderCartItems();
-
-            // Bắn pháo hoa vàng kim & phát âm thanh chuông may mắn!
-            triggerGoldConfetti();
-            playChimeSound();
-
-            updateVoucherLanguage();
-            const voucherRecMsgs = {
-                vi: `Bạn nhận được ${voucher.code}: giảm ${voucher.discount.toLocaleString('vi-VN')}đ cho đơn từ ${voucher.minOrder.toLocaleString('vi-VN')}đ.`,
-                en: `You received ${voucher.code}: VND ${voucher.discount.toLocaleString('en-US')} off orders from VND ${voucher.minOrder.toLocaleString('en-US')}.`,
-                zh: `恭喜获得 ${voucher.code}：满 ${voucher.minOrder.toLocaleString('zh-CN')}₫ 立减 ${voucher.discount.toLocaleString('zh-CN')}₫。`,
-                ko: `축하합니다! ${voucher.code} 수령: ${voucher.minOrder.toLocaleString('ko-KR')}₫ 이상 주문 시 ${voucher.discount.toLocaleString('ko-KR')}₫ 할인.`,
-                ja: `おめでとうございます！${voucher.code} 獲得：${voucher.minOrder.toLocaleString('ja-JP')}₫ 以上で ${voucher.discount.toLocaleString('ja-JP')}₫ 割引。`
-            };
-            showToast(voucherRecMsgs[currentLanguage] || voucherRecMsgs.vi, 'success');
-        }
+        function openLuckyGift() {}
 
         function scrollToProducts() {
             const sec = document.getElementById('products-section');
@@ -11023,12 +10918,16 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             ${getProductPromoPercent(p) > 0 ? `<span data-promo-reference="${p.id}" class="text-xs text-gray-400"><s>${getProductPromoReferenceLabel(p)}</s></span>` : ''}
                             <span class="text-lg break-words font-black text-red-600">${getProductPriceLabel(p)}</span>
                         </div>
-                        <div class="flex items-stretch gap-2">
-                            <button onclick="closeQuickView(); openStoreLocator(${p.id});" class="min-h-12 flex-1 rounded-2xl bg-amber-500 hover:bg-amber-600 py-3 text-xs font-bold text-white shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <button onclick="closeQuickView(); openStoreLocator(${p.id});" class="min-h-12 rounded-2xl bg-amber-500 hover:bg-amber-600 py-2.5 px-2 text-xs font-bold text-white shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer" title="Định vị Điểm Bán O2O & Chỉ đường Maps">
                                 <i class="fa-solid fa-store text-amber-100"></i>
                                 <span>${storeLocBtnMap[currentLanguage] || storeLocBtnMap.vi}</span>
                             </button>
-                            <button onclick="addToCart(${p.id}); closeQuickView();" class="min-h-12 flex-1 rounded-2xl bg-emerald-800 hover:bg-emerald-700 py-3 text-xs font-bold text-white shadow-lg transition flex items-center justify-center space-x-1.5 cursor-pointer border border-emerald-400/50">
+                            <button type="button" onclick="closeQuickView(); if(typeof toggleAIChat==='function') toggleAIChat();" class="min-h-12 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 py-2.5 px-2 text-xs font-bold text-slate-950 shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer" title="Hỏi Trợ Lý AI Kể Chuyện Di Sản & Thổ Nhưỡng">
+                                <i class="fa-solid fa-robot text-slate-950"></i>
+                                <span>Tư Vấn AI</span>
+                            </button>
+                            <button onclick="addToCart(${p.id}); closeQuickView();" class="min-h-12 rounded-2xl bg-emerald-800 hover:bg-emerald-700 py-2.5 px-2 text-xs font-bold text-white shadow-lg transition flex items-center justify-center space-x-1.5 cursor-pointer border border-emerald-400/50" title="Phân tích mô phỏng dòng tiền và chiết khấu HTX">
                                 <i class="fa-solid fa-chart-line text-emerald-300"></i>
                                 <span>${cashFlowBtnMap[currentLanguage] || cashFlowBtnMap.vi}</span>
                             </button>
@@ -13856,7 +13755,42 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             if (guidEl) guidEl.textContent = guidances[currentLanguage] || guidances.vi;
 
             const promptButtons = document.querySelectorAll('#ai-chat-quick-replies .chat-prompt');
+            // Standard OCOP Showcase & B2B Prompt mapping across 5 languages (UI Active)
             const quickPrompts = {
+                vi: [
+                    ['🍵 Đặc sản OCOP Đồng Nai', 'Tư vấn đặc sản OCOP tiêu biểu tỉnh Đồng Nai và chỉ đường đến showroom chính hãng'],
+                    ['🎁 Tư vấn Quà tặng Doanh nghiệp B2B', 'Tư vấn giải pháp set quà tặng doanh nghiệp B2B từ đặc sản OCOP 63 tỉnh thành'],
+                    ['🗺️ Tìm Showroom O2O chính hãng', 'Tra cứu mạng lưới showroom và điểm bán O2O chính hãng trên bản đồ số'],
+                    ['📊 Phân tích Dòng tiền & CHM cho HTX', 'Phân tích mô hình dòng tiền, chiết khấu liên kết CHM và tỷ suất lợi nhuận cho Hợp tác xã OCOP']
+                ],
+                en: [
+                    ['🍵 Dong Nai OCOP Specialties', 'Consult flagship OCOP specialties from Dong Nai and guide to authentic showrooms'],
+                    ['🎁 B2B Corporate Gifts', 'Corporate gift solutions featuring certified OCOP products from 63 provinces'],
+                    ['🗺️ Official O2O Showrooms', 'Locate official O2O specialty showrooms and outlets on interactive digital map'],
+                    ['📊 Cooperative Cash Flow & CHM', 'Analyze cooperative cash flow, CHM affiliate commission and net profit margin']
+                ],
+                zh: [
+                    ['🍵 同奈省 OCOP 特产', '咨询同奈省代表性 OCOP 特产并导航至实体展厅'],
+                    ['🎁 B2B 企业礼品方案', '基于 63 个省市 OCOP 认证特产的定制企业礼盒方案'],
+                    ['🗺️ 正品 O2O 展厅导航', '在数字地图上检索全国正品 OCOP 展厅与销售网络'],
+                    ['📊 合作社现金流与 CHM 分析', '分析合作社现金流模型、CHM 佣金结算与净利润率']
+                ],
+                ko: [
+                    ['🍵 동나이 OCOP 특산물', '동나이성 대표 OCOP 특산물 추천 및 공식 쇼룸 안내'],
+                    ['🎁 B2B 기업 선물 제안', '63개 성·시 인증 OCOP 특산품 기반 맞춤형 기업 선물 세트'],
+                    ['🗺️ 공식 O2O 쇼룸 찾기', '디지털 지도에서 공식 O2O 쇼룸 및 오프라인 매장 위치 확인'],
+                    ['📊 협동조합 현금흐름 & CHM', '협동조합 현금 흐름, CHM 제휴 수수료 및 순이익률 분석']
+                ],
+                ja: [
+                    ['🍵 ドンナイ OCOP特産品', 'ドンナイ省の代表的なOCOP特産品の紹介と公式ショールームへのルート案内'],
+                    ['🎁 B2B 法人向けギフト', '63省の認証OCOP特産品を活用した法人向け贈答品ソリューション'],
+                    ['🗺️ 公式O2Oショールーム', 'デジタル地図上で全国の公式OCOPショールームと販売拠点を検索'],
+                    ['📊 協同組合CF & CHM分析', '協同組合のキャッシュフロー、CHM提携手数料および純利益率の分析']
+                ]
+            };
+
+            // Financial & CHM deep analysis telemetry dictionary (Digital Fest 2026 Contest Verification Suite)
+            const financialTelemetryPrompts = {
                 vi: [
                     ['⚡ Biên lợi nhuận: Đồng Nai', 'Phân tích chi tiết biên lợi nhuận gộp và ròng của Trà khổ qua rừng túi lọc Hiệp Vân tỉnh Đồng Nai'],
                     ['📊 Sản lượng số hóa: Hà Nội', 'Cập nhật sản lượng phân bổ số hóa cho Bưởi Diễn Hà Nội'],
@@ -14888,5 +14822,32 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
     });
 </script>
 <script src="shop-prices.js?v=20261010"></script>
+    <!-- ============================================================== -->
+    <!-- FLOATING JUDGE BAR (CHẾ ĐỘ BAN GIÁM KHẢO DIGITAL FEST 2026) -->
+    <!-- ============================================================== -->
+    <div id="judge-quick-access-bar" class="select-none" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; align-items: center; filter: drop-shadow(0 12px 28px rgba(0,0,0,0.75));">
+        <div class="flex items-center gap-1.5 p-1.5 rounded-full border border-amber-400/50 bg-[#061e16]/95 backdrop-blur-xl shadow-[0_0_25px_rgba(251,191,36,0.25)]">
+            <span class="px-3 py-1.5 rounded-full text-[11px] font-black flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 shadow-sm cursor-default">
+                <i class="fa-solid fa-gavel text-xs"></i>
+                <span>BGK 2026</span>
+            </span>
+            <button type="button" onclick="openChallengeProposalModal()" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold text-amber-200 hover:text-white hover:bg-emerald-900/60 transition flex items-center gap-1 cursor-pointer" title="Xem Toàn Văn Đề Án B2B2C 5 Tab">
+                <i class="fa-solid fa-file-shield text-amber-400 text-xs"></i>
+                <span class="hidden sm:inline">1. Đề Án B2B2C</span>
+            </button>
+            <button type="button" onclick="openFinancialDashboardModal()" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold text-amber-200 hover:text-white hover:bg-emerald-900/60 transition flex items-center gap-1 cursor-pointer" title="Mở Bảng Quản Trị Tài Chính AI 63 Tỉnh Thành">
+                <i class="fa-solid fa-chart-line text-emerald-400 text-xs"></i>
+                <span class="hidden sm:inline">2. Dòng Tiền AI</span>
+            </button>
+            <button type="button" onclick="triggerHeroVoiceDemo()" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold text-amber-200 hover:text-white hover:bg-emerald-900/60 transition flex items-center gap-1 cursor-pointer" title="Nghe Voice AI Báo Cáo Tài Chính 3 Miền">
+                <i class="fa-solid fa-volume-high text-yellow-400 text-xs"></i>
+                <span class="hidden sm:inline">3. Voice Báo Cáo</span>
+            </button>
+            <button type="button" onclick="filterByProvince('Đồng Nai')" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold text-amber-200 hover:text-white hover:bg-emerald-900/60 transition flex items-center gap-1 cursor-pointer" title="Trải nghiệm O2O Tỉnh Điểm Đồng Nai">
+                <i class="fa-solid fa-location-dot text-rose-400 text-xs"></i>
+                <span class="hidden sm:inline">4. Test O2O Đồng Nai</span>
+            </button>
+        </div>
+    </div>
 </body>
 </html>
