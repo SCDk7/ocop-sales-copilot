@@ -740,3 +740,4 @@ if (js.includes(escAnchor) && !js.includes('closeTikTokStudioModal')) {
 
 fs.writeFileSync('skytech-complete.js', js, 'utf8');
 console.log('=== DONE UPDATING skytech-complete.js ===');
+
