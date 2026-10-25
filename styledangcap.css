@@ -346,8 +346,16 @@
     padding-inline: 16px !important;
 }
 #ocop-intro-overlay .province-map {
-    height: min(40vh, 320px) !important;
-    min-height: 230px !important;
+    height: min(32vh, 260px) !important;
+    min-height: 200px !important;
+}
+#ocop-intro-overlay .intro-stage {
+    padding-block: 0.25rem !important;
+    gap: 0.35rem !important;
+}
+#ocop-intro-overlay .intro-actions {
+    padding-top: 0 !important;
+    margin-top: 0.25rem !important;
 }
 #i18n-intro-title2 {
     font-size: clamp(1.1rem, 2.2vw, 1.75rem) !important;
@@ -361,4 +369,42 @@
 }
 .product-card-image-wrap {
     background: rgba(7, 28, 20, 0.95) !important;
+}
+
+
+/* ============================================================== */
+/* MODAL DANH BẠ ĐIỂM BÁN OCOP & CỬA HÀNG CONTRAST FIX            */
+/* ============================================================== */
+#ocop-all-stores-modal button,
+#ocop-store-modal button {
+    color: #fef08a !important;
+    background-color: rgba(14, 58, 42, 0.9) !important;
+    border: 1px solid rgba(251, 191, 36, 0.4) !important;
+}
+#ocop-all-stores-modal button:hover,
+#ocop-store-modal button:hover {
+    background-color: rgba(251, 191, 36, 0.25) !important;
+    border-color: #fde047 !important;
+    color: #ffffff !important;
+}
+#ocop-all-stores-modal p, #ocop-all-stores-modal span, #ocop-all-stores-modal div,
+#ocop-store-modal p, #ocop-store-modal span, #ocop-store-modal div {
+    color: #f1f5f9;
+}
+#ocop-all-stores-modal h4, #ocop-all-stores-modal strong,
+#ocop-store-modal h4, #ocop-store-modal strong {
+    color: #fde047 !important;
+}
+#ocop-all-stores-modal #store-modal-search {
+    background-color: rgba(6, 36, 25, 0.95) !important;
+    color: #fef08a !important;
+    border-color: rgba(251, 191, 36, 0.5) !important;
+}
+#ocop-all-stores-modal #store-modal-search::placeholder {
+    color: rgba(254, 240, 138, 0.6) !important;
+}
+
+#ocop-all-stores-modal button span,
+#ocop-store-modal button span {
+    color: inherit !important;
 }

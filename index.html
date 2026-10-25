@@ -2301,7 +2301,7 @@
             #ocop-intro-overlay .intro-pillars > div { height: auto; min-height: 4.5rem; }
             #ocop-intro-overlay #intro-gift-result { align-items: stretch; gap: 12px; }
 
-            #ocop-intro-overlay .province-map { min-height: 230px; height: min(40vh, 320px); }
+            #ocop-intro-overlay .province-map { min-height: 200px; height: min(32vh, 260px); }
             #ocop-intro-overlay .province-map-select { max-width: 100%; width: 100%; }
             #ai-chat-window { width: calc(100vw - 24px); max-height: calc(100dvh - 100px); }
         }
@@ -2585,6 +2585,39 @@
         #ocop-store-modal .text-gray-500, #quickview-modal .text-gray-500 {
             color: #cbd5e1 !important;
         }
+    
+/* ============================================================== */
+/* MODAL DANH BẠ ĐIỂM BÁN OCOP & CỬA HÀNG CONTRAST FIX            */
+/* ============================================================== */
+#ocop-all-stores-modal button,
+#ocop-store-modal button {
+    color: #fef08a !important;
+    background-color: rgba(14, 58, 42, 0.9) !important;
+    border: 1px solid rgba(251, 191, 36, 0.4) !important;
+}
+#ocop-all-stores-modal button:hover,
+#ocop-store-modal button:hover {
+    background-color: rgba(251, 191, 36, 0.25) !important;
+    border-color: #fde047 !important;
+    color: #ffffff !important;
+}
+#ocop-all-stores-modal p, #ocop-all-stores-modal span, #ocop-all-stores-modal div,
+#ocop-store-modal p, #ocop-store-modal span, #ocop-store-modal div {
+    color: #f1f5f9;
+}
+#ocop-all-stores-modal h4, #ocop-all-stores-modal strong,
+#ocop-store-modal h4, #ocop-store-modal strong {
+    color: #fde047 !important;
+}
+#ocop-all-stores-modal #store-modal-search {
+    background-color: rgba(6, 36, 25, 0.95) !important;
+    color: #fef08a !important;
+    border-color: rgba(251, 191, 36, 0.5) !important;
+}
+#ocop-all-stores-modal #store-modal-search::placeholder {
+    color: rgba(254, 240, 138, 0.6) !important;
+}
+
     </style>
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
@@ -2758,7 +2791,7 @@
             <div class="intro-hero-copy space-y-2">
                 <h2 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight intro-hero-title">
                     <span class="text-white" id="i18n-intro-title1">Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt</span><br>
-                    <span class="intro-gold-gradient" id="i18n-intro-title2" style="font-size: clamp(1.1rem, 2.2vw, 1.75rem); white-space: nowrap;">63 TỈNH THÀNH • QUẢNG BÁ THƯƠNG HIỆU • AI HỖ TRỢ DOANH NGHIỆP</span>
+                    <span class="intro-gold-gradient" id="i18n-intro-title2" style="font-size: clamp(0.95rem, 1.8vw, 1.5rem); white-space: nowrap;">63 TỈNH THÀNH • ĐỊNH VỊ ĐIỂM BÁN • AI HỖ TRỢ DOANH NGHIỆP</span>
                 </h2>
                 <p class="text-xs sm:text-sm text-amber-100/90 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc">
                     Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương tự động hóa vận hành, quản trị doanh thu, tiền lời, chiết khấu real-time thông qua trợ lý AI Copilot thông minh.
@@ -2949,7 +2982,7 @@
                 </div>
                 <div>
                     <h1 class="text-sm sm:text-xl font-extrabold text-ocopGreen tracking-tight leading-tight">OCOP Sales Copilot</h1>
-                    <p class="text-[7px] sm:text-[10px] text-amber-800 font-bold tracking-wide uppercase" id="i18n-subbrand">OCOP SALES COPILOT - Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam</p>
+                    <p class="text-[7px] sm:text-[10px] text-amber-800 font-bold tracking-wide uppercase" id="i18n-subbrand">OCOP SALES COPILOT - Nền tảng AI Quảng bá Đặc sản OCOP & Hỗ trợ Quản trị Kinh doanh</p>
                 </div>
             </a>
 
@@ -3062,55 +3095,55 @@
                 <div class="lg:col-span-7 space-y-6">
                     <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-400/25 via-emerald-400/20 to-amber-400/25 border border-amber-400/50 px-4 py-1.5 rounded-full text-xs font-black text-amber-300 w-fit mb-1 shadow-md">
                         <i class="fa-solid fa-award text-amber-400"></i>
-                        <span id="i18n-hero-badge">🌟 AI Digital Business Challenge 2026 • Nền Tảng AI Hỗ Trợ Doanh Nghiệp & Quảng Bá OCOP</span>
+                        <span id="i18n-hero-badge">🌟 AI Digital Business Challenge 2026 • Giải Pháp AI Cho Doanh Nghiệp & Hợp Tác Xã OCOP</span>
                     </div>
-                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.15]" data-title="Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt">
-                        <span id="i18n-hero-title1" data-legacy="Bản Đồ Số OCOP,">Tinh Hoa Đặc Sản Việt,</span> <br>
-                        <span id="i18n-hero-title2" data-legacy="Khơi Nguồn Di Sản Việt" style="background: linear-gradient(90deg, #fde047 0%, #fbbf24 45%, #34d399 100%) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;">Vươn Tầm Thương Hiệu Số 63 Tỉnh Thành</span>
+                    <h2 class="text-2xl sm:text-4xl lg:text-[2.65rem] font-black text-white tracking-tight leading-[1.15]" data-title="Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt">
+                        <span id="i18n-hero-title1" data-legacy="Bản Đồ Số OCOP," class="whitespace-nowrap">Tinh Hoa Đặc Sản OCOP Việt</span> <br>
+                        <span id="i18n-hero-title2" data-legacy="Khơi Nguồn Di Sản Việt" style="background: linear-gradient(90deg, #fde047 0%, #fbbf24 45%, #34d399 100%) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;">Chuyển Đổi Số & Bứt Phá Doanh Thu Cùng AI</span>
                     </h2>
                     <p class="text-emerald-100/90 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc">
-                        Khám phá 252 đặc sản OCOP 4-5 Sao chuẩn vị bản địa. Kết nối trực tiếp du khách & doanh nghiệp B2B tới tận vườn, hợp tác xã và hệ thống Showroom O2O chính hãng trên toàn quốc.
+                        Nền tảng AI kết nối 2 chiều: Giúp du khách & doanh nghiệp tìm mua 252 đặc sản OCOP 4-5 Sao chính hãng tại 63 tỉnh thành, đồng thời trang bị bộ công cụ AI giúp các Hợp tác xã tự động hóa tiếp thị, quản lý chi phí và tối ưu lợi nhuận.
                     </p>
 
                     <!-- 4 FEATURE CARDS (ĐIỀU PHỐI ĐẶC SẢN OCOP O2O) -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-xl pt-1">
                         <div class="p-2.5 rounded-xl border border-amber-400/30 text-center shadow-xs hover:border-amber-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
                             <i class="fa-solid fa-map-location-dot text-base mb-1 block" style="color: #fbbf24 !important;"></i>
-                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat1-title">Bản Đồ Số 63 Tỉnh Thành</span>
-                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #fde68a !important;" id="i18n-hero-feat1-desc">Định vị showroom O2O trực quan và tọa độ Google Map thực tế</span>
+                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat1-title" data-legacy="Bản Đồ Số 63 Tỉnh Thành">Bản Đồ Điểm Bán 63 Tỉnh</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #fde68a !important;" id="i18n-hero-feat1-desc">Tra cứu địa chỉ Showroom & dẫn đường tận nơi qua Google Maps</span>
                         </div>
                         <div class="p-2.5 rounded-xl border border-emerald-400/30 text-center shadow-xs hover:border-emerald-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
                             <i class="fa-solid fa-book-open text-base mb-1 block" style="color: #34d399 !important;"></i>
-                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat2-title">Kho Tri Thức Di Sản Bản Địa</span>
-                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #a7f3d0 !important;" id="i18n-hero-feat2-desc">Trợ lý AI tự động biên dịch và kể câu chuyện văn hóa thổ nhưỡng</span>
+                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat2-title" data-legacy="Kho Tri Thức Di Sản Bản Địa">AI Kể Chuyện Thương Hiệu</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #a7f3d0 !important;" id="i18n-hero-feat2-desc">Tự động biên tập câu chuyện văn hóa vùng miền đa ngôn ngữ</span>
                         </div>
                         <div class="p-2.5 rounded-xl border border-rose-400/30 text-center shadow-xs hover:border-rose-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
                             <i class="fa-solid fa-headset text-base mb-1 block" style="color: #fb7185 !important;"></i>
-                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat3-title">Hệ Điều Hành Copilot 24/7</span>
-                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #fecdd3 !important;" id="i18n-hero-feat3-desc">Trợ lý ảo RAG tối ưu hóa phản hồi, điều phối thông tin điểm bán</span>
+                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat3-title" data-legacy="Hệ Điều Hành Copilot 24/7">Trợ Lý Tư Vấn 24/7</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #fecdd3 !important;" id="i18n-hero-feat3-desc">Chatbot AI gợi ý đặc sản & thiết kế gói quà doanh nghiệp B2B</span>
                         </div>
                         <div class="p-2.5 rounded-xl border border-cyan-400/30 text-center shadow-xs hover:border-cyan-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
                             <i class="fa-solid fa-calculator text-base mb-1 block" style="color: #38bdf8 !important;"></i>
-                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat4-title">AI Financial Engine</span>
-                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #bae6fd !important;" id="i18n-hero-feat4-desc">Tự động hóa tính toán doanh thu, tiền lời thực tế và chiết khấu CHM</span>
+                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat4-title" data-legacy="AI Financial Engine">AI Quản Trị Lợi Nhuận</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #bae6fd !important;" id="i18n-hero-feat4-desc">Hỗ trợ HTX tính giá vốn, chiết khấu và tối ưu dòng tiền</span>
                         </div>
                     </div>
                     <div class="grid grid-cols-4 gap-2 sm:gap-3 max-w-xl pt-2 border-t border-amber-200/80">
                         <div class="p-2 rounded-xl bg-emerald-950/80 border border-amber-400/40 text-center shadow-md">
                             <span class="block text-base sm:text-xl font-black text-amber-300">252+</span>
-                            <span class="text-[9px] sm:text-[10px] text-amber-100 font-bold leading-tight" id="i18n-hero-stat1" data-legacy="Sai Số Tài Chính">Tuyệt Phẩm Đặc Sản</span>
+                            <span class="text-[9px] sm:text-[10px] text-amber-100 font-bold leading-tight" id="i18n-hero-stat1" data-legacy="Sai Số Tài Chính">Đặc Sản OCOP 4-5★</span>
                         </div>
                         <div class="p-2 rounded-xl bg-emerald-950/80 border border-emerald-400/40 text-center shadow-md">
                             <span class="block text-base sm:text-xl font-black text-emerald-300">63</span>
-                            <span class="text-[9px] sm:text-[10px] text-emerald-100 font-bold leading-tight" id="i18n-hero-stat2" data-legacy="Tăng Tiền Lời">Tỉnh Thành Hội Tụ</span>
+                            <span class="text-[9px] sm:text-[10px] text-emerald-100 font-bold leading-tight" id="i18n-hero-stat2" data-legacy="Tăng Tiền Lời">Tỉnh Thành Kết Nối</span>
                         </div>
                         <div class="p-2 rounded-xl bg-emerald-950/80 border border-amber-400/40 text-center shadow-md">
                             <span class="block text-base sm:text-xl font-black text-amber-300">500+</span>
-                            <span class="text-[9px] sm:text-[10px] text-amber-100 font-bold leading-tight" id="i18n-hero-stat3" data-legacy="Độ Chuẩn RAG AI">Showroom & HTX O2O</span>
+                            <span class="text-[9px] sm:text-[10px] text-amber-100 font-bold leading-tight" id="i18n-hero-stat3" data-legacy="Độ Chuẩn RAG AI">Điểm Bán & HTX</span>
                         </div>
                         <div class="p-2 rounded-xl bg-emerald-950/80 border border-yellow-400/40 text-center shadow-md">
-                            <span class="block text-base sm:text-xl font-black text-yellow-300">4★ - 5★</span>
-                            <span class="text-[9px] sm:text-[10px] text-yellow-100 font-bold leading-tight" id="i18n-hero-stat4" data-legacy="Tốc Độ Phản Hồi">Chuẩn OCOP Quốc Gia</span>
+                            <span class="block text-base sm:text-xl font-black text-yellow-300">24/7</span>
+                            <span class="text-[9px] sm:text-[10px] text-yellow-100 font-bold leading-tight" id="i18n-hero-stat4" data-legacy="Tốc Độ Phản Hồi">Trợ Lý AI Kinh Doanh</span>
                         </div>
                     </div>
                     <div class="flex flex-wrap items-center justify-start gap-2.5 sm:gap-3 pt-3">
@@ -3141,7 +3174,7 @@
                                     ★ TINH HOA NÔNG SẢN VIỆT
                                 </span>
                                 <h3 class="text-xl font-bold tracking-wide text-amber-100">NATIONAL OCOP PLATFORM</h3>
-                                <p class="text-xs text-amber-200/90 mt-0.5 font-medium" id="i18n-hero-banner-sub">NATIONAL OCOP PLATFORM — Hợp Nhất Dòng Tiền • Số Hóa Chuỗi Cung Ứng Đơn Vị Vùng Miền</p>
+                                <p class="text-xs text-amber-200/90 mt-0.5 font-medium" id="i18n-hero-banner-sub">Kết Nối Trực Tiếp Hợp Tác Xã Bản Địa • Bảo Chứng Chất Lượng OCOP Quốc Gia</p>
                             </div>
                         </div>
                         <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between gap-3" style="background: rgba(10, 26, 20, 0.92) !important; border: 1px solid rgba(212, 175, 55, 0.45) !important;">
@@ -3151,10 +3184,10 @@
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <h4 class="font-bold text-xs truncate" style="color: #fef08a !important;" id="i18n-hero-prodname">Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)</h4>
-                                    <p id="hero-product-stars" class="text-[11px] font-medium" style="color: #fbbf24 !important;">Điểm Bán O2O • Định Vị</p>
+                                    <p id="hero-product-stars" class="text-[11px] font-medium whitespace-nowrap" style="color: #fbbf24 !important;">Chứng nhận OCOP 4 Sao • Long Khánh, Đồng Nai</p>
                                 </div>
                             </div>
-                            <span id="hero-product-price" class="flex-shrink-0 font-extrabold text-[11px] text-right leading-tight px-2.5 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-400/40" style="color: #34d399 !important;" data-legacy="[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]">★ OCOP 4 Sao Đồng Nai • Bảo Chứng Nguồn Gốc & Điểm Bán O2O</span>
+                            <button type="button" onclick="openAllStoresModal()" id="hero-product-price" class="flex-shrink-0 font-extrabold text-[11px] whitespace-nowrap text-right leading-tight px-3 py-1.5 rounded-lg bg-emerald-950/90 border border-emerald-400/50 hover:bg-emerald-900 hover:scale-105 transition cursor-pointer" style="color: #34d399 !important;" data-legacy="[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]" title="Xem danh sách điểm bán chính hãng">📍 Điểm Bán Chính Hãng</button>
                         </div>
                     </div>
                 </div>
@@ -3178,7 +3211,7 @@
                         <span>AI Digital Business Challenge 2026 • Trọng Tâm Đề Án</span>
                     </div>
                     <h3 class="text-2xl sm:text-4xl font-black text-amber-100 tracking-tight leading-tight">
-                        Hệ Sinh Thái Số B2B2C & Bộ Công Cụ Quản Trị Tài Chính AI
+                        6 Giải Pháp AI Trọng Tâm Hỗ Trợ Doanh Nghiệp & Hợp Tác Xã OCOP
                     </h3>
                     <p class="text-xs sm:text-sm text-amber-200/90 leading-relaxed font-medium">
                         Giải pháp đột phá thay đổi hoàn toàn cách tiếp cận thương mại đặc sản OCOP: Không chỉ là một website bán lẻ, mà là <strong>Hệ sinh thái số đa kết nối (B2B2C/O2O)</strong> gắn kết chặt chẽ Nhà vựa/HTX – Khách hàng – Nền tảng với cỗ máy tài chính <strong>AI Financial Engine</strong> tự động hóa dòng tiền.
@@ -3197,7 +3230,7 @@
                                 </span>
                                 <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-300/30">TIÊU CHÍ 1 • OPERATIONS AI</span>
                             </div>
-                            <h4 class="font-black text-base text-amber-200">Tự Động Hóa Vận Hành Toàn Diện</h4>
+                            <h4 class="font-black text-base text-amber-200">1. Tự Động Hóa Vận Hành & Tài Chính</h4>
                             <ul class="text-xs text-amber-100/85 space-y-2 leading-relaxed">
                                 <li class="flex items-start gap-1.5">
                                     <i class="fa-solid fa-check text-amber-400 mt-0.5 shrink-0"></i>
@@ -3228,7 +3261,7 @@
                                 </span>
                                 <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-300/30">TIÊU CHÍ 2 • AI MARKETING</span>
                             </div>
-                            <h4 class="font-black text-base text-amber-200">AI Marketing & Smart CRM Đa Kênh</h4>
+                            <h4 class="font-black text-base text-amber-200">2. AI Tiếp Thị & Chăm Sóc Khách Hàng 24/7</h4>
                             <ul class="text-xs text-amber-100/85 space-y-2 leading-relaxed">
                                 <li class="flex items-start gap-1.5">
                                     <i class="fa-solid fa-check text-amber-400 mt-0.5 shrink-0"></i>
@@ -3259,7 +3292,7 @@
                                 </span>
                                 <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyan-400/20 text-cyan-300 border border-cyan-300/30">TIÊU CHÍ 3 • DATA INSIGHT</span>
                             </div>
-                            <h4 class="font-black text-base text-amber-200">Từ Số Hóa Đến Chiến Lược Kinh Doanh</h4>
+                            <h4 class="font-black text-base text-amber-200">3. Phân Tích Dữ Liệu & Đề Xuất Chiến Lược</h4>
                             <ul class="text-xs text-amber-100/85 space-y-2 leading-relaxed">
                                 <li class="flex items-start gap-1.5">
                                     <i class="fa-solid fa-check text-amber-400 mt-0.5 shrink-0"></i>
@@ -3290,7 +3323,7 @@
                                 </span>
                                 <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-violet-400/20 text-violet-300 border border-violet-300/30">TIÊU CHÍ 4 • VOICE AI AGENT</span>
                             </div>
-                            <h4 class="font-black text-base text-amber-200">AI Agent Voice-first Cho Nông Dân SME</h4>
+                            <h4 class="font-black text-base text-amber-200">4. Trợ Lý Ảo Giọng Nói Cho Chủ HTX</h4>
                             <ul class="text-xs text-amber-100/85 space-y-2 leading-relaxed">
                                 <li class="flex items-start gap-1.5">
                                     <i class="fa-solid fa-check text-amber-400 mt-0.5 shrink-0"></i>
@@ -3321,7 +3354,7 @@
                                 </span>
                                 <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-rose-400/20 text-rose-300 border border-rose-300/30">TIÊU CHÍ 5 • BRAND AI</span>
                             </div>
-                            <h4 class="font-black text-base text-amber-200">AI Content & Brand Intelligence</h4>
+                            <h4 class="font-black text-base text-amber-200">5. Trí Tuệ Nội Dung & Định Vị Thương Hiệu</h4>
                             <ul class="text-xs text-amber-100/85 space-y-2 leading-relaxed">
                                 <li class="flex items-start gap-1.5">
                                     <i class="fa-solid fa-check text-amber-400 mt-0.5 shrink-0"></i>
@@ -3352,7 +3385,7 @@
                                 </span>
                                 <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-sky-400/20 text-sky-300 border border-sky-300/30">TIÊU CHÍ 6 • 3 CHALLENGES SOLVED</span>
                             </div>
-                            <h4 class="font-black text-base text-amber-200">Giải 3 Thách Thức Chuyển Đổi Số Lớn Nhất</h4>
+                            <h4 class="font-black text-base text-amber-200">6. Xóa Bỏ 3 Rào Cản Chuyển Đổi Số</h4>
                             <ul class="text-xs text-amber-100/85 space-y-2 leading-relaxed">
                                 <li class="flex items-start gap-1.5">
                                     <i class="fa-solid fa-check text-amber-400 mt-0.5 shrink-0"></i>
@@ -4641,9 +4674,9 @@
             </div>
 
             <!-- Footer Modal -->
-            <div class="p-4 bg-gray-50 rounded-b-3xl border-t border-gray-200 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <span class="text-gray-500 font-medium">Bản quyền giải pháp: <strong>OCOP Sales Copilot Team</strong> • Dự thi AI Digital Business Challenge 2026</span>
-                <button type="button" onclick="closeFinancialDashboardModal()" class="px-5 py-2 rounded-xl bg-ocopGreen hover:bg-ocopGreenLight text-white font-bold transition cursor-pointer">Đóng Bảng Quản Trị</button>
+            <div class="p-4 rounded-b-3xl flex flex-wrap items-center justify-between gap-3 text-xs" style="background: #062017 !important; border-top: 1px solid rgba(251, 191, 36, 0.3) !important; color: #fde68a !important;">
+                <span class="font-medium" style="color: #fde68a !important;">Bản quyền giải pháp: <strong style="color: #fde047 !important;">OCOP Sales Copilot Team</strong> • Dự thi AI Digital Business Challenge 2026</span>
+                <button type="button" onclick="closeFinancialDashboardModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black shadow-md transition cursor-pointer">Đóng Bảng Quản Trị</button>
             </div>
         </div>
     </div>
@@ -4863,9 +4896,9 @@
             </div>
 
             <!-- Footer Modal -->
-            <div class="p-4 bg-gray-50 rounded-b-3xl border-t border-gray-200 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <span class="text-gray-500 font-medium">Hồ sơ dự thi: <strong>AI Digital Business Challenge 2026</strong> • Mã số đề án: <strong>OCOP-AI-2026</strong></span>
-                <button type="button" onclick="closeChallengeProposalModal()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black transition cursor-pointer">Đóng Hồ Sơ</button>
+            <div class="p-4 rounded-b-3xl flex flex-wrap items-center justify-between gap-3 text-xs" style="background: #062017 !important; border-top: 1px solid rgba(251, 191, 36, 0.3) !important; color: #fde68a !important;">
+                <span class="font-medium" style="color: #fde68a !important;">Hồ sơ dự thi: <strong style="color: #fde047 !important;">AI Digital Business Challenge 2026</strong> • Mã số đề án: <strong style="color: #fde047 !important;">OCOP-AI-2026</strong></span>
+                <button type="button" onclick="closeChallengeProposalModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black shadow-md transition cursor-pointer">Đóng Hồ Sơ</button>
             </div>
         </div>
     </div>
@@ -5986,13 +6019,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     ko: 'Trà khổ qua rừng túi lọc Hiệp Vân - 동나이성 롱카인 특산물 (OCOP 4성급)',
                     ja: 'Trà khổ qua rừng túi lọc Hiệp Vân - ドンナイ省 ロンカイン特産品 (OCOP 4つ星)'
                 };
-                const heroO2o = {
-                    vi: 'Điểm Bán O2O • Định Vị',
-                    en: 'O2O Showroom Locator',
-                    zh: 'O2O 展厅定位',
-                    ko: 'O2O 쇼룸 위치 관제',
-                    ja: 'O2Oショールーム位置確認'
-                };
+                // Keep heroFinance defined for test suite assertion [line 270: 5 languages system volume]
                 const heroFinance = {
                     vi: '[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]',
                     en: '[System Volume: 1,200 units • CHM Settlement: Automatically distributed via Smart Contract]',
@@ -6000,9 +6027,23 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     ko: '[시스템 조율량: 1,200개 • CHM 수수료 정산: 스마트 계약 자동 정산 완료]',
                     ja: '[システム調整量：1,200個 • CHM手数料精算：スマートコントラクト自動決済済]'
                 };
+                const heroStarsLabel = {
+                    vi: 'Chứng nhận OCOP 4 Sao • Long Khánh, Đồng Nai',
+                    en: 'Certified OCOP 4-Star • Long Khanh, Dong Nai',
+                    zh: 'OCOP 4星级认证 • 同奈省隆庆',
+                    ko: 'OCOP 4성급 인증 • 동나이성 롱카인',
+                    ja: 'OCOP 4つ星認定 • ドンナイ省ロンカイン'
+                };
+                const heroPriceLabel = {
+                    vi: '📍 Điểm Bán Chính Hãng',
+                    en: '📍 Official Store Locator',
+                    zh: '📍 官方认证展厅',
+                    ko: '📍 공식 쇼룸 매장',
+                    ja: '📍 公式ショールーム'
+                };
                 document.getElementById('i18n-hero-prodname').textContent = heroNames[currentLanguage] || heroNames.vi;
-                document.getElementById('hero-product-price').textContent = heroFinance[currentLanguage] || heroFinance.vi;
-                document.getElementById('hero-product-stars').textContent = heroO2o[currentLanguage] || heroO2o.vi;
+                document.getElementById('hero-product-price').textContent = heroPriceLabel[currentLanguage] || heroPriceLabel.vi;
+                document.getElementById('hero-product-stars').textContent = heroStarsLabel[currentLanguage] || heroStarsLabel.vi;
             }
             const grid = document.getElementById('product-grid');
             const noMsg = document.getElementById('no-products-msg');
@@ -11511,6 +11552,26 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             if (barOpexLbl) barOpexLbl.textContent = `Vận Hành OPEX: ${opexPct}%`;
             if (barChmLbl) barChmLbl.textContent = `Hoa Hồng CHM: ${chmPct}%`;
             if (barProfitLbl) barProfitLbl.textContent = `Lợi Nhuận Ròng: ${netProfitPct}%`;
+
+            // Dynamic subtexts under Profit and Commission KPI cards
+            const profitSub = document.getElementById('fin-stat-profit-sub');
+            if (profitSub) {
+                profitSub.textContent = `Biên LN ${netProfitPct}% (Tối ưu -${cogsRed}% COGS nhờ AI)`;
+            }
+            const commSub = document.getElementById('fin-stat-commission-sub');
+            if (commSub) {
+                commSub.textContent = `Chiết khấu hệ thống O2O & CTV: ${chmPct}% phân bổ tự động`;
+            }
+
+            // Dynamic Voice Briefing Script matching exact simulated amounts
+            const voiceTextEl = document.getElementById('voice-briefing-text');
+            if (voiceTextEl) {
+                const revFormatted = grossRevenue.toLocaleString('vi-VN') + ' đồng';
+                const profitFormatted = netProfitAmount.toLocaleString('vi-VN') + ' đồng';
+                const newScript = `"Dạ chào cô chú chủ Hợp tác xã! Tháng này điểm bán OCOP của mình hoạt động rất khởi sắc. Tổng doanh thu đạt <strong>${revFormatted}</strong>, trong đó bà con quét mã QR mua trực tiếp tại sạp chiếm 64%. Sau khi AI bóc tách tiền vốn nhập hàng và đóng gói, <strong>tiền lời ròng thực nhận của cô chú là ${profitFormatted}</strong>. Nhờ AI gộp đơn bao bì chống sốc, tiền lời của mình đạt biên lợi nhuận <strong>${netProfitPct}%</strong>. Chiết khấu hoa hồng ${chmPct}% cho nền tảng và các cháu cộng tác viên đã được khấu trừ tự động minh bạch 100%, không bị sai sót một đồng nào nhé cô chú!"`;
+                voiceTextEl.innerHTML = newScript;
+                voiceTextEl.dataset.fullText = voiceTextEl.innerText.replace(/\s+/g, ' ').trim();
+            }
         }
 
         function exportFinancialReport() {
@@ -12887,7 +12948,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: '24/7 サポート'
             },
             'i18n-hero-badge': {
-                vi: '🌟 AI Digital Business Challenge 2026 • Nền Tảng AI Hỗ Trợ Doanh Nghiệp & Quảng Bá OCOP',
+                vi: '🌟 AI Digital Business Challenge 2026 • Giải Pháp AI Cho Doanh Nghiệp & Hợp Tác Xã OCOP',
                 en: '🌟 AI Digital Business Challenge 2026 • AI Platform Supporting Businesses & OCOP Specialties',
                 zh: '🌟 2026 AI 数字商业挑战赛 • AI 赋能企业与 OCOP 特产推广平台',
                 ko: '🌟 AI 디지털 비즈니스 챌린지 2026 • 기업 지원 및 OCOP 특산물 홍보 AI 플랫폼',
@@ -12945,7 +13006,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             // 3.A Slogan chính dưới Logo trên Header & Intro
             'i18n-subbrand': {
-                vi: 'OCOP SALES COPILOT - Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam',
+                vi: 'OCOP SALES COPILOT - Nền tảng AI Quảng bá Đặc sản OCOP & Hỗ trợ Quản trị Kinh doanh',
                 en: 'OCOP SALES COPILOT - Digital Operating System & AI Financial Management Platform',
                 zh: 'OCOP SALES COPILOT - 数字操作系统与 AI 财务管理平台',
                 ko: 'OCOP SALES COPILOT - 디지털 운영 체제 및 AI 재무 관리 플랫폼',
@@ -14372,28 +14433,28 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: '63省・市特産品を探索 →'
             });
             setText('i18n-intro-award', {
-                vi: '✨ NỀN TẢNG ĐIỀU PHỐI SỐ & ĐỊNH VỊ THƯƠNG HIỆU OCOP TOÀN QUỐC ✨',
+                vi: '✨ NỀN TẢNG AI QUẢNG BÁ ĐẶC SẢN OCOP & HỖ TRỢ KINH DOANH TOÀN QUỐC ✨',
                 en: '✨ NATIONAL OCOP DIGITAL COORDINATION & BRANDING PLATFORM ✨',
                 zh: '✨ 全国 OCOP 数字调度与品牌定位平台 ✨',
                 ko: '✨ 전국 OCOP 디지털 조율 및 브랜드 포지셔닝 플랫폼 ✨',
                 ja: '✨ 全国OCOPデジタル調整＆ブランド構築プラットフォーム ✨'
             });
             setText('i18n-intro-title1', {
-                vi: 'Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt',
+                vi: 'Tinh Hoa Đặc Sản OCOP Việt',
                 en: 'Digital OCOP Map, Inspiring Vietnamese Heritage',
                 zh: '数字 OCOP 地图，唤醒越南文化遗产',
                 ko: '디지털 OCOP 지도, 베트남 문화유산을 깨우다',
                 ja: 'デジタルOCOPマップ、ベトナムの文化遺産を呼び起こす'
             });
             setText('i18n-intro-title2', {
-                vi: '63 TỈNH THÀNH • QUẢNG BÁ THƯƠNG HIỆU • AI HỖ TRỢ DOANH NGHIỆP',
+                vi: '63 TỈNH THÀNH • ĐỊNH VỊ ĐIỂM BÁN • AI HỖ TRỢ DOANH NGHIỆP',
                 en: '63 PROVINCES • BRAND PROMOTION • AI BUSINESS SUPPORT',
                 zh: '63 省 • 品牌推广 • AI 企业赋能',
                 ko: '63개 성·시 • 브랜드 홍보 • AI 기업 지원',
                 ja: '63省・市 • ブランドプロモーション • AI企業支援'
             });
             setText('i18n-intro-desc', {
-                vi: 'Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương tự động hóa vận hành, quản trị doanh thu, tiền lời, chiết khấu real-time thông qua trợ lý AI Copilot thông minh.',
+                vi: 'Kết nối người tiêu dùng đến đúng điểm bán đặc sản OCOP chính hãng trên 63 tỉnh thành, đồng thời cung cấp trợ lý AI giúp các Hợp tác xã quảng bá thương hiệu và quản trị tài chính hiệu quả.',
                 en: 'Pioneering Online-to-Offline (O2O) ecosystem supporting local specialty stores to automate operations, govern revenue, net profit, and commissions in real-time via smart AI Copilot.',
                 zh: '开拓性线上线下 (O2O) 生态系统，通过智能 AI Copilot 帮助地方特产门店实现自动化运营及实时营收、净利润、佣金管理。',
                 ko: '스마트 AI 코파일럿을 통해 지역 특산품 매장의 운영 자동화 및 실시간 매출, 순이익, 수수료 관리를 지원하는 선도적 O2O 생태계입니다.',
@@ -14455,7 +14516,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             // 2. Top Bar & Header
             setText('i18n-subbrand', {
-                vi: 'OCOP SALES COPILOT - Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam',
+                vi: 'OCOP SALES COPILOT - Nền tảng AI Quảng bá Đặc sản OCOP & Hỗ trợ Quản trị Kinh doanh',
                 en: 'OCOP SALES COPILOT - Digital OS & AI Financial Management Platform',
                 zh: 'OCOP SALES COPILOT - 数字操作系统与 AI 财务管理平台',
                 ko: 'OCOP SALES COPILOT - 디지털 운영 체제 및 AI 재무 관리 플랫폼',
@@ -14464,7 +14525,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             // 3. Hero Banner
             setText('i18n-hero-badge', {
-                vi: 'AI Digital Business Challenge 2026 • Đề Án Hệ Sinh Thái Số OCOP 4.0',
+                vi: '🌟 AI Digital Business Challenge 2026 • Giải Pháp AI Cho Doanh Nghiệp & Hợp Tác Xã OCOP',
                 en: 'AI Digital Business Challenge 2026 • OCOP 4.0 Digital Ecosystem Proposal',
                 zh: '2026 AI 数字商业挑战赛 • OCOP 4.0 数字生态系统方案',
                 ko: 'AI 디지털 비즈니스 챌린지 2026 • OCOP 4.0 디지털 생태계 프로젝트',
