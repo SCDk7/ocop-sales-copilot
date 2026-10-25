@@ -1,0 +1,528 @@
+/* ==========================================================================
+   ROYAL COBALT BLUE THEME (J2TEAM STYLE) & FULL COMMERCIAL ARCHITECTURE
+   OCOP Sales Copilot | DigitalFest Đồng Nai 2026
+   ========================================================================== */
+
+/* 1. TOÀN DIỆN MÀU NỀN ROYAL COBALT BLUE (J2TEAM STYLE) */
+:root {
+    --cobalt-bg-dark: #0A194E;
+    --cobalt-bg-mid: #132E7C;
+    --cobalt-bg-deep: #0D2163;
+    --cobalt-surface: #153284;
+    --cobalt-surface-dark: #0E225D;
+    --cobalt-border: rgba(125, 211, 252, 0.3);
+    --cobalt-border-bright: #60A5FA;
+    --cobalt-primary-btn: #2563EB;
+    --text-white: #FFFFFF;
+    --text-ice-blue: #E0F2FE;
+    --gold-accent: #FACC15;
+    --cyan-accent: #38BDF8;
+}
+
+html, body, main, section, #ocop-intro-overlay {
+    background: linear-gradient(135deg, #0A194E 0%, #132E7C 50%, #0D2163 100%) !important;
+    background-attachment: fixed !important;
+    color: var(--text-white) !important;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: clip !important;
+}
+
+/* J2TEAM Constellation Canvas (Chùm tia sáng nối chuột mượt mà) */
+#j2-bg-canvas {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+}
+
+/* Container chính tối ưu full màn hình */
+.max-w-7xl,
+.max-w-5xl,
+#shop-hero,
+#catalog-layout-wrapper,
+#why-choose-us-section,
+#products-section,
+header > div {
+    max-width: 1440px !important;
+    width: 95% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* 2. THANH HEADER (NAVBAR) ROYAL COBALT BLUE */
+header {
+    background: rgba(10, 25, 78, 0.96) !important;
+    backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid var(--cobalt-border) !important;
+    padding: 0 24px !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+}
+
+header h1 {
+    color: var(--text-white) !important;
+}
+
+.header-primary-nav {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+}
+
+.header-primary-nav .header-nav-btn {
+    color: var(--text-ice-blue) !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    transition: all 0.2s ease !important;
+}
+
+.header-primary-nav .header-nav-btn:hover {
+    color: var(--cyan-accent) !important;
+}
+
+.header-right-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-shrink: 0 !important;
+}
+
+.header-right-actions button {
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    border-radius: 999px !important;
+}
+
+#btn-header-admin-pin {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid #60A5FA !important;
+    box-shadow: 0 0 14px rgba(37, 99, 235, 0.4) !important;
+    font-weight: 800 !important;
+    padding: 7px 16px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+#btn-header-admin-pin:hover {
+    background: #1D4ED8 !important;
+    transform: translateY(-1px) !important;
+}
+
+/* 3. KHUNG MỞ ĐẦU (HERO BANNER) */
+#shop-hero {
+    background: linear-gradient(145deg, #153284 0%, #0E225D 100%) !important;
+    border: 1px solid var(--cobalt-border) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3) !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 2rem !important;
+    padding: 2.5rem 2rem !important;
+}
+
+#shop-hero h2 {
+    color: var(--text-white) !important;
+    font-weight: 900 !important;
+}
+
+#shop-hero #i18n-hero-desc,
+#shop-hero p {
+    color: var(--text-ice-blue) !important;
+    font-size: 16px !important;
+    line-height: 1.65 !important;
+    font-weight: 500 !important;
+}
+
+/* 4 THẺ TÍNH NĂNG TRONG HERO */
+#shop-hero .grid-cols-2 > div,
+#shop-hero .grid-cols-4 > div {
+    background: rgba(14, 34, 93, 0.8) !important;
+    border: 1px solid rgba(125, 211, 252, 0.25) !important;
+    border-radius: 14px !important;
+}
+
+#shop-hero .grid-cols-2 > div span,
+#shop-hero .grid-cols-4 > div span {
+    color: var(--text-ice-blue) !important;
+}
+
+#shop-hero .grid-cols-2 > div span[id$="-title"],
+#shop-hero .grid-cols-4 > div span[id$="-title"] {
+    color: var(--text-white) !important;
+    font-weight: 800 !important;
+}
+
+/* 4. MÀN HÌNH MỞ ĐẦU & BẢN ĐỒ VIỆT NAM SVG TƯƠNG TÁC */
+#ocop-intro-overlay {
+    background: linear-gradient(135deg, #0A194E 0%, #132E7C 50%, #0D2163 100%) !important;
+    color: #FFFFFF !important;
+}
+
+#province-map {
+    min-height: 280px !important;
+    height: auto !important;
+    background: #0B1D51 !important;
+    border: 1.5px solid rgba(125, 211, 252, 0.35) !important;
+    border-radius: 20px !important;
+    padding: 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+}
+
+.vn-map-interactive-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 12px !important;
+}
+
+.vn-svg-map {
+    width: 100% !important;
+    max-width: 480px !important;
+    height: auto !important;
+    filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.35)) !important;
+}
+
+.vn-svg-map path {
+    fill: #1E40AF !important;
+    stroke: #38BDF8 !important;
+    stroke-width: 1.5 !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+}
+
+.vn-svg-map path:hover {
+    fill: #2563EB !important;
+    stroke: #FACC15 !important;
+    filter: drop-shadow(0 0 8px #FACC15) !important;
+}
+
+.vn-hotspot {
+    fill: #FACC15 !important;
+    stroke: #FFFFFF !important;
+    stroke-width: 1.5 !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease !important;
+}
+
+.vn-hotspot:hover {
+    transform: scale(1.4) !important;
+    fill: #38BDF8 !important;
+}
+
+.vn-quick-provinces-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+.vn-prov-btn {
+    padding: 8px 10px !important;
+    border-radius: 999px !important;
+    background: #153284 !important;
+    border: 1px solid rgba(125, 211, 252, 0.3) !important;
+    color: var(--text-white) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+}
+
+.vn-prov-btn:hover,
+.vn-prov-btn.active {
+    background: #2563EB !important;
+    border-color: #FACC15 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5) !important;
+}
+
+.vn-prov-btn.dongnai-hotspot {
+    background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+    border: 1.5px solid #FACC15 !important;
+    color: #FACC15 !important;
+    font-weight: 900 !important;
+}
+
+/* 5. CỘT BỘ LỌC BÊN TRÁI & LƯỚI SẢN PHẨM */
+#catalog-layout-wrapper {
+    display: grid !important;
+    gap: 28px !important;
+    align-items: start !important;
+}
+
+@media (min-width: 1025px) {
+    #catalog-layout-wrapper {
+        grid-template-columns: 280px 1fr !important;
+    }
+    #catalog-sidebar {
+        display: block !important;
+        width: 280px !important;
+        min-width: 280px !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    #catalog-layout-wrapper {
+        grid-template-columns: 1fr !important;
+    }
+    #catalog-sidebar {
+        display: none !important;
+    }
+}
+
+#catalog-sidebar .glass-panel {
+    background: linear-gradient(145deg, #153284 0%, #0E225D 100%) !important;
+    border: 1px solid var(--cobalt-border) !important;
+    border-radius: 16px !important;
+    padding: 14px !important;
+}
+
+#catalog-sidebar select,
+#catalog-sidebar button {
+    border-radius: 10px !important;
+}
+
+/* Lưới sản phẩm: Chia 3 cột đều tăm tắp */
+#product-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)) !important;
+    gap: 20px !important;
+}
+
+/* 6. THẺ SẢN PHẨM: ĐỒNG BỘ 100% ROYAL COBALT BLUE, KHÔNG BACKDROP BLUR */
+.product-card {
+    background: linear-gradient(145deg, #153284 0%, #0E225D 100%) !important;
+    border: 1px solid var(--cobalt-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    height: 100% !important;
+    backdrop-filter: none !important; /* Tối ưu 60 FPS cuộn trang */
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.product-card:hover {
+    transform: translateY(-4px) !important;
+    border-color: var(--cobalt-border-bright) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35), 0 0 15px rgba(56, 189, 248, 0.2) !important;
+}
+
+.product-card h3 {
+    color: var(--text-white) !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+}
+
+.product-card p {
+    color: var(--text-ice-blue) !important;
+    font-size: 12px !important;
+}
+
+/* Hộp Cửa hàng / Showroom trong thẻ sản phẩm */
+.product-card .mx-3.mb-2,
+.product-card .bg-slate-950\/70 {
+    background: rgba(10, 25, 78, 0.85) !important;
+    border: 1px solid rgba(125, 211, 252, 0.25) !important;
+    border-radius: 12px !important;
+    padding: 8px 10px !important;
+}
+
+.product-card .mx-3.mb-2 * {
+    color: var(--text-ice-blue) !important;
+}
+
+.product-card .mx-3.mb-2 .text-amber-200,
+.product-card .mx-3.mb-2 i.fa-landmark {
+    color: var(--gold-accent) !important;
+}
+
+.product-card .mx-3.mb-2 a {
+    color: var(--cyan-accent) !important;
+    font-weight: 700 !important;
+}
+
+.product-card .mx-3.mb-2 .text-emerald-300,
+.product-card .mx-3.mb-2 i.fa-phone {
+    color: #34D399 !important;
+    font-weight: 800 !important;
+}
+
+/* Footer thẻ sản phẩm */
+.product-card-footer {
+    background: rgba(8, 20, 62, 0.9) !important;
+    border-top: 1px solid var(--cobalt-border) !important;
+    padding: 10px 12px !important;
+}
+
+.card-actions-wrapper.customer-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+.btn-card-store {
+    background: #1E40AF !important;
+    color: #FFFFFF !important;
+    border: 1px solid #60A5FA !important;
+    border-radius: 999px !important;
+    padding: 8px 10px !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-card-store:hover {
+    background: #2563EB !important;
+    transform: translateY(-1px) !important;
+}
+
+.btn-card-story {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+    color: #FFFFFF !important;
+    border: 1px solid #93C5FD !important;
+    border-radius: 999px !important;
+    padding: 8px 10px !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-card-story:hover {
+    background: #1D4ED8 !important;
+    transform: translateY(-1px) !important;
+}
+
+/* 7. XÓA VĨNH VIỄN CÁC PHẦN DƯ THỪA */
+#judge-quick-access-bar,
+#admin-support-widget,
+#challenge-criteria-modal,
+#challenge-proposal-modal,
+#voice-briefing-box,
+button[onclick*="playVoiceFinancialBriefing"],
+button[onclick*="playNeuralVoiceReport"],
+button.nav-btn-studio,
+#ai-content-studio-section,
+.product-card-footer > div:first-child:not(.customer-actions),
+.product-card-footer button[onclick*="activateProductReconciliation"],
+.product-card-footer .flex.items-center.justify-between.gap-2:not(.customer-actions),
+#catalog-sidebar .glass-panel:has(#i18n-ai-financial-desc) {
+    display: none !important;
+}
+
+/* 8. AVATAR AI CHATBOT HIỆN ĐẠI */
+#ai-chat-toggle-btn {
+    background: #2563EB !important;
+    border: 2px solid #60A5FA !important;
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.45) !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* 9. MODAL QUẢN TRỊ TÀI CHÍNH & MÃ PIN 2007 (ROYAL COBALT BLUE) */
+#ai-financial-modal .relative.bg-white,
+#quickview-modal .relative.bg-white,
+#ocop-store-modal .relative.bg-white,
+#partner-registration-modal .relative.bg-white,
+.pin-card-box {
+    background: linear-gradient(145deg, #153284 0%, #0E225D 100%) !important;
+    border: 1.5px solid var(--cobalt-border-bright) !important;
+    border-radius: 20px !important;
+    color: var(--text-white) !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
+}
+
+#ai-financial-modal h3, #ai-financial-modal h4, #ai-financial-modal h5,
+#ai-financial-modal .text-2xl, #ai-financial-modal strong {
+    color: var(--text-white) !important;
+}
+
+#ai-financial-modal .grid-cols-4 > div,
+#ai-financial-modal .grid-cols-2 > div {
+    background: rgba(10, 25, 78, 0.85) !important;
+    border: 1px solid rgba(125, 211, 252, 0.3) !important;
+    border-radius: 14px !important;
+    padding: 14px !important;
+}
+
+#fin-stat-revenue { color: #34D399 !important; font-weight: 900 !important; }
+#fin-stat-profit { color: var(--cyan-accent) !important; font-weight: 900 !important; }
+#fin-stat-commission { color: var(--gold-accent) !important; font-weight: 900 !important; }
+
+/* 10. MODAL ĐĂNG KÝ ĐIỂM BÁN (AI OCR) */
+#partner-registration-modal .p-4.sm\:p-6,
+#partner-registration-modal .p-6 {
+    background: #0F256E !important;
+    color: #FFFFFF !important;
+}
+
+#partner-registration-modal input,
+#partner-registration-modal select,
+#partner-registration-modal textarea {
+    background: #0A194E !important;
+    border: 1px solid #60A5FA !important;
+    color: #FFFFFF !important;
+    border-radius: 12px !important;
+}
+
+/* Ẩn nút thử mẫu Đồng Nai cũ theo yêu cầu */
+#partner-registration-modal button[onclick*="simulateOcrScan('dongnai')"] {
+    display: none !important;
+}
+
+/* Nút hoàn tất đăng ký ở dưới cùng */
+#partner-registration-modal button[type="submit"],
+#partner-registration-modal .btn-submit-registration {
+    background: #2563EB !important;
+    color: #FFFFFF !important;
+    border: 1px solid #60A5FA !important;
+    border-radius: 999px !important;
+    font-weight: 900 !important;
+}
+
+/* 11. RESPONSIVE MOBILE & TABLET */
+@media (max-width: 640px) {
+    header { padding: 0 12px !important; }
+    #shop-hero { padding: 20px 14px !important; border-radius: 18px !important; }
+    #product-grid { grid-template-columns: 1fr !important; }
+    .card-actions-wrapper.customer-actions { grid-template-columns: 1fr 1fr !important; }
+}
+
