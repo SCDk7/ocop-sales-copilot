@@ -1,0 +1,82 @@
+<USER_REQUEST>
+# 🎯 LỆNH HOÀN THIỆN CUỐI CÙNG: SỬA DỨT ĐIỂM 7 LỖI THỰC TẾ TRONG `ocop-sales-copilot/index.html` & `ocop-copilot.js`
+
+Bạn đang làm việc tại thư mục `ocop-sales-copilot/`.
+Hãy dùng Node.js script sửa trực tiếp vào `ocop-sales-copilot/index.html`, file CSS/JS hiện tại và `ocop-copilot.js` để giải quyết chính xác 100% 7 yêu cầu dưới đây (KHÔNG hỏi xin phép, thực thi trọn vẹn ngay lập tức):
+
+---
+
+## 1. DIỆT TẬN GỐC HIỆN TƯỢNG F5 BỊ NHÁY MÀU XANH LÁ CŨ (ZERO FLASH ON RELOAD)
+Hiện tại khi bấm F5 tải lại trang, web vẫn nháy màu xanh lá cây/đen cũ khoảng 0.5 giây rồi mới chuyển sang màu xanh sáng vì CSS gốc nằm ở `<head>` còn CSS mới nằm ở cuối `<body>`.
+- **Cách xử lý bắt buộc:** Dùng script Node.js sửa trực tiếp trong phần `<head>` của `index.html`:
+  + Thay thế các mã màu nền xanh lá/đen cũ (`#051b11`, `#0a2e1d`, `#064e3b`, `#022c22`, `#041f15`) trong thẻ `<style>` của `<head>` thành màu sáng `#F0F9FF` và `#0284C7`.
+  + Chèn `<link>` của file CSS giao diện sáng lên **ngay sát trước thẻ `</head>`** để trình duyệt render màu xanh da trời sáng ngay từ mili-giây đầu tiên (0.00s), tuyệt đối không còn nháy màu xanh lá cũ khi F5!
+
+---
+
+## 2. SỬA BẢNG QUẢN TRỊ DOANH THU (ẢNH 1): ĐỔI SANG MÀU SÁNG NHƯ TRANG 3 & SỬA NÚT THOÁT (`X` / ĐÓNG)
+Hiện tại khi nhập mã PIN `2007` mở Bảng Quản Trị (Ảnh 1), giao diện vẫn đang bị nền đen/kem vàng cũ kỹ, các chữ tiêu đề xanh dương đậm trên nền xám đen rất khó đọc, và **KHÔNG BẤM THOÁT RA ĐƯỢC**!
+1. **Sửa cơ chế Đóng / Thoát Bảng Quản Trị 100% ăn ngay:**
+   - Thêm một nút **`✖ Đóng`** cố định, to rõ ở góc trên cùng bên phải của Bảng Quản Trị (`position: sticky; top: 12px; right: 12px; z-index: 999999; background: #EF4444; color: #FFFFFF; padding: 8px 16px; border-radius: 999px; cursor: pointer; font-weight: 700;`).
+   - Gắn sự kiện click trực tiếp (`onclick`) cho cả nút **`✖ Đóng`** trên cùng, nút **`Đóng Bảng Quản Trị`** ở góc dưới phải, nút **`Esc`** trên bàn phím và khi click ra vùng nền mờ bên ngoài -> Lập tức ẩn hoàn toàn Modal Bảng Quản Trị (`modal.style.setProperty('display', 'none', 'important'); modal.classList.add('hidden'); document.body.style.overflow = 'auto';`) để quay về trang web bình thường!
+2. **Đổi toàn bộ màu sắc của Bảng Quản Trị (Ảnh 1) sang Tông Trắng & Xanh Sáng như Trang 3:**
+   - Khung chính của Bảng Quản Trị: Nền Trắng Sứ `#F8FAFC !important`, viền `2px solid #7DD3FC !important`, bo góc `24px`.
+   - Tất cả các thẻ bên trong (Thanh tỷ lệ trên cùng, 4 thẻ KPI `875.000.000 ₫`, `301.875.000 ₫`, `70.000.000 ₫`, `3.420 Đơn`, 3 thẻ Đề xuất chiến lược, Bảng bóc tách COGS và 2 hộp cuối):
+     + Tẩy sạch nền đen/xám đen (`#1e293b`, `#0f172a`)! Đổi toàn bộ sang **Nền Trắng Tinh (`#FFFFFF !important`)** hoặc **Xanh Băng Nhạt (`#F0F9FF !important`)**, viền `1px solid #BAE6FD !important`, đổ bóng mềm `0 6px 20px rgba(2, 132, 199, 0.08) !important`.
+     + Chữ tiêu đề và tên sản phẩm trong bảng đổi sang **Xanh Navy Đậm (`#0F172A !important`, font-weight: 700)**, chữ mô tả màu **Xám Đậm (`#334155 !important`)**, con số tiền màu **Xanh Dương Đậm (`#0284C7 !important`)** và **Xanh Ngọc (`#059669 !important`)** -> Sáng sủa, đồng bộ 100% với Trang 3!
+
+---
+
+## 3. XÓA NÚT "CÂU CHUYỆN OCOP" (ẢNH 6) & SỬA MODAL ĐIỂM BÁN (ẢNH 5)
+1. **XÓA BỎ HOÀN TOÀN nút `✨ Câu Chuyện OCOP` / `✨ AI Câu Chuyện` trên tất cả 252 Thẻ Sản Phẩm (Ảnh 6):**
+   - Tìm và xóa/ẩn triệt để nút `✨ Câu Chuyện OCOP` dưới đáy mỗi thẻ sản phẩm.
+   - Cho nút còn lại là **`📍 Xem Điểm Bán & Liên Hệ`** mở rộng 100% chiều ngang dưới đáy thẻ (`width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important;`).
+2. **Sửa toàn diện Modal "Mạng Lưới Điểm Bán & Cửa Hàng OCOP Chính Hãng" (Ảnh 5):**
+   - **Đổi màu sang Tông Sáng như Trang 3:** Đổi nền xanh rêu/đen của Modal Điểm Bán và các thẻ cửa hàng (Showroom 1, Điểm bán 2, Điểm bán 3) sang **Nền Trắng (`#FFFFFF !important`) & Xanh Băng (`#F0F9FF !important`)**, viền `#BAE6FD !important`, Header modal màu Xanh Dương `#0284C7 !important` chữ trắng.
+   - **Sửa lỗi chữ trắng trên nền trắng mờ tịt trong Ảnh 5:** Các nhãn `📍 Sơn La`, `☕ Cà phê...`, `Showroom trực tiếp / Bản đồ`, `Tem chống giả & QR`, `Code OCOP`, `Bản đồ | Gọi ngay` phải có nền `#E0F2FE !important` và chữ màu **Xanh Đậm (`#0369A1 !important`, font-weight: 700)** đọc rõ 100%!
+   - **XÓA BỎ HOÀN TOÀN nút `📊 Đối Soát Dòng Tiền`** ở góc dưới của Modal Điểm Bán!
+   - **Sửa nút `💬 Hỏi AI điểm bán` (đang bấm không hiện gì):** Gắn sự kiện click trực tiếp để khi người dùng bấm vào nút `💬 Hỏi AI điểm bán`, hệ thống sẽ:
+     1. Tự động đóng Modal Điểm Bán hiện tại.
+     2. Mở ngay cửa sổ **AI Chatbot (`ocop-copilot.js`)** ở góc dưới phải lên.
+     3. Tự động gửi câu hỏi và cho Bot trả lời ngay thông tin chi tiết về sản phẩm, địa chỉ Showroom, số điện thoại hotline và hướng dẫn mua hàng của điểm bán vừa xem!
+
+---
+
+## 4. KHÔI PHỤC HỆ THỐNG CSKH & CƠ CHẾ "CHUYỂN TIẾP GẶP ADMIN KHI AI KHÔNG TRẢ LỜI ĐƯỢC" (ẢNH 4)
+1. **Làm đẹp Khung Chatbot AI (Ảnh 4):**
+   - Đổi nền đen/xanh đen bên trong khung chat sang **Nền Trắng Sáng (`#F8FAFC !important`)**, bong bóng tin nhắn của Bot có nền Trắng `#FFFFFF !important`, viền `#BAE6FD !important`, chữ màu **Xanh Đen (`#0F172A !important`)** cực kỳ dễ đọc!
+   - Sửa câu chào đầu tiên của Bot (xóa chữ *"phân tích doanh thu, tiền lời, chiết khấu CHM"*) và xóa thanh thông báo bị lặp thứ 2 ở dưới.
+2. **Tích hợp Cơ Chế CSKH & Kết Nối Admin Trực Tiếp (AI-to-Human Admin Escalation):**
+   - Khôi phục lại khu vực/danh sách **Đội ngũ Admin & CSKH Hỗ trợ Trực tuyến** (hiển thị đẹp mắt, chuyên nghiệp với vai trò: *Admin 1 - Hỗ trợ Điểm bán & Đơn hàng*, *Admin 2 - Tư vấn Quà tặng Doanh nghiệp B2B*, *Admin 3 - Hỗ trợ Kỹ thuật & Đăng ký HTX*, *Admin 4 - Chăm sóc Khách hàng 24/7*).
+   - **Ngay bên trong Khung Chatbot AI (Ảnh 4):**
+     + Thêm thanh nút hỗ trợ nhanh: **`👨💻 Gặp Admin / CSKH Trực Tiếp`** bên cạnh các gợi ý chat.
+     + **Logic thông minh trong `ocop-copilot.js`:** Khi khách hàng hỏi một câu nằm ngoài dữ liệu hoặc AI không chắc chắn câu trả lời (hoặc khi khách bấm nút `👨💻 Gặp Admin / CSKH`), Chatbot sẽ tự động phản hồi:
+       *"💡 Câu hỏi của bạn cần sự hỗ trợ chuyên sâu hơn. Hệ thống đã chuyển tiếp yêu cầu của bạn đến **Đội ngũ Admin CSKH Trực tuyến**! Bạn có thể nhắn trực tiếp tại đây hoặc liên hệ ngay với Admin phụ trách bên dưới để được giải đáp tức thì:"* kèm theo **Thẻ Liên Hệ Nhanh của các Admin (Nút Chat trực tiếp / Zalo / Facebook CSKH / Hotline)** và cho phép Admin phản hồi hỗ trợ khách hàng!
+
+---
+
+## 5. SỬA LỖI TRANG 1 (MÀN HÌNH MỞ ĐẦU - ẢNH 2) & CHỮ BỊ CẮT Ở TRANG 3
+1. **Ở Màn hình mở đầu (Ảnh 2):**
+   - Trên góc phải thanh trên cùng đang bị lặp 2 nút giống hệt nhau (`Khám phá đặc sản 63 tỉnh thành →` màu xanh và màu vàng) -> Xóa bớt 1 nút bị lặp, chỉ giữ 1 nút duy nhất.
+   - Sửa khung Bản đồ Việt Nam bên phải đang bị nền đen trống rỗng: Đổi nền khung sang màu sáng/xanh trong trẻo và kích hoạt hiển thị ngay **Bản đồ địa lý Việt Nam 63 tỉnh thành** bên trong khung đó!
+   - Xóa chữ *"quản trị doanh thu, tiền lời, chiết khấu"* trong đoạn mô tả và xóa ô *"AI Financial Engine"* ở màn hình ngoài (thay bằng *Tư vấn Đặc sản & Giỏ quà OCOP*).
+2. **Ở Trang bên trong (Ảnh 3):**
+   - Chữ `Tinh Hoa Đặc Sản OCOP Việt` đang bị cắt mất nét bên trái của chữ `T` (do `overflow: hidden` hoặc lề trái) -> Thêm `padding-left: 4px !important; overflow: visible !important;` để chữ hiển thị trọn vẹn 100%.
+   - Trong ô thứ 4 (`Chứng Nhận OCOP 3-5 Sao`), sửa dòng chữ nhỏ bên dưới vẫn còn sót *"Tự động hóa tính toán doanh thu, tiền lời..."* thành *"100% sản phẩm có quyết định công nhận sao OCOP chính quy"*.
+
+Hãy thực thi toàn bộ ngay lập tức và kiểm tra chắc chắn mọi nút bấm (`Đóng Bảng Quản Trị`, `Hỏi AI điểm bán`, `CSKH / Admin`) đều hoạt động trơn tru 100%!
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-25T11:51:38+07:00.
+
+The user's current state is as follows:
+Active Document: c:\DuAn\ocop-sales-copilot\index.html (LANGUAGE_UNSPECIFIED)
+Cursor is on line: 15271
+Other open documents:
+- c:\DuAn\ocop-sales-copilot\scratch\check_index_tail.cjs (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\scratch\inspect_header.cjs (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\scratch\find_financial_modal.cjs (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\scratch\inspect_chat_widget.cjs (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\chat-language.js (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>

@@ -643,7 +643,19 @@
     function enhanceProductCardElements() {
         const cards = document.querySelectorAll('#product-grid > div');
         cards.forEach(card => {
-            if (card.querySelector('.product-action-cluster')) return;
+            // Remove any AI story buttons on all cards
+            card.querySelectorAll('.btn-card-ai-story').forEach(btn => btn.remove());
+
+            let cluster = card.querySelector('.product-action-cluster');
+            if (cluster) {
+                const storeBtn = cluster.querySelector('.btn-card-store');
+                if (storeBtn) {
+                    storeBtn.innerHTML = '<i class="fa-solid fa-location-dot mr-1.5"></i><span>📍 Xem Điểm Bán & Liên Hệ</span>';
+                    storeBtn.style.cssText = 'width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important;';
+                }
+                cluster.style.cssText = 'display: block !important; width: 100% !important; margin-top: 10px !important;';
+                return;
+            }
 
             let productId = null;
             const actionBtn = card.querySelector('[onclick*="activateProductReconciliation"]');
@@ -662,16 +674,13 @@
 
             if (!productId) return;
 
-            const cluster = document.createElement('div');
+            cluster = document.createElement('div');
             cluster.className = 'product-action-cluster';
+            cluster.style.cssText = 'display: block !important; width: 100% !important; margin-top: 10px !important;';
             cluster.innerHTML = `
-                <button type="button" class="btn-card-store" onclick="openStoreLocator(${productId})">
+                <button type="button" class="btn-card-store" onclick="openStoreLocator(${productId})" style="width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important;">
                     <i class="fa-solid fa-location-dot"></i>
-                    <span>📍 Điểm Bán</span>
-                </button>
-                <button type="button" class="btn-card-ai-story" onclick="openAIStoryModal(${productId})">
-                    <i class="fa-solid fa-sparkles"></i>
-                    <span>✨ Câu Chuyện OCOP</span>
+                    <span>📍 Xem Điểm Bán & Liên Hệ</span>
                 </button>
             `;
 
@@ -801,6 +810,66 @@
             }
         });
     }
+
+    
+    // GLOBAL ESCAPE KEY LISTENER (ĐÓNG TẤT CẢ CÁC MODAL KHI BẤM ESC)
+    window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            if (typeof window.closeFinancialDashboardModal === 'function') {
+                window.closeFinancialDashboardModal();
+            }
+            if (typeof window.closeAdminPinModal === 'function') {
+                window.closeAdminPinModal();
+            }
+            if (typeof window.closeStoreLocatorModal === 'function') {
+                window.closeStoreLocatorModal();
+            }
+            if (typeof window.closeAIStoryModal === 'function') {
+                window.closeAIStoryModal();
+            }
+            if (typeof window.closePartnerRegistrationModal === 'function') {
+                window.closePartnerRegistrationModal();
+            }
+            if (typeof window.closeChallengeProposalModal === 'function') {
+                window.closeChallengeProposalModal();
+            }
+        }
+    });
+
+    
+    // HỎI AI VỀ ĐIỂM BÁN & SẢN PHẨM (TỰ ĐỘNG ĐÓNG MODAL ĐIỂM BÁN & MỞ CHATBOT)
+    window.askAiAboutStore = function (productId) {
+        const storeModal = document.getElementById('ocop-store-modal');
+        if (storeModal) {
+            storeModal.classList.add('hidden');
+            storeModal.style.setProperty('display', 'none', 'important');
+        }
+        if (typeof window.closeStoreLocatorModal === 'function') {
+            window.closeStoreLocatorModal();
+        }
+
+        const chatWindow = document.getElementById('ai-chat-window');
+        if (chatWindow) {
+            chatWindow.classList.remove('hidden');
+            chatWindow.style.setProperty('display', 'flex', 'important');
+        }
+        if (typeof window.setChatOpen === 'function') {
+            window.setChatOpen(true);
+        }
+
+        const p = (window.products || []).find(item => item.id === productId);
+        const pName = p ? p.name : 'đặc sản OCOP';
+        const queryText = `Tư vấn điểm bán chính hãng và showroom đặc sản: ${pName}`;
+
+        const input = document.getElementById('ai-chat-input');
+        if (input) {
+            input.value = queryText;
+        }
+
+        if (typeof window.sendAIMessage === 'function') {
+            window.sendAIMessage();
+        }
+    };
 
     // KHỞI CHẠY TẤT CẢ (CHỈ CHẠY 1 LẦN KHI LOAD, ZERO-LAG)
     function initAll() {

@@ -178,7 +178,7 @@
         }
 
         // Khiếu nại / Giao hàng có vấn đề / CSKH
-        if (/(giao hang co van de|su co giao hang|giao hang tre|giao tre|tre han|hong hang|be vo|rach tem|sai mon|sai hang|chua nhan duoc|mat hang|khieu nai|doi tra|hoan tien|gap cskh|lien he cskh|nhan vien ho tro|tong dai|hotline|zalo cskh|complaint|damaged|broken|late delivery|missing item|refund|talk to human|support)/i.test(norm)) {
+        if (/(giao hang co van de|su co giao hang|giao hang tre|giao tre|tre han|hong hang|be vo|rach tem|sai mon|sai hang|chua nhan duoc|mat hang|khieu nai|doi tra|hoan tien|gap cskh|cskh|gap admin|admin|lien he admin|nhan vien|tu van vien|truc tiep|ho tro truc tiep|nguoi that|tong dai|hotline|zalo cskh|complaint|damaged|broken|late delivery|missing item|refund|talk to human|support)/i.test(norm)) {
             return INTENTS.COMPLAINT_CSKH;
         }
 
@@ -848,6 +848,48 @@
                     <div>
                         <h4 class="font-extrabold text-rose-700 text-xs uppercase">${en ? '24/7 CUSTOMER CARE & DISPUTE HANDLER' : 'TRUNG TÂM CSKH & XỬ LÝ SỰ CỐ ĐƠN HÀNG'}</h4>
                         <p class="text-[10px] text-gray-500">${en ? '100% money back or replacement guaranteed' : 'Cam kết đổi mới hoặc hoàn tiền 100% nếu có lỗi'}</p>
+                    </div>
+                </div>
+
+                <!-- 4 Admin Chuyên Trách OCOP -->
+                <div class="mb-3 space-y-2">
+                    <p class="font-extrabold text-[11px] text-gray-800 uppercase flex items-center gap-1.5">
+                        <i class="fa-solid fa-users text-sky-600"></i>
+                        <span>Đội Ngũ Admin CSKH Chuyên Trách:</span>
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                        <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-200 flex items-start gap-2">
+                            <span class="w-7 h-7 rounded-lg bg-sky-600 text-white flex items-center justify-center text-xs shrink-0 font-bold">A1</span>
+                            <div class="min-w-0 flex-1">
+                                <p class="font-bold text-sky-900 leading-tight">Admin 1 - Điểm Bán & Đơn Hàng</p>
+                                <p class="text-[10px] text-gray-600 mt-0.5">Xử lý showroom, đơn hàng O2O</p>
+                                <a href="tel:0915688202" class="inline-block mt-1 text-[10px] font-bold text-sky-700 hover:underline">📞 0915 688 202</a>
+                            </div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-2">
+                            <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs shrink-0 font-bold">A2</span>
+                            <div class="min-w-0 flex-1">
+                                <p class="font-bold text-emerald-900 leading-tight">Admin 2 - Tư Vấn Quà B2B</p>
+                                <p class="text-[10px] text-gray-600 mt-0.5">Set quà doanh nghiệp & combo</p>
+                                <a href="https://zalo.me/0988234567" target="_blank" rel="noopener" class="inline-block mt-1 text-[10px] font-bold text-emerald-700 hover:underline">💬 Zalo B2B 24/7</a>
+                            </div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-2">
+                            <span class="w-7 h-7 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xs shrink-0 font-bold">A3</span>
+                            <div class="min-w-0 flex-1">
+                                <p class="font-bold text-amber-900 leading-tight">Admin 3 - Hỗ Trợ Đăng Ký HTX</p>
+                                <p class="text-[10px] text-gray-600 mt-0.5">Kỹ thuật & số hóa nông sản</p>
+                                <button type="button" onclick="openPartnerRegistrationModal()" class="inline-block mt-1 text-[10px] font-bold text-amber-800 hover:underline cursor-pointer">⚡ Đăng ký điểm bán</button>
+                            </div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-purple-50 border border-purple-200 flex items-start gap-2">
+                            <span class="w-7 h-7 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xs shrink-0 font-bold">A4</span>
+                            <div class="min-w-0 flex-1">
+                                <p class="font-bold text-purple-900 leading-tight">Admin 4 - CSKH 24/7 & Sự Cố</p>
+                                <p class="text-[10px] text-gray-600 mt-0.5">Khiếu nại, hoàn tiền & đổi trả</p>
+                                <a href="tel:19006868" class="inline-block mt-1 text-[10px] font-bold text-purple-700 hover:underline">📞 Hotline 1900 6868</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

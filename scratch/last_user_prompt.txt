@@ -1,0 +1,44 @@
+<USER_REQUEST>
+# 🎯 LỆNH HOÀN THIỆN CUỐI CÙNG: SỬA DỨT ĐIỂM 7 LỖI THỰC TẾ TRONG `ocop-sales-copilot/index.html` & `ocop-copilot.js`
+
+Bạn đang làm việc tại thư mục `ocop-sales-copilot/`.
+Hãy dùng Node.js script sửa trực tiếp vào `ocop-sales-copilot/index.html`, file CSS/JS hiện tại và `ocop-copilot.js` để giải quyết chính xác 100% 7 yêu cầu dưới đây (KHÔNG hỏi xin phép, thực thi trọn vẹn ngay lập tức):
+
+---
+
+## 1. DIỆT TẬN GỐC HIỆN TƯỢNG F5 BỊ NHÁY MÀU XANH LÁ CŨ (ZERO FLASH ON RELOAD)
+Hiện tại khi bấm F5 tải lại trang, web vẫn nháy màu xanh lá cây/đen cũ khoảng 0.5 giây rồi mới chuyển sang màu xanh sáng vì CSS gốc nằm ở `<head>` còn CSS mới nằm ở cuối `<body>`.
+- **Cách xử lý bắt buộc:** Dùng script Node.js sửa trực tiếp trong phần `<head>` của `index.html`:
+  + Thay thế các mã màu nền xanh lá/đen cũ (`#051b11`, `#0a2e1d`, `#064e3b`, `#022c22`, `#041f15`) trong thẻ `<style>` của `<head>` thành màu sáng `#F0F9FF` và `#0284C7`.
+  + Chèn `<link>` của file CSS giao diện sáng lên **ngay sát trước thẻ `</head>`** để trình duyệt render màu xanh da trời sáng ngay từ mili-giây đầu tiên (0.00s), tuyệt đối không còn nháy màu xanh lá cũ khi F5!
+
+---
+
+## 2. SỬA BẢNG QUẢN TRỊ DOANH THU (ẢNH 1): ĐỔI SANG MÀU SÁNG NHƯ TRANG 3 & SỬA NÚT THOÁT (`X` / ĐÓNG)
+Hiện tại khi nhập mã PIN `2007` mở Bảng Quản Trị (Ảnh 1), giao diện vẫn đang bị nền đen/kem vàng cũ kỹ, các chữ tiêu đề xanh dương đậm trên nền xám đen rất khó đọc, và **KHÔNG BẤM THOÁT RA ĐƯỢC**!
+1. **Sửa cơ chế Đóng / Thoát Bảng Quản Trị 100% ăn ngay:**
+   - Thêm một nút **`✖ Đóng`** cố định, to rõ ở góc trên cùng bên phải của Bảng Quản Trị (`position: sticky; top: 12px; right: 12px; z-index: 999999; background: #EF4444; color: #FFFFF
+<truncated 6138 bytes>
+ hệt nhau (`Khám phá đặc sản 63 tỉnh thành →` màu xanh và màu vàng) -> Xóa bớt 1 nút bị lặp, chỉ giữ 1 nút duy nhất.
+   - Sửa khung Bản đồ Việt Nam bên phải đang bị nền đen trống rỗng: Đổi nền khung sang màu sáng/xanh trong trẻo và kích hoạt hiển thị ngay **Bản đồ địa lý Việt Nam 63 tỉnh thành** bên trong khung đó!
+   - Xóa chữ *"quản trị doanh thu, tiền lời, chiết khấu"* trong đoạn mô tả và xóa ô *"AI Financial Engine"* ở màn hình ngoài (thay bằng *Tư vấn Đặc sản & Giỏ quà OCOP*).
+2. **Ở Trang bên trong (Ảnh 3):**
+   - Chữ `Tinh Hoa Đặc Sản OCOP Việt` đang bị cắt mất nét bên trái của chữ `T` (do `overflow: hidden` hoặc lề trái) -> Thêm `padding-left: 4px !important; overflow: visible !important;` để chữ hiển thị trọn vẹn 100%.
+   - Trong ô thứ 4 (`Chứng Nhận OCOP 3-5 Sao`), sửa dòng chữ nhỏ bên dưới vẫn còn sót *"Tự động hóa tính toán doanh thu, tiền lời..."* thành *"100% sản phẩm có quyết định công nhận sao OCOP chính quy"*.
+
+Hãy thực thi toàn bộ ngay lập tức và kiểm tra chắc chắn mọi nút bấm (`Đóng Bảng Quản Trị`, `Hỏi AI điểm bán`, `CSKH / Admin`) đều hoạt động trơn tru 100%!
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-25T11:51:38+07:00.
+
+The user's current state is as follows:
+Active Document: c:\DuAn\ocop-sales-copilot\index.html (LANGUAGE_UNSPECIFIED)
+Cursor is on line: 15271
+Other open documents:
+- c:\DuAn\ocop-sales-copilot\scratch\check_index_tail.cjs (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\scratch\inspect_header.cjs (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\scratch\find_financial_modal.cjs (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\scratch\inspect_chat_widget.cjs (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\chat-language.js (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>
