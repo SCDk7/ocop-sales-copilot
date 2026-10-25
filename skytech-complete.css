@@ -832,16 +832,219 @@ header h1 {
 
 
 /* ==========================================================================
-   FINAL POLISH STYLES (7 CORE FIXES)
+   
+/* ==========================================================================
+   FINAL POLISH STYLES V2 (4 CORE SECTIONS ENFORCED)
    ========================================================================== */
 
-/* 1. PRODUCT CARDS ACTION BUTTON (FULL WIDTH STORE BUTTON & HIDE STORY BUTTON) */
-.product-action-cluster {
-    display: block !important;
-    width: 100% !important;
-    margin-top: 10px !important;
+/* --- 1. MÀN HÌNH ĐẦU TIÊN (INTRO SCREEN) & BẢN ĐỒ VIỆT NAM --- */
+#ocop-intro-overlay,
+#intro-content,
+.intro-screen {
+    background: linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 50%, #FFFFFF 100%) !important;
+    color: #0F172A !important;
 }
 
+#ocop-intro-overlay h1,
+#ocop-intro-overlay h2,
+#i18n-intro-title1 {
+    color: #0C4A6E !important;
+    font-weight: 900 !important;
+}
+
+#i18n-intro-title2,
+.intro-gold-gradient {
+    color: #0284C7 !important;
+    background: none !important;
+    -webkit-text-fill-color: #0284C7 !important;
+    font-weight: 800 !important;
+}
+
+#i18n-intro-desc {
+    color: #1E293B !important;
+    font-weight: 500 !important;
+}
+
+#intro-award-badge,
+.intro-seal-badge {
+    background: #E0F2FE !important;
+    border: 1px solid #7DD3FC !important;
+    color: #0369A1 !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.1) !important;
+}
+
+#intro-award-badge span,
+#i18n-intro-award {
+    color: #0369A1 !important;
+    font-weight: 800 !important;
+}
+
+.intro-pillars > div,
+.intro-card-glass,
+#intro-features > div,
+.intro-feature-card {
+    background: #FFFFFF !important;
+    border: 1.5px solid #BAE6FD !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08) !important;
+    color: #0F172A !important;
+}
+
+.intro-pillars span[id*="i18n-intro-pillar"]:not([id*="sub"]) {
+    color: #0369A1 !important;
+    font-weight: 800 !important;
+}
+
+.intro-pillars span[id*="i18n-intro-pillar"][id*="sub"] {
+    color: #334155 !important;
+    font-weight: 500 !important;
+}
+
+#intro-lucky-card,
+.lucky-golden-box {
+    background: #FFFFFF !important;
+    border: 1.5px solid #BAE6FD !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08) !important;
+    color: #0F172A !important;
+}
+
+#intro-lucky-card span,
+#intro-lucky-card strong {
+    color: #0369A1 !important;
+    font-weight: 800 !important;
+}
+
+#intro-lucky-card p {
+    color: #334155 !important;
+    font-weight: 500 !important;
+}
+
+#btn-draw-gift {
+    background: linear-gradient(135deg, #0284C7, #0EA5E9) !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25) !important;
+}
+
+.intro-regions,
+.intro-map-console {
+    background: #FFFFFF !important;
+    border: 1.5px solid #7DD3FC !important;
+    border-radius: 24px !important;
+    box-shadow: 0 10px 30px rgba(2, 132, 199, 0.12) !important;
+    color: #0F172A !important;
+}
+
+.intro-regions .intro-region-kicker,
+.intro-regions #i18n-intro-region-header {
+    color: #0C4A6E !important;
+    font-weight: 800 !important;
+}
+
+.intro-regions .intro-region-caption,
+.intro-regions #i18n-intro-region-caption {
+    color: #334155 !important;
+    font-weight: 600 !important;
+}
+
+#province-map,
+.province-map,
+.province-map .leaflet-container,
+#province-map .leaflet-container {
+    background: #E0F2FE !important;
+    border: 1.5px solid #7DD3FC !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.1) !important;
+    min-height: 380px !important;
+}
+
+#province-selection-status {
+    color: #0369A1 !important;
+    font-weight: 700 !important;
+}
+
+/* --- 2. KHU VỰC SẢN PHẨM & BỘ LỌC BÊN TRONG --- */
+#catalog-main-content > div:first-child,
+.catalog-control-toolbar {
+    background: #FFFFFF !important;
+    border: 1.5px solid #BAE6FD !important;
+    color: #0F172A !important;
+    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08) !important;
+}
+
+#system-status-indicator,
+#system-status-indicator span,
+#catalog-main-content > div:first-child span {
+    color: #0F172A !important;
+}
+
+#product-count-badge {
+    color: #0284C7 !important;
+    background: #E0F2FE !important;
+    border: 1px solid #BAE6FD !important;
+    font-weight: 800 !important;
+}
+
+#search-status-text {
+    color: #0369A1 !important;
+    font-weight: 800 !important;
+}
+
+#catalog-sidebar div:has(#i18n-cat-header) {
+    background: #E0F2FE !important;
+    border: 1px solid #BAE6FD !important;
+    color: #0369A1 !important;
+}
+
+#i18n-cat-header {
+    color: #0369A1 !important;
+    font-weight: 800 !important;
+}
+
+#i18n-macro-region-title,
+#catalog-sidebar .text-amber-300,
+#catalog-sidebar h3,
+#catalog-sidebar h4,
+#catalog-sidebar [id*="i18n"] {
+    color: #0C4A6E !important;
+    font-weight: 800 !important;
+}
+
+.product-card .mx-3.mb-2,
+.product-card .store-info-box,
+.product-card-store-box {
+    background: #F0F9FF !important;
+    border: 1px solid #BAE6FD !important;
+    border-radius: 12px !important;
+}
+
+[data-review-summary],
+[data-review-summary] button,
+[data-review-summary] i {
+    color: #D97706 !important;
+    font-weight: 700 !important;
+}
+
+.product-card span[class*="bg-amber-400"] {
+    background: #FEF3C7 !important;
+    color: #D97706 !important;
+    border: 1px solid #FDE68A !important;
+    font-weight: 700 !important;
+}
+
+.product-card-footer {
+    background: #FFFFFF !important;
+    border-top: 1px solid #BAE6FD !important;
+    padding: 10px 12px !important;
+}
+
+.product-card-footer > div:has([onclick*="openQuickView"]),
+.product-card-footer .product-sys-metrics,
+.product-card-footer div:has([onclick*="activateProductReconciliation"]),
+.product-card-footer button[onclick*="openQuickView"],
 .btn-card-ai-story {
     display: none !important;
 }
@@ -871,7 +1074,69 @@ header h1 {
     box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35) !important;
 }
 
-/* 2. REVENUE DASHBOARD MODAL (AI FINANCIAL MODAL) LIGHT THEME & RED CLOSE BUTTON */
+/* --- 3. POPUP MẠNG LƯỚI ĐIỂM BÁN & CỬA HÀNG (ẢNH 2) --- */
+#ocop-store-modal > div {
+    background: #FFFFFF !important;
+    border: 2px solid #7DD3FC !important;
+    border-radius: 24px !important;
+    box-shadow: 0 25px 60px rgba(2, 132, 199, 0.18) !important;
+    color: #0F172A !important;
+}
+
+#ocop-store-modal .modal-header,
+#ocop-store-modal .bg-gradient-to-r.from-emerald-900 {
+    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+    color: #FFFFFF !important;
+}
+
+#ocop-store-modal .space-y-3 > div,
+#ocop-store-modal div:has(> img[alt]) {
+    background: #FFFFFF !important;
+    border: 1.5px solid #BAE6FD !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.06) !important;
+}
+
+#ocop-store-modal .producer-box,
+#ocop-store-modal .bg-gradient-to-br,
+#ocop-store-modal div:has(i.fa-landmark) {
+    background: #F0F9FF !important;
+    border: 1.5px solid #7DD3FC !important;
+    border-radius: 16px !important;
+    color: #0F172A !important;
+}
+
+#ocop-store-modal div:has(i.fa-landmark) span,
+#ocop-store-modal div:has(i.fa-landmark) strong {
+    color: #0F172A !important;
+}
+
+#ocop-store-modal span[class*="bg-emerald-100"],
+#ocop-store-modal span[class*="bg-blue-50"] {
+    background: #E0F2FE !important;
+    color: #0369A1 !important;
+    font-weight: 700 !important;
+    border: 1px solid #BAE6FD !important;
+}
+
+#ocop-store-modal .text-gray-500.font-bold,
+#ocop-store-modal .p-3\.5.rounded-2xl span {
+    color: #0C4A6E !important;
+    font-weight: 700 !important;
+}
+
+#ocop-store-modal a[href*="maps"],
+#ocop-store-modal a[href*="google.com/maps"] {
+    color: #0284C7 !important;
+    font-weight: 700 !important;
+}
+
+#ocop-store-modal a[href*="tel:"] {
+    color: #D97706 !important;
+    font-weight: 700 !important;
+}
+
+/* --- 4. BẢNG QUẢN TRỊ DOANH THU (AI FINANCIAL MODAL) --- */
 #ai-financial-modal > div:last-child {
     background: #F8FAFC !important;
     border: 2px solid #7DD3FC !important;
@@ -880,92 +1145,53 @@ header h1 {
     color: #0F172A !important;
 }
 
-#ai-financial-modal .bg-gradient-to-r.from-emerald-950,
-#ai-financial-modal .modal-header-fin {
-    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
-    border-bottom: 1px solid #7DD3FC !important;
+#ai-financial-modal h3 {
     color: #FFFFFF !important;
+    font-weight: 900 !important;
 }
 
-#btn-close-fin-modal-sticky,
-.btn-close-fin-sticky {
-    position: sticky !important;
-    top: 12px !important;
-    right: 12px !important;
-    z-index: 999999 !important;
-    background: #EF4444 !important;
-    color: #FFFFFF !important;
-    padding: 8px 18px !important;
-    border-radius: 999px !important;
-    cursor: pointer !important;
+#ai-financial-modal h4 {
+    color: #0C4A6E !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+}
+
+#ai-financial-modal div[style*="background:#E0F2FE"],
+#ai-financial-modal div:has(i.fa-lock) {
+    background: #E0F2FE !important;
+    color: #0F172A !important;
+    border: 1px solid #BAE6FD !important;
+}
+
+#ai-financial-modal div:has(i.fa-lock) strong,
+#ai-financial-modal div:has(i.fa-lock) span {
+    color: #0F172A !important;
+}
+
+#ai-financial-modal .grid-cols-4 span.text-xs,
+#ai-financial-modal .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 span.text-xs {
+    color: #1E293B !important;
     font-weight: 700 !important;
-    border: none !important;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
-    display: inline-flex !important;
-    align-items: center !important;
+    font-size: 0.78rem !important;
 }
 
-#ai-financial-modal button[onclick*="closeFinancialDashboardModal"] {
-    background: #EF4444 !important;
-    color: #FFFFFF !important;
-    font-weight: 700 !important;
-    border-radius: 12px !important;
-}
-
-/* What-if Simulator Container & 3 Sliders */
-#ai-financial-modal div[style*="rgba(10, 26, 20"],
-#ai-financial-modal .simulator-box {
+#ai-financial-modal .grid-cols-1.md\:grid-cols-3 > div {
     background: #FFFFFF !important;
     border: 1px solid #BAE6FD !important;
-    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.06) !important;
 }
 
-#ai-financial-modal .bg-slate-900\/80,
-#ai-financial-modal .slider-card {
-    background: #F0F9FF !important;
-    border: 1px solid #BAE6FD !important;
+#ai-financial-modal .grid-cols-1.md\:grid-cols-3 h5 {
     color: #0F172A !important;
+    font-weight: 800 !important;
 }
 
-#ai-financial-modal .bg-slate-900\/80 span,
-#ai-financial-modal .bg-slate-900\/80 div {
-    color: #0F172A !important;
+#ai-financial-modal .grid-cols-1.md\:grid-cols-3 p {
+    color: #334155 !important;
+    font-weight: 500 !important;
 }
 
-#ai-financial-modal input[type="range"] {
-    accent-color: #0284C7 !important;
-}
-
-/* 4 KPI Cards inside Financial Modal */
-#ai-financial-modal .grid-cols-4 > div,
-#ai-financial-modal .grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-4 > div {
-    background: #FFFFFF !important;
-    border: 1px solid #BAE6FD !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.06) !important;
-}
-
-#ai-financial-modal #fin-stat-revenue {
-    color: #0284C7 !important;
-    font-weight: 900 !important;
-}
-
-#ai-financial-modal #fin-stat-profit {
-    color: #059669 !important;
-    font-weight: 900 !important;
-}
-
-#ai-financial-modal #fin-stat-commission {
-    color: #0284C7 !important;
-    font-weight: 900 !important;
-}
-
-#ai-financial-modal #fin-stat-orders {
-    color: #0F172A !important;
-    font-weight: 900 !important;
-}
-
-/* Product COGS Breakdown Table */
 #ai-financial-modal table {
     background: #FFFFFF !important;
     color: #0F172A !important;
@@ -987,114 +1213,6 @@ header h1 {
     background: #F0F9FF !important;
 }
 
-/* 3. STORE LOCATOR MODAL (MẠNG LƯỚI ĐIỂM BÁN) LIGHT THEME & TAGS */
-#ocop-store-modal > div {
-    background: #FFFFFF !important;
-    border: 2px solid #7DD3FC !important;
-    border-radius: 20px !important;
-    box-shadow: 0 25px 60px rgba(2, 132, 199, 0.18) !important;
-    color: #0F172A !important;
-}
-
-#ocop-store-modal .modal-header,
-#ocop-store-modal .bg-gradient-to-r.from-emerald-900 {
-    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
-    color: #FFFFFF !important;
-}
-
-#ocop-store-modal .producer-box,
-#ocop-store-modal .bg-gradient-to-r.from-emerald-950 {
-    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
-    border: 1px solid #7DD3FC !important;
-    color: #FFFFFF !important;
-    border-radius: 16px !important;
-}
-
-#ocop-store-modal .producer-box span,
-#ocop-store-modal .bg-gradient-to-r.from-emerald-950 span {
-    color: #E0F2FE !important;
-}
-
-#ocop-store-modal .producer-box strong,
-#ocop-store-modal .bg-gradient-to-r.from-emerald-950 strong {
-    color: #FFFFFF !important;
-}
-
-/* Store Modal Tags & Badges: Fix White-on-White */
-#ocop-store-modal span[class*="bg-emerald-100"],
-#ocop-store-modal span[class*="bg-gray-100"],
-#ocop-store-modal span[class*="bg-amber-100"],
-#ocop-store-modal span[class*="bg-blue-100"],
-#ocop-store-modal .store-tag,
-#ocop-store-modal .badge-ocop {
-    background: #E0F2FE !important;
-    color: #0369A1 !important;
-    font-weight: 700 !important;
-    border: 1px solid #BAE6FD !important;
-}
-
-#ocop-store-modal button[onclick*="activateProductReconciliation"],
-#btn-store-reconcile {
+#ai-financial-modal button[onclick*="playVoiceFinancialBriefing"] {
     display: none !important;
-}
-
-#ocop-store-modal button[onclick*="askAiAboutStore"] {
-    background: #0284C7 !important;
-    color: #FFFFFF !important;
-    font-weight: 700 !important;
-    border-radius: 12px !important;
-    border: none !important;
-    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25) !important;
-}
-
-#ocop-store-modal button[onclick*="askAiAboutStore"]:hover {
-    background: #0369A1 !important;
-}
-
-/* 4. AI CHATBOT CSKH & LIGHT THEME */
-#ai-chat-window {
-    background: #F8FAFC !important;
-    border: 2px solid #7DD3FC !important;
-    border-radius: 24px !important;
-    box-shadow: 0 20px 50px rgba(2, 132, 199, 0.2) !important;
-}
-
-#ai-chat-messages {
-    background: #F8FAFC !important;
-}
-
-#ai-chat-messages .bg-white {
-    background: #FFFFFF !important;
-    border: 1px solid #BAE6FD !important;
-    color: #0F172A !important;
-    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.05) !important;
-}
-
-#chat-verification-bar {
-    display: none !important;
-}
-
-/* 5. INTRO SCREEN MAP CONSOLE & HERO TITLE */
-.intro-map-console {
-    background: rgba(240, 249, 255, 0.95) !important;
-    border: 1.5px solid #7DD3FC !important;
-    box-shadow: 0 10px 30px rgba(2, 132, 199, 0.15) !important;
-    color: #0F172A !important;
-}
-
-.intro-map-console .intro-region-kicker,
-.intro-map-console #i18n-intro-region-header {
-    color: #0284C7 !important;
-    font-weight: 800 !important;
-}
-
-.intro-map-console .intro-region-caption,
-.intro-map-console #i18n-intro-region-caption {
-    color: #334155 !important;
-}
-
-#i18n-hero-title1 {
-    padding-left: 4px !important;
-    overflow: visible !important;
-    display: inline-block !important;
 }

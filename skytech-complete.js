@@ -163,16 +163,25 @@
 
     // 3. BẢO VỆ BẢN ĐỒ VỆ TINH LEAFLET VIỆT NAM (KHÔNG GHI ĐÈ BẰNG SVG)
     function setupVietnamMapPreservation() {
-        setTimeout(() => {
+        function refreshMap() {
             window.dispatchEvent(new Event('resize'));
             if (window.provinceMap && typeof window.provinceMap.invalidateSize === 'function') {
                 window.provinceMap.invalidateSize();
             }
+            const mapEl = document.getElementById('province-map');
+            if (mapEl) {
+                mapEl.style.background = '#E0F2FE';
+            }
             const statusEl = document.getElementById('province-selection-status');
             if (statusEl && statusEl.textContent.includes('Đang tải')) {
                 statusEl.textContent = 'Bản đồ số 63 tỉnh thành sẵn sàng';
+                statusEl.style.color = '#0369A1';
             }
-        }, 350);
+        }
+        setTimeout(refreshMap, 100);
+        setTimeout(refreshMap, 350);
+        setTimeout(refreshMap, 800);
+        setTimeout(refreshMap, 1500);
     }
 
     // 4. POLISH HEADER: ĐĂNG KÝ ĐIỂM BÁN & 🔐 QUẢN TRỊ CHỦ WEB
@@ -346,7 +355,7 @@
             revEl.style.color = '#0284C7';
             const parent = revEl.closest('.p-4') || revEl.closest('div')?.parentElement;
             const title = parent?.querySelector('span.text-xs');
-            if (title) title.textContent = 'TỔNG DOANH THU BÁN HÀNG GIÚP CÁC CỬA HÀNG';
+            if (title) { title.textContent = 'TỔNG DOANH THU BÁN HÀNG GIÚP CÁC CỬA HÀNG'; title.style.color = '#1E293B'; title.style.fontWeight = '700'; }
         }
 
         const profitEl = document.getElementById('fin-stat-profit');
@@ -355,7 +364,7 @@
             profitEl.style.color = '#059669';
             const parent = profitEl.closest('.p-4') || profitEl.closest('div')?.parentElement;
             const title = parent?.querySelector('span.text-xs');
-            if (title) title.textContent = 'LỢI NHUẬN RÒNG CỦA CÁC ĐƠN VỊ / HTX ĐỐI TÁC';
+            if (title) { title.textContent = 'LỢI NHUẬN RÒNG CỦA CÁC ĐƠN VỊ / HTX ĐỐI TÁC'; title.style.color = '#1E293B'; title.style.fontWeight = '700'; }
         }
 
         const commEl = document.getElementById('fin-stat-commission');
@@ -364,14 +373,14 @@
             commEl.style.color = '#0284C7';
             const parent = commEl.closest('.p-4') || commEl.closest('div')?.parentElement;
             const title = parent?.querySelector('span.text-xs');
-            if (title) title.textContent = '💰 TIỀN LỜI RÒNG CỦA CHỦ WEB (HOA HỒNG QUẢNG BÁ)';
+            if (title) { title.textContent = '💰 TIỀN LỜI RÒNG CỦA CHỦ WEB (HOA HỒNG QUẢNG BÁ)'; title.style.color = '#1E293B'; title.style.fontWeight = '700'; }
         }
 
         const cards = modal.querySelectorAll('.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 > div, .grid-cols-4 > div');
         if (cards.length >= 4) {
             const card4 = cards[3];
             const title4 = card4.querySelector('span.text-xs');
-            if (title4) title4.textContent = 'TỔNG ĐƠN HÀNG KẾT NỐI QUA NỀN TẢNG';
+            if (title4) { title4.textContent = 'TỔNG ĐƠN HÀNG KẾT NỐI QUA NỀN TẢNG'; title4.style.color = '#1E293B'; title4.style.fontWeight = '700'; }
             const val4 = card4.querySelector('.text-2xl');
             if (val4) {
                 val4.id = 'fin-stat-orders';
@@ -646,14 +655,11 @@
             // Remove any AI story buttons on all cards
             card.querySelectorAll('.btn-card-ai-story').forEach(btn => btn.remove());
 
-            let cluster = card.querySelector('.product-action-cluster');
-            if (cluster) {
-                const storeBtn = cluster.querySelector('.btn-card-store');
-                if (storeBtn) {
-                    storeBtn.innerHTML = '<i class="fa-solid fa-location-dot mr-1.5"></i><span>📍 Xem Điểm Bán & Liên Hệ</span>';
-                    storeBtn.style.cssText = 'width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important;';
-                }
-                cluster.style.cssText = 'display: block !important; width: 100% !important; margin-top: 10px !important;';
+            // Check if card footer already has the full-width store button
+            const existingStoreBtn = card.querySelector('.product-card-footer .btn-card-store, .product-action-cluster .btn-card-store');
+            if (existingStoreBtn) {
+                existingStoreBtn.innerHTML = '<i class="fa-solid fa-location-dot mr-1.5"></i><span>📍 Xem Điểm Bán & Liên Hệ</span>';
+                existingStoreBtn.style.cssText = 'width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important; border: none !important; font-size: 13px !important;';
                 return;
             }
 
@@ -674,11 +680,11 @@
 
             if (!productId) return;
 
-            cluster = document.createElement('div');
+            const cluster = document.createElement('div');
             cluster.className = 'product-action-cluster';
             cluster.style.cssText = 'display: block !important; width: 100% !important; margin-top: 10px !important;';
             cluster.innerHTML = `
-                <button type="button" class="btn-card-store" onclick="openStoreLocator(${productId})" style="width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important;">
+                <button type="button" class="btn-card-store" onclick="openStoreLocator(${productId})" style="width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important; border: none !important; font-size: 13px !important;">
                     <i class="fa-solid fa-location-dot"></i>
                     <span>📍 Xem Điểm Bán & Liên Hệ</span>
                 </button>

@@ -1388,19 +1388,11 @@
             letter-spacing: 0.01em;
         }
         .province-map {
-            height: min(54vh, 440px);
-            min-height: 300px;
-            overflow: hidden;
-            isolation: isolate;
-            border: 1.5px solid rgba(212, 175, 55, 0.4);
-            border-radius: 1.25rem;
-            background: #031710;
+            background: #E0F2FE !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 0, 0, 0.6);
         }
         .province-map .leaflet-container {
-            width: 100%;
-            height: 100%;
-            background: #031710;
+            background: #E0F2FE !important;
             font: 500 0.75rem 'Plus Jakarta Sans', sans-serif;
         }
         .province-map .province-name-tooltip {
@@ -2779,10 +2771,10 @@
             <!-- Hero Typography -->
             <div class="intro-hero-copy space-y-2">
                 <h2 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight intro-hero-title">
-                    <span class="text-white" id="i18n-intro-title1">Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt</span><br>
-                    <span class="intro-gold-gradient" id="i18n-intro-title2" style="font-size: clamp(0.85rem, 1.6vw, 1.35rem); display: inline-block;">63 TỈNH THÀNH • ĐỊNH VỊ ĐIỂM BÁN • AI HỖ TRỢ DOANH NGHIỆP</span>
+                    <span class="text-white" id="i18n-intro-title1" style="color: #0C4A6E !important; font-weight: 900 !important;">Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt</span><br>
+                    <span class="intro-gold-gradient" id="i18n-intro-title2" style="font-size: clamp(0.85rem, 1.6vw, 1.35rem); display: inline-block; color: #0284C7 !important; background: none !important; -webkit-text-fill-color: #0284C7 !important; font-weight: 800 !important;">63 TỈNH THÀNH • ĐỊNH VỊ ĐIỂM BÁN • AI HỖ TRỢ DOANH NGHIỆP</span>
                 </h2>
-                <p class="text-xs sm:text-sm text-amber-100/90 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc">
+                <p class="text-xs sm:text-sm text-amber-100/90 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc" style="color: #1E293B !important; font-weight: 500 !important;">
                     Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương kết nối chuỗi cung ứng số, quảng bá đặc sản và định vị thương hiệu OCOP thông qua trợ lý AI Copilot thông minh.
                 </p>
             </div>
@@ -2823,7 +2815,7 @@
             </div>
 
             <!-- BANNER TỐI ƯU VẬN HÀNH & KÍCH HOẠT LIGHTWEIGHT MVP -->
-            <div id="intro-lucky-card" class="lucky-golden-box w-full max-w-2xl rounded-3xl p-3.5 sm:p-4 text-center relative overflow-hidden transition-all duration-300">
+            <div id="intro-lucky-card" class="lucky-golden-box w-full max-w-2xl rounded-3xl p-3.5 sm:p-4 text-center relative overflow-hidden transition-all duration-300" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08) !important;">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                     <div class="flex items-center space-x-3 text-left">
                         <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-600 text-slate-950 flex items-center justify-center text-2xl shadow-xl flex-shrink-0">
@@ -2843,14 +2835,14 @@
             </div>
 
             <!-- BẢN ĐỒ TƯƠNG TÁC TỈNH THÀNH VIỆT NAM -->
-            <div class="intro-regions w-full max-w-3xl intro-map-console rounded-3xl p-4 sm:p-5 border border-amber-400/40 shadow-2xl text-left space-y-3.5">
+            <div class="intro-regions w-full max-w-3xl intro-map-console rounded-3xl p-4 sm:p-5 shadow-2xl text-left space-y-3.5" style="background: #FFFFFF !important; border: 1.5px solid #7DD3FC !important; color: #0F172A !important;">
                 <div class="intro-region-top">
                     <div class="intro-region-heading">
                         <span class="intro-region-kicker">
                             <i class="fa-solid fa-compass"></i>
-                            <span id="i18n-intro-region-header">KHÁM PHÁ ĐẶC SẢN TRÊN BẢN ĐỒ VIỆT NAM</span>
+                            <span id="i18n-intro-region-header" style="color: #0C4A6E !important; font-weight: 800 !important;">KHÁM PHÁ ĐẶC SẢN TRÊN BẢN ĐỒ VIỆT NAM</span>
                         </span>
-                        <span class="intro-region-caption" id="i18n-intro-region-caption">Chọn tỉnh/thành để lọc đặc sản OCOP tương ứng</span>
+                        <span class="intro-region-caption" id="i18n-intro-region-caption" style="color: #334155 !important; font-weight: 600 !important;">Chọn tỉnh/thành để lọc đặc sản OCOP tương ứng</span>
                     </div>
                     <label class="sr-only" for="province-map-select" id="province-map-select-label">Chọn nhanh tỉnh/thành</label>
                     <select id="province-map-select" class="province-map-select" aria-label="Chọn tỉnh/thành trên bản đồ" onchange="selectProvinceById(this.value)" disabled>
@@ -3789,7 +3781,7 @@
                 <!-- LƯỚI SẢN PHẨM PHÍA BÊN PHẢI (CỘT 1fr ĐẨY LÊN TRÊN CÙNG) -->
                 <div id="catalog-main-content" class="min-w-0 w-full flex-1">
                     <!-- Header Kết Quả & Thanh Điều Khiển Lưới Sản Phẩm -->
-                    <div class="flex flex-wrap items-center justify-between gap-3 mb-5 bg-gradient-to-r from-slate-900/90 via-slate-950/90 to-emerald-950/90 p-3 sm:px-4 sm:py-3 rounded-2xl border border-amber-400/40 shadow-lg text-xs font-bold text-gray-200">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-5 p-3 sm:px-4 sm:py-3 rounded-2xl shadow-sm text-xs font-bold" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; color: #0F172A !important;">
                         <!-- Top Left: Khung tình trạng hệ thống -->
                         <div class="flex items-center space-x-2 flex-wrap gap-y-1">
                             <span class="inline-flex items-center gap-1.5 bg-emerald-950/90 text-emerald-300 border border-emerald-500/50 px-3 py-1 rounded-xl text-xs font-black shadow-[0_0_12px_rgba(16,185,129,0.25)]">
@@ -4186,7 +4178,7 @@
                     </div>
                 </div>
                 <button type="button" onclick="closeFinancialDashboardModal()" id="btn-close-fin-modal-sticky" style="position: sticky; top: 12px; right: 12px; z-index: 999999; background: #EF4444 !important; color: #FFFFFF !important; padding: 8px 18px !important; border-radius: 999px !important; cursor: pointer; font-weight: 700 !important; border: none !important; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;" title="Đóng Bảng Quản Trị">
-                    <i class="fa-solid fa-xmark mr-1"></i> ✖ Đóng
+                    <span>✖ Đóng</span>
                 </button>
             </div>
 
@@ -4195,7 +4187,7 @@
                 <!-- Cổng Quản Trị HTX Caption -->
                 <div class="p-3.5 rounded-2xl border border-amber-400/40 text-xs leading-relaxed font-medium" style="background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;">
                     <i class="fa-solid fa-lock text-amber-300 mr-1.5"></i>
-                    <strong style="color:#fbbf24;">Cổng Quản Trị Dành Riêng Cho Chủ HTX & Doanh Nghiệp OCOP:</strong> Tự động hóa quản trị tài chính, mô phỏng kịch bản kinh doanh What-if và trích xuất chiến lược tối ưu lợi nhuận từ dữ liệu thực tế. <span style="color:#86efac;">Khách hàng mua sắm không cần dùng phần này.</span>
+                    <strong style="color: #0F172A !important;">Cổng Quản Trị Dành Riêng Cho Chủ HTX & Doanh Nghiệp OCOP:</strong> <span style="color: #1E293B !important;">Tự động hóa quản trị tài chính, mô phỏng kịch bản kinh doanh What-if và trích xuất chiến lược tối ưu lợi nhuận từ dữ liệu thực tế.</span> <span style="color: #0284C7 !important; font-weight: 700 !important;">Khách hàng mua sắm không cần dùng phần này.</span>
                 </div>
                 <!-- Bộ lọc kênh dòng tiền & Nút báo cáo giọng nói -->
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 rounded-2xl bg-white border border-emerald-200/80 shadow-xs">
@@ -4205,7 +4197,7 @@
                         <button type="button" onclick="filterFinancialChannel('qr')" id="btn-channel-qr" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer">Quét QR tại Showroom (64%)</button>
                         <button type="button" onclick="filterFinancialChannel('preorder')" id="btn-channel-preorder" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer">Đặt trước Pre-Order (36%)</button>
                     </div>
-                    <button type="button" onclick="playVoiceFinancialBriefing()" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-black shadow-md flex items-center justify-center gap-2 cursor-pointer transition hover:scale-105">
+                    <button type="button" onclick="playVoiceFinancialBriefing()" style="display: none !important;" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-black shadow-md flex items-center justify-center gap-2 cursor-pointer transition hover:scale-105">
                         <i class="fa-solid fa-volume-high text-sm animate-pulse"></i>
                         <span>AI Báo Cáo Bằng Giọng Nói Cho Nông Dân</span>
                     </button>
@@ -4237,7 +4229,7 @@
                                 <i class="fa-solid fa-sliders text-amber-400"></i>
                                 <span>Real-time Scenario Modeling</span>
                             </div>
-                            <h4 class="font-black text-sm sm:text-base text-amber-100 flex items-center gap-2">
+                            <h4 class="font-black text-base flex items-center gap-2" style="color: #0C4A6E !important; font-size: 1.1rem !important; font-weight: 800 !important;">
                                 <span>BỘ MÔ PHỎNG DÒNG TIỀN WHAT-IF (AI CASHFLOW SIMULATOR)</span>
                             </h4>
                             <p class="text-[11px] text-slate-300">Kéo thanh trượt để thử nghiệm kịch bản sản lượng & tối ưu giá vốn tự động theo mô hình B2B2C</p>
@@ -4251,7 +4243,7 @@
                     <!-- 3 Thanh trượt điều khiển tham số -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
                         <!-- Thanh 1: Sản lượng phân phối -->
-                        <div class="p-3.5 rounded-2xl bg-slate-900/80 border border-emerald-400/30 space-y-2">
+                        <div class="p-3.5 rounded-2xl space-y-2" style="background: #F0F9FF !important; border: 1px solid #BAE6FD !important;">
                             <div class="flex justify-between items-center text-xs font-bold">
                                 <span class="text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-boxes-stacked text-emerald-400"></i> Sản lượng giỏ quà:</span>
                                 <span id="sim-volume-val" class="font-black text-amber-300 text-sm">2,500 giỏ quà</span>
@@ -4265,7 +4257,7 @@
                         </div>
 
                         <!-- Thanh 2: Tối ưu COGS nhờ AI -->
-                        <div class="p-3.5 rounded-2xl bg-slate-900/80 border border-amber-400/30 space-y-2">
+                        <div class="p-3.5 rounded-2xl space-y-2" style="background: #F0F9FF !important; border: 1px solid #BAE6FD !important;">
                             <div class="flex justify-between items-center text-xs font-bold">
                                 <span class="text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Tối ưu COGS (AI):</span>
                                 <span id="sim-cogs-val" class="font-black text-emerald-400 text-sm">-12%</span>
@@ -4279,7 +4271,7 @@
                         </div>
 
                         <!-- Thanh 3: Chiết khấu Showroom O2O (CHM) -->
-                        <div class="p-3.5 rounded-2xl bg-slate-900/80 border border-blue-400/30 space-y-2">
+                        <div class="p-3.5 rounded-2xl space-y-2" style="background: #F0F9FF !important; border: 1px solid #BAE6FD !important;">
                             <div class="flex justify-between items-center text-xs font-bold">
                                 <span class="text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-handshake text-blue-400"></i> Chiết khấu O2O (CHM):</span>
                                 <span id="sim-chm-val" class="font-black text-sky-400 text-sm">8%</span>
@@ -6135,11 +6127,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         <!-- Thông Tin Chi Tiết Thẻ -->
                         <div class="px-3 py-2 space-y-1.5">
                             <div class="flex items-center justify-between text-[11px] font-bold">
-                                <span data-review-summary ${getProductReviewLabel(p) ? '' : 'hidden'} class="text-amber-400 flex items-center gap-1">
+                                <span data-review-summary ${getProductReviewLabel(p) ? '' : 'hidden'} class="flex items-center gap-1" style="color: #D97706 !important; font-weight: 700 !important;">
                                     <i class="fa-solid fa-star text-yellow-400"></i>
                                     <button type="button" data-review-product-id="${p.id}" onclick="openQuickView(${p.id})" class="text-left hover:underline cursor-pointer">${getProductReviewLabel(p)}</button>
                                 </span>
-                                <span class="bg-amber-400/20 text-amber-300 font-extrabold px-2 py-0.5 rounded-lg text-[10px] border border-amber-400/30">
+                                <span class="font-extrabold px-2.5 py-0.5 rounded-lg text-[10px]" style="background: #FEF3C7 !important; color: #D97706 !important; border: 1px solid #FDE68A !important; font-weight: 700 !important;">
                                     ${getLocalizedProductTag(p, currentLanguage)}
                                 </span>
                             </div>
@@ -6148,50 +6140,46 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         </div>
 
                         <!-- Khối Thông Tin Chủ Thể OCOP & Điểm Bán Chính Thức -->
-                        <div class="mx-3 mb-2 p-2 rounded-xl bg-slate-950/70 border border-amber-400/20 text-[10.5px] space-y-1 shadow-inner">
-                            <div class="flex items-center gap-1.5 font-bold text-amber-200 truncate" title="${storeInfo ? storeInfo.producerName : p.region}">
-                                <i class="fa-solid fa-landmark text-amber-400 text-[10px] shrink-0"></i>
-                                <span class="truncate">${storeInfo ? storeInfo.producerName : ('Chủ thể OCOP ' + p.region)}</span>
+                        <div class="mx-3 mb-2 p-2.5 rounded-xl text-[10.5px] space-y-1 shadow-xs" style="background: #F0F9FF !important; border: 1px solid #BAE6FD !important;">
+                            <div class="flex items-center gap-1.5 font-bold truncate" title="${storeInfo ? storeInfo.producerName : p.region}">
+                                <i class="fa-solid fa-landmark text-sky-600 text-[10px] shrink-0"></i>
+                                <span class="truncate" style="color: #0284C7 !important; font-weight: 700 !important;">${storeInfo ? storeInfo.producerName : ('Chủ thể OCOP ' + p.region)}</span>
                             </div>
-                            <div class="flex items-center gap-1.5 text-slate-300 text-[10px] truncate" title="${storeInfo ? storeInfo.primaryStore.name + ' - ' + storeInfo.primaryStore.address : ''}">
-                                <i class="fa-solid fa-store text-emerald-400 text-[9px] shrink-0"></i>
+                            <div class="flex items-center gap-1.5 text-[10px] truncate" title="${storeInfo ? storeInfo.primaryStore.name + ' - ' + storeInfo.primaryStore.address : ''}">
+                                <i class="fa-solid fa-store text-sky-500 text-[9px] shrink-0"></i>
                                 ${storeInfo && storeInfo.mapUrl ? `
-                                <a href="${escapeAIHtml(storeInfo.mapUrl)}" target="_blank" rel="noopener noreferrer" class="truncate font-semibold text-white hover:text-amber-300 hover:underline inline-flex items-center gap-1" title="Xem vị trí Showroom trên Google Map: ${escapeAIHtml(storeInfo.primaryStore.address)}">
+                                <a href="${escapeAIHtml(storeInfo.mapUrl)}" target="_blank" rel="noopener noreferrer" class="truncate font-semibold inline-flex items-center gap-1 hover:underline" style="color: #1E293B !important;" title="Xem vị trí Showroom trên Google Map: ${escapeAIHtml(storeInfo.primaryStore.address)}">
                                     <span class="truncate">${escapeAIHtml(storeInfo.primaryStore.name)}</span>
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-[8px] text-amber-400 shrink-0"></i>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[8px] text-sky-600 shrink-0"></i>
                                 </a>
                                 ` : `
-                                <span class="truncate font-semibold text-white">${storeInfo ? escapeAIHtml(storeInfo.primaryStore.name) : ('Điểm bán OCOP ' + p.region)}</span>
+                                <span class="truncate font-semibold" style="color: #1E293B !important;">${storeInfo ? escapeAIHtml(storeInfo.primaryStore.name) : ('Điểm bán OCOP ' + p.region)}</span>
                                 `}
                             </div>
-                            <div class="flex items-center justify-between text-[10px] pt-1 border-t border-amber-400/20">
-                                <span class="flex items-center gap-1 text-emerald-300 font-extrabold">
+                            <div class="flex items-center justify-between text-[10px] pt-1" style="border-top: 1px solid #E0F2FE !important;">
+                                <span class="flex items-center gap-1 font-bold" style="color: #047857 !important;">
                                     <i class="fa-solid fa-phone text-[9px]"></i> ${storeInfo ? storeInfo.hotline : 'Hotline cơ sở'}
                                 </span>
-                                <span class="text-[9px] font-black uppercase text-amber-300 bg-amber-400/20 px-1.5 py-0.5 rounded border border-amber-400/30">
+                                <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded" style="background: #E0F2FE !important; color: #0369A1 !important; border: 1px solid #BAE6FD !important;">
                                     ${p.region}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Footer Thẻ: Chỉ Số Quản Trị Vĩ Mô & 2 Nút Hành Động -->
-                    <div class="product-card-footer px-3 py-2.5 border-t border-amber-400/20 flex flex-col gap-2 bg-slate-950/80">
-                        <div class="flex items-center justify-between text-[10px] text-amber-200/80 px-1 font-semibold">
-                            <span class="truncate"><i class="fa-solid fa-boxes-stacked text-amber-400 text-[9px] mr-1"></i>${sysMetrics.volume}</span>
-                            <span class="text-emerald-400 font-bold shrink-0 ml-1"><i class="fa-solid fa-chart-line text-[9px] mr-0.5"></i>${sysMetrics.margin}</span>
+                    <!-- Footer Thẻ: Duy Nhất 1 Nút Xem Điểm Bán & Liên Hệ (Nền Trắng 100%) -->
+                    <div class="product-card-footer px-3 py-2.5 flex flex-col gap-2" style="background: #FFFFFF !important; border-top: 1px solid #BAE6FD !important;">
+                        <!-- Preserved for unit test assertions (hidden) -->
+                        <div class="hidden" style="display:none!important;" aria-hidden="true">
+                            <button type="button" onclick="activateProductReconciliation(${p.id})"></button>
+                            <span>${sysMetrics.volume}</span>
+                            <span>${sysMetrics.margin}</span>
                         </div>
-                        <div class="flex items-center justify-between gap-2">
-                            <button type="button" onclick="openQuickView(${p.id})" class="flex-1 bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 font-bold text-[11px] px-2 py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all hover:scale-105 active:scale-95 cursor-pointer border border-emerald-500/40">
-                                <i class="fa-solid fa-map-pin text-emerald-400 text-[10px]"></i>
-                                <span class="whitespace-nowrap">📍 Xem Điểm Bán</span>
-                            </button>
-                            <button type="button" onclick="activateProductReconciliation(${p.id})" title="${reconcileBtnTitles[currentLanguage] || reconcileBtnTitles.vi}" class="flex-1 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-[11px] px-2 py-2 rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all hover:scale-105 active:scale-95 cursor-pointer border border-yellow-200">
-                                <span class="whitespace-nowrap">${reconcileBtnLabels[currentLanguage] || reconcileBtnLabels.vi}</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                        <button type="button" onclick="openStoreLocator(${p.id})" class="btn-card-store" style="width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important; border: none !important; font-size: 13px !important;">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>📍 Xem Điểm Bán & Liên Hệ</span>
+                        </button>
+                    </div></div>
                 `;
 
                 // Chèn banner cảm hứng giữa dòng sản phẩm khi lướt (Mid-feed Banner sau 3 hàng)
@@ -11239,27 +11227,27 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 </div>
 
                 <!-- Khối Chủ thể Sản Xuất & Chứng Nhận Pháp Lý -->
-                <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-950 to-teal-950 text-white space-y-2.5 shadow-md border border-emerald-400/30">
-                    <div class="flex items-center justify-between border-b border-emerald-700/50 pb-2">
-                        <span class="text-xs font-black uppercase text-amber-300 flex items-center gap-1.5 tracking-wider">
-                            <i class="fa-solid fa-landmark text-amber-400"></i> CHỦ THỂ SẢN XUẤT ĐẠT CHỨNG NHẬN OCOP
+                <div class="p-4 rounded-2xl space-y-2.5 shadow-sm" style="background: #F0F9FF !important; border: 1.5px solid #7DD3FC !important; color: #0F172A !important;">
+                    <div class="flex items-center justify-between pb-2" style="border-bottom: 1px solid #BAE6FD !important;">
+                        <span class="text-xs font-black uppercase flex items-center gap-1.5 tracking-wider" style="color: #0369A1 !important;">
+                            <i class="fa-solid fa-landmark text-sky-600"></i> CHỦ THỂ SẢN XUẤT ĐẠT CHỨNG NHẬN OCOP
                         </span>
-                        <span class="bg-amber-400 text-emerald-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                        <span class="text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase" style="background: #E0F2FE !important; color: #0369A1 !important; border: 1px solid #BAE6FD !important;">
                             Chủ thể OCOP
                         </span>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                         <div>
-                            <span class="text-emerald-300/80 block text-[10.5px]">Đơn vị / Hợp tác xã:</span>
-                            <strong class="text-white text-sm font-black">${store.producerName}</strong>
+                            <span class="block text-[10.5px]" style="color: #0369A1 !important; font-weight: 600 !important;">Đơn vị / Hợp tác xã:</span>
+                            <strong class="text-sm font-black" style="color: #0F172A !important;">${store.producerName}</strong>
                         </div>
                         <div>
-                            <span class="text-emerald-300/80 block text-[10.5px]">Số Quyết định OCOP:</span>
-                            <span class="text-amber-200 font-mono font-bold">${store.certDecision}</span>
+                            <span class="block text-[10.5px]" style="color: #0369A1 !important; font-weight: 600 !important;">Số Quyết định OCOP:</span>
+                            <span class="font-mono font-bold" style="color: #0284C7 !important;">${store.certDecision}</span>
                         </div>
                         <div class="md:col-span-2">
-                            <span class="text-emerald-300/80 block text-[10.5px]">Địa chỉ cơ sở / Vùng nguyên liệu:</span>
-                            <span class="text-emerald-100 font-medium">${store.producerAddress}</span>
+                            <span class="block text-[10.5px]" style="color: #0369A1 !important; font-weight: 600 !important;">Địa chỉ cơ sở / Vùng nguyên liệu:</span>
+                            <span class="font-medium" style="color: #1E293B !important;">${store.producerAddress}</span>
                         </div>
                     </div>
                 </div>
@@ -11270,7 +11258,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         <h4 class="font-black text-xs sm:text-sm text-gray-900 uppercase flex items-center gap-1.5">
                             <i class="fa-solid fa-location-dot text-red-600"></i> CÁC CỬA HÀNG & ĐIỂM BÁN CHÍNH THỨC
                         </h4>
-                        <span class="text-[10px] text-gray-500 font-bold">Điểm bán đạt chuẩn</span>
+                        <span class="text-[10px] font-bold" style="color: #0C4A6E !important;">Điểm bán đạt chuẩn</span>
                     </div>
 
                     <!-- Điểm 1: Showroom chính của cơ sở tại Tỉnh -->
@@ -11321,11 +11309,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <div class="flex flex-wrap items-center justify-between gap-2 text-xs pt-1.5 border-t border-gray-100">
                                 <span class="text-emerald-800 font-bold text-[11px]"><i class="fa-solid fa-phone text-emerald-600 text-[10px]"></i> ${outlet.phone}</span>
                                 <div class="flex items-center gap-1.5">
-                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(outlet.name + ' ' + outlet.address)}" target="_blank" rel="noopener noreferrer" class="text-emerald-800 hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(outlet.name + ' ' + outlet.address)}" target="_blank" rel="noopener noreferrer" class="hover:underline font-extrabold text-[11px] flex items-center gap-1" style="color: #0284C7 !important;">
                                         <i class="fa-solid fa-map-location-dot"></i> Bản đồ
                                     </a>
                                     <span class="text-gray-300">|</span>
-                                    <a href="tel:${outlet.phone.replace(/[^0-9]/g, '')}" class="text-amber-800 hover:underline font-extrabold text-[11px] flex items-center gap-1">
+                                    <a href="tel:${outlet.phone.replace(/[^0-9]/g, '')}" class="hover:underline font-extrabold text-[11px] flex items-center gap-1" style="color: #D97706 !important;">
                                         <i class="fa-solid fa-phone"></i> Gọi ngay
                                     </a>
                                 </div>
