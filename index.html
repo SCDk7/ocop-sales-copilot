@@ -2614,6 +2614,55 @@
 
     </style>
 <link rel="stylesheet" href="skytech-complete.css">
+
+    <!-- SUPER VIP: ELIMINATE ALL BLURRY TEXT-SHADOWS & ENFORCE SHARP CONTRAST -->
+    <style id="super-vip-contrast-rules">
+        * {
+            text-shadow: none !important;
+        }
+        #i18n-hero-title1 {
+            overflow: visible !important;
+            padding-left: 12px !important;
+            margin-left: 0 !important;
+            text-indent: 0 !important;
+            display: inline-block !important;
+            color: #0F172A !important;
+        }
+        #shop-hero h2,
+        #shop-hero .lg\:col-span-7 {
+            overflow: visible !important;
+        }
+        #shop-hero .absolute h3,
+        #shop-hero .absolute p,
+        #shop-hero .absolute #i18n-hero-banner-sub {
+            color: #FFFFFF !important;
+            text-shadow: none !important;
+        }
+        #shop-hero .absolute #i18n-hero-badge-tag {
+            background: #0284C7 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #38BDF8 !important;
+        }
+        .lang-dropdown-btn,
+        #header-lang-dropdown-btn,
+        #intro-lang-dropdown-btn {
+            background: #F0F9FF !important;
+            border: 1.5px solid #7DD3FC !important;
+            color: #0369A1 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08) !important;
+        }
+        .lang-dropdown-btn span,
+        .lang-dropdown-btn i,
+        #header-lang-dropdown-btn span,
+        #header-lang-dropdown-btn i,
+        #intro-lang-dropdown-btn span,
+        #intro-lang-dropdown-btn i {
+            color: #0369A1 !important;
+            font-weight: 800 !important;
+        }
+    </style>
+
 </head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
     <!-- THANH TIẾN TRÌNH CUỘN HOÀNG KIM (GOLDEN SCROLL PROGRESS BAR) -->
@@ -2713,13 +2762,13 @@
                     <div class="flex items-center space-x-2">
                         <span class="block text-xs sm:text-sm font-black text-sky-200 tracking-wider leading-none">OCOP SALES COPILOT</span>
                     </div>
-                    <span class="text-[9px] sm:text-[10px] text-sky-300 uppercase font-bold tracking-widest" id="i18n-intro-badge">Hệ điều hành số & Trợ lý quản trị đặc sản Việt Nam</span>
+                    <span class="text-[9px] sm:text-[10px] text-sky-300 uppercase font-bold tracking-widest" id="i18n-intro-badge">CỔNG THÔNG TIN QUẢNG BÁ ĐẶC SẢN & KẾT NỐI ĐIỂM BÁN OCOP VIỆT NAM</span>
                 </div>
             </div>
 
             <div class="flex items-center space-x-2 sm:space-x-3">
-                <button type="button" onclick="enterOcopMarket('all')" class="px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer bg-sky-600 hover:bg-sky-500 text-white shadow-sm border border-sky-400">
-                    <span>Khám phá đặc sản 63 tỉnh thành →</span>
+                <button type="button" id="btn-intro-header-explore" onclick="enterOcopMarket('all')" class="px-4 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-md hover:opacity-95" style="background: #0284C7 !important; color: #FFFFFF !important; border: 1px solid #0369A1 !important; font-weight: 800 !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3) !important;">
+                    <span style="color: #FFFFFF !important; font-weight: 800 !important;">Khám Phá Đặc Sản Ngay →</span>
                 </button>
                 <div class="lang-dropdown-container" id="intro-lang-dropdown-container">
                     <button type="button" id="intro-lang-dropdown-btn" onclick="toggleLanguageDropdown(event, 'intro-lang-dropdown-menu')" class="lang-dropdown-btn" aria-haspopup="true" aria-expanded="false" title="Chọn ngôn ngữ / Select Language">
@@ -2772,64 +2821,64 @@
             <div class="intro-hero-copy space-y-2">
                 <h2 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight intro-hero-title">
                     <span class="text-white" id="i18n-intro-title1" style="color: #0C4A6E !important; font-weight: 900 !important;">Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt</span><br>
-                    <span class="intro-gold-gradient" id="i18n-intro-title2" style="font-size: clamp(0.85rem, 1.6vw, 1.35rem); display: inline-block; color: #0284C7 !important; background: none !important; -webkit-text-fill-color: #0284C7 !important; font-weight: 800 !important;">63 TỈNH THÀNH • ĐỊNH VỊ ĐIỂM BÁN • AI HỖ TRỢ DOANH NGHIỆP</span>
+                    <span class="intro-gold-gradient" id="i18n-intro-title2" style="font-size: clamp(0.85rem, 1.5vw, 1.25rem); display: inline-block; color: #0284C7 !important; background: none !important; -webkit-text-fill-color: #0284C7 !important; font-weight: 800 !important;">KHÁM PHÁ ĐẶC SẢN VÙNG MIỀN • TRA CỨU CỬA HÀNG CHÍNH HÃNG • TRỢ LÝ AI TƯ VẤN</span>
                 </h2>
-                <p class="text-xs sm:text-sm text-amber-100/90 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc" style="color: #1E293B !important; font-weight: 500 !important;">
-                    Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương kết nối chuỗi cung ứng số, quảng bá đặc sản và định vị thương hiệu OCOP thông qua trợ lý AI Copilot thông minh.
+                <p class="text-xs sm:text-sm text-slate-700 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc" style="color: #1E293B !important; font-size: 1.05rem !important; line-height: 1.6 !important; font-weight: 500 !important;">
+                    Chào mừng bạn đến với không gian trưng bày hơn 252 đặc sản OCOP tiêu biểu từ 63 tỉnh thành Việt Nam. Dễ dàng tìm kiếm sản phẩm chuẩn 3–5 Sao, xem câu chuyện nguồn gốc và tra cứu địa chỉ cửa hàng chính hãng gần bạn nhất.
                 </p>
             </div>
 
             <!-- 4 Trụ Cột Hologram Cards (Hiệu ứng 3D Floating) -->
             <div class="intro-pillars grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 w-full max-w-3xl pt-1">
-                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
-                    <div class="w-9 h-9 mx-auto rounded-xl bg-amber-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default" style="background: #FFFFFF !important; border: 1.5px solid #7DD3FC !important; box-shadow: 0 6px 16px rgba(2, 132, 199, 0.08) !important;">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-lg mb-1.5 shadow-sm">
                         <i class="fa-solid fa-map-location-dot"></i>
                     </div>
-                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar1">Bản Đồ Số 63 Tỉnh Thành</span>
-                    <span class="block text-[10px] text-amber-300/80 font-medium" id="i18n-intro-pillar1-sub">Định vị showroom O2O trực quan.</span>
+                    <span class="block text-xs font-black" style="color: #0C4A6E !important; font-weight: 800 !important; font-size: 0.95rem !important;" id="i18n-intro-pillar1">🗺️ Bản Đồ Điểm Bán 63 Tỉnh</span>
+                    <span class="block text-[11px] font-medium mt-0.5" style="color: #334155 !important;" id="i18n-intro-pillar1-sub">Tra cứu địa chỉ cửa hàng & chỉ đường tận nơi.</span>
                 </div>
 
-                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
-                    <div class="w-9 h-9 mx-auto rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-                        <i class="fa-solid fa-network-wired"></i>
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default" style="background: #FFFFFF !important; border: 1.5px solid #7DD3FC !important; box-shadow: 0 6px 16px rgba(2, 132, 199, 0.08) !important;">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg mb-1.5 shadow-sm">
+                        <i class="fa-solid fa-seedling"></i>
                     </div>
-                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar2">Số Hóa Chuỗi Cung Ứng</span>
-                    <span class="block text-[10px] text-emerald-300/80 font-medium" id="i18n-intro-pillar2-sub">Kết nối Nhà vựa và Cửa hàng lẻ.</span>
+                    <span class="block text-xs font-black" style="color: #0C4A6E !important; font-weight: 800 !important; font-size: 0.95rem !important;" id="i18n-intro-pillar2">🌾 Đặc Sản Vùng Miền Chính Hãng</span>
+                    <span class="block text-[11px] font-medium mt-0.5" style="color: #334155 !important;" id="i18n-intro-pillar2-sub">100% sản phẩm đạt chứng nhận OCOP 3–5 Sao.</span>
                 </div>
 
-                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
-                    <div class="w-9 h-9 mx-auto rounded-xl bg-cyan-400/20 text-cyan-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(0,240,255,0.3)]">
-                        <i class="fa-solid fa-calculator"></i>
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default" style="background: #FFFFFF !important; border: 1.5px solid #7DD3FC !important; box-shadow: 0 6px 16px rgba(2, 132, 199, 0.08) !important;">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg mb-1.5 shadow-sm">
+                        <i class="fa-solid fa-robot"></i>
                     </div>
-                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar3">AI Financial Engine</span>
-                    <span class="block text-[10px] text-cyan-300/80 font-medium" id="i18n-intro-pillar3-sub">Tự động tính toán doanh thu & tiền lời ròng.</span>
+                    <span class="block text-xs font-black" style="color: #0C4A6E !important; font-weight: 800 !important; font-size: 0.95rem !important;" id="i18n-intro-pillar3">🤖 Trợ Lý AI Tư Vấn 24/7</span>
+                    <span class="block text-[11px] font-medium mt-0.5" style="color: #334155 !important;" id="i18n-intro-pillar3-sub">Gợi ý đặc sản phù hợp & kết nối CSKH trực tiếp.</span>
                 </div>
 
-                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default">
-                    <div class="w-9 h-9 mx-auto rounded-xl bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-lg mb-1.5 shadow-[0_0_15px_rgba(255,223,0,0.3)]">
-                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                <div class="intro-card-glass rounded-2xl p-3 sm:p-3.5 text-center cursor-default" style="background: #FFFFFF !important; border: 1.5px solid #7DD3FC !important; box-shadow: 0 6px 16px rgba(2, 132, 199, 0.08) !important;">
+                    <div class="w-9 h-9 mx-auto rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg mb-1.5 shadow-sm">
+                        <i class="fa-solid fa-video"></i>
                     </div>
-                    <span class="block text-xs font-black text-amber-100" id="i18n-intro-pillar4">Smart Commission (CHM)</span>
-                    <span class="block text-[10px] text-yellow-300/80 font-medium" id="i18n-intro-pillar4-sub">Phân bổ chiết khấu tự động, chính xác 100%.</span>
+                    <span class="block text-xs font-black" style="color: #0C4A6E !important; font-weight: 800 !important; font-size: 0.95rem !important;" id="i18n-intro-pillar4">🎬 AI Quảng Bá Đa Kênh</span>
+                    <span class="block text-[11px] font-medium mt-0.5" style="color: #334155 !important;" id="i18n-intro-pillar4-sub">Hỗ trợ tạo nội dung & video giới thiệu sản phẩm OCOP.</span>
                 </div>
             </div>
 
             <!-- BANNER TỐI ƯU VẬN HÀNH & KÍCH HOẠT LIGHTWEIGHT MVP -->
-            <div id="intro-lucky-card" class="lucky-golden-box w-full max-w-2xl rounded-3xl p-3.5 sm:p-4 text-center relative overflow-hidden transition-all duration-300" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08) !important;">
+            <div id="intro-lucky-card" class="lucky-golden-box w-full max-w-2xl rounded-3xl p-3.5 sm:p-4 text-center relative overflow-hidden transition-all duration-300" style="background: #FEF3C7 !important; border: 1.5px solid #F59E0B !important; box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15) !important;">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
                     <div class="flex items-center space-x-3 text-left">
-                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-600 text-slate-950 flex items-center justify-center text-2xl shadow-xl flex-shrink-0">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shadow-md flex-shrink-0">
                             ⚡
                         </div>
                         <div>
                             <div class="flex items-center space-x-2">
-                                <span class="text-xs sm:text-sm font-black text-amber-300 uppercase tracking-wide">⚡ TỐI ƯU HÓA VẬN HÀNH • KÍCH HOẠT LIGHTWEIGHT MVP CHO HTX TRONG 2 GIỜ</span>
+                                <span class="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-wide" style="color: #0F172A !important;">⚡ BẠN LÀ CHỦ CỬA HÀNG / HỢP TÁC XÃ OCOP? • ĐĂNG KÝ ĐƯA SẢN PHẨM LÊN TRANG QUẢNG BÁ NGAY HÔM NAY</span>
                             </div>
-                            <p class="text-[11px] text-amber-100/90 font-medium mt-0.5">Số hóa danh mục điểm bán OCOP chỉ 2-3 giờ • Kết nối cỗ máy dòng tiền AI</p>
+                            <p class="text-[11px] text-slate-800 font-medium mt-0.5" style="color: #1E293B !important;">Đưa đặc sản địa phương tiếp cận hàng triệu khách hàng toàn quốc • Hỗ trợ số hóa điểm bán & AI truyền thông đa kênh miễn phí</p>
                         </div>
                     </div>
-                    <button id="btn-draw-gift" onclick="openPartnerRegistrationModal()" class="intro-mega-btn w-full sm:w-auto flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition flex items-center justify-center space-x-2 cursor-pointer bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 border border-yellow-200">
-                        <span>⚡ Đăng Ký Điểm Bán Mới</span>
+                    <button id="btn-draw-gift" onclick="openPartnerRegistrationModal()" class="intro-mega-btn w-full sm:w-auto flex-shrink-0 px-5 py-2.5 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition flex items-center justify-center space-x-2 cursor-pointer bg-amber-500 hover:bg-amber-600 text-white border border-amber-600">
+                        <span>📝 Đăng Ký Điểm Bán Ngay</span>
                     </button>
                 </div>
             </div>
@@ -2850,6 +2899,21 @@
                     </select>
                 </div>
                 <div>
+                    
+                <!-- THẺ CHỌN NHANH TỈNH THÀNH OCOP TIÊU BIỂU -->
+                <div class="intro-province-quick-chips flex flex-wrap items-center gap-1.5 py-1" style="display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px;">
+                    <span style="font-size: 11px; font-weight: 800; color: #0C4A6E; margin-right: 4px;">📍 Chọn nhanh tỉnh:</span>
+                    <button type="button" onclick="selectProvinceById('VN-39')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer hover:scale-105" style="background: #0284C7; color: #FFFFFF; border: 1px solid #0369A1; font-weight: 800;">⭐ Đồng Nai (Chủ nhà)</button>
+                    <button type="button" onclick="selectProvinceById('VN-HN')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer hover:bg-sky-100" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">Hà Nội</button>
+                    <button type="button" onclick="selectProvinceById('VN-SG')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer hover:bg-sky-100" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">TP.HCM</button>
+                    <button type="button" onclick="selectProvinceById('VN-35')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer hover:bg-sky-100" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">Lâm Đồng</button>
+                    <button type="button" onclick="selectProvinceById('VN-DN')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer hover:bg-sky-100" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">Đà Nẵng</button>
+                    <button type="button" onclick="selectProvinceById('VN-01')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer hover:bg-sky-100" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">Lai Châu</button>
+                    <button type="button" onclick="selectProvinceById('VN-05')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer hover:bg-sky-100" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">Sơn La</button>
+                    <button type="button" onclick="selectProvinceById('VN-50')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer hover:bg-sky-100" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">Bến Tre</button>
+                    <button type="button" onclick="selectProvinceById('VN-CT')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer hover:bg-sky-100" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">Cần Thơ</button>
+                </div>
+
                     <div id="province-map" class="province-map" role="region" aria-label="Bản đồ tương tác 63 tỉnh thành Việt Nam"></div>
                     <div class="mt-2.5 flex flex-wrap items-center justify-between gap-2">
                         <p id="province-selection-status" class="province-map-status m-0" role="status" aria-live="polite">
@@ -2996,6 +3060,13 @@
                 <button type="button" id="btn-header-admin-pin" onclick="promptAdminPinModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer shrink-0 bg-slate-900 hover:bg-slate-800 text-white shadow-xs border border-slate-700" style="white-space: nowrap !important; height: 38px; background: #0F172A !important; color: #FFFFFF !important;" title="Cổng Quản Trị Doanh Thu & Tiền Lời Quảng Bá">
                     <span>🔐 Quản Trị Doanh Thu</span>
                 </button>
+
+                <!-- Action Button 3: 🎬 AI Tạo Video TikTok -->
+                <button type="button" id="btn-header-tiktok" onclick="openTikTokStudioModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; border: 1px solid #38BDF8 !important;" title="AI Tạo Nội Dung & Video TikTok Quảng Bá OCOP">
+                    <i class="fa-brands fa-tiktok text-rose-300"></i>
+                    <span>🎬 AI Tạo Video TikTok</span>
+                </button>
+
 
                 <!-- Hidden compatibility markers for system tests -->
                 <button onclick="toggleAuthModal()" id="user-btn" class="hidden" style="display:none!important" aria-hidden="true">
@@ -6136,7 +6207,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 </span>
                             </div>
                             <h3 class="font-extrabold text-sm text-white group-hover:text-amber-300 transition-colors duration-200 line-clamp-2 leading-snug">${productName}</h3>
-                            <p class="text-xs text-slate-300 line-clamp-2 leading-relaxed font-medium">${productDescription}</p>
+                            <p class="text-xs line-clamp-2 leading-relaxed font-medium" style="color: #334155 !important; font-weight: 500 !important;">${productDescription}</p>
                         </div>
 
                         <!-- Khối Thông Tin Chủ Thể OCOP & Điểm Bán Chính Thức -->
@@ -13311,7 +13382,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: 'AI 財務エンジン'
             },
             'i18n-hero-feat4-desc': {
-                vi: 'Tự động hóa tính toán doanh thu, tiền lời thực tế và chiết khấu CHM',
+                vi: 'Bảo chứng chất lượng chuẩn 3–5 Sao Quốc gia',
                 en: 'Automates revenue, actual net profit, and CHM commission calculations',
                 zh: '自动化营收、实际净利润及 CHM 佣金计算',
                 ko: '매출, 실제 순이익 및 CHM 수수료 계산 자동화',
