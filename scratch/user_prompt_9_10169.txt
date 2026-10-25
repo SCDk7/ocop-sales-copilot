@@ -1,0 +1,111 @@
+<USER_REQUEST>
+# 🚨 SIÊU LỆNH TỔNG HỢP CUỐI CÙNG (ALL-IN-ONE): SỬA DỨT ĐIỂM LỖI XOAY VÒNG TREO TRANG + GIAO DIỆN ROYAL COBALT BLUE (J2TEAM STYLE) + BẢN ĐỒ VIỆT NAM + OCR THẬT + KHÓA PIN 2007
+
+Bạn đang làm việc tại thư mục `ocop-sales-copilot/` trên model Gemini 3.8 Flash (High).
+Hiện tại tab trình duyệt đang bị lỗi **xoay vòng tải mãi không dứt (infinite loading / main thread hang)** do xung đột các script cũ, vòng lặp `MutationObserver` vô tận hoặc thẻ CDN bị treo.
+Hãy thực thi liền mạch từ đầu đến cuối tất cả các bước dưới đây. **KHÔNG hỏi xin phép, KHÔNG viết code rút gọn.**
+
+---
+
+# 🛠️ BƯỚC 1: DIỆT TẬN GỐC LỖI XOAY VÒNG & LÀM SẠCH `index.html` (TẢI XONG TRONG 0.2 GIÂY)
+1. **Khôi phục `index.html` gốc sạch sẽ:** Nếu có `ocop-sales-copilot/index.backup-safe.html`, hãy copy đè lại vào `ocop-sales-copilot/index.html`. Nếu chưa có, hãy tạo bản backup ngay.
+2. **Gỡ bỏ 100% các tác nhân gây treo/xoay vòng trong `index.html` bằng script Node.js:**
+   - Gỡ bỏ/comment TẤT CẢ các file vá cũ và file gây lỗi (`sualoiclick.js`, `SuaLoiKoClick.css`, `toiuu.js`, `AI tot hon.js`, `styledangcap.css`, `style1.css`, `style3.css`, `antigravity-*`, `optimize-*`, `ultimate-*`, `master-*`, `app-production-*`, `polish-*`, `j2-*`, `smooth-*`, `patch-*`).
+   - Kiểm tra các thẻ `<script>`, `<link>`, `<img>`, `<audio>` trong `index.html`: Nếu có link CDN nào bị lỗi/chết hoặc `<script src="...tesseract...">` đang chặn luồng tải trang, hãy xóa bỏ (chỉ nạp Tesseract động `async` khi người dùng thực sự bấm chọn ảnh!).
+   - Thêm đoạn script nhỏ tự động thêm `loading="lazy"` cho toàn bộ 252 ảnh sản phẩm để trình duyệt ngừng xoay vòng tab ngay lập tức!
+3. **Chỉ tạo mới DUY NHẤT 1 cặp file sạch, nhẹ, không vòng lặp:**
+   - `ocop-sales-copilot/final-perfect.css`
+   - `ocop-sales-copilot/final-perfect.js`
+   Và nhúng vào ngay trước thẻ đóng `</body>` của `ocop-sales-copilot/index.html`.
+
+---
+
+# ⚡ BƯỚC 2: QUY TẮC CHỐNG TREO & CHỐNG LAG TUYỆT ĐỐI TRONG `final-perfect.js`
+- **TUYỆT ĐỐI CẤM dùng `MutationObserver` sửa DOM liên tục** và **CẤM dùng `setInterval` quét DOM** (đây là nguyên nhân làm treo tab trình duyệt!).
+- Chỉ chạy hàm khởi tạo giao diện **ĐÚNG 1 LẦN DUY NHẤT** khi sự kiện `DOMContentLoaded` kích hoạt, và dùng **Event Delegation (`document.addEventListener('click', ...)` nhẹ nhàng)** để xử lý mọi nút bấm.
+- Không dùng `backdrop-filter: blur()` trên danh sách 252 thẻ sản phẩm để cuộn trang mượt 60 FPS.
+
+---
+
+# 🌌 BƯỚC 3: ĐỒNG BỘ MÀU SẮC "ROYAL COBALT BLUE" (PHONG CÁCH J2TEAM) & CHÙM TIA ĐI THEO CHUỘT (`final-perfect.css` + Canvas)
+
+1. **Bảng màu Royal Cobalt Blue hài hòa, đồng bộ từ Màn hình mở đầu vào tận bên trong:**
+   - **Nền toàn trang (`html`, `body`, `main`, `section`, và cả Màn hình mở đầu Intro):** `background: linear-gradient(135deg, #0A194E 0%, #132E7C 50%, #0D2163 100%) !important; color: #FFFFFF !important;`.
+   - **Nền các Khung (Khung Hero, Khung Bản đồ, Cột lọc bên trái, 252 Thẻ sản phẩm, và tất cả Modal/Popup):** Đồng bộ màu xanh dương sang trọng `background: linear-gradient(145deg, #153284 0%, #0E225D 100%) !important; border: 1px solid rgba(125, 211, 252, 0.3) !important; border-radius: 16px !important; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;`.
+   - **Màu chữ tương phản cao, đọc rõ 100% ở mọi nơi (Không bao giờ có chữ đen trên nền tối hay chữ trắng trên nền trắng):**
+     + Tiêu đề lớn, tên sản phẩm, tiêu đề Modal, tên tỉnh thành: **Trắng Tinh Khiết (`#FFFFFF !important`, font-weight: 700)**.
+     + Đoạn văn mô tả dưới tiêu đề Hero, mô tả sản phẩm, tên công ty/cửa hàng, địa chỉ: **Xanh Băng Sáng (`#E0F2FE !important`)**.
+     + Điểm nhấn số liệu (`252+`, `63`, `500+`), SĐT, sao OCOP: **Vàng Sáng (`#FACC15 !important`)** và **Xanh Ngọc (`#38BDF8 !important`)**.
+   - **Nút bấm chính:** `background: #2563EB !important; color: #FFFFFF !important; border: 1px solid #60A5FA !important; border-radius: 999px !important;`.
+   - **Tối ưu Full Màn Hình (Responsive PC/Laptop & Điện thoại):** Mở rộng khung chính (`max-width: 1440px !important; width: 95% !important; margin: 0 auto !important;`), tự động co giãn chuẩn thành 1 cột trên điện thoại, không tràn lề ngang.
+
+2. **Hiệu ứng Chùm Tia Sáng Đi Theo Chuột Siêu Nhẹ (J2TEAM Constellation Canvas):**
+   - Tạo `<canvas id="j2-bg-canvas">` cố định toàn màn hình (`position: fixed; inset: 0; pointer-events: none; z-index: 0;`).
+   - Vẽ 35 hạt sáng `#60A5FA` chuyển động êm ái. Khi di chuột, các hạt gần con trỏ chuột tự động nối các tia sáng mảnh (`rgba(147, 197, 253, 0.4)`) đi theo chuột mượt mà 60 FPS.
+
+---
+
+# 🗺️ BƯỚC 4: SỬA MÀN HÌNH MỞ ĐẦU (TRANG CHỦ) & VẼ BẢN ĐỒ VIỆT NAM TƯƠNG TÁC
+Trên màn hình mở đầu (`"Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt"`):
+1. **Sửa khung Bản đồ Việt Nam bị đen bên phải:**
+   - Xóa dòng chữ `"Đang tải bản đồ tỉnh/thành..."`.
+   - Chèn ngay vào khung đen đó một **Bản Đồ Số Việt Nam SVG Tương Tác** (màu xanh sáng `#38BDF8` trên nền `#0B1D51`, có đủ quần đảo **Hoàng Sa & Trường Sa**, các chấm sáng Hotspot tại *Đồng Nai, Hà Nội, TP.HCM, Lai Châu, Đà Nẵng, Lâm Đồng, Cần Thơ*) kết hợp **Lưới nút chọn nhanh Tỉnh/Thành phố** ngay bên cạnh.
+   - Khi bấm vào tỉnh nào trên bản đồ hoặc chọn trong danh sách -> Tự động chuyển xuống gian hàng và lọc ra đúng đặc sản của tỉnh đó!
+2. **Sửa câu chữ trên Màn hình mở đầu cho khớp với Web quảng bá:**
+   - Sửa dòng chữ vàng bị cắt lề thành: `63 TỈNH THÀNH • 500+ ĐIỂM BÁN CHÍNH HÃNG • TRỢ LÝ AI TƯ VẤN 24/7` (`white-space: normal !important`).
+   - Đổi 4 ô tính năng thành: `🗺️ Bản Đồ Số 63 Tỉnh Thành`, `🏅 Bảo Chứng OCOP Chính Hãng`, `🎁 AI Tư Vấn & Thiết Kế Giỏ Quà`, `📸 Số Hóa Điểm Bán Bằng AI OCR`.
+   - Xóa nút `"Nhạc: Tắt"`, xóa nút `"Hội Đồng Cố Vấn Số"`, xóa nút *"Khám phá 252 đặc sản"* bị lặp thứ 2.
+
+---
+
+# 🧹 BƯỚC 5: DỌN SẠCH PHẦN THỪA, CHUẨN HÓA THẺ SẢN PHẨM & ĐỔI AVATAR AI CHATBOT
+1. **Xóa vĩnh viễn các phần không cần thiết (bằng CSS `display: none !important` + xóa 1 lần khi load):**
+   - **XÓA SẠCH** nút `🤖 Trợ Lý AI Tạo Nội Dung` trên thanh Header VÀ xóa khu vực `AI MARKETING & CONTENT STUDIO • AI Tự Động Hóa Truyền Thông & Xuất Khẩu Đặc Sản OCOP` trên trang chủ.
+   - **XÓA SẠCH** phần *"AI Báo Cáo Bằng Giọng Nói"*, *"Hồ sơ đề án Challenge 2026"*, *"6 Giải pháp AI trọng tâm"*, *"Hội đồng 4 Admin"*, và thanh nổi màu vàng ở đáy màn hình.
+2. **Làm sạch Thẻ Sản Phẩm (Product Cards) cho Khách hàng:**
+   - Ẩn dòng *"Biên lợi nhuận ròng: ...%"*, *"Sản lượng số hóa"*, nút *"Phân Tích Dòng Tiền"* trên thẻ sản phẩm và ẩn hộp *"Trợ lý AI Financial"* ở đáy cột lọc bên trái.
+   - Xóa nút `Xem Điểm Bán` bị lặp, chỉ giữ gọn gàng 2 nút cân đối: **`📍 Điểm Bán`** và **`✨ AI Câu Chuyện`** (khi bấm mở popup xem câu chuyện văn hóa, nguồn gốc sản phẩm & địa chỉ cửa hàng với chữ trắng sáng rõ 100%).
+3. **Đổi Avatar AI Chatbot góc dưới phải:**
+   - Giữ nguyên 100% tính năng chat của `ocop-copilot.js`, chỉ đổi hình ảnh nút tròn góc dưới phải từ hình ông đồ cũ sang **Icon Robot AI Hiện Đại** (nền xanh `#2563EB`, viền sáng `#60A5FA`).
+
+---
+
+# 📸 BƯỚC 6: QUÉT GIẤY CHỨNG NHẬN AI OCR ĐỌC ĐÚNG 100% ẢNH THẬT (LAI CHÂU / 63 TỈNH)
+Khi bấm vào nút **`⚡ Đăng Ký Điểm Bán (AI OCR)`** trên Header:
+1. Mở đúng Modal **"Đăng Ký Điểm Bán OCOP Mới"** (Đồng bộ màu Xanh Cobalt `#0F256E`, tiêu đề trên cùng và nút bấm **`⚡ Hoàn Tất Đăng Ký & Kích Hoạt Điểm Bán`** ở dưới cùng phải hiện chữ Trắng rõ nét 100%, xóa bỏ chữ `🪄 Thử Mẫu Đồng Nai`).
+2. Khi người dùng chọn file ảnh Giấy chứng nhận từ máy tính (`<input type="file" accept="image/*">`):
+   - Hiển thị ảnh xem trước (Preview) và thanh trạng thái quét AI OCR trong 1 giây.
+   - Tự động nạp động (`lazy-load`) Tesseract.js hoặc dùng bộ nhận diện thông minh kiểm tra văn bản/đặc trưng file ảnh vừa tải lên:
+     + **Nếu là ảnh Giấy chứng nhận Tỉnh Lai Châu (Gạo nếp Khẩu Hốc):** Điền chính xác 100% vào các ô:
+       * Tên Điểm Bán / HTX: `Hợp Tác Xã Công Nghệ Và Môi Trường (Bản Nậm Bon, xã Phúc Khoa, huyện Tân Uyên)`
+       * Tỉnh / Thành Phố: `Lai Châu`
+       * Hotline / Zalo: `0915 688 202`
+       * Mã Quyết Định & Sản phẩm: `QĐ số 1045/QĐ-UBND (10/08/2021) • Sản phẩm: Gạo Nếp Khẩu Hốc (Đạt hạng OCOP 3 Sao)`
+     + **Nếu là ảnh Giấy chứng nhận của tỉnh khác:** Tự động trích xuất đúng tên Tỉnh, tên Hợp tác xã/Đơn vị, Số quyết định và Tên sản phẩm trên ảnh đó để điền vào form!
+
+---
+
+# 🔐 BƯỚC 7: KHÓA "QUẢN TRỊ CHỦ WEB" BẰNG MÃ PIN `2007` & XEM TIỀN LỜI QUẢNG BÁ
+1. Trên góc phải thanh Header, đặt nút **`🔐 Quản Trị Chủ Web`** (gọn gàng, không lặp chữ, không tràn lề).
+2. Khi bấm vào nút này (hoặc nút `Quản Trị Dòng Tiền AI`), hiển thị Popup yêu cầu nhập **Mã PIN `2007`**.
+3. Chỉ khi nhập đúng **`2007`**, mở **Bảng Quản Trị Tài Chính & Tối Ưu Dòng Tiền OCOP** (Tất cả tiêu đề và thẻ KPI đều dùng chữ Trắng `#FFFFFF`, Vàng `#FACC15`, Xanh sáng `#38BDF8` rõ nét 100% trên nền Xanh Cobalt):
+   - Hiển thị rõ ràng:
+     + **Tổng Doanh Thu Bán Hàng Của Các Cửa Hàng:** `875.000.000 ₫`
+     + **Tiền Lời Của Các Cửa Hàng / HTX Đối Tác:** `415.625.000 ₫`
+     + **💰 Tiền Lời Ròng Của Chủ Web (Phí Quảng Bá & Hoa Hồng Kết Nối O2O):** `70.000.000 ₫`
+   - Các thanh trượt mô phỏng What-if kéo mượt mà, nhảy số doanh thu và tiền lời quảng bá của Chủ Web theo thời gian thực.
+
+Hãy thực thi ngay lập tức và kiểm tra chắc chắn trang web tải xong trong tích tắc (không xoay vòng tab), chạy mượt 60 FPS, bấm đâu ra đó!
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-25T09:46:01+07:00.
+
+The user's current state is as follows:
+Active Document: c:\DuAn\ocop-sales-copilot\index.html (LANGUAGE_UNSPECIFIED)
+Cursor is on line: 15387
+Other open documents:
+- c:\DuAn\ocop-sales-copilot\chat-language.js (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\styledangcap.css (LANGUAGE_UNSPECIFIED)
+- c:\DuAn\ocop-sales-copilot\account-client.js (LANGUAGE_UNSPECIFIED)
+</ADDITIONAL_METADATA>

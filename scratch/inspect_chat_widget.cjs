@@ -1,5 +1,4 @@
-const fs = require("fs");
-const html = fs.readFileSync("index.html", "utf8");
-const lines = html.split("\n");
-console.log(lines.slice(3935, 4035).join("\n"));
-
+const fs = require('fs');
+const content = fs.readFileSync('index.html', 'utf8');
+const lines = content.split('\n');
+console.log(lines.slice(3938, 3990).join('\n'));

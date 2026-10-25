@@ -1,9 +1,8 @@
-const fs = require("fs");
-const html = fs.readFileSync("index.html", "utf8");
-const lines = html.split("\n");
+const fs = require('fs');
+const content = fs.readFileSync('index.html', 'utf8');
+const lines = content.split('\n');
 lines.forEach((l, i) => {
-  if (l.includes('id="ai-financial-modal"') || l.includes('openFinancialDashboardModal')) {
-    console.log(`${i+1}: ${l.slice(0, 100)}`);
+  if (l.includes('ai-financial-modal') || l.includes('openFinancialDashboardModal')) {
+    console.log(`L${i+1}: ${l}`);
   }
 });
-
