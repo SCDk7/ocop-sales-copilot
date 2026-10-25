@@ -15,6 +15,14 @@
  */
 
 (function () {
+    // PURGE ANY SAVED ADMIN AUTH STATE IMMEDIATELY (MANDATORY PIN 2007 ON EVERY ACCESS)
+    try {
+        sessionStorage.removeItem('ocop_admin_pin_verified');
+        sessionStorage.removeItem('admin_pin_verified');
+        localStorage.removeItem('ocop_admin_pin_verified');
+        localStorage.removeItem('admin_pin_verified');
+    } catch (e) {}
+
     'use strict';
 
     // 1. SKYTECH LIGHT CONSTELLATION CANVAS (48 HẠT XANH DA TRỜI + KÉO TIA THEO CHUỘT 185PX)
@@ -216,58 +224,64 @@
         if (navStudio) navStudio.style.display = 'none';
     }
 
-    // 5. CỔNG MÃ PIN 2007 BẢO VỆ BẢNG QUẢN TRỊ TÀI CHÍNH
+    // 5. CỔNG MÃ PIN 2007 BẢO VỆ BẢNG QUẢN TRỊ TÀI CHÍNH (KHÓA CHẶT 100% - BẮT BUỘC NHẬP MÃ MỖI LẦN)
     window.isMasterAdminAuthed = function () {
-        return sessionStorage.getItem('ocop_admin_pin_verified') === 'true';
+        // Never allow persistent authorization
+        return false;
     };
 
     window.promptAdminPinModal = function () {
-        if (window.isMasterAdminAuthed()) {
-            openRealFinancialDashboard();
-            return;
-        }
+        // Purge any stored token so no stale auth can exist
+        try {
+            sessionStorage.removeItem('ocop_admin_pin_verified');
+            sessionStorage.removeItem('admin_pin_verified');
+            localStorage.removeItem('ocop_admin_pin_verified');
+            localStorage.removeItem('admin_pin_verified');
+        } catch (e) {}
 
         let modal = document.getElementById('admin-pin-modal');
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'admin-pin-modal';
-            modal.className = 'fixed inset-0 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm';
-            modal.style.zIndex = '999999';
+            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.65) !important; backdrop-filter: blur(4px) !important;';
             modal.innerHTML = `
-                <div class="relative w-full max-w-md bg-white border-2 border-sky-400 rounded-3xl p-6 sm:p-8 text-slate-900 shadow-2xl space-y-5 animate-pop-in" style="z-index: 1000000;">
-                    <button onclick="closeAdminPinModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm absolute top-4 right-4 cursor-pointer transition">
-                        <i class="fa-solid fa-xmark"></i>
+                <div id="admin-pin-card" style="position: relative !important; width: 100% !important; max-width: 440px !important; background: #FFFFFF !important; border: 2.5px solid #0284C7 !important; border-radius: 24px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.3) !important; color: #0F172A !important; font-family: inherit !important; text-align: center !important;">
+                    <button type="button" onclick="closeAdminPinModal()" style="position: absolute !important; top: 16px !important; right: 16px !important; width: 32px !important; height: 32px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng">
+                        <i class="fa-solid fa-xmark" style="font-size: 14px !important;"></i>
                     </button>
-                    <div class="text-center space-y-2">
-                        <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-2xl border border-sky-200 shadow-sm">
-                            <i class="fa-solid fa-lock"></i>
-                        </div>
-                        <h3 class="text-lg font-black text-slate-900 uppercase tracking-wide">Cổng Quản Trị Doanh Thu</h3>
-                        <p class="text-xs text-slate-600">Khu vực quản trị nội bộ: Báo cáo dòng tiền, doanh thu hệ thống và hoa hồng quảng bá O2O.</p>
+                    
+                    <div style="width: 56px !important; height: 56px !important; margin: 0 auto 12px !important; border-radius: 18px !important; background: #E0F2FE !important; color: #0284C7 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 24px !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;">
+                        <i class="fa-solid fa-lock"></i>
                     </div>
 
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-bold text-sky-800 mb-1.5">Nhập mã PIN bảo mật:</label>
-                            <input type="password" id="admin-pin-input" maxlength="10" placeholder="••••" autocomplete="off"
-                                   class="w-full px-4 py-3 text-center text-xl tracking-widest rounded-xl bg-slate-50 border-2 border-sky-200 text-sky-700 font-mono font-bold focus:border-sky-500 focus:outline-none">
-                            <p id="admin-pin-error" class="hidden text-xs font-bold text-rose-500 mt-1.5 text-center">
-                                <i class="fa-solid fa-circle-exclamation mr-1"></i> Mã PIN không đúng. Vui lòng thử lại! (Gợi ý: 2007)
-                            </p>
-                        </div>
+                    <h3 style="margin: 0 0 8px !important; color: #0C4A6E !important; font-size: 1.22rem !important; font-weight: 900 !important; letter-spacing: -0.01em !important;">
+                        🔐 XÁC THỰC QUẢN TRỊ VIÊN (ADMIN)
+                    </h3>
 
-                        <div class="p-3 rounded-xl bg-sky-50 border border-sky-200 text-[11px] text-sky-800 text-center">
-                            💡 Khách mua hàng & khám phá đặc sản không cần mã PIN. Mã PIN mặc định: <strong class="text-sky-700">2007</strong>
-                        </div>
+                    <p style="margin: 0 0 20px !important; color: #334155 !important; font-size: 13.5px !important; line-height: 1.5 !important; font-weight: 500 !important;">
+                        Khu vực bảo mật doanh thu & tiền lời dành riêng cho Chủ Web. Khách hàng vui lòng quay lại.
+                    </p>
 
-                        <div class="flex items-center gap-3 pt-1">
-                            <button type="button" onclick="verifyAdminPin()" class="flex-1 py-3 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-black text-xs shadow-md transition cursor-pointer">
-                                🔓 Xác Nhận
-                            </button>
-                            <button type="button" onclick="closeAdminPinModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs cursor-pointer transition">
-                                Đóng
-                            </button>
-                        </div>
+                    <div style="margin-bottom: 16px !important; text-align: left !important;">
+                        <label for="admin-pin-input" style="display: block !important; font-size: 12px !important; font-weight: 700 !important; color: #0369A1 !important; margin-bottom: 6px !important;">
+                            Mã PIN Quản Trị:
+                        </label>
+                        <input type="password" id="admin-pin-input" maxlength="10" placeholder="Nhập mã PIN quản trị..." autocomplete="off"
+                               style="width: 100% !important; box-sizing: border-box !important; padding: 12px 16px !important; font-size: 16px !important; font-weight: 700 !important; text-align: center !important; letter-spacing: 0.15em !important; border-radius: 12px !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; color: #0F172A !important; outline: none !important; transition: all 0.2s !important;">
+                        <p id="admin-pin-error" style="display: none; margin: 8px 0 0 !important; color: #DC2626 !important; font-size: 12.5px !important; font-weight: 700 !important; text-align: center !important;">
+                            ❌ Mã PIN không chính xác! Bạn không có quyền truy cập.
+                        </p>
+                    </div>
+
+                    <div style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 12px !important; margin-top: 20px !important;">
+                        <button type="button" onclick="closeAdminPinModal()"
+                                style="flex: 1 !important; padding: 12px 18px !important; border-radius: 12px !important; background: #F1F5F9 !important; color: #475569 !important; font-weight: 700 !important; font-size: 14px !important; border: 1px solid #E2E8F0 !important; cursor: pointer !important; transition: all 0.2s !important;">
+                            Hủy Bỏ
+                        </button>
+                        <button type="button" onclick="verifyAdminPin()"
+                                style="flex: 1 !important; padding: 12px 20px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 14px !important; border: none !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important; cursor: pointer !important; transition: all 0.2s !important;">
+                            Mở Khóa
+                        </button>
                     </div>
                 </div>
             `;
@@ -276,65 +290,173 @@
             const input = document.getElementById('admin-pin-input');
             if (input) {
                 input.addEventListener('keydown', function (e) {
-                    if (e.key === 'Enter') verifyAdminPin();
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        window.verifyAdminPin();
+                    }
                 });
             }
         }
+
         modal.classList.remove('hidden');
-        modal.style.display = 'flex';
-        modal.style.zIndex = '999999';
+        modal.style.setProperty('display', 'flex', 'important');
+        modal.style.setProperty('z-index', '2147483647', 'important');
+
+        const card = document.getElementById('admin-pin-card');
+        if (card) {
+            card.classList.remove('admin-pin-shake');
+        }
+
         const input = document.getElementById('admin-pin-input');
         if (input) {
             input.value = '';
-            setTimeout(() => input.focus(), 100);
+            input.style.borderColor = '#BAE6FD';
+            input.style.background = '#F8FAFC';
+            setTimeout(() => input.focus(), 80);
         }
         const err = document.getElementById('admin-pin-error');
-        if (err) err.classList.add('hidden');
+        if (err) err.style.display = 'none';
     };
 
     window.closeAdminPinModal = function () {
         const modal = document.getElementById('admin-pin-modal');
         if (modal) {
             modal.classList.add('hidden');
-            modal.style.display = 'none';
+            modal.style.setProperty('display', 'none', 'important');
         }
     };
 
     window.verifyAdminPin = function () {
         const input = document.getElementById('admin-pin-input');
         const err = document.getElementById('admin-pin-error');
+        const card = document.getElementById('admin-pin-card');
         const pin = (input ? input.value : '').trim();
 
         if (pin === '2007') {
-            sessionStorage.setItem('ocop_admin_pin_verified', 'true');
+            if (err) err.style.display = 'none';
             window.closeAdminPinModal();
             openRealFinancialDashboard();
             if (typeof showToast === 'function') {
-                showToast('✅ Xác thực Quản Trị thành công!', 'success');
+                showToast('🔓 Xác thực Quản Trị thành công!', 'success');
             }
         } else {
-            if (err) err.classList.remove('hidden');
+            if (err) err.style.display = 'block';
             if (input) {
-                input.classList.add('border-rose-500');
+                input.style.borderColor = '#DC2626';
+                input.style.background = '#FEF2F2';
+                input.value = '';
                 input.focus();
-                input.select();
+            }
+            if (card) {
+                card.classList.remove('admin-pin-shake');
+                void card.offsetWidth; // trigger reflow
+                card.classList.add('admin-pin-shake');
             }
         }
     };
 
-    // Mở Bảng Quản Trị Doanh Thu thật
+    // Mở Bảng Quản Trị Doanh Thu thật (chỉ gọi sau khi xác thực đúng PIN 2007)
     function openRealFinancialDashboard() {
         const modal = document.getElementById('ai-financial-modal');
         if (modal) {
             modal.classList.remove('hidden');
-            modal.style.display = 'flex';
-            modal.style.zIndex = '100000';
+            modal.style.setProperty('display', 'flex', 'important');
+            modal.style.setProperty('z-index', '100000', 'important');
             enrichWebmasterRevenueData();
             if (typeof updateFinancialSimulator === 'function') {
                 updateFinancialSimulator();
             }
         }
     }
+
+    // Bọc hàm mở/đóng modal tài chính để khóa chặt
+    window.openFinancialDashboardModal = function () {
+        window.promptAdminPinModal();
+    };
+    window.toggleAiFinancialModal = function () {
+        window.promptAdminPinModal();
+    };
+
+    const prevCloseFin = window.closeFinancialDashboardModal;
+    window.closeFinancialDashboardModal = function () {
+        try {
+            sessionStorage.removeItem('ocop_admin_pin_verified');
+            sessionStorage.removeItem('admin_pin_verified');
+            localStorage.removeItem('ocop_admin_pin_verified');
+            localStorage.removeItem('admin_pin_verified');
+        } catch (e) {}
+
+        const modal = document.getElementById('ai-financial-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.setProperty('display', 'none', 'important');
+        }
+        document.body.style.overflow = 'auto';
+        document.documentElement.style.overflow = 'auto';
+        if (typeof prevCloseFin === 'function') {
+            try { prevCloseFin(); } catch (err) {}
+        }
+    };
+
+    // CAPTURE-PHASE CLICK INTERCEPTOR (CHẶN ĐỨNG TRƯỚC MỌI ONCLICK)
+    window.addEventListener('click', function (e) {
+        // Không chặn click bên trong PIN modal
+        if (e.target.closest('#admin-pin-modal')) {
+            return;
+        }
+
+        // Không chặn click vào nút đóng Bảng Quản Trị
+        if (e.target.closest('#btn-close-fin-modal-sticky') || e.target.closest('[onclick*="closeFinancialDashboardModal"]')) {
+            window.closeFinancialDashboardModal();
+            return;
+        }
+
+        // Không chặn thao tác bên trong Bảng Quản Trị khi nó đã mở
+        if (e.target.closest('#ai-financial-modal')) {
+            return;
+        }
+
+        const el = e.target.closest('button, a, div[onclick], [role="button"], span');
+        if (!el) return;
+
+        const rawText = (el.innerText || el.textContent || '').trim().toLowerCase();
+        const onclickAttr = (el.getAttribute('onclick') || '').toLowerCase();
+        const id = (el.id || '').toLowerCase();
+        const cls = (el.className || '').toString().toLowerCase();
+
+        // Không chặn nếu là hành động đóng
+        if (rawText.includes('đóng') || rawText.includes('close') || onclickAttr.includes('close')) {
+            return;
+        }
+
+        const isRevenueTrigger =
+            id === 'btn-header-admin-pin' ||
+            cls.includes('nav-btn-finance') ||
+            onclickAttr.includes('openfinancialdashboardmodal') ||
+            onclickAttr.includes('promptadminpinmodal') ||
+            onclickAttr.includes('openrealfinancialdashboard') ||
+            onclickAttr.includes('toggleaifinancialmodal') ||
+            rawText.includes('quản trị doanh thu') ||
+            rawText.includes('quản trị chủ web') ||
+            rawText.includes('bảng quản trị') ||
+            rawText.includes('ai financial engine') ||
+            rawText.includes('kích hoạt ai financial engine');
+
+        if (isRevenueTrigger) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            // Đảm bảo Bảng Quản Trị luôn bị ẩn cho đến khi nhập đúng PIN
+            const finModal = document.getElementById('ai-financial-modal');
+            if (finModal) {
+                finModal.classList.add('hidden');
+                finModal.style.setProperty('display', 'none', 'important');
+            }
+
+            window.promptAdminPinModal();
+        }
+    }, true); // true = CAPTURE PHASE, chạy trước mọi onclick trong HTML
 
     // Cập nhật dữ liệu Bảng Quản Trị Doanh Thu & Tiền Lời Quảng Bá
     function enrichWebmasterRevenueData() {
