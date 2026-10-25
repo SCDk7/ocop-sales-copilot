@@ -1,67 +1,65 @@
 /* ==========================================================================
-   EMERALD OCOP LUXURY THEME (J2TEAM GREEN TECH STYLE)
-   AI Digital Business Challenge 2026 • OCOP Sales Copilot
+   EMERALD OCOP LUXURY THEME (J2TEAM GREEN TECH PRODUCTION)
+   AI Digital Business Challenge - DigitalFest Đồng Nai 2026
    ========================================================================== */
 
-/* 1. HỆ MÀU XANH LÁ NGỌC LỤC BẢO TOÀN TRANG (EMERALD LUXURY) */
+/* 1. BẢNG MÀU "EMERALD OCOP LUXURY" ĐỒNG BỘ 100% */
 :root {
-    --emerald-bg-dark: #031C13;
-    --emerald-bg-mid: #063222;
-    --emerald-bg-light: #0D4A34;
-    --emerald-surface: #084C35;
-    --emerald-surface-dark: #042F20;
-    --emerald-surface-card: #063B29;
-    --emerald-border: rgba(52, 211, 153, 0.3);
-    --emerald-border-bright: #34D399;
-    --emerald-neon: #6EE7B7;
-    --emerald-btn: #10B981;
-    --emerald-btn-hover: #059669;
-    --gold-accent: #FDE047;
-    --gold-amber: #D97706;
-    --gold-bright: #FACC15;
-    --text-white: #FFFFFF;
-    --text-mint: #D1FAE5;
-    --text-slate: #F1F5F9;
+    --bg-deep-emerald: #031F16;
+    --bg-mid-emerald: #063B2A;
+    --bg-card-emerald: linear-gradient(155deg, rgba(8, 72, 50, 0.94) 0%, rgba(4, 42, 29, 0.98) 100%);
+    --bg-subbox-emerald: rgba(2, 26, 18, 0.68);
+    --border-emerald-glow: rgba(52, 211, 153, 0.32);
+    --border-emerald-hover: #34D399;
+    --text-pure-white: #FFFFFF;
+    --text-mint-light: #D1FAE5;
+    --text-gold-accent: #FACC15;
+    --btn-primary-grad: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    --btn-amber-grad: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
 }
 
-html, body, main, section, #ocop-intro-overlay, #intro-hero-section, #intro-content {
-    background: radial-gradient(circle at 50% 15%, #0D4A34 0%, #063222 55%, #031C13 100%) !important;
+/* 2. TOÀN TRANG & MÀN HÌNH MỞ ĐẦU (INTRO) */
+html, body, main, section,
+#intro-overlay, .intro-screen, #ocop-intro-overlay,
+#intro-hero-section, #intro-content {
+    background: radial-gradient(circle at 50% 15%, #0A4D36 0%, #052E20 55%, #021810 100%) !important;
     background-attachment: fixed !important;
-    color: var(--text-white) !important;
+    color: #FFFFFF !important;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
     margin: 0 !important;
     padding: 0 !important;
-    overflow-x: clip !important;
+    overflow-x: hidden !important;
 }
 
-/* Khối Blob trang trí mềm mại phong cách J2TEAM */
-.emerald-blob-tr {
+/* Họa tiết Organic Blobs chuẩn phong cách J2TEAM */
+.j2-emerald-blob-1 {
+    width: 500px !important;
+    height: 500px !important;
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55% !important;
+    background: rgba(16, 185, 129, 0.08) !important;
     position: fixed !important;
     top: -120px !important;
     right: -120px !important;
-    width: 520px !important;
-    height: 520px !important;
-    border-radius: 45% 55% 65% 35% / 45% 45% 55% 55% !important;
-    background: rgba(16, 185, 129, 0.08) !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
     filter: blur(60px) !important;
-    pointer-events: none !important;
-    z-index: 0 !important;
 }
 
-.emerald-blob-bl {
+.j2-emerald-blob-2 {
+    width: 450px !important;
+    height: 450px !important;
+    border-radius: 58% 42% 38% 62% / 52% 48% 52% 48% !important;
+    background: rgba(52, 211, 153, 0.06) !important;
     position: fixed !important;
-    bottom: -150px !important;
-    left: -150px !important;
-    width: 620px !important;
-    height: 620px !important;
-    border-radius: 55% 45% 35% 65% / 55% 55% 45% 45% !important;
-    background: rgba(16, 185, 129, 0.06) !important;
-    filter: blur(70px) !important;
+    bottom: -100px !important;
+    left: -100px !important;
     pointer-events: none !important;
     z-index: 0 !important;
+    filter: blur(70px) !important;
 }
 
-/* Emerald Star Canvas (48 ngôi sao bay lơ lửng, kéo tia theo chuột 185px) */
+/* Canvas tương tác chùm sao J2TEAM (48 sao + kéo tia 185px) */
+#j2-emerald-canvas,
 #emerald-star-canvas {
     position: fixed !important;
     inset: 0 !important;
@@ -71,7 +69,7 @@ html, body, main, section, #ocop-intro-overlay, #intro-hero-section, #intro-cont
     z-index: 1 !important;
 }
 
-/* Container chính tối ưu full màn hình */
+/* Khung layout chính căn giữa full màn hình */
 .max-w-7xl,
 .max-w-5xl,
 #shop-hero,
@@ -87,11 +85,13 @@ header > div {
     z-index: 10 !important;
 }
 
-/* 2. THANH HEADER (NAVBAR) EMERALD TECH */
+/* 3. THANH HEADER (NAVBAR) CHUẨN STICKY J2TEAM */
 header {
-    background: rgba(4, 42, 29, 0.94) !important;
+    background: rgba(3, 31, 22, 0.94) !important;
+    backdrop-filter: blur(12px) !important;
     border-bottom: 1px solid rgba(52, 211, 153, 0.3) !important;
-    backdrop-filter: blur(16px) !important;
+    padding: 10px 24px !important;
+    z-index: 9990 !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
 }
 
@@ -105,7 +105,7 @@ header h1 {
     font-weight: 700 !important;
 }
 
-/* Ẩn topbar lặp & các phần tử rác */
+/* Ẩn topbar lặp & các widget rác */
 #strategic-topbar,
 .topbar,
 .strategic-topbar-banner,
@@ -125,11 +125,24 @@ header + .topbar,
     display: none !important;
 }
 
-/* Navigation Buttons trên Header */
+/* Đồng bộ nút Header: Chiều cao 38px, bo tròn 999px chuẩn J2TEAM, không cắt mép */
+header button,
+.header-nav-btn,
+.header-right-actions button {
+    height: 38px !important;
+    border-radius: 999px !important;
+    white-space: nowrap !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+
 .header-nav-btn {
     color: #E2E8F0 !important;
-    font-weight: 700 !important;
-    transition: all 0.2s ease !important;
 }
 
 .header-nav-btn:hover {
@@ -137,12 +150,34 @@ header + .topbar,
     transform: translateY(-1px) !important;
 }
 
-/* Search Input Desktop & Mobile */
+/* Nút Header Đăng Ký OCOP (AI OCR) */
+#btn-header-ocr,
+.header-right-actions button[onclick*="openPartnerRegistrationModal"] {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+    border: 1px solid rgba(52, 211, 153, 0.45) !important;
+    color: #FFFFFF !important;
+    padding: 0 16px !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Nút Header 🔐 Quản Trị Chủ Web (PIN 2007) */
+#btn-header-admin-pin,
+.header-right-actions button[onclick*="openChallengeProposalModal"],
+.header-right-actions button[onclick*="promptAdminPinModal"] {
+    background: linear-gradient(135deg, #064E3B 0%, #084C35 100%) !important;
+    border: 1px solid #FACC15 !important;
+    color: #FACC15 !important;
+    padding: 0 16px !important;
+    box-shadow: 0 4px 12px rgba(250, 204, 21, 0.2) !important;
+}
+
+/* Search Input */
 .site-search-input {
-    background: rgba(3, 30, 20, 0.85) !important;
+    background: rgba(2, 26, 18, 0.85) !important;
     border: 1px solid rgba(52, 211, 153, 0.35) !important;
     color: #FFFFFF !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
+    border-radius: 999px !important;
+    height: 38px !important;
 }
 
 .site-search-input::placeholder {
@@ -159,13 +194,15 @@ header + .topbar,
     background: rgba(6, 78, 59, 0.75) !important;
     border: 1px solid rgba(52, 211, 153, 0.4) !important;
     color: #FFFFFF !important;
-    border-radius: 12px !important;
+    height: 38px !important;
+    border-radius: 999px !important;
+    padding: 0 14px !important;
 }
 
 .lang-dropdown-menu {
     background: #042F20 !important;
     border: 1px solid rgba(52, 211, 153, 0.4) !important;
-    border-radius: 12px !important;
+    border-radius: 14px !important;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
     overflow: hidden !important;
 }
@@ -178,48 +215,24 @@ header + .topbar,
 .lang-dropdown-item:hover,
 .lang-dropdown-item.active {
     background: #084C35 !important;
-    color: #FDE047 !important;
+    color: #FACC15 !important;
 }
 
-/* Nút Header Đăng Ký OCOP (AI OCR) & Quản Trị Chủ Web */
-#btn-header-ocr,
-.header-right-actions button[onclick*="openPartnerRegistrationModal"] {
-    background: linear-gradient(135deg, #059669 0%, #10B981 100%) !important;
-    border: 1px solid rgba(52, 211, 153, 0.45) !important;
-    color: #FFFFFF !important;
-    font-weight: 800 !important;
-    border-radius: 999px !important;
-    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
-    padding: 7px 15px !important;
-}
-
-#btn-header-admin-pin,
-.header-right-actions button[onclick*="openChallengeProposalModal"],
-.header-right-actions button[onclick*="promptAdminPinModal"] {
-    background: linear-gradient(135deg, #064E3B 0%, #084C35 100%) !important;
-    border: 1px solid #FDE047 !important;
-    color: #FDE047 !important;
-    font-weight: 800 !important;
-    border-radius: 999px !important;
-    box-shadow: 0 4px 14px rgba(253, 224, 71, 0.25) !important;
-    padding: 7px 15px !important;
-}
-
-/* 3. HERO BANNER MỞ ĐẦU & 8 Ô NHỎ ĐỒNG BỘ MÀU XANH LÁ NGỌC LỤC BẢO */
+/* 4. KHUNG HERO MỞ ĐẦU & 8 Ô NHỎ BÊN TRONG */
 #shop-hero > div:first-child,
 #intro-hero-section {
-    background: linear-gradient(145deg, rgba(8, 68, 47, 0.92) 0%, rgba(4, 40, 28, 0.96) 100%) !important;
-    border: 1px solid rgba(52, 211, 153, 0.35) !important;
+    background: var(--bg-card-emerald) !important;
+    border: 1px solid var(--border-emerald-glow) !important;
     border-radius: 24px !important;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
     padding: 2.25rem !important;
     position: relative !important;
 }
 
 #i18n-hero-badge {
     background: rgba(6, 78, 59, 0.8) !important;
-    border: 1px solid rgba(253, 224, 71, 0.5) !important;
-    color: #FDE047 !important;
+    border: 1px solid rgba(250, 204, 21, 0.5) !important;
+    color: #FACC15 !important;
     font-weight: 800 !important;
     border-radius: 999px !important;
 }
@@ -228,7 +241,6 @@ header + .topbar,
 #intro-hero-section h2 {
     color: #FFFFFF !important;
     font-weight: 900 !important;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* 8 Ô nhỏ bên trong Hero (4 ô tính năng + 4 ô thống kê 252+, 63, 500+, 24/7) */
@@ -236,7 +248,7 @@ header + .topbar,
 #shop-hero .grid-cols-4 > div,
 .hero-feat-card,
 .hero-stat-card {
-    background: rgba(6, 95, 70, 0.6) !important;
+    background: rgba(6, 95, 70, 0.55) !important;
     border: 1px solid rgba(52, 211, 153, 0.3) !important;
     border-radius: 14px !important;
     color: #FFFFFF !important;
@@ -251,13 +263,12 @@ header + .topbar,
     transform: translateY(-2px) !important;
 }
 
-/* Tiêu đề & con số trong 8 ô: Vàng sáng hoặc Xanh ngọc sáng */
 #shop-hero .grid-cols-2 h3,
 #shop-hero .grid-cols-2 h4,
 #shop-hero .grid-cols-2 .text-amber-300,
 #shop-hero .grid-cols-4 .text-2xl,
 #shop-hero .grid-cols-4 .font-black {
-    color: #FDE047 !important;
+    color: #FACC15 !important;
     font-weight: 900 !important;
 }
 
@@ -271,15 +282,16 @@ header + .topbar,
 /* Khung ảnh bên phải Hero: NATIONAL OCOP PLATFORM */
 #shop-hero .lg\:col-span-5 > div,
 .hero-right-card {
-    background: rgba(3, 28, 19, 0.88) !important;
+    background: rgba(2, 26, 18, 0.85) !important;
     border: 1px solid rgba(52, 211, 153, 0.4) !important;
     border-radius: 20px !important;
+    padding: 14px !important;
     color: #FFFFFF !important;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3) !important;
     overflow: hidden !important;
 }
 
-/* 4. BẢN ĐỒ VỆ TINH VIỆT NAM (LEAFLET / GEOJSON KHÔNG BỊ PHÁ HỦY) */
+/* 5. BẢN ĐỒ VỆ TINH LEAFLET VIỆT NAM (BẢO TOÀN 100% GỐC) */
 #province-map {
     border: 1px solid rgba(52, 211, 153, 0.4) !important;
     border-radius: 18px !important;
@@ -291,7 +303,7 @@ header + .topbar,
 
 #province-map-select {
     background: #064E3B !important;
-    color: #FDE047 !important;
+    color: #FACC15 !important;
     border: 1px solid rgba(52, 211, 153, 0.4) !important;
     border-radius: 12px !important;
     font-weight: 700 !important;
@@ -314,19 +326,19 @@ header + .topbar,
     font-weight: 600 !important;
 }
 
-/* 5. CỘT BỘ LỌC BÊN TRÁI (SIDEBAR) & MODAL DANH BẠ 63 TỈNH THÀNH */
+/* 6. CỘT BỘ LỌC BÊN TRÁI (SIDEBAR) */
 #catalog-sidebar,
 #catalog-sidebar > div {
-    background: #063B29 !important;
-    border: 1px solid rgba(52, 211, 153, 0.3) !important;
-    border-radius: 18px !important;
+    background: var(--bg-card-emerald) !important;
+    border: 1px solid var(--border-emerald-glow) !important;
+    border-radius: 20px !important;
     color: #FFFFFF !important;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25) !important;
 }
 
 #catalog-sidebar h3,
 #catalog-sidebar h4 {
-    color: #FDE047 !important;
+    color: #FACC15 !important;
     font-weight: 800 !important;
 }
 
@@ -335,13 +347,25 @@ header + .topbar,
     color: #E2E8F0 !important;
 }
 
-/* Ẩn widget financial nhỏ thừa ở đáy sidebar nếu có */
-#catalog-sidebar .sidebar-financial-widget,
-#catalog-sidebar .financial-engine-badge {
-    display: none !important;
+/* Các nút chọn Miền / Tỉnh / Danh mục trong Sidebar */
+#catalog-sidebar button,
+.catalog-filter-btn {
+    background: rgba(6, 95, 70, 0.45) !important;
+    border: 1px solid rgba(52, 211, 153, 0.25) !important;
+    border-radius: 12px !important;
+    color: #ECFDF5 !important;
+    transition: all 0.2s ease !important;
 }
 
-/* Dropdown & select trong sidebar */
+#catalog-sidebar button:hover,
+#catalog-sidebar button.active,
+.catalog-filter-btn.active {
+    background: #10B981 !important;
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    border-color: #34D399 !important;
+}
+
 #sidebar-province-select,
 #product-sort-select {
     background: #042B1E !important;
@@ -351,67 +375,83 @@ header + .topbar,
     font-weight: 700 !important;
 }
 
-/* 6. THIẾT KẾ 252 THẺ SẢN PHẨM (PRODUCT CARDS) CHUẨN XANH LỤC BẢO SANG TRỌNG */
+/* 7. 252 THẺ SẢN PHẨM (PRODUCT CARDS) CHỐNG LAG 60FPS */
 .product-card,
 #product-grid > div {
-    background: linear-gradient(160deg, #084C35 0%, #042F20 100%) !important;
-    border: 1px solid rgba(52, 211, 153, 0.3) !important;
+    background: linear-gradient(165deg, #074732 0%, #04291D 100%) !important;
+    border: 1px solid rgba(52, 211, 153, 0.28) !important;
     border-radius: 18px !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.28) !important;
-    transition: transform 0.25s ease, border-color 0.25s ease !important;
-    backdrop-filter: none !important;
-    color: #FFFFFF !important;
-    overflow: hidden !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3) !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
+    transition: transform 0.2s ease, border-color 0.2s ease !important;
+    backdrop-filter: none !important;
+    color: #FFFFFF !important;
+    overflow: hidden !important;
 }
 
 .product-card:hover,
 #product-grid > div:hover {
-    border-color: #34D399 !important;
     transform: translateY(-4px) !important;
-    box-shadow: 0 14px 30px rgba(16, 185, 129, 0.25) !important;
+    border-color: #34D399 !important;
+    box-shadow: 0 14px 30px rgba(16, 185, 129, 0.22) !important;
 }
 
-/* Tên & mô tả sản phẩm trong thẻ */
+/* Tên & mô tả sản phẩm */
 .product-card h3,
 .product-card h4,
 #product-grid h3 {
     color: #FFFFFF !important;
-    font-weight: 800 !important;
-    line-height: 1.35 !important;
+    font-size: 1.08rem !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
 }
 
 .product-card p,
 #product-grid p {
     color: #D1FAE5 !important;
+    font-size: 0.9rem !important;
     line-height: 1.45 !important;
 }
 
-/* Hộp thông tin cửa hàng/showroom bên trong thẻ */
+/* Hộp thông tin Đơn vị / HTX / Showroom bên trong thẻ */
 .product-card .store-info-box,
 .product-card-store-box {
-    background: rgba(2, 28, 19, 0.65) !important;
-    border: 1px solid rgba(52, 211, 153, 0.2) !important;
+    background: rgba(2, 24, 16, 0.72) !important;
+    border: 1px solid rgba(52, 211, 153, 0.22) !important;
     border-radius: 12px !important;
-    padding: 9px 12px !important;
+    padding: 10px 12px !important;
     margin-top: 8px !important;
 }
 
 .product-card .store-name {
-    color: #FDE047 !important;
-    font-weight: 800 !important;
-    font-size: 0.85rem !important;
+    color: #FACC15 !important;
+    font-weight: 700 !important;
+    font-size: 0.88rem !important;
 }
 
-.product-card .store-address,
-.product-card .store-phone {
-    color: #F8FAFC !important;
+.product-card .store-address {
+    color: #E2E8F0 !important;
     font-size: 0.8rem !important;
 }
 
-/* ẨN CÁC CHỈ SỐ NỘI BỘ (Biên lợi nhuận ròng, sản lượng số hóa, nút phân tích dòng tiền) KHỎI KHÁCH HÀNG */
+.product-card .store-phone {
+    color: #34D399 !important;
+    font-weight: 700 !important;
+    font-size: 0.8rem !important;
+}
+
+.product-card .store-province-badge {
+    color: #FDE047 !important;
+    background: rgba(16, 185, 129, 0.25) !important;
+    border-radius: 999px !important;
+    padding: 2px 8px !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+}
+
+/* ẨN CÁC THÔNG SỐ NỘI BỘ VÀ NÚT ĐỐI SOÁT KHỎI KHÁCH HÀNG */
 .product-card-footer [onclick*="activateProductReconciliation"],
 .product-card-footer button[onclick*="activateProductReconciliation"],
 .product-system-metrics,
@@ -420,64 +460,61 @@ header + .topbar,
     display: none !important;
 }
 
-/* 2 Nút bấm dưới đáy thẻ: 📍 Điểm Bán và ✨ AI Câu Chuyện (Bo tròn 999px chuẩn J2TEAM) */
+/* 2 Nút hành động dưới đáy thẻ: Hàng ngang 2 cột cân đối, bo tròn 999px */
 .product-action-cluster {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
     width: 100% !important;
     margin-top: 10px !important;
 }
 
 .btn-card-store {
-    flex: 1 !important;
-    background: #10B981 !important;
+    background: rgba(16, 185, 129, 0.2) !important;
+    border: 1px solid #34D399 !important;
     color: #FFFFFF !important;
     border-radius: 999px !important;
     font-weight: 800 !important;
-    font-size: 12.5px !important;
-    padding: 7px 12px !important;
-    border: none !important;
+    font-size: 13px !important;
+    padding: 8px 12px !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 5px !important;
     transition: transform 0.15s ease, background 0.15s ease !important;
-    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3) !important;
     text-align: center !important;
 }
 
 .btn-card-store:hover {
-    background: #059669 !important;
+    background: rgba(16, 185, 129, 0.35) !important;
     transform: scale(1.02) !important;
 }
 
 .btn-card-ai-story {
-    flex: 1 !important;
-    background: #D97706 !important;
+    background: var(--btn-primary-grad) !important;
+    border: 1px solid #34D399 !important;
     color: #FFFFFF !important;
     border-radius: 999px !important;
     font-weight: 800 !important;
-    font-size: 12.5px !important;
-    padding: 7px 12px !important;
-    border: none !important;
+    font-size: 13px !important;
+    padding: 8px 12px !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 5px !important;
     transition: transform 0.15s ease, background 0.15s ease !important;
-    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
     text-align: center !important;
 }
 
 .btn-card-ai-story:hover {
-    background: #B45309 !important;
     transform: scale(1.02) !important;
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.45) !important;
 }
 
-/* 7. TẤT CẢ MODAL POPUP ĐỒNG BỘ NỀN XANH LỤC BẢO ĐẬM (#053323) */
+/* 8. TẤT CẢ MODAL / POPUP ĐỒNG BỘ NỀN #053323 */
 #partner-registration-modal > div,
 #ocop-store-modal > div,
 #ai-financial-modal > div:last-child,
@@ -485,10 +522,31 @@ header + .topbar,
 #admin-pin-modal > div:last-child,
 #ai-story-modal > div:last-child {
     background: #053323 !important;
-    border: 1.5px solid #34D399 !important;
+    border: 1px solid #34D399 !important;
     border-radius: 20px !important;
     color: #FFFFFF !important;
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Các ô chọn tỉnh thành, thẻ showroom bên trong modal */
+#stores-directory-modal .province-tile,
+#stores-directory-modal .showroom-card,
+.modal-emerald-tile {
+    background: #074732 !important;
+    border: 1px solid rgba(52, 211, 153, 0.35) !important;
+    border-radius: 12px !important;
+    color: #FFFFFF !important;
+}
+
+.modal-emerald-tile .title,
+#stores-directory-modal .province-tile h4 {
+    color: #FACC15 !important;
+    font-weight: 800 !important;
+}
+
+.modal-emerald-tile .address,
+#stores-directory-modal .showroom-card p {
+    color: #D1FAE5 !important;
 }
 
 /* Form inputs bên trong modal */
@@ -512,15 +570,15 @@ header + .topbar,
 }
 
 #partner-registration-modal label {
-    color: #FDE047 !important;
+    color: #FACC15 !important;
     font-weight: 700 !important;
     margin-bottom: 4px !important;
     display: block !important;
 }
 
-/* Khu vực Drag & Drop OCR */
+/* Drag & Drop OCR Zone */
 #ocr-dropzone {
-    background: rgba(3, 30, 20, 0.75) !important;
+    background: rgba(2, 26, 18, 0.75) !important;
     border: 2px dashed rgba(52, 211, 153, 0.5) !important;
     border-radius: 16px !important;
     transition: all 0.2s ease !important;
@@ -528,12 +586,12 @@ header + .topbar,
 
 #ocr-dropzone:hover {
     border-color: #34D399 !important;
-    background: rgba(6, 78, 59, 0.5) !important;
+    background: rgba(6, 78, 59, 0.45) !important;
 }
 
 /* Nút Submit trong Modal Đăng Ký OCOP */
 #partner-registration-modal button[type="submit"] {
-    background: linear-gradient(135deg, #059669 0%, #10B981 100%) !important;
+    background: var(--btn-primary-grad) !important;
     border: 1px solid #34D399 !important;
     color: #FFFFFF !important;
     font-weight: 800 !important;
@@ -542,7 +600,7 @@ header + .topbar,
     box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35) !important;
 }
 
-/* 8. AI CHATBOT NÚT NỔI HIỆN ĐẠI (ICON ROBOT AI XANH NGỌC) */
+/* 9. AI CHATBOT NÚT NỔI HIỆN ĐẠI */
 #ai-chat-toggle-btn {
     background: linear-gradient(135deg, #064E3B 0%, #10B981 100%) !important;
     border: 2px solid #34D399 !important;
@@ -579,15 +637,14 @@ header + .topbar,
     color: #FFFFFF !important;
 }
 
-/* Quick reply pills */
 .quick-reply-pill {
     background: #064E3B !important;
     border: 1px solid rgba(52, 211, 153, 0.4) !important;
-    color: #FDE047 !important;
+    color: #FACC15 !important;
     border-radius: 999px !important;
 }
 
-/* 9. BẢNG QUẢN TRỊ TÀI CHÍNH & WHAT-IF SLIDERS */
+/* 10. BẢNG QUẢN TRỊ TÀI CHÍNH & WHAT-IF SLIDERS */
 #ai-financial-modal {
     color: #FFFFFF !important;
 }
@@ -597,27 +654,67 @@ header + .topbar,
 }
 
 #fin-stat-profit {
-    color: #FDE047 !important;
+    color: #FACC15 !important;
 }
 
 #fin-stat-commission {
     color: #38BDF8 !important;
 }
 
-/* 10. TỐI ƯU RESPONSIVE MOBILE */
-@media (max-width: 768px) {
+/* 11. TỐI ƯU RESPONSIVE MOBILE & DESKTOP */
+@media (min-width: 1025px) {
+    .max-w-7xl,
+    .max-w-5xl,
+    #shop-hero,
+    #catalog-layout-wrapper {
+        max-width: 1440px !important;
+        width: 95% !important;
+        margin: 0 auto !important;
+    }
+}
+
+@media (max-width: 992px) {
     #shop-hero > div:first-child {
-        padding: 1.25rem !important;
+        padding: 1.5rem !important;
     }
     
-    .product-action-cluster {
+    #catalog-layout-wrapper {
         flex-direction: column !important;
+    }
+    
+    #catalog-sidebar {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+@media (max-width: 640px) {
+    #shop-hero > div:first-child {
+        padding: 1.25rem !important;
+        width: 94vw !important;
+        margin: 0 auto !important;
+    }
+
+    .product-action-cluster {
+        grid-template-columns: 1fr !important;
         gap: 6px !important;
     }
 
     .btn-card-store,
     .btn-card-ai-story {
         width: 100% !important;
+    }
+
+    #partner-registration-modal > div,
+    #ocop-store-modal > div,
+    #ai-financial-modal > div:last-child,
+    #stores-directory-modal > div:last-child,
+    #admin-pin-modal > div:last-child,
+    #ai-story-modal > div:last-child {
+        max-height: 88vh !important;
+        overflow-y: auto !important;
+        width: 94vw !important;
+        padding: 1rem !important;
     }
 }
 

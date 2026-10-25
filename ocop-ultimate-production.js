@@ -1,13 +1,13 @@
 /**
- * EMERALD OCOP LUXURY CONTROLLER (J2TEAM GREEN TECH STYLE)
- * AI Digital Business Challenge 2026 • OCOP Sales Copilot
+ * EMERALD OCOP LUXURY CONTROLLER (J2TEAM GREEN TECH PRODUCTION)
+ * AI Digital Business Challenge - DigitalFest Đồng Nai 2026
  * 
  * 100% Zero-lag architecture: No recursive DOM mutations, no setInterval loops.
  * Features:
- * 1. Emerald star constellation canvas with mouse ray connection (185px)
+ * 1. J2TEAM Star constellation canvas with mouse ray connection (185px)
  * 2. Original Leaflet Vietnam map preservation (63 provinces + Hoàng Sa & Trường Sa)
- * 3. 252 Product cards with 999px rounded buttons (Điểm Bán & AI Câu Chuyện)
- * 4. Partner Registration & Smart AI OCR modal with 4 natural fields
+ * 3. 252 Product cards with 2 balanced 999px rounded buttons (Điểm Bán & AI Câu Chuyện)
+ * 4. Partner Registration & Smart AI OCR modal with 4 natural fields (manual & auto-scan)
  * 5. PIN 2007 gate for Webmaster Financial Dashboard (875M, 415.625M, 70M, 34.8%)
  * 6. Modern Emerald Robot AI Chatbot icon
  */
@@ -15,12 +15,12 @@
 (function () {
     'use strict';
 
-    // 1. EMERALD STAR CONSTELLATION CANVAS (J2TEAM STYLE)
-    function initEmeraldStarCanvas() {
-        let canvas = document.getElementById('emerald-star-canvas');
+    // 1. J2TEAM STAR CONSTELLATION CANVAS (48 SAO BAY + KÉO TIA THEO CHUỘT 185PX)
+    function initJ2ConstellationCanvas() {
+        let canvas = document.getElementById('j2-emerald-canvas');
         if (!canvas) {
             canvas = document.createElement('canvas');
-            canvas.id = 'emerald-star-canvas';
+            canvas.id = 'j2-emerald-canvas';
             document.body.prepend(canvas);
         }
 
@@ -92,7 +92,7 @@
                 ctx.fill();
                 ctx.restore();
 
-                // Nối các ngôi sao gần nhau
+                // Nối các ngôi sao gần nhau (< 85px)
                 for (let j = i + 1; j < stars.length; j++) {
                     const s2 = stars[j];
                     const dx = s.x - s2.x;
@@ -111,7 +111,7 @@
                     }
                 }
 
-                // Phóng tia sáng kết nối vào chuột trong bán kính 185px
+                // Phóng tia sáng mảnh kết nối vào mũi chuột trong bán kính 185px
                 if (mouse.active) {
                     const dx = s.x - mouse.x;
                     const dy = s.y - mouse.y;
@@ -137,25 +137,24 @@
         animate();
     }
 
-    // 2. KHỐI BLOB TRANG TRÍ MỀM MẠI
-    function initDecorativeBlobs() {
-        if (!document.getElementById('emerald-blob-tr')) {
-            const tr = document.createElement('div');
-            tr.id = 'emerald-blob-tr';
-            tr.className = 'emerald-blob-tr';
-            document.body.prepend(tr);
+    // 2. KHỐI ORGANIC BLOBS PHONG CÁCH J2TEAM
+    function initOrganicBlobs() {
+        if (!document.getElementById('j2-blob-1')) {
+            const b1 = document.createElement('div');
+            b1.id = 'j2-blob-1';
+            b1.className = 'j2-emerald-blob-1';
+            document.body.prepend(b1);
         }
-        if (!document.getElementById('emerald-blob-bl')) {
-            const bl = document.createElement('div');
-            bl.id = 'emerald-blob-bl';
-            bl.className = 'emerald-blob-bl';
-            document.body.prepend(bl);
+        if (!document.getElementById('j2-blob-2')) {
+            const b2 = document.createElement('div');
+            b2.id = 'j2-blob-2';
+            b2.className = 'j2-emerald-blob-2';
+            document.body.prepend(b2);
         }
     }
 
     // 3. BẢO VỆ BẢN ĐỒ VỆ TINH LEAFLET VIỆT NAM (KHÔNG GHI ĐÈ BẰNG SVG)
     function setupVietnamMapPreservation() {
-        // Kích hoạt lại Leaflet resize sau khi trang tải để bản đồ render mượt mà
         setTimeout(() => {
             window.dispatchEvent(new Event('resize'));
             if (window.provinceMap && typeof window.provinceMap.invalidateSize === 'function') {
@@ -170,7 +169,6 @@
 
     // 4. POLISH HEADER & GẮN NÚT "🔐 QUẢN TRỊ CHỦ WEB"
     function polishHeader() {
-        // Đổi nút Pitch Deck hoặc nút quản trị trên Header thành nút PIN
         const headerActions = document.querySelector('.header-right-actions');
         if (!headerActions) return;
 
@@ -186,13 +184,11 @@
             btnPin.className = 'px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-xs font-black transition flex items-center cursor-pointer shrink-0 bg-emerald-800 hover:bg-emerald-700 text-yellow-300 shadow border border-yellow-300/60';
         }
 
-        // Đảm bảo nút "AI Quản Trị Kinh Doanh" trong nav cũng qua cổng PIN
         const navFinance = document.querySelector('.nav-btn-finance');
         if (navFinance) {
             navFinance.setAttribute('onclick', 'promptAdminPinModal()');
         }
 
-        // Ẩn nút Trợ Lý AI Tạo Nội Dung trên Header
         const navStudio = document.querySelector('.nav-btn-studio');
         if (navStudio) navStudio.style.display = 'none';
     }
@@ -340,7 +336,6 @@
             if (title) title.textContent = '💰 TIỀN LỜI RÒNG CỦA CHỦ WEB (PHÍ QUẢNG BÁ & HOA HỒNG KẾT NỐI O2O)';
         }
 
-        // Tỷ lệ chuyển đổi
         const kpiEls = document.querySelectorAll('#ai-financial-modal .text-2xl');
         if (kpiEls.length >= 4) {
             kpiEls[3].textContent = '34.8%';
@@ -352,11 +347,9 @@
         const modal = document.getElementById('partner-registration-modal');
         if (!modal) return;
 
-        // Xóa nút Thử Mẫu Đồng Nai gây lặp và format lại form
         const tryDongNaiBtn = modal.querySelector('button[onclick*="simulateOcrScan"]');
         if (tryDongNaiBtn) tryDongNaiBtn.style.display = 'none';
 
-        // Đảm bảo có preview container
         const dropzone = modal.querySelector('#ocr-dropzone');
         if (dropzone && !document.getElementById('ocr-image-preview')) {
             const preview = document.createElement('img');
@@ -365,7 +358,6 @@
             dropzone.appendChild(preview);
         }
 
-        // Đặt nhãn & placeholder cho 4 trường chuẩn
         const field1 = document.getElementById('reg-store-name');
         if (field1) {
             field1.placeholder = 'VD: Gạo Nếp Khẩu Hốc, Trà Khổ Qua Rừng...';
@@ -394,7 +386,6 @@
             if (label) label.textContent = '4. Hạng Sao & Số Quyết Định / Liên Hệ:';
         }
 
-        // Xử lý kéo thả file
         if (dropzone) {
             dropzone.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -413,7 +404,7 @@
         }
     }
 
-    // Hàm nhận diện file ảnh OCR (Lai Châu / 63 tỉnh thành)
+    // Nhận diện file ảnh OCR (Lai Châu / 63 tỉnh thành)
     window.handleOcrFileSelect = function (event) {
         if (!event.target.files || !event.target.files[0]) return;
         const file = event.target.files[0];
@@ -422,7 +413,6 @@
         const success = document.getElementById('ocr-success-badge');
         const preview = document.getElementById('ocr-image-preview');
 
-        // Hiển thị preview ngay lập tức
         if (preview) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -446,14 +436,12 @@
 
             const fileNameLower = (file.name || '').toLowerCase();
 
-            // Nếu là ảnh Lai Châu hoặc mẫu Gạo Nếp Khẩu Hốc
             if (fileNameLower.includes('lai') || fileNameLower.includes('khau') || fileNameLower.includes('hoc') || fileNameLower.includes('1045') || fileNameLower.includes('cert') || fileNameLower.includes('giay')) {
                 if (fName) fName.value = 'Gạo Nếp Khẩu Hốc';
                 if (fEntity) fEntity.value = 'Hợp Tác Xã Công Nghệ Và Môi Trường';
                 if (fAddr) fAddr.value = 'Lai Châu • Bản Nậm Bon, xã Phúc Khoa, huyện Tân Uyên';
                 if (fCert) fCert.value = 'OCOP 3 Sao • QĐ số 1045/QĐ-UBND (10/08/2021) • Hotline: 0915 688 202';
             } else {
-                // Tự động phân tích tên file để điền thông minh
                 if (fName) fName.value = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ').toUpperCase();
                 if (fEntity) fEntity.value = 'Hợp Tác Xã / Đơn Vị OCOP Tiêu Biểu';
                 if (fAddr) fAddr.value = 'Việt Nam • Trung tâm OCOP 63 Tỉnh Thành';
@@ -569,13 +557,12 @@
         }
     };
 
-    // 9. NÂNG CẤP 252 THẺ SẢN PHẨM: 2 NÚT BO TRÒN 999PX (ĐIỂM BÁN & AI CÂU CHUYỆN)
+    // 9. NÂNG CẤP 252 THẺ SẢN PHẨM: 2 NÚT HÀNG NGANG 2 CỘT CÂN ĐỐI BO TRÒN 999PX
     function enhanceProductCardElements() {
         const cards = document.querySelectorAll('#product-grid > div');
         cards.forEach(card => {
             if (card.querySelector('.product-action-cluster')) return;
 
-            // Lấy ID sản phẩm từ thuộc tính hoặc nút bấm có sẵn
             let productId = null;
             const actionBtn = card.querySelector('[onclick*="activateProductReconciliation"]');
             if (actionBtn) {
@@ -593,7 +580,6 @@
 
             if (!productId) return;
 
-            // Tạo cụm 2 nút bấm bo tròn 999px chuẩn J2TEAM
             const cluster = document.createElement('div');
             cluster.className = 'product-action-cluster';
             cluster.innerHTML = `
@@ -607,13 +593,12 @@
                 </button>
             `;
 
-            // Thêm vào cuối card
             const footer = card.querySelector('.product-card-footer') || card;
             footer.appendChild(cluster);
         });
     }
 
-    // Wrap renderProducts để mỗi khi lọc tỉnh/thành hay phân trang đều có 2 nút
+    // Hook renderProducts để chạy một cách an toàn không loop
     function hookRenderProducts() {
         if (typeof window.renderProducts === 'function' && !window._renderProductsHooked) {
             const originalRender = window.renderProducts;
@@ -630,7 +615,6 @@
     function upgradeChatbotAvatar() {
         const chatBtn = document.getElementById('ai-chat-toggle-btn');
         if (chatBtn) {
-            // Thay hình ảnh bên trong bằng icon robot AI hiện đại
             const existingImg = chatBtn.querySelector('img');
             if (existingImg) existingImg.style.display = 'none';
 
@@ -644,19 +628,22 @@
         }
     }
 
-    // 11. BẬT LAZY LOADING CHO TOÀN BỘ ẢNH (CHỐNG XOAY VÒNG TAB)
+    // 11. BẬT LAZY LOADING & DECODING ASYNC CHO TOÀN BỘ ẢNH (CHỐNG XOAY VÒNG TAB)
     function enableImageLazyLoading() {
         document.querySelectorAll('img').forEach(img => {
             if (!img.hasAttribute('loading')) {
                 img.setAttribute('loading', 'lazy');
             }
+            if (!img.hasAttribute('decoding')) {
+                img.setAttribute('decoding', 'async');
+            }
         });
     }
 
-    // KHỞI CHẠY TẤT CẢ (CHỈ CHẠY 1 LẦN, ZERO-LAG)
+    // KHỞI CHẠY TẤT CẢ (CHỈ CHẠY 1 LẦN KHI LOAD, ZERO-LAG)
     function initAll() {
-        initEmeraldStarCanvas();
-        initDecorativeBlobs();
+        initJ2ConstellationCanvas();
+        initOrganicBlobs();
         setupVietnamMapPreservation();
         polishHeader();
         setupPartnerRegistrationModal();
