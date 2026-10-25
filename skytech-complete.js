@@ -1,26 +1,28 @@
 /**
- * EMERALD OCOP LUXURY CONTROLLER (J2TEAM GREEN TECH PRODUCTION)
- * AI Digital Business Challenge - DigitalFest Đồng Nai 2026
+ * MODERN SKY-TECH & CLEAN SAPPHIRE CONTROLLER
+ * AI Digital Business Challenge 2026 • OCOP Sales Copilot
  * 
  * 100% Zero-lag architecture: No recursive DOM mutations, no setInterval loops.
  * Features:
- * 1. J2TEAM Star constellation canvas with mouse ray connection (185px)
- * 2. Original Leaflet Vietnam map preservation (63 provinces + Hoàng Sa & Trường Sa)
- * 3. 252 Product cards with 2 balanced 999px rounded buttons (Điểm Bán & AI Câu Chuyện)
- * 4. Partner Registration & Smart AI OCR modal with 4 natural fields (manual & auto-scan)
- * 5. PIN 2007 gate for Webmaster Financial Dashboard (875M, 415.625M, 70M, 34.8%)
- * 6. Modern Emerald Robot AI Chatbot icon
+ * 1. Sky-Tech Blue & Clean White palette applied across 100% of the UI
+ * 2. Intro Screen perfectly isolated from inner Header
+ * 3. Sky-Tech canvas with interactive cursor rays (185px)
+ * 4. Original Leaflet Vietnam map preservation (63 provinces + Hoàng Sa & Trường Sa)
+ * 5. 252 Product cards with 2 balanced 999px rounded buttons (Điểm Bán & Câu Chuyện OCOP)
+ * 6. Partner Registration & Smart AI OCR modal with 4 natural fields (manual & auto-scan)
+ * 7. PIN 2007 gate for Webmaster Financial Dashboard (875M, 415.625M, 70M, 34.8%)
+ * 8. Modern White & Sky Blue Robot AI Chatbot icon & clean greeting
  */
 
 (function () {
     'use strict';
 
-    // 1. J2TEAM STAR CONSTELLATION CANVAS (48 SAO BAY + KÉO TIA THEO CHUỘT 185PX)
-    function initJ2ConstellationCanvas() {
-        let canvas = document.getElementById('j2-emerald-canvas');
+    // 1. SKYTECH LIGHT CONSTELLATION CANVAS (48 HẠT XANH DA TRỜI + KÉO TIA THEO CHUỘT 185PX)
+    function initSkyTechCanvas() {
+        let canvas = document.getElementById('skytech-canvas');
         if (!canvas) {
             canvas = document.createElement('canvas');
-            canvas.id = 'j2-emerald-canvas';
+            canvas.id = 'skytech-canvas';
             document.body.prepend(canvas);
         }
 
@@ -35,7 +37,7 @@
             height = canvas.height = window.innerHeight;
         });
 
-        const colors = ['#6EE7B7', '#FFFFFF', '#FDE68A', '#34D399'];
+        const colors = ['#0284C7', '#38BDF8', '#7DD3FC', '#0369A1'];
         const starCount = 48;
         const stars = [];
 
@@ -43,11 +45,11 @@
             stars.push({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                radius: Math.random() * 1.8 + 0.8,
+                radius: Math.random() * 2 + 1,
                 color: colors[Math.floor(Math.random() * colors.length)],
                 vx: (Math.random() - 0.5) * 0.45,
                 vy: (Math.random() - 0.5) * 0.45,
-                alpha: Math.random() * 0.7 + 0.3,
+                alpha: Math.random() * 0.6 + 0.3,
                 alphaChange: (Math.random() * 0.01 + 0.005) * (Math.random() > 0.5 ? 1 : -1)
             });
         }
@@ -78,21 +80,19 @@
                 if (s.y > height) s.y = 0;
 
                 s.alpha += s.alphaChange;
-                if (s.alpha > 0.95 || s.alpha < 0.25) {
+                if (s.alpha > 0.85 || s.alpha < 0.25) {
                     s.alphaChange = -s.alphaChange;
                 }
 
                 ctx.save();
                 ctx.globalAlpha = Math.max(0.1, Math.min(1, s.alpha));
                 ctx.fillStyle = s.color;
-                ctx.shadowBlur = 6;
-                ctx.shadowColor = s.color;
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.restore();
 
-                // Nối các ngôi sao gần nhau (< 85px)
+                // Nối các hạt gần nhau (< 85px)
                 for (let j = i + 1; j < stars.length; j++) {
                     const s2 = stars[j];
                     const dx = s.x - s2.x;
@@ -101,8 +101,8 @@
                     if (dist < 85) {
                         ctx.save();
                         ctx.globalAlpha = (1 - dist / 85) * 0.15;
-                        ctx.strokeStyle = '#6EE7B7';
-                        ctx.lineWidth = 0.5;
+                        ctx.strokeStyle = '#38BDF8';
+                        ctx.lineWidth = 0.6;
                         ctx.beginPath();
                         ctx.moveTo(s.x, s.y);
                         ctx.lineTo(s2.x, s2.y);
@@ -111,7 +111,7 @@
                     }
                 }
 
-                // Phóng tia sáng mảnh kết nối vào mũi chuột trong bán kính 185px
+                // Phóng tia sáng xanh mảnh kết nối vào mũi chuột trong bán kính 185px
                 if (mouse.active) {
                     const dx = s.x - mouse.x;
                     const dy = s.y - mouse.y;
@@ -119,8 +119,8 @@
                     if (dist < 185) {
                         ctx.save();
                         const intensity = (1 - dist / 185);
-                        ctx.globalAlpha = intensity * 0.45;
-                        ctx.strokeStyle = 'rgba(110, 231, 183, 0.45)';
+                        ctx.globalAlpha = intensity * 0.4;
+                        ctx.strokeStyle = 'rgba(2, 132, 199, 0.4)';
                         ctx.lineWidth = 0.8;
                         ctx.beginPath();
                         ctx.moveTo(s.x, s.y);
@@ -137,19 +137,27 @@
         animate();
     }
 
-    // 2. KHỐI ORGANIC BLOBS PHONG CÁCH J2TEAM
-    function initOrganicBlobs() {
-        if (!document.getElementById('j2-blob-1')) {
-            const b1 = document.createElement('div');
-            b1.id = 'j2-blob-1';
-            b1.className = 'j2-emerald-blob-1';
-            document.body.prepend(b1);
+    // 2. TÁCH BIỆT HOÀN TOÀN MÀN HÌNH MỞ ĐẦU VÀ THANH HEADER BÊN TRONG
+    function setupIntroHeaderIsolation() {
+        const intro = document.getElementById('ocop-intro-overlay');
+        const header = document.querySelector('header');
+
+        if (intro && header) {
+            const isIntroOpen = !intro.classList.contains('hidden') && intro.style.display !== 'none';
+            if (isIntroOpen) {
+                header.style.display = 'none';
+            } else {
+                header.style.display = '';
+            }
         }
-        if (!document.getElementById('j2-blob-2')) {
-            const b2 = document.createElement('div');
-            b2.id = 'j2-blob-2';
-            b2.className = 'j2-emerald-blob-2';
-            document.body.prepend(b2);
+
+        if (typeof window.enterOcopMarket === 'function' && !window._enterOcopMarketHooked) {
+            const origEnter = window.enterOcopMarket;
+            window.enterOcopMarket = function (mode, onEntered) {
+                if (header) header.style.display = '';
+                return origEnter.apply(this, arguments);
+            };
+            window._enterOcopMarketHooked = true;
         }
     }
 
@@ -167,11 +175,22 @@
         }, 350);
     }
 
-    // 4. POLISH HEADER & GẮN NÚT "🔐 QUẢN TRỊ CHỦ WEB"
+    // 4. POLISH HEADER: ĐĂNG KÝ ĐIỂM BÁN & 🔐 QUẢN TRỊ CHỦ WEB
     function polishHeader() {
         const headerActions = document.querySelector('.header-right-actions');
         if (!headerActions) return;
 
+        // Nút Đăng Ký Điểm Bán
+        let btnOcr = document.getElementById('btn-header-ocr');
+        if (!btnOcr) {
+            btnOcr = headerActions.querySelector('button[onclick*="openPartnerRegistrationModal"]');
+        }
+        if (btnOcr) {
+            btnOcr.id = 'btn-header-ocr';
+            btnOcr.innerHTML = '<i class="fa-solid fa-bolt text-yellow-300 mr-1.5"></i><span>⚡ Đăng Ký Điểm Bán</span>';
+        }
+
+        // Nút Quản Trị Chủ Web
         let btnPin = document.getElementById('btn-header-admin-pin');
         if (!btnPin) {
             btnPin = headerActions.querySelector('button[onclick*="openChallengeProposalModal"]');
@@ -180,8 +199,7 @@
             btnPin.id = 'btn-header-admin-pin';
             btnPin.setAttribute('onclick', 'promptAdminPinModal()');
             btnPin.setAttribute('title', 'Cổng Quản Trị Chủ Web (Mã PIN: 2007)');
-            btnPin.innerHTML = '<i class="fa-solid fa-lock text-amber-300 mr-1.5"></i><span>🔐 Quản Trị Chủ Web</span>';
-            btnPin.className = 'px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-xs font-black transition flex items-center cursor-pointer shrink-0 bg-emerald-800 hover:bg-emerald-700 text-yellow-300 shadow border border-yellow-300/60';
+            btnPin.innerHTML = '<i class="fa-solid fa-lock text-yellow-300 mr-1.5"></i><span>🔐 Quản Trị Chủ Web</span>';
         }
 
         const navFinance = document.querySelector('.nav-btn-finance');
@@ -208,39 +226,39 @@
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'admin-pin-modal';
-            modal.className = 'fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm';
+            modal.className = 'fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm';
             modal.innerHTML = `
-                <div class="relative w-full max-w-md bg-[#053323] border-2 border-emerald-400 rounded-3xl p-6 sm:p-8 text-white shadow-2xl space-y-5 animate-pop-in">
-                    <button onclick="closeAdminPinModal()" class="w-8 h-8 rounded-full bg-emerald-900/60 hover:bg-emerald-800 text-slate-300 hover:text-white flex items-center justify-center text-sm absolute top-4 right-4 cursor-pointer transition">
+                <div class="relative w-full max-w-md bg-white border-2 border-sky-400 rounded-3xl p-6 sm:p-8 text-slate-900 shadow-2xl space-y-5 animate-pop-in">
+                    <button onclick="closeAdminPinModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm absolute top-4 right-4 cursor-pointer transition">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                     <div class="text-center space-y-2">
-                        <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-800 text-yellow-300 flex items-center justify-center text-2xl border border-yellow-400/50 shadow-lg">
+                        <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-2xl border border-sky-200 shadow-sm">
                             <i class="fa-solid fa-lock"></i>
                         </div>
-                        <h3 class="text-lg font-black text-yellow-300 uppercase tracking-wide">Cổng Quản Trị Chủ Web</h3>
-                        <p class="text-xs text-emerald-200">Khu vực quản trị nội bộ: Báo cáo dòng tiền, doanh thu hệ thống và hoa hồng quảng bá O2O.</p>
+                        <h3 class="text-lg font-black text-slate-900 uppercase tracking-wide">Cổng Quản Trị Chủ Web</h3>
+                        <p class="text-xs text-slate-600">Khu vực quản trị nội bộ: Báo cáo dòng tiền, doanh thu hệ thống và hoa hồng quảng bá O2O.</p>
                     </div>
 
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-xs font-bold text-yellow-200 mb-1.5">Nhập mã PIN bảo mật:</label>
+                            <label class="block text-xs font-bold text-sky-800 mb-1.5">Nhập mã PIN bảo mật:</label>
                             <input type="password" id="admin-pin-input" maxlength="10" placeholder="••••" autocomplete="off"
-                                   class="w-full px-4 py-3 text-center text-xl tracking-widest rounded-xl bg-[#032116] border-2 border-emerald-400/60 text-yellow-300 font-mono font-bold focus:border-yellow-400 focus:outline-none">
-                            <p id="admin-pin-error" class="hidden text-xs font-bold text-rose-400 mt-1.5 text-center">
+                                   class="w-full px-4 py-3 text-center text-xl tracking-widest rounded-xl bg-slate-50 border-2 border-sky-200 text-sky-700 font-mono font-bold focus:border-sky-500 focus:outline-none">
+                            <p id="admin-pin-error" class="hidden text-xs font-bold text-rose-500 mt-1.5 text-center">
                                 <i class="fa-solid fa-circle-exclamation mr-1"></i> Mã PIN không đúng. Vui lòng thử lại! (Gợi ý: 2007)
                             </p>
                         </div>
 
-                        <div class="p-3 rounded-xl bg-emerald-900/40 border border-emerald-500/30 text-[11px] text-emerald-300 text-center">
-                            💡 Khách mua hàng & khám phá đặc sản không cần mã PIN. Mã PIN mặc định: <strong class="text-yellow-300">2007</strong>
+                        <div class="p-3 rounded-xl bg-sky-50 border border-sky-200 text-[11px] text-sky-800 text-center">
+                            💡 Khách mua hàng & khám phá đặc sản không cần mã PIN. Mã PIN mặc định: <strong class="text-sky-700">2007</strong>
                         </div>
 
                         <div class="flex items-center gap-3 pt-1">
-                            <button type="button" onclick="verifyAdminPin()" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black text-xs shadow-lg transition cursor-pointer">
+                            <button type="button" onclick="verifyAdminPin()" class="flex-1 py-3 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-black text-xs shadow-md transition cursor-pointer">
                                 🔓 Mở Bảng Quản Trị
                             </button>
-                            <button type="button" onclick="closeAdminPinModal()" class="py-3 px-4 rounded-xl bg-emerald-950 hover:bg-emerald-900 text-slate-300 font-bold text-xs cursor-pointer transition">
+                            <button type="button" onclick="closeAdminPinModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs cursor-pointer transition">
                                 Đóng
                             </button>
                         </div>
@@ -354,7 +372,7 @@
         if (dropzone && !document.getElementById('ocr-image-preview')) {
             const preview = document.createElement('img');
             preview.id = 'ocr-image-preview';
-            preview.className = 'hidden max-h-36 mx-auto rounded-xl border border-emerald-400 mt-2 object-contain shadow-md';
+            preview.className = 'hidden max-h-36 mx-auto rounded-xl border border-sky-300 mt-2 object-contain shadow-sm';
             dropzone.appendChild(preview);
         }
 
@@ -389,14 +407,14 @@
         if (dropzone) {
             dropzone.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                dropzone.classList.add('border-emerald-400', 'bg-emerald-950/60');
+                dropzone.classList.add('border-sky-500', 'bg-sky-100/60');
             });
             dropzone.addEventListener('dragleave', () => {
-                dropzone.classList.remove('border-emerald-400', 'bg-emerald-950/60');
+                dropzone.classList.remove('border-sky-500', 'bg-sky-100/60');
             });
             dropzone.addEventListener('drop', (e) => {
                 e.preventDefault();
-                dropzone.classList.remove('border-emerald-400', 'bg-emerald-950/60');
+                dropzone.classList.remove('border-sky-500', 'bg-sky-100/60');
                 if (e.dataTransfer.files && e.dataTransfer.files[0]) {
                     handleOcrFileSelect({ target: { files: e.dataTransfer.files } });
                 }
@@ -464,7 +482,7 @@
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'ai-story-modal';
-            modal.className = 'fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm';
+            modal.className = 'fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm';
             document.body.appendChild(modal);
         }
 
@@ -475,61 +493,61 @@
         const star = p.stars || 4;
 
         modal.innerHTML = `
-            <div class="relative w-full max-w-2xl bg-[#053323] border-2 border-emerald-400 rounded-3xl text-white z-10 overflow-hidden flex flex-col animate-pop-in" style="max-height: 90vh;">
-                <div class="p-4 bg-emerald-950/90 border-b border-emerald-400/40 flex items-center justify-between">
+            <div class="relative w-full max-w-2xl bg-white border-2 border-sky-400 rounded-3xl text-slate-900 z-10 overflow-hidden flex flex-col animate-pop-in" style="max-height: 90vh;">
+                <div class="p-4 bg-gradient-to-r from-sky-700 to-sky-600 border-b border-sky-300 text-white flex items-center justify-between">
                     <div class="flex items-center gap-2.5">
                         <span class="w-9 h-9 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-base shadow">
                             <i class="fa-solid fa-feather-pointed"></i>
                         </span>
                         <div>
-                            <span class="text-[10px] font-bold text-yellow-300 uppercase tracking-widest">AI RAG Cultural Storytelling</span>
+                            <span class="text-[10px] font-bold text-sky-100 uppercase tracking-widest">AI RAG Cultural Storytelling</span>
                             <h3 class="text-sm sm:text-base font-black text-white line-clamp-1">${p.name}</h3>
                         </div>
                     </div>
-                    <button onclick="closeAIStoryModal()" class="w-8 h-8 rounded-full bg-emerald-900/60 hover:bg-emerald-800 text-slate-300 hover:text-white flex items-center justify-center text-sm cursor-pointer transition">
+                    <button onclick="closeAIStoryModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm cursor-pointer transition">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
 
                 <div class="p-5 overflow-y-auto space-y-4 text-xs">
-                    <div class="flex flex-col sm:flex-row items-center gap-4 bg-emerald-900/40 p-4 rounded-2xl border border-emerald-500/30">
-                        <img src="${p.img}" alt="${p.name}" class="w-24 h-24 object-contain rounded-xl bg-emerald-950 p-1 border border-emerald-400/40 shrink-0">
+                    <div class="flex flex-col sm:flex-row items-center gap-4 bg-sky-50/70 p-4 rounded-2xl border border-sky-200">
+                        <img src="${p.img}" alt="${p.name}" class="w-24 h-24 object-contain rounded-xl bg-white p-1 border border-sky-200 shrink-0">
                         <div class="space-y-1.5 text-center sm:text-left">
                             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
                                 <span class="bg-amber-400 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase shadow">
                                     ⭐ OCOP ${star} SAO
                                 </span>
-                                <span class="bg-emerald-800 text-emerald-200 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-400/40">
+                                <span class="bg-sky-100 text-sky-800 font-bold text-[10px] px-2.5 py-0.5 rounded-full border border-sky-200">
                                     📍 ${p.region}
                                 </span>
                             </div>
-                            <h4 class="text-base font-black text-yellow-300">${p.name}</h4>
-                            <p class="text-emerald-200 font-semibold">${p.desc || 'Đặc sản tinh hoa truyền thống OCOP đạt chứng nhận cấp Quốc gia.'}</p>
+                            <h4 class="text-base font-black text-sky-900">${p.name}</h4>
+                            <p class="text-slate-600 font-semibold">${p.desc || 'Đặc sản tinh hoa truyền thống OCOP đạt chứng nhận cấp Quốc gia.'}</p>
                         </div>
                     </div>
 
-                    <div class="bg-emerald-900/30 p-4 rounded-2xl border border-emerald-500/30 space-y-2">
-                        <h5 class="text-xs font-black text-yellow-300 flex items-center gap-1.5">
-                            <i class="fa-solid fa-book-open-reader text-emerald-400"></i>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-sky-100 space-y-2">
+                        <h5 class="text-xs font-black text-sky-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-book-open-reader text-sky-600"></i>
                             <span>Câu Chuyện Di Sản & Bản Sắc Văn Hóa Địa Phương:</span>
                         </h5>
-                        <p class="text-slate-200 leading-relaxed font-normal">
+                        <p class="text-slate-700 leading-relaxed font-normal">
                             Đặc sản <strong>${p.name}</strong> là niềm tự hào của vùng đất <strong>${p.region}</strong>, được chế tác từ nguồn nguyên liệu thổ nhưỡng bản địa thuần khiết theo quy trình canh tác bền vững. Không chỉ đơn thuần là một món quà ẩm thực, mỗi sản phẩm mang trong mình ký ức trăm năm của các nghệ nhân và đồng bào, kết tinh giá trị văn hóa độc bản được Nhà nước xếp hạng OCOP ${star} Sao.
                         </p>
                     </div>
 
-                    <div class="bg-[#032116] p-4 rounded-2xl border border-emerald-400/40 space-y-2">
-                        <h5 class="text-xs font-black text-emerald-300 flex items-center gap-1.5">
-                            <i class="fa-solid fa-store text-yellow-300"></i>
+                    <div class="bg-sky-50/50 p-4 rounded-2xl border border-sky-200 space-y-2">
+                        <h5 class="text-xs font-black text-sky-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-store text-sky-600"></i>
                             <span>Điểm Bán & Showroom Trưng Bày Chính Hãng:</span>
                         </h5>
-                        <div class="text-xs space-y-1 text-slate-200">
-                            <div class="font-bold text-yellow-300"><i class="fa-solid fa-building mr-1.5 text-emerald-400"></i>${storeName}</div>
-                            <div><i class="fa-solid fa-location-dot mr-1.5 text-rose-400"></i>${storeAddr}</div>
-                            <div><i class="fa-solid fa-phone mr-1.5 text-yellow-400"></i>Hotline: <strong class="text-white">${storePhone}</strong></div>
+                        <div class="text-xs space-y-1 text-slate-700">
+                            <div class="font-bold text-sky-900"><i class="fa-solid fa-building mr-1.5 text-sky-600"></i>${storeName}</div>
+                            <div><i class="fa-solid fa-location-dot mr-1.5 text-rose-500"></i>${storeAddr}</div>
+                            <div><i class="fa-solid fa-phone mr-1.5 text-sky-700"></i>Hotline: <strong class="text-slate-900">${storePhone}</strong></div>
                         </div>
                         <div class="pt-2">
-                            <a href="${mapUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-xs shadow transition">
+                            <a href="${mapUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shadow transition">
                                 <i class="fa-solid fa-location-arrow"></i>
                                 <span>Chỉ Đường Đến Showroom (Google Map)</span>
                             </a>
@@ -537,8 +555,8 @@
                     </div>
                 </div>
 
-                <div class="p-3 bg-emerald-950/80 border-t border-emerald-400/30 flex justify-end">
-                    <button onclick="closeAIStoryModal()" class="px-5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs cursor-pointer transition">
+                <div class="p-3 bg-slate-50 border-t border-sky-100 flex justify-end">
+                    <button onclick="closeAIStoryModal()" class="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs cursor-pointer transition">
                         Đóng
                     </button>
                 </div>
@@ -589,7 +607,7 @@
                 </button>
                 <button type="button" class="btn-card-ai-story" onclick="openAIStoryModal(${productId})">
                     <i class="fa-solid fa-sparkles"></i>
-                    <span>✨ AI Câu Chuyện</span>
+                    <span>✨ Câu Chuyện OCOP</span>
                 </button>
             `;
 
@@ -598,20 +616,22 @@
         });
     }
 
-    // Hook renderProducts để chạy một cách an toàn không loop
     function hookRenderProducts() {
         if (typeof window.renderProducts === 'function' && !window._renderProductsHooked) {
             const originalRender = window.renderProducts;
             window.renderProducts = function (items) {
                 const res = originalRender.apply(this, arguments);
-                setTimeout(enhanceProductCardElements, 20);
+                setTimeout(() => {
+                    enhanceProductCardElements();
+                    transformEntireWebColors();
+                }, 20);
                 return res;
             };
             window._renderProductsHooked = true;
         }
     }
 
-    // 10. ĐỔI AVATAR AI CHATBOT SANG ICON ROBOT HIỆN ĐẠI
+    // 10. ĐỔI AVATAR AI CHATBOT SANG ROBOT AI TRẮNG - XANH DƯƠNG & CẬP NHẬT CÂU CHÀO
     function upgradeChatbotAvatar() {
         const chatBtn = document.getElementById('ai-chat-toggle-btn');
         if (chatBtn) {
@@ -622,13 +642,91 @@
             if (!robotIcon) {
                 robotIcon = document.createElement('div');
                 robotIcon.className = 'ai-robot-icon w-full h-full flex items-center justify-center text-white text-xl animate-pulse';
-                robotIcon.innerHTML = '<i class="fa-solid fa-robot text-2xl text-yellow-300"></i>';
+                robotIcon.innerHTML = '<i class="fa-solid fa-robot text-2xl text-white"></i>';
                 chatBtn.appendChild(robotIcon);
             }
         }
+
+        // Đổi avatar bên trong khung chat
+        const innerAvatars = document.querySelectorAll('#ai-chat-window img[src*="chat-avatar"]');
+        innerAvatars.forEach(img => {
+            img.style.display = 'none';
+            if (!img.nextElementSibling || !img.nextElementSibling.classList.contains('chat-robot-avatar')) {
+                const icon = document.createElement('div');
+                icon.className = 'chat-robot-avatar w-7 h-7 rounded-full bg-sky-600 text-white flex items-center justify-center text-xs shadow shrink-0';
+                icon.innerHTML = '<i class="fa-solid fa-robot"></i>';
+                img.parentNode.insertBefore(icon, img.nextSibling);
+            }
+        });
+
+        // Cập nhật câu chào của Chatbot
+        const greeting = document.getElementById('chat-greeting');
+        if (greeting) {
+            greeting.textContent = 'Xin chào! Tôi là Trợ Lý AI OCOP Sales Copilot — Đồng hành cùng bạn khám phá tinh hoa 252 đặc sản OCOP 63 tỉnh thành, tra cứu mạng lưới điểm bán chính hãng và tư vấn giỏ quà tặng doanh nghiệp.';
+        }
+        const guidance = document.getElementById('chat-guidance');
+        if (guidance) {
+            guidance.textContent = 'Bạn có thể nhập tên đặc sản, tỉnh thành cần tìm hoặc chọn nhanh các đề xuất gợi ý bên dưới nhé!';
+        }
     }
 
-    // 11. BẬT LAZY LOADING & DECODING ASYNC CHO TOÀN BỘ ẢNH (CHỐNG XOAY VÒNG TAB)
+    // 11. HÀM QUÉT TOÀN BỘ DOM ĐỔI MÀU TRIỆT ĐỂ (TRANSFORM ENTIRE WEB COLORS)
+    function transformEntireWebColors() {
+        // 1. Quét 4 thẻ cam kết lớn: chữ tiêu đề thành #0C4A6E, mô tả thành #334155
+        document.querySelectorAll('#why-choose-us-section .grid > div, .why-pillar-card').forEach(card => {
+            const h = card.querySelector('h3, h4, [id*="i18n-why-pillar"]');
+            if (h) {
+                h.style.color = '#0C4A6E';
+                h.style.fontWeight = '800';
+            }
+            const p = card.querySelector('p');
+            if (p) {
+                p.style.color = '#334155';
+                p.style.fontWeight = '500';
+            }
+        });
+
+        // 2. Quét tiêu đề Sidebar: thành #0369A1
+        document.querySelectorAll('#catalog-sidebar h3, #catalog-sidebar h4').forEach(h => {
+            h.style.color = '#0369A1';
+            h.style.fontWeight = '800';
+        });
+
+        // 3. Quét hộp thông tin HTX/Showroom trong thẻ sản phẩm: thành #F0F9FF, tên HTX thành #0369A1, địa chỉ #1E293B, phone #047857
+        document.querySelectorAll('.product-card, #product-grid > div').forEach(card => {
+            card.style.background = '#FFFFFF';
+            card.style.borderColor = '#BAE6FD';
+            
+            const storeBox = card.querySelector('.store-info-box, .product-card-store-box, div[class*="bg-slate-900"], div[class*="bg-black"], div[class*="bg-emerald-950"]');
+            if (storeBox) {
+                storeBox.style.background = '#F0F9FF';
+                storeBox.style.borderColor = '#BAE6FD';
+                storeBox.style.borderRadius = '12px';
+            }
+
+            const storeName = card.querySelector('.store-name');
+            if (storeName) {
+                storeName.style.color = '#0369A1';
+                storeName.style.fontWeight = '700';
+            }
+
+            const storeAddr = card.querySelector('.store-address');
+            if (storeAddr) {
+                storeAddr.style.color = '#1E293B';
+            }
+
+            const storePhone = card.querySelector('.store-phone');
+            if (storePhone) {
+                storePhone.style.color = '#047857';
+                storePhone.style.fontWeight = '700';
+            }
+        });
+
+        // 4. Xóa vĩnh viễn thanh dock nổi dưới đáy
+        document.querySelectorAll('.bottom-judge-dock, .admin-bottom-dock').forEach(el => el.remove());
+    }
+
+    // 12. BẬT LAZY LOADING & DECODING ASYNC
     function enableImageLazyLoading() {
         document.querySelectorAll('img').forEach(img => {
             if (!img.hasAttribute('loading')) {
@@ -642,14 +740,15 @@
 
     // KHỞI CHẠY TẤT CẢ (CHỈ CHẠY 1 LẦN KHI LOAD, ZERO-LAG)
     function initAll() {
-        initJ2ConstellationCanvas();
-        initOrganicBlobs();
+        initSkyTechCanvas();
+        setupIntroHeaderIsolation();
         setupVietnamMapPreservation();
         polishHeader();
         setupPartnerRegistrationModal();
         hookRenderProducts();
         enhanceProductCardElements();
         upgradeChatbotAvatar();
+        transformEntireWebColors();
         enableImageLazyLoading();
     }
 
