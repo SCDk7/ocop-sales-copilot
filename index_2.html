@@ -2711,25 +2711,23 @@
         </div>
 
         <!-- HEADER ĐẢO NỔI GLASSMORPHISM -->
-        <div class="intro-header relative z-50 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-amber-400/30">
+        <div class="intro-header relative z-50 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-sky-300/40" style="background: transparent !important; border-radius: 0 !important; box-shadow: none !important;">
             <div class="flex items-center space-x-3">
-                <div class="intro-brand-mark relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-ocopGreen via-emerald-700 to-amber-500 border-2 border-ocopGold flex items-center justify-center text-white text-xl shadow-[0_0_25px_rgba(212,175,55,0.7)] group">
+                <div class="intro-brand-mark relative w-10 h-10 rounded-2xl bg-sky-600 flex items-center justify-center text-white text-lg shadow-md group">
                     <i class="fa-solid fa-leaf text-amber-300"></i>
                 </div>
                 <div>
                     <div class="flex items-center space-x-2">
-                        <span class="block text-xs sm:text-sm font-black text-amber-200 tracking-wider leading-none">OCOP SALES COPILOT</span>
+                        <span class="block text-xs sm:text-sm font-black text-sky-200 tracking-wider leading-none">OCOP SALES COPILOT</span>
                     </div>
-                    <span class="text-[9px] sm:text-[10px] text-amber-300 uppercase font-bold tracking-widest" id="i18n-intro-badge">Hệ điều hành số & Trợ lý quản trị tài chính đặc sản Việt Nam</span>
+                    <span class="text-[9px] sm:text-[10px] text-sky-300 uppercase font-bold tracking-widest" id="i18n-intro-badge">Hệ điều hành số & Trợ lý quản trị đặc sản Việt Nam</span>
                 </div>
             </div>
 
             <div class="flex items-center space-x-2 sm:space-x-3">
-                <button id="intro-sound-btn" onclick="toggleIntroSound()" class="intro-pill-btn px-3 py-1.5 rounded-full text-amber-200 text-xs font-bold flex items-center space-x-1.5 cursor-pointer shadow-sm">
-                    <i class="fa-solid fa-volume-xmark text-gray-400" id="intro-sound-icon"></i>
-                    <span class="text-[10px] hidden sm:inline" id="i18n-intro-sound-status">Nhạc: Tắt</span>
+                <button type="button" onclick="enterOcopMarket('all')" class="px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer bg-sky-600 hover:bg-sky-500 text-white shadow-sm border border-sky-400">
+                    <span>Khám phá đặc sản 63 tỉnh thành →</span>
                 </button>
-                <!-- Nút chọn ngôn ngữ hình chữ nhật & Dropdown cao cấp -->
                 <div class="lang-dropdown-container" id="intro-lang-dropdown-container">
                     <button type="button" id="intro-lang-dropdown-btn" onclick="toggleLanguageDropdown(event, 'intro-lang-dropdown-menu')" class="lang-dropdown-btn" aria-haspopup="true" aria-expanded="false" title="Chọn ngôn ngữ / Select Language">
                         <i class="fa-solid fa-globe text-amber-300 text-xs"></i>
@@ -2784,7 +2782,7 @@
             <div class="intro-hero-copy space-y-2">
                 <h2 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight intro-hero-title">
                     <span class="text-white" id="i18n-intro-title1">Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt</span><br>
-                    <span class="intro-gold-gradient" id="i18n-intro-title2" style="font-size: clamp(0.95rem, 1.8vw, 1.5rem); white-space: nowrap;">63 TỈNH THÀNH • ĐỊNH VỊ ĐIỂM BÁN • AI HỖ TRỢ DOANH NGHIỆP</span>
+                    <span class="intro-gold-gradient" id="i18n-intro-title2" style="font-size: clamp(0.85rem, 1.6vw, 1.35rem); display: inline-block;">63 TỈNH THÀNH • ĐỊNH VỊ ĐIỂM BÁN • AI HỖ TRỢ DOANH NGHIỆP</span>
                 </h2>
                 <p class="text-xs sm:text-sm text-amber-100/90 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc">
                     Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương tự động hóa vận hành, quản trị doanh thu, tiền lời, chiết khấu real-time thông qua trợ lý AI Copilot thông minh.
@@ -2886,44 +2884,32 @@
                 </div>
             </div>
 
-            <!-- MEGA CALL-TO-ACTION (CTA) 3 NÚT HÀNH ĐỘNG HỆ ĐIỀU HÀNH SỐ -->
+            <!-- MEGA CALL-TO-ACTION (CTA) 2 NÚT HÀNH ĐỘNG HỆ ĐIỀU HÀNH SỐ -->
             <div class="intro-actions w-full max-w-3xl space-y-3.5 pt-1">
-                <!-- 3 Nút Hành Động Phía Dưới -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 w-full">
-                    <!-- Nút 1 (Ngọc Bích Sáng - Trái): KHÁM PHÁ SHOWROOM O2O -->
-                    <button id="btn-intro-action-showroom" onclick="enterOcopMarket('all', () => openAllStoresModal())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white border border-amber-400/40 shadow-[0_0_22px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Mở danh bạ showroom O2O toàn quốc">
+                <!-- 2 Nút Hành Động Phía Dưới -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                    <!-- Nút 1: TÌM ĐIỂM BÁN & MUA ĐẶC SẢN (O2O) -->
+                    <button id="btn-intro-action-showroom" onclick="enterOcopMarket('all', () => openAllStoresModal())" class="group relative px-4 py-3 rounded-2xl font-black text-xs sm:text-xs text-white border border-sky-400/50 shadow-md hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" style="background: #0284C7 !important;" title="Mở danh bạ showroom O2O toàn quốc">
                         <i class="fa-solid fa-store text-amber-300 text-sm group-hover:scale-110 transition-transform"></i>
                         <span id="i18n-btn-intro-showroom" class="tracking-wide">🗺️ TÌM ĐIỂM BÁN & MUA ĐẶC SẢN (O2O)</span>
                     </button>
 
-                    <!-- Nút 2 (Hoàng Kim Vương Giả - Giữa / Tâm Điểm): QUẢN TRỊ DÒNG TIỀN AI -->
-                    <button id="btn-intro-action-finance" onclick="enterOcopMarket('all', () => openFinancialDashboardModal())" class="group relative px-4 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 border border-yellow-200 shadow-[0_0_28px_rgba(251,191,36,0.65)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Khởi chạy Bảng Quản Trị Tài Chính B2B2C & Giọng Nói 3 Miền">
-                        <i class="fa-solid fa-chart-line text-slate-950 text-sm group-hover:scale-110 transition-transform"></i>
-                        <span id="i18n-btn-intro-finance" class="tracking-wide">📊 AI QUẢN TRỊ & TỐI ƯU KINH DOANH HTX</span>
-                    </button>
-
-                    <!-- Nút 3 (Ngọc Bích Đậm Hoàng Gia - Phải): TRUY XUẤT NGUỒN GỐC & MAP -->
-                    <button id="btn-intro-action-trace" onclick="enterOcopMarket('all', () => scrollToProducts())" class="group relative px-3.5 py-3 rounded-2xl font-black text-xs sm:text-xs bg-gradient-to-r from-emerald-800 via-teal-800 to-emerald-900 hover:from-emerald-700 hover:to-teal-700 text-amber-200 border border-amber-400/60 shadow-[0_0_22px_rgba(16,185,129,0.35)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" title="Xem chứng nhận 4-5 sao và bản đồ chuỗi cung ứng">
-                        <i class="fa-solid fa-certificate text-amber-300 text-sm group-hover:scale-110 transition-transform"></i>
+                    <!-- Nút 2: KHÁM PHÁ 252 ĐẶC SẢN 63 TỈNH THÀNH -->
+                    <button id="btn-intro-action-trace" onclick="enterOcopMarket('all', () => scrollToProducts())" class="group relative px-4 py-3 rounded-2xl font-black text-xs sm:text-xs text-white border border-sky-500 shadow-md hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 cursor-pointer" style="background: #0F172A !important;" title="Xem chứng nhận 4-5 sao và bản đồ chuỗi cung ứng">
+                        <i class="fa-solid fa-certificate text-sky-400 text-sm group-hover:scale-110 transition-transform"></i>
                         <span id="i18n-btn-intro-trace" class="tracking-wide">🌿 KHÁM PHÁ 252 ĐẶC SẢN 63 TỈNH THÀNH</span>
                     </button>
                 </div>
 
-                <button id="intro-enter-market" onclick="enterOcopMarket('all')" class="intro-mega-btn btn-sweep group relative w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 rounded-2xl text-xs sm:text-sm font-black border-2 border-white/80 cursor-pointer shadow-lg">
-                    <i class="fa-solid fa-wand-magic-sparkles text-ocopGreen mr-2 text-base group-hover:rotate-12 transition-transform"></i>
-                    <span id="i18n-intro-btn-enter">Khám phá toàn diện 252 đặc sản 63 tỉnh thành</span>
-                    <i class="fa-solid fa-arrow-right-long ml-2.5 text-xs group-hover:translate-x-2 transition-transform"></i>
-                </button>
-
                 <!-- Quick Navigation Pills -->
                 <div class="space-y-1.5 pt-0.5">
-                    <span class="block text-[11px] text-amber-200/70 font-semibold uppercase tracking-wider" id="i18n-intro-quick-header">Phân hệ điều phối chiến lược:</span>
+                    <span class="block text-[11px] text-sky-200/80 font-semibold uppercase tracking-wider" id="i18n-intro-quick-header">Phân hệ điều phối chiến lược:</span>
                     <div class="flex flex-wrap items-center justify-center gap-2 text-xs font-bold">
-                        <button onclick="enterOcopMarket('gift')" class="intro-pill-btn px-3 py-1.5 rounded-xl text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('gift')" class="intro-pill-btn px-3 py-1.5 rounded-xl text-sky-100 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
                             <span>🎁</span>
                             <span id="i18n-intro-quick-gift">Combo Quà Doanh Nghiệp B2B</span>
                         </button>
-                        <button onclick="enterOcopMarket('tea')" class="intro-pill-btn px-3 py-1.5 rounded-xl text-amber-200 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
+                        <button onclick="enterOcopMarket('tea')" class="intro-pill-btn px-3 py-1.5 rounded-xl text-sky-100 hover:text-white transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
                             <span>🍵</span>
                             <span id="i18n-intro-quick-tea">Dược Liệu & Trà Di Sản 5★</span>
                         </button>
@@ -2931,15 +2917,10 @@
                             <span>🤖</span>
                             <span id="i18n-intro-quick-ai">AI Copilot Phân Tích</span>
                         </button>
-                        <button onclick="enterOcopMarket('admin')" class="intro-pill-btn px-3 py-1.5 rounded-xl transition flex items-center space-x-1.5 shadow-sm hover:scale-105 cursor-pointer">
-                            <span>👥</span>
-                            <span id="i18n-intro-quick-admin">Hội Đồng Cố Vấn Số</span>
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- FOOTER INTRO BẢO CHỨNG QUỐC GIA -->
         <div class="relative z-20 pointer-events-auto max-w-5xl mx-auto w-full pt-3 border-t border-amber-400/25 flex flex-col sm:flex-row items-center justify-between text-[11px] text-amber-200/70 gap-2">
             <div class="flex items-center space-x-2">
@@ -2949,88 +2930,48 @@
             <span>Ấn phím <kbd class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-[10px]">Esc</kbd> hoặc nút Khám phá để truy cập Trung tâm Điều phối Hệ sinh thái OCOP</span>
         </div>
     </div>
-    <!-- 1. TOP ANNOUNCEMENT BAR -->
-    <div class="top-announcement-bar bg-[#0C4A6E] text-sky-100 text-[11px] font-semibold py-1.5 px-4 border-b border-sky-400/30 flex justify-between items-center max-w-7xl mx-auto w-full sm:px-8">
-        <div class="flex items-center space-x-2 text-xs font-black tracking-wide">
-            <span id="i18n-top-strategic">❖ HỆ THỐNG ĐIỀU PHỐI ĐẶC SẢN OCOP TOÀN QUỐC • HỖ TRỢ CHUYỂN ĐỔI SỐ 63 TỈNH THÀNH • HOTLINE ĐIỀU PHỐI TRUNG TÂM: 1900 888 688</span>
-        </div>
-        <div class="hidden lg:flex items-center space-x-3 text-xs">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-800/80 text-sky-200 border border-sky-400/40 text-[10px] font-black">
-                <i class="fa-solid fa-award text-amber-300"></i> DigitalFest Đồng Nai 2026
-            </span>
-            <span>|</span>
-            <button onclick="openIntroModal()" class="hover:text-amber-300 text-sky-200 font-bold transition flex items-center space-x-1 cursor-pointer" title="Xem lại màn giới thiệu">
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-[10px]"></i>
-                <span id="i18n-top-intro">Bảng Quản Trị (Dashboard)</span>
-            </button>
-            <span>|</span>
-            <a href="#contact-footer" class="hover:text-amber-300 transition" id="i18n-top-centers">Trung tâm OCOP</a>
-            <span>|</span>
-            <a href="#products-section" class="hover:text-amber-300 transition" id="i18n-top-specs">Đặc sản 63 Tỉnh Thành</a>
-        </div>
+    <!-- 1. TOP ANNOUNCEMENT BAR (HIDDEN FOR MODERN FULL-WIDTH NAVBAR) -->
+    <div class="top-announcement-bar" style="display:none!important;" aria-hidden="true">
+        <span id="i18n-top-strategic">❖ HỆ THỐNG ĐIỀU PHỐI ĐẶC SẢN OCOP TOÀN QUỐC • HỖ TRỢ CHUYỂN ĐỔI SỐ 63 TỈNH THÀNH • HOTLINE ĐIỀU PHỐI TRUNG TÂM: 1900 888 688</span>
+        <span id="i18n-top-intro">Bảng Quản Trị (Dashboard)</span>
+        <span id="i18n-top-centers">Trung tâm OCOP</span>
+        <span id="i18n-top-specs">Đặc sản 63 Tỉnh Thành</span>
     </div>
-
-    <!-- 2. HEADER: SINGLE STICKY OCOP AI HUB -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-sky-200 shadow-xs transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-1 sm:gap-4">
+    
+    <!-- 2. HEADER: SINGLE STICKY OCOP AI HUB (FULL-WIDTH MODERN SKY-TECH NAVBAR) -->
+    <header class="sticky top-0 z-40 bg-white border-b border-sky-200 transition-all duration-300 w-full" style="width: 100% !important; max-width: 100% !important; border-radius: 0 !important; background: #FFFFFF !important; border-bottom: 1px solid #BAE6FD !important; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.05) !important;">
+        <div class="w-full px-4 sm:px-6 flex items-center justify-between" style="max-width: 100% !important; width: 100% !important; height: 56px !important;">
             <!-- Logo + Brand -->
-            <a href="#" class="flex items-center space-x-1.5 sm:space-x-3 group flex-shrink-0">
-                <div class="w-8 h-8 sm:w-11 sm:h-11 bg-gradient-to-tr from-sky-600 to-cyan-500 rounded-xl sm:rounded-2xl flex items-center justify-center text-white text-base sm:text-xl shadow-md ring-2 ring-sky-300 group-hover:scale-105 transition duration-300">
+            <a href="#" class="flex items-center space-x-2 group flex-shrink-0" style="text-decoration: none;">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white text-base shadow-sm shrink-0" style="background: #0284C7;">
                     <i class="fa-solid fa-brain"></i>
                 </div>
-                <div>
-                    <div class="flex items-center gap-1.5 sm:gap-2">
-                        <h1 class="text-sm sm:text-xl font-extrabold text-slate-900 tracking-tight leading-tight">OCOP AI Hub</h1>
-                        <span class="text-[8px] sm:text-[10px] font-black px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 border border-sky-300 shrink-0">DigitalFest Đồng Nai 2026</span>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-base sm:text-lg font-extrabold tracking-tight leading-none" style="color: #0284C7 !important;">OCOP AI Hub</span>
                     </div>
-                    <p class="text-[7px] sm:text-[10px] text-slate-500 font-bold tracking-wide uppercase" id="i18n-subbrand">OCOP SALES COPILOT - Nền tảng AI Quảng bá Đặc sản OCOP & Hỗ trợ Quản trị Kinh doanh</p>
+                    <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider hidden sm:inline" id="i18n-subbrand">Nền tảng AI Quảng bá OCOP 63 Tỉnh Thành</span>
                 </div>
             </a>
 
-            <!-- Thanh Tìm Kiếm Header Desktop -->
-            <div class="hidden 2xl:flex flex-1 min-w-[150px] max-w-[210px] relative">
-                <label for="header-search-input" class="sr-only">Tìm kiếm sản phẩm OCOP</label>
-                <input type="search" id="header-search-input" oninput="scheduleProductSearch(this.value)" onkeydown="handleSearchKeydown(event)"
-                       placeholder="Tìm đặc sản, HTX..."
-                       autocomplete="off" aria-controls="product-grid"
-                       class="site-search-input w-full pl-9 pr-16 py-2 text-xs rounded-full border border-sky-200 focus:outline-none focus:border-sky-500 bg-sky-50/50 shadow-2xs transition">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                <button type="button" data-voice-search="header-search-input" aria-pressed="false" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-8 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-500 hover:text-sky-600 rounded-full cursor-pointer">
-                    <i class="fa-solid fa-microphone text-xs"></i>
+            <!-- 2 Central Navigation Items in .header-primary-nav -->
+            <nav class="header-primary-nav hidden md:inline-flex items-center" style="display: inline-flex !important; gap: 10px !important; flex-wrap: nowrap !important;" aria-label="Thanh điều hướng trung tâm">
+                <button type="button" onclick="scrollToProducts()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" style="white-space: nowrap !important; height: 38px; color: #0369A1 !important; background: #F0F9FF !important; border: 1px solid #7DD3FC !important;">
+                    <span>🌟 Đặc Sản 63 Tỉnh Thành</span>
                 </button>
-                <button id="header-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-sky-600 text-xs rounded-full">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                </button>
-            </div>
-
-            <!-- 4 Central Navigation Items in .header-primary-nav -->
-            <nav class="header-primary-nav" style="display: inline-flex !important; gap: 18px !important;" aria-label="Thanh điều hướng trung tâm">
-                <button type="button" onclick="scrollToProducts()" class="header-nav-btn nav-btn-products hover:text-sky-600 transition flex items-center gap-1.5 text-xs font-bold text-slate-700 py-1.5 px-1 cursor-pointer" title="Chợ Đặc Sản OCOP 63 Tỉnh Thành">
-                    <span class="text-sm">🛒</span>
-                    <span id="i18n-nav-products">Chợ Đặc Sản OCOP</span>
-                </button>
-                <button type="button" onclick="openAllStoresModal()" class="header-nav-btn nav-btn-stores hover:text-sky-600 transition flex items-center gap-1.5 text-xs font-bold text-slate-700 py-1.5 px-1 cursor-pointer" title="Bản Đồ Số & Điểm Bán O2O">
-                    <span class="text-sm">🗺️</span>
-                    <span id="i18n-nav-stores">Bản Đồ Số O2O</span>
-                </button>
-                <button type="button" onclick="openFinancialDashboardModal()" class="header-nav-btn nav-btn-finance hover:text-sky-600 transition flex items-center gap-1.5 text-xs font-bold text-slate-700 py-1.5 px-1 cursor-pointer" title="Cổng Quản Trị Kinh Doanh & Dòng Tiền AI">
-                    <span class="text-sm">📊</span>
-                    <span id="i18n-nav-finance">AI Quản Trị Kinh Doanh (Dashboard)</span>
-                </button>
-                <button type="button" onclick="scrollToAiStudio()" class="header-nav-btn nav-btn-studio hover:text-sky-600 transition flex items-center gap-1.5 text-xs font-bold text-slate-700 py-1.5 px-1 cursor-pointer" title="Trợ Lý AI Tạo Nội Dung & Tiếp Thị Số">
-                    <span class="text-sm">🤖</span>
-                    <span id="i18n-nav-studio">Trợ Lý AI Tạo Nội Dung</span>
+                <button type="button" onclick="openAllStoresModal()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" style="white-space: nowrap !important; height: 38px; color: #0369A1 !important; background: #F0F9FF !important; border: 1px solid #7DD3FC !important;">
+                    <span>🗺️ Điểm Bán OCOP</span>
                 </button>
             </nav>
 
             <!-- Quick Action Cluster: Language Switcher + CTAs -->
-            <div class="header-right-actions flex items-center space-x-1.5 sm:space-x-2.5 flex-shrink-0">
-                <!-- Rectangular Language Dropdown (VI | EN | ZH | KO | JA) -->
+            <div class="header-right-actions flex items-center space-x-2 flex-shrink-0" style="gap: 8px !important;">
+                <!-- Language Dropdown -->
                 <div class="lang-dropdown-container flex-shrink-0" id="header-lang-dropdown-container">
-                    <button type="button" id="header-lang-dropdown-btn" onclick="toggleLanguageDropdown(event, 'header-lang-dropdown-menu')" class="lang-dropdown-btn px-2.5 py-1.5 rounded-xl border border-sky-200 bg-sky-50/70 text-slate-800 text-xs font-bold flex items-center gap-1.5 hover:border-sky-400 transition" aria-haspopup="true" aria-expanded="false" title="Chọn ngôn ngữ / Select Language">
+                    <button type="button" id="header-lang-dropdown-btn" onclick="toggleLanguageDropdown(event, 'header-lang-dropdown-menu')" class="lang-dropdown-btn px-2.5 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-slate-800 text-xs font-bold flex items-center gap-1 hover:border-sky-400 transition" aria-haspopup="true" aria-expanded="false" title="Chọn ngôn ngữ / Select Language" style="height: 38px;">
                         <i class="fa-solid fa-globe text-sky-600 text-xs"></i>
                         <span class="current-lang-code font-black text-sky-700">VI</span>
-                        <i class="fa-solid fa-chevron-down text-[9px] text-gray-500"></i>
+                        <i class="fa-solid fa-chevron-down text-[8px] text-gray-500"></i>
                     </button>
                     <div id="header-lang-dropdown-menu" class="lang-dropdown-menu hidden" role="menu">
                         <button type="button" onclick="changeLanguage('vi')" class="lang-dropdown-item active" data-lang="vi" role="menuitem">
@@ -3055,151 +2996,127 @@
                         </button>
                     </div>
                 </div>
-                <div id="header-language-switcher" class="hidden" aria-hidden="true"></div>
 
-                <!-- Action Buttons: Đăng Ký HTX (AI OCR) & Pitch Deck (BGK) -->
-                <div class="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0">
-                    <button type="button" onclick="openPartnerRegistrationModal()" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer shrink-0 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-sm border border-sky-300 hover:scale-105" title="Đăng ký số hóa Hợp tác xã với AI OCR">
-                        <i class="fa-solid fa-bolt text-amber-300"></i>
-                        <span class="hidden sm:inline">⚡ Đăng Ký HTX (AI OCR)</span>
-                        <span class="sm:hidden">HTX OCR</span>
-                    </button>
-                    <button type="button" onclick="openChallengeProposalModal()" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer shrink-0 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 shadow-sm border border-amber-300 hover:scale-105" title="Hồ Sơ Đề Án Challenge 2026">
-                        <i class="fa-solid fa-trophy text-slate-950"></i>
-                        <span class="hidden sm:inline">🏆 Pitch Deck (BGK)</span>
-                        <span class="sm:hidden">Pitch Deck</span>
-                    </button>
-
-                    <!-- Hidden compatibility markers for system tests -->
-                    <button onclick="toggleAuthModal()" id="user-btn" class="hidden" style="display:none!important" aria-hidden="true" title="Tài khoản đối tác HTX">
-                        <span id="user-btn-label" class="hidden">Đăng nhập</span>
-                    </button>
-                    <span id="i18n-header-onboard-btn" class="hidden">Đăng Ký HTX</span>
-                    <span id="i18n-nav-dashboard" class="hidden">⚡ Đăng Ký Điểm Bán (AI OCR)</span>
-                    <span id="i18n-nav-challenge" class="hidden">🏆 Đề Án AI Business 2026</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Thanh Tìm Kiếm Mobile Riêng Biệt -->
-        <div class="block md:hidden px-3 pb-2.5 pt-0.5 border-t border-sky-100">
-            <div class="relative w-full">
-                <label for="mobile-search-input" class="sr-only">Tìm kiếm sản phẩm OCOP</label>
-                <input type="search" id="mobile-search-input" oninput="scheduleProductSearch(this.value)" onkeydown="handleSearchKeydown(event)"
-                       placeholder="Nhập tên đặc sản, tỉnh thành hoặc mã HTX..."
-                       autocomplete="off" aria-controls="product-grid"
-                       class="site-search-input w-full pl-9 pr-20 py-2.5 text-xs rounded-full border border-sky-200 focus:outline-none bg-sky-50/60 shadow-2xs">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                <button type="button" data-voice-search="mobile-search-input" aria-pressed="false" aria-label="Tìm kiếm bằng giọng nói" title="Tìm kiếm bằng giọng nói" class="absolute right-10 top-1/2 -translate-y-1/2 w-7 h-7 text-gray-500 hover:text-sky-600 rounded-full cursor-pointer">
-                    <i class="fa-solid fa-microphone"></i>
+                <!-- Action Button 1: ⚡ Đăng Ký Điểm Bán -->
+                <button type="button" id="btn-header-ocr" onclick="openPartnerRegistrationModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer shrink-0 bg-sky-600 hover:bg-sky-700 text-white shadow-xs border border-sky-500" style="white-space: nowrap !important; height: 38px; background: #0284C7 !important; color: #FFFFFF !important;" title="Đăng ký điểm bán đặc sản OCOP">
+                    <span>⚡ Đăng Ký Điểm Bán</span>
                 </button>
-                <button id="mobile-search-clear" type="button" aria-label="Xóa nội dung tìm kiếm" title="Xóa tìm kiếm" onclick="clearSearchInput()" class="search-clear-button hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs rounded-full">
-                    <i class="fa-solid fa-circle-xmark"></i>
+
+                <!-- Action Button 2: 🔐 Quản Trị Doanh Thu -->
+                <button type="button" id="btn-header-admin-pin" onclick="promptAdminPinModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer shrink-0 bg-slate-900 hover:bg-slate-800 text-white shadow-xs border border-slate-700" style="white-space: nowrap !important; height: 38px; background: #0F172A !important; color: #FFFFFF !important;" title="Cổng Quản Trị Doanh Thu & Tiền Lời Quảng Bá">
+                    <span>🔐 Quản Trị Doanh Thu</span>
                 </button>
+
+                <!-- Hidden compatibility markers for system tests -->
+                <button onclick="toggleAuthModal()" id="user-btn" class="hidden" style="display:none!important" aria-hidden="true">
+                    <span id="user-btn-label" class="hidden">Đăng nhập</span>
+                </button>
+                <span id="i18n-header-onboard-btn" class="hidden" style="display:none!important">Đăng Ký HTX</span>
+                <span id="i18n-nav-dashboard" class="hidden" style="display:none!important">⚡ Đăng Ký Điểm Bán (AI OCR)</span>
+                <span id="i18n-nav-challenge" class="hidden" style="display:none!important">🏆 Đề Án AI Business 2026</span>
+                <span id="i18n-nav-products" class="hidden" style="display:none!important">Chợ Đặc Sản OCOP</span>
+                <span id="i18n-nav-stores" class="hidden" style="display:none!important">Bản Đồ Số O2O</span>
+                <span id="i18n-nav-finance" class="hidden" style="display:none!important">AI Quản Trị Kinh Doanh (Dashboard)</span>
+                <span id="i18n-nav-studio" class="hidden" style="display:none!important">Trợ Lý AI Tạo Nội Dung</span>
+                <div id="header-language-switcher" class="hidden" style="display:none!important" aria-hidden="true"></div>
             </div>
         </div>
     </header>
 
     <main class="flex-1" style="display: flex !important; flex-direction: column !important; gap: 48px !important; min-height: auto !important; height: auto !important; position: relative !important; z-index: 20 !important;">
-        <!-- 3. HERO BANNER SECTION -->
-        <section id="shop-hero" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative">
+        <!-- 3. HERO BANNER SECTION (CLEAN SKY-TECH UNBOXED HERO) -->
+        <section id="shop-hero" class="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 relative" style="max-width: 1400px !important; width: 94% !important; background: transparent !important; border: none !important; box-shadow: none !important;">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-400/25 via-emerald-400/20 to-amber-400/25 border border-amber-400/50 px-4 py-1.5 rounded-full text-xs font-black text-amber-300 w-fit mb-1 shadow-md">
-                        <i class="fa-solid fa-award text-amber-400"></i>
-                        <span id="i18n-hero-badge">🌟 AI Digital Business Challenge 2026 • Giải Pháp AI Cho Doanh Nghiệp & Hợp Tác Xã OCOP</span>
-                    </div>
-                    <h2 class="text-2xl sm:text-4xl lg:text-[2.65rem] font-black text-white tracking-tight leading-[1.15]" data-title="Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt">
-                        <span id="i18n-hero-title1" data-legacy="Bản Đồ Số OCOP," class="whitespace-nowrap">Tinh Hoa Đặc Sản OCOP Việt</span> <br>
-                        <span id="i18n-hero-title2" data-legacy="Khơi Nguồn Di Sản Việt" style="background: linear-gradient(90deg, #fde047 0%, #fbbf24 45%, #34d399 100%) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important;">Chuyển Đổi Số & Bứt Phá Doanh Thu Cùng AI</span>
+                <div class="lg:col-span-7 space-y-5">
+                    <h2 class="text-2xl sm:text-4xl lg:text-[2.65rem] font-black tracking-tight leading-[1.15]" data-title="Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt" style="color: #0F172A !important;">
+                        <span id="i18n-hero-title1" data-legacy="Bản Đồ Số OCOP," class="whitespace-nowrap" style="color: #0F172A !important;">Tinh Hoa Đặc Sản OCOP Việt</span> <br>
+                        <span id="i18n-hero-title2" data-legacy="Khơi Nguồn Di Sản Việt" style="color: #0284C7 !important;">Chuyển Đổi Số & Bứt Phá Doanh Thu Cùng AI</span>
                     </h2>
-                    <p class="text-emerald-100/90 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc">
-                        Nền tảng AI kết nối 2 chiều: Giúp du khách & doanh nghiệp tìm mua 252 đặc sản OCOP 4-5 Sao chính hãng tại 63 tỉnh thành, đồng thời trang bị bộ công cụ AI giúp các Hợp tác xã tự động hóa tiếp thị, quản lý chi phí và tối ưu lợi nhuận.
+                    <p class="text-slate-600 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc" style="color: #334155 !important;">
+                        Nền tảng AI kết nối 2 chiều: Giúp du khách & doanh nghiệp tìm mua 252 đặc sản OCOP 4-5 Sao chính hãng tại 63 tỉnh thành, và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.
                     </p>
 
-                    <!-- 4 FEATURE CARDS (ĐIỀU PHỐI ĐẶC SẢN OCOP O2O) -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-xl pt-1">
-                        <div class="p-2.5 rounded-xl border border-amber-400/30 text-center shadow-xs hover:border-amber-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
-                            <i class="fa-solid fa-map-location-dot text-base mb-1 block" style="color: #fbbf24 !important;"></i>
-                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat1-title" data-legacy="Bản Đồ Số 63 Tỉnh Thành">Bản Đồ Điểm Bán 63 Tỉnh</span>
-                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #fde68a !important;" id="i18n-hero-feat1-desc">Tra cứu địa chỉ Showroom & dẫn đường tận nơi qua Google Maps</span>
+                    <!-- 4 FEATURE CARDS (CLEAN WHITE CARDS) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl pt-1">
+                        <div class="p-3 rounded-2xl bg-white text-center shadow-xs hover:border-sky-400 transition" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; border-radius: 16px !important; box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08) !important;">
+                            <i class="fa-solid fa-map-location-dot text-base mb-1 block" style="color: #0284C7 !important;"></i>
+                            <span class="block text-xs font-black" style="color: #0284C7 !important;" id="i18n-hero-feat1-title" data-legacy="Bản Đồ Số 63 Tỉnh Thành">Bản Đồ Số 63 Tỉnh Thành</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #334155 !important;" id="i18n-hero-feat1-desc">Tra cứu địa chỉ Showroom & dẫn đường tận nơi qua Google Maps</span>
                         </div>
-                        <div class="p-2.5 rounded-xl border border-emerald-400/30 text-center shadow-xs hover:border-emerald-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
-                            <i class="fa-solid fa-book-open text-base mb-1 block" style="color: #34d399 !important;"></i>
-                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat2-title" data-legacy="Kho Tri Thức Di Sản Bản Địa">AI Kể Chuyện Thương Hiệu</span>
-                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #a7f3d0 !important;" id="i18n-hero-feat2-desc">Tự động biên tập câu chuyện văn hóa vùng miền đa ngôn ngữ</span>
+                        <div class="p-3 rounded-2xl bg-white text-center shadow-xs hover:border-sky-400 transition" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; border-radius: 16px !important; box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08) !important;">
+                            <i class="fa-solid fa-book-open text-base mb-1 block" style="color: #0284C7 !important;"></i>
+                            <span class="block text-xs font-black" style="color: #0284C7 !important;" id="i18n-hero-feat2-title" data-legacy="Kho Tri Thức Di Sản Bản Địa">Kho Tri Thức Di Sản Bản Địa</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #334155 !important;" id="i18n-hero-feat2-desc">Tự động biên tập câu chuyện văn hóa vùng miền đa ngôn ngữ</span>
                         </div>
-                        <div class="p-2.5 rounded-xl border border-rose-400/30 text-center shadow-xs hover:border-rose-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
-                            <i class="fa-solid fa-headset text-base mb-1 block" style="color: #fb7185 !important;"></i>
-                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat3-title" data-legacy="Hệ Điều Hành Copilot 24/7">Trợ Lý Tư Vấn 24/7</span>
-                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #fecdd3 !important;" id="i18n-hero-feat3-desc">Chatbot AI gợi ý đặc sản & thiết kế gói quà doanh nghiệp B2B</span>
+                        <div class="p-3 rounded-2xl bg-white text-center shadow-xs hover:border-sky-400 transition" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; border-radius: 16px !important; box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08) !important;">
+                            <i class="fa-solid fa-headset text-base mb-1 block" style="color: #0284C7 !important;"></i>
+                            <span class="block text-xs font-black" style="color: #0284C7 !important;" id="i18n-hero-feat3-title" data-legacy="Hệ Điều Hành Copilot 24/7">Hệ Điều Hành Copilot 24/7</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #334155 !important;" id="i18n-hero-feat3-desc">Chatbot AI gợi ý đặc sản & thiết kế gói quà doanh nghiệp B2B</span>
                         </div>
-                        <div class="p-2.5 rounded-xl border border-cyan-400/30 text-center shadow-xs hover:border-cyan-400 transition" style="background: rgba(15, 23, 42, 0.95) !important;">
-                            <i class="fa-solid fa-calculator text-base mb-1 block" style="color: #38bdf8 !important;"></i>
-                            <span class="block text-xs font-black" style="color: #fef08a !important;" id="i18n-hero-feat4-title" data-legacy="AI Financial Engine">AI Quản Trị Lợi Nhuận</span>
-                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #bae6fd !important;" id="i18n-hero-feat4-desc">Hỗ trợ HTX tính giá vốn, chiết khấu và tối ưu dòng tiền</span>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-4 gap-2 sm:gap-3 max-w-xl pt-2 border-t border-amber-200/80">
-                        <div class="p-2 rounded-xl bg-emerald-950/80 border border-amber-400/40 text-center shadow-md">
-                            <span class="block text-base sm:text-xl font-black text-amber-300">252+</span>
-                            <span class="text-[9px] sm:text-[10px] text-amber-100 font-bold leading-tight" id="i18n-hero-stat1" data-legacy="Sai Số Tài Chính">Đặc Sản OCOP 4-5★</span>
-                        </div>
-                        <div class="p-2 rounded-xl bg-emerald-950/80 border border-emerald-400/40 text-center shadow-md">
-                            <span class="block text-base sm:text-xl font-black text-emerald-300">63</span>
-                            <span class="text-[9px] sm:text-[10px] text-emerald-100 font-bold leading-tight" id="i18n-hero-stat2" data-legacy="Tăng Tiền Lời">Tỉnh Thành Kết Nối</span>
-                        </div>
-                        <div class="p-2 rounded-xl bg-emerald-950/80 border border-amber-400/40 text-center shadow-md">
-                            <span class="block text-base sm:text-xl font-black text-amber-300">500+</span>
-                            <span class="text-[9px] sm:text-[10px] text-amber-100 font-bold leading-tight" id="i18n-hero-stat3" data-legacy="Độ Chuẩn RAG AI">Điểm Bán & HTX</span>
-                        </div>
-                        <div class="p-2 rounded-xl bg-emerald-950/80 border border-yellow-400/40 text-center shadow-md">
-                            <span class="block text-base sm:text-xl font-black text-yellow-300">24/7</span>
-                            <span class="text-[9px] sm:text-[10px] text-yellow-100 font-bold leading-tight" id="i18n-hero-stat4" data-legacy="Tốc Độ Phản Hồi">Trợ Lý AI Kinh Doanh</span>
+                        <div class="p-3 rounded-2xl bg-white text-center shadow-xs hover:border-sky-400 transition" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; border-radius: 16px !important; box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08) !important;">
+                            <i class="fa-solid fa-certificate text-base mb-1 block" style="color: #0284C7 !important;"></i>
+                            <span class="block text-xs font-black" style="color: #0284C7 !important;">Chứng Nhận OCOP 3-5 Sao</span>
+                            <span id="i18n-hero-feat4-title" style="display:none!important">AI Financial Engine</span>
+                            <span class="block text-[10px] font-medium leading-tight mt-0.5" style="color: #334155 !important;" id="i18n-hero-feat4-desc">Bảo chứng pháp lý & nguồn gốc xuất xứ chính hãng 63 tỉnh thành</span>
                         </div>
                     </div>
-                    <div class="flex flex-wrap items-center justify-start gap-2.5 sm:gap-3 pt-3">
-                        <button type="button" onclick="openFinancialDashboardModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black px-4 sm:px-5 py-3 rounded-2xl shadow-lg hover:from-emerald-500 hover:to-teal-500 hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-emerald-400/60 hover:-translate-y-0.5 cursor-pointer">
-                            <i class="fa-solid fa-chart-line text-amber-300 text-base"></i>
-                            <span id="i18n-hero-btn-dashboard">AI Quản Trị Tài Chính</span>
-                        </button>
-                        <button type="button" onclick="openAllStoresModal()" class="bg-ocopGold text-amber-950 font-black px-4 sm:px-5 py-3 rounded-2xl shadow-lg hover:bg-amber-400 hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-amber-500 hover:-translate-y-0.5 cursor-pointer">
+
+                    <!-- 4 STATS CARDS -->
+                    <div class="grid grid-cols-4 gap-2 sm:gap-3 max-w-xl pt-2">
+                        <div class="p-2.5 rounded-2xl bg-white border border-sky-200 text-center shadow-sm" style="background: #FFFFFF !important; border: 1px solid #BAE6FD !important;">
+                            <span class="block text-base sm:text-xl font-black" style="color: #0284C7 !important;">252+</span>
+                            <span class="text-[9px] sm:text-[10px] font-bold leading-tight" style="color: #334155 !important;" id="i18n-hero-stat1">Đặc Sản OCOP 4-5★</span>
+                        </div>
+                        <div class="p-2.5 rounded-2xl bg-white border border-sky-200 text-center shadow-sm" style="background: #FFFFFF !important; border: 1px solid #BAE6FD !important;">
+                            <span class="block text-base sm:text-xl font-black" style="color: #0284C7 !important;">63</span>
+                            <span class="text-[9px] sm:text-[10px] font-bold leading-tight" style="color: #334155 !important;" id="i18n-hero-stat2">Tỉnh Thành Kết Nối</span>
+                        </div>
+                        <div class="p-2.5 rounded-2xl bg-white border border-sky-200 text-center shadow-sm" style="background: #FFFFFF !important; border: 1px solid #BAE6FD !important;">
+                            <span class="block text-base sm:text-xl font-black" style="color: #0284C7 !important;">500+</span>
+                            <span class="text-[9px] sm:text-[10px] font-bold leading-tight" style="color: #334155 !important;" id="i18n-hero-stat3">Điểm Bán & HTX</span>
+                        </div>
+                        <div class="p-2.5 rounded-2xl bg-white border border-sky-200 text-center shadow-sm" style="background: #FFFFFF !important; border: 1px solid #BAE6FD !important;">
+                            <span class="block text-base sm:text-xl font-black" style="color: #0284C7 !important;">24/7</span>
+                            <span class="text-[9px] sm:text-[10px] font-bold leading-tight" style="color: #334155 !important;" id="i18n-hero-stat4">Trợ Lý AI Kinh Doanh</span>
+                        </div>
+                    </div>
+
+                    <!-- 2 CLEAN ACTION BUTTONS -->
+                    <div class="flex flex-wrap items-center justify-start gap-3 pt-2">
+                        <button type="button" onclick="openAllStoresModal()" class="font-black px-5 py-3 rounded-2xl shadow-sm transition text-xs sm:text-sm flex items-center space-x-2 cursor-pointer hover:scale-105" style="background: #0284C7 !important; color: #FFFFFF !important; border: 1px solid #0369A1 !important;">
                             <i class="fa-solid fa-store text-base"></i>
-                            <span id="i18n-hero-btn-stores">Mạng Lưới Điểm Bán OCOP</span>
+                            <span id="i18n-hero-btn-stores">🗺️ Mạng Lưới Điểm Bán OCOP</span>
                         </button>
-                        <button type="button" onclick="openChallengeProposalModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black px-4 sm:px-5 py-3 rounded-2xl shadow-lg hover:from-amber-400 hover:to-yellow-400 hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-yellow-300 hover:-translate-y-0.5 cursor-pointer">
-                            <i class="fa-solid fa-trophy text-amber-900 text-base"></i>
-                            <span id="i18n-hero-btn-proposal">Hồ Sơ Đề Án Challenge 2026</span>
-                        </button>
-                        <button type="button" onclick="toggleAIChat()" class="bg-slate-900 text-amber-300 font-black px-4 sm:px-5 py-3 rounded-2xl shadow-lg hover:bg-slate-800 hover:text-white hover:shadow-xl transition-all duration-300 text-xs sm:text-sm flex items-center space-x-2 border border-amber-400/40 hover:-translate-y-0.5 cursor-pointer">
-                            <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-base"></i>
-                            <span id="i18n-hero-btn-copilot">Trợ Lý Tư Vấn Combo OCOP</span>
+                        <button type="button" onclick="toggleAIChat()" class="font-black px-5 py-3 rounded-2xl shadow-sm transition text-xs sm:text-sm flex items-center space-x-2 cursor-pointer hover:scale-105" style="background: #0F172A !important; color: #FFFFFF !important; border: 1px solid #1E293B !important;">
+                            <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-base"></i>
+                            <span id="i18n-hero-btn-copilot">🎁 Trợ Lý Tư Vấn Combo OCOP</span>
                         </button>
                     </div>
                 </div>
+
                 <div class="lg:col-span-5">
-                    <div class="glass-panel border-2 border-amber-200 p-4 rounded-3xl shadow-xl relative overflow-hidden group hover:border-ocopGold/60 transition-all duration-500">
+                    <div class="border border-sky-200 p-4 rounded-3xl shadow-lg relative overflow-hidden bg-white" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.08) !important;">
                         <div class="h-72 rounded-2xl overflow-hidden relative shadow-md">
                             <img id="hero-product-img" src="images/catalog/web-latest-171.jpg" alt="Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" loading="lazy" decoding="async">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5 text-white">
-                                <span id="i18n-hero-badge-tag" class="bg-ocopGold text-ocopGreen font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-1.5 shadow">
+                                <span id="i18n-hero-badge-tag" class="bg-sky-600 text-white font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-1.5 shadow">
                                     ★ TINH HOA NÔNG SẢN VIỆT
                                 </span>
-                                <h3 class="text-xl font-bold tracking-wide text-amber-100">NATIONAL OCOP PLATFORM</h3>
-                                <p class="text-xs text-amber-200/90 mt-0.5 font-medium" id="i18n-hero-banner-sub">Kết Nối Trực Tiếp Hợp Tác Xã Bản Địa • Bảo Chứng Chất Lượng OCOP Quốc Gia</p>
+                                <h3 class="text-xl font-bold tracking-wide text-white">NATIONAL OCOP PLATFORM</h3>
+                                <p class="text-xs text-sky-100 mt-0.5 font-medium" id="i18n-hero-banner-sub">Kết Nối Trực Tiếp Hợp Tác Xã Bản Địa • Bảo Chứng Chất Lượng OCOP Quốc Gia</p>
                             </div>
                         </div>
-                        <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between gap-3" style="background: rgba(10, 26, 20, 0.92) !important; border: 1px solid rgba(212, 175, 55, 0.45) !important;">
+                        <div class="mt-3 p-3.5 rounded-2xl flex items-center justify-between gap-3" style="background: #F0F9FF !important; border: 1px solid #7DD3FC !important;">
                             <div class="flex items-center space-x-3 flex-1 min-w-0">
-                                <div class="flex-shrink-0 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow" style="width: 40px; height: 40px; min-width: 40px;">
+                                <div class="flex-shrink-0 bg-sky-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow" style="width: 40px; height: 40px; min-width: 40px;">
                                     <i class="fa-solid fa-medal"></i>
                                 </div>
                                 <div class="min-w-0 flex-1">
-                                    <h4 class="font-bold text-xs truncate" style="color: #fef08a !important;" id="i18n-hero-prodname">Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)</h4>
-                                    <p id="hero-product-stars" class="text-[11px] font-medium whitespace-nowrap" style="color: #fbbf24 !important;">Chứng nhận OCOP 4 Sao • Long Khánh, Đồng Nai</p>
+                                    <h4 class="font-bold text-xs truncate" style="color: #0F172A !important; font-weight: 700 !important;" id="i18n-hero-prodname">Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)</h4>
+                                    <p id="hero-product-stars" class="text-[11px] font-medium whitespace-nowrap" style="color: #0369A1 !important;">Chứng nhận OCOP 4 Sao • Long Khánh, Đồng Nai</p>
                                 </div>
                             </div>
-                            <button type="button" onclick="openAllStoresModal()" id="hero-product-price" class="flex-shrink-0 font-extrabold text-[11px] whitespace-nowrap text-right leading-tight px-3 py-1.5 rounded-lg bg-emerald-950/90 border border-emerald-400/50 hover:bg-emerald-900 hover:scale-105 transition cursor-pointer" style="color: #34d399 !important;" data-legacy="[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]" title="Xem danh sách điểm bán chính hãng">📍 Điểm Bán Chính Hãng</button>
+                            <button type="button" onclick="openAllStoresModal()" id="hero-product-price" class="flex-shrink-0 font-extrabold text-[11px] whitespace-nowrap text-right leading-tight px-3 py-1.5 rounded-lg transition cursor-pointer" style="background: #0284C7 !important; color: #FFFFFF !important; border: 1px solid #0369A1 !important;" data-legacy="[Sản lượng điều phối hệ thống: 1.200 đơn vị • Trạng thái đối soát CHM: Đã phân bổ tự động]" title="Xem danh sách điểm bán chính hãng">📍 Điểm Bán Chính Hãng</button>
                         </div>
                     </div>
                 </div>
@@ -3341,13 +3258,13 @@
                     <i class="fa-solid fa-award text-amber-600"></i>
                     <span>CHUỖI CUNG ỨNG SỐ OCOP 4.0</span>
                 </div>
-                <h2 class="text-2xl sm:text-3xl font-black text-amber-100 tracking-tight flex items-center justify-center gap-3" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 0 18px rgba(251, 191, 36, 0.18);">
-                    <span class="hidden sm:inline-block h-0.5 w-12 bg-gradient-to-r from-transparent to-amber-500 rounded-full"></span>
-                    <span>CAM KẾT VẬN HÀNH CHUỖI CUNG ỨNG SỐ TOÀN DIỆN</span>
-                    <span class="hidden sm:inline-block h-0.5 w-12 bg-gradient-to-l from-transparent to-amber-500 rounded-full"></span>
+                <h2 class="text-2xl sm:text-3xl font-black tracking-tight flex items-center justify-center gap-3" style="color: #0C4A6E !important; text-shadow: none !important;">
+                    <span class="hidden sm:inline-block h-0.5 w-12 bg-sky-500 rounded-full"></span>
+                    <span style="color: #0C4A6E !important;">CAM KẾT VẬN HÀNH CHUỖI CUNG ỨNG SỐ TOÀN DIỆN</span>
+                    <span class="hidden sm:inline-block h-0.5 w-12 bg-sky-500 rounded-full"></span>
                 </h2>
-                <div class="w-20 h-1 bg-gradient-to-r from-ocopGreen via-amber-400 to-ocopGreen mx-auto rounded-full mt-2 mb-3"></div>
-                <p class="text-xs sm:text-sm text-slate-200 font-semibold max-w-xl mx-auto" style="text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);">
+                <div class="w-20 h-1 bg-sky-500 mx-auto rounded-full mt-2 mb-3"></div>
+                <p class="text-xs sm:text-sm font-semibold max-w-xl mx-auto" style="color: #334155 !important; text-shadow: none !important;">
                     Nền tảng chuẩn hóa dữ liệu pháp lý, tối ưu logistics vựa vùng và giải phóng năng lực cạnh tranh cho hợp tác xã nông sản 63 tỉnh thành.
                 </p>
             </div>
@@ -13082,7 +12999,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: 'AIアシスタントと切り拓くデジタルビジネス革新'
             },
             'i18n-hero-desc': {
-                vi: 'Nền tảng AI toàn diện giúp Hợp tác xã & Doanh nghiệp địa phương quảng bá 252 đặc sản OCOP 4-5 Sao, kết nối mạng lưới Showroom O2O 63 tỉnh thành và tự động hóa quản trị doanh thu, giá vốn, chiết khấu B2B2C theo thời gian thực.',
+                vi: 'Nền tảng AI toàn diện giúp Hợp tác xã & Doanh nghiệp địa phương quảng bá 252 đặc sản OCOP 4-5 Sao, kết nối mạng lưới Showroom O2O 63 tỉnh thành và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.',
                 en: 'Comprehensive AI platform empowering local cooperatives & enterprises to promote 252 4-5 Star OCOP specialties, connect 63-province O2O showrooms, and automate real-time B2B2C revenue, COGS, and commission governance.',
                 zh: '全方位 AI 平台赋能地方合作社与企业推广 252 项 4-5 星级 OCOP 特产，打通 63 省 O2O 展厅网络，并实时自动化管理 B2B2C 营收、成本与佣金。',
                 ko: '252개 4~5성급 OCOP 특산품 홍보, 63개 성·시 O2O 쇼룸 연계, 실시간 B2B2C 매출·원가·수수료 거버넌스 자동화를 지원하는 포괄적 AI 플랫폼.',
@@ -15135,36 +15052,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
     });
 </script>
 <script src="shop-prices.js?v=20261010"></script>
-    <!-- ============================================================== -->
-    <!-- FLOATING JUDGE BAR (CHẾ ĐỘ BAN GIÁM KHẢO DIGITALFEST ĐỒNG NAI 2026) -->
-    <div id="judge-quick-access-bar" class="select-none" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; align-items: center; filter: drop-shadow(0 10px 25px rgba(2, 132, 199, 0.2));">
-        <div class="flex items-center gap-1.5 p-1.5 rounded-full border border-sky-300 bg-white/95 backdrop-blur-xl shadow-lg">
-            <span class="px-3 py-1.5 rounded-full text-[11px] font-black flex items-center gap-1.5 bg-gradient-to-r from-sky-600 to-blue-600 text-white shadow-2xs cursor-default">
-                <i class="fa-solid fa-gavel text-xs"></i>
-                <span>BGK 2026</span>
-            </span>
-            <button type="button" onclick="openChallengeProposalModal()" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold text-slate-800 hover:text-sky-600 hover:bg-sky-50 transition flex items-center gap-1 cursor-pointer" title="Xem Toàn Văn Đề Án B2B2C">
-                <span>🎯</span>
-                <span class="hidden sm:inline">Tóm Tắt Đề Án</span>
-            </button>
-            <button type="button" onclick="filterByProvince('Đồng Nai')" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold text-slate-800 hover:text-sky-600 hover:bg-sky-50 transition flex items-center gap-1 cursor-pointer" title="Trải nghiệm O2O Tỉnh Điểm Đồng Nai">
-                <span>📍</span>
-                <span class="hidden sm:inline">Điểm Sáng OCOP Đồng Nai</span>
-            </button>
-            <button type="button" onclick="openFinancialDashboardModal()" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold text-slate-800 hover:text-sky-600 hover:bg-sky-50 transition flex items-center gap-1 cursor-pointer" title="Mở Bảng Quản Trị Tài Chính AI">
-                <span>📈</span>
-                <span class="hidden sm:inline">Test AI Tính Dòng Tiền</span>
-            </button>
-            <button type="button" onclick="scrollToAiStudio()" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold text-slate-800 hover:text-sky-600 hover:bg-sky-50 transition flex items-center gap-1 cursor-pointer" title="Trợ Lý AI Sáng Tạo Nội Dung & Tiếp Thị">
-                <span>✨</span>
-                <span class="hidden sm:inline">Test AI Viết Content</span>
-            </button>
-            <button type="button" onclick="triggerHeroVoiceDemo()" class="px-2.5 py-1.5 rounded-full text-[11px] font-bold text-slate-800 hover:text-sky-600 hover:bg-sky-50 transition flex items-center gap-1 cursor-pointer" title="Nghe Voice AI Báo Cáo Tài Chính 3 Miền">
-                <span>🗣️</span>
-                <span class="hidden sm:inline">Nghe AI Báo Cáo Giọng Nói</span>
-            </button>
-        </div>
-    </div>
+    
 
 <script>
     // -------------------------------------------------------------

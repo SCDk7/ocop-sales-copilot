@@ -177,29 +177,25 @@
 
     // 4. POLISH HEADER: ĐĂNG KÝ ĐIỂM BÁN & 🔐 QUẢN TRỊ CHỦ WEB
     function polishHeader() {
-        const headerActions = document.querySelector('.header-right-actions');
-        if (!headerActions) return;
-
         // Nút Đăng Ký Điểm Bán
         let btnOcr = document.getElementById('btn-header-ocr');
-        if (!btnOcr) {
-            btnOcr = headerActions.querySelector('button[onclick*="openPartnerRegistrationModal"]');
-        }
         if (btnOcr) {
-            btnOcr.id = 'btn-header-ocr';
-            btnOcr.innerHTML = '<i class="fa-solid fa-bolt text-yellow-300 mr-1.5"></i><span>⚡ Đăng Ký Điểm Bán</span>';
+            btnOcr.innerHTML = '<span>⚡ Đăng Ký Điểm Bán</span>';
+            btnOcr.onclick = function (e) {
+                if (e) e.preventDefault();
+                openPartnerRegistrationModal();
+            };
         }
 
-        // Nút Quản Trị Chủ Web
+        // Nút Quản Trị Doanh Thu
         let btnPin = document.getElementById('btn-header-admin-pin');
-        if (!btnPin) {
-            btnPin = headerActions.querySelector('button[onclick*="openChallengeProposalModal"]');
-        }
         if (btnPin) {
-            btnPin.id = 'btn-header-admin-pin';
-            btnPin.setAttribute('onclick', 'promptAdminPinModal()');
-            btnPin.setAttribute('title', 'Cổng Quản Trị Chủ Web (Mã PIN: 2007)');
-            btnPin.innerHTML = '<i class="fa-solid fa-lock text-yellow-300 mr-1.5"></i><span>🔐 Quản Trị Chủ Web</span>';
+            btnPin.innerHTML = '<span>🔐 Quản Trị Doanh Thu</span>';
+            btnPin.setAttribute('title', 'Cổng Quản Trị Doanh Thu (Mã PIN: 2007)');
+            btnPin.onclick = function (e) {
+                if (e) e.preventDefault();
+                promptAdminPinModal();
+            };
         }
 
         const navFinance = document.querySelector('.nav-btn-finance');
@@ -226,9 +222,10 @@
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'admin-pin-modal';
-            modal.className = 'fixed inset-0 z-[100000] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm';
+            modal.className = 'fixed inset-0 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm';
+            modal.style.zIndex = '999999';
             modal.innerHTML = `
-                <div class="relative w-full max-w-md bg-white border-2 border-sky-400 rounded-3xl p-6 sm:p-8 text-slate-900 shadow-2xl space-y-5 animate-pop-in">
+                <div class="relative w-full max-w-md bg-white border-2 border-sky-400 rounded-3xl p-6 sm:p-8 text-slate-900 shadow-2xl space-y-5 animate-pop-in" style="z-index: 1000000;">
                     <button onclick="closeAdminPinModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm absolute top-4 right-4 cursor-pointer transition">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
@@ -236,7 +233,7 @@
                         <div class="w-14 h-14 mx-auto rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-2xl border border-sky-200 shadow-sm">
                             <i class="fa-solid fa-lock"></i>
                         </div>
-                        <h3 class="text-lg font-black text-slate-900 uppercase tracking-wide">Cổng Quản Trị Chủ Web</h3>
+                        <h3 class="text-lg font-black text-slate-900 uppercase tracking-wide">Cổng Quản Trị Doanh Thu</h3>
                         <p class="text-xs text-slate-600">Khu vực quản trị nội bộ: Báo cáo dòng tiền, doanh thu hệ thống và hoa hồng quảng bá O2O.</p>
                     </div>
 
@@ -256,7 +253,7 @@
 
                         <div class="flex items-center gap-3 pt-1">
                             <button type="button" onclick="verifyAdminPin()" class="flex-1 py-3 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-black text-xs shadow-md transition cursor-pointer">
-                                🔓 Mở Bảng Quản Trị
+                                🔓 Xác Nhận
                             </button>
                             <button type="button" onclick="closeAdminPinModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs cursor-pointer transition">
                                 Đóng
@@ -276,6 +273,7 @@
         }
         modal.classList.remove('hidden');
         modal.style.display = 'flex';
+        modal.style.zIndex = '999999';
         const input = document.getElementById('admin-pin-input');
         if (input) {
             input.value = '';
@@ -303,7 +301,7 @@
             window.closeAdminPinModal();
             openRealFinancialDashboard();
             if (typeof showToast === 'function') {
-                showToast('✅ Xác thực Quản Trị Chủ Web thành công!', 'success');
+                showToast('✅ Xác thực Quản Trị thành công!', 'success');
             }
         } else {
             if (err) err.classList.remove('hidden');
@@ -315,12 +313,13 @@
         }
     };
 
-    // Mở Bảng Quản Trị Tài Chính thật
+    // Mở Bảng Quản Trị Doanh Thu thật
     function openRealFinancialDashboard() {
         const modal = document.getElementById('ai-financial-modal');
         if (modal) {
             modal.classList.remove('hidden');
             modal.style.display = 'flex';
+            modal.style.zIndex = '100000';
             enrichWebmasterRevenueData();
             if (typeof updateFinancialSimulator === 'function') {
                 updateFinancialSimulator();
@@ -328,35 +327,100 @@
         }
     }
 
-    // 6. CẬP NHẬT DỮ LIỆU BẢNG QUẢN TRỊ TÀI CHÍNH (TIỀN LỜI QUẢNG BÁ CHỦ WEB)
+    // Cập nhật dữ liệu Bảng Quản Trị Doanh Thu & Tiền Lời Quảng Bá
     function enrichWebmasterRevenueData() {
+        const modal = document.getElementById('ai-financial-modal');
+        if (!modal) return;
+
+        // Modal title
+        const titleH3 = modal.querySelector('h3');
+        if (titleH3) {
+            titleH3.textContent = 'BẢNG QUẢN TRỊ DOANH THU & TIỀN LỜI QUẢNG BÁ DÀNH CHO CHỦ WEB';
+            titleH3.style.color = '#0284C7';
+        }
+
+        // 4 KPI Cards
         const revEl = document.getElementById('fin-stat-revenue');
         if (revEl) {
             revEl.textContent = '875.000.000 ₫';
-            const parent = revEl.closest('div')?.parentElement;
+            revEl.style.color = '#0284C7';
+            const parent = revEl.closest('.p-4') || revEl.closest('div')?.parentElement;
             const title = parent?.querySelector('span.text-xs');
-            if (title) title.textContent = 'TỔNG DOANH THU BÁN HÀNG CỦA CÁC CỬA HÀNG';
+            if (title) title.textContent = 'TỔNG DOANH THU BÁN HÀNG GIÚP CÁC CỬA HÀNG';
         }
 
         const profitEl = document.getElementById('fin-stat-profit');
         if (profitEl) {
-            profitEl.textContent = '415.625.000 ₫';
-            const parent = profitEl.closest('div')?.parentElement;
+            profitEl.innerHTML = '415.625.000 ₫';
+            profitEl.style.color = '#059669';
+            const parent = profitEl.closest('.p-4') || profitEl.closest('div')?.parentElement;
             const title = parent?.querySelector('span.text-xs');
-            if (title) title.textContent = 'TIỀN LỜI CỦA CÁC CỬA HÀNG / HTX ĐỐI TÁC';
+            if (title) title.textContent = 'LỢI NHUẬN RÒNG CỦA CÁC ĐƠN VỊ / HTX ĐỐI TÁC';
         }
 
         const commEl = document.getElementById('fin-stat-commission');
         if (commEl) {
             commEl.textContent = '70.000.000 ₫';
-            const parent = commEl.closest('div')?.parentElement;
+            commEl.style.color = '#0284C7';
+            const parent = commEl.closest('.p-4') || commEl.closest('div')?.parentElement;
             const title = parent?.querySelector('span.text-xs');
-            if (title) title.textContent = '💰 TIỀN LỜI RÒNG CỦA CHỦ WEB (PHÍ QUẢNG BÁ & HOA HỒNG KẾT NỐI O2O)';
+            if (title) title.textContent = '💰 TIỀN LỜI RÒNG CỦA CHỦ WEB (HOA HỒNG QUẢNG BÁ)';
         }
 
-        const kpiEls = document.querySelectorAll('#ai-financial-modal .text-2xl');
-        if (kpiEls.length >= 4) {
-            kpiEls[3].textContent = '34.8%';
+        const cards = modal.querySelectorAll('.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 > div, .grid-cols-4 > div');
+        if (cards.length >= 4) {
+            const card4 = cards[3];
+            const title4 = card4.querySelector('span.text-xs');
+            if (title4) title4.textContent = 'TỔNG ĐƠN HÀNG KẾT NỐI QUA NỀN TẢNG';
+            const val4 = card4.querySelector('.text-2xl');
+            if (val4) {
+                val4.id = 'fin-stat-orders';
+                val4.textContent = '3.420 Đơn';
+                val4.style.color = '#0F172A';
+            }
+        }
+
+        // Hook sliders for interactive dynamic recalculation
+        hookSimulatorSliders();
+    }
+
+    function hookSimulatorSliders() {
+        const volInput = document.getElementById('sim-volume');
+        const chmInput = document.getElementById('sim-chm-rate');
+        const cogsInput = document.getElementById('sim-cogs-reduction');
+
+        function recalc() {
+            const vol = parseInt(volInput?.value || 2500, 10);
+            const chm = parseFloat(chmInput?.value || 8);
+            const gross = vol * 350000;
+            const partner = Math.round(gross * 0.475);
+            const webmaster = Math.round(gross * (chm / 100));
+            const orders = Math.round(vol * 1.368);
+
+            const revEl = document.getElementById('fin-stat-revenue');
+            if (revEl) revEl.textContent = gross.toLocaleString('vi-VN') + ' ₫';
+
+            const profitEl = document.getElementById('fin-stat-profit');
+            if (profitEl) profitEl.innerHTML = partner.toLocaleString('vi-VN') + ' ₫';
+
+            const commEl = document.getElementById('fin-stat-commission');
+            if (commEl) commEl.textContent = webmaster.toLocaleString('vi-VN') + ' ₫';
+
+            const ordersEl = document.getElementById('fin-stat-orders');
+            if (ordersEl) ordersEl.textContent = orders.toLocaleString('vi-VN') + ' Đơn';
+        }
+
+        if (volInput && !volInput._hooked) {
+            volInput.addEventListener('input', recalc);
+            volInput._hooked = true;
+        }
+        if (chmInput && !chmInput._hooked) {
+            chmInput.addEventListener('input', recalc);
+            chmInput._hooked = true;
+        }
+        if (cogsInput && !cogsInput._hooked) {
+            cogsInput.addEventListener('input', recalc);
+            cogsInput._hooked = true;
         }
     }
 
