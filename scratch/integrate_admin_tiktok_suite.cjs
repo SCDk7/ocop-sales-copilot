@@ -962,3 +962,4 @@ if (js.includes(hookSliderAnchor)) {
 fs.writeFileSync('skytech-complete.js', js, 'utf8');
 console.log('✓ Successfully integrated AI TikTok Marketing Suite into skytech-complete.js');
 console.log('=== DONE ===');
+
