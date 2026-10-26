@@ -3053,6 +3053,12 @@
                     </div>
                 </div>
 
+                <!-- Action Button 0: 👤 Tài Khoản Khách Hàng -->
+                <button type="button" id="btn-customer-account" onclick="openCustomerAuthModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; background: #FFFFFF !important; color: #0284C7 !important; border: 1.5px solid #0284C7 !important;" title="Tài khoản khách hàng (Đăng nhập / Đăng ký / Đổi mật khẩu)">
+                    <i class="fa-solid fa-user text-sky-600"></i>
+                    <span id="customer-account-btn-text">👤 Đăng Nhập</span>
+                </button>
+
                 <!-- Action Button 1: ⚡ Đăng Ký Điểm Bán -->
                 <button type="button" id="btn-header-ocr" onclick="openPartnerRegistrationModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer shrink-0 bg-sky-600 hover:bg-sky-700 text-white shadow-xs border border-sky-500" style="white-space: nowrap !important; height: 38px; background: #0284C7 !important; color: #FFFFFF !important;" title="Đăng ký điểm bán đặc sản OCOP">
                     <span>⚡ Đăng Ký Điểm Bán</span>
@@ -3094,7 +3100,7 @@
                         <span id="i18n-hero-title2" data-legacy="Khơi Nguồn Di Sản Việt" style="color: #0284C7 !important;">Chuyển Đổi Số & Bứt Phá Doanh Thu Cùng AI</span>
                     </h2>
                     <p class="text-slate-600 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc" style="color: #334155 !important;">
-                        Nền tảng AI kết nối 2 chiều: Giúp du khách & doanh nghiệp tìm mua 520+ đặc sản OCOP 4-5 Sao chính hãng tại 63 tỉnh thành, và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.
+                        Nền tảng AI kết nối 2 chiều: Giúp du khách & doanh nghiệp tìm mua 520+ đặc sản OCOP 3-5 Sao chính hãng tại 63 tỉnh thành, và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.
                     </p>
 
                     <!-- 4 FEATURE CARDS (CLEAN WHITE CARDS) -->
@@ -3728,7 +3734,7 @@
                                         <i class="fa-solid fa-wheat-awn text-amber-300"></i>
                                         <span id="i18n-cat-all">Tất cả danh mục</span>
                                     </span>
-                                    <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] font-extrabold">252</span>
+                                    <span class="bg-white/20 text-white px-2 py-0.5 rounded-full text-[10px] font-extrabold">520+</span>
                                 </button>
                                 <button onclick="setCategoryFilter('tea', this)" class="cat-side-btn w-full text-left px-3.5 py-2.5 rounded-2xl text-slate-200 hover:bg-slate-800 hover:text-amber-300 transition-all duration-200 flex items-center justify-between border border-slate-800 cursor-pointer">
                                     <span class="flex items-center space-x-2.5">
@@ -3861,7 +3867,7 @@
                             </span>
                             <span class="inline-flex items-center gap-1 bg-amber-500/20 text-amber-300 border border-amber-400/30 px-2.5 py-1 rounded-xl text-xs font-black">
                                 <i class="fa-solid fa-layer-group text-amber-400 text-[10px]"></i>
-                                <span id="product-count-badge">252</span>
+                                <span id="product-count-badge">520+</span>
                             </span>
                         </div>
 
@@ -4987,18 +4993,95 @@
                     </div>
                 </div>
 
-                <!-- 4. Phương Thức Thanh Toán -->
-                <div class="space-y-1.5 pt-1">
-                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">Phương thức thanh toán:</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                        <label class="flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-400 bg-sky-50/50 cursor-pointer font-bold text-slate-800">
-                            <input type="radio" name="order-payment" value="cod" checked class="accent-sky-600">
-                            <span>💵 Thanh toán khi nhận hàng (COD)</span>
+                <!-- 4. Phương Thức Thanh Toán (BIDV 8808661371, MoMo 0971280030, Ship COD) -->
+                <div class="space-y-2.5 pt-1">
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">Chọn hình thức thanh toán:</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                        <label id="payment-label-bidv" class="flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition">
+                            <input type="radio" name="order-payment" value="bidv" checked onchange="switchOrderPaymentMethod('bidv')" class="accent-sky-600">
+                            <span class="truncate">🏦 CK BIDV (VietQR)</span>
                         </label>
-                        <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-semibold text-slate-800 hover:border-sky-400">
-                            <input type="radio" name="order-payment" value="vietqr" class="accent-sky-600">
-                            <span>🏦 Chuyển khoản QR ngân hàng</span>
+                        <label id="payment-label-momo" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-pink-400 transition">
+                            <input type="radio" name="order-payment" value="momo" onchange="switchOrderPaymentMethod('momo')" class="accent-pink-600">
+                            <span class="truncate">📱 Ví MoMo (0971280030)</span>
                         </label>
+                        <label id="payment-label-cod" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-sky-400 transition">
+                            <input type="radio" name="order-payment" value="cod" onchange="switchOrderPaymentMethod('cod')" class="accent-sky-600">
+                            <span class="truncate">🚚 Ship COD Tận Nơi</span>
+                        </label>
+                    </div>
+
+                    <!-- Panel 1: BIDV VietQR Box -->
+                    <div id="panel-payment-bidv" class="p-3.5 rounded-2xl bg-gradient-to-br from-sky-50 via-white to-blue-50 border-2 border-sky-300 space-y-2.5 shadow-2xs">
+                        <div class="flex flex-col sm:flex-row items-center gap-3">
+                            <img id="order-bidv-qr" src="https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=120000&addInfo=OCOP%208829" alt="Mã VietQR BIDV" class="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border-2 border-sky-400 p-1 bg-white shadow-sm shrink-0 object-contain">
+                            <div class="space-y-1 text-[11px] text-slate-800 flex-1 min-w-0">
+                                <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sky-600 text-white font-black text-[10px] mb-1">
+                                    <span>🏦 BIDV - TMCP Đầu tư &amp; Phát triển VN</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">Số tài khoản:</span>
+                                    <div class="flex items-center gap-1">
+                                        <strong class="font-mono text-sm text-sky-900 font-black">8808661371</strong>
+                                        <button type="button" onclick="copyToClipboard('8808661371', 'Đã sao chép số tài khoản BIDV 8808661371!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">Số tiền chuyển:</span>
+                                    <strong id="bidv-transfer-amount" class="text-rose-600 font-black text-sm">0 ₫</strong>
+                                </div>
+                                <div class="flex items-center justify-between gap-1 pt-1 border-t border-sky-200">
+                                    <span class="text-slate-500">Nội dung CK:</span>
+                                    <div class="flex items-center gap-1">
+                                        <strong id="bidv-transfer-memo" class="font-mono text-xs text-sky-800 font-black">OCOP 8829</strong>
+                                        <button type="button" onclick="copyToClipboard(document.getElementById('bidv-transfer-memo').textContent, 'Đã sao chép nội dung chuyển khoản!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép</button>
+                                    </div>
+                                </div>
+                                <p class="text-[9.5px] text-slate-500 italic pt-0.5">*(Số tiền đã gồm tiền hàng + 25k ship + 10.000đ phí dịch vụ nền tảng Chủ Web)*</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2: MoMo Box -->
+                    <div id="panel-payment-momo" class="hidden p-3.5 rounded-2xl bg-gradient-to-br from-pink-50 via-white to-rose-50 border-2 border-pink-300 space-y-2.5 shadow-2xs">
+                        <div class="flex flex-col sm:flex-row items-center gap-3">
+                            <img id="order-momo-qr" src="" alt="Mã MoMo" class="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border-2 border-pink-400 p-1 bg-white shadow-sm shrink-0 object-contain">
+                            <div class="space-y-1 text-[11px] text-slate-800 flex-1 min-w-0">
+                                <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#D82D8B] text-white font-black text-[10px] mb-1">
+                                    <span>📱 Ví Điện Tử MoMo</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">SĐT nhận MoMo:</span>
+                                    <div class="flex items-center gap-1">
+                                        <strong class="font-mono text-sm text-[#D82D8B] font-black">0971280030</strong>
+                                        <button type="button" onclick="copyToClipboard('0971280030', 'Đã sao chép SĐT MoMo 0971280030!')" class="px-2 py-0.5 rounded bg-pink-100 hover:bg-pink-200 text-pink-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép SĐT</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">Số tiền chuyển:</span>
+                                    <strong id="momo-transfer-amount" class="text-rose-600 font-black text-sm">0 ₫</strong>
+                                </div>
+                                <div class="flex items-center justify-between gap-1 pt-1 border-t border-pink-200">
+                                    <span class="text-slate-500">Lời nhắn chuyển:</span>
+                                    <div class="flex items-center gap-1">
+                                        <strong id="momo-transfer-memo" class="font-mono text-xs text-pink-800 font-black">OCOP 8829</strong>
+                                        <button type="button" onclick="copyToClipboard(document.getElementById('momo-transfer-memo').textContent, 'Đã sao chép lời nhắn chuyển tiền!')" class="px-2 py-0.5 rounded bg-pink-100 hover:bg-pink-200 text-pink-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép</button>
+                                    </div>
+                                </div>
+                                <p class="text-[9.5px] text-slate-500 italic pt-0.5">*(Quét QR bằng App MoMo hoặc chuyển tiền theo SĐT 0971280030)*</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 3: COD Box -->
+                    <div id="panel-payment-cod" class="hidden p-3.5 rounded-2xl bg-slate-50 border border-slate-300 space-y-1.5">
+                        <div class="flex items-center gap-2 font-black text-slate-900 text-xs">
+                            <i class="fa-solid fa-box-open text-sky-600 text-sm"></i>
+                            <span>Thanh toán trực tiếp cho Shipper khi nhận hàng (Ship COD)</span>
+                        </div>
+                        <p class="text-[11px] text-slate-600 leading-relaxed">
+                            Bưu tá sẽ giao hàng đến tận tay bạn. Bạn được kiểm tra kiện hàng niêm phong và thanh toán tổng tiền <strong id="cod-transfer-amount" class="text-rose-600 font-black">0 ₫</strong> (Đã bao gồm tiền hàng, 25.000đ phí ship và 10.000đ phí dịch vụ nền tảng Chủ Web).
+                        </p>
                     </div>
                 </div>
 
@@ -5081,6 +5164,191 @@
                 <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer">
                     🛍️ Tiếp Tục Mua Sắm Đặc Sản
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10.4 MODAL TÀI KHOẢN KHÁCH HÀNG (ĐĂNG NHẬP / ĐĂNG KÝ / ĐỔI MẬT KHẨU / ĐƠN HÀNG) -->
+    <div id="customer-auth-modal" class="fixed inset-0 z-[99999] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in" onclick="if(event.target === this) closeCustomerAuthModal()">
+        <div class="bg-white border-2 border-sky-400 rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden text-slate-800 animate-pop-in flex flex-col" style="max-height: calc(100dvh - 2rem); overflow-y: auto;">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-sky-700 via-sky-800 to-slate-900 text-white p-4 sm:p-5 flex items-center justify-between border-b border-sky-300/40 relative">
+                <div class="flex items-center space-x-3">
+                    <span class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md text-lg">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-black/40 px-2.5 py-0.5 rounded-full border border-amber-400/30 mb-0.5">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>Cổng Khách Hàng OCOP</span>
+                        </div>
+                        <h3 class="font-black text-base sm:text-lg text-white tracking-wide" id="customer-modal-title">
+                            👤 QUẢN LÝ TÀI KHOẢN KHÁCH HÀNG
+                        </h3>
+                    </div>
+                </div>
+                <button type="button" onclick="closeCustomerAuthModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm font-bold cursor-pointer transition" title="Đóng">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-black">
+                <button type="button" id="tab-btn-cust-login" onclick="switchCustomerAuthTab('login')" class="flex-1 py-3 px-2 text-center transition border-b-2 border-sky-600 text-sky-700 bg-white cursor-pointer">
+                    🔑 Đăng Nhập
+                </button>
+                <button type="button" id="tab-btn-cust-register" onclick="switchCustomerAuthTab('register')" class="flex-1 py-3 px-2 text-center transition border-b-2 border-transparent text-slate-500 hover:text-slate-800 cursor-pointer">
+                    📝 Đăng Ký
+                </button>
+                <button type="button" id="tab-btn-cust-chpass" onclick="switchCustomerAuthTab('chpass')" class="flex-1 py-3 px-2 text-center transition border-b-2 border-transparent text-slate-500 hover:text-slate-800 cursor-pointer">
+                    🔄 Đổi Mật Khẩu
+                </button>
+                <button type="button" id="tab-btn-cust-orders" onclick="switchCustomerAuthTab('orders')" class="flex-1 py-3 px-2 text-center transition border-b-2 border-transparent text-slate-500 hover:text-slate-800 cursor-pointer">
+                    📦 Đơn Mua
+                </button>
+            </div>
+
+            <!-- Body Modal -->
+            <div class="p-5 space-y-4 text-xs">
+                <!-- Alert banner -->
+                <div id="cust-auth-alert" class="hidden p-3 rounded-xl text-xs font-bold items-center gap-2"></div>
+
+                <!-- TAB 1: ĐĂNG NHẬP -->
+                <div id="cust-pane-login" class="space-y-3.5">
+                    <div class="p-3 bg-sky-50 rounded-xl border border-sky-200 text-[11px] text-sky-900 leading-relaxed">
+                        💡 <strong>Tài khoản mẫu dùng thử:</strong> Tên đăng nhập: <code class="bg-white px-1.5 py-0.5 rounded border border-sky-300 font-black text-sky-800">khachhang</code> | Mật khẩu: <code class="bg-white px-1.5 py-0.5 rounded border border-sky-300 font-black text-sky-800">123456</code> (Hoặc bạn có thể tự đăng ký tài khoản mới ở tab Đăng Ký).
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Tài khoản (Tên đăng nhập hoặc Số điện thoại) <span class="text-rose-600">*</span></label>
+                        <input type="text" id="cust-login-user" placeholder="Ví dụ: khachhang hoặc 0912345678" class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu <span class="text-rose-600">*</span></label>
+                        <input type="password" id="cust-login-pass" placeholder="Nhập mật khẩu..." class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                    </div>
+                    <button type="button" onclick="handleCustomerLoginSubmit()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-sky-600 via-sky-700 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-95">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>ĐĂNG NHẬP NGAY</span>
+                    </button>
+                    <div class="text-center text-[11px] text-slate-500 pt-1">
+                        Chưa có tài khoản? <a href="javascript:void(0)" onclick="switchCustomerAuthTab('register')" class="text-sky-700 font-black hover:underline">Bấm vào đây để Đăng Ký miễn phí</a>
+                    </div>
+                </div>
+
+                <!-- TAB 2: ĐĂNG KÝ -->
+                <div id="cust-pane-register" class="hidden space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Họ và tên <span class="text-rose-600">*</span></label>
+                            <input type="text" id="cust-reg-name" placeholder="Ví dụ: Nguyễn Văn An" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Tên tài khoản (Username) <span class="text-rose-600">*</span></label>
+                            <input type="text" id="cust-reg-user" placeholder="Ví dụ: nguyenvana" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Số điện thoại nhận hàng <span class="text-rose-600">*</span></label>
+                            <input type="tel" id="cust-reg-phone" placeholder="Ví dụ: 0912 345 678" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Địa chỉ nhận hàng chi tiết</label>
+                            <input type="text" id="cust-reg-address" placeholder="Số nhà, đường, phường/xã, tỉnh..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu <span class="text-rose-600">*</span></label>
+                            <input type="password" id="cust-reg-pass" placeholder="Tối thiểu 4 ký tự..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Nhập lại mật khẩu <span class="text-rose-600">*</span></label>
+                            <input type="password" id="cust-reg-pass2" placeholder="Nhập lại mật khẩu..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                    </div>
+                    <button type="button" onclick="handleCustomerRegisterSubmit()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-95">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>TẠO TÀI KHOẢN &amp; TỰ ĐỘNG ĐĂNG NHẬP</span>
+                    </button>
+                    <div class="text-center text-[11px] text-slate-500 pt-1">
+                        Đã có tài khoản? <a href="javascript:void(0)" onclick="switchCustomerAuthTab('login')" class="text-sky-700 font-black hover:underline">Quay lại Đăng Nhập</a>
+                    </div>
+                </div>
+
+                <!-- TAB 3: ĐỔI MẬT KHẨU -->
+                <div id="cust-pane-chpass" class="hidden space-y-3">
+                    <div id="cust-chpass-not-logged" class="p-4 bg-amber-50 rounded-xl border border-amber-200 text-center space-y-2">
+                        <p class="font-bold text-amber-900">⚠️ Bạn chưa đăng nhập tài khoản khách hàng!</p>
+                        <button type="button" onclick="switchCustomerAuthTab('login')" class="px-4 py-2 bg-sky-600 text-white font-bold rounded-lg text-xs hover:bg-sky-700 cursor-pointer">
+                            Đăng Nhập Ngay
+                        </button>
+                    </div>
+                    <div id="cust-chpass-form" class="space-y-3 hidden">
+                        <div class="p-2.5 bg-sky-50 rounded-xl border border-sky-200 text-[11px] text-sky-800">
+                            Đang đổi mật khẩu cho tài khoản: <strong id="chpass-username-display" class="font-mono text-sky-950 font-black"></strong>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu hiện tại <span class="text-rose-600">*</span></label>
+                            <input type="password" id="cust-chpass-old" placeholder="Nhập mật khẩu đang dùng..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu mới <span class="text-rose-600">*</span></label>
+                            <input type="password" id="cust-chpass-new" placeholder="Nhập mật khẩu mới (tối thiểu 4 ký tự)..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Xác nhận mật khẩu mới <span class="text-rose-600">*</span></label>
+                            <input type="password" id="cust-chpass-new2" placeholder="Nhập lại mật khẩu mới..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                        <button type="button" onclick="handleCustomerChangePassSubmit()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-sky-600 via-sky-700 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-95">
+                            <i class="fa-solid fa-key"></i>
+                            <span>XÁC NHẬN ĐỔI MẬT KHẨU</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 4: ĐƠN HÀNG ĐÃ MUA & ĐĂNG XUẤT -->
+                <div id="cust-pane-orders" class="hidden space-y-3">
+                    <div id="cust-orders-not-logged" class="p-4 bg-amber-50 rounded-xl border border-amber-200 text-center space-y-2">
+                        <p class="font-bold text-amber-900">⚠️ Bạn chưa đăng nhập tài khoản khách hàng!</p>
+                        <button type="button" onclick="switchCustomerAuthTab('login')" class="px-4 py-2 bg-sky-600 text-white font-bold rounded-lg text-xs hover:bg-sky-700 cursor-pointer">
+                            Đăng Nhập Ngay
+                        </button>
+                    </div>
+                    <div id="cust-orders-content" class="space-y-3 hidden">
+                        <!-- Profile Card -->
+                        <div class="p-3.5 bg-gradient-to-r from-sky-50 to-blue-50 rounded-2xl border border-sky-200 flex flex-wrap items-center justify-between gap-2">
+                            <div class="space-y-0.5">
+                                <div class="font-black text-slate-900 text-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-user text-sky-600"></i>
+                                    <span id="cust-profile-fullname"></span>
+                                    <span class="text-[10px] font-normal text-slate-500">(@<span id="cust-profile-username"></span>)</span>
+                                </div>
+                                <div class="text-[11px] text-slate-600">
+                                    📞 SĐT: <strong id="cust-profile-phone"></strong> | 📍 Địa chỉ: <span id="cust-profile-address"></span>
+                                </div>
+                            </div>
+                            <button type="button" onclick="handleCustomerLogout()" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs flex items-center gap-1.5 cursor-pointer transition">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                <span>🚪 Đăng Xuất</span>
+                            </button>
+                        </div>
+
+                        <!-- Orders List -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h5 class="font-black text-slate-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
+                                    <i class="fa-solid fa-box text-sky-600"></i>
+                                    <span>LỊCH SỬ ĐƠN HÀNG ĐÃ ĐẶT:</span>
+                                </h5>
+                                <span id="cust-orders-count" class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">0 đơn</span>
+                            </div>
+                            <div id="cust-orders-list-body" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -13740,8 +14008,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: 'AIアシスタントと切り拓くデジタルビジネス革新'
             },
             'i18n-hero-desc': {
-                vi: 'Nền tảng AI toàn diện giúp Hợp tác xã & Doanh nghiệp địa phương quảng bá 252 đặc sản OCOP 4-5 Sao, kết nối mạng lưới Showroom O2O 63 tỉnh thành và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.',
-                en: 'Comprehensive AI platform empowering local cooperatives & enterprises to promote 252 4-5 Star OCOP specialties, connect 63-province O2O showrooms, and automate real-time B2B2C revenue, COGS, and commission governance.',
+                vi: 'Nền tảng AI toàn diện giúp Hợp tác xã & Doanh nghiệp địa phương quảng bá 520+ đặc sản OCOP 3-5 Sao, kết nối mạng lưới Showroom O2O 63 tỉnh thành và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.',
+                en: 'Comprehensive AI platform empowering local cooperatives & enterprises to promote 520+ 3-5 Star OCOP specialties, connect 63-province O2O showrooms, and automate real-time B2B2C revenue, COGS, and commission governance.',
                 zh: '全方位 AI 平台赋能地方合作社与企业推广 252 项 4-5 星级 OCOP 特产，打通 63 省 O2O 展厅网络，并实时自动化管理 B2B2C 营收、成本与佣金。',
                 ko: '252개 4~5성급 OCOP 특산품 홍보, 63개 성·시 O2O 쇼룸 연계, 실시간 B2B2C 매출·원가·수수료 거버넌스 자동화를 지원하는 포괄적 AI 플랫폼.',
                 ja: '252点の4〜5つ星OCOP特産品を推進し、63省・市のO2Oショールームを接続、B2B2Cの売上・原価・手数料管理をリアルタイムに自動化する総合AIプラットフォーム。'
@@ -16001,6 +16269,389 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         if (event.target.files && event.target.files[0]) {
             simulateOcrScan('upload');
         }
+    }
+
+    // =====================================================================
+    // HỆ THỐNG QUẢN LÝ TÀI KHOẢN KHÁCH HÀNG (localStorage: ocop_customers, ocop_current_user)
+    // =====================================================================
+    function copyToClipboard(text, msg) {
+        if (!text) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                if (typeof showToast === 'function') showToast(msg || 'Đã sao chép vào bộ nhớ tạm!', 'success');
+                else alert(msg || 'Đã sao chép: ' + text);
+            }).catch(() => {
+                prompt('Sao chép nội dung bên dưới:', text);
+            });
+        } else {
+            prompt('Sao chép nội dung bên dưới:', text);
+        }
+    }
+    window.copyToClipboard = copyToClipboard;
+
+    function initCustomerAccountSystem() {
+        try {
+            let customers = JSON.parse(localStorage.getItem('ocop_customers') || 'null');
+            if (!Array.isArray(customers) || customers.length === 0) {
+                customers = [
+                    {
+                        username: 'khachhang',
+                        password: '123456',
+                        fullName: 'Nguyễn Văn An (Mẫu)',
+                        phone: '0912345678',
+                        address: 'Số 1 Tràng Tiền, Hoàn Kiếm, Hà Nội',
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                localStorage.setItem('ocop_customers', JSON.stringify(customers));
+            }
+        } catch (e) {
+            console.warn('initCustomerAccountSystem error:', e);
+        }
+        updateCustomerHeaderUI();
+    }
+    window.initCustomerAccountSystem = initCustomerAccountSystem;
+
+    function getCurrentCustomer() {
+        try {
+            const raw = localStorage.getItem('ocop_current_user');
+            if (!raw) return null;
+            return JSON.parse(raw);
+        } catch (e) {
+            return null;
+        }
+    }
+    window.getCurrentCustomer = getCurrentCustomer;
+
+    function updateCustomerHeaderUI() {
+        const user = getCurrentCustomer();
+        const label = document.getElementById('customer-account-btn-text');
+        const btn = document.getElementById('btn-customer-account');
+        if (!label) return;
+
+        if (user && user.username) {
+            const displayName = user.fullName ? user.fullName.split(' ').slice(-1)[0] : user.username;
+            label.textContent = '👤 ' + displayName + ' ▾';
+            if (btn) {
+                btn.style.setProperty('background', '#F0F9FF', 'important');
+                btn.style.setProperty('border-color', '#0284C7', 'important');
+                btn.style.setProperty('color', '#0284C7', 'important');
+                btn.setAttribute('title', 'Tài khoản: ' + (user.fullName || user.username) + ' (Bấm để quản lý đơn hàng & đổi mật khẩu)');
+            }
+        } else {
+            label.textContent = '👤 Đăng Nhập';
+            if (btn) {
+                btn.style.setProperty('background', '#FFFFFF', 'important');
+                btn.style.setProperty('border-color', '#0284C7', 'important');
+                btn.style.setProperty('color', '#0284C7', 'important');
+                btn.setAttribute('title', 'Đăng nhập tài khoản khách hàng');
+            }
+        }
+    }
+    window.updateCustomerHeaderUI = updateCustomerHeaderUI;
+
+    function openCustomerAuthModal() {
+        const modal = document.getElementById('customer-auth-modal');
+        if (!modal) return;
+        const user = getCurrentCustomer();
+        modal.classList.remove('hidden');
+        modal.style.setProperty('display', 'flex', 'important');
+        document.body.style.overflow = 'hidden';
+
+        if (user && user.username) {
+            switchCustomerAuthTab('orders');
+        } else {
+            switchCustomerAuthTab('login');
+        }
+    }
+    window.openCustomerAuthModal = openCustomerAuthModal;
+
+    function closeCustomerAuthModal() {
+        const modal = document.getElementById('customer-auth-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.setProperty('display', 'none', 'important');
+        }
+        document.body.style.overflow = 'auto';
+        hideCustomerAuthAlert();
+    }
+    window.closeCustomerAuthModal = closeCustomerAuthModal;
+
+    function showCustomerAuthAlert(msg, type = 'error') {
+        const alertEl = document.getElementById('cust-auth-alert');
+        if (!alertEl) return;
+        alertEl.classList.remove('hidden', 'bg-red-50', 'text-red-800', 'border-red-300', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-300');
+        alertEl.style.display = 'flex';
+        if (type === 'success') {
+            alertEl.className = 'p-3 rounded-xl text-xs font-bold flex items-center gap-2 bg-emerald-50 text-emerald-800 border border-emerald-300';
+            alertEl.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i> <span>' + msg + '</span>';
+        } else {
+            alertEl.className = 'p-3 rounded-xl text-xs font-bold flex items-center gap-2 bg-red-50 text-red-800 border border-red-300';
+            alertEl.innerHTML = '<i class="fa-solid fa-circle-exclamation text-red-600 text-sm"></i> <span>' + msg + '</span>';
+        }
+    }
+
+    function hideCustomerAuthAlert() {
+        const alertEl = document.getElementById('cust-auth-alert');
+        if (alertEl) {
+            alertEl.classList.add('hidden');
+            alertEl.style.display = 'none';
+        }
+    }
+
+    function switchCustomerAuthTab(tabName) {
+        hideCustomerAuthAlert();
+        const tabs = ['login', 'register', 'chpass', 'orders'];
+        tabs.forEach(t => {
+            const pane = document.getElementById('cust-pane-' + t);
+            const btn = document.getElementById('tab-btn-cust-' + t);
+            const isActive = (t === tabName);
+            if (pane) pane.classList.toggle('hidden', !isActive);
+            if (btn) {
+                if (isActive) {
+                    btn.className = 'flex-1 py-3 px-2 text-center transition border-b-2 border-sky-600 text-sky-700 bg-white font-black cursor-pointer';
+                } else {
+                    btn.className = 'flex-1 py-3 px-2 text-center transition border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-bold cursor-pointer';
+                }
+            }
+        });
+
+        const user = getCurrentCustomer();
+        if (tabName === 'chpass') {
+            const notLog = document.getElementById('cust-chpass-not-logged');
+            const form = document.getElementById('cust-chpass-form');
+            const userDisp = document.getElementById('chpass-username-display');
+            if (user && user.username) {
+                if (notLog) notLog.classList.add('hidden');
+                if (form) form.classList.remove('hidden');
+                if (userDisp) userDisp.textContent = user.username + ' (' + (user.fullName || '') + ')';
+            } else {
+                if (notLog) notLog.classList.remove('hidden');
+                if (form) form.classList.add('hidden');
+            }
+        } else if (tabName === 'orders') {
+            const notLog = document.getElementById('cust-orders-not-logged');
+            const content = document.getElementById('cust-orders-content');
+            if (user && user.username) {
+                if (notLog) notLog.classList.add('hidden');
+                if (content) content.classList.remove('hidden');
+                renderCustomerOrdersTab(user);
+            } else {
+                if (notLog) notLog.classList.remove('hidden');
+                if (content) content.classList.add('hidden');
+            }
+        }
+    }
+    window.switchCustomerAuthTab = switchCustomerAuthTab;
+
+    function handleCustomerLoginSubmit() {
+        const u = document.getElementById('cust-login-user')?.value?.trim();
+        const p = document.getElementById('cust-login-pass')?.value?.trim();
+        if (!u || !p) {
+            showCustomerAuthAlert('Vui lòng nhập đầy đủ tài khoản và mật khẩu!', 'error');
+            return;
+        }
+
+        let customers = [];
+        try {
+            customers = JSON.parse(localStorage.getItem('ocop_customers') || '[]');
+        } catch (_) {}
+
+        const found = customers.find(c => 
+            (String(c.username).toLowerCase() === u.toLowerCase() || String(c.phone).trim() === u) &&
+            String(c.password) === p
+        );
+
+        if (found) {
+            const sessionUser = {
+                username: found.username,
+                fullName: found.fullName || found.username,
+                phone: found.phone || '',
+                address: found.address || ''
+            };
+            localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
+            updateCustomerHeaderUI();
+            showCustomerAuthAlert('✅ Đăng nhập thành công! Chào mừng ' + (found.fullName || found.username), 'success');
+            setTimeout(() => {
+                switchCustomerAuthTab('orders');
+            }, 500);
+        } else {
+            showCustomerAuthAlert('❌ Sai tài khoản (Username/SĐT) hoặc mật khẩu!', 'error');
+        }
+    }
+    window.handleCustomerLoginSubmit = handleCustomerLoginSubmit;
+
+    function handleCustomerRegisterSubmit() {
+        const fullName = document.getElementById('cust-reg-name')?.value?.trim();
+        const username = document.getElementById('cust-reg-user')?.value?.trim();
+        const phone = document.getElementById('cust-reg-phone')?.value?.trim();
+        const address = document.getElementById('cust-reg-address')?.value?.trim() || '';
+        const pass = document.getElementById('cust-reg-pass')?.value?.trim();
+        const pass2 = document.getElementById('cust-reg-pass2')?.value?.trim();
+
+        if (!fullName || !username || !phone || !pass) {
+            showCustomerAuthAlert('Vui lòng điền đầy đủ các mục bắt buộc (*)!', 'error');
+            return;
+        }
+        if (pass !== pass2) {
+            showCustomerAuthAlert('Mật khẩu xác nhận không khớp nhau!', 'error');
+            return;
+        }
+        if (pass.length < 4) {
+            showCustomerAuthAlert('Mật khẩu phải có độ dài từ 4 ký tự trở lên!', 'error');
+            return;
+        }
+
+        let customers = [];
+        try {
+            customers = JSON.parse(localStorage.getItem('ocop_customers') || '[]');
+        } catch (_) {}
+
+        if (customers.some(c => String(c.username).toLowerCase() === username.toLowerCase())) {
+            showCustomerAuthAlert('Tên tài khoản này đã tồn tại, vui lòng chọn tên khác!', 'error');
+            return;
+        }
+
+        const newCustomer = {
+            username: username,
+            password: pass,
+            fullName: fullName,
+            phone: phone,
+            address: address,
+            createdAt: new Date().toISOString()
+        };
+
+        customers.push(newCustomer);
+        localStorage.setItem('ocop_customers', JSON.stringify(customers));
+
+        const sessionUser = {
+            username: newCustomer.username,
+            fullName: newCustomer.fullName,
+            phone: newCustomer.phone,
+            address: newCustomer.address
+        };
+        localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
+        updateCustomerHeaderUI();
+        showCustomerAuthAlert('✅ Đăng ký tài khoản thành công! Tự động đăng nhập.', 'success');
+        setTimeout(() => {
+            switchCustomerAuthTab('orders');
+        }, 600);
+    }
+    window.handleCustomerRegisterSubmit = handleCustomerRegisterSubmit;
+
+    function handleCustomerChangePassSubmit() {
+        const user = getCurrentCustomer();
+        if (!user) {
+            showCustomerAuthAlert('Vui lòng đăng nhập trước khi đổi mật khẩu!', 'error');
+            return;
+        }
+
+        const oldPass = document.getElementById('cust-chpass-old')?.value?.trim();
+        const newPass = document.getElementById('cust-chpass-new')?.value?.trim();
+        const newPass2 = document.getElementById('cust-chpass-new2')?.value?.trim();
+
+        if (!oldPass || !newPass || !newPass2) {
+            showCustomerAuthAlert('Vui lòng nhập đầy đủ mật khẩu cũ và mới!', 'error');
+            return;
+        }
+        if (newPass !== newPass2) {
+            showCustomerAuthAlert('Xác nhận mật khẩu mới không khớp!', 'error');
+            return;
+        }
+        if (newPass.length < 4) {
+            showCustomerAuthAlert('Mật khẩu mới phải có ít nhất 4 ký tự!', 'error');
+            return;
+        }
+
+        let customers = [];
+        try {
+            customers = JSON.parse(localStorage.getItem('ocop_customers') || '[]');
+        } catch (_) {}
+
+        const index = customers.findIndex(c => String(c.username).toLowerCase() === String(user.username).toLowerCase());
+        if (index === -1) {
+            showCustomerAuthAlert('Không tìm thấy tài khoản của bạn trên hệ thống!', 'error');
+            return;
+        }
+
+        if (String(customers[index].password) !== String(oldPass)) {
+            showCustomerAuthAlert('❌ Mật khẩu hiện tại không chính xác!', 'error');
+            return;
+        }
+
+        customers[index].password = newPass;
+        localStorage.setItem('ocop_customers', JSON.stringify(customers));
+        showCustomerAuthAlert('✅ Đổi mật khẩu thành công!', 'success');
+
+        // Clear input fields
+        if (document.getElementById('cust-chpass-old')) document.getElementById('cust-chpass-old').value = '';
+        if (document.getElementById('cust-chpass-new')) document.getElementById('cust-chpass-new').value = '';
+        if (document.getElementById('cust-chpass-new2')) document.getElementById('cust-chpass-new2').value = '';
+    }
+    window.handleCustomerChangePassSubmit = handleCustomerChangePassSubmit;
+
+    function handleCustomerLogout() {
+        localStorage.removeItem('ocop_current_user');
+        updateCustomerHeaderUI();
+        switchCustomerAuthTab('login');
+        showCustomerAuthAlert('🚪 Đã đăng xuất tài khoản an toàn.', 'success');
+        if (typeof showToast === 'function') showToast('Đã đăng xuất tài khoản', 'info');
+    }
+    window.handleCustomerLogout = handleCustomerLogout;
+
+    function renderCustomerOrdersTab(user) {
+        const nameEl = document.getElementById('cust-profile-fullname');
+        const userEl = document.getElementById('cust-profile-username');
+        const phoneEl = document.getElementById('cust-profile-phone');
+        const addrEl = document.getElementById('cust-profile-address');
+        const countEl = document.getElementById('cust-orders-count');
+        const listEl = document.getElementById('cust-orders-list-body');
+
+        if (nameEl) nameEl.textContent = user.fullName || user.username;
+        if (userEl) userEl.textContent = user.username;
+        if (phoneEl) phoneEl.textContent = user.phone || 'Chưa có SĐT';
+        if (addrEl) addrEl.textContent = user.address || 'Chưa lưu địa chỉ';
+
+        let allOrders = [];
+        try {
+            allOrders = JSON.parse(localStorage.getItem('ocop_online_orders') || '[]');
+        } catch (_) {}
+
+        const myOrders = allOrders.filter(o => 
+            (o.username && String(o.username).toLowerCase() === String(user.username).toLowerCase()) ||
+            (user.phone && o.customerPhone && String(o.customerPhone).replace(/\s/g,'') === String(user.phone).replace(/\s/g,'')) ||
+            (user.fullName && o.customerName === user.fullName)
+        );
+
+        if (countEl) countEl.textContent = myOrders.length + ' đơn hàng';
+
+        if (!listEl) return;
+        if (myOrders.length === 0) {
+            listEl.innerHTML = '<div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-500 font-medium">Bạn chưa có đơn đặt mua online nào. Hãy dạo chợ OCOP và trải nghiệm đặt mua ship tận nơi nhé!</div>';
+            return;
+        }
+
+        listEl.innerHTML = myOrders.map(o => {
+            return '<div class="p-3 bg-white rounded-xl border border-sky-200 shadow-2xs space-y-1.5">' +
+                '<div class="flex items-center justify-between text-xs">' +
+                    '<span class="font-mono font-black text-sky-700">' + o.orderId + '</span>' +
+                    '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">🟡 Chờ xác nhận</span>' +
+                '</div>' +
+                '<div class="font-bold text-slate-900 text-xs truncate">' + o.productName + ' (SL: ' + (o.qty || 1) + ')</div>' +
+                '<div class="text-[11px] text-slate-500 flex items-center justify-between">' +
+                    '<span>Hình thức: <strong class="text-slate-800">' + (o.paymentMethod || 'COD') + '</strong></span>' +
+                    '<span class="text-rose-600 font-black">' + (o.grandTotal ? o.grandTotal.toLocaleString('vi-VN') + ' ₫' : '') + '</span>' +
+                '</div>' +
+                '<div class="text-[10px] text-slate-400">Giao đến: ' + o.shippingAddress + '</div>' +
+            '</div>';
+        }).join('');
+    }
+
+    // Auto-init on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCustomerAccountSystem);
+    } else {
+        initCustomerAccountSystem();
     }
 </script>
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->

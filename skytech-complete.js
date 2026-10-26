@@ -1,3 +1,33 @@
+
+    window.switchOrderPaymentMethod = function (method) {
+        const pBidv = document.getElementById('panel-payment-bidv');
+        const pMomo = document.getElementById('panel-payment-momo');
+        const pCod = document.getElementById('panel-payment-cod');
+        const lBidv = document.getElementById('payment-label-bidv');
+        const lMomo = document.getElementById('payment-label-momo');
+        const lCod = document.getElementById('payment-label-cod');
+
+        if (pBidv) pBidv.classList.toggle('hidden', method !== 'bidv');
+        if (pMomo) pMomo.classList.toggle('hidden', method !== 'momo');
+        if (pCod) pCod.classList.toggle('hidden', method !== 'cod');
+
+        if (lBidv) {
+            lBidv.className = method === 'bidv'
+                ? 'flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition'
+                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-sky-400 transition';
+        }
+        if (lMomo) {
+            lMomo.className = method === 'momo'
+                ? 'flex items-center gap-2 p-2.5 rounded-xl border-2 border-[#D82D8B] bg-pink-50/70 cursor-pointer font-black text-slate-900 transition'
+                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-pink-400 transition';
+        }
+        if (lCod) {
+            lCod.className = method === 'cod'
+                ? 'flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition'
+                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-sky-400 transition';
+        }
+    };
+
 /**
  * MODERN SKY-TECH & CLEAN SAPPHIRE CONTROLLER
  * AI Digital Business Challenge 2026 • OCOP Sales Copilot
@@ -788,6 +818,7 @@
 
         currentOrderProduct = p;
         currentOrderQty = 1;
+        window.currentOrderCode = '' + (8800 + Math.floor(Math.random() * 1100));
 
         const modal = document.getElementById('online-order-modal');
         if (!modal) return;
@@ -817,7 +848,23 @@
         const qtyInput = document.getElementById('order-qty-input');
         if (qtyInput) qtyInput.value = 1;
 
+        // Tự động điền thông tin nếu khách hàng đã đăng nhập
+        const curUser = (typeof window.getCurrentCustomer === 'function') ? window.getCurrentCustomer() : null;
+        if (curUser) {
+            const nameInput = document.getElementById('order-cust-name');
+            const phoneInput = document.getElementById('order-cust-phone');
+            const addrInput = document.getElementById('order-cust-address');
+            if (nameInput && !nameInput.value) nameInput.value = curUser.fullName || '';
+            if (phoneInput && !phoneInput.value) phoneInput.value = curUser.phone || '';
+            if (addrInput && !addrInput.value) addrInput.value = curUser.address || '';
+        }
+
         window.updateOrderCalculations();
+
+        // Default to BIDV payment
+        if (typeof window.switchOrderPaymentMethod === 'function') {
+            window.switchOrderPaymentMethod('bidv');
+        }
 
         modal.classList.remove('hidden');
         modal.style.setProperty('display', 'flex', 'important');
@@ -863,6 +910,32 @@
 
         const grandTotalEl = document.getElementById('calc-grand-total');
         if (grandTotalEl) grandTotalEl.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+
+        // Cập nhật thông tin thanh toán BIDV & MoMo
+        const orderCode = window.currentOrderCode || '8829';
+        const bidvUrl = 'https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=' + grandTotal + '&addInfo=OCOP%20' + orderCode;
+        const momoUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=2|99|0971280030|||0|0|' + grandTotal + '|OCOP%20' + orderCode + '|transfer_myqr';
+
+        const bidvImg = document.getElementById('order-bidv-qr');
+        if (bidvImg) bidvImg.src = bidvUrl;
+
+        const momoImg = document.getElementById('order-momo-qr');
+        if (momoImg) momoImg.src = momoUrl;
+
+        const bidvAmt = document.getElementById('bidv-transfer-amount');
+        if (bidvAmt) bidvAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+
+        const momoAmt = document.getElementById('momo-transfer-amount');
+        if (momoAmt) momoAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+
+        const codAmt = document.getElementById('cod-transfer-amount');
+        if (codAmt) codAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+
+        const bidvMemo = document.getElementById('bidv-transfer-memo');
+        if (bidvMemo) bidvMemo.textContent = 'OCOP ' + orderCode;
+
+        const momoMemo = document.getElementById('momo-transfer-memo');
+        if (momoMemo) momoMemo.textContent = 'OCOP ' + orderCode;
     };
 
     window.submitOnlineOrder = function () {
@@ -895,21 +968,19 @@
         }
 
         const paymentInput = document.querySelector('input[name="order-payment"]:checked');
-        const paymentMethod = paymentInput ? (paymentInput.value === 'vietqr' ? 'Chuyển khoản QR ngân hàng' : 'Thanh toán khi nhận hàng (COD)') : 'COD';
+        let paymentMethod = '🚚 Ship COD';
+        if (paymentInput) {
+            if (paymentInput.value === 'bidv' || paymentInput.value === 'vietqr') {
+                paymentMethod = '🏦 Đã CK BIDV 8808661371';
+            } else if (paymentInput.value === 'momo') {
+                paymentMethod = '📱 Đã CK MoMo 0971280030';
+            } else {
+                paymentMethod = '🚚 Ship COD';
+            }
+        }
 
-        const p = currentOrderProduct;
-        const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(p.id) : null;
-        const storeName = storeInfo ? storeInfo.primaryStore.name : ('Showroom OCOP ' + p.region);
-
-        const unitPrice = p.price || 0;
-        const goodsTotal = unitPrice * currentOrderQty;
-        const shippingFee = 25000;
-        const platformFee = 10000;
-        const webmasterCommission = Math.round(goodsTotal * 0.08);
-        const webmasterProfit = platformFee + webmasterCommission;
-        const grandTotal = goodsTotal + shippingFee + platformFee;
-
-        const orderId = '#OCOP-' + (8800 + Math.floor(Math.random() * 1100));
+        const orderCode = window.currentOrderCode || ('' + (8800 + Math.floor(Math.random() * 1100)));
+        const orderId = '#OCOP-' + orderCode;
 
         const orderData = {
             orderId: orderId,
@@ -918,6 +989,7 @@
             shippingAddress: customerAddress,
             customerNote: customerNote,
             paymentMethod: paymentMethod,
+            username: (typeof window.getCurrentCustomer === 'function' && window.getCurrentCustomer()) ? window.getCurrentCustomer().username : null,
             productId: p.id,
             productName: p.name,
             productImg: p.img,
