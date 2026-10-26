@@ -2824,7 +2824,7 @@
                     <span class="intro-gold-gradient" id="i18n-intro-title2" style="font-size: clamp(0.85rem, 1.5vw, 1.25rem); display: inline-block; color: #0284C7 !important; background: none !important; -webkit-text-fill-color: #0284C7 !important; font-weight: 800 !important;">KHÁM PHÁ ĐẶC SẢN VÙNG MIỀN • TRA CỨU CỬA HÀNG CHÍNH HÃNG • TRỢ LÝ AI TƯ VẤN</span>
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-700 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc" style="color: #1E293B !important; font-size: 1.05rem !important; line-height: 1.6 !important; font-weight: 500 !important;">
-                    Chào mừng bạn đến với không gian trưng bày hơn 252 đặc sản OCOP tiêu biểu từ 63 tỉnh thành Việt Nam. Dễ dàng tìm kiếm sản phẩm chuẩn 3–5 Sao, xem câu chuyện nguồn gốc và tra cứu địa chỉ cửa hàng chính hãng gần bạn nhất.
+                    Chào mừng bạn đến với không gian trưng bày hơn 520 đặc sản OCOP tiêu biểu từ 63 tỉnh thành Việt Nam. Dễ dàng tìm kiếm sản phẩm chuẩn 3–5 Sao, xem câu chuyện nguồn gốc và tra cứu địa chỉ cửa hàng chính hãng gần bạn nhất.
                 </p>
             </div>
 
@@ -3094,7 +3094,7 @@
                         <span id="i18n-hero-title2" data-legacy="Khơi Nguồn Di Sản Việt" style="color: #0284C7 !important;">Chuyển Đổi Số & Bứt Phá Doanh Thu Cùng AI</span>
                     </h2>
                     <p class="text-slate-600 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc" style="color: #334155 !important;">
-                        Nền tảng AI kết nối 2 chiều: Giúp du khách & doanh nghiệp tìm mua 252 đặc sản OCOP 4-5 Sao chính hãng tại 63 tỉnh thành, và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.
+                        Nền tảng AI kết nối 2 chiều: Giúp du khách & doanh nghiệp tìm mua 520+ đặc sản OCOP 4-5 Sao chính hãng tại 63 tỉnh thành, và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.
                     </p>
 
                     <!-- 4 FEATURE CARDS (CLEAN WHITE CARDS) -->
@@ -3125,7 +3125,7 @@
                     <!-- 4 STATS CARDS -->
                     <div class="grid grid-cols-4 gap-2 sm:gap-3 max-w-xl pt-2">
                         <div class="p-2.5 rounded-2xl bg-white border border-sky-200 text-center shadow-sm" style="background: #FFFFFF !important; border: 1px solid #BAE6FD !important;">
-                            <span class="block text-base sm:text-xl font-black" style="color: #0284C7 !important;">252+</span>
+                            <span class="block text-base sm:text-xl font-black" style="color: #0284C7 !important;">520+</span>
                             <span class="text-[9px] sm:text-[10px] font-bold leading-tight" style="color: #334155 !important;" id="i18n-hero-stat1">Đặc Sản OCOP 4-5★</span>
                         </div>
                         <div class="p-2.5 rounded-2xl bg-white border border-sky-200 text-center shadow-sm" style="background: #FFFFFF !important; border: 1px solid #BAE6FD !important;">
@@ -3942,7 +3942,7 @@
                 <div class="flex items-start space-x-2">
                     <img src="chat-avatar.jpg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow" loading="lazy" decoding="async">
                     <div class="bg-white p-3.5 rounded-2xl border border-emerald-100 text-gray-800 shadow-sm leading-relaxed max-w-[88%]">
-                        <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào! Tôi là AI OCOP Sales Copilot — Đồng hành cùng bạn khám phá tinh hoa 252 đặc sản OCOP 63 tỉnh thành, tra cứu mạng lưới điểm bán chính hãng và tư vấn giỏ quà tặng doanh nghiệp.</p>
+                        <p class="font-bold text-ocopGreen" id="chat-greeting">Xin chào! Tôi là AI OCOP Sales Copilot — Đồng hành cùng bạn khám phá tinh hoa 520+ đặc sản OCOP 63 tỉnh thành, tra cứu mạng lưới điểm bán chính hãng và tư vấn giỏ quà tặng doanh nghiệp.</p>
                         <p class="mt-1.5" id="chat-guidance">Bạn có thể nhập tên đặc sản, tỉnh thành cần tìm hoặc chọn nhanh các đề xuất gợi ý bên dưới nhé!</p>
                         <p class="mt-1.5 text-[10px] text-gray-500" id="chat-disclaimer">❖ Hệ thống đã xác thực chứng nhận OCOP Quốc gia • Dữ liệu tọa độ điểm bán đồng bộ real-time.</p>
                     </div>
@@ -6211,7 +6211,21 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             return getProductPriceLabel({ ...product, price: referencePrice, priceMax: referencePrice });
         }
 
-        function renderProducts(items) {
+        let displayedProductCount = 36;
+        const PRODUCT_PAGE_SIZE = 36;
+
+        function loadMoreProducts() {
+            displayedProductCount += PRODUCT_PAGE_SIZE;
+            if (Array.isArray(lastRenderedProducts)) {
+                renderProducts(lastRenderedProducts, true);
+            }
+        }
+        window.loadMoreProducts = loadMoreProducts;
+
+        function renderProducts(items, isAppend = false) {
+            if (!isAppend) {
+                displayedProductCount = PRODUCT_PAGE_SIZE;
+            }
             const heroProduct = products.find(p => p.region.includes('Đồng Nai') && p.name.includes('khổ qua')) || products.find(p => p.id === 525) || products[0];
             if (heroProduct) {
                 const heroNames = {
@@ -6357,7 +6371,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ja: 'AI Copilot アシスタントを開く'
             };
 
-            grid.innerHTML = items.map((p, idx) => {
+            const visibleItems = items.slice(0, displayedProductCount);
+            let cardsHtml = visibleItems.map((p, idx) => {
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
@@ -6495,6 +6510,26 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
                 return cardHtml;
             }).join('');
+
+            if (items.length > displayedProductCount) {
+                cardsHtml += `
+                <div class="col-span-full my-6 flex flex-col items-center justify-center gap-2">
+                    <button type="button" onclick="loadMoreProducts()" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-sky-600 via-blue-600 to-sky-700 hover:from-sky-500 hover:to-blue-500 text-white font-black text-sm shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center gap-2.5 cursor-pointer border-2 border-sky-300/40" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important;">
+                        <span>👇 Xem thêm sản phẩm</span>
+                        <span class="bg-white/20 text-white text-xs px-2.5 py-0.5 rounded-full font-mono">Đang hiển thị ${visibleItems.length} / ${items.length} Đặc sản OCOP</span>
+                    </button>
+                    <p class="text-[11px] text-slate-500 font-medium">Toàn bộ 520+ đặc sản OCOP chính hãng từ 63 tỉnh thành Việt Nam</p>
+                </div>
+                `;
+            } else if (items.length > PRODUCT_PAGE_SIZE) {
+                cardsHtml += `
+                <div class="col-span-full py-4 text-center text-xs text-slate-400 font-bold">
+                    ✨ Đã hiển thị toàn bộ ${items.length} đặc sản OCOP từ 63 tỉnh thành
+                </div>
+                `;
+            }
+
+            grid.innerHTML = cardsHtml;
         }
 
         let productSearchTimer;
@@ -7282,18 +7317,53 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             '<span>📞 <b>' + sPhone + '</b></span>' +
                             '<span>⏰ ' + sHours + '</span>' +
                         '</div>' +
-                        '<p class="text-[10px] text-sky-800 font-semibold line-clamp-1 bg-sky-50 px-2 py-1 rounded-md mb-2" style="background: #F0F9FF !important; color: #0369A1 !important; border: 1px solid #E0F2FE !important;">' +
-                            '🌾 Đặc sản: ' + (s.productName || 'Nông sản OCOP') +
-                        '</p>' +
+                        (function() {
+                            const provItems = (Array.isArray(products) ? products : []).filter(item => {
+                                if (!item) return false;
+                                const r1 = (item.region || '').toLowerCase().trim();
+                                const r2 = (provinceName || '').toLowerCase().trim();
+                                return r1 === r2 || (typeof normalizeProvinceName === 'function' && normalizeProvinceName(r1) === normalizeProvinceName(r2));
+                            });
+                            if (provItems.length === 0) {
+                                return '<p class="text-[10px] text-sky-800 font-semibold line-clamp-1 bg-sky-50 px-2 py-1 rounded-md mb-2" style="background: #F0F9FF !important; color: #0369A1 !important; border: 1px solid #E0F2FE !important;">🌾 Đặc sản: ' + (s.productName || 'Nông sản OCOP') + '</p>';
+                            }
+                            return '<div class="mt-2.5 pt-2 border-t border-sky-100">' +
+                                '<div class="flex items-center justify-between mb-1.5">' +
+                                    '<span class="text-[11px] font-black text-slate-800 flex items-center gap-1" style="color: #0F172A !important;">' +
+                                        '<i class="fa-solid fa-basket-shopping text-sky-600"></i>' +
+                                        '<span>🌾 Danh sách món đang bán (' + provItems.length + ' món OCOP):</span>' +
+                                    '</span>' +
+                                '</div>' +
+                                '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">' +
+                                    provItems.map(item => (
+                                        '<div class="p-2 rounded-lg bg-sky-50/60 border border-sky-200 flex items-center gap-2" style="background: #F0F9FF !important; border: 1px solid #BAE6FD !important;">' +
+                                            '<img src="' + item.img + '" class="w-10 h-10 rounded-md object-contain bg-white p-0.5 border border-sky-200 shrink-0" onerror="this.src=\'images/p1.jpg\'">' +
+                                            '<div class="flex-1 min-w-0">' +
+                                                '<div class="text-[11px] font-black text-slate-800 truncate" title="' + escapeAIHtml(item.name) + '">' + escapeAIHtml(item.name) + '</div>' +
+                                                '<div class="text-[10px] text-red-600 font-bold">' + (item.price ? item.price.toLocaleString('vi-VN') + 'đ' : '') + ' <span class="text-amber-600">⭐ ' + item.stars + '★</span></div>' +
+                                            '</div>' +
+                                            '<button type="button" onclick="openOnlineOrderModal(' + item.id + ')" class="px-2 py-1 rounded-md bg-sky-600 hover:bg-sky-700 text-white text-[10px] font-black shrink-0 transition flex items-center gap-1 shadow-2xs cursor-pointer" style="background: #0284C7 !important; color: #FFFFFF !important;" title="Đặt mua online">' +
+                                                '<i class="fa-solid fa-cart-shopping text-[9px]"></i> Mua' +
+                                            '</button>' +
+                                        '</div>'
+                                    )).join('') +
+                                '</div>' +
+                            '</div>';
+                        })() +
                     '</div>' +
-                    '<div class="pt-2 border-t border-slate-100 flex items-center justify-between" style="border-top: 1px solid #F1F5F9 !important;">' +
+                    '<div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between" style="border-top: 1px solid #F1F5F9 !important;">' +
                         '<a href="' + mapUrl + '" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-black text-sky-600 hover:text-sky-800 hover:underline" style="color: #0284C7 !important;">' +
                             '<span>🗺️ Chỉ đường Google Maps</span>' +
                             '<i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>' +
                         '</a>' +
-                        '<button type="button" onclick="window.askAiAboutStore(' + (s.id || 0) + ')" class="px-2.5 py-1 rounded-lg text-[10px] font-black bg-sky-600 hover:bg-sky-700 text-white transition cursor-pointer" style="background: #0284C7 !important; color: #FFFFFF !important; border-radius: 6px !important;">' +
-                            '💬 Hỏi AI điểm bán' +
-                        '</button>' +
+                        '<div class="flex items-center gap-1.5">' +
+                            '<button type="button" onclick="openStoreLocator(' + (s.id || 0) + ')" class="px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-600 hover:bg-emerald-700 text-white transition cursor-pointer" style="background: #059669 !important; color: #FFFFFF !important; border-radius: 6px !important;">' +
+                                '📍 Chi tiết điểm bán' +
+                            '</button>' +
+                            '<button type="button" onclick="window.askAiAboutStore(' + (s.id || 0) + ')" class="px-2.5 py-1 rounded-lg text-[10px] font-black bg-sky-600 hover:bg-sky-700 text-white transition cursor-pointer" style="background: #0284C7 !important; color: #FFFFFF !important; border-radius: 6px !important;">' +
+                                '💬 Hỏi AI' +
+                            '</button>' +
+                        '</div>' +
                     '</div>' +
                 '</div>';
             }).join('');
@@ -11723,6 +11793,18 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const priceLabel = getProductPriceLabel(p);
             const productName = getProductName(p);
 
+            // Tìm tất cả các món đang bán tại cửa hàng / HTX / Tỉnh này
+            const storeProducts = products.filter(item => {
+                if (!item) return false;
+                if (item.id === p.id) return true;
+                const r1 = (item.region || '').toLowerCase().trim();
+                const r2 = (p.region || '').toLowerCase().trim();
+                if (r1 && r2 && (r1 === r2 || (typeof normalizeProvinceName === 'function' && normalizeProvinceName(r1) === normalizeProvinceName(r2)))) return true;
+                if (store && store.producerName && item.producerName && item.producerName.toLowerCase().includes(store.producerName.toLowerCase())) return true;
+                return false;
+            });
+            const sortedStoreProducts = [p, ...storeProducts.filter(item => item.id !== p.id)];
+
             body.innerHTML = `
                 <!-- Thông tin tóm tắt sản phẩm -->
                 <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-white border border-amber-200/90 shadow-sm">
@@ -11841,6 +11923,38 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             </div>
                         </div>
                     `).join('') : ''}
+                </div>
+
+                <!-- Danh sách tất cả các món đang bán tại Cửa hàng / HTX -->
+                <div class="p-4 rounded-2xl bg-white border-2 border-sky-300 shadow-sm space-y-3" style="background: #FFFFFF !important; border: 2px solid #38BDF8 !important;">
+                    <div class="flex items-center justify-between pb-2 border-b border-sky-100" style="border-bottom: 1px solid #BAE6FD !important;">
+                        <h4 class="font-black text-xs sm:text-sm uppercase flex items-center gap-2" style="color: #0F172A !important;">
+                            <i class="fa-solid fa-basket-shopping text-sky-600"></i>
+                            <span>DANH SÁCH MÓN ĐANG BÁN TẠI CỬA HÀNG (${sortedStoreProducts.length} MÓN ĐẶC SẢN)</span>
+                        </h4>
+                        <span class="text-[10px] font-black px-2.5 py-0.5 rounded-full" style="background: #E0F2FE !important; color: #0369A1 !important; border: 1px solid #BAE6FD !important;">
+                            🌾 Phân phối chính hãng • ${p.region}
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-80 overflow-y-auto pr-1">
+                        ${sortedStoreProducts.map(item => `
+                            <div class="p-2.5 rounded-xl border ${item.id === p.id ? 'border-sky-500 bg-sky-50/70 ring-1 ring-sky-400' : 'border-slate-200 bg-white hover:border-sky-300'} shadow-2xs flex items-center gap-3 transition">
+                                <img src="${item.img}" alt="${escapeAIHtml(item.name)}" class="w-14 h-14 rounded-lg object-contain bg-slate-50 p-1 border border-slate-200 shrink-0" onerror="this.src='images/p1.jpg'">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-1.5 mb-0.5">
+                                        <span class="text-[10px] font-black text-amber-600 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">⭐ ${item.stars}★</span>
+                                        ${item.id === p.id ? '<span class="text-[9px] font-black bg-sky-600 text-white px-1.5 py-0.2 rounded">Đang xem</span>' : ''}
+                                    </div>
+                                    <h5 class="text-xs font-black text-slate-900 truncate" title="${escapeAIHtml(item.name)}">${escapeAIHtml(item.name)}</h5>
+                                    <div class="text-xs font-black text-red-600">${item.price ? item.price.toLocaleString('vi-VN') + 'đ' : ''} <span class="text-[10px] text-slate-500 font-normal">/ ${item.packaging || 'hộp'}</span></div>
+                                    <button type="button" onclick="closeStoreLocator(); openOnlineOrderModal(${item.id});" class="mt-1 w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white font-black text-[11px] py-1 px-2 rounded-lg flex items-center justify-center gap-1 shadow-2xs transition cursor-pointer" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important;">
+                                        <i class="fa-solid fa-cart-shopping text-[10px]"></i>
+                                        <span>🛒 Mua Online</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
 
                 <!-- Footer Modal: Hướng dẫn & Đặt mua trực tiếp -->
