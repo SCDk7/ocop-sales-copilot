@@ -6998,26 +6998,36 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         let activeLeafletRedPin = null;
 
-        function placeLeafletRedPin(latlng) {
+        function placeLeafletRedPin(latlng, provName) {
             if (activeLeafletRedPin && provinceMap) {
                 try { provinceMap.removeLayer(activeLeafletRedPin); } catch (e) {}
                 activeLeafletRedPin = null;
             }
             if (!provinceMap || !latlng || typeof L === 'undefined') return;
 
+            const pName = provName || (selectedProvince ? selectedProvince.name : 'Đặc sản OCOP');
             const redPinIcon = L.divIcon({
                 className: 'leaflet-red-pin-wrapper',
-                html: '<div class="pin-ripple-pulse"></div>' +
-                      '<svg width="34" height="46" viewBox="0 0 34 46" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-                      '<path d="M17 0C7.61 0 0 7.61 0 17C0 29.75 17 46 17 46C17 46 34 29.75 34 17C34 7.61 26.39 0 17 0Z" fill="#DC2626"/>' +
+                html: '<div class="svg-pin-pulse-wave"></div>' +
+                      '<div class="svg-active-red-pin-drop" style="display:flex;flex-direction:column;align-items:center;">' +
+                      '<div style="background:#B91C1C;color:#FFFFFF;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:900;border:1px solid #FDE047;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.6);margin-bottom:2px;">📍 ' + pName.toUpperCase() + '</div>' +
+                      '<svg width="34" height="44" viewBox="0 0 34 44" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                      '<path d="M17 0C7.61 0 0 7.61 0 17C0 29.75 17 44 17 44C17 44 34 29.75 34 17C34 7.61 26.39 0 17 0Z" fill="#DC2626"/>' +
                       '<circle cx="17" cy="17" r="7.5" fill="#FFFFFF"/>' +
                       '<circle cx="17" cy="17" r="4.5" fill="#DC2626"/>' +
-                      '</svg>',
-                iconSize: [34, 46],
-                iconAnchor: [17, 46]
+                      '</svg>' +
+                      '</div>',
+                iconSize: [120, 68],
+                iconAnchor: [60, 68]
             });
 
             activeLeafletRedPin = L.marker(latlng, { icon: redPinIcon, zIndexOffset: 2000 }).addTo(provinceMap);
+            activeLeafletRedPin.bindPopup(
+                '<div style="text-align:center;padding:4px;font-family:sans-serif;">' +
+                '<b style="color:#0C4A6E;font-size:13px;">📍 ' + pName + '</b><br>' +
+                '<span style="font-size:11px;color:#0369A1;font-weight:700;">Đặc sản chứng nhận OCOP &amp; Showroom phân phối</span>' +
+                '</div>'
+            ).openPopup();
         }
 
         function removeLeafletRedPin() {
@@ -7114,69 +7124,36 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         async function initializeProvinceMap() {
             const status = document.getElementById('province-selection-status');
+            const mapContainer = document.getElementById('province-map');
+            if (!mapContainer) return;
+
             if (!window.L) {
-                const mapErrMap = {
-                    vi: 'Không tải được thư viện bản đồ. Vui lòng tải lại trang.',
-                    en: 'The map library could not be loaded. Refresh the page to try again.',
-                    zh: '无法加载地图库。请刷新页面重试。',
-                    ko: '지도 라이브러리를 로드할 수 없습니다. 페이지를 새로고침하세요.',
-                    ja: '地図ライブラリを読み込めませんでした。ページを更新してください。'
-                };
-                status.textContent = mapErrMap[currentLanguage] || mapErrMap.vi;
-                console.error('Leaflet is unavailable; the province map could not be initialized.');
+                console.warn('Leaflet is not yet loaded, retrying in 200ms...');
+                setTimeout(initializeProvinceMap, 200);
+                return;
+            }
+
+            if (provinceMap) {
+                try { provinceMap.invalidateSize(); } catch (e) {}
                 return;
             }
 
             try {
-                const response = await fetch('./data/vietnam-provinces.geojson');
-                if (!response.ok) throw new Error(`Province GeoJSON request failed with HTTP ${response.status}.`);
-                const provinceData = await response.json();
-                if (!Array.isArray(provinceData.features) || provinceData.features.length !== 63) {
-                    throw new Error(`Expected 63 province features; received ${provinceData.features?.length ?? 0}.`);
-                }
-                if (provinceData.features.some(feature => !feature.properties?.id || !feature.properties?.name)) {
-                    throw new Error('Province GeoJSON contains a feature without an ID or name.');
-                }
-                const provinceSelect = document.getElementById('province-map-select');
-                provinceData.features.forEach(feature => {
-                    const option = document.createElement('option');
-                    option.value = feature.properties.id;
-                    option.textContent = feature.properties.name;
-                    provinceSelect.append(option);
-                });
-                provinceSelect.disabled = false;
-                const islandsResponse = await fetch('./data/vietnam-islands.geojson');
-                if (!islandsResponse.ok) throw new Error(`Island GeoJSON request failed with HTTP ${islandsResponse.status}.`);
-                const islandsData = await islandsResponse.json();
-                const islandOutlines = islandsData.features?.filter(feature => feature.properties?.kind === 'outline') ?? [];
-                const islandReferences = islandsData.features?.filter(feature => feature.properties?.kind === 'reference') ?? [];
-                if (islandOutlines.length !== 2 || islandReferences.length !== 2
-                    || islandOutlines.some(feature =>
-                        feature.geometry?.type !== 'MultiPolygon'
-                        || !feature.properties?.id
-                        || !feature.properties?.name
-                        || feature.geometry.coordinates?.length === 0
-                    )
-                    || islandReferences.some(feature =>
-                        feature.geometry?.type !== 'Point'
-                        || !feature.properties?.id
-                        || !feature.properties?.name
-                        || feature.geometry.coordinates?.length !== 2
-                    )) {
-                    throw new Error('Island GeoJSON must contain two named MultiPolygon outlines and two reference points.');
-                }
-                const islandBoundsById = new Map(islandOutlines.map(feature => [
-                    feature.properties.id.replace(/-outline$/, ''),
-                    L.geoJSON(feature).getBounds()
-                ]));
-
-                // CARTO Dark-Navy No-Labels tile layer (Clean, ZERO foreign labels / No East Sea foreign text)
-                const darkNavyLayer = L.tileLayer(
-                    'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+                // 1. ESRI WORLD IMAGERY SATELLITE TILES (Ảnh chụp vệ tinh Trái Đất thật sắc nét)
+                const satelliteLayer = L.tileLayer(
+                    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
                     {
-                        subdomains: 'abcd',
-                        maxZoom: 19,
-                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                        maxZoom: 18,
+                        attribution: '&copy; <a href="https://www.esri.com/" target="_blank" rel="noopener noreferrer">Esri World Imagery</a>'
+                    }
+                );
+
+                // 2. ESRI WORLD BOUNDARIES AND PLACES (Ranh giới & địa danh nổi bật trên nền vệ tinh)
+                const boundaryPlacesLayer = L.tileLayer(
+                    'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+                    {
+                        maxZoom: 18,
+                        attribution: ''
                     }
                 );
 
@@ -7184,17 +7161,22 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     center: [16.0, 107.8],
                     zoom: 5.5,
                     minZoom: 4.8,
-                    maxZoom: 13,
-                    layers: [darkNavyLayer],
+                    maxZoom: 14,
+                    layers: [satelliteLayer, boundaryPlacesLayer],
                     scrollWheelZoom: false,
                     zoomControl: true
                 });
                 window.provinceMap = provinceMap;
 
-                // 1. CHỦ QUYỀN BIỂN ĐÔNG (Chữ in hoa cố định màu xanh sáng/trắng)
+                // Fix Leaflet sizing / blank container
+                setTimeout(() => { if (provinceMap) provinceMap.invalidateSize(); }, 200);
+                setTimeout(() => { if (provinceMap) provinceMap.invalidateSize(); }, 600);
+                setTimeout(() => { if (provinceMap) provinceMap.invalidateSize(); }, 1200);
+
+                // 1. CHỦ QUYỀN BIỂN ĐÔNG (Chữ in hoa cố định màu trắng viền đen dễ đọc trên nền vệ tinh)
                 const bienDongIcon = L.divIcon({
                     className: 'bien-dong-label',
-                    html: '<span style="font-size: 13px; font-weight: 900; letter-spacing: 3px; color: #38BDF8; text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 10px rgba(56,189,248,0.7); text-transform: uppercase;">BIỂN ĐÔNG</span>',
+                    html: '<span style="font-size: 14px; font-weight: 900; letter-spacing: 3px; color: #FFFFFF; text-shadow: 0 2px 8px rgba(0,0,0,0.95), 0 0 12px rgba(56,189,248,0.9); text-transform: uppercase;">BIỂN ĐÔNG</span>',
                     iconSize: [140, 24],
                     iconAnchor: [70, 12]
                 });
@@ -7203,14 +7185,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 // 2. QUẦN ĐẢO HOÀNG SA (Đà Nẵng - Việt Nam)
                 const hoangSaIcon = L.divIcon({
                     className: 'sovereign-island-marker',
-                    html: '<div class="sovereign-island-badge" style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; background: rgba(15, 23, 42, 0.9); border: 1.5px solid #F59E0B; border-radius: 999px; box-shadow: 0 4px 12px rgba(0,0,0,0.6); color: #FFFFFF; font-size: 10.5px; font-weight: 800; white-space: nowrap; cursor: pointer;">' +
-                          '<span>🇻🇳</span><span style="color: #FEF08A; font-weight: 900;">Quần đảo Hoàng Sa</span><span style="color: #93C5FD; font-size: 9px;">(Đà Nẵng - VN)</span>' +
+                    html: '<div class="sovereign-island-badge" style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; background: rgba(15, 23, 42, 0.88); border: 1.5px solid #F59E0B; border-radius: 999px; box-shadow: 0 4px 12px rgba(0,0,0,0.6); color: #FFFFFF; font-size: 11px; font-weight: 800; white-space: nowrap; cursor: pointer;">' +
+                          '<span>🇻🇳</span><span style="color: #FEF08A; font-weight: 900;">Quần đảo Hoàng Sa</span><span style="color: #93C5FD; font-size: 9.5px;">(Đà Nẵng - VN)</span>' +
                           '</div>',
-                    iconSize: [210, 28],
-                    iconAnchor: [105, 14]
+                    iconSize: [230, 28],
+                    iconAnchor: [115, 14]
                 });
                 L.marker([16.5, 112.0], { icon: hoangSaIcon }).addTo(provinceMap).on('click', () => {
-                    provinceMap.flyTo([16.5, 112.0], 8, { duration: 1.2 });
+                    provinceMap.flyTo([16.5, 112.0], 8.5, { duration: 1.2 });
                     if (typeof showToast === 'function') {
                         showToast('🇻🇳 Quần đảo Hoàng Sa thuộc chủ quyền thiêng liêng của nước CHXHCN Việt Nam (Trực thuộc TP. Đà Nẵng)', 'info');
                     }
@@ -7219,14 +7201,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 // 3. QUẦN ĐẢO TRƯỜNG SA (Khánh Hòa - Việt Nam)
                 const truongSaIcon = L.divIcon({
                     className: 'sovereign-island-marker',
-                    html: '<div class="sovereign-island-badge" style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; background: rgba(15, 23, 42, 0.9); border: 1.5px solid #F59E0B; border-radius: 999px; box-shadow: 0 4px 12px rgba(0,0,0,0.6); color: #FFFFFF; font-size: 10.5px; font-weight: 800; white-space: nowrap; cursor: pointer;">' +
-                          '<span>🇻🇳</span><span style="color: #FEF08A; font-weight: 900;">Quần đảo Trường Sa</span><span style="color: #93C5FD; font-size: 9px;">(Khánh Hòa - VN)</span>' +
+                    html: '<div class="sovereign-island-badge" style="display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; background: rgba(15, 23, 42, 0.88); border: 1.5px solid #F59E0B; border-radius: 999px; box-shadow: 0 4px 12px rgba(0,0,0,0.6); color: #FFFFFF; font-size: 11px; font-weight: 800; white-space: nowrap; cursor: pointer;">' +
+                          '<span>🇻🇳</span><span style="color: #FEF08A; font-weight: 900;">Quần đảo Trường Sa</span><span style="color: #93C5FD; font-size: 9.5px;">(Khánh Hòa - VN)</span>' +
                           '</div>',
-                    iconSize: [210, 28],
-                    iconAnchor: [105, 14]
+                    iconSize: [230, 28],
+                    iconAnchor: [115, 14]
                 });
                 L.marker([10.0, 114.0], { icon: truongSaIcon }).addTo(provinceMap).on('click', () => {
-                    provinceMap.flyTo([10.0, 114.0], 8, { duration: 1.2 });
+                    provinceMap.flyTo([10.0, 114.0], 8.5, { duration: 1.2 });
                     if (typeof showToast === 'function') {
                         showToast('🇻🇳 Quần đảo Trường Sa thuộc chủ quyền thiêng liêng của nước CHXHCN Việt Nam (Trực thuộc tỉnh Khánh Hòa)', 'info');
                     }
@@ -7235,122 +7217,97 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 // 4. ĐẢO PHÚ QUỐC
                 const phuQuocIcon = L.divIcon({
                     className: 'sovereign-island-marker',
-                    html: '<div style="display: inline-flex; align-items: center; padding: 3px 8px; background: rgba(15, 23, 42, 0.85); border: 1px solid #38BDF8; border-radius: 999px; color: #E0F2FE; font-size: 9.5px; font-weight: 700; white-space: nowrap; cursor: pointer;">' +
+                    html: '<div style="display: inline-flex; align-items: center; padding: 3px 8px; background: rgba(15, 23, 42, 0.85); border: 1.2px solid #38BDF8; border-radius: 999px; color: #E0F2FE; font-size: 10px; font-weight: 800; white-space: nowrap; cursor: pointer;">' +
                           '<span>🏝️ Đảo Phú Quốc</span></div>',
-                    iconSize: [110, 22],
-                    iconAnchor: [55, 11]
+                    iconSize: [115, 22],
+                    iconAnchor: [57, 11]
                 });
                 L.marker([10.22, 103.96], { icon: phuQuocIcon }).addTo(provinceMap).on('click', () => {
-                    selectProvinceById('VN-47');
+                    selectProvinceById('VN-60');
                 });
 
                 // 5. CÔN ĐẢO
                 const conDaoIcon = L.divIcon({
                     className: 'sovereign-island-marker',
-                    html: '<div style="display: inline-flex; align-items: center; padding: 3px 8px; background: rgba(15, 23, 42, 0.85); border: 1px solid #38BDF8; border-radius: 999px; color: #E0F2FE; font-size: 9.5px; font-weight: 700; white-space: nowrap; cursor: pointer;">' +
+                    html: '<div style="display: inline-flex; align-items: center; padding: 3px 8px; background: rgba(15, 23, 42, 0.85); border: 1.2px solid #38BDF8; border-radius: 999px; color: #E0F2FE; font-size: 10px; font-weight: 800; white-space: nowrap; cursor: pointer;">' +
                           '<span>🏝️ Côn Đảo</span></div>',
-                    iconSize: [85, 22],
-                    iconAnchor: [42, 11]
+                    iconSize: [90, 22],
+                    iconAnchor: [45, 11]
                 });
                 L.marker([8.68, 106.60], { icon: conDaoIcon }).addTo(provinceMap).on('click', () => {
-                    selectProvinceById('VN-43');
+                    selectProvinceById('VN-48');
                 });
 
-                provinceBoundaryLayer = L.geoJSON(provinceData, {
-                    style: getProvinceStyle,
-                    attribution: '<a href="https://www.geoboundaries.org/" target="_blank" rel="noopener noreferrer">geoBoundaries</a> · CC BY 4.0',
-                    onEachFeature: (feature, layer) => {
-                        layer.bindTooltip(feature.properties.name, {
-                            sticky: true,
-                            className: 'province-name-tooltip'
-                        });
-                        layer.on({
-                            mouseover: event => event.target.setStyle(
-                                selectedProvince?.id === feature.properties.id
-                                    ? getProvinceStyle(feature)
-                                    : { weight: 2.5, fillOpacity: 0.88 }
-                            ),
-                            mouseout: event => provinceBoundaryLayer.resetStyle(event.target),
-                            click: () => selectProvince(feature.properties)
-                        });
-                    }
-                }).addTo(provinceMap);
+                // Fetch GeoJSON boundaries safely
+                try {
+                    const response = await fetch('./data/vietnam-provinces.geojson');
+                    if (response.ok) {
+                        const provinceData = await response.json();
+                        const provinceSelect = document.getElementById('province-map-select');
+                        if (provinceSelect && provinceSelect.options.length <= 1) {
+                            provinceData.features.forEach(feature => {
+                                const option = document.createElement('option');
+                                option.value = feature.properties.id;
+                                option.textContent = feature.properties.name;
+                                provinceSelect.append(option);
+                            });
+                            provinceSelect.disabled = false;
+                        }
 
-                const islandReferenceLayer = L.geoJSON(islandsData, {
-                    attribution: '<a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener noreferrer">Natural Earth</a> · Public domain',
-                    style: feature => feature.properties.kind === 'outline'
-                        ? {
-                            color: '#fff4c2',
-                            weight: 2.2,
-                            opacity: 1,
-                            fillColor: '#d4af37',
-                            fillOpacity: 0.76
-                        }
-                        : {},
-                    pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
-                        radius: 7,
-                        color: '#fffdf7',
-                        weight: 2,
-                        fillColor: '#d4af37',
-                        fillOpacity: 1
-                    }),
-                    onEachFeature: (feature, layer) => {
-                        const name = (currentLanguage !== 'vi' && feature.properties.nameEn)
-                            ? feature.properties.nameEn
-                            : feature.properties.name;
-                        const outlineDescMap = {
-                            vi: 'Đường viền địa hình đảo · Natural Earth',
-                            en: 'Physical island outlines · Natural Earth',
-                            zh: '岛屿地形轮廓 · Natural Earth',
-                            ko: '도서 지형 윤곽 · Natural Earth',
-                            ja: '島嶼地形の輪郭 · Natural Earth'
-                        };
-                        const refDescMap = {
-                            vi: 'Điểm tham chiếu đặt nhãn địa lý',
-                            en: 'Geographic label reference point',
-                            zh: '地理标签参考点',
-                            ko: '지리 라벨 기준점',
-                            ja: '地理ラベルの参照点'
-                        };
-                        if (feature.properties.kind === 'outline') {
-                            layer.bindPopup(
-                                `<strong>${name}</strong><br><span>${outlineDescMap[currentLanguage] || outlineDescMap.vi}</span>`
-                            );
-                            layer.on('click', () => provinceMap.fitBounds(layer.getBounds(), { padding: [32, 32], maxZoom: 10 }));
-                            return;
-                        }
-                        layer.bindTooltip(name, {
-                            permanent: true,
-                            direction: 'right',
-                            className: 'province-island-label',
-                            offset: [8, 0]
-                        });
-                        layer.bindPopup(`<strong>${name}</strong><br><span>${refDescMap[currentLanguage] || refDescMap.vi}</span>`);
-                        const islandBounds = islandBoundsById.get(feature.properties.id);
-                        if (islandBounds) {
-                            layer.on('click', () => provinceMap.fitBounds(islandBounds, { padding: [32, 32], maxZoom: 10 }));
-                        }
+                        provinceBoundaryLayer = L.geoJSON(provinceData, {
+                            style: {
+                                color: '#38BDF8',
+                                weight: 1.5,
+                                opacity: 0.85,
+                                fillOpacity: 0.08
+                            },
+                            onEachFeature: (feature, layer) => {
+                                layer.bindTooltip(feature.properties.name, {
+                                    sticky: true,
+                                    className: 'province-name-tooltip'
+                                });
+                                layer.on({
+                                    mouseover: e => e.target.setStyle({ weight: 2.5, fillOpacity: 0.25, color: '#FDE047' }),
+                                    mouseout: e => provinceBoundaryLayer.resetStyle(e.target),
+                                    click: () => selectProvince(feature.properties)
+                                });
+                            }
+                        }).addTo(provinceMap);
                     }
-                }).addTo(provinceMap);
+                } catch (geoErr) {
+                    console.log('Local GeoJSON boundary fetch skipped or offline, using satellite direct navigation.');
+                }
 
-                provinceMap.fitBounds(
-                    L.featureGroup([provinceBoundaryLayer, islandReferenceLayer]).getBounds(),
-                    { padding: [24, 24], maxZoom: 7 }
-                );
-                window.setTimeout(() => provinceMap.invalidateSize(), 250);
-                updateProvinceSelectionStatus();
-            } catch (error) {
-                console.error('Unable to initialize the Vietnam province map:', error);
-                const mapLoadErrMap = {
-                    vi: 'Không thể tải bản đồ tỉnh/thành. Vui lòng kiểm tra kết nối và tải lại trang.',
-                    en: 'The province map could not be loaded. Check your connection and refresh the page.',
-                    zh: '无法加载省市地图。请检查网络连接并刷新页面。',
-                    ko: '성/시 지도를 로드할 수 없습니다. 연결 상태를 확인하고 페이지를 새로고침하세요.',
-                    ja: '省・市地図を読み込めませんでした。通信環境を確認し、ページを更新してください。'
-                };
-                status.textContent = mapLoadErrMap[currentLanguage] || mapLoadErrMap.vi;
+                try {
+                    const islandsResponse = await fetch('./data/vietnam-islands.geojson');
+                    if (islandsResponse.ok) {
+                        const islandsData = await islandsResponse.json();
+                        L.geoJSON(islandsData, {
+                            style: feature => feature.properties.kind === 'outline'
+                                ? { color: '#FDE047', weight: 2, opacity: 1, fillOpacity: 0.4 }
+                                : {},
+                            pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
+                                radius: 6,
+                                color: '#FFFFFF',
+                                weight: 1.5,
+                                fillColor: '#FDE047',
+                                fillOpacity: 1
+                            })
+                        }).addTo(provinceMap);
+                    }
+                } catch (islErr) {}
+
+                if (status) {
+                    status.textContent = 'Bản đồ vệ tinh Trái Đất 63 tỉnh thành sẵn sàng • Nhấp chọn tỉnh để xem showroom';
+                    status.style.color = '#0284C7';
+                    status.style.fontWeight = '700';
+                }
+            } catch (err) {
+                console.error('Error initializing Satellite map:', err);
             }
         }
+
+        window.initializeProvinceMap = initializeProvinceMap;
 
         function handleSearchKeydown(event) {
             if (event.key === 'Escape') {

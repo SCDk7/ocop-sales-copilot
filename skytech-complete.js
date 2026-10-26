@@ -212,90 +212,91 @@
     };
 
     // =========================================================================
-    // 3. HIGH-PRECISION INTERACTIVE GEO-MAP SVG (0ms, 100% OFFLINE, DARK-NAVY #0B2239)
+    // 3. REAL SATELLITE MAP CONTROLLER (ESRI WORLD IMAGERY + LEAFLET.JS)
     // =========================================================================
 
-    // All 63 Provinces mapped with geographic pixel coordinates on 650x780 viewBox
-    const VN_63_COORDINATES = {
-        'Lai Châu': { x: 155, y: 85, id: 'VN-01' },
-        'Điện Biên': { x: 135, y: 110, id: 'VN-02' },
-        'Lào Cai': { x: 195, y: 75, id: 'VN-03' },
-        'Hà Giang': { x: 235, y: 60, id: 'VN-04' },
-        'Sơn La': { x: 175, y: 135, id: 'VN-05' },
-        'Yên Bái': { x: 215, y: 105, id: 'VN-06' },
-        'Cao Bằng': { x: 285, y: 65, id: 'VN-07' },
-        'Bắc Kạn': { x: 265, y: 90, id: 'VN-08' },
-        'Lạng Sơn': { x: 305, y: 105, id: 'VN-09' },
-        'Tuyên Quang': { x: 245, y: 95, id: 'VN-10' },
-        'Thái Nguyên': { x: 270, y: 115, id: 'VN-11' },
-        'Phú Thọ': { x: 230, y: 125, id: 'VN-12' },
-        'Vĩnh Phúc': { x: 255, y: 125, id: 'VN-13' },
-        'Bắc Giang': { x: 290, y: 120, id: 'VN-14' },
-        'Bắc Ninh': { x: 275, y: 130, id: 'VN-15' },
-        'Quảng Ninh': { x: 340, y: 125, id: 'VN-16' },
-        'Hà Nội': { x: 265, y: 138, id: 'VN-HN' },
-        'Hải Dương': { x: 290, y: 138, id: 'VN-18' },
-        'Hải Phòng': { x: 315, y: 142, id: 'VN-HP' },
-        'Hưng Yên': { x: 275, y: 148, id: 'VN-20' },
-        'Hà Nam': { x: 265, y: 158, id: 'VN-21' },
-        'Nam Định': { x: 285, y: 165, id: 'VN-22' },
-        'Thái Bình': { x: 298, y: 156, id: 'VN-23' },
-        'Ninh Bình': { x: 255, y: 175, id: 'VN-24' },
-        'Thanh Hóa': { x: 240, y: 200, id: 'VN-25' },
-        'Nghệ An': { x: 245, y: 235, id: 'VN-26' },
-        'Hà Tĩnh': { x: 270, y: 265, id: 'VN-27' },
-        'Quảng Bình': { x: 290, y: 300, id: 'VN-28' },
-        'Quảng Trị': { x: 315, y: 330, id: 'VN-29' },
-        'Thừa Thiên Huế': { x: 340, y: 355, id: 'VN-30' },
-        'Đà Nẵng': { x: 370, y: 375, id: 'VN-DN' },
-        'Quảng Nam': { x: 375, y: 405, id: 'VN-32' },
-        'Quảng Ngãi': { x: 395, y: 435, id: 'VN-33' },
-        'Kon Tum': { x: 345, y: 440, id: 'VN-34' },
-        'Bình Định': { x: 410, y: 470, id: 'VN-35' },
-        'Gia Lai': { x: 355, y: 480, id: 'VN-37' },
-        'Phú Yên': { x: 418, y: 505, id: 'VN-36' },
-        'Đắk Lắk': { x: 350, y: 525, id: 'VN-38' },
-        'Khánh Hòa': { x: 425, y: 545, id: 'VN-KH' },
-        'Đắk Nông': { x: 325, y: 560, id: 'VN-40' },
-        'Lâm Đồng': { x: 370, y: 575, id: 'VN-35' },
-        'Ninh Thuận': { x: 410, y: 585, id: 'VN-42' },
-        'Bình Phước': { x: 285, y: 590, id: 'VN-43' },
-        'Tây Ninh': { x: 255, y: 615, id: 'VN-44' },
-        'Bình Dương': { x: 295, y: 620, id: 'VN-45' },
-        'Đồng Nai': { x: 325, y: 625, id: 'VN-39' },
-        'Bình Thuận': { x: 390, y: 625, id: 'VN-47' },
-        'Bà Rịa - Vũng Tàu': { x: 320, y: 660, id: 'VN-48' },
-        'TP. Hồ Chí Minh': { x: 285, y: 645, id: 'VN-SG' },
-        'Long An': { x: 260, y: 655, id: 'VN-51' },
-        'Tiền Giang': { x: 275, y: 675, id: 'VN-52' },
-        'Bến Tre': { x: 290, y: 690, id: 'VN-50' },
-        'Đồng Tháp': { x: 235, y: 665, id: 'VN-53' },
-        'Vĩnh Long': { x: 260, y: 690, id: 'VN-55' },
-        'Trà Vinh': { x: 285, y: 710, id: 'VN-54' },
-        'An Giang': { x: 205, y: 675, id: 'VN-56' },
-        'Cần Thơ': { x: 245, y: 705, id: 'VN-CT' },
-        'Hậu Giang': { x: 240, y: 725, id: 'VN-58' },
-        'Sóc Trăng': { x: 265, y: 735, id: 'VN-59' },
-        'Kiên Giang': { x: 185, y: 710, id: 'VN-60' },
-        'Bạc Liêu': { x: 245, y: 755, id: 'VN-61' },
-        'Cà Mau': { x: 215, y: 770, id: 'VN-62' }
+    // All 63 Provinces mapped with geographic (Latitude, Longitude) coordinates
+    const VN_PROVINCE_LATLNG = {
+        'Hà Nội': { lat: 21.0285, lng: 105.8542, id: 'VN-HN' },
+        'Đồng Nai': { lat: 10.9574, lng: 106.8427, id: 'VN-39' },
+        'TP. Hồ Chí Minh': { lat: 10.8231, lng: 106.6297, id: 'VN-SG' },
+        'Đà Nẵng': { lat: 16.0544, lng: 108.2022, id: 'VN-DN' },
+        'Hải Phòng': { lat: 20.8449, lng: 106.6881, id: 'VN-HP' },
+        'Cần Thơ': { lat: 10.0452, lng: 105.7469, id: 'VN-CT' },
+        'Lâm Đồng': { lat: 11.9404, lng: 108.4583, id: 'VN-35' },
+        'Lai Châu': { lat: 22.3963, lng: 103.4682, id: 'VN-01' },
+        'Điện Biên': { lat: 21.3869, lng: 103.0233, id: 'VN-02' },
+        'Lào Cai': { lat: 22.4856, lng: 103.9707, id: 'VN-03' },
+        'Hà Giang': { lat: 22.8233, lng: 104.9839, id: 'VN-04' },
+        'Sơn La': { lat: 21.3283, lng: 103.9148, id: 'VN-05' },
+        'Yên Bái': { lat: 21.7167, lng: 104.8986, id: 'VN-06' },
+        'Cao Bằng': { lat: 22.6667, lng: 106.2500, id: 'VN-07' },
+        'Bắc Kạn': { lat: 22.1472, lng: 105.8347, id: 'VN-08' },
+        'Lạng Sơn': { lat: 21.8536, lng: 106.7622, id: 'VN-09' },
+        'Tuyên Quang': { lat: 21.8233, lng: 105.2181, id: 'VN-10' },
+        'Thái Nguyên': { lat: 21.5942, lng: 105.8481, id: 'VN-11' },
+        'Phú Thọ': { lat: 21.3228, lng: 105.2280, id: 'VN-12' },
+        'Vĩnh Phúc': { lat: 21.3089, lng: 105.6049, id: 'VN-13' },
+        'Bắc Giang': { lat: 21.2731, lng: 106.1946, id: 'VN-14' },
+        'Bắc Ninh': { lat: 21.1861, lng: 106.0763, id: 'VN-15' },
+        'Quảng Ninh': { lat: 20.9505, lng: 107.0734, id: 'VN-16' },
+        'Hải Dương': { lat: 20.9409, lng: 106.3330, id: 'VN-18' },
+        'Hưng Yên': { lat: 20.6508, lng: 106.0514, id: 'VN-20' },
+        'Hà Nam': { lat: 20.5835, lng: 105.9229, id: 'VN-21' },
+        'Nam Định': { lat: 20.4200, lng: 106.1683, id: 'VN-22' },
+        'Thái Bình': { lat: 20.4464, lng: 106.3366, id: 'VN-23' },
+        'Ninh Bình': { lat: 20.2506, lng: 105.9745, id: 'VN-24' },
+        'Thanh Hóa': { lat: 19.8067, lng: 105.7852, id: 'VN-25' },
+        'Nghệ An': { lat: 18.6734, lng: 105.6813, id: 'VN-26' },
+        'Hà Tĩnh': { lat: 18.3560, lng: 105.9059, id: 'VN-27' },
+        'Quảng Bình': { lat: 17.4690, lng: 106.6225, id: 'VN-28' },
+        'Quảng Trị': { lat: 16.7500, lng: 107.1855, id: 'VN-29' },
+        'Thừa Thiên Huế': { lat: 16.4637, lng: 107.5909, id: 'VN-30' },
+        'Quảng Nam': { lat: 15.5683, lng: 108.4750, id: 'VN-32' },
+        'Quảng Ngãi': { lat: 15.1205, lng: 108.7923, id: 'VN-33' },
+        'Bình Định': { lat: 13.7820, lng: 109.2197, id: 'VN-31' },
+        'Phú Yên': { lat: 13.0882, lng: 109.3134, id: 'VN-36' },
+        'Khánh Hòa': { lat: 12.2388, lng: 109.1967, id: 'VN-KH' },
+        'Ninh Thuận': { lat: 11.5653, lng: 108.9882, id: 'VN-42' },
+        'Bình Thuận': { lat: 10.9333, lng: 108.1000, id: 'VN-47' },
+        'Kon Tum': { lat: 14.3541, lng: 108.0076, id: 'VN-34' },
+        'Gia Lai': { lat: 13.9833, lng: 108.0000, id: 'VN-37' },
+        'Đắk Lắk': { lat: 12.6667, lng: 108.0500, id: 'VN-38' },
+        'Đắk Nông': { lat: 12.0041, lng: 107.6875, id: 'VN-40' },
+        'Bình Phước': { lat: 11.7511, lng: 106.9069, id: 'VN-43' },
+        'Tây Ninh': { lat: 11.3102, lng: 106.0984, id: 'VN-44' },
+        'Bình Dương': { lat: 11.1667, lng: 106.6667, id: 'VN-45' },
+        'Bà Rịa - Vũng Tàu': { lat: 10.4114, lng: 107.1362, id: 'VN-48' },
+        'Long An': { lat: 10.5333, lng: 106.4000, id: 'VN-51' },
+        'Tiền Giang': { lat: 10.3600, lng: 106.3600, id: 'VN-52' },
+        'Bến Tre': { lat: 10.2415, lng: 106.3759, id: 'VN-50' },
+        'Trà Vinh': { lat: 9.9347, lng: 106.3455, id: 'VN-54' },
+        'Vĩnh Long': { lat: 10.2537, lng: 105.9722, id: 'VN-55' },
+        'Đồng Tháp': { lat: 10.4578, lng: 105.6331, id: 'VN-53' },
+        'An Giang': { lat: 10.3833, lng: 105.4167, id: 'VN-56' },
+        'Kiên Giang': { lat: 10.0139, lng: 105.0809, id: 'VN-60' },
+        'Hậu Giang': { lat: 9.7844, lng: 105.4701, id: 'VN-58' },
+        'Sóc Trăng': { lat: 9.6033, lng: 105.9800, id: 'VN-59' },
+        'Bạc Liêu': { lat: 9.2941, lng: 105.7278, id: 'VN-61' },
+        'Cà Mau': { lat: 9.1769, lng: 105.1500, id: 'VN-62' },
+        'Hòa Bình': { lat: 20.8167, lng: 105.3333, id: 'VN-17' }
     };
 
     function setupInteractiveVietnamMap() {
         const mapContainer = document.getElementById('province-map');
         if (!mapContainer) return;
 
-        // Container styling: 440px, Dark-Navy #0B2239, border-radius 16px, border 2px solid #38BDF8
-        mapContainer.style.setProperty('background', '#0B2239', 'important');
-        mapContainer.style.setProperty('min-height', '440px', 'important');
-        mapContainer.style.setProperty('height', '440px', 'important');
+        // Container styling: 450px height, border-radius 16px, border 2px solid #38BDF8
+        mapContainer.style.setProperty('height', '450px', 'important');
+        mapContainer.style.setProperty('min-height', '450px', 'important');
+        mapContainer.style.setProperty('width', '100%', 'important');
         mapContainer.style.setProperty('border-radius', '16px', 'important');
         mapContainer.style.setProperty('overflow', 'hidden', 'important');
         mapContainer.style.setProperty('border', '2px solid #38BDF8', 'important');
         mapContainer.style.setProperty('box-shadow', '0 10px 30px rgba(11, 34, 57, 0.45)', 'important');
         mapContainer.style.setProperty('position', 'relative', 'important');
 
-        // Style province-map-select: White background #FFFFFF, border #38BDF8, text #0F172A, font-weight 700
+        // Style province-map-select: White background #FFFFFF, border #38BDF8, text #0F172A
         const mapSelect = document.getElementById('province-map-select');
         if (mapSelect) {
             mapSelect.style.setProperty('background', '#FFFFFF', 'important');
@@ -310,204 +311,31 @@
             // Populate all 63 provinces if select has few options
             if (mapSelect.options.length <= 1) {
                 mapSelect.innerHTML = '<option value="">Chọn nhanh tỉnh/thành...</option>';
-                Object.keys(VN_63_COORDINATES).sort((a,b) => a.localeCompare(b, 'vi')).forEach(provName => {
+                Object.keys(VN_PROVINCE_LATLNG).sort((a,b) => a.localeCompare(b, 'vi')).forEach(provName => {
                     const opt = document.createElement('option');
-                    opt.value = VN_63_COORDINATES[provName].id || provName;
+                    opt.value = VN_PROVINCE_LATLNG[provName].id || provName;
                     opt.textContent = provName;
                     mapSelect.appendChild(opt);
                 });
             }
         }
 
-        // Render High-Precision Geo-Map SVG
-        const mapSvg = `<svg id="vn-high-precision-svg" viewBox="0 0 650 780" width="100%" height="100%" style="display: block; width: 100%; height: 100%; user-select: none;" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-        <linearGradient id="oceanNavyGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#071A2E" />
-            <stop offset="50%" stop-color="#0B2239" />
-            <stop offset="100%" stop-color="#0A2C4A" />
-        </linearGradient>
-        <linearGradient id="vnLandEmerald" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#047857" />
-            <stop offset="35%" stop-color="#059669" />
-            <stop offset="70%" stop-color="#0284C7" />
-            <stop offset="100%" stop-color="#0369A1" />
-        </linearGradient>
-        <filter id="landGlowFilter" x="-15%" y="-15%" width="130%" height="130%">
-            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.55" />
-        </filter>
-        <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#FDE047" flood-opacity="0.9" />
-        </filter>
-        <filter id="pinShadow" x="-30%" y="-30%" width="160%" height="160%">
-            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.6" />
-        </filter>
-    </defs>
-
-    <!-- Ocean Background -->
-    <rect width="650" height="780" fill="url(#oceanNavyGrad)" />
-
-    <!-- Subtle Satellite Grid Lines -->
-    <g stroke="rgba(56, 189, 248, 0.10)" stroke-width="1" stroke-dasharray="3,5">
-        <line x1="0" y1="130" x2="650" y2="130" />
-        <line x1="0" y1="260" x2="650" y2="260" />
-        <line x1="0" y1="390" x2="650" y2="390" />
-        <line x1="0" y1="520" x2="650" y2="520" />
-        <line x1="0" y1="650" x2="650" y2="650" />
-        <line x1="130" y1="0" x2="130" y2="780" />
-        <line x1="260" y1="0" x2="260" y2="780" />
-        <line x1="390" y1="0" x2="390" y2="780" />
-        <line x1="520" y1="0" x2="520" y2="780" />
-    </g>
-
-    <!-- Compass Rose -->
-    <g transform="translate(590, 48)" opacity="0.85">
-        <circle r="22" fill="rgba(11, 34, 57, 0.75)" stroke="#38BDF8" stroke-width="1.2" />
-        <polygon points="0,-18 4,-2 0,0" fill="#EF4444" />
-        <polygon points="0,-18 -4,-2 0,0" fill="#DC2626" />
-        <polygon points="0,18 4,2 0,0" fill="#94A3B8" />
-        <polygon points="0,18 -4,2 0,0" fill="#64748B" />
-        <circle r="2.5" fill="#FDE047" />
-        <text x="0" y="-22" text-anchor="middle" font-size="9.5" font-weight="900" fill="#FDE047" font-family="sans-serif">B</text>
-    </g>
-
-    <!-- Map Header Overlay -->
-    <g transform="translate(18, 28)">
-        <text font-family="sans-serif" font-weight="900" font-size="12" fill="#FDE047" letter-spacing="1">BẢN ĐỒ ĐỊA LÝ &amp; DI SẢN OCOP VIỆT NAM</text>
-        <text y="15" font-family="sans-serif" font-weight="700" font-size="9.5" fill="#BAE6FD" opacity="0.9">63 Tỉnh Thành • Quần Đảo Hoàng Sa &amp; Trường Sa</text>
-    </g>
-
-    <!-- Accurate Mainland Vietnam S-Shape -->
-    <path id="vn-mainland-geo" d="M 120,100 C 140,75 180,60 220,50 C 260,42 290,55 330,95 C 345,110 360,120 340,140 C 315,150 290,155 265,185 C 255,200 250,225 245,245 C 240,265 265,275 285,285 C 305,305 320,325 340,345 C 360,365 385,385 395,415 C 410,445 425,480 435,515 C 440,550 425,595 405,630 C 390,645 365,655 345,665 C 320,675 305,695 300,725 C 290,750 265,770 230,785 C 205,785 190,760 195,735 C 205,700 230,680 245,665 C 255,640 280,610 285,585 C 295,560 330,545 340,500 C 345,460 325,410 305,370 C 285,330 250,290 225,240 C 205,200 165,160 125,130 Z" fill="url(#vnLandEmerald)" stroke="#38BDF8" stroke-width="2" filter="url(#landGlowFilter)" />
-
-    <!-- Maritime Sovereignty: BIỂN ĐÔNG -->
-    <g transform="translate(420, 375)">
-        <text font-family="sans-serif" font-weight="900" font-size="16" fill="#38BDF8" letter-spacing="5" opacity="0.88">BIỂN ĐÔNG</text>
-        <text y="18" font-family="sans-serif" font-weight="800" font-size="9" fill="#BAE6FD" letter-spacing="1.5" opacity="0.75">CHỦ QUYỀN THIÊNG LIÊNG VIỆT NAM</text>
-    </g>
-
-    <!-- HOÀNG SA ARCHIPELAGO -->
-    <g id="svg-archipelago-hoangsa" transform="translate(415, 205)" style="cursor: pointer;" onclick="window.showMaritimeToast('Hoàng Sa')">
-        <rect x="0" y="0" width="160" height="80" rx="8" fill="rgba(15, 23, 42, 0.85)" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4,3" />
-        <circle cx="35" cy="30" r="4" fill="#FDE047" filter="url(#goldGlow)" />
-        <circle cx="55" cy="22" r="3" fill="#FDE047" />
-        <circle cx="75" cy="35" r="3.5" fill="#FDE047" />
-        <circle cx="95" cy="25" r="3" fill="#FDE047" />
-        <circle cx="65" cy="48" r="3" fill="#FDE047" />
-        <circle cx="45" cy="55" r="3.5" fill="#FDE047" filter="url(#goldGlow)" />
-        <rect x="8" y="58" width="144" height="17" rx="4" fill="#B91C1C" />
-        <text x="80" y="70" font-family="sans-serif" font-weight="900" font-size="8.5" fill="#FFFFFF" text-anchor="middle">🇻🇳 QUẦN ĐẢO HOÀNG SA (VN)</text>
-    </g>
-
-    <!-- TRƯỜNG SA ARCHIPELAGO -->
-    <g id="svg-archipelago-truongsa" transform="translate(405, 470)" style="cursor: pointer;" onclick="window.showMaritimeToast('Trường Sa')">
-        <rect x="0" y="0" width="170" height="95" rx="8" fill="rgba(15, 23, 42, 0.85)" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4,3" />
-        <circle cx="30" cy="25" r="3.5" fill="#FDE047" />
-        <circle cx="60" cy="20" r="4" fill="#FDE047" filter="url(#goldGlow)" />
-        <circle cx="90" cy="32" r="3" fill="#FDE047" />
-        <circle cx="120" cy="40" r="3.5" fill="#FDE047" />
-        <circle cx="40" cy="52" r="4" fill="#FDE047" filter="url(#goldGlow)" />
-        <circle cx="75" cy="60" r="3" fill="#FDE047" />
-        <circle cx="105" cy="68" r="3.5" fill="#FDE047" />
-        <circle cx="60" cy="76" r="3.5" fill="#FDE047" />
-        <rect x="10" y="75" width="150" height="17" rx="4" fill="#B91C1C" />
-        <text x="85" y="87" font-family="sans-serif" font-weight="900" font-size="8.5" fill="#FFFFFF" text-anchor="middle">🇻🇳 QUẦN ĐẢO TRƯỜNG SA (VN)</text>
-    </g>
-
-    <!-- PHÚ QUỐC ISLAND -->
-    <g id="svg-island-phuquoc" transform="translate(130, 680)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Kiên Giang', 'VN-47')">
-        <ellipse cx="14" cy="18" rx="9" ry="15" transform="rotate(-20 14 18)" fill="#10B981" stroke="#38BDF8" stroke-width="1.5" />
-        <text x="26" y="22" font-family="sans-serif" font-weight="800" font-size="9" fill="#FDE047">Đảo Phú Quốc</text>
-    </g>
-
-    <!-- CÔN ĐẢO ISLAND -->
-    <g id="svg-island-condao" transform="translate(290, 740)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Bà Rịa - Vũng Tàu', 'VN-43')">
-        <circle cx="10" cy="10" r="5" fill="#10B981" stroke="#38BDF8" stroke-width="1.5" />
-        <text x="18" y="14" font-family="sans-serif" font-weight="800" font-size="9" fill="#BAE6FD">Côn Đảo</text>
-    </g>
-
-    <!-- Key Regional Clickable Province Markers -->
-    <g class="svg-base-provinces">
-        <!-- Lai Châu -->
-        <g transform="translate(155, 85)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Lai Châu', 'VN-01')">
-            <circle r="4" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1" />
-            <text x="8" y="3" font-size="8.5" font-weight="800" fill="#FFFFFF">Lai Châu</text>
-        </g>
-        <!-- Sơn La -->
-        <g transform="translate(175, 135)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Sơn La', 'VN-05')">
-            <circle r="4" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1" />
-            <text x="8" y="3" font-size="8.5" font-weight="800" fill="#FFFFFF">Sơn La</text>
-        </g>
-        <!-- Hà Nội -->
-        <g transform="translate(265, 138)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Hà Nội', 'VN-HN')">
-            <circle r="5.5" fill="#FDE047" stroke="#DC2626" stroke-width="1.8" />
-            <text x="9" y="3.5" font-size="9.5" font-weight="900" fill="#FEF08A">⭐ Hà Nội</text>
-        </g>
-        <!-- Đà Nẵng -->
-        <g transform="translate(370, 375)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Đà Nẵng', 'VN-DN')">
-            <circle r="4.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.2" />
-            <text x="8" y="3" font-size="9" font-weight="800" fill="#FFFFFF">Đà Nẵng</text>
-        </g>
-        <!-- Lâm Đồng -->
-        <g transform="translate(370, 575)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Lâm Đồng', 'VN-35')">
-            <circle r="4" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1" />
-            <text x="8" y="3" font-size="8.5" font-weight="800" fill="#FFFFFF">Lâm Đồng</text>
-        </g>
-        <!-- Đồng Nai -->
-        <g transform="translate(325, 625)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Đồng Nai', 'VN-39')">
-            <circle r="5.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.8" />
-            <text x="9" y="3.5" font-size="9.5" font-weight="900" fill="#38BDF8">📍 Đồng Nai</text>
-        </g>
-        <!-- TP.HCM -->
-        <g transform="translate(285, 645)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('TP. Hồ Chí Minh', 'VN-SG')">
-            <circle r="5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5" />
-            <text x="-48" y="3" font-size="9" font-weight="800" fill="#FFFFFF">TP.HCM</text>
-        </g>
-        <!-- Bến Tre -->
-        <g transform="translate(290, 690)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Bến Tre', 'VN-50')">
-            <circle r="4" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1" />
-            <text x="8" y="3" font-size="8.5" font-weight="800" fill="#FFFFFF">Bến Tre</text>
-        </g>
-        <!-- Cần Thơ -->
-        <g transform="translate(245, 705)" style="cursor: pointer;" onclick="window.selectProvinceFromMap('Cần Thơ', 'VN-CT')">
-            <circle r="4" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1" />
-            <text x="-48" y="3" font-size="8.5" font-weight="800" fill="#FFFFFF">Cần Thơ</text>
-        </g>
-    </g>
-
-    <!-- DYNAMIC LARGE RED GOOGLE MAPS PIN (ANIMATED) -->
-    <g id="svg-active-red-pin" style="display: none; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
-        <circle class="svg-pin-pulse-wave" r="14" fill="rgba(220, 38, 38, 0.45)" />
-        <path d="M 0,-36 C -10,-36 -18,-28 -18,-18 C -18,-5 0,0 0,0 C 0,0 18,-5 18,-18 C 18,-28 10,-36 0,-36 Z" fill="#DC2626" filter="url(#pinShadow)" />
-        <circle cx="0" cy="-18" r="7" fill="#FFFFFF" />
-        <circle cx="0" cy="-18" r="4" fill="#DC2626" />
-        <g id="svg-pin-label-group" transform="translate(0, -42)">
-            <rect id="svg-pin-label-bg" x="-45" y="-18" width="90" height="20" rx="5" fill="#B91C1C" stroke="#FDE047" stroke-width="1.2" />
-            <text id="svg-pin-label-text" x="0" y="-5" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="10" fill="#FFFFFF">ĐỒNG NAI</text>
-        </g>
-    </g>
-</svg>`;
-
-        mapContainer.innerHTML = mapSvg;
-
-        // Update status text
-        const statusEl = document.getElementById('province-selection-status');
-        if (statusEl) {
-            statusEl.textContent = 'Bản đồ địa lý 63 tỉnh thành sẵn sàng • Nhấp vào tỉnh hoặc danh sách để lọc đặc sản';
-            statusEl.style.color = '#0369A1';
-            statusEl.style.fontWeight = '700';
+        // Initialize Leaflet satellite map if not yet created
+        if (typeof window.initializeProvinceMap === 'function' && !window.provinceMap) {
+            window.initializeProvinceMap();
         }
 
-        // Style clear button
-        const clearBtn = document.getElementById('province-map-clear');
-        if (clearBtn) {
-            clearBtn.style.setProperty('background', '#0284C7', 'important');
-            clearBtn.style.setProperty('color', '#FFFFFF', 'important');
-            clearBtn.style.setProperty('font-weight', '800', 'important');
-            clearBtn.style.setProperty('border', '1.5px solid #0369A1', 'important');
-            clearBtn.style.setProperty('border-radius', '8px', 'important');
-            clearBtn.style.setProperty('box-shadow', '0 2px 8px rgba(2, 132, 199, 0.3)', 'important');
-        }
+        // Fix Leaflet sizing / blank container
+        setTimeout(() => {
+            if (window.provinceMap) {
+                try { window.provinceMap.invalidateSize(); } catch (e) {}
+            }
+        }, 200);
+        setTimeout(() => {
+            if (window.provinceMap) {
+                try { window.provinceMap.invalidateSize(); } catch (e) {}
+            }
+        }, 600);
     }
 
     // Global maritime toast
@@ -523,21 +351,13 @@
     window.selectProvinceFromMap = function (provName, provId) {
         if (!provName) return;
 
-        // 1. Move and show the Red Map Pin on SVG
-        const pin = document.getElementById('svg-active-red-pin');
-        const coords = VN_63_COORDINATES[provName] || Object.values(VN_63_COORDINATES).find(c => provName.includes(c.id)) || { x: 325, y: 625 };
+        const coords = VN_PROVINCE_LATLNG[provName] || Object.values(VN_PROVINCE_LATLNG).find(c => provName.includes(c.id)) || { lat: 10.9574, lng: 106.8427 };
         
-        if (pin) {
-            pin.setAttribute('transform', 'translate(' + coords.x + ', ' + coords.y + ')');
-            pin.style.display = 'block';
-
-            const labelTxt = document.getElementById('svg-pin-label-text');
-            const labelBg = document.getElementById('svg-pin-label-bg');
-            if (labelTxt && labelBg) {
-                labelTxt.textContent = provName.toUpperCase();
-                const width = Math.max(70, provName.length * 8 + 20);
-                labelBg.setAttribute('x', -width / 2);
-                labelBg.setAttribute('width', width);
+        // 1. Fly to satellite coordinates and place active red pin
+        if (window.provinceMap) {
+            window.provinceMap.flyTo([coords.lat, coords.lng], 9, { duration: 1.2 });
+            if (typeof placeLeafletRedPin === 'function') {
+                placeLeafletRedPin([coords.lat, coords.lng], provName);
             }
         }
 
@@ -586,7 +406,7 @@
             return;
         }
         let matchedName = null;
-        for (let [name, data] of Object.entries(VN_63_COORDINATES)) {
+        for (let [name, data] of Object.entries(VN_PROVINCE_LATLNG)) {
             if (data.id === provId || (typeof normalizeProvinceName === 'function' && normalizeProvinceName(name) === normalizeProvinceName(provId))) {
                 matchedName = name;
                 break;
@@ -601,8 +421,12 @@
 
     // Override clearSelectedProvince
     window.clearSelectedProvince = function () {
-        const pin = document.getElementById('svg-active-red-pin');
-        if (pin) pin.style.display = 'none';
+        if (window.provinceMap) {
+            window.provinceMap.flyTo([16.0, 107.8], 5.5, { duration: 1.2 });
+            if (typeof removeLeafletRedPin === 'function') {
+                removeLeafletRedPin();
+            }
+        }
 
         const mapSelect = document.getElementById('province-map-select');
         if (mapSelect) mapSelect.value = '';
@@ -626,106 +450,6 @@
         if (typeof onProvinceFilterChange === 'function') {
             onProvinceFilterChange('all');
         }
-    };
-
-    // Store directory lookup and renderer
-    window.renderProvinceStoresPanel = function (provinceName) {
-        const panel = document.getElementById('province-stores-panel');
-        if (!panel) return;
-        if (!provinceName || provinceName === 'all') {
-            panel.classList.add('hidden');
-            panel.innerHTML = '';
-            return;
-        }
-
-        let stores = [];
-        if (typeof findStoresForProvinceName === 'function') {
-            stores = findStoresForProvinceName(provinceName);
-        } else if (window.OcopStores && window.OcopStores.STORE_MAP) {
-            for (let [key, val] of Object.entries(window.OcopStores.STORE_MAP)) {
-                if (key.toLowerCase().includes(provinceName.toLowerCase()) || provinceName.toLowerCase().includes(key.toLowerCase())) {
-                    stores.push(val);
-                }
-            }
-        }
-
-        if (!stores || stores.length === 0) {
-            panel.innerHTML = `
-                <div class="p-4 rounded-xl border border-sky-200 bg-white shadow-xs text-center">
-                    <p class="text-xs font-bold text-slate-600 m-0">
-                        📍 Đang cập nhật showroom chính thức tại ${provinceName}. Bạn có thể đặt giao hàng online qua hệ thống O2O OCOP!
-                    </p>
-                </div>
-            `;
-            panel.classList.remove('hidden');
-            return;
-        }
-
-        const storeCardsHtml = stores.map(s => {
-            const sName = s.primaryStore?.name || s.producerName || s.productName || ('Điểm Bán OCOP ' + provinceName);
-            const sAddress = s.primaryStore?.address || s.producerAddress || 'Trung tâm Trưng bày & Giới thiệu Sản phẩm OCOP ' + provinceName;
-            const sPhone = s.primaryStore?.phone || s.hotline || '1900.8888';
-            const sHours = s.primaryStore?.hours || '08:00 - 21:00';
-            const sStars = s.stars || 5;
-            const starIcons = '⭐'.repeat(sStars);
-            const mapUrl = s.mapUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sName + ' ' + sAddress));
-
-            return `
-                <div class="bg-white border-1.5 border-sky-300 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between" style="border: 1.5px solid #7DD3FC; background: #FFFFFF;">
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-2">
-                            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-200">
-                                ${starIcons} OCOP ${sStars} SAO
-                            </span>
-                            <span class="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Đang mở cửa
-                            </span>
-                        </div>
-                        <h4 class="font-black text-sm text-sky-950 mb-1.5 line-clamp-1">${sName}</h4>
-                        <p class="text-xs text-slate-600 mb-2 flex items-start gap-1.5">
-                            <i class="fa-solid fa-location-dot text-rose-500 mt-0.5 shrink-0"></i>
-                            <span class="line-clamp-2">${sAddress}</span>
-                        </p>
-                    </div>
-                    <div class="pt-2 border-t border-sky-100 flex items-center justify-between gap-2 text-xs">
-                        <span class="font-bold text-slate-700 flex items-center gap-1">
-                            <i class="fa-solid fa-phone text-sky-600"></i> ${sPhone}
-                        </span>
-                        <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-bold transition flex items-center gap-1 cursor-pointer">
-                            <span>Chỉ đường</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                        </a>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        panel.innerHTML = `
-            <div class="p-4 sm:p-5 rounded-2xl border-2 border-sky-300 shadow-md space-y-3" style="background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-sky-200 pb-2.5">
-                    <div class="flex items-center gap-2">
-                        <span class="w-8 h-8 rounded-xl bg-sky-600 text-white flex items-center justify-center font-black text-sm shadow-sm">
-                            <i class="fa-solid fa-store"></i>
-                        </span>
-                        <div>
-                            <h3 class="font-black text-sm sm:text-base text-sky-950 m-0">
-                                🏪 Cửa Hàng &amp; Điểm Bán Chứng Nhận OCOP tại ${provinceName}
-                            </h3>
-                            <p class="text-xs text-sky-800 m-0 font-medium">
-                                Hệ thống phân phối O2O kết nối trực tiếp nhà sản xuất &amp; showroom đạt chuẩn
-                            </p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-black text-sky-700 bg-white px-2.5 py-1 rounded-lg border border-sky-200 shadow-xs">
-                        ${stores.length} Điểm Bán Khả Dụng
-                    </span>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    ${storeCardsHtml}
-                </div>
-            </div>
-        `;
-        panel.classList.remove('hidden');
     };
     
     // 4. POLISH HEADER: ĐĂNG KÝ ĐIỂM BÁN & 🔐 QUẢN TRỊ CHỦ WEB
@@ -904,6 +628,15 @@
     // ADMIN HUB CHOICE MODAL (MÃ PIN 2007 -> CHỌN TÀI CHÍNH HOẶC TIKTOK STUDIO)
     // =========================================================================
     window.openAdminHubModal = function () {
+        // Tắt hẳn bảng nhập mã PIN bên ngoài
+        window.closeAdminPinModal();
+        const pinModal = document.getElementById('admin-pin-modal');
+        if (pinModal) {
+            pinModal.classList.add('hidden');
+            pinModal.style.setProperty('display', 'none', 'important');
+            pinModal.style.setProperty('z-index', '-1', 'important');
+        }
+
         let modal = document.getElementById('admin-hub-modal');
         if (!modal) {
             modal = document.createElement('div');
@@ -954,7 +687,7 @@
                                 </p>
                             </div>
 
-                            <button type="button" style="width: 100% !important; padding: 11px 16px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3) !important; cursor: pointer !important;">
+                            <button type="button" onclick="event.stopPropagation(); selectAdminHubPortal('revenue')" style="width: 100% !important; padding: 11px 16px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3) !important; cursor: pointer !important;">
                                 <span>👉 Mở Bảng Quản Trị Doanh Thu</span>
                             </button>
                         </div>
@@ -980,16 +713,15 @@
                                 </p>
                             </div>
 
-                            <button type="button" style="width: 100% !important; padding: 11px 16px !important; border-radius: 12px !important; background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%) !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(225, 29, 72, 0.3) !important; cursor: pointer !important;">
+                            <button type="button" onclick="event.stopPropagation(); selectAdminHubPortal('tiktok')" style="width: 100% !important; padding: 11px 16px !important; border-radius: 12px !important; background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%) !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(225, 29, 72, 0.3) !important; cursor: pointer !important;">
                                 <span>👉 Mở Studio Video TikTok</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Footer Note -->
-                    <div style="background: #F1F5F9 !important; border-radius: 12px !important; padding: 10px 16px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; font-size: 12px !important; color: #475569 !important;">
+                    <!-- Footer Note (NO PIN DISPLAYED) -->
+                    <div style="background: #F1F5F9 !important; border-radius: 12px !important; padding: 10px 16px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 12px !important; color: #475569 !important; text-align: center !important;">
                         <span style="font-weight: 600 !important;"><i class="fa-solid fa-arrows-rotate text-sky-500 mr-1.5"></i> Có nút chuyển đổi qua lại nhanh giữa 2 phân hệ mà không cần nhập lại mã PIN.</span>
-                        <span style="font-weight: 800 !important; color: #0284C7 !important;">PIN: 2007</span>
                     </div>
                 </div>
             `;
@@ -1017,6 +749,7 @@
 
     window.selectAdminHubPortal = function (portal) {
         window.closeAdminHubModal();
+        window.closeAdminPinModal();
         if (portal === 'revenue') {
             openRealFinancialDashboard();
         } else if (portal === 'tiktok') {
@@ -1085,19 +818,17 @@
 
     // CAPTURE-PHASE CLICK INTERCEPTOR (CHẶN ĐỨNG TRƯỚC MỌI ONCLICK)
     window.addEventListener('click', function (e) {
-        // Không chặn click bên trong PIN modal
-        if (e.target.closest('#admin-pin-modal')) {
+        // KHÔNG CHẶN click bên trong PIN modal, Admin Hub modal, Bảng Quản Trị, hoặc TikTok Studio
+        if (e.target.closest('#admin-pin-modal') ||
+            e.target.closest('#admin-hub-modal') ||
+            e.target.closest('#ai-financial-modal') ||
+            e.target.closest('#tiktok-studio-modal')) {
             return;
         }
 
         // Không chặn click vào nút đóng Bảng Quản Trị
         if (e.target.closest('#btn-close-fin-modal-sticky') || e.target.closest('[onclick*="closeFinancialDashboardModal"]')) {
             window.closeFinancialDashboardModal();
-            return;
-        }
-
-        // Không chặn thao tác bên trong Bảng Quản Trị khi nó đã mở
-        if (e.target.closest('#ai-financial-modal')) {
             return;
         }
 
@@ -1118,14 +849,8 @@
             id === 'btn-header-admin-pin' ||
             cls.includes('nav-btn-finance') ||
             onclickAttr.includes('openfinancialdashboardmodal') ||
-            onclickAttr.includes('promptadminpinmodal') ||
-            onclickAttr.includes('openrealfinancialdashboard') ||
             onclickAttr.includes('toggleaifinancialmodal') ||
-            rawText.includes('quản trị doanh thu') ||
-            rawText.includes('quản trị chủ web') ||
-            rawText.includes('bảng quản trị') ||
-            rawText.includes('ai financial engine') ||
-            rawText.includes('kích hoạt ai financial engine');
+            (rawText.includes('quản trị') && (rawText.includes('doanh thu') || rawText.includes('chủ web')));
 
         if (isRevenueTrigger) {
             e.preventDefault();
