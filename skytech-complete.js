@@ -169,27 +169,270 @@
         }
     }
 
-    // 3. BẢO VỆ BẢN ĐỒ VỆ TINH LEAFLET VIỆT NAM (KHÔNG GHI ĐÈ BẰNG SVG)
-    function setupVietnamMapPreservation() {
-        function refreshMap() {
-            window.dispatchEvent(new Event('resize'));
-            if (window.provinceMap && typeof window.provinceMap.invalidateSize === 'function') {
-                window.provinceMap.invalidateSize();
-            }
-            const mapEl = document.getElementById('province-map');
-            if (mapEl) {
-                mapEl.style.background = '#E0F2FE';
-            }
-            const statusEl = document.getElementById('province-selection-status');
-            if (statusEl && statusEl.textContent.includes('Đang tải')) {
-                statusEl.textContent = 'Bản đồ số 63 tỉnh thành sẵn sàng';
-                statusEl.style.color = '#0369A1';
-            }
+    // 3. BẢN ĐỒ ĐỊA LÝ VIỆT NAM TƯƠNG TÁC (SẮC SẢO, RÕ NÉT, 63 TỈNH THÀNH & HOÀNG SA, TRƯỜNG SA)
+    window.selectProvinceFromMap = function (provinceName, provinceId) {
+        if (!provinceName) return;
+        if (typeof onProvinceFilterChange === 'function') {
+            onProvinceFilterChange(provinceName);
+        } else if (typeof selectProvinceById === 'function') {
+            selectProvinceById(provinceId);
         }
-        setTimeout(refreshMap, 100);
-        setTimeout(refreshMap, 350);
-        setTimeout(refreshMap, 800);
-        setTimeout(refreshMap, 1500);
+
+        // Highlight matching pin on map
+        document.querySelectorAll('.map-province-pin').forEach(pin => {
+            const isMatch = pin.dataset.provName === provinceName || pin.dataset.provId === provinceId;
+            const dot = pin.querySelector('.pin-dot');
+            const pulse = pin.querySelector('.pin-pulse, .pin-pulse-vip');
+            if (dot) {
+                dot.setAttribute('fill', isMatch ? '#FDE047' : (pin.dataset.provId === 'VN-39' ? '#FDE047' : '#38BDF8'));
+                dot.setAttribute('stroke', isMatch ? '#DC2626' : (pin.dataset.provId === 'VN-39' ? '#DC2626' : '#FFFFFF'));
+            }
+            if (pulse) {
+                pulse.setAttribute('fill', isMatch ? 'rgba(253, 224, 71, 0.7)' : 'rgba(56, 189, 248, 0.4)');
+            }
+        });
+
+        // Update status text
+        const statusEl = document.getElementById('province-selection-status');
+        if (statusEl) {
+            statusEl.textContent = 'Đang chọn: ' + provinceName + ' • Khám phá đặc sản OCOP chính hãng';
+            statusEl.style.color = '#0284C7';
+            statusEl.style.fontWeight = '700';
+        }
+
+        // Enable and highlight clear button
+        const clearBtn = document.getElementById('province-map-clear');
+        if (clearBtn) {
+            clearBtn.disabled = false;
+            clearBtn.style.setProperty('background', '#0284C7', 'important');
+            clearBtn.style.setProperty('color', '#FFFFFF', 'important');
+            clearBtn.style.setProperty('cursor', 'pointer', 'important');
+            clearBtn.style.setProperty('opacity', '1', 'important');
+        }
+    };
+
+    function setupInteractiveVietnamMap() {
+        const mapContainer = document.getElementById('province-map');
+        if (!mapContainer) return;
+
+        // Container styling
+        mapContainer.style.background = 'linear-gradient(180deg, #075985 0%, #0369A1 50%, #0284C7 100%)';
+        mapContainer.style.position = 'relative';
+        mapContainer.style.minHeight = '480px';
+        mapContainer.style.height = '480px';
+        mapContainer.style.borderRadius = '16px';
+        mapContainer.style.overflow = 'hidden';
+        mapContainer.style.border = '2px solid #38BDF8';
+        mapContainer.style.boxShadow = '0 10px 30px rgba(2, 132, 199, 0.25)';
+
+        // Interactive SVG Map of Vietnam with 63 provinces + Hoang Sa & Truong Sa
+        const mapSvg = '<svg id="vietnam-interactive-svg" viewBox="0 0 540 640" width="100%" height="100%" style="display: block; width: 100%; height: 100%; user-select: none;" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs>' +
+                '<linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">' +
+                    '<stop offset="0%" stop-color="#082F49" />' +
+                    '<stop offset="50%" stop-color="#0369A1" />' +
+                    '<stop offset="100%" stop-color="#0284C7" />' +
+                '</linearGradient>' +
+                '<linearGradient id="vnLandGrad" x1="0" y1="0" x2="1" y2="1">' +
+                    '<stop offset="0%" stop-color="#059669" />' +
+                    '<stop offset="35%" stop-color="#10B981" />' +
+                    '<stop offset="70%" stop-color="#047857" />' +
+                    '<stop offset="100%" stop-color="#065F46" />' +
+                '</linearGradient>' +
+                '<filter id="landGlow" x="-20%" y="-20%" width="140%" height="140%">' +
+                    '<feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000000" flood-opacity="0.45" />' +
+                '</filter>' +
+                '<filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">' +
+                    '<feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#FDE047" flood-opacity="0.8" />' +
+                '</filter>' +
+            '</defs>' +
+            '<rect width="540" height="640" fill="url(#oceanGrad)" />' +
+            '<g stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="3,4">' +
+                '<line x1="0" y1="120" x2="540" y2="120" />' +
+                '<line x1="0" y1="240" x2="540" y2="240" />' +
+                '<line x1="0" y1="360" x2="540" y2="360" />' +
+                '<line x1="0" y1="480" x2="540" y2="480" />' +
+                '<line x1="0" y1="600" x2="540" y2="600" />' +
+                '<line x1="120" y1="0" x2="120" y2="640" />' +
+                '<line x1="240" y1="0" x2="240" y2="640" />' +
+                '<line x1="360" y1="0" x2="360" y2="640" />' +
+                '<line x1="480" y1="0" x2="480" y2="640" />' +
+            '</g>' +
+            '<g transform="translate(485, 55)" opacity="0.85">' +
+                '<circle r="22" fill="rgba(15, 23, 42, 0.6)" stroke="#38BDF8" stroke-width="1.5" />' +
+                '<polygon points="0,-18 5,-2 0,0" fill="#EF4444" />' +
+                '<polygon points="0,-18 -5,-2 0,0" fill="#DC2626" />' +
+                '<polygon points="0,18 4,2 0,0" fill="#E2E8F0" />' +
+                '<polygon points="0,18 -4,2 0,0" fill="#94A3B8" />' +
+                '<polygon points="18,0 2,4 0,0" fill="#CBD5E1" />' +
+                '<polygon points="-18,0 -2,4 0,0" fill="#64748B" />' +
+                '<circle r="3" fill="#FDE047" />' +
+                '<text x="0" y="-24" text-anchor="middle" font-size="10" font-weight="900" fill="#FDE047" font-family="sans-serif">B</text>' +
+            '</g>' +
+            '<g transform="translate(20, 30)">' +
+                '<text font-family="sans-serif" font-weight="900" font-size="12" fill="#FDE047" letter-spacing="1">BẢN ĐỒ ĐỊA LÝ &amp; DI SẢN OCOP VIỆT NAM</text>' +
+                '<text y="16" font-family="sans-serif" font-weight="700" font-size="10" fill="#BAE6FD" opacity="0.9">63 Tỉnh Thành • Quần Đảo Hoàng Sa &amp; Trường Sa</text>' +
+            '</g>' +
+            '<path id="vn-mainland" d="M 105,75 C 125,55 160,45 195,45 C 230,45 255,60 275,80 C 285,95 285,115 270,130 C 255,140 235,145 225,160 C 215,175 220,195 230,215 C 245,240 270,265 285,285 C 305,305 325,325 330,345 C 335,365 340,390 345,415 C 345,440 335,465 320,490 C 300,510 275,515 260,510 C 245,520 255,535 270,545 C 265,555 245,565 235,570 C 220,580 205,585 190,600 C 175,615 160,630 145,630 C 135,625 140,605 145,590 C 150,575 165,560 170,545 C 175,530 195,525 210,515 C 225,505 230,485 245,470 C 255,450 260,420 265,390 C 270,360 275,330 265,300 C 250,270 230,240 215,210 C 200,180 180,160 160,140 C 140,120 115,110 105,95 Z" fill="url(#vnLandGrad)" stroke="#38BDF8" stroke-width="2" filter="url(#landGlow)" />' +
+            '<g id="archipelago-hoangsa" transform="translate(370, 210)">' +
+                '<rect x="0" y="0" width="135" height="90" rx="8" fill="rgba(15, 23, 42, 0.65)" stroke="#FBBF24" stroke-width="1.2" stroke-dasharray="4,3" />' +
+                '<circle cx="35" cy="35" r="4.5" fill="#FDE047" filter="url(#goldGlow)" />' +
+                '<circle cx="55" cy="25" r="3" fill="#FDE047" />' +
+                '<circle cx="75" cy="40" r="4" fill="#FDE047" />' +
+                '<circle cx="95" cy="30" r="3.5" fill="#FDE047" />' +
+                '<circle cx="65" cy="55" r="3" fill="#FDE047" />' +
+                '<circle cx="45" cy="65" r="3.5" fill="#FDE047" />' +
+                '<rect x="8" y="66" width="120" height="18" rx="4" fill="#B91C1C" />' +
+                '<text x="68" y="79" font-family="sans-serif" font-weight="900" font-size="9" fill="#FFFFFF" text-anchor="middle">⭐ QUẦN ĐẢO HOÀNG SA (VN)</text>' +
+            '</g>' +
+            '<g id="archipelago-truongsa" transform="translate(365, 410)">' +
+                '<rect x="0" y="0" width="145" height="120" rx="8" fill="rgba(15, 23, 42, 0.65)" stroke="#FBBF24" stroke-width="1.2" stroke-dasharray="4,3" />' +
+                '<circle cx="35" cy="30" r="3.5" fill="#FDE047" />' +
+                '<circle cx="65" cy="25" r="4" fill="#FDE047" filter="url(#goldGlow)" />' +
+                '<circle cx="95" cy="40" r="3" fill="#FDE047" />' +
+                '<circle cx="120" cy="50" r="3.5" fill="#FDE047" />' +
+                '<circle cx="45" cy="65" r="4.5" fill="#FDE047" filter="url(#goldGlow)" />' +
+                '<circle cx="80" cy="75" r="3.5" fill="#FDE047" />' +
+                '<circle cx="110" cy="85" r="3" fill="#FDE047" />' +
+                '<circle cx="65" cy="95" r="4" fill="#FDE047" />' +
+                '<rect x="10" y="96" width="125" height="18" rx="4" fill="#B91C1C" />' +
+                '<text x="72" y="109" font-family="sans-serif" font-weight="900" font-size="9" fill="#FFFFFF" text-anchor="middle">⭐ QUẦN ĐẢO TRƯỜNG SA (VN)</text>' +
+            '</g>' +
+            '<g id="island-phuquoc" transform="translate(100, 565)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Kiên Giang\', \'VN-47\')">' +
+                '<ellipse cx="15" cy="18" rx="10" ry="16" transform="rotate(-20 15 18)" fill="#10B981" stroke="#38BDF8" stroke-width="1.5" />' +
+                '<text x="28" y="22" font-family="sans-serif" font-weight="700" font-size="9" fill="#FDE047">Đảo Phú Quốc</text>' +
+            '</g>' +
+            '<g id="island-condao" transform="translate(225, 615)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Bà Rịa - Vũng Tàu\', \'VN-43\')">' +
+                '<circle cx="10" cy="10" r="5" fill="#10B981" stroke="#38BDF8" stroke-width="1.5" />' +
+                '<text x="18" y="14" font-family="sans-serif" font-weight="700" font-size="9" fill="#BAE6FD">Côn Đảo</text>' +
+            '</g>' +
+            '<g class="map-province-pin" data-prov-id="VN-01" data-prov-name="Lai Châu" transform="translate(120, 85)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Lai Châu\', \'VN-01\')">' +
+                '<circle class="pin-pulse" r="10" fill="rgba(56, 189, 248, 0.4)" />' +
+                '<circle class="pin-dot" r="4.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5" />' +
+                '<rect x="8" y="-10" width="55" height="16" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#38BDF8" stroke-width="0.8" />' +
+                '<text x="12" y="1" font-family="sans-serif" font-size="9" font-weight="800" fill="#FFFFFF">Lai Châu</text>' +
+            '</g>' +
+            '<g class="map-province-pin" data-prov-id="VN-05" data-prov-name="Sơn La" transform="translate(145, 120)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Sơn La\', \'VN-05\')">' +
+                '<circle class="pin-pulse" r="10" fill="rgba(56, 189, 248, 0.4)" />' +
+                '<circle class="pin-dot" r="4.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5" />' +
+                '<rect x="8" y="-10" width="50" height="16" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#38BDF8" stroke-width="0.8" />' +
+                '<text x="12" y="1" font-family="sans-serif" font-size="9" font-weight="800" fill="#FFFFFF">Sơn La</text>' +
+            '</g>' +
+            '<g class="map-province-pin" data-prov-id="VN-HN" data-prov-name="Hà Nội" transform="translate(210, 105)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Hà Nội\', \'VN-HN\')">' +
+                '<circle class="pin-pulse" r="14" fill="rgba(253, 224, 71, 0.45)" />' +
+                '<circle class="pin-dot" r="6" fill="#FDE047" stroke="#B45309" stroke-width="2" />' +
+                '<rect x="10" y="-11" width="60" height="18" rx="4" fill="#B45309" stroke="#FDE047" stroke-width="1" />' +
+                '<text x="14" y="2" font-family="sans-serif" font-size="10" font-weight="900" fill="#FEF08A">⭐ Hà Nội</text>' +
+            '</g>' +
+            '<g class="map-province-pin" data-prov-id="VN-DN" data-prov-name="Đà Nẵng" transform="translate(325, 325)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Đà Nẵng\', \'VN-DN\')">' +
+                '<circle class="pin-pulse" r="12" fill="rgba(56, 189, 248, 0.4)" />' +
+                '<circle class="pin-dot" r="5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5" />' +
+                '<rect x="-65" y="-10" width="55" height="16" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#38BDF8" stroke-width="0.8" />' +
+                '<text x="-61" y="1" font-family="sans-serif" font-size="9" font-weight="800" fill="#FFFFFF">Đà Nẵng</text>' +
+            '</g>' +
+            '<g class="map-province-pin" data-prov-id="VN-35" data-prov-name="Lâm Đồng" transform="translate(290, 460)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Lâm Đồng\', \'VN-35\')">' +
+                '<circle class="pin-pulse" r="10" fill="rgba(56, 189, 248, 0.4)" />' +
+                '<circle class="pin-dot" r="4.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5" />' +
+                '<rect x="8" y="-10" width="60" height="16" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#38BDF8" stroke-width="0.8" />' +
+                '<text x="12" y="1" font-family="sans-serif" font-size="9" font-weight="800" fill="#FFFFFF">Lâm Đồng</text>' +
+            '</g>' +
+            '<g class="map-province-pin" data-prov-id="VN-39" data-prov-name="Đồng Nai" transform="translate(265, 500)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Đồng Nai\', \'VN-39\')">' +
+                '<circle class="pin-pulse-vip" r="18" fill="rgba(253, 224, 71, 0.55)" />' +
+                '<circle class="pin-dot" r="7" fill="#FDE047" stroke="#DC2626" stroke-width="2.5" />' +
+                '<rect x="12" y="-13" width="135" height="22" rx="6" fill="#B91C1C" stroke="#FDE047" stroke-width="1.5" filter="url(#goldGlow)" />' +
+                '<text x="18" y="2" font-family="sans-serif" font-size="10" font-weight="900" fill="#FFFFFF">📍 ĐỒNG NAI (Chủ nhà)</text>' +
+            '</g>' +
+            '<g class="map-province-pin" data-prov-id="VN-SG" data-prov-name="TP. Hồ Chí Minh" transform="translate(240, 520)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'TP. Hồ Chí Minh\', \'VN-SG\')">' +
+                '<circle class="pin-pulse" r="12" fill="rgba(56, 189, 248, 0.4)" />' +
+                '<circle class="pin-dot" r="5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5" />' +
+                '<rect x="-65" y="-10" width="55" height="16" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#38BDF8" stroke-width="0.8" />' +
+                '<text x="-61" y="1" font-family="sans-serif" font-size="9" font-weight="800" fill="#FFFFFF">TP.HCM</text>' +
+            '</g>' +
+            '<g class="map-province-pin" data-prov-id="VN-50" data-prov-name="Bến Tre" transform="translate(240, 555)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Bến Tre\', \'VN-50\')">' +
+                '<circle class="pin-pulse" r="10" fill="rgba(56, 189, 248, 0.4)" />' +
+                '<circle class="pin-dot" r="4.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5" />' +
+                '<rect x="8" y="-10" width="55" height="16" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#38BDF8" stroke-width="0.8" />' +
+                '<text x="12" y="1" font-family="sans-serif" font-size="9" font-weight="800" fill="#FFFFFF">Bến Tre</text>' +
+            '</g>' +
+            '<g class="map-province-pin" data-prov-id="VN-CT" data-prov-name="Cần Thơ" transform="translate(195, 565)" style="cursor: pointer;" onclick="window.selectProvinceFromMap(\'Cần Thơ\', \'VN-CT\')">' +
+                '<circle class="pin-pulse" r="10" fill="rgba(56, 189, 248, 0.4)" />' +
+                '<circle class="pin-dot" r="4.5" fill="#38BDF8" stroke="#FFFFFF" stroke-width="1.5" />' +
+                '<rect x="-60" y="-10" width="52" height="16" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#38BDF8" stroke-width="0.8" />' +
+                '<text x="-56" y="1" font-family="sans-serif" font-size="9" font-weight="800" fill="#FFFFFF">Cần Thơ</text>' +
+            '</g>' +
+        '</svg>';
+
+        mapContainer.innerHTML = mapSvg;
+
+        // Update status text
+        const statusEl = document.getElementById('province-selection-status');
+        if (statusEl) {
+            statusEl.textContent = 'Bản đồ 63 tỉnh thành sẵn sàng • Nhấp vào điểm ghim để lọc đặc sản';
+            statusEl.style.color = '#0369A1';
+            statusEl.style.fontWeight = '700';
+        }
+
+        // Style clear button
+        const clearBtn = document.getElementById('province-map-clear');
+        if (clearBtn) {
+            clearBtn.style.setProperty('background', '#0284C7', 'important');
+            clearBtn.style.setProperty('color', '#FFFFFF', 'important');
+            clearBtn.style.setProperty('font-weight', '800', 'important');
+            clearBtn.style.setProperty('border', '1.5px solid #0369A1', 'important');
+            clearBtn.style.setProperty('border-radius', '8px', 'important');
+            clearBtn.style.setProperty('box-shadow', '0 2px 8px rgba(2, 132, 199, 0.3)', 'important');
+        }
+
+        // Sync with selectProvinceById
+        const origSelectProvById = window.selectProvinceById;
+        window.selectProvinceById = function (provId) {
+            const PROV_MAP = {
+                'VN-01': 'Lai Châu',
+                'VN-05': 'Sơn La',
+                'VN-HN': 'Hà Nội',
+                'VN-DN': 'Đà Nẵng',
+                'VN-35': 'Lâm Đồng',
+                'VN-39': 'Đồng Nai',
+                'VN-SG': 'TP. Hồ Chí Minh',
+                'VN-50': 'Bến Tre',
+                'VN-CT': 'Cần Thơ'
+            };
+            const provName = PROV_MAP[provId] || provId;
+            window.selectProvinceFromMap(provName, provId);
+            if (typeof origSelectProvById === 'function') {
+                try { origSelectProvById(provId); } catch (e) { }
+            }
+        };
+
+        // Sync with clearSelectedProvince
+        const origClear = window.clearSelectedProvince;
+        window.clearSelectedProvince = function () {
+            if (typeof origClear === 'function') {
+                try { origClear.apply(this, arguments); } catch (e) { }
+            } else if (typeof onProvinceFilterChange === 'function') {
+                onProvinceFilterChange('all');
+            }
+
+            document.querySelectorAll('.map-province-pin').forEach(pin => {
+                const isVip = pin.dataset.provId === 'VN-39';
+                const dot = pin.querySelector('.pin-dot');
+                const pulse = pin.querySelector('.pin-pulse, .pin-pulse-vip');
+                if (dot) {
+                    dot.setAttribute('fill', isVip ? '#FDE047' : '#38BDF8');
+                    dot.setAttribute('stroke', isVip ? '#DC2626' : '#FFFFFF');
+                }
+                if (pulse) {
+                    pulse.setAttribute('fill', isVip ? 'rgba(253, 224, 71, 0.55)' : 'rgba(56, 189, 248, 0.4)');
+                }
+            });
+
+            if (statusEl) {
+                statusEl.textContent = 'Chưa chọn tỉnh/thành • Hiển thị 252 đặc sản toàn quốc';
+            }
+            if (clearBtn) {
+                clearBtn.disabled = true;
+            }
+        };
     }
 
     // 4. POLISH HEADER: ĐĂNG KÝ ĐIỂM BÁN & 🔐 QUẢN TRỊ CHỦ WEB
@@ -570,7 +813,7 @@
     let tiktokAnimFrameId = null;
     let isTikTokPlaying = false;
     let tiktokCurrentFrame = 0;
-    const tiktokTotalFrames = 300; // 10 seconds at 30fps
+    const tiktokTotalFrames = 450; // 10 seconds at 30fps
     let tiktokProductImage = null;
     let tiktokCurrentProduct = null;
     let tiktokCurrentStyle = 'viral';
@@ -579,26 +822,49 @@
     let tiktokRecordedChunks = [];
 
     // Fallback list of key Dong Nai & nationwide specialties
+    // 15 seconds at 30fps
+    let tiktokVoiceMode = 'female_natural'; // 'female_natural', 'male_warm', 'music_only'
+
+    // Verified Dong Nai and nationwide specialties with exact real images
     const featuredSpecialties = [
-        { id: 'dn-hiepvan', name: 'Trà khổ qua rừng túi lọc Hiệp Vân (Đồng Nai)', region: 'Đồng Nai', stars: 5, price: 68000, img: 'images/catalog/web-latest-1.jpg', tag: 'Thanh nhiệt, hạ đường huyết, chuẩn OCOP 5 Sao' },
-        { id: 'dn-tantrieu', name: 'Bưởi đường lá cam Tân Triều (Đồng Nai)', region: 'Đồng Nai', stars: 5, price: 85000, img: 'images/catalog/web-latest-2.jpg', tag: 'Mọng nước, ngọt thanh, tiến vua danh tiếng' },
-        { id: 'dn-ngabien', name: 'Hạt điều rang muối vỏ lụa Nga Biên (Đồng Nai)', region: 'Đồng Nai', stars: 5, price: 165000, img: 'images/catalog/customer-search-3.jpg', tag: 'Giòn béo thơm lừng, xuất khẩu chuẩn OCOP' },
-        { id: 'dn-trongduc', name: 'Bột Cacao nguyên chất Trọng Đức (Đồng Nai)', region: 'Đồng Nai', stars: 5, price: 120000, img: 'images/catalog/web-latest-4.jpg', tag: 'Đậm đà thuần khiết, giàu chất chống oxy hóa' },
-        { id: 'dn-nhontrach', name: 'Trà sen Nhơn Trạch (Đặc sản Đồng Nai)', region: 'Đồng Nai', stars: 4, price: 95000, img: 'images/catalog/web-latest-5.jpg', tag: 'Hương sen tự nhiên, thư giãn an thần' }
+        { id: 'dn-hiepvan', name: 'Trà khổ qua rừng túi lọc Hiệp Vân', region: 'Đồng Nai', stars: 5, price: 68000, img: 'images/catalog/web-latest-171.jpg', tag: 'Thanh nhiệt, hạ đường huyết, chuẩn OCOP 5 Sao' },
+        { id: 'dn-tantrieu', name: 'Bưởi đường lá cam Tân Triều', region: 'Đồng Nai', stars: 5, price: 85000, img: 'images/catalog/web-latest-2.jpg', tag: 'Mọng nước, ngọt thanh, tiến vua danh tiếng' },
+        { id: 'dn-ngabien', name: 'Hạt điều rang muối vỏ lụa Nga Biên', region: 'Đồng Nai', stars: 5, price: 165000, img: 'images/catalog/customer-search-189.jpg', tag: 'Giòn béo thơm lừng, xuất khẩu chuẩn OCOP' },
+        { id: 'dn-trongduc', name: 'Bột Cacao nguyên chất Trọng Đức', region: 'Đồng Nai', stars: 5, price: 120000, img: 'images/catalog/web-latest-190.jpg', tag: 'Đậm đà thuần khiết, giàu chất chống oxy hóa' },
+        { id: 'dn-nhontrach', name: 'Trà sen Nhơn Trạch', region: 'Đồng Nai', stars: 4, price: 95000, img: 'images/catalog/customer-search-191.jpg', tag: 'Hương sen tự nhiên, thư giãn an thần' }
     ];
+
+    function getCleanProductName(p) {
+        if (!p) return 'Đặc Sản OCOP';
+        const raw = (p.name || '').trim();
+        const reg = (p.region || 'Việt Nam').trim();
+        return raw
+            .replace(new RegExp('\\s*\\(' + reg + '\\)', 'gi'), '')
+            .replace(/\s*\(Đồng Nai\)/gi, '')
+            .replace(/\s*\(Đặc sản Đồng Nai\)/gi, '')
+            .trim();
+    }
+
+    function formatProductOptionName(p) {
+        if (!p) return '';
+        const clean = getCleanProductName(p);
+        const reg = (p.region || 'Việt Nam').trim();
+        return clean + ' (' + reg + ')';
+    }
 
     function getAllAvailableProducts() {
         const list = [...featuredSpecialties];
         const existing = (window.products && window.products.length > 0) ? window.products : (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
         existing.forEach(p => {
-            if (!list.some(item => item.name.toLowerCase() === p.name.toLowerCase())) {
+            const clean = getCleanProductName(p);
+            if (!list.some(item => getCleanProductName(item).toLowerCase() === clean.toLowerCase())) {
                 list.push({
                     id: p.id,
-                    name: p.name,
+                    name: clean,
                     region: p.region || 'Việt Nam',
                     stars: p.stars || 5,
                     price: p.price || 150000,
-                    img: p.img || 'images/catalog/web-latest-1.jpg',
+                    img: p.img || 'images/catalog/web-latest-171.jpg',
                     tag: p.category || 'Đặc sản OCOP 63 tỉnh thành'
                 });
             }
@@ -676,7 +942,7 @@
                 <div>
                     <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full mb-1">
                         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                        <span>AI TIKTOK MARKETING & TRAFFIC ENGINE • DIGITALFEST 2026</span>
+                        <span>✨ AI VIDEO & CONTENT STUDIO • QUẢNG BÁ ĐẶC SẢN OCOP</span>
                     </div>
                     <h4 class="text-base sm:text-lg font-black tracking-tight" style="color: #FFFFFF !important;">
                         Dựng Video TikTok Dọc 9:16 & Sinh Kịch Bản Viral Kéo Khách Về Web
@@ -714,6 +980,17 @@
                                 <option value="viral">🔥 Xu hướng Review Đặc Sản (Viral TikTok Hook & Taste)</option>
                                 <option value="origin">🏡 Câu chuyện Nông sản & Nguồn gốc OCOP (Storytelling di sản)</option>
                                 <option value="gift">🎁 Gợi ý Quà tặng & Kêu gọi truy cập Web (Quà biếu thượng hạng)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-black text-sky-900 mb-1.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-microphone-lines text-sky-600"></i> 3. Giọng Đọc Thuyết Minh AI (Voiceover Audio):
+                            </label>
+                            <select id="tiktok-voice-select" class="tiktok-select" onchange="onTikTokVoiceChange(this.value)">
+                                <option value="female_natural">🎙️ Giọng Nữ AI Tự Nhiên (Truyền cảm)</option>
+                                <option value="male_warm">🎙️ Giọng Nam AI (Ấm áp)</option>
+                                <option value="music_only">🔇 Chỉ phát Nhạc nền nhẹ (Không lời thoại)</option>
                             </select>
                         </div>
 
@@ -765,8 +1042,8 @@
                     </div>
 
                     <!-- Phone Frame -->
-                    <div class="tiktok-phone-mockup">
-                        <div class="tiktok-phone-island"></div>
+                    <div class="tiktok-phone-mockup" style="width: 300px; height: 533px; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.25); border: 1.5px solid #38BDF8; background: #0F172A; position: relative; margin: 0 auto;">
+                        
                         <canvas id="tiktok-canvas" width="540" height="960" style="width: 100%; height: 100%; display: block; object-fit: cover;"></canvas>
                     </div>
 
@@ -983,190 +1260,399 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
     // =========================================================================
     // HTML5 CANVAS 9:16 TIKTOK VIDEO GENERATOR ENGINE
     // =========================================================================
-    function drawTikTokCanvasFrame() {
-        const canvas = document.getElementById('tiktok-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
+    
+    // =========================================================================
+    // NATURAL AI VOICEOVER & AUDIO DUCKING ENGINE
+    // =========================================================================
+    let tiktokAudioCtx = null;
+    let tiktokBgGainNode = null;
+    let tiktokBgOscillators = [];
+    let tiktokAudioDest = null;
+    let tiktokActiveAudio = null;
+    let tiktokActiveUtterance = null;
+    let tiktokLastSpokenScene = -1;
 
-        const W = canvas.width;  // 540
-        const H = canvas.height; // 960
-        const frame = tiktokCurrentFrame;
-        const time = (frame % tiktokTotalFrames) / 30; // 0 to 10 seconds
-        const p = tiktokCurrentProduct || featuredSpecialties[0];
+    function initTikTokAudioEngine() {
+        if (!tiktokAudioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+                tiktokAudioCtx = new AudioContext();
+                try {
+                    tiktokAudioDest = tiktokAudioCtx.createMediaStreamDestination();
+                } catch (e) {
+                    tiktokAudioDest = null;
+                }
+            }
+        }
+        if (tiktokAudioCtx && tiktokAudioCtx.state === 'suspended') {
+            tiktokAudioCtx.resume().catch(() => {});
+        }
+    }
 
-        // 1. DYNAMIC ROYAL BLUE GRADIENT BACKGROUND
+    function startTikTokBackgroundMusic() {
+        stopTikTokBackgroundMusic();
+        if (!tiktokAudioCtx) return;
+
+        tiktokBgGainNode = tiktokAudioCtx.createGain();
+        tiktokBgGainNode.gain.setValueAtTime(0.12, tiktokAudioCtx.currentTime);
+        tiktokBgGainNode.connect(tiktokAudioCtx.destination);
+        if (tiktokAudioDest) {
+            try { tiktokBgGainNode.connect(tiktokAudioDest); } catch (e) {}
+        }
+
+        // Ambient pentatonic chord progression (C4, E4, G4, A4)
+        const notes = [261.63, 329.63, 392.00, 440.00];
+        tiktokBgOscillators = notes.map(freq => {
+            const osc = tiktokAudioCtx.createOscillator();
+            const gain = tiktokAudioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, tiktokAudioCtx.currentTime);
+            gain.gain.setValueAtTime(0.035, tiktokAudioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(tiktokBgGainNode);
+            osc.start();
+            return osc;
+        });
+    }
+
+    function stopTikTokBackgroundMusic() {
+        if (tiktokBgOscillators.length > 0) {
+            tiktokBgOscillators.forEach(osc => {
+                try { osc.stop(); osc.disconnect(); } catch (e) {}
+            });
+            tiktokBgOscillators = [];
+        }
+        if (tiktokBgGainNode) {
+            try { tiktokBgGainNode.disconnect(); } catch (e) {}
+            tiktokBgGainNode = null;
+        }
+    }
+
+    function setTikTokAudioDucking(isDucking) {
+        if (!tiktokAudioCtx || !tiktokBgGainNode) return;
+        const targetVol = isDucking ? 0.03 : 0.12; // 25% volume during speech
+        tiktokBgGainNode.gain.setTargetAtTime(targetVol, tiktokAudioCtx.currentTime, 0.2);
+    }
+
+    function cleanTextForSpeech(text) {
+        if (!text) return '';
+        return text
+            .replace(/\[\d{2}:\d{2}\s*-\s*\d{2}:\d{2}\]/g, '') // remove timestamps
+            .replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '') // remove emojis
+            .replace(/\bO2O\b/gi, 'tại cửa hàng và trực tuyến')
+            .replace(/\bBio\b/gi, 'tiểu sử kênh')
+            .replace(/\bOCOP\b/gi, 'Ô-cốp')
+            .replace(/\bOcop\b/gi, 'Ô-cốp')
+            .replace(/\bOCOP AI Hub\b/gi, 'trang web Ô-cốp Việt Nam')
+            .replace(/\bQR code\b/gi, 'mã Q-R')
+            .replace(/\bQR\b/gi, 'Q-R')
+            .replace(/DigitalFest\s*2026/gi, 'Đại hội số hai nghìn không trăm hai mươi sáu')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function getScriptSceneSentences(scriptText) {
+        if (!scriptText) return [];
+        const lines = scriptText.split('\n')
+            .map(l => cleanTextForSpeech(l))
+            .filter(l => l.length > 5);
+        if (lines.length >= 4) return lines.slice(0, 4);
+        
+        const allText = cleanTextForSpeech(scriptText);
+        const sentences = allText.split(/(?<=[.!?])\s+/).filter(s => s.length > 5);
+        return sentences.slice(0, 4);
+    }
+
+    function speakTikTokSentence(sentence) {
+        if (tiktokVoiceMode === 'music_only' || !sentence) return;
+
+        if (tiktokActiveAudio) {
+            try { tiktokActiveAudio.pause(); } catch (e) {}
+            tiktokActiveAudio = null;
+        }
+        if (window.speechSynthesis) {
+            try { window.speechSynthesis.cancel(); } catch (e) {}
+        }
+
+        setTikTokAudioDucking(true);
+
+        const ttsUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=' + encodeURIComponent(sentence);
+        const audio = new Audio(ttsUrl);
+        tiktokActiveAudio = audio;
+
+        audio.onended = function () {
+            setTikTokAudioDucking(false);
+            tiktokActiveAudio = null;
+        };
+        audio.onerror = function () {
+            speakWebSpeechFallback(sentence);
+        };
+
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(function () {
+                speakWebSpeechFallback(sentence);
+            });
+        }
+    }
+
+    function speakWebSpeechFallback(sentence) {
+        if (!window.speechSynthesis) {
+            setTikTokAudioDucking(false);
+            return;
+        }
+        try {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(sentence);
+            utter.lang = 'vi-VN';
+            const voices = window.speechSynthesis.getVoices() || [];
+            if (tiktokVoiceMode === 'female_natural') {
+                const femaleVoice = voices.find(v => /hoaimy|linh|female|nu/i.test(v.name) && v.lang.startsWith('vi')) || voices.find(v => v.lang.startsWith('vi'));
+                if (femaleVoice) utter.voice = femaleVoice;
+                utter.rate = 0.98;
+                utter.pitch = 1.04;
+            } else {
+                const maleVoice = voices.find(v => /namminh|minh|male|nam/i.test(v.name) && v.lang.startsWith('vi')) || voices.find(v => v.lang.startsWith('vi'));
+                if (maleVoice) utter.voice = maleVoice;
+                utter.rate = 0.94;
+                utter.pitch = 0.88;
+            }
+
+            utter.onstart = function () { setTikTokAudioDucking(true); };
+            utter.onend = function () { setTikTokAudioDucking(false); };
+            utter.onerror = function () { setTikTokAudioDucking(false); };
+            tiktokActiveUtterance = utter;
+            window.speechSynthesis.speak(utter);
+        } catch (err) {
+            setTikTokAudioDucking(false);
+        }
+    }
+
+    function stopTikTokAudio() {
+        if (tiktokActiveAudio) {
+            try { tiktokActiveAudio.pause(); } catch (e) {}
+            tiktokActiveAudio = null;
+        }
+        if (window.speechSynthesis) {
+            try { window.speechSynthesis.cancel(); } catch (e) {}
+        }
+        stopTikTokBackgroundMusic();
+        setTikTokAudioDucking(false);
+        tiktokLastSpokenScene = -1;
+    }
+
+    window.onTikTokVoiceChange = function (val) {
+        tiktokVoiceMode = val || 'female_natural';
+        const sel1 = document.getElementById('tiktok-voice-select');
+        const sel2 = document.getElementById('tiktok-voice-select-modal');
+        if (sel1) sel1.value = tiktokVoiceMode;
+        if (sel2) sel2.value = tiktokVoiceMode;
+    };
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, font, fillStyle) {
+        ctx.save();
+        ctx.font = font;
+        ctx.fillStyle = fillStyle;
+        const words = text.split(' ');
+        let line = '';
+        let currentY = y;
+        let lineCount = 0;
+
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = ctx.measureText(testLine);
+            const testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                ctx.fillText(line.trim(), x, currentY);
+                line = words[n] + ' ';
+                currentY += lineHeight;
+                lineCount++;
+                if (lineCount >= 2) {
+                    const remaining = words.slice(n).join(' ');
+                    const truncated = ctx.measureText(remaining).width > maxWidth ? remaining.slice(0, 24) : remaining;
+                    ctx.fillText(truncated, x, currentY);
+                    line = '';
+                    break;
+                }
+            } else {
+                line = testLine;
+            }
+        }
+        if (line.trim().length > 0) {
+            ctx.fillText(line.trim(), x, currentY);
+        }
+        ctx.restore();
+    }
+
+    // =========================================================================
+    // CLEAN 9:16 COMMERCIAL VIDEO CANVAS ENGINE (ZERO FAKE BUTTONS / ZERO NOTCH)
+    // =========================================================================
+    function renderCommercialStudioVideo(ctx, canvas, p, frame, totalFrames, imgObj, style, captions) {
+        const W = canvas.width;
+        const H = canvas.height;
+        const totalDuration = 15; // 15 seconds
+        const time = (frame % totalFrames) / 30;
+
+        let sceneIndex = 0;
+        if (time < 3.5) sceneIndex = 0;
+        else if (time < 7.5) sceneIndex = 1;
+        else if (time < 11.5) sceneIndex = 2;
+        else sceneIndex = 3;
+
+        // 1. Dynamic Royal Sapphire Gradient Background
         const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
         bgGrad.addColorStop(0, '#0369A1');
-        bgGrad.addColorStop(0.35, '#0284C7');
+        bgGrad.addColorStop(0.35, '#075985');
         bgGrad.addColorStop(0.7, '#0C4A6E');
         bgGrad.addColorStop(1, '#082F49');
         ctx.fillStyle = bgGrad;
         ctx.fillRect(0, 0, W, H);
 
-        // 2. AMBIENT SPARKLES / PARTICLES
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        for (let i = 0; i < 28; i++) {
-            const px = (Math.sin(i * 99 + time * 0.5) * 0.5 + 0.5) * W;
-            const py = ((i * 37 - time * 45) % H + H) % H;
-            const size = 1.5 + (i % 3);
+        // 2. Ambient Floating Sparkles
+        for (let i = 0; i < 24; i++) {
+            const px = (Math.sin(i * 99 + time * 0.4) * 0.5 + 0.5) * W;
+            const py = ((i * 37 - time * 40) % H + H) % H;
+            const size = 1.2 + (i % 3);
+            const alpha = 0.25 + 0.25 * Math.sin(time * 2 + i);
+            ctx.fillStyle = (i % 2 === 0) ? 'rgba(253, 224, 71, ' + alpha + ')' : 'rgba(56, 189, 248, ' + alpha + ')';
             ctx.beginPath();
             ctx.arc(px, py, size, 0, Math.PI * 2);
             ctx.fill();
         }
 
-        // 3. TOP PILL BADGE: LIVE / OCOP 63 TỈNH THÀNH
+        // 3. Top Clean Watermark (No fake live dot)
         ctx.save();
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
         ctx.beginPath();
-        ctx.roundRect(30, 40, 240, 36, 18);
+        ctx.roundRect(35, 38, 305, 34, 17);
         ctx.fill();
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+        ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Red Live Dot
-        ctx.fillStyle = '#EF4444';
-        ctx.beginPath();
-        ctx.arc(50, 58, 6, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 13px Inter, system-ui, sans-serif';
-        ctx.fillText('OCOP VIỆT NAM • 63 TỈNH', 66, 63);
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = 'bold 12px Inter, system-ui, sans-serif';
+        ctx.fillText('✨ OCOP VIỆT NAM • TINH HOA NÔNG SẢN', 50, 60);
         ctx.restore();
 
-        // 4. PRODUCT SHOWCASE CARD (KEN BURNS ZOOM EFFECT)
+        // 4. Product Showcase Card with Ken Burns Zoom & Pan
         const cardX = 35;
-        const cardY = 110;
+        const cardY = 92;
         const cardW = 470;
-        const cardH = 460;
-        const cardR = 28;
+        const cardH = 470;
+        const cardR = 24;
 
         ctx.save();
-        // Drop shadow
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
-        ctx.shadowBlur = 30;
-        ctx.shadowOffsetY = 15;
-
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
+        ctx.shadowBlur = 24;
+        ctx.shadowOffsetY = 12;
         ctx.fillStyle = '#FFFFFF';
         ctx.beginPath();
         ctx.roundRect(cardX, cardY, cardW, cardH, cardR);
         ctx.fill();
         ctx.restore();
 
-        // Clip card interior
         ctx.save();
         ctx.beginPath();
         ctx.roundRect(cardX, cardY, cardW, cardH, cardR);
         ctx.clip();
 
-        // Draw image or emblem
-        if (tiktokProductImage && tiktokProductImage.complete && tiktokProductImage.naturalWidth > 0) {
-            // Ken Burns zoom calculation
-            const zoom = 1.05 + 0.08 * Math.sin(time * 0.8);
-            const panY = Math.cos(time * 0.5) * 8;
-            const drawW = cardW * zoom;
-            const drawH = cardH * zoom;
-            const drawX = cardX - (drawW - cardW) / 2;
-            const drawY = cardY - (drawH - cardH) / 2 + panY;
-            ctx.drawImage(tiktokProductImage, drawX, drawY, drawW, drawH);
+        const zoom = 1.02 + 0.10 * Math.sin((time / totalDuration) * Math.PI);
+        const panX = Math.sin(time * 0.4) * 10;
+        const panY = Math.cos(time * 0.3) * 8;
+
+        if (imgObj && imgObj.complete && imgObj.naturalWidth > 0) {
+            const dw = cardW * zoom;
+            const dh = cardH * zoom;
+            const dx = cardX - (dw - cardW) / 2 + panX;
+            const dy = cardY - (dh - cardH) / 2 + panY;
+            ctx.drawImage(imgObj, dx, dy, dw, dh);
         } else {
-            // Stylized emblem placeholder
-            const placeholderGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
-            placeholderGrad.addColorStop(0, '#E0F2FE');
-            placeholderGrad.addColorStop(1, '#BAE6FD');
-            ctx.fillStyle = placeholderGrad;
+            const pGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
+            pGrad.addColorStop(0, '#0284C7');
+            pGrad.addColorStop(1, '#0369A1');
+            ctx.fillStyle = pGrad;
             ctx.fillRect(cardX, cardY, cardW, cardH);
-
-            ctx.fillStyle = '#0284C7';
-            ctx.font = '900 64px Inter, sans-serif';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '900 32px Inter, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('🌾', cardX + cardW / 2, cardY + cardH / 2 - 20);
-
-            ctx.fillStyle = '#0C4A6E';
-            ctx.font = 'bold 22px Inter, sans-serif';
-            ctx.fillText(p.name, cardX + cardW / 2, cardY + cardH / 2 + 50);
+            ctx.fillText('🌾 ' + getCleanProductName(p), cardX + cardW / 2, cardY + cardH / 2);
         }
 
-        // Inner glowing border
-        ctx.strokeStyle = 'rgba(56, 189, 248, 0.6)';
-        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.5)';
+        ctx.lineWidth = 3;
         ctx.stroke();
         ctx.restore();
 
-        // 5. OCOP STAR CERTIFICATION BANNER (OVERLAY ON CARD)
+        // 5. OCOP Star Badge
         ctx.save();
         ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
         ctx.beginPath();
-        ctx.roundRect(50, 125, 230, 36, 18);
+        ctx.roundRect(50, 108, 235, 36, 18);
+        ctx.fill();
+        ctx.strokeStyle = '#FBBF24';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.fillStyle = '#FDE047';
+        ctx.font = 'bold 13px Inter, sans-serif';
+        ctx.fillText('⭐ CHỨNG NHẬN OCOP ' + (p.stars || 5) + ' SAO', 65, 131);
+        ctx.restore();
+
+        // 6. Product Information Section (Safe Zone: Y = 585 - 710)
+        ctx.save();
+        ctx.textAlign = 'left';
+        const cleanName = getCleanProductName(p);
+        wrapCanvasText(ctx, cleanName, 35, 600, 470, 28, '900 23px Inter, sans-serif', '#FFFFFF');
+
+        ctx.font = 'bold 14px Inter, sans-serif';
+        ctx.fillStyle = '#38BDF8';
+        ctx.fillText('📍 Đặc sản: ' + (p.region || 'Việt Nam') + ' • Showroom O2O & Điểm Bán Toàn Quốc', 35, 660);
+
+        const priceText = p.price ? p.price.toLocaleString('vi-VN') + ' đ' : 'Giá ưu đãi';
+        ctx.fillStyle = '#FEF08A';
+        ctx.beginPath();
+        ctx.roundRect(35, 675, 160, 32, 16);
+        ctx.fill();
+        ctx.fillStyle = '#854D0E';
+        ctx.font = 'bold 14px Inter, sans-serif';
+        ctx.fillText('💰 ' + priceText, 48, 696);
+        ctx.restore();
+
+        // 7. Dynamic 4-Scene Subtitles in Safe Zone (Y = 725 - 785)
+        let defaultCaptions = [
+            '🔥 ĐẶC SẢN ' + (p.region || 'VIỆT NAM').toUpperCase() + ': BẠN ĐÃ THỬ CHƯA?',
+            '🌿 100% NGUYÊN LIỆU TỰ NHIÊN • ĐẠT OCOP ' + (p.stars || 5) + ' SAO',
+            '⭐ HƯƠNG VỊ ĐẬM ĐÀ • TRUY XUẤT NGUỒN GỐC QR CODE',
+            '👉 NHẤP VÀO BIO ĐỂ MỞ BẢN ĐỒ SỐ OCOP NGAY!'
+        ];
+        if (captions && captions.length >= 4) {
+            defaultCaptions = captions;
+        }
+
+        const subText = defaultCaptions[sceneIndex] || defaultCaptions[0];
+        ctx.save();
+        ctx.font = '900 17px Inter, sans-serif';
+        const textWidth = ctx.measureText(subText).width;
+        const subW = Math.min(Math.max(textWidth + 36, 280), 470);
+        const subX = (W - subW) / 2;
+        const subY = 730;
+
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
+        ctx.beginPath();
+        ctx.roundRect(subX, subY, subW, 44, 22);
         ctx.fill();
         ctx.strokeStyle = '#FBBF24';
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
         ctx.fillStyle = '#FDE047';
-        ctx.font = 'bold 13px Inter, sans-serif';
-        ctx.fillText(`⭐ CHỨNG NHẬN OCOP ${p.stars || 5} SAO`, 65, 148);
+        ctx.textAlign = 'center';
+        ctx.fillText(subText, W / 2, subY + 28);
         ctx.restore();
 
-        // 6. PRODUCT INFO STRIP
+        // 8. Call-To-Action Banner (Y = 800 - 870)
         ctx.save();
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 24px Inter, sans-serif';
-        ctx.shadowColor = 'rgba(0,0,0,0.8)';
-        ctx.shadowBlur = 8;
-        
-        // Wrap product title if too long
-        const displayName = p.name.length > 28 ? p.name.substring(0, 26) + '...' : p.name;
-        ctx.fillText(displayName, 35, 615);
-
-        ctx.font = 'bold 15px Inter, sans-serif';
-        ctx.fillStyle = '#38BDF8';
-        ctx.fillText(`📍 Đặc sản: ${p.region || 'Việt Nam'} • Showroom O2O`, 35, 642);
-
-        // Price Badge
-        const priceText = p.price ? p.price.toLocaleString('vi-VN') + ' đ' : 'Giá ưu đãi';
-        ctx.fillStyle = '#FEF08A';
-        ctx.beginPath();
-        ctx.roundRect(35, 655, 150, 32, 16);
-        ctx.fill();
-        ctx.fillStyle = '#854D0E';
-        ctx.font = 'bold 14px Inter, sans-serif';
-        ctx.fillText(priceText, 50, 676);
-        ctx.restore();
-
-        // 7. AUTO-CAPTIONS (TIKTOK DYNAMIC SUBTITLES)
-        if (tiktokAutoCaptions && tiktokAutoCaptions.length > 0) {
-            const capIndex = Math.min(
-                Math.floor((time / 10) * tiktokAutoCaptions.length),
-                tiktokAutoCaptions.length - 1
-            );
-            const currentSub = tiktokAutoCaptions[capIndex] || '';
-
-            ctx.save();
-            ctx.font = '900 18px Inter, sans-serif';
-            const textWidth = ctx.measureText(currentSub).width;
-            const subW = Math.max(textWidth + 36, 260);
-            const subX = (W - subW) / 2;
-            const subY = 720;
-
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-            ctx.beginPath();
-            ctx.roundRect(subX, subY, subW, 44, 22);
-            ctx.fill();
-            ctx.strokeStyle = '#FBBF24';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            ctx.fillStyle = '#FDE047';
-            ctx.textAlign = 'center';
-            ctx.fillText(currentSub, W / 2, subY + 28);
-            ctx.restore();
-        }
-
-        // 8. BOUNCING CALL-TO-ACTION BANNER (FINAL DRIVER TO BIO LINK)
-        ctx.save();
-        const ctaBounce = Math.sin(time * 6) * 4;
+        const ctaBounce = sceneIndex === 3 ? Math.sin(time * 6) * 3 : 0;
         const ctaY = 800 + ctaBounce;
         const ctaW = 470;
         const ctaX = 35;
@@ -1176,9 +1662,8 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         ctaGrad.addColorStop(1, '#0EA5E9');
         ctx.fillStyle = ctaGrad;
         ctx.beginPath();
-        ctx.roundRect(ctaX, ctaY, ctaW, 64, 20);
+        ctx.roundRect(ctaX, ctaY, ctaW, 66, 18);
         ctx.fill();
-
         ctx.strokeStyle = '#BAE6FD';
         ctx.lineWidth = 2;
         ctx.stroke();
@@ -1186,83 +1671,48 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         ctx.fillStyle = '#FFFFFF';
         ctx.font = '900 16px Inter, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('🌐 TÌM MUA TẠI: OCOP AI HUB • LINK BIO 👆', W / 2, ctaY + 28);
+        ctx.fillText('🌐 ĐẶT MUA CHÍNH HÃNG TẠI: OCOP AI HUB | GIAO TOÀN QUỐC', W / 2, ctaY + 28);
 
-        ctx.font = 'bold 12.5px Inter, sans-serif';
+        ctx.font = 'bold 12px Inter, sans-serif';
         ctx.fillStyle = '#E0F2FE';
-        ctx.fillText('Bản đồ số 63 Tỉnh Thành • Tìm Điểm Bán & Showroom Gần Bạn', W / 2, ctaY + 49);
+        ctx.fillText('Bản Đồ Số 63 Tỉnh Thành • Tra Cứu Showroom & Điểm Bán Gần Nhất', W / 2, ctaY + 49);
         ctx.restore();
 
-        // 9. TIKTOK UI MOCKUP ON RIGHT SIDE
-        ctx.save();
-        const iconX = 490;
-        ctx.textAlign = 'center';
-
-        // Avatar
-        ctx.fillStyle = '#FFFFFF';
-        ctx.beginPath();
-        ctx.arc(iconX, 420, 20, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#0284C7';
-        ctx.font = 'bold 14px Inter, sans-serif';
-        ctx.fillText('OCOP', iconX, 425);
-
-        // Heart
-        ctx.font = '22px Inter, sans-serif';
-        ctx.fillText('❤️', iconX, 480);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 10px Inter, sans-serif';
-        ctx.fillText('18.2K', iconX, 498);
-
-        // Comment
-        ctx.font = '22px Inter, sans-serif';
-        ctx.fillText('💬', iconX, 535);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 10px Inter, sans-serif';
-        ctx.fillText('539', iconX, 553);
-
-        // Bookmark
-        ctx.font = '22px Inter, sans-serif';
-        ctx.fillText('🔖', iconX, 590);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 10px Inter, sans-serif';
-        ctx.fillText('2.4K', iconX, 608);
-
-        // Share
-        ctx.font = '22px Inter, sans-serif';
-        ctx.fillText('↗️', iconX, 645);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 10px Inter, sans-serif';
-        ctx.fillText('1.1K', iconX, 663);
-
-        // Rotating Music Disc
-        const discAngle = time * 3;
-        ctx.translate(iconX, 720);
-        ctx.rotate(discAngle);
-        ctx.fillStyle = '#0F172A';
-        ctx.beginPath();
-        ctx.arc(0, 0, 18, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.fillStyle = '#38BDF8';
-        ctx.beginPath();
-        ctx.arc(0, 0, 6, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        // 10. BOTTOM PROGRESS BAR
+        // 9. Bottom Progress Bar
         ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
         ctx.fillRect(0, H - 4, W, 4);
         ctx.fillStyle = '#38BDF8';
-        ctx.fillRect(0, H - 4, (frame % tiktokTotalFrames) / tiktokTotalFrames * W, 4);
+        ctx.fillRect(0, H - 4, (time / totalDuration) * W, 4);
+    }
+
+    function drawTikTokCanvasFrame() {
+        const canvas = document.getElementById('tiktok-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        const p = tiktokCurrentProduct || featuredSpecialties[0];
+        renderCommercialStudioVideo(ctx, canvas, p, tiktokCurrentFrame, tiktokTotalFrames, tiktokProductImage, tiktokCurrentStyle, tiktokAutoCaptions);
     }
 
     function runTikTokAnimationLoop() {
         if (!isTikTokPlaying) return;
-        tiktokCurrentFrame++;
+        tiktokCurrentFrame = (tiktokCurrentFrame + 1) % tiktokTotalFrames;
         drawTikTokCanvasFrame();
+
+        const time = (tiktokCurrentFrame % tiktokTotalFrames) / 30;
+        let sIdx = 0;
+        if (time < 3.5) sIdx = 0;
+        else if (time < 7.5) sIdx = 1;
+        else if (time < 11.5) sIdx = 2;
+        else sIdx = 3;
+
+        if (sIdx !== tiktokLastSpokenScene) {
+            tiktokLastSpokenScene = sIdx;
+            const scr = document.getElementById('tiktok-script-output')?.value || '';
+            const sents = getScriptSceneSentences(scr);
+            if (sents[sIdx]) speakTikTokSentence(sents[sIdx]);
+        }
+
         tiktokAnimFrameId = requestAnimationFrame(runTikTokAnimationLoop);
     }
 
@@ -1270,10 +1720,11 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         if (isTikTokPlaying) return;
         isTikTokPlaying = true;
         const btn = document.getElementById('txt-tiktok-play');
-        if (btn) btn.textContent = '⏸ Tạm Dừng Video';
+        if (btn) btn.textContent = '⏸ Tạm Dừng Video & Giọng Đọc';
 
-        // Play voiceover via SpeechSynthesis if available
-        playTikTokVoiceover();
+        initTikTokAudioEngine();
+        startTikTokBackgroundMusic();
+        tiktokLastSpokenScene = -1;
 
         tiktokAnimFrameId = requestAnimationFrame(runTikTokAnimationLoop);
     }
@@ -1286,7 +1737,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         }
         const btn = document.getElementById('txt-tiktok-play');
         if (btn) btn.textContent = '▶️ Phát / Xem Thử Video TikTok';
-        stopTikTokVoiceover();
+        stopTikTokAudio();
     }
 
     window.toggleTikTokVideoPlayback = function () {
@@ -1297,44 +1748,10 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         }
     };
 
-    function playTikTokVoiceover() {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-
-        const scr = document.getElementById('tiktok-script-output')?.value || '';
-        // Clean timestamps [00:00 - 00:04]
-        const cleanText = scr.replace(/\[\d\d:\d\d - \d\d:\d\d\]/g, '').replace(/👉/g, '').trim();
-        if (!cleanText) return;
-
-        const utter = new SpeechSynthesisUtterance(cleanText);
-        utter.lang = 'vi-VN';
-        utter.rate = 1.05;
-
-        // Try to select Vietnamese voice if available
-        const voices = window.speechSynthesis.getVoices();
-        const viVoice = voices.find(v => v.lang.startsWith('vi') || v.name.includes('Vietnamese'));
-        if (viVoice) utter.voice = viVoice;
-
-        window.speechSynthesis.speak(utter);
-    }
-
-    function stopTikTokVoiceover() {
-        if (window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-        }
-    }
-
-    // Export & Download TikTok Video (.webm / .mp4 via MediaRecorder)
-    window.downloadTikTokVideo = function () {
-        const canvas = document.getElementById('tiktok-canvas');
+    function downloadTikTokVideoEngine(canvas, isModal) {
         if (!canvas) return;
-
-        const downloadTxt = document.getElementById('txt-tiktok-download');
-        if (downloadTxt) downloadTxt.textContent = '⏳ Đang render video TikTok... (0%)';
-
-        // Ensure canvas animation is running
-        tiktokCurrentFrame = 0;
-        drawTikTokCanvasFrame();
+        const downloadTxt = document.getElementById(isModal ? 'txt-modal-download' : 'txt-tiktok-download');
+        const p = tiktokCurrentProduct || featuredSpecialties[0];
 
         if (typeof canvas.captureStream !== 'function' || typeof MediaRecorder === 'undefined') {
             alert('Trình duyệt của bạn không hỗ trợ MediaRecorder canvas. Vui lòng sử dụng Chrome, Edge hoặc Firefox!');
@@ -1342,73 +1759,109 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             return;
         }
 
-        const stream = canvas.captureStream(30);
-        let mimeType = 'video/webm;codecs=vp9';
-        if (!MediaRecorder.isTypeSupported(mimeType)) {
-            mimeType = 'video/webm';
-        }
-        if (!MediaRecorder.isTypeSupported(mimeType)) {
-            mimeType = '';
-        }
+        if (downloadTxt) downloadTxt.textContent = '⏳ Đang render video sạch 9:16...';
 
-        try {
-            tiktokRecordedChunks = [];
-            tiktokMediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
-        } catch (err) {
-            console.error('MediaRecorder error:', err);
-            tiktokMediaRecorder = new MediaRecorder(stream);
-        }
+        initTikTokAudioEngine();
+        startTikTokBackgroundMusic();
 
-        tiktokMediaRecorder.ondataavailable = function (e) {
-            if (e.data && e.data.size > 0) {
-                tiktokRecordedChunks.push(e.data);
+        const canvasStream = canvas.captureStream(30);
+        let exportStream = canvasStream;
+
+        if (tiktokAudioDest && tiktokAudioDest.stream && tiktokAudioDest.stream.getAudioTracks().length > 0) {
+            try {
+                exportStream = new MediaStream([
+                    ...canvasStream.getVideoTracks(),
+                    ...tiktokAudioDest.stream.getAudioTracks()
+                ]);
+            } catch (e) {
+                exportStream = canvasStream;
             }
+        }
+
+        let mimeType = 'video/webm;codecs=vp9,opus';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm;codecs=vp8,opus';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
+        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = '';
+
+        let chunks = [];
+        let recorder = null;
+        try {
+            recorder = mimeType ? new MediaRecorder(exportStream, { mimeType }) : new MediaRecorder(exportStream);
+        } catch (err) {
+            recorder = new MediaRecorder(exportStream);
+        }
+
+        recorder.ondataavailable = e => {
+            if (e.data && e.data.size > 0) chunks.push(e.data);
         };
 
-        tiktokMediaRecorder.onstop = function () {
-            const blob = new Blob(tiktokRecordedChunks, { type: 'video/webm' });
+        recorder.onstop = () => {
+            stopTikTokAudio();
+            const blob = new Blob(chunks, { type: 'video/webm' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            const pName = (tiktokCurrentProduct?.name || 'SanPham').replace(/[^a-zA-Z0-9À-ỹ]/g, '_');
-            a.download = `OCOP_TikTok_${pName}_9x16.webm`;
+            const safeName = (p.id || 'ocop-specialty').replace(/[^a-z0-9_-]/gi, '_');
+            a.download = 'video-commercial-9-16-' + safeName + '.webm';
             document.body.appendChild(a);
             a.click();
             setTimeout(() => {
                 document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 100);
-
-            if (downloadTxt) downloadTxt.textContent = '📥 Tải Video Về Máy (.WebM / .MP4)';
-            if (typeof showToast === 'function') {
-                showToast('🎉 Đã tải video TikTok OCOP thành công! Bạn có thể đăng ngay lên TikTok.', 'success');
-            } else {
-                alert('🎉 Đã xuất và tải video TikTok OCOP thành công!');
-            }
+                URL.revokeObjectURL(url);
+                if (downloadTxt) downloadTxt.textContent = '📥 Tải Video Về Máy (.WebM / .MP4)';
+                if (typeof showToast === 'function') {
+                    showToast('🎉 Đã tải video quảng cáo 9:16 thương mại thành công!', 'success');
+                }
+            }, 500);
         };
 
-        tiktokMediaRecorder.start();
+        recorder.start();
 
-        // Render frames manually for exact 10 seconds (300 frames)
+        const scrEl = document.getElementById(isModal ? 'tiktok-script-modal' : 'tiktok-script-output');
+        const sents = getScriptSceneSentences(scrEl ? scrEl.value : '');
+
         let renderFrame = 0;
-        const totalRecordFrames = 300;
+        let lastScene = -1;
         const renderInterval = setInterval(() => {
-            tiktokCurrentFrame = renderFrame;
-            drawTikTokCanvasFrame();
-            renderFrame++;
+            if (renderFrame < tiktokTotalFrames) {
+                if (isModal) {
+                    modalCurrentFrame = renderFrame;
+                    drawTikTokCanvasModalFrame();
+                } else {
+                    tiktokCurrentFrame = renderFrame;
+                    drawTikTokCanvasFrame();
+                }
 
-            const pct = Math.round((renderFrame / totalRecordFrames) * 100);
-            if (downloadTxt) downloadTxt.textContent = `⏳ Đang render video TikTok... (${pct}%)`;
+                const time = renderFrame / 30;
+                let sIdx = 0;
+                if (time < 3.5) sIdx = 0;
+                else if (time < 7.5) sIdx = 1;
+                else if (time < 11.5) sIdx = 2;
+                else sIdx = 3;
 
-            if (renderFrame >= totalRecordFrames) {
+                if (sIdx !== lastScene) {
+                    lastScene = sIdx;
+                    if (sents[sIdx]) speakTikTokSentence(sents[sIdx]);
+                }
+
+                renderFrame++;
+                if (downloadTxt && renderFrame % 30 === 0) {
+                    const pct = Math.round((renderFrame / tiktokTotalFrames) * 100);
+                    downloadTxt.textContent = '⏳ Đang dựng video: ' + pct + '%...';
+                }
+            } else {
                 clearInterval(renderInterval);
-                tiktokMediaRecorder.stop();
+                try { recorder.stop(); } catch (e) {}
             }
-        }, 33); // ~30 fps
+        }, 33);
+    }
+
+    window.downloadTikTokVideo = function () {
+        const canvas = document.getElementById('tiktok-canvas');
+        downloadTikTokVideoEngine(canvas, false);
     };
 
-    // Open TikTok Upload Center & Copy Caption
     window.openTikTokUploadCenter = function () {
         const cap = document.getElementById('tiktok-caption-output')?.value || '';
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1854,7 +2307,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                             <div>
                                 <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-sky-200 bg-black/20 px-2.5 py-0.5 rounded-full mb-0.5">
                                     <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                                    <span>AI TikTok Marketing Engine 2026 • Chuẩn Ý Thảo Nguyên</span>
+                                    <span>✨ AI VIDEO & CONTENT STUDIO • QUẢNG BÁ ĐẶC SẢN OCOP</span>
                                 </div>
                                 <h3 class="font-black text-base sm:text-lg text-white tracking-wide">
                                     🎬 STUDIO AI: TẠO NỘI DUNG & VIDEO TIKTOK QUẢNG BÁ SẢN PHẨM OCOP
@@ -1911,6 +2364,17 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                                 </select>
                             </div>
 
+                            <div>
+                                <label class="block text-xs font-black text-sky-900 mb-1.5 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-microphone-lines text-sky-600"></i> Chọn Giọng Đọc Thuyết Minh AI:
+                                </label>
+                                <select id="tiktok-voice-select-modal" class="tiktok-select" onchange="onTikTokVoiceChange(this.value)">
+                                    <option value="female_natural">🎙️ Giọng Nữ AI Tự Nhiên (Truyền cảm)</option>
+                                    <option value="male_warm">🎙️ Giọng Nam AI (Ấm áp)</option>
+                                    <option value="music_only">🔇 Chỉ phát Nhạc nền nhẹ (Không lời thoại)</option>
+                                </select>
+                            </div>
+
                             <button type="button" onclick="generateAiTikTokPackageModal()" class="w-full py-3 px-4 rounded-xl text-white font-black text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer hover:opacity-95" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important;">
                                 <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
                                 <span>✨ AI Tạo Nội Dung & Dựng Video TikTok</span>
@@ -1955,8 +2419,8 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                         </div>
 
                         <!-- Phone Frame -->
-                        <div class="tiktok-phone-mockup">
-                            <div class="tiktok-phone-island"></div>
+                        <div class="tiktok-phone-mockup" style="width: 300px; height: 533px; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.25); border: 1.5px solid #38BDF8; background: #0F172A; position: relative; margin: 0 auto;">
+                            
                             <canvas id="tiktok-canvas-modal" width="540" height="960" style="width: 100%; height: 100%; display: block; object-fit: cover;"></canvas>
                         </div>
 
@@ -2159,273 +2623,35 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
     };
 
     // Canvas rendering for modal
+    
     function drawTikTokCanvasModalFrame() {
         const canvas = document.getElementById('tiktok-canvas-modal');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
-
-        const W = canvas.width;  // 540
-        const H = canvas.height; // 960
-        const frame = tiktokCurrentFrame;
-        const time = (frame % tiktokTotalFrames) / 30; // 0 to 10 seconds
         const p = tiktokCurrentProduct || featuredSpecialties[0];
-
-        // 1. DYNAMIC ROYAL BLUE GRADIENT BACKGROUND
-        const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
-        bgGrad.addColorStop(0, '#0369A1');
-        bgGrad.addColorStop(0.35, '#0284C7');
-        bgGrad.addColorStop(0.7, '#0C4A6E');
-        bgGrad.addColorStop(1, '#082F49');
-        ctx.fillStyle = bgGrad;
-        ctx.fillRect(0, 0, W, H);
-
-        // 2. PARTICLES
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        for (let i = 0; i < 28; i++) {
-            const px = (Math.sin(i * 99 + time * 0.5) * 0.5 + 0.5) * W;
-            const py = ((i * 37 - time * 45) % H + H) % H;
-            const size = 1.5 + (i % 3);
-            ctx.beginPath();
-            ctx.arc(px, py, size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        // 3. TOP PILL BADGE
-        ctx.save();
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
-        ctx.beginPath();
-        ctx.roundRect(30, 40, 240, 36, 18);
-        ctx.fill();
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-        ctx.stroke();
-
-        ctx.fillStyle = '#EF4444';
-        ctx.beginPath();
-        ctx.arc(50, 58, 6, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 13px Inter, system-ui, sans-serif';
-        ctx.fillText('OCOP VIỆT NAM • 63 TỈNH', 66, 63);
-        ctx.restore();
-
-        // 4. PRODUCT SHOWCASE CARD (KEN BURNS ZOOM EFFECT)
-        const cardX = 35;
-        const cardY = 110;
-        const cardW = 470;
-        const cardH = 460;
-        const cardR = 28;
-
-        ctx.save();
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
-        ctx.shadowBlur = 30;
-        ctx.shadowOffsetY = 15;
-        ctx.fillStyle = '#FFFFFF';
-        ctx.beginPath();
-        ctx.roundRect(cardX, cardY, cardW, cardH, cardR);
-        ctx.fill();
-        ctx.restore();
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.roundRect(cardX, cardY, cardW, cardH, cardR);
-        ctx.clip();
-
-        if (tiktokProductImage && tiktokProductImage.complete && tiktokProductImage.naturalWidth > 0) {
-            const zoom = 1.05 + 0.08 * Math.sin(time * 0.8);
-            const panY = Math.cos(time * 0.5) * 8;
-            const drawW = cardW * zoom;
-            const drawH = cardH * zoom;
-            const drawX = cardX - (drawW - cardW) / 2;
-            const drawY = cardY - (drawH - cardH) / 2 + panY;
-            ctx.drawImage(tiktokProductImage, drawX, drawY, drawW, drawH);
-        } else {
-            const placeholderGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
-            placeholderGrad.addColorStop(0, '#E0F2FE');
-            placeholderGrad.addColorStop(1, '#BAE6FD');
-            ctx.fillStyle = placeholderGrad;
-            ctx.fillRect(cardX, cardY, cardW, cardH);
-
-            ctx.fillStyle = '#0284C7';
-            ctx.font = '900 64px Inter, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('🌾', cardX + cardW / 2, cardY + cardH / 2 - 20);
-
-            ctx.fillStyle = '#0C4A6E';
-            ctx.font = 'bold 22px Inter, sans-serif';
-            ctx.fillText(p.name, cardX + cardW / 2, cardY + cardH / 2 + 50);
-        }
-
-        ctx.strokeStyle = 'rgba(56, 189, 248, 0.6)';
-        ctx.lineWidth = 4;
-        ctx.stroke();
-        ctx.restore();
-
-        // 5. OCOP STAR BADGE
-        ctx.save();
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-        ctx.beginPath();
-        ctx.roundRect(50, 125, 230, 36, 18);
-        ctx.fill();
-        ctx.strokeStyle = '#FBBF24';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        ctx.fillStyle = '#FDE047';
-        ctx.font = 'bold 13px Inter, sans-serif';
-        ctx.fillText(`⭐ CHỨNG NHẬN OCOP ${p.stars || 5} SAO`, 65, 148);
-        ctx.restore();
-
-        // 6. PRODUCT INFO
-        ctx.save();
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 24px Inter, sans-serif';
-        ctx.shadowColor = 'rgba(0,0,0,0.8)';
-        ctx.shadowBlur = 8;
-        
-        const displayName = p.name.length > 28 ? p.name.substring(0, 26) + '...' : p.name;
-        ctx.fillText(displayName, 35, 615);
-
-        ctx.font = 'bold 15px Inter, sans-serif';
-        ctx.fillStyle = '#38BDF8';
-        ctx.fillText(`📍 Đặc sản: ${p.region || 'Việt Nam'} • Showroom O2O`, 35, 642);
-
-        const priceText = p.price ? p.price.toLocaleString('vi-VN') + ' đ' : 'Giá ưu đãi';
-        ctx.fillStyle = '#FEF08A';
-        ctx.beginPath();
-        ctx.roundRect(35, 655, 150, 32, 16);
-        ctx.fill();
-        ctx.fillStyle = '#854D0E';
-        ctx.font = 'bold 14px Inter, sans-serif';
-        ctx.fillText(priceText, 50, 676);
-        ctx.restore();
-
-        // 7. AUTO-CAPTIONS
-        if (tiktokAutoCaptions && tiktokAutoCaptions.length > 0) {
-            const capIndex = Math.min(
-                Math.floor((time / 10) * tiktokAutoCaptions.length),
-                tiktokAutoCaptions.length - 1
-            );
-            const currentSub = tiktokAutoCaptions[capIndex] || '';
-
-            ctx.save();
-            ctx.font = '900 18px Inter, sans-serif';
-            const textWidth = ctx.measureText(currentSub).width;
-            const subW = Math.max(textWidth + 36, 260);
-            const subX = (W - subW) / 2;
-            const subY = 720;
-
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-            ctx.beginPath();
-            ctx.roundRect(subX, subY, subW, 44, 22);
-            ctx.fill();
-            ctx.strokeStyle = '#FBBF24';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            ctx.fillStyle = '#FDE047';
-            ctx.textAlign = 'center';
-            ctx.fillText(currentSub, W / 2, subY + 28);
-            ctx.restore();
-        }
-
-        // 8. BOUNCING CALL-TO-ACTION BANNER
-        ctx.save();
-        const ctaBounce = Math.sin(time * 6) * 4;
-        const ctaY = 800 + ctaBounce;
-        const ctaW = 470;
-        const ctaX = 35;
-
-        const ctaGrad = ctx.createLinearGradient(ctaX, 0, ctaX + ctaW, 0);
-        ctaGrad.addColorStop(0, '#0284C7');
-        ctaGrad.addColorStop(1, '#0EA5E9');
-        ctx.fillStyle = ctaGrad;
-        ctx.beginPath();
-        ctx.roundRect(ctaX, ctaY, ctaW, 64, 20);
-        ctx.fill();
-
-        ctx.strokeStyle = '#BAE6FD';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 16px Inter, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('🌐 XEM ĐIỂM BÁN CHÍNH HÃNG: OCOP AI HUB 👆', W / 2, ctaY + 28);
-
-        ctx.font = 'bold 12.5px Inter, sans-serif';
-        ctx.fillStyle = '#E0F2FE';
-        ctx.fillText('Bản đồ số 63 Tỉnh Thành • Tra Cứu Showroom Gần Nhất', W / 2, ctaY + 49);
-        ctx.restore();
-
-        // 9. TIKTOK HUD
-        ctx.save();
-        const iconX = 490;
-        ctx.textAlign = 'center';
-
-        ctx.fillStyle = '#FFFFFF';
-        ctx.beginPath();
-        ctx.arc(iconX, 420, 20, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#0284C7';
-        ctx.font = 'bold 14px Inter, sans-serif';
-        ctx.fillText('OCOP', iconX, 425);
-
-        ctx.font = '22px Inter, sans-serif';
-        ctx.fillText('❤️', iconX, 480);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 10px Inter, sans-serif';
-        ctx.fillText('18.2K', iconX, 498);
-
-        ctx.font = '22px Inter, sans-serif';
-        ctx.fillText('💬', iconX, 535);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 10px Inter, sans-serif';
-        ctx.fillText('539', iconX, 553);
-
-        ctx.font = '22px Inter, sans-serif';
-        ctx.fillText('🔖', iconX, 590);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 10px Inter, sans-serif';
-        ctx.fillText('2.4K', iconX, 608);
-
-        ctx.font = '22px Inter, sans-serif';
-        ctx.fillText('↗️', iconX, 645);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 10px Inter, sans-serif';
-        ctx.fillText('1.1K', iconX, 663);
-
-        const discAngle = time * 3;
-        ctx.translate(iconX, 720);
-        ctx.rotate(discAngle);
-        ctx.fillStyle = '#0F172A';
-        ctx.beginPath();
-        ctx.arc(0, 0, 18, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.fillStyle = '#38BDF8';
-        ctx.beginPath();
-        ctx.arc(0, 0, 6, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        // 10. PROGRESS BAR
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-        ctx.fillRect(0, H - 4, W, 4);
-        ctx.fillStyle = '#38BDF8';
-        ctx.fillRect(0, H - 4, (frame % tiktokTotalFrames) / tiktokTotalFrames * W, 4);
+        renderCommercialStudioVideo(ctx, canvas, p, modalCurrentFrame, tiktokTotalFrames, tiktokProductImage, tiktokCurrentStyle, tiktokAutoCaptions);
     }
-
-    let isModalPlaying = false;
-    let modalAnimId = null;
 
     function runTikTokModalLoop() {
         if (!isModalPlaying) return;
-        tiktokCurrentFrame++;
+        modalCurrentFrame = (modalCurrentFrame + 1) % tiktokTotalFrames;
         drawTikTokCanvasModalFrame();
+
+        const time = (modalCurrentFrame % tiktokTotalFrames) / 30;
+        let sIdx = 0;
+        if (time < 3.5) sIdx = 0;
+        else if (time < 7.5) sIdx = 1;
+        else if (time < 11.5) sIdx = 2;
+        else sIdx = 3;
+
+        if (sIdx !== tiktokLastSpokenScene) {
+            tiktokLastSpokenScene = sIdx;
+            const scr = document.getElementById('tiktok-script-modal')?.value || '';
+            const sents = getScriptSceneSentences(scr);
+            if (sents[sIdx]) speakTikTokSentence(sents[sIdx]);
+        }
+
         modalAnimId = requestAnimationFrame(runTikTokModalLoop);
     }
 
@@ -2433,22 +2659,11 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         if (isModalPlaying) return;
         isModalPlaying = true;
         const btn = document.getElementById('txt-modal-play');
-        if (btn) btn.textContent = '⏸ Tạm Dừng Video';
+        if (btn) btn.textContent = '⏸ Tạm Dừng Video & Giọng Đọc';
 
-        if (window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-            const scr = document.getElementById('tiktok-script-modal')?.value || '';
-            const cleanText = scr.replace(/\[\d\d:\d\d - \d\d:\d\d\]/g, '').replace(/👉/g, '').trim();
-            if (cleanText) {
-                const utter = new SpeechSynthesisUtterance(cleanText);
-                utter.lang = 'vi-VN';
-                utter.rate = 1.05;
-                const voices = window.speechSynthesis.getVoices();
-                const viVoice = voices.find(v => v.lang.startsWith('vi') || v.name.includes('Vietnamese'));
-                if (viVoice) utter.voice = viVoice;
-                window.speechSynthesis.speak(utter);
-            }
-        }
+        initTikTokAudioEngine();
+        startTikTokBackgroundMusic();
+        tiktokLastSpokenScene = -1;
 
         modalAnimId = requestAnimationFrame(runTikTokModalLoop);
     }
@@ -2461,9 +2676,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         }
         const btn = document.getElementById('txt-modal-play');
         if (btn) btn.textContent = '▶️ Xem Thử Video';
-        if (window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-        }
+        stopTikTokAudio();
     }
 
     window.toggleTikTokModalPlayback = function () {
@@ -2476,74 +2689,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
     window.downloadTikTokModalVideo = function () {
         const canvas = document.getElementById('tiktok-canvas-modal');
-        if (!canvas) return;
-
-        const downloadTxt = document.getElementById('txt-modal-download');
-        if (downloadTxt) downloadTxt.textContent = '⏳ Đang render video TikTok... (0%)';
-
-        tiktokCurrentFrame = 0;
-        drawTikTokCanvasModalFrame();
-
-        if (typeof canvas.captureStream !== 'function' || typeof MediaRecorder === 'undefined') {
-            alert('Trình duyệt của bạn không hỗ trợ MediaRecorder canvas. Vui lòng sử dụng Chrome, Edge hoặc Firefox!');
-            if (downloadTxt) downloadTxt.textContent = '📥 Tải Video Về Máy (.WebM / .MP4)';
-            return;
-        }
-
-        const stream = canvas.captureStream(30);
-        let mimeType = 'video/webm;codecs=vp9';
-        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
-        if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = '';
-
-        let chunks = [];
-        let recorder = null;
-        try {
-            recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
-        } catch (err) {
-            recorder = new MediaRecorder(stream);
-        }
-
-        recorder.ondataavailable = e => { if (e.data && e.data.size > 0) chunks.push(e.data); };
-        recorder.onstop = () => {
-            const blob = new Blob(chunks, { type: 'video/webm' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            const pName = (tiktokCurrentProduct?.name || 'SanPham').replace(/[^a-zA-Z0-9À-ỹ]/g, '_');
-            a.download = `OCOP_TikTok_${pName}_9x16.webm`;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 100);
-
-            if (downloadTxt) downloadTxt.textContent = '📥 Tải Video Về Máy (.WebM / .MP4)';
-            if (typeof showToast === 'function') {
-                showToast('🎉 Đã tải video TikTok OCOP thành công! Bạn có thể đăng ngay lên TikTok.', 'success');
-            } else {
-                alert('🎉 Đã xuất và tải video TikTok OCOP thành công!');
-            }
-        };
-
-        recorder.start();
-
-        let renderFrame = 0;
-        const totalRecordFrames = 300;
-        const interval = setInterval(() => {
-            tiktokCurrentFrame = renderFrame;
-            drawTikTokCanvasModalFrame();
-            renderFrame++;
-
-            const pct = Math.round((renderFrame / totalRecordFrames) * 100);
-            if (downloadTxt) downloadTxt.textContent = `⏳ Đang render video TikTok... (${pct}%)`;
-
-            if (renderFrame >= totalRecordFrames) {
-                clearInterval(interval);
-                recorder.stop();
-            }
-        }, 33);
+        downloadTikTokVideoEngine(canvas, true);
     };
 
     window.openTikTokUploadCenterModal = function () {
@@ -2594,7 +2740,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
     function initAll() {
         initSkyTechCanvas();
         setupIntroHeaderIsolation();
-        setupVietnamMapPreservation();
+        setupInteractiveVietnamMap();
         polishHeader();
         setupPartnerRegistrationModal();
         hookRenderProducts();
