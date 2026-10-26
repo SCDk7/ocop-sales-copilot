@@ -21,3 +21,4 @@ if (pos !== -1) {
         console.log('Already includes #province-stores-panel');
     }
 }
+
