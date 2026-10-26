@@ -771,6 +771,233 @@
         openRealFinancialDashboard();
     };
 
+    
+    // =========================================================================
+    // HỆ THỐNG ĐẶT MUA ONLINE SHIP TẬN NƠI & THU PHÍ NỀN TẢNG 10.000Đ CHO CHỦ WEB
+    // =========================================================================
+    let currentOrderProduct = null;
+    let currentOrderQty = 1;
+
+    window.openOnlineOrderModal = function (productId) {
+        const prodList = window.products || (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
+        const p = prodList.find(item => item.id === productId);
+        if (!p) {
+            if (typeof showToast === 'function') showToast('Không tìm thấy thông tin sản phẩm', 'error');
+            return;
+        }
+
+        currentOrderProduct = p;
+        currentOrderQty = 1;
+
+        const modal = document.getElementById('online-order-modal');
+        if (!modal) return;
+
+        const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(productId) : null;
+        const storeName = storeInfo ? storeInfo.primaryStore.name : ('Showroom OCOP ' + p.region);
+        const storeAddress = storeInfo ? storeInfo.primaryStore.address : ('Trung tâm OCOP ' + p.region);
+
+        const imgEl = document.getElementById('order-prod-img');
+        if (imgEl) imgEl.src = p.img || '';
+
+        const nameEl = document.getElementById('order-prod-name');
+        if (nameEl) nameEl.textContent = p.name || '';
+
+        const starsEl = document.getElementById('order-prod-stars');
+        if (starsEl) starsEl.textContent = (p.stars || 4) + '★ OCOP • ' + (p.region || '');
+
+        const priceEl = document.getElementById('order-prod-price');
+        if (priceEl) priceEl.textContent = (p.price || 0).toLocaleString('vi-VN') + ' ₫';
+
+        const storeEl = document.getElementById('order-store-name');
+        if (storeEl) storeEl.textContent = storeName;
+
+        const addrEl = document.getElementById('order-store-address');
+        if (addrEl) addrEl.textContent = storeAddress;
+
+        const qtyInput = document.getElementById('order-qty-input');
+        if (qtyInput) qtyInput.value = 1;
+
+        window.updateOrderCalculations();
+
+        modal.classList.remove('hidden');
+        modal.style.setProperty('display', 'flex', 'important');
+        modal.style.setProperty('z-index', '99999', 'important');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeOnlineOrderModal = function () {
+        const modal = document.getElementById('online-order-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.setProperty('display', 'none', 'important');
+        }
+        document.body.style.overflow = 'auto';
+    };
+
+    window.changeOrderQty = function (delta) {
+        const input = document.getElementById('order-qty-input');
+        if (!input) return;
+        let qty = parseInt(input.value, 10) || 1;
+        qty = Math.max(1, Math.min(99, qty + delta));
+        input.value = qty;
+        currentOrderQty = qty;
+        window.updateOrderCalculations();
+    };
+
+    window.updateOrderCalculations = function () {
+        if (!currentOrderProduct) return;
+        const input = document.getElementById('order-qty-input');
+        currentOrderQty = parseInt(input?.value || 1, 10) || 1;
+
+        const unitPrice = currentOrderProduct.price || 0;
+        const goodsTotal = unitPrice * currentOrderQty;
+        const shippingFee = 25000;
+        const platformFee = 10000;
+        const grandTotal = goodsTotal + shippingFee + platformFee;
+
+        const qtyDisplay = document.getElementById('calc-qty-display');
+        if (qtyDisplay) qtyDisplay.textContent = currentOrderQty;
+
+        const goodsTotalEl = document.getElementById('calc-goods-total');
+        if (goodsTotalEl) goodsTotalEl.textContent = goodsTotal.toLocaleString('vi-VN') + ' ₫';
+
+        const grandTotalEl = document.getElementById('calc-grand-total');
+        if (grandTotalEl) grandTotalEl.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+    };
+
+    window.submitOnlineOrder = function () {
+        if (!currentOrderProduct) return;
+
+        const nameInput = document.getElementById('order-cust-name');
+        const phoneInput = document.getElementById('order-cust-phone');
+        const addrInput = document.getElementById('order-cust-address');
+        const noteInput = document.getElementById('order-cust-note');
+
+        const customerName = nameInput?.value?.trim();
+        const customerPhone = phoneInput?.value?.trim();
+        const customerAddress = addrInput?.value?.trim();
+        const customerNote = noteInput?.value?.trim() || '';
+
+        if (!customerName) {
+            alert('Vui lòng nhập Họ và tên người nhận hàng!');
+            nameInput?.focus();
+            return;
+        }
+        if (!customerPhone || customerPhone.length < 9) {
+            alert('Vui lòng nhập Số điện thoại nhận hàng hợp lệ!');
+            phoneInput?.focus();
+            return;
+        }
+        if (!customerAddress) {
+            alert('Vui lòng nhập Địa chỉ nhận hàng chi tiết!');
+            addrInput?.focus();
+            return;
+        }
+
+        const paymentInput = document.querySelector('input[name="order-payment"]:checked');
+        const paymentMethod = paymentInput ? (paymentInput.value === 'vietqr' ? 'Chuyển khoản QR ngân hàng' : 'Thanh toán khi nhận hàng (COD)') : 'COD';
+
+        const p = currentOrderProduct;
+        const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(p.id) : null;
+        const storeName = storeInfo ? storeInfo.primaryStore.name : ('Showroom OCOP ' + p.region);
+
+        const unitPrice = p.price || 0;
+        const goodsTotal = unitPrice * currentOrderQty;
+        const shippingFee = 25000;
+        const platformFee = 10000;
+        const webmasterCommission = Math.round(goodsTotal * 0.08);
+        const webmasterProfit = platformFee + webmasterCommission;
+        const grandTotal = goodsTotal + shippingFee + platformFee;
+
+        const orderId = '#OCOP-' + (8800 + Math.floor(Math.random() * 1100));
+
+        const orderData = {
+            orderId: orderId,
+            customerName: customerName,
+            customerPhone: customerPhone,
+            shippingAddress: customerAddress,
+            customerNote: customerNote,
+            paymentMethod: paymentMethod,
+            productId: p.id,
+            productName: p.name,
+            productImg: p.img,
+            storeName: storeName,
+            qty: currentOrderQty,
+            unitPrice: unitPrice,
+            goodsTotal: goodsTotal,
+            shippingFee: shippingFee,
+            platformFee: platformFee,
+            webmasterCommission: webmasterCommission,
+            webmasterProfit: webmasterProfit,
+            grandTotal: grandTotal,
+            createdAt: new Date().toISOString(),
+            timeDisplay: 'Vừa xong'
+        };
+
+        // Lưu vào localStorage
+        try {
+            let existingOrders = [];
+            const raw = localStorage.getItem('ocop_online_orders');
+            if (raw) existingOrders = JSON.parse(raw);
+            if (!Array.isArray(existingOrders)) existingOrders = [];
+            existingOrders.unshift(orderData);
+            localStorage.setItem('ocop_online_orders', JSON.stringify(existingOrders));
+        } catch (e) {
+            console.warn('Could not save order to localStorage:', e);
+        }
+
+        // Đóng order modal
+        window.closeOnlineOrderModal();
+
+        // Mở success modal
+        window.showOrderSuccessModal(orderData);
+
+        // Kích hoạt cập nhật dữ liệu tài chính của Chủ Web
+        if (typeof window.enrichWebmasterRevenueData === 'function') {
+            window.enrichWebmasterRevenueData();
+        }
+    };
+
+    window.showOrderSuccessModal = function (order) {
+        const successModal = document.getElementById('order-success-modal');
+        if (!successModal) {
+            if (typeof showToast === 'function') {
+                showToast('🎉 Đặt hàng online thành công! Mã đơn: ' + order.orderId, 'success');
+            }
+            return;
+        }
+
+        const idEl = document.getElementById('success-order-id');
+        if (idEl) idEl.textContent = order.orderId;
+
+        const storeEl = document.getElementById('success-order-store');
+        if (storeEl) storeEl.textContent = order.storeName;
+
+        const prodEl = document.getElementById('success-order-product');
+        if (prodEl) prodEl.textContent = order.productName + ' (SL: ' + order.qty + ')';
+
+        const addrEl = document.getElementById('success-order-address');
+        if (addrEl) addrEl.textContent = order.shippingAddress;
+
+        const totalEl = document.getElementById('success-order-total');
+        if (totalEl) totalEl.textContent = order.grandTotal.toLocaleString('vi-VN') + ' ₫';
+
+        successModal.classList.remove('hidden');
+        successModal.style.setProperty('display', 'flex', 'important');
+        successModal.style.setProperty('z-index', '99999', 'important');
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeOrderSuccessModal = function () {
+        const modal = document.getElementById('order-success-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.setProperty('display', 'none', 'important');
+        }
+        document.body.style.overflow = 'auto';
+    };
+
+
     window.enrichWebmasterRevenueData = function () {
         try {
             const stores = [
@@ -805,9 +1032,29 @@
             if (typeof setupAdminDashboardTabsAndTikTokEngine === "function") setupAdminDashboardTabsAndTikTokEngine();
             if (typeof hookSimulatorSliders === "function") hookSimulatorSliders();
 
-            const totalGmv = stores.reduce((acc, s) => acc + s.gmv, 0) + extraCartGmv;
-            const totalPayout = Math.round(totalGmv * 0.92);
-            const totalCommission = Math.round(totalGmv * 0.08);
+            // 1. Đọc danh sách đơn hàng online từ localStorage
+            let onlineOrders = [];
+            try {
+                const raw = localStorage.getItem('ocop_online_orders');
+                if (raw) onlineOrders = JSON.parse(raw);
+                if (!Array.isArray(onlineOrders)) onlineOrders = [];
+            } catch (e) {}
+
+            let onlineGmv = 0;
+            let onlinePlatformFees = 0;
+            let onlineCommissions = 0;
+            onlineOrders.forEach(o => {
+                onlineGmv += (Number(o.goodsTotal) || 0);
+                onlinePlatformFees += (Number(o.platformFee) || 10000);
+                onlineCommissions += (Number(o.webmasterCommission) || Math.round((Number(o.goodsTotal) || 0) * 0.08));
+            });
+            const totalOnlineWebmasterProfit = onlinePlatformFees + onlineCommissions;
+
+            const baseStoresGmv = stores.reduce((acc, s) => acc + s.gmv, 0) + extraCartGmv;
+            const totalGmv = baseStoresGmv + onlineGmv;
+            const totalPayout = Math.round(baseStoresGmv * 0.92) + Math.round(onlineGmv * 0.92);
+            const baseCommission = Math.round(baseStoresGmv * 0.08);
+            const totalCommission = baseCommission + totalOnlineWebmasterProfit;
 
             // Cập nhật 4 thẻ KPI
             const revEl = document.getElementById('fin-stat-revenue');
@@ -824,8 +1071,8 @@
 
             const ordersEl = document.getElementById('fin-stat-orders-ai');
             if (ordersEl) {
-                const count = 2840 + (cartItems.length > 0 ? cartItems.length : 0);
-                ordersEl.textContent = count.toLocaleString('vi-VN') + ' đơn (31.8% CR)';
+                const count = 2840 + onlineOrders.length + (cartItems.length > 0 ? cartItems.length : 0);
+                ordersEl.textContent = count.toLocaleString('vi-VN') + ' đơn (' + (onlineOrders.length > 0 ? ('+' + onlineOrders.length + ' đơn online mới') : '31.8% CR') + ')';
             }
 
             // Đổ dữ liệu bảng Showroom
@@ -858,6 +1105,37 @@
             const feedEl = document.getElementById('recent-orders-feed');
             if (feedEl) {
                 let itemsHtml = '';
+
+                // Hiển thị các đơn đặt mua online của khách hàng lên đầu bảng
+                if (onlineOrders.length > 0) {
+                    onlineOrders.forEach(o => {
+                        itemsHtml += '<div class="p-3 rounded-2xl bg-gradient-to-r from-sky-50 via-emerald-50 to-amber-50 border-2 border-sky-400 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-2 shadow-xs mb-2 animate-fade-in">' +
+                            '<div class="space-y-1">' +
+                                '<div class="flex items-center gap-2 font-black text-slate-900">' +
+                                    '<span class="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] uppercase font-black">Ship Online Mới</span>' +
+                                    '<span class="text-sky-700 font-mono font-black">' + o.orderId + '</span>' +
+                                    '<span class="text-slate-800">' + o.customerName + ' - ' + o.customerPhone + '</span>' +
+                                    '<span class="text-[10px] bg-sky-100 text-sky-800 px-2 py-0.5 rounded-md font-semibold">' + (o.paymentMethod || 'COD') + '</span>' +
+                                '</div>' +
+                                '<div class="text-[11px] text-slate-600 flex flex-wrap items-center gap-x-2">' +
+                                    '<span>📦 <strong>' + o.productName + '</strong> (x' + o.qty + ')</span>' +
+                                    '<span>•</span>' +
+                                    '<span>🏬 Gửi từ: <strong class="text-sky-800">' + o.storeName + '</strong></span>' +
+                                    '<span>•</span>' +
+                                    '<span>📍 Ship đến: <span class="text-slate-700 font-medium">' + o.shippingAddress + '</span></span>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="text-right sm:shrink-0 space-y-1">' +
+                                '<div class="font-black text-slate-900 text-xs">Tiền hàng: ' + o.goodsTotal.toLocaleString('vi-VN') + ' ₫ + Ship 25k</div>' +
+                                '<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-900 font-black text-[11px] border border-emerald-300 shadow-2xs">' +
+                                    '<i class="fa-solid fa-coins text-amber-500"></i>' +
+                                    '<span>Chủ Web thu: +' + o.webmasterProfit.toLocaleString('vi-VN') + ' ₫</span>' +
+                                    '<span class="text-[9.5px] font-normal text-emerald-700">(+10k phí nền tảng + 8% CHM)</span>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+                    });
+                }
                 if (cartItems.length > 0) {
                     cartItems.forEach((item, i) => {
                         const price = Number(item.price) || 350000;
@@ -962,7 +1240,9 @@
         if (e.target.closest('#admin-pin-modal') ||
             e.target.closest('#admin-hub-modal') ||
             e.target.closest('#ai-financial-modal') ||
-            e.target.closest('#tiktok-studio-modal')) {
+            e.target.closest('#tiktok-studio-modal') ||
+            e.target.closest('#online-order-modal') ||
+            e.target.closest('#order-success-modal')) {
             return;
         }
 
@@ -2411,59 +2691,33 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             // Remove any AI story buttons on all cards
             card.querySelectorAll('.btn-card-ai-story').forEach(btn => btn.remove());
 
-            // Check if card footer already has the full-width store button
-            const existingStoreBtn = card.querySelector('.product-card-footer .btn-card-store, .product-action-cluster .btn-card-store');
-            if (existingStoreBtn) {
-                existingStoreBtn.innerHTML = '<i class="fa-solid fa-location-dot mr-1.5"></i><span>📍 Xem Điểm Bán & Liên Hệ</span>';
-                existingStoreBtn.style.cssText = 'width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important; border: none !important; font-size: 13px !important;';
-                return;
-            }
-
-            let productId = null;
-            const actionBtn = card.querySelector('[onclick*="activateProductReconciliation"]');
-            if (actionBtn) {
-                const match = actionBtn.getAttribute('onclick')?.match(/\d+/);
-                if (match) productId = parseInt(match[0], 10);
-            }
-
+            let productId = card.getAttribute('data-product-id');
             if (!productId) {
-                const storeBtn = card.querySelector('[onclick*="openStoreLocator"]');
-                if (storeBtn) {
-                    const match = storeBtn.getAttribute('onclick')?.match(/\d+/);
-                    if (match) productId = parseInt(match[0], 10);
+                const btn = card.querySelector('[onclick*="openStoreLocator"], [onclick*="openOnlineOrderModal"], [onclick*="activateProductReconciliation"]');
+                if (btn) {
+                    const match = btn.getAttribute('onclick')?.match(/\d+/);
+                    if (match) productId = match[0];
                 }
             }
-
+            if (productId) productId = parseInt(productId, 10);
             if (!productId) return;
 
-            const cluster = document.createElement('div');
-            cluster.className = 'product-action-cluster';
-            cluster.style.cssText = 'display: block !important; width: 100% !important; margin-top: 10px !important;';
-            cluster.innerHTML = `
-                <button type="button" class="btn-card-store" onclick="openStoreLocator(${productId})" style="width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important; border: none !important; font-size: 13px !important;">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>📍 Xem Điểm Bán & Liên Hệ</span>
-                </button>
-            `;
-
+            // Check if card footer has the 2 buttons
             const footer = card.querySelector('.product-card-footer') || card;
-            footer.appendChild(cluster);
-        });
-    }
+            const hasBuyBtn = footer.querySelector('.btn-card-buy-online');
+            const storeBtn = footer.querySelector('.btn-card-store');
 
-    function hookRenderProducts() {
-        if (typeof window.renderProducts === 'function' && !window._renderProductsHooked) {
-            const originalRender = window.renderProducts;
-            window.renderProducts = function (items) {
-                const res = originalRender.apply(this, arguments);
-                setTimeout(() => {
-                    enhanceProductCardElements();
-                    transformEntireWebColors();
-                }, 20);
-                return res;
-            };
-            window._renderProductsHooked = true;
-        }
+            if (!hasBuyBtn) {
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-2 gap-2';
+                grid.innerHTML = '<button type="button" onclick="openStoreLocator(' + productId + ')" class="btn-card-store" style="background: #F0F9FF !important; color: #0284C7 !important; border: 1.5px solid #BAE6FD !important; font-weight: 700 !important; padding: 8px 6px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 4px !important; cursor: pointer !important; font-size: 11.5px !important; transition: all 0.2s ease !important;" title="Xem thông tin điểm bán, showroom & liên hệ"><i class="fa-solid fa-location-dot text-sky-600 text-[11px]"></i><span class="truncate">📍 Điểm Bán</span></button>' +
+                    '<button type="button" onclick="openOnlineOrderModal(' + productId + ')" class="btn-card-buy-online" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 8px 6px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 4px !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important; border: none !important; font-size: 11.5px !important; transition: all 0.2s ease !important;" title="Đặt mua online giao hàng tận nơi"><i class="fa-solid fa-cart-shopping text-white text-[11px]"></i><span class="truncate">🛒 Mua Online</span></button>';
+                if (storeBtn) storeBtn.remove();
+                const oldCluster = footer.querySelector('.product-action-cluster');
+                if (oldCluster) oldCluster.remove();
+                footer.appendChild(grid);
+            }
+        });
     }
 
     // 10. ĐỔI AVATAR AI CHATBOT SANG ROBOT AI TRẮNG - XANH DƯƠNG & CẬP NHẬT CÂU CHÀO

@@ -4903,6 +4903,188 @@
         <button onclick="activateO2ODispatch()" class="hidden">Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền</button>
     </div>
 
+    <!-- 10.2 MODAL ĐẶT MUA ONLINE & GIAO HÀNG TẬN NƠI (THU PHÍ NỀN TẢNG 10.000Đ/ĐƠN CHO CHỦ WEB) -->
+    <div id="online-order-modal" class="fixed inset-0 z-[99999] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in" onclick="if(event.target === this) closeOnlineOrderModal()">
+        <div class="bg-white border-2 border-sky-400 rounded-3xl max-w-xl w-full shadow-2xl overflow-hidden text-slate-800 animate-pop-in flex flex-col" style="max-height: calc(100dvh - 2rem); overflow-y: auto;">
+            <!-- Header Modal -->
+            <div class="bg-gradient-to-r from-sky-700 via-sky-800 to-slate-900 text-white p-4 sm:p-5 flex items-center justify-between border-b border-sky-300/40 relative">
+                <div class="flex items-center space-x-3">
+                    <span class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md text-lg">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </span>
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-black/40 px-2.5 py-0.5 rounded-full border border-amber-400/30 mb-0.5">
+                            <i class="fa-solid fa-certificate"></i>
+                            <span>O2O E-Commerce • Ship Tận Nơi</span>
+                        </div>
+                        <h3 class="font-black text-base sm:text-lg text-white tracking-wide">
+                            🚚 ĐẶT MUA ONLINE & GIAO HÀNG TẬN NƠI
+                        </h3>
+                    </div>
+                </div>
+                <button type="button" onclick="closeOnlineOrderModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm font-bold cursor-pointer transition" title="Đóng">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Body Modal -->
+            <div class="p-4 sm:p-6 space-y-4 text-xs">
+                <!-- 1. Thông Tin Sản Phẩm & Cửa Hàng Gửi Đi -->
+                <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 flex items-start gap-3.5">
+                    <img id="order-prod-img" src="" alt="Sản phẩm" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-sky-300 shrink-0 bg-white shadow-xs">
+                    <div class="flex-1 min-w-0 space-y-1">
+                        <span id="order-prod-stars" class="inline-block text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300"></span>
+                        <h4 id="order-prod-name" class="font-black text-sm text-slate-900 leading-snug line-clamp-2"></h4>
+                        <div class="text-sm font-black text-sky-700" id="order-prod-price"></div>
+                        
+                        <!-- Cửa Hàng / HTX Xuất Hàng -->
+                        <div class="mt-2 pt-2 border-t border-sky-200/80 text-[11px] space-y-0.5">
+                            <div class="font-bold text-slate-800 flex items-center gap-1">
+                                <i class="fa-solid fa-store text-sky-600 text-[10px]"></i>
+                                <span>Cửa hàng gửi đi:</span>
+                                <span id="order-store-name" class="text-sky-700 font-extrabold truncate"></span>
+                            </div>
+                            <div class="text-slate-600 flex items-start gap-1 text-[10.5px]">
+                                <i class="fa-solid fa-location-dot text-slate-400 mt-0.5 text-[9px]"></i>
+                                <span id="order-store-address" class="line-clamp-1"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Chọn Số Lượng -->
+                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <span class="font-bold text-slate-700">Số lượng đặt mua:</span>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="changeOrderQty(-1)" class="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer shadow-2xs transition active:scale-95">-</button>
+                        <input type="number" id="order-qty-input" value="1" min="1" max="99" onchange="updateOrderCalculations()" class="w-14 text-center py-1.5 border border-slate-300 rounded-lg font-black text-sm text-slate-900 bg-white">
+                        <button type="button" onclick="changeOrderQty(1)" class="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer shadow-2xs transition active:scale-95">+</button>
+                    </div>
+                </div>
+
+                <!-- 3. Form Thông Tin Nhận Hàng -->
+                <div class="space-y-3 pt-1">
+                    <h5 class="font-black text-slate-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
+                        <i class="fa-solid fa-user text-sky-600"></i> Thông Tin Nhận Hàng:
+                    </h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Họ và tên người nhận <span class="text-rose-600">*</span></label>
+                            <input type="text" id="order-cust-name" placeholder="Ví dụ: Nguyễn Văn An" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Số điện thoại nhận hàng <span class="text-rose-600">*</span></label>
+                            <input type="tel" id="order-cust-phone" placeholder="Ví dụ: 0912 345 678" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">Địa chỉ giao hàng chi tiết <span class="text-rose-600">*</span></label>
+                        <input type="text" id="order-cust-address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">Ghi chú đơn hàng (Tùy chọn)</label>
+                        <input type="text" id="order-cust-note" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi đến..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-700 focus:border-sky-500 focus:outline-none bg-white">
+                    </div>
+                </div>
+
+                <!-- 4. Phương Thức Thanh Toán -->
+                <div class="space-y-1.5 pt-1">
+                    <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">Phương thức thanh toán:</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-400 bg-sky-50/50 cursor-pointer font-bold text-slate-800">
+                            <input type="radio" name="order-payment" value="cod" checked class="accent-sky-600">
+                            <span>💵 Thanh toán khi nhận hàng (COD)</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-semibold text-slate-800 hover:border-sky-400">
+                            <input type="radio" name="order-payment" value="vietqr" class="accent-sky-600">
+                            <span>🏦 Chuyển khoản QR ngân hàng</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 5. Bảng Tạm Tính Chi Phí Minh Bạch -->
+                <div class="p-4 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-2 text-xs">
+                    <div class="flex items-center justify-between text-slate-700">
+                        <span>Tiền hàng gốc (Trả về HTX/Cửa hàng - <span id="calc-qty-display">1</span> sản phẩm):</span>
+                        <span class="font-bold text-slate-900" id="calc-goods-total">0 ₫</span>
+                    </div>
+                    <div class="flex items-center justify-between text-slate-700">
+                        <span>Phí vận chuyển tiêu chuẩn (Ship tận nơi):</span>
+                        <span class="font-bold text-slate-800">25.000 ₫</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sky-900 font-bold bg-sky-100/90 p-2.5 rounded-xl border border-sky-300">
+                        <div>
+                            <div class="flex items-center gap-1.5 text-sky-900 font-black">
+                                <i class="fa-solid fa-bolt text-amber-500"></i>
+                                <span>Phí dịch vụ nền tảng & Bảo đảm OCOP (Chủ Web):</span>
+                            </div>
+                            <div class="text-[10px] text-sky-700 font-normal">Phí kết nối & kiểm định đơn hàng O2O của nền tảng</div>
+                        </div>
+                        <span class="text-sm font-black text-sky-700">+10.000 ₫</span>
+                    </div>
+                    <div class="flex items-center justify-between pt-2.5 border-t border-sky-200">
+                        <span class="text-sm font-black text-slate-900">💰 TỔNG THANH TOÁN:</span>
+                        <span class="text-lg font-black text-rose-600" id="calc-grand-total">0 ₫</span>
+                    </div>
+                </div>
+
+                <!-- Nút Xác Nhận Đặt Hàng -->
+                <button type="button" onclick="submitOnlineOrder()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer transition hover:scale-[1.01] active:scale-95">
+                    <i class="fa-solid fa-circle-check text-lg"></i>
+                    <span>✅ Xác Nhận Đặt Hàng Online</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10.3 MODAL XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG -->
+    <div id="order-success-modal" class="fixed inset-0 z-[99999] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-sm animate-fade-in" onclick="if(event.target === this) closeOrderSuccessModal()">
+        <div class="bg-white border-2 border-emerald-400 rounded-3xl max-w-md w-full shadow-2xl p-6 text-slate-800 animate-pop-in space-y-4 text-center relative">
+            <button type="button" onclick="closeOrderSuccessModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-bold absolute top-4 right-4 cursor-pointer transition">✖</button>
+            
+            <div class="w-16 h-16 rounded-3xl bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center text-3xl shadow-inner">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            
+            <div class="space-y-1">
+                <h3 class="text-xl font-black text-slate-900">🎉 ĐẶT HÀNG THÀNH CÔNG!</h3>
+                <p class="text-xs text-slate-500">Mã vận đơn O2O: <strong id="success-order-id" class="text-sky-700 font-mono text-sm">#OCOP-8829</strong></p>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-left text-xs space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-slate-500">Sản phẩm:</span>
+                    <span id="success-order-product" class="font-bold text-slate-900 text-right truncate max-w-[200px]"></span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-slate-500">Nơi đóng gói:</span>
+                    <span id="success-order-store" class="font-bold text-sky-700 text-right truncate max-w-[200px]"></span>
+                </div>
+                <div class="flex items-start justify-between">
+                    <span class="text-slate-500 shrink-0">Địa chỉ ship:</span>
+                    <span id="success-order-address" class="font-semibold text-slate-800 text-right text-[11px] line-clamp-2 pl-2"></span>
+                </div>
+                <div class="flex items-center justify-between pt-2 border-t border-slate-200 font-bold">
+                    <span class="text-slate-900">Tổng thu khách:</span>
+                    <span id="success-order-total" class="text-sm font-black text-rose-600"></span>
+                </div>
+                <div class="text-[10px] text-emerald-700 italic text-center pt-1" id="success-order-fee-note">
+                    (Đã bao gồm 10.000đ phí dịch vụ nền tảng & đảm bảo OCOP)
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 pt-1">
+                <button type="button" onclick="closeOrderSuccessModal(); promptAdminPinModal();" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-500 hover:to-sky-600 text-white font-bold text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-lock text-amber-300"></i>
+                    <span>Xem Bảng Quản Trị Doanh Thu (Mã PIN 2007)</span>
+                </button>
+                <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer">
+                    🛍️ Tiếp Tục Mua Sắm Đặc Sản
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 10.1 MODAL ĐĂNG KÝ ĐIỂM BÁN MỚI (LIGHTWEIGHT MVP & AI OCR) -->
     <div id="partner-registration-modal" class="fixed inset-0 z-[120] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-fade-in" onclick="if(event.target === this) closePartnerRegistrationModal()">
         <div class="bg-white border-2 border-sky-300 rounded-3xl p-5 sm:p-7 max-w-xl w-full text-slate-800 shadow-2xl space-y-4 relative" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
@@ -6217,6 +6399,16 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             </div>
                             <h3 class="font-extrabold text-sm text-white group-hover:text-amber-300 transition-colors duration-200 line-clamp-2 leading-snug">${productName}</h3>
                             <p class="text-xs line-clamp-2 leading-relaxed font-medium" style="color: #334155 !important; font-weight: 500 !important;">${productDescription}</p>
+
+                            <!-- GIÁ BÁN SẢN PHẨM RÕ RÀNG (MÀU XANH ĐẬM #0284C7) -->
+                            <div class="flex items-center justify-between py-1.5 px-2.5 my-1 rounded-xl border border-sky-200 shadow-2xs" style="background: #F0F9FF !important;">
+                                <span class="text-[11px] font-bold text-slate-500 flex items-center gap-1">
+                                    <i class="fa-solid fa-tag text-sky-600"></i> Giá niêm yết:
+                                </span>
+                                <span class="text-sm sm:text-base font-black text-sky-700" style="color: #0284C7 !important;">
+                                    ${getProductPriceLabel(p) || ((p.price || 0).toLocaleString('vi-VN') + ' ₫')}
+                                </span>
+                            </div>
                         </div>
 
                         <!-- Khối Thông Tin Chủ Thể OCOP & Điểm Bán Chính Thức -->
@@ -6247,7 +6439,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         </div>
                     </div>
 
-                    <!-- Footer Thẻ: Duy Nhất 1 Nút Xem Điểm Bán & Liên Hệ (Nền Trắng 100%) -->
+                    <!-- Footer Thẻ: 2 Nút Song Song (Xem Điểm Bán & Mua Online) -->
                     <div class="product-card-footer px-3 py-2.5 flex flex-col gap-2" style="background: #FFFFFF !important; border-top: 1px solid #BAE6FD !important;">
                         <!-- Preserved for unit test assertions (hidden) -->
                         <div class="hidden" style="display:none!important;" aria-hidden="true">
@@ -6255,10 +6447,16 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <span>${sysMetrics.volume}</span>
                             <span>${sysMetrics.margin}</span>
                         </div>
-                        <button type="button" onclick="openStoreLocator(${p.id})" class="btn-card-store" style="width: 100% !important; background: linear-gradient(135deg, #0284C7, #0EA5E9) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 10px 16px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important; border: none !important; font-size: 13px !important;">
-                            <i class="fa-solid fa-location-dot"></i>
-                            <span>📍 Xem Điểm Bán & Liên Hệ</span>
-                        </button>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" onclick="openStoreLocator(${p.id})" class="btn-card-store" style="background: #F0F9FF !important; color: #0284C7 !important; border: 1.5px solid #BAE6FD !important; font-weight: 700 !important; padding: 8px 6px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 4px !important; cursor: pointer !important; font-size: 11.5px !important; transition: all 0.2s ease !important;" title="Xem thông tin điểm bán, showroom & liên hệ">
+                                <i class="fa-solid fa-location-dot text-sky-600 text-[11px]"></i>
+                                <span class="truncate">📍 Điểm Bán</span>
+                            </button>
+                            <button type="button" onclick="openOnlineOrderModal(${p.id})" class="btn-card-buy-online" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 8px 6px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 4px !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important; border: none !important; font-size: 11.5px !important; transition: all 0.2s ease !important;" title="Đặt mua online giao hàng tận nơi">
+                                <i class="fa-solid fa-cart-shopping text-white text-[11px]"></i>
+                                <span class="truncate">🛒 Mua Online</span>
+                            </button>
+                        </div>
                     </div></div>
                 `;
 
@@ -11422,6 +11620,10 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <button onclick="closeQuickView(); openStoreLocator(${p.id});" class="min-h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 py-2.5 px-2 text-xs font-bold text-white shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer" title="Mở thông tin Showroom O2O, bản đồ Google Maps & chứng nhận pháp lý">
                                 <i class="fa-solid fa-map-location-dot text-amber-200"></i>
                                 <span class="whitespace-nowrap font-black">${storeLocBtnMap[currentLanguage] || storeLocBtnMap.vi}</span>
+                            </button>
+                            <button type="button" onclick="closeQuickView(); openOnlineOrderModal(${p.id});" class="min-h-12 rounded-2xl bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 py-2.5 px-2 text-xs font-bold text-white shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer" title="Đặt mua online giao hàng tận nơi (Ship COD / VietQR)">
+                                <i class="fa-solid fa-truck-fast text-amber-200"></i>
+                                <span class="whitespace-nowrap font-black">🛒 Mua Online (Ship)</span>
                             </button>
                             <button type="button" onclick="closeQuickView(); if(typeof toggleAIChat==='function') toggleAIChat();" class="min-h-12 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 py-2.5 px-2 text-xs font-bold text-slate-950 shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer" title="Kích hoạt AI giới thiệu văn hóa đặc sản & gợi ý gói quà doanh nghiệp B2B">
                                 <i class="fa-solid fa-wand-magic-sparkles text-slate-950"></i>
