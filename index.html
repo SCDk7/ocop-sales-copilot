@@ -4244,18 +4244,20 @@
                             <span>AI Financial Engine • Mô phỏng / Simulation</span>
                         </div>
                         <h3 class="font-black text-base sm:text-lg text-amber-200 tracking-wide">
-                            BẢNG QUẢN TRỊ TÀI CHÍNH & TỐI ƯU DÒNG TIỀN OCOP
+                            📊 QUẢN TRỊ DOANH THU & HOA HỒNG CHỦ WEB (ADMIN)
                         </h3>
                     </div>
                 </div>
                 <div class="flex items-center gap-2" style="position: sticky; top: 12px; right: 12px; z-index: 999999;">
                     <button type="button" onclick="quickSwitchToTikTokStudio()" id="btn-quick-switch-tiktok" class="px-3.5 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-md transition hover:opacity-95" style="background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%) !important; color: #FFFFFF !important; border: 1px solid #FDA4AF !important;">
                         <i class="fa-brands fa-tiktok text-rose-200"></i>
-                        <span>🎬 Chuyển sang Studio AI TikTok</span>
+                        <span>🎬 Mở Studio TikTok</span>
                     </button>
                     <button type="button" onclick="closeFinancialDashboardModal()" id="btn-close-fin-modal-sticky" style="position: sticky; top: 12px; right: 12px; z-index: 999999; background: #EF4444 !important; color: #FFFFFF !important; padding: 8px 18px !important; border-radius: 999px !important; cursor: pointer; font-weight: 700 !important; border: none !important; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;" title="Đóng Bảng Quản Trị">
                     <span>✖ Đóng</span>
                 </button>
+            </div>
+
             </div>
 
             <!-- Body Modal -->
@@ -4395,64 +4397,64 @@
                     </div>
                 </div>
 
-                <!-- 4 Thẻ Chỉ Số Tài Chính Cốt Lõi (Financial KPI Grid) -->
+                <!-- 4 Thẻ Thống Kê Quản Trị Cốt Lõi (Admin Revenue KPI Grid) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Doanh Thu (Revenue) -->
-                    <div class="p-4 rounded-2xl bg-white border border-emerald-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex items-center justify-between text-gray-500 mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider">Doanh Thu (Revenue)</span>
-                            <span class="w-7 h-7 rounded-lg bg-emerald-100 text-ocopGreen flex items-center justify-center text-xs"><i class="fa-solid fa-sack-dollar"></i></span>
+                    <!-- 1. Tổng Doanh Thu Toàn Sàn (GMV) -->
+                    <div class="p-4 rounded-2xl bg-white border-2 border-emerald-300 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                        <div class="flex items-center justify-between text-slate-600 mb-2">
+                            <span class="text-xs font-black uppercase tracking-wider text-emerald-800">💰 Tổng Doanh Thu Sàn (GMV)</span>
+                            <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-black shadow-xs"><i class="fa-solid fa-sack-dollar"></i></span>
                         </div>
                         <div>
-                            <div class="text-2xl font-black text-ocopGreen" id="fin-stat-revenue">842.500.000 ₫</div>
-                            <div class="text-[11px] text-emerald-700 font-bold flex items-center gap-1 mt-1">
-                                <i class="fa-solid fa-arrow-up"></i>
-                                <span>+24.6% so với tháng trước (Real-time)</span>
+                            <div class="text-2xl font-black text-emerald-600" id="fin-stat-revenue">842.500.000 ₫</div>
+                            <div class="text-[11px] text-emerald-800 font-bold flex items-center gap-1 mt-1">
+                                <i class="fa-solid fa-arrow-trend-up text-emerald-600"></i>
+                                <span>Bán giúp các HTX toàn quốc (+24.6%)</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Tiền Lời Ròng (Net Profit) -->
-                    <div class="p-4 rounded-2xl bg-white border border-amber-300 shadow-sm flex flex-col justify-between">
-                        <div class="flex items-center justify-between text-gray-500 mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-amber-900">Tiền Lời Ròng (Profit)</span>
-                            <span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center text-xs"><i class="fa-solid fa-hand-holding-dollar"></i></span>
+                    <!-- 2. Doanh Thu Trả Về Các HTX / Điểm Bán OCOP -->
+                    <div class="p-4 rounded-2xl bg-white border-2 border-amber-300 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                        <div class="flex items-center justify-between text-slate-600 mb-2">
+                            <span class="text-xs font-black uppercase tracking-wider text-amber-900">🏪 Doanh Thu Trả Về HTX</span>
+                            <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-sm font-black shadow-xs"><i class="fa-solid fa-store"></i></span>
                         </div>
                         <div>
-                            <div class="text-2xl font-black text-amber-800" id="fin-stat-profit">269.600.000 ₫</div>
+                            <div class="text-2xl font-black text-amber-800" id="fin-stat-stores-payout">775.100.000 ₫</div>
                             <div class="text-[11px] text-amber-900 font-bold flex items-center gap-1 mt-1">
-                                <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i>
-                                <span id="fin-stat-profit-sub">Biên LN 34.5% (Tối ưu -12% COGS nhờ AI)</span>
+                                <i class="fa-solid fa-hand-holding-dollar text-amber-600"></i>
+                                <span id="fin-stat-stores-payout-sub">Tiền hàng gốc & lãi trả về 63 HTX (92%)</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Chiết Khấu & Hoa Hồng (Commission) -->
-                    <div class="p-4 rounded-2xl bg-white border border-blue-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex items-center justify-between text-gray-500 mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-blue-900">Chiết Khấu (Commission)</span>
-                            <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center text-xs"><i class="fa-solid fa-percent"></i></span>
+                    <!-- 3. Lợi Nhuận Ròng / Hoa Hồng Chủ Web -->
+                    <div class="p-4 rounded-2xl bg-white border-2 border-sky-400 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                        <div class="flex items-center justify-between text-slate-600 mb-2">
+                            <span class="text-xs font-black uppercase tracking-wider text-sky-900">💎 Hoa Hồng & Lãi Chủ Web</span>
+                            <span class="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-sm font-black shadow-xs"><i class="fa-solid fa-gem"></i></span>
                         </div>
                         <div>
-                            <div class="text-2xl font-black text-blue-800" id="fin-stat-commission">42.125.000 ₫</div>
-                            <div class="text-[11px] text-blue-700 font-bold flex items-center gap-1 mt-1">
-                                <i class="fa-solid fa-shield-halved"></i>
-                                <span id="fin-stat-commission-sub">Chiết khấu hệ thống O2O & CTV: 8% phân bổ tự động</span>
+                            <div class="text-2xl font-black text-sky-600" id="fin-stat-commission">67.400.000 ₫</div>
+                            <div class="text-[11px] text-sky-800 font-bold flex items-center gap-1 mt-1">
+                                <i class="fa-solid fa-percent text-sky-600"></i>
+                                <span id="fin-stat-commission-sub">8.0% hoa hồng Smart Commission (CHM)</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Sai Số Tài Chính (Accuracy) -->
-                    <div class="p-4 rounded-2xl bg-white border border-purple-200 shadow-sm flex flex-col justify-between">
-                        <div class="flex items-center justify-between text-gray-500 mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-purple-900">Sai Số Đối Soát</span>
-                            <span class="w-7 h-7 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center text-xs"><i class="fa-solid fa-bullseye"></i></span>
+                    <!-- 4. Tổng Đơn Hàng Thành Công & Tỷ Lệ Chuyển Đổi AI Copilot -->
+                    <div class="p-4 rounded-2xl bg-white border-2 border-indigo-300 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                        <div class="flex items-center justify-between text-slate-600 mb-2">
+                            <span class="text-xs font-black uppercase tracking-wider text-indigo-900">📦 Đơn Hàng & Chuyển Đổi AI</span>
+                            <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-black shadow-xs"><i class="fa-solid fa-robot"></i></span>
                         </div>
                         <div>
-                            <div class="text-2xl font-black text-purple-800">0.00%</div>
-                            <div class="text-[11px] text-purple-700 font-bold flex items-center gap-1 mt-1">
-                                <i class="fa-solid fa-circle-check"></i>
-                                <span>Cam kết đối soát tự động chính xác 100%</span>
+                            <div class="text-2xl font-black text-indigo-700" id="fin-stat-orders-ai">2,840 đơn (31.8% CR)</div>
+                            <div class="text-[11px] text-indigo-800 font-bold flex items-center gap-1 mt-1">
+                                <i class="fa-solid fa-qrcode text-indigo-600"></i>
+                                <span>Đối soát tự động VietQR • Chuẩn 100%</span>
                             </div>
                         </div>
                     </div>
@@ -4887,6 +4889,8 @@
 
     <!-- 10. B2B2C O2O DISPATCH ACTION BRIDGE -->
     <div id="cart-drawer" class="hidden" style="display:none !important;" aria-hidden="true">
+        <div id="cart-items" class="hidden"></div>
+        <div id="cart-voucher-row" class="hidden"><span id="cart-voucher-label"></span><span id="cart-voucher-discount"></span></div>
         <span id="cart-cogs">0 ₫</span>
         <span id="cart-opex">0 ₫</span>
         <span id="cart-subtotal">0 ₫</span>
@@ -4986,23 +4990,23 @@
 
 
     <!-- 12. FOOTER -->
-    <footer id="contact-footer" style="position: relative !important; top: auto !important; bottom: auto !important; left: auto !important; right: auto !important; margin-top: 80px !important; margin-bottom: 0 !important; z-index: 10 !important; width: 100% !important; clear: both !important; display: block !important; transform: none !important; background: #07120e !important; color: #cbd5e1 !important; border-top: 1px solid rgba(212, 175, 55, 0.3) !important;" class="bg-[#07120e] border-t border-amber-400/30 pt-10 pb-24 lg:pb-6 text-slate-300 text-xs mt-20 relative z-10 shadow-2xl">
+    <footer id="contact-footer" style="position: relative !important; top: auto !important; bottom: auto !important; left: auto !important; right: auto !important; margin-top: 64px !important; margin-bottom: 0 !important; z-index: 1 !important; width: 100% !important; clear: both !important; display: block !important; transform: none !important; background: linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 100%) !important; color: #0F172A !important; border-top: 2px solid #BAE6FD !important;" class="border-t border-sky-200 pt-10 pb-24 lg:pb-6 text-slate-800 text-xs mt-16 relative z-1 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-amber-400/20 pb-6 gap-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-sky-200 pb-6 gap-4">
                 <div class="space-y-1 max-w-3xl">
-                    <h5 class="font-extrabold text-amber-300 text-xs">Bản quyền của Hệ Thống OCOP Sales Copilot Việt Nam</h5>
-                    <p class="text-[11px] text-slate-400 leading-relaxed">
+                    <h5 class="font-black text-sky-900 text-xs uppercase tracking-wide">Bản quyền của Hệ Thống OCOP Sales Copilot Việt Nam</h5>
+                    <p class="text-[11px] text-slate-600 leading-relaxed font-medium">
                         Giấy chứng nhận ĐKKD & Xúc tiến thương mại OCOP Quốc Gia số: 0312461711 do Sở KH&ĐT TP.HCM cấp. <br>
                         Trụ sở chính: 496 - 496A - 496B Nguyễn Thị Minh Khai, Phường 2, Quận 3, TP.HCM & Hệ thống Trung tâm OCOP Toàn Quốc.
                     </p>
                 </div>
 
                 <div class="flex-shrink-0">
-                    <div class="border-2 border-amber-400/50 rounded-xl px-3.5 py-1.5 flex items-center space-x-2 bg-slate-900/80 shadow-sm">
-                        <i class="fa-solid fa-circle-check text-amber-400 text-xl"></i>
+                    <div class="border-2 border-sky-300 rounded-xl px-3.5 py-1.5 flex items-center space-x-2 bg-white shadow-xs">
+                        <i class="fa-solid fa-circle-check text-emerald-600 text-xl"></i>
                         <div>
-                            <span class="block text-[9px] font-bold text-amber-300 uppercase leading-none">ĐÃ THÔNG BÁO</span>
-                            <span class="block text-[11px] font-extrabold text-amber-400 uppercase leading-tight">BỘ CÔNG THƯƠNG</span>
+                            <span class="block text-[9px] font-black text-slate-500 uppercase leading-none">ĐÃ THÔNG BÁO</span>
+                            <span class="block text-[11px] font-black text-sky-700 uppercase leading-tight">BỘ CÔNG THƯƠNG</span>
                         </div>
                     </div>
                 </div>
@@ -5010,44 +5014,44 @@
 
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-2">
                 <div class="md:col-span-4 space-y-3">
-                    <h6 class="font-extrabold text-amber-300 text-xs uppercase tracking-wider text-ocopGreen">Thông tin liên hệ</h6>
-                    <ul class="space-y-2.5 text-slate-300">
+                    <h6 class="font-black text-sky-900 text-xs uppercase tracking-wider">Thông tin liên hệ</h6>
+                    <ul class="space-y-2.5 text-slate-700 font-medium">
                         <li class="flex items-start space-x-2">
-                            <i class="fa-solid fa-location-dot text-amber-400 mt-0.5 text-sm"></i>
+                            <i class="fa-solid fa-location-dot text-sky-600 mt-0.5 text-sm"></i>
                             <span>496 Nguyễn Thị Minh Khai, Phường 2, Quận 3, TP.HCM</span>
                         </li>
                         <li class="flex items-center space-x-2">
-                            <i class="fa-solid fa-phone text-amber-400 text-xs"></i>
-                            <span class="font-bold text-white">Hotline: 1900 888 688 (Miễn phí)</span>
+                            <i class="fa-solid fa-phone text-sky-600 text-xs"></i>
+                            <span class="font-bold text-slate-900">Hotline: 1900 888 688 (Miễn phí)</span>
                         </li>
                         <li class="flex items-center space-x-2">
-                            <i class="fa-solid fa-envelope text-amber-400 text-xs"></i>
-                            <span class="text-amber-300 font-semibold">support@ocopsalescopilot.vn</span>
+                            <i class="fa-solid fa-envelope text-sky-600 text-xs"></i>
+                            <span class="text-sky-700 font-bold">support@ocopsalescopilot.vn</span>
                         </li>
                     </ul>
                 </div>
                 <div class="md:col-span-4 space-y-3">
-                    <h6 class="font-extrabold text-amber-300 text-xs uppercase tracking-wider text-ocopGreen">CẤU TRÚC HỆ SINH THÁI SỐ</h6>
-                    <ul class="space-y-2 text-slate-300">
-                        <li><a href="#" class="hover:text-amber-300 transition flex items-center space-x-1.5"><i class="fa-solid fa-file-invoice-dollar text-amber-400/80 text-[10px]"></i><span>Cơ chế Đối soát Tự động CHM (Smart Commission)</span></a></li>
-                        <li><a href="#" class="hover:text-amber-300 transition flex items-center space-x-1.5"><i class="fa-solid fa-certificate text-emerald-400/80 text-[10px]"></i><span>Tiêu chuẩn Xác thực Pháp lý OCOP 3-5 Sao</span></a></li>
-                        <li><a href="#" class="hover:text-amber-300 transition flex items-center space-x-1.5"><i class="fa-solid fa-bolt text-amber-400/80 text-[10px]"></i><span>Cổng Onboarding Lightweight MVP (2-3h)</span></a></li>
-                        <li><a href="#" class="hover:text-amber-300 transition flex items-center space-x-1.5"><i class="fa-solid fa-map-location-dot text-cyan-400/80 text-[10px]"></i><span>Tài liệu API & Bản đồ số O2O</span></a></li>
+                    <h6 class="font-black text-sky-900 text-xs uppercase tracking-wider">CẤU TRÚC HỆ SINH THÁI SỐ</h6>
+                    <ul class="space-y-2 text-slate-700 font-medium">
+                        <li><a href="#" class="hover:text-sky-700 transition flex items-center space-x-1.5"><i class="fa-solid fa-file-invoice-dollar text-sky-600 text-[10px]"></i><span>Cơ chế Đối soát Tự động CHM (Smart Commission)</span></a></li>
+                        <li><a href="#" class="hover:text-sky-700 transition flex items-center space-x-1.5"><i class="fa-solid fa-certificate text-emerald-600 text-[10px]"></i><span>Tiêu chuẩn Xác thực Pháp lý OCOP 3-5 Sao</span></a></li>
+                        <li><a href="#" class="hover:text-sky-700 transition flex items-center space-x-1.5"><i class="fa-solid fa-bolt text-amber-500 text-[10px]"></i><span>Cổng Onboarding Lightweight MVP (2-3h)</span></a></li>
+                        <li><a href="#" class="hover:text-sky-700 transition flex items-center space-x-1.5"><i class="fa-solid fa-map-location-dot text-cyan-600 text-[10px]"></i><span>Tài liệu API & Bản đồ số O2O</span></a></li>
                     </ul>
                 </div>
                 <div class="md:col-span-4 space-y-3">
-                    <h6 class="font-extrabold text-amber-300 text-xs uppercase tracking-wider text-ocopGreen">VỀ OCOP SALES COPILOT AI</h6>
-                    <p class="text-slate-400 leading-relaxed text-[11px]">
+                    <h6 class="font-black text-sky-900 text-xs uppercase tracking-wider">VỀ OCOP SALES COPILOT AI</h6>
+                    <p class="text-slate-600 leading-relaxed text-[11px] font-medium">
                         Nền tảng xúc tiến thương mại nông sản số 1 Việt Nam. Kết nối trực tiếp các sản phẩm OCOP chuẩn 4-5 sao từ vùng sản xuất đến người tiêu dùng cả nước.
                     </p>
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-amber-400/20 flex flex-col sm:flex-row items-center justify-between text-slate-400 text-[11px] gap-2">
+            <div class="pt-6 border-t border-sky-200 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px] gap-2">
                 <p>© 2026 OCOP Sales Copilot. All rights reserved.</p>
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="hover:text-amber-300">Điều khoản dịch vụ</a>
-                    <a href="#" class="hover:text-amber-300">Chính sách bảo mật</a>
+                    <a href="#" class="hover:text-sky-700 font-medium">Điều khoản dịch vụ</a>
+                    <a href="#" class="hover:text-sky-700 font-medium">Chính sách bảo mật</a>
                 </div>
             </div>
         </div>
@@ -10948,12 +10952,12 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     ko: "시뮬레이션 분석표가 비어 있습니다. 특산품의 '📊 현금 흐름 분석'을 클릭하세요!",
                     ja: "シミュレーションは空です。特産品の「📊 キャッシュフロー分析」をクリックして分析してください！"
                 };
-                container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">${emptyMsgs[currentLanguage] || emptyMsgs.vi}</p>`;
-                subtotalEl.innerText = "0 ₫";
+                if (container) container.innerHTML = `<p class="text-gray-500 text-center py-12 text-xs" id="i18n-cart-empty">${emptyMsgs[currentLanguage] || emptyMsgs.vi}</p>`;
+                if (subtotalEl) subtotalEl.innerText = "0 ₫";
                 if (cogsEl) cogsEl.innerText = "0 ₫";
                 if (opexEl) opexEl.innerText = "0 ₫";
-                totalEl.innerText = "0 ₫";
-                voucherRow.classList.add('hidden');
+                if (totalEl) totalEl.innerText = "0 ₫";
+                if (voucherRow) voucherRow.classList.add('hidden');
                 return;
             }
 

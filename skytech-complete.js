@@ -771,16 +771,156 @@
         openRealFinancialDashboard();
     };
 
+    window.enrichWebmasterRevenueData = function () {
+        try {
+            const stores = [
+                { name: 'Showroom OCOP Đồng Nai - HTX Hiệp Vân', province: 'Đồng Nai', products: '28 đặc sản', gmv: 184500000, status: 'Hoạt động 100%' },
+                { name: 'Trung Tâm OCOP Toàn Quốc - 496 NTMK', province: 'TP.HCM', products: '45 đặc sản', gmv: 236800000, status: 'Hoạt động 100%' },
+                { name: 'Showroom OCOP Hà Nội - Bát Tràng', province: 'Hà Nội', products: '36 đặc sản', gmv: 152400000, status: 'Hoạt động 100%' },
+                { name: 'Showroom Lâm Đồng - Oolong Cầu Đất', province: 'Lâm Đồng', products: '24 đặc sản', gmv: 98600000, status: 'Hoạt động 100%' },
+                { name: 'Showroom Lai Châu - Sâm Hoàng Liên Sơn', province: 'Lai Châu', products: '18 đặc sản', gmv: 74200000, status: 'Hoạt động 100%' },
+                { name: 'Showroom Đà Nẵng - Đặc Sản Miền Trung', province: 'Đà Nẵng', products: '22 đặc sản', gmv: 56000000, status: 'Hoạt động 100%' },
+                { name: 'Showroom Cần Thơ - Trái Cây Miền Tây', province: 'Cần Thơ', products: '20 đặc sản', gmv: 40000000, status: 'Hoạt động 100%' }
+            ];
+
+            let extraCartGmv = 0;
+            let cartItems = [];
+            try {
+                if (Array.isArray(window.cart) && window.cart.length > 0) {
+                    cartItems = window.cart;
+                } else {
+                    const storedCart = localStorage.getItem('ocop_cart');
+                    if (storedCart) cartItems = JSON.parse(storedCart);
+                }
+            } catch (e) {}
+
+            if (Array.isArray(cartItems)) {
+                cartItems.forEach(item => {
+                    const price = Number(item.price) || 0;
+                    const qty = Number(item.qty || item.quantity) || 1;
+                    extraCartGmv += price * qty;
+                });
+            }
+
+            if (typeof setupAdminDashboardTabsAndTikTokEngine === "function") setupAdminDashboardTabsAndTikTokEngine();
+            if (typeof hookSimulatorSliders === "function") hookSimulatorSliders();
+
+            const totalGmv = stores.reduce((acc, s) => acc + s.gmv, 0) + extraCartGmv;
+            const totalPayout = Math.round(totalGmv * 0.92);
+            const totalCommission = Math.round(totalGmv * 0.08);
+
+            // Cập nhật 4 thẻ KPI
+            const revEl = document.getElementById('fin-stat-revenue');
+            if (revEl) revEl.textContent = totalGmv.toLocaleString('vi-VN') + ' ₫';
+
+            const payoutEl = document.getElementById('fin-stat-stores-payout');
+            if (payoutEl) payoutEl.textContent = totalPayout.toLocaleString('vi-VN') + ' ₫';
+
+            const commEl = document.getElementById('fin-stat-commission');
+            if (commEl) commEl.textContent = totalCommission.toLocaleString('vi-VN') + ' ₫';
+
+            const profEl = document.getElementById('fin-stat-profit');
+            if (profEl) profEl.textContent = totalCommission.toLocaleString('vi-VN') + ' ₫';
+
+            const ordersEl = document.getElementById('fin-stat-orders-ai');
+            if (ordersEl) {
+                const count = 2840 + (cartItems.length > 0 ? cartItems.length : 0);
+                ordersEl.textContent = count.toLocaleString('vi-VN') + ' đơn (31.8% CR)';
+            }
+
+            // Đổ dữ liệu bảng Showroom
+            const tbody = document.getElementById('store-revenue-table-body');
+            if (tbody) {
+                tbody.innerHTML = stores.map((s, idx) => {
+                    const storePayout = Math.round(s.gmv * 0.92);
+                    const storeComm = Math.round(s.gmv * 0.08);
+                    const isEven = idx % 2 === 0;
+                    return '<tr class="hover:bg-sky-50/60 transition ' + (isEven ? 'bg-white' : 'bg-slate-50/50') + '">' +
+                        '<td class="py-3 px-3 font-bold text-slate-900 flex items-center gap-2">' +
+                            '<span class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-black">' + (idx + 1) + '</span>' +
+                            '<span>' + s.name + '</span>' +
+                        '</td>' +
+                        '<td class="py-3 px-2 font-semibold text-sky-700">' + s.province + '</td>' +
+                        '<td class="py-3 px-2 text-slate-600">' + s.products + '</td>' +
+                        '<td class="py-3 px-2 text-right font-black text-slate-900">' + s.gmv.toLocaleString('vi-VN') + ' ₫</td>' +
+                        '<td class="py-3 px-2 text-right font-bold text-amber-800">' + storePayout.toLocaleString('vi-VN') + ' ₫</td>' +
+                        '<td class="py-3 px-3 text-right font-black text-emerald-600">+' + storeComm.toLocaleString('vi-VN') + ' ₫</td>' +
+                        '<td class="py-3 px-2 text-center">' +
+                            '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px] inline-flex items-center gap-1">' +
+                                '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' + s.status +
+                            '</span>' +
+                        '</td>' +
+                    '</tr>';
+                }).join('');
+            }
+
+            // Đổ dữ liệu Đơn hàng gần đây
+            const feedEl = document.getElementById('recent-orders-feed');
+            if (feedEl) {
+                let itemsHtml = '';
+                if (cartItems.length > 0) {
+                    cartItems.forEach((item, i) => {
+                        const price = Number(item.price) || 350000;
+                        const qty = Number(item.qty || item.quantity) || 1;
+                        const val = price * qty;
+                        const comm = Math.round(val * 0.08);
+                        itemsHtml += '<div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-1.5 animate-pulse">' +
+                            '<div class="flex items-center gap-2 font-bold text-slate-900">' +
+                                '<span class="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] uppercase font-black">Khách Đặt Mới</span>' +
+                                '<span>🛒 ' + (item.name || 'Sản phẩm OCOP') + '</span>' +
+                                '<span class="text-slate-500">(SL: ' + qty + ')</span>' +
+                            '</div>' +
+                            '<div class="flex items-center gap-3">' +
+                                '<span class="font-black text-slate-900">' + val.toLocaleString('vi-VN') + ' ₫</span>' +
+                                '<span class="text-emerald-700 font-bold text-[11px] bg-emerald-100 px-2 py-0.5 rounded-md">Hoa hồng web: +' + comm.toLocaleString('vi-VN') + ' ₫ (8%)</span>' +
+                                '<span class="text-[10px] text-slate-400">Vừa xong</span>' +
+                            '</div>' +
+                        '</div>';
+                    });
+                }
+
+                const mockOrders = [
+                    { id: '#OCOP-8842', name: 'Combo 3 Hộp Trà Khổ Qua Rừng Hiệp Vân (Đồng Nai)', total: 720000, comm: 57600, time: '2 phút trước', channel: 'VietQR Showroom' },
+                    { id: '#OCOP-8839', name: 'Bộ Bình Trà Gốm Sứ Men Lam Cổ Bát Tràng (Hà Nội)', total: 2000000, comm: 160000, time: '8 phút trước', channel: 'Pre-Order Web' },
+                    { id: '#OCOP-8835', name: 'Hộp Trà Oolong Cầu Đất Thượng Hạng (Lâm Đồng)', total: 680000, comm: 54400, time: '14 phút trước', channel: 'AI Copilot Chat' }
+                ];
+
+                mockOrders.forEach(o => {
+                    itemsHtml += '<div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-1.5 hover:bg-sky-50/50 transition">' +
+                        '<div class="flex items-center gap-2 font-semibold text-slate-800">' +
+                            '<span class="text-sky-700 font-mono font-black">' + o.id + '</span>' +
+                            '<span>' + o.name + '</span>' +
+                            '<span class="text-[10px] text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded">' + o.channel + '</span>' +
+                        '</div>' +
+                        '<div class="flex items-center gap-3">' +
+                            '<span class="font-black text-slate-900">' + o.total.toLocaleString('vi-VN') + ' ₫</span>' +
+                            '<span class="text-sky-700 font-bold text-[11px] bg-sky-100 px-2 py-0.5 rounded-md">Hoa hồng web: +' + o.comm.toLocaleString('vi-VN') + ' ₫ (8%)</span>' +
+                            '<span class="text-[10px] text-slate-400">' + o.time + '</span>' +
+                        '</div>' +
+                    '</div>';
+                });
+
+                feedEl.innerHTML = itemsHtml;
+            }
+        } catch (err) {
+            console.warn('enrichWebmasterRevenueData error:', err);
+        }
+    };
+    const enrichWebmasterRevenueData = window.enrichWebmasterRevenueData;
+
     function openRealFinancialDashboard() {
-        const modal = document.getElementById('ai-financial-modal');
+        const modal = document.getElementById('ai-financial-modal') || document.getElementById('adminRevenueModal');
         if (modal) {
             modal.classList.remove('hidden');
             modal.style.setProperty('display', 'flex', 'important');
-            modal.style.setProperty('z-index', '100000', 'important');
-            enrichWebmasterRevenueData();
+            modal.style.setProperty('z-index', '99999', 'important');
+            if (typeof window.enrichWebmasterRevenueData === 'function') {
+                window.enrichWebmasterRevenueData();
+            }
             if (typeof updateFinancialSimulator === 'function') {
                 updateFinancialSimulator();
             }
+            document.body.style.overflow = 'hidden';
         }
     }
 
@@ -868,64 +1008,7 @@
         }
     }, true); // true = CAPTURE PHASE, chạy trước mọi onclick trong HTML
 
-    // Cập nhật dữ liệu Bảng Quản Trị Doanh Thu & Tiền Lời Quảng Bá
-    function enrichWebmasterRevenueData() {
-        setupAdminDashboardTabsAndTikTokEngine();
-        const modal = document.getElementById('ai-financial-modal');
-        if (!modal) return;
-
-        // Modal title
-        const titleH3 = modal.querySelector('h3');
-        if (titleH3) {
-            titleH3.textContent = 'BẢNG QUẢN TRỊ DOANH THU & TIỀN LỜI QUẢNG BÁ DÀNH CHO CHỦ WEB';
-            titleH3.style.color = '#0284C7';
-        }
-
-        // 4 KPI Cards
-        const revEl = document.getElementById('fin-stat-revenue');
-        if (revEl) {
-            revEl.textContent = '875.000.000 ₫';
-            revEl.style.color = '#0284C7';
-            const parent = revEl.closest('.p-4') || revEl.closest('div')?.parentElement;
-            const title = parent?.querySelector('span.text-xs');
-            if (title) { title.textContent = 'TỔNG DOANH THU BÁN HÀNG GIÚP CÁC CỬA HÀNG'; title.style.color = '#1E293B'; title.style.fontWeight = '700'; }
-        }
-
-        const profitEl = document.getElementById('fin-stat-profit');
-        if (profitEl) {
-            profitEl.innerHTML = '415.625.000 ₫';
-            profitEl.style.color = '#059669';
-            const parent = profitEl.closest('.p-4') || profitEl.closest('div')?.parentElement;
-            const title = parent?.querySelector('span.text-xs');
-            if (title) { title.textContent = 'LỢI NHUẬN RÒNG CỦA CÁC ĐƠN VỊ / HTX ĐỐI TÁC'; title.style.color = '#1E293B'; title.style.fontWeight = '700'; }
-        }
-
-        const commEl = document.getElementById('fin-stat-commission');
-        if (commEl) {
-            commEl.textContent = '70.000.000 ₫';
-            commEl.style.color = '#0284C7';
-            const parent = commEl.closest('.p-4') || commEl.closest('div')?.parentElement;
-            const title = parent?.querySelector('span.text-xs');
-            if (title) { title.textContent = '💰 TIỀN LỜI RÒNG CỦA CHỦ WEB (HOA HỒNG QUẢNG BÁ)'; title.style.color = '#1E293B'; title.style.fontWeight = '700'; }
-        }
-
-        const cards = modal.querySelectorAll('.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 > div, .grid-cols-4 > div');
-        if (cards.length >= 4) {
-            const card4 = cards[3];
-            const title4 = card4.querySelector('span.text-xs');
-            if (title4) { title4.textContent = 'TỔNG ĐƠN HÀNG KẾT NỐI QUA NỀN TẢNG'; title4.style.color = '#1E293B'; title4.style.fontWeight = '700'; }
-            const val4 = card4.querySelector('.text-2xl');
-            if (val4) {
-                val4.id = 'fin-stat-orders';
-                val4.textContent = '3.420 Đơn';
-                val4.style.color = '#0F172A';
-            }
-        }
-
-        // Hook sliders for interactive dynamic recalculation
-        hookSimulatorSliders();
-    }
-
+    // Cập nhật dữ liệu Bảng Quản Trị Doanh Thu đã được tích hợp tập trung vào window.enrichWebmasterRevenueData
     function hookSimulatorSliders() {
         const volInput = document.getElementById('sim-volume');
         const chmInput = document.getElementById('sim-chm-rate');
