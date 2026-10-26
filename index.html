@@ -3059,15 +3059,13 @@
                 </button>
 
                 <!-- Action Button 2: 🔐 Quản Trị Doanh Thu -->
-                <button type="button" id="btn-header-admin-pin" onclick="promptAdminPinModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer shrink-0 bg-slate-900 hover:bg-slate-800 text-white shadow-xs border border-slate-700" style="white-space: nowrap !important; height: 38px; background: #0F172A !important; color: #FFFFFF !important;" title="Cổng Quản Trị Doanh Thu & Tiền Lời Quảng Bá">
-                    <span>🔐 Quản Trị Doanh Thu</span>
+                <button type="button" id="btn-header-admin-pin" onclick="promptAdminPinModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important; color: #FFFFFF !important; border: 1.5px solid #38BDF8 !important;" title="Cổng Quản Trị Doanh Thu & Studio AI TikTok (Yêu cầu mã PIN 2007)">
+                    <i class="fa-solid fa-lock text-sky-400"></i>
+                    <span>🔐 Quản Trị &amp; Studio AI</span>
                 </button>
 
                 <!-- Action Button 3: 🎬 AI Tạo Video TikTok -->
-                <button type="button" id="btn-header-tiktok" onclick="openTikTokStudioModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; border: 1px solid #38BDF8 !important;" title="AI Tạo Nội Dung & Video TikTok Quảng Bá OCOP">
-                    <i class="fa-brands fa-tiktok text-rose-300"></i>
-                    <span>🎬 AI Tạo Video TikTok</span>
-                </button>
+                <button type="button" id="btn-header-tiktok" onclick="promptAdminPinModal()" class="hidden" style="display: none !important;" aria-hidden="true"></button>
 
 
                 <!-- Hidden compatibility markers for system tests -->
@@ -4250,7 +4248,12 @@
                         </h3>
                     </div>
                 </div>
-                <button type="button" onclick="closeFinancialDashboardModal()" id="btn-close-fin-modal-sticky" style="position: sticky; top: 12px; right: 12px; z-index: 999999; background: #EF4444 !important; color: #FFFFFF !important; padding: 8px 18px !important; border-radius: 999px !important; cursor: pointer; font-weight: 700 !important; border: none !important; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;" title="Đóng Bảng Quản Trị">
+                <div class="flex items-center gap-2" style="position: sticky; top: 12px; right: 12px; z-index: 999999;">
+                    <button type="button" onclick="quickSwitchToTikTokStudio()" id="btn-quick-switch-tiktok" class="px-3.5 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-md transition hover:opacity-95" style="background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%) !important; color: #FFFFFF !important; border: 1px solid #FDA4AF !important;">
+                        <i class="fa-brands fa-tiktok text-rose-200"></i>
+                        <span>🎬 Chuyển sang Studio AI TikTok</span>
+                    </button>
+                    <button type="button" onclick="closeFinancialDashboardModal()" id="btn-close-fin-modal-sticky" style="position: sticky; top: 12px; right: 12px; z-index: 999999; background: #EF4444 !important; color: #FFFFFF !important; padding: 8px 18px !important; border-radius: 999px !important; cursor: pointer; font-weight: 700 !important; border: none !important; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;" title="Đóng Bảng Quản Trị">
                     <span>✖ Đóng</span>
                 </button>
             </div>

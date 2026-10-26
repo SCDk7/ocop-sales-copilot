@@ -1430,8 +1430,8 @@ header h1 {
     border-radius: 16px !important;
     overflow: hidden !important;
     border: 2px solid #38BDF8 !important;
-    box-shadow: 0 10px 30px rgba(11, 25, 44, 0.45) !important;
-    background: #0B192C !important;
+    box-shadow: 0 10px 30px rgba(11, 34, 57, 0.45) !important;
+    background: #0B2239 !important;
 }
 
 #province-map-select,
@@ -1521,7 +1521,7 @@ select#province-map-select {
 
 /* LEAFLET DARK-NAVY VIETNAM MAP & SOVEREIGNTY STYLING */
 #province-map .leaflet-container {
-    background: #0B192C !important;
+    background: #0B2239 !important;
     font-family: inherit !important;
 }
 
@@ -1590,4 +1590,53 @@ select#province-map-select {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(2, 132, 199, 0.15) !important;
     border-color: #38BDF8 !important;
+}
+
+
+/* ADMIN HUB PORTAL CHOICE MODAL */
+#admin-hub-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483647 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(6px) !important;
+}
+
+.admin-hub-card {
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.admin-hub-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 24px rgba(2, 132, 199, 0.2) !important;
+    border-color: #0284C7 !important;
+}
+
+/* HIGH-PRECISION SVG VIETNAM MAP ANIMATIONS */
+@keyframes svgPinPulse {
+    0% { r: 8; opacity: 0.9; }
+    100% { r: 24; opacity: 0; }
+}
+
+@keyframes svgRedPinBounce {
+    0% { transform: translateY(-20px); opacity: 0; }
+    70% { transform: translateY(4px); opacity: 1; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.svg-pin-pulse-wave {
+    animation: svgPinPulse 1.8s infinite ease-out;
+    transform-origin: center;
+}
+
+.svg-active-red-pin-drop {
+    animation: svgRedPinBounce 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#province-stores-panel {
+    transition: all 0.3s ease !important;
 }
