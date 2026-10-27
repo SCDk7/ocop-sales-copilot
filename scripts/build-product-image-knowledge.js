@@ -241,3 +241,4 @@ console.log('Products without Google images:', without.length);
 
 fs.writeFileSync(path.join(rootDir, 'data/product-image-knowledge.json'), JSON.stringify(knowledgeBase, null, 2), 'utf8');
 console.log('Successfully saved to data/product-image-knowledge.json');
+
