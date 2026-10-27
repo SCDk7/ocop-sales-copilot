@@ -1250,6 +1250,10 @@ async function handleAIChatRequest(req, res) {
     const body=composeDataReply([], {requiredClarification:scenario.message},validation.language);
     return res.json({...body,handoffAdmin:Boolean(scenario.handoffAdmin),understandingStatus:scenario.needsClarification?'needs_clarification':'understood',combos:[],imageIds});
   }
+  if (!attachedImages.length && localIntent.isStoreLookup && !localIntent.exactRegion && !localIntent.categoryOrKeyword) {
+    const body = composeDataReply(validation.products, localIntent, validation.language);
+    return res.json({ ...body, imageIds, understandingStatus: 'understood', handoffAdmin: false });
+  }
   if (attachedImages.length) {
     attachedImages.forEach(image => { image.messageText = lastMessage.text; });
     try {

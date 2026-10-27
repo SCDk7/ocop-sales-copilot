@@ -60,3 +60,15 @@ test('store lookup query returns showroom directory and never misclassifies tra 
  assert(reply.message.includes('Hoàng Quốc Việt'));
  assert(!reply.message.includes('Trà Phúc'));
 });
+
+test('store lookup query with prior product chat history returns showroom directory without leaking previous products',()=>{
+ const history = [
+   { role: 'user', text: 'Tìm bánh chưng Tranh Khúc' },
+   { role: 'assistant', text: 'Dạ anh/chị' }
+ ];
+ const reply = catalogReply('Tra cứu mạng lưới showroom và điểm bán O2O chính hãng trên bản đồ số', PRODUCTS, 'vi', history);
+ assert(reply.message.includes('Mạng lưới Showroom & Điểm bán O2O'));
+ assert(reply.message.includes('Hoàng Quốc Việt'));
+ assert(!reply.message.includes('Bánh chưng'));
+ assert.equal(reply.productIds.length, 0);
+});
