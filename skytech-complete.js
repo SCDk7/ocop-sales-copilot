@@ -4204,7 +4204,40 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                 return;
             }
 
-            // B. Kiểm tra modal đang mở thực sự (cho phép cuộn bên trong modal)
+            // B1. GIỎ HÀNG OCOP (#cart-ui-panel, #cart-ui-overlay, #cart-drawer):
+            // Cho phép cuộn danh sách sản phẩm ở BẤT CỨ VỊ TRÍ NÀO trong giỏ hàng
+            // (kể cả Header "Giỏ hàng của bạn", Footer "Tổng tiền hàng / Mua hàng", viền, khoảng trống hay nền backdrop bên ngoài).
+            const cartPanel = document.getElementById('cart-ui-panel');
+            const isCartOpen = (typeof window.isCartUIOpen === 'function' && window.isCartUIOpen()) ||
+                (cartPanel && (
+                    cartPanel.classList.contains('cart-ui-panel-open') ||
+                    cartPanel.getAttribute('aria-hidden') === 'false' ||
+                    (cartPanel.style.visibility === 'visible' && cartPanel.style.display !== 'none')
+                ));
+            const inCartTarget = e.target && e.target.closest && e.target.closest('#cart-ui-panel, #cart-ui-overlay, #cart-drawer, #shopping-cart-drawer');
+
+            if (isCartOpen || inCartTarget) {
+                const cartScroll = (cartPanel && (
+                    cartPanel.querySelector('.cart-ui-items, #cart-ui-items') ||
+                    cartPanel.querySelector('#cart-ui-product-list')?.parentElement ||
+                    cartPanel.querySelector('#cart-ui-product-list')
+                )) || (function() {
+                    const legacy = document.querySelector('#cart-drawer:not(.hidden), #shopping-cart-drawer:not(.hidden)');
+                    return legacy ? (legacy.querySelector('#cart-items, .cart-items, [id$="-list"]') || legacy) : null;
+                })();
+
+                if (cartScroll && e.deltaY !== 0) {
+                    cartScroll.scrollBy({
+                        top: e.deltaY * 1.35,
+                        behavior: 'auto'
+                    });
+                }
+                e._cartScrolled = true;
+                if (e.cancelable) e.preventDefault();
+                return;
+            }
+
+            // B2. Kiểm tra modal đang mở thực sự (cho phép cuộn bên trong modal)
             const openModal = document.querySelector(
                 '#auth-modal:not(.hidden):not([style*="display: none"]), ' +
                 '#quickview-modal:not(.hidden):not([style*="display: none"]), ' +
@@ -4215,12 +4248,18 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                 '#order-success-modal:not(.hidden):not([style*="display: none"]), ' +
                 '#customer-auth-modal:not(.hidden):not([style*="display: none"]), ' +
                 '#partner-registration-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#cart-ui-panel.cart-ui-panel-open, ' +
+                '#cart-drawer:not(.hidden):not([style*="display: none"]), ' +
                 '.account-center:not([hidden])'
             );
 
             if (openModal) {
                 // Người dùng đang tương tác trong modal, tăng nhẹ tốc độ cuộn bên trong modal
-                const scrollable = getScrollableContainer(e.target);
+                let scrollable = getScrollableContainer(e.target);
+                if (!scrollable) {
+                    // Nếu con trỏ chuột đang ở Header/Footer/khoảng trống của modal, tìm vùng cuộn nội bộ của modal đó
+                    scrollable = openModal.querySelector('.overflow-y-auto, [class*="overflow-y-auto"], [style*="overflow-y: auto"], [style*="overflow-y: scroll"], .modal-body, .cart-ui-items') || openModal;
+                }
                 if (scrollable && e.deltaY !== 0) {
                     const canScrollDown = e.deltaY > 0 && scrollable.scrollTop + scrollable.clientHeight < scrollable.scrollHeight - 1;
                     const canScrollUp = e.deltaY < 0 && scrollable.scrollTop > 1;
@@ -4229,6 +4268,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                             top: e.deltaY * SPEED_BOOST,
                             behavior: 'auto'
                         });
+                        if (e.cancelable) e.preventDefault();
                     }
                 }
                 return;
