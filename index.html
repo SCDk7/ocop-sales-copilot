@@ -3882,7 +3882,11 @@ Khơi Nguồn Di Sản Việt</span>
  </div>
  </div>
  <div class="flex items-center space-x-1.5 pointer-events-auto">
- <button type="button" onclick="toggleAdminSupport()" title="Liên hệ 4 Admin CSKH Facebook" class="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-white/20 hover:bg-white/30 text-[10px] font-bold text-amber-100 transition cursor-pointer border border-white/20 shadow-2xs">
+ <button type="button" id="ai-chat-reset-btn" onclick="resetAIChatHistory()" title="Bắt đầu hội thoại mới (Làm mới lịch sử)" class="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-white/20 hover:bg-white/30 text-[10px] font-bold text-amber-100 transition cursor-pointer border border-white/20 shadow-2xs">
+<i class="fa-solid fa-rotate-left text-xs"></i>
+<span id="chat-reset-label">Làm mới</span>
+</button>
+<button type="button" onclick="toggleAdminSupport()" title="Liên hệ 4 Admin CSKH Facebook" class="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-white/20 hover:bg-white/30 text-[10px] font-bold text-amber-100 transition cursor-pointer border border-white/20 shadow-2xs">
  <i class="fa-brands fa-facebook-messenger text-xs text-blue-200"></i>
  <span>CSKH FB</span>
  </button>
@@ -5773,6 +5777,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const syncVisibility = () => setAIChatWidgetVisibility(intro.classList.contains('hidden'));
             new MutationObserver(syncVisibility).observe(intro, { attributes: true, attributeFilter: ['class'] });
             syncVisibility();
+            if (typeof restoreAIChatHistory === 'function') restoreAIChatHistory();
             restorePageScrollState();
             updateCatalogCounts();
             applyLanguage(currentLanguage);
@@ -8002,8 +8007,17 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         window.closeAIChat = closeAIChat;
 
         function openAIChat() {
+            const widget = document.getElementById('ai-chat-widget');
+            if (widget) {
+                widget.hidden = false;
+                widget.removeAttribute('hidden');
+                widget.style.display = '';
+                widget.classList.remove('hidden');
+            }
             const win = document.getElementById('ai-chat-window');
             if (!win) return;
+            win.hidden = false;
+            win.removeAttribute('hidden');
             win.classList.remove('hidden');
             win.style.display = 'flex';
             if (savedChatPosition) {
@@ -8027,7 +8041,9 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         function toggleAIChat(forceState) {
             const win = document.getElementById('ai-chat-window');
             if (!win) return;
-            const isCurrentlyHidden = win.classList.contains('hidden') || win.style.display === 'none';
+            const widget = document.getElementById('ai-chat-widget');
+            const isWidgetHidden = widget && (widget.hidden || widget.classList.contains('hidden') || widget.style.display === 'none');
+            const isCurrentlyHidden = isWidgetHidden || win.classList.contains('hidden') || win.style.display === 'none';
             const shouldOpen = typeof forceState === 'boolean' ? forceState : isCurrentlyHidden;
             if (shouldOpen) {
                 openAIChat();
@@ -8039,6 +8055,105 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         window.setChatOpen = function(isOpen) {
             return toggleAIChat(isOpen);
         };
+
+        function saveAIChatHistory() {
+            try {
+                const messagesEl = document.getElementById('ai-chat-messages');
+                if (messagesEl && Array.isArray(aiConversationHistory) && aiConversationHistory.length > 0) {
+                    sessionStorage.setItem('ocop_chat_history_v1', JSON.stringify({
+                        history: aiConversationHistory,
+                        html: messagesEl.innerHTML
+                    }));
+                }
+            } catch (_) {}
+        }
+        window.saveAIChatHistory = saveAIChatHistory;
+
+        function restoreAIChatHistory() {
+            try {
+                const raw = sessionStorage.getItem('ocop_chat_history_v1');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed.history) && parsed.history.length > 0) {
+                        aiConversationHistory = parsed.history;
+                    }
+                    if (parsed.html) {
+                        const messagesEl = document.getElementById('ai-chat-messages');
+                        if (messagesEl) {
+                            messagesEl.innerHTML = parsed.html;
+                            messagesEl.scrollTop = messagesEl.scrollHeight;
+                        }
+                    }
+                }
+            } catch (_) {}
+        }
+        window.restoreAIChatHistory = restoreAIChatHistory;
+
+        function resetAIChatHistory() {
+            aiConversationHistory = [];
+            try { sessionStorage.removeItem('ocop_chat_history_v1'); } catch (_) {}
+            const messagesEl = document.getElementById('ai-chat-messages');
+            if (messagesEl) {
+                const greetingMap = {
+                    vi: 'Xin chào! Trợ lý AI Copilot sẵn sàng định vị Showroom O2O và phân tích doanh thu, tiền lời, chiết khấu (CHM).',
+                    en: 'Hello! AI Copilot is ready to locate O2O Showrooms and analyze gross revenue, net profit, and CHM commissions.',
+                    zh: '您好！AI Copilot 随时为您定位 O2O 展厅并分析总营收、净利润与 CHM 佣金分成。',
+                    ko: '안녕하세요! AI 코파일럿이 O2O 쇼룸 위치 확인 및 총매출, 순이익, CHM 수수료 정산을 분석합니다.',
+                    ja: 'こんにちは！AI CopilotがO2Oショールームの位置確認と総売上・純利益・CHM手数料の分析を行います。'
+                };
+                const guideMap = {
+                    vi: 'Anh/chị nhập tên đặc sản, tỉnh thành (ưu tiên Đồng Nai) hoặc chọn yêu cầu phân tích tài chính bên dưới nhé.',
+                    en: 'Enter specialty, province (prioritizing Dong Nai), or select financial simulation below.',
+                    zh: '请输入特产名称、省份（优先同奈）或在下方选择财务模拟。',
+                    ko: '특산물 이름, 성·시(동나이 우선)를 입력하거나 아래 재무 시뮬레이션을 선택하세요.',
+                    ja: '特産品名、省名（ドンナイ優先）を入力するか、下の財務シミュレーションを選択してください。'
+                };
+                messagesEl.innerHTML = `
+                    <div class="flex items-start space-x-2">
+                        <img src="chat-avatar.jpg" alt="Trợ lý AI OCOP" class="w-7 h-7 rounded-full object-cover flex-shrink-0 mt-0.5 shadow" loading="lazy" decoding="async">
+                        <div class="bg-white p-3.5 rounded-2xl border border-amber-200 text-gray-800 shadow-sm leading-relaxed max-w-[85%] space-y-1">
+                            <p class="font-extrabold text-ocopGreen" id="chat-greeting">${greetingMap[currentLanguage] || greetingMap.vi}</p>
+                            <p class="text-gray-500 text-[11px]" id="chat-guidance">${guideMap[currentLanguage] || guideMap.vi}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        window.resetAIChatHistory = resetAIChatHistory;
+
+        function consultProductWithAI(productId) {
+            const p = (typeof products !== 'undefined' && Array.isArray(products) ? products : []).find(item => item.id === productId);
+            if (typeof closeQuickView === 'function') {
+                closeQuickView();
+            }
+            if (typeof openAIChat === 'function') {
+                openAIChat();
+            } else if (typeof toggleAIChat === 'function') {
+                toggleAIChat(true);
+            }
+
+            if (!p) return;
+
+            const queryMap = {
+                vi: `Tư vấn cho tôi về đặc sản ${p.name} (${p.region}): nguồn gốc xuất xứ, câu chuyện văn hóa và địa chỉ showroom O2O chính hãng.`,
+                en: `Tell me about the specialty ${p.name} (${p.region}): origin, cultural story, and official O2O showroom locations.`,
+                zh: `请向我介绍特产 ${p.name}（${p.region}）：产地来源、文化故事及正品 O2O 展厅地址。`,
+                ko: `특산품 ${p.name} (${p.region})에 대해 안내해 주세요: 원산지, 문화 이야기 및 공식 O2O 쇼룸 위치.`,
+                ja: `特産品「${p.name}」（${p.region}）について教えてください：産地、文化的背景、公式O2Oショールーム情報。`
+            };
+            const promptText = queryMap[currentLanguage] || queryMap.vi;
+
+            setTimeout(() => {
+                const inputEl = document.getElementById('ai-chat-input');
+                if (inputEl) {
+                    inputEl.value = promptText;
+                }
+                if (typeof sendAIMessage === 'function') {
+                    sendAIMessage();
+                }
+            }, 180);
+        }
+        window.consultProductWithAI = consultProductWithAI;
 
         // ==============================================================
         // DRAGGABLE & RESIZABLE CHATBOX ENGINE (2026 DIGITAL CHALLENGE)
@@ -9148,6 +9263,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     { role: 'user', text: messageText },
                     { role: 'assistant', text: result.message }
                 ].slice(-16);
+                saveAIChatHistory();
                 messagesEl.scrollTop = messagesEl.scrollHeight;
 
                 // ── Dynamic chips: refresh the chip bar with contextual suggestions ──
@@ -9183,6 +9299,12 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 `;
                 reply.querySelector('p').innerHTML = formatAIMessageText(fallbackResult.message);
                 messagesEl.append(reply);
+                aiConversationHistory = [
+                    ...aiConversationHistory,
+                    { role: 'user', text: messageText },
+                    { role: 'assistant', text: fallbackResult.message }
+                ].slice(-16);
+                saveAIChatHistory();
                 messagesEl.scrollTop = messagesEl.scrollHeight;
             } finally {
                 isAIRequestPending = false;
@@ -10432,7 +10554,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 <i class="fa-solid fa-truck-fast text-emerald-200"></i>
                                 <span class="whitespace-nowrap font-black">🛒 Mua Online</span>
                             </button>
-                            <button type="button" onclick="closeQuickView(); if(typeof toggleAIChat==='function') toggleAIChat();" class="min-h-11 rounded-xl bg-amber-400 hover:bg-amber-300 py-2 px-2 text-xs font-bold text-slate-950 shadow-sm transition flex items-center justify-center space-x-1.5 cursor-pointer" title="Kích hoạt AI giới thiệu văn hóa đặc sản & gợi ý gói quà doanh nghiệp B2B">
+                            <button type="button" onclick="consultProductWithAI(${p.id});" class="min-h-11 rounded-xl bg-amber-400 hover:bg-amber-300 py-2 px-2 text-xs font-bold text-slate-950 shadow-sm transition flex items-center justify-center space-x-1.5 cursor-pointer" title="Kích hoạt AI giới thiệu văn hóa đặc sản & gợi ý gói quà doanh nghiệp B2B">
                                 <i class="fa-solid fa-wand-magic-sparkles text-slate-950"></i>
                                 <span class="whitespace-nowrap font-black">${aiConsultBtnMap[currentLanguage] || aiConsultBtnMap.vi}</span>
                             </button>
@@ -10640,7 +10762,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 <i class="fa-solid fa-truck-fast text-amber-200"></i>
                                 <span class="whitespace-nowrap font-black">🛒 Mua Online (Ship)</span>
                             </button>
-                            <button type="button" onclick="closeQuickView(); if(typeof toggleAIChat==='function') toggleAIChat();" class="min-h-12 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 py-2.5 px-2 text-xs font-bold text-slate-950 shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer" title="Kích hoạt AI giới thiệu văn hóa đặc sản & gợi ý gói quà doanh nghiệp B2B">
+                            <button type="button" onclick="consultProductWithAI(${p.id});" class="min-h-12 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 py-2.5 px-2 text-xs font-bold text-slate-950 shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer" title="Kích hoạt AI giới thiệu văn hóa đặc sản & gợi ý gói quà doanh nghiệp B2B">
                                 <i class="fa-solid fa-wand-magic-sparkles text-slate-950"></i>
                                 <span class="whitespace-nowrap font-black">${aiConsultBtnMap[currentLanguage] || aiConsultBtnMap.vi}</span>
                             </button>
@@ -13135,6 +13257,13 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 zh: '选择目标预算，AI 自动配置兼顾文化价值与利润率的 OCOP 特产组合！',
                 ko: '목표 예산을 선택하면 AI가 가치와 마진을 극대화한 OCOP 특산품 구성을 자동 제안합니다!',
                 ja: '予算を選択すると、AIが価値と利益率を最大化するOCOP特产品セットを自動構成します！'
+            },
+            'chat-reset-label': {
+                vi: 'Làm mới',
+                en: 'New chat',
+                zh: '新对话',
+                ko: '새 대화',
+                ja: 'リセット'
             },
             'i18n-b2b-box-btn': {
                 vi: 'Mở Chatbot AI Tư Vấn 24/7',

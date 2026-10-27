@@ -569,3 +569,26 @@ test('Wikipedia remains supporting context and cannot change catalogue prices', 
  assert(reply.message.includes('321.000'));assert.equal(reply.wikipediaSources[0].url,source.url);
  assert.deepEqual(reply.productIds,[555]);
 });
+
+test('AI Tu Van quickview button opens chat, preserves and continues chat history', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Quickview modal buttons trigger consultProductWithAI
+    assert(html.includes('consultProductWithAI(${p.id})'), 'Quickview modal buttons call consultProductWithAI');
+    assert(!html.includes('onclick="closeQuickView(); if(typeof toggleAIChat===\'function\') toggleAIChat();"'), 'Old toggling call removed from quickview');
+
+    // 2. consultProductWithAI is defined and exported to window
+    assert(html.includes('function consultProductWithAI(productId)'), 'consultProductWithAI is defined');
+    assert(html.includes('window.consultProductWithAI = consultProductWithAI;'), 'consultProductWithAI is exported to window');
+
+    // 3. openAIChat unhides #ai-chat-widget
+    assert(html.includes("const widget = document.getElementById('ai-chat-widget');"), 'openAIChat gets ai-chat-widget element');
+    assert(html.includes("widget.removeAttribute('hidden');") || html.includes("widget.hidden = false;"), 'openAIChat unhides ai-chat-widget');
+
+    // 4. Chat history persistence and new chat reset
+    assert(html.includes('function saveAIChatHistory()'), 'saveAIChatHistory is defined');
+    assert(html.includes('function restoreAIChatHistory()'), 'restoreAIChatHistory is defined');
+    assert(html.includes('function resetAIChatHistory()'), 'resetAIChatHistory is defined');
+    assert(html.includes('id="ai-chat-reset-btn"'), 'ai-chat-reset-btn exists in AI chat header');
+    assert(html.includes('restoreAIChatHistory()'), 'restoreAIChatHistory called on page init');
+});
