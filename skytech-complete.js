@@ -724,29 +724,16 @@
     // window.initializeProvinceMap preserved for satellite map
 
 
-    // 4. POLISH HEADER: ĐĂNG KÝ ĐIỂM BÁN & 🔐 QUẢN TRỊ CHỦ WEB
+    // 4. POLISH HEADER: ĐĂNG KÝ ĐIỂM BÁN & 🔐 QUẢN TRỊ CHỦ WEB (ĐÃ CHUYỂN VÀO HỒ SƠ)
     function polishHeader() {
-        // Nút Đăng Ký Điểm Bán
         let btnOcr = document.getElementById('btn-header-ocr');
         if (btnOcr) {
-            btnOcr.innerHTML = '<span>⚡ Đăng Ký Điểm Bán</span>';
-            btnOcr.onclick = function (e) {
-                if (e) e.preventDefault();
-                openPartnerRegistrationModal();
-            };
+            btnOcr.style.setProperty('display', 'none', 'important');
         }
 
-        // Nút Quản Trị Hệ Thống
         let btnPin = document.getElementById('btn-header-admin-pin');
         if (btnPin) {
-            btnPin.innerHTML = '<i class="fa-solid fa-lock text-white" aria-hidden="true"></i> <span>Quản trị</span>';
-        btnPin.style.display = 'inline-flex';
-        btnPin.style.visibility = 'visible';
-            btnPin.setAttribute('title', 'Cổng Quản Trị Toàn Quyền Admin & Nhà Phân Phối (Yêu cầu mật khẩu)');
-            btnPin.onclick = function (e) {
-                if (e) e.preventDefault();
-                promptAdminPinModal();
-            };
+            btnPin.style.setProperty('display', 'none', 'important');
         }
 
         // Hide standalone tiktok header button

@@ -2964,12 +2964,10 @@ Khơi Nguồn Di Sản Việt</span>
  <!-- Quick Action Cluster: Cart + CTAs + Language + Login -->
  <div class="header-right-actions flex items-center space-x-2 flex-shrink-0" style="gap: 8px !important;">
  <!-- Action Button 1: 🛒 Giỏ hàng & ⚡ Đăng Ký Điểm Bán -->
- <button type="button" id="btn-header-ocr" onclick="openPartnerRegistrationModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer shrink-0 bg-sky-600 hover:bg-sky-700 text-white shadow-xs border border-sky-500" style="white-space: nowrap !important; height: 38px; background: #0284C7 !important; color: #FFFFFF !important;" title="Đăng ký điểm bán đặc sản OCOP">
- <span>⚡ Đăng Ký Điểm Bán</span>
- </button>
+ <button type="button" id="btn-header-ocr" onclick="openPartnerRegistrationModal()" class="hidden" style="display: none !important;" aria-hidden="true"></button>
 
  <!-- Action Button 2: 🔐 Quản Trị Doanh Thu -->
- <button type="button" id="btn-header-admin-pin" onclick="promptAdminPinModal()" class="px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 36px; background: #0F172A !important; color: #FFFFFF !important; border: 1.5px solid #38BDF8 !important; display: inline-flex !important; visibility: visible !important;" title="Quản trị (yêu cầu mã PIN)"><i class="fa-solid fa-lock text-white" aria-hidden="true"></i><span>Quản trị</span></button>
+ <button type="button" id="btn-header-admin-pin" onclick="promptAdminPinModal()" class="hidden" style="display: none !important;" aria-hidden="true"></button>
 
  <!-- Action Button 3: 🎬 AI Tạo Video TikTok -->
  <button type="button" id="btn-header-tiktok" onclick="promptAdminPinModal()" class="hidden" style="display: none !important;" aria-hidden="true"></button>
@@ -5296,7 +5294,20 @@ Khơi Nguồn Di Sản Việt</span>
  </div>
  <div id="cust-orders-content" class="space-y-3 hidden">
  <!-- Profile Card -->
- <div class="p-3.5 bg-gradient-to-r from-sky-50 to-blue-50 rounded-2xl border border-sky-200 flex flex-wrap items-center justify-between gap-2">
+ <!-- Quick actions for Partner and Admin inside customer profile -->
+                        <div class="p-3 bg-sky-50/80 rounded-xl border border-sky-200 mb-3 flex items-center justify-between gap-2 flex-wrap">
+                            <span class="text-xs font-bold text-sky-950">Dành cho đối tác &amp; Quản trị:</span>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="closeCustomerAuthModal(); if(typeof openPartnerRegistrationModal==='function') openPartnerRegistrationModal();" class="px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs transition" title="Đăng ký điểm bán đặc sản OCOP">
+                                    <span>⚡ Đăng Ký Điểm Bán</span>
+                                </button>
+                                <button type="button" onclick="closeCustomerAuthModal(); if(typeof promptAdminPinModal==='function') promptAdminPinModal();" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white border border-sky-400 font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs transition" title="Quản trị hệ thống">
+                                    <i class="fa-solid fa-lock text-sky-400"></i>
+                                    <span>🔒 Quản trị</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-3.5 bg-gradient-to-r from-sky-50 to-blue-50 rounded-2xl border border-sky-200 flex flex-wrap items-center justify-between gap-2">
  <div class="space-y-0.5">
  <div class="font-black text-slate-900 text-sm flex items-center gap-1.5">
  <i class="fa-solid fa-circle-user text-sky-600"></i>

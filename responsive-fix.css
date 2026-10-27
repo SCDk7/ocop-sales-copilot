@@ -875,18 +875,7 @@ body:not(.catalog-browsing) #mobile-cro-bottom-bar,
 
 /* Ensure Quản Trị button is always visible on all devices */
 #btn-header-admin-pin,
-button#btn-header-admin-pin {
-    display: inline-flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    flex-shrink: 0 !important;
-    cursor: pointer !important;
-    white-space: nowrap !important;
-    background: #0F172A !important;
-    color: #FFFFFF !important;
-    border: 1.5px solid #38BDF8 !important;
-    border-radius: 999px !important;
-}
+button#btn-header-admin-pin { display: none !important; }
 
 @media (max-width: 767px) {
     .header-right-actions {
@@ -901,17 +890,16 @@ button#btn-header-admin-pin {
     .header-right-actions::-webkit-scrollbar {
         display: none !important;
     }
-    #btn-header-admin-pin {
-        display: inline-flex !important;
-        visibility: visible !important;
-        padding: 4px 10px !important;
-        font-size: 11px !important;
-        height: 32px !important;
-        flex-shrink: 0 !important;
-    }
+    #btn-header-admin-pin { display: none !important; }
 }
 
 /* Ẩn hoàn toàn bảng danh sách điểm bán Lâm Đồng / tỉnh thành dưới bản đồ theo yêu cầu */
 #province-stores-panel {
+    display: none !important;
+}
+
+/* Ẩn nút Đăng Ký Điểm Bán & Quản Trị khỏi header (đã chuyển vào hồ sơ) */
+#btn-header-ocr,
+#btn-header-admin-pin {
     display: none !important;
 }
