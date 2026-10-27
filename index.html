@@ -2257,65 +2257,155 @@
         #products-section .product-card-image { transition: transform 0.45s ease; }
         #products-section .product-card:hover .product-card-image { transform: scale(1.035); }
         @media (min-width: 1024px) {
+            #ocop-intro-overlay {
+                height: 100vh !important;
+                max-height: 100vh !important;
+                padding: clamp(6px, 1.2vh, 12px) clamp(16px, 2.5vw, 28px) !important;
+                overflow-y: hidden !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                box-sizing: border-box !important;
+            }
+            #ocop-intro-overlay .intro-header {
+                padding-bottom: 4px !important;
+                margin-bottom: 0 !important;
+            }
             #ocop-intro-overlay .intro-stage {
-                grid-template-columns: minmax(0, 1.08fr) minmax(25rem, 0.92fr);
+                grid-template-columns: minmax(0, 1.05fr) minmax(21rem, 0.95fr) !important;
                 grid-template-areas:
-                    "ticker ticker"
                     "award regions"
                     "copy regions"
                     "pillars regions"
-                    "lucky lucky"
-                    "actions actions";
+                    "actions actions" !important;
+                gap: clamp(6px, 1.2vh, 10px) clamp(12px, 1.8vw, 22px) !important;
+                padding-block: 2px !important;
+                margin-block: auto !important;
+                align-items: center !important;
+                max-width: 76rem !important;
+            }
+            #ocop-intro-overlay #intro-award-badge {
+                grid-area: award !important;
+                padding: 2px 10px !important;
+                font-size: 10px !important;
+                margin-bottom: 2px !important;
+            }
+            #ocop-intro-overlay .intro-hero-copy {
+                grid-area: copy !important;
+            }
+            #ocop-intro-overlay .intro-hero-title,
+            #ocop-intro-overlay #i18n-intro-title1 {
+                font-size: clamp(1.3rem, 2vw, 1.85rem) !important;
+                line-height: 1.12 !important;
+                margin-bottom: 2px !important;
+            }
+            #ocop-intro-overlay #i18n-intro-title2 {
+                font-size: clamp(0.72rem, 0.95vw, 0.82rem) !important;
+                gap: 1px !important;
+                margin: 2px 0 4px !important;
+                line-height: 1.2 !important;
+            }
+            #ocop-intro-overlay #i18n-intro-desc {
+                font-size: clamp(10.5px, 0.85vw, 11.5px) !important;
+                line-height: 1.35 !important;
+                max-width: 32rem !important;
+                margin-bottom: 4px !important;
             }
             #ocop-intro-overlay .intro-pillars {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 0.55rem;
-                padding-top: 0;
+                grid-area: pillars !important;
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+                gap: 5px !important;
+                padding-top: 2px !important;
             }
-            #ocop-intro-overlay .intro-pillars > div {
-                display: grid;
-                grid-template-columns: 2rem minmax(0, 1fr);
-                grid-template-rows: max-content max-content;
-                align-content: center;
-                align-items: center;
-                column-gap: 0.65rem;
-                row-gap: 0.05rem;
-                height: 4.5rem;
-                min-height: 4.5rem;
-                padding: 0.45rem 0.65rem;
-                text-align: left;
+            #ocop-intro-overlay .intro-feature-grid .compact-feature-card {
+                min-height: 44px !important;
+                height: 46px !important;
+                padding: 3px 4px !important;
             }
-            #ocop-intro-overlay .intro-pillars > div > div {
-                grid-column: 1;
-                grid-row: 1 / span 2;
-                margin: 0;
+            #ocop-intro-overlay .intro-feature-grid .compact-feature-card i {
+                width: 18px !important;
+                height: 18px !important;
+                font-size: 10px !important;
             }
-            #ocop-intro-overlay .intro-pillars > div > span {
-                min-width: 0;
-            }
-            #ocop-intro-overlay .province-map {
-                height: min(58vh, 480px);
-                min-height: 320px;
+            #ocop-intro-overlay .intro-feature-grid .compact-feature-card span {
+                font-size: 9.5px !important;
+                line-height: 1.2 !important;
             }
             #ocop-intro-overlay .intro-regions {
-                position: relative;
+                grid-area: regions !important;
+                position: relative !important;
+                padding: 8px 12px !important;
+                border-radius: 18px !important;
+                space-y: 5px !important;
+            }
+            #ocop-intro-overlay .intro-region-heading {
+                margin-bottom: 3px !important;
+            }
+            #ocop-intro-overlay .intro-region-kicker {
+                font-size: 11px !important;
+            }
+            #ocop-intro-overlay .intro-region-caption {
+                font-size: 9.5px !important;
+            }
+            #ocop-intro-overlay #province-map-select {
+                min-height: 28px !important;
+                height: 28px !important;
+                padding: 2px 8px !important;
+                font-size: 11px !important;
+            }
+            #ocop-intro-overlay .intro-province-quick-chips {
+                gap: 3px !important;
+                margin: 2px 0 4px !important;
+            }
+            #ocop-intro-overlay .intro-province-quick-chips button {
+                padding: 1.5px 6px !important;
+                font-size: 10px !important;
+                border-radius: 6px !important;
+            }
+            #ocop-intro-overlay .province-map,
+            #ocop-intro-overlay #province-map {
+                height: clamp(175px, 25vh, 230px) !important;
+                min-height: 175px !important;
+                max-height: 230px !important;
+            }
+            #ocop-intro-overlay .intro-actions {
+                grid-area: actions !important;
+                padding-top: 0 !important;
+                margin-top: 2px !important;
+            }
+            #ocop-intro-overlay #btn-intro-action-trace {
+                padding: 6px 14px !important;
+                height: 34px !important;
+                font-size: 11.5px !important;
+                border-radius: 10px !important;
+            }
+            #ocop-intro-overlay .intro-footer {
+                padding-top: 3px !important;
+                font-size: 9.5px !important;
+                gap: 4px !important;
+                border-top: 1px solid rgba(125, 211, 252, 0.25) !important;
             }
             #ocop-intro-overlay #province-products-panel:not(.hidden) {
                 position: absolute;
                 z-index: 1000;
-                right: 1rem;
-                bottom: 3.25rem;
-                left: 1rem;
-                max-height: min(38vh, 16rem);
+                right: 0.75rem;
+                bottom: 2.75rem;
+                left: 0.75rem;
+                max-height: min(34vh, 14rem);
                 margin: 0;
                 overflow-y: auto;
                 overscroll-behavior: contain;
                 border: 1.5px solid rgba(212, 175, 55, 0.45);
-                border-radius: 1rem;
-                padding: 0.75rem;
+                border-radius: 0.75rem;
+                padding: 0.5rem;
                 background: rgba(4, 22, 16, 0.96);
                 box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(212, 175, 55, 0.1);
                 color: #ffffff;
+            }
+        }
+        @media (min-width: 1024px) and (max-height: 560px) {
+            #ocop-intro-overlay {
+                overflow-y: auto !important;
             }
         }
         @media (max-width: 640px) {

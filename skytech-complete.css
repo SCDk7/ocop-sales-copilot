@@ -2544,6 +2544,14 @@ body #ocop-intro-overlay:not(.hidden) {
     -webkit-overflow-scrolling: touch !important;
     overscroll-behavior: contain !important;
 }
+@media (min-width: 1024px) {
+    #ocop-intro-overlay:not(.hidden),
+    body #ocop-intro-overlay:not(.hidden) {
+        overflow-y: hidden !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+    }
+}
 
 html:has(.storefront-header) { scroll-padding-top: calc(var(--storefront-nav-height, 60px) + 12px); }
 body.catalog-browsing { padding-top: var(--storefront-nav-height, 60px) !important; }
