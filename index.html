@@ -1458,7 +1458,14 @@
             font-weight: 600;
             letter-spacing: 0.01em;
         }
+        
+        #catalog-sidebar > div {
+            overscroll-behavior-y: auto !important;
+        }
         .province-map {
+            overscroll-behavior-y: auto !important;
+        }
+.province-map {
             background: #E0F2FE !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 0, 0, 0.6);
         }
@@ -7724,16 +7731,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     zoomControl: true
                 });
                 window.provinceMap = provinceMap;
-                if (mapContainer) {
-                    mapContainer.addEventListener('wheel', function(e) {
-                        const introOverlay = document.getElementById('ocop-intro-overlay');
-                        if (introOverlay && !introOverlay.classList.contains('hidden') && introOverlay.style.display !== 'none') {
-                            introOverlay.scrollBy({ top: e.deltaY, left: e.deltaX || 0, behavior: 'auto' });
-                        } else {
-                            window.scrollBy({ top: e.deltaY, left: e.deltaX || 0, behavior: 'auto' });
-                        }
-                    }, { capture: true, passive: true });
-                }
+                // Map wheel scrolling is managed globally by initUniversalMouseWheelScroll
 
                 if (status) {
                     status.textContent = 'Bản đồ số OCOP 63 tỉnh thành sẵn sàng • Nhấp chọn tỉnh để xem showroom';
@@ -16397,6 +16395,110 @@ setInterval(() => {
         mobileBadge.textContent = mainBadge.textContent || '0';
     }
 }, 1000);
+
+// =========================================================================
+// UNIVERSAL MOUSE WHEEL SCROLL ENGINE (CUỘN CHUỘT TOÀN DIỆN MỌI VỊ TRÍ)
+// Cho phép lăn chuột ở bất kỳ đâu trên trang chính (trên bản đồ Leaflet,
+// thanh sidebar tiện ích, các khối carousel trượt ngang, thẻ sản phẩm,...)
+// đều cuộn trang mượt mà, chuẩn hóa deltaMode trên Windows & Mac.
+// =========================================================================
+(function initUniversalMouseWheelScroll() {
+    const LINE_HEIGHT_PX = 36;
+
+    window.addEventListener('wheel', function(e) {
+        // Không can thiệp nếu người dùng đang giữ phím Ctrl (Ctrl+Wheel để phóng to / thu nhỏ trang)
+        if (e.ctrlKey) return;
+
+        // Chuẩn hóa deltaY sang pixel chính xác
+        let delta = e.deltaY;
+        if (e.deltaMode === 1) { // DOM_DELTA_LINE (chuột con lăn trên Windows)
+            delta = e.deltaY * LINE_HEIGHT_PX;
+        } else if (e.deltaMode === 2) { // DOM_DELTA_PAGE
+            delta = e.deltaY * (window.innerHeight || 800);
+        }
+
+        if (!delta || Math.abs(delta) < 0.1) return;
+
+        // Cho phép cuộn textarea nếu đang có nội dung cuộn bên trong
+        if (e.target && e.target.tagName === 'TEXTAREA') {
+            const ta = e.target;
+            if (ta.scrollHeight > ta.clientHeight) {
+                const canScrollDown = delta > 0 && (ta.scrollTop + ta.clientHeight < ta.scrollHeight - 1);
+                const canScrollUp = delta < 0 && (ta.scrollTop > 1);
+                if (canScrollDown || canScrollUp) return;
+            }
+        }
+
+        // Nếu người dùng đang cuộn ngang trên trackpad hoặc chuột có con lăn ngang trong khối trượt ngang
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 5) {
+            const horizScrollable = e.target.closest && e.target.closest('.overflow-x-auto, [class*="overflow-x"]');
+            if (horizScrollable) return;
+        }
+
+        // 1. MÀN HÌNH CHỜ (INTRO OVERLAY)
+        const introOverlay = document.getElementById('ocop-intro-overlay');
+        if (introOverlay && !introOverlay.classList.contains('hidden') && introOverlay.style.display !== 'none') {
+            e.preventDefault();
+            introOverlay.scrollBy({ top: delta, left: 0, behavior: 'auto' });
+            return;
+        }
+
+        // 2. MODAL DIALOG ĐANG MỞ
+        const activeModal = document.querySelector(
+            '#auth-modal:not(.hidden), #product-quickview-modal:not(.hidden), #ocop-store-modal:not(.hidden), #ocop-all-stores-modal:not(.hidden), #online-order-modal:not(.hidden), #customer-auth-modal:not(.hidden), [id$="-modal"]:not(.hidden)'
+        );
+        if (activeModal && activeModal.contains(e.target)) {
+            const scrollable = e.target.closest && e.target.closest('.overflow-y-auto, .overflow-auto');
+            if (scrollable && scrollable.scrollHeight > scrollable.clientHeight) {
+                const canScrollDown = delta > 0 && (scrollable.scrollTop + scrollable.clientHeight < scrollable.scrollHeight - 1);
+                const canScrollUp = delta < 0 && (scrollable.scrollTop > 1);
+                if (canScrollDown || canScrollUp) {
+                    return; // Cho phép cuộn nội dung bên trong modal
+                }
+            }
+            return; // Đang ở trong modal nhưng chạm mép -> không cuộn nền
+        }
+
+        // 3. CỬA SỔ AI CHAT KHI ĐANG MỞ
+        const chatWindow = document.getElementById('ai-chat-window');
+        if (chatWindow && !chatWindow.classList.contains('hidden') && chatWindow.contains(e.target)) {
+            const chatMessages = document.getElementById('ai-chat-messages');
+            if (chatMessages && chatMessages.contains(e.target)) {
+                const canScrollDown = delta > 0 && (chatMessages.scrollTop + chatMessages.clientHeight < chatMessages.scrollHeight - 1);
+                const canScrollUp = delta < 0 && (chatMessages.scrollTop > 1);
+                if (canScrollDown || canScrollUp) {
+                    return; // Cho phép cuộn tin nhắn chat
+                }
+            }
+        }
+
+        // 4. THANH TIỆN ÍCH BÊN TRÁI (CATALOG SIDEBAR)
+        const sidebarInner = document.querySelector('#catalog-sidebar .overflow-y-auto');
+        if (sidebarInner && sidebarInner.contains(e.target)) {
+            const canScrollDown = delta > 0 && (sidebarInner.scrollTop + sidebarInner.clientHeight < sidebarInner.scrollHeight - 2);
+            const canScrollUp = delta < 0 && (sidebarInner.scrollTop > 2);
+            if (canScrollDown || canScrollUp) {
+                sidebarInner.scrollBy({ top: delta, behavior: 'auto' });
+                e.preventDefault();
+                return;
+            }
+            // Khi sidebar đã chạm đáy hoặc chạm đỉnh, cuộn tiếp trang chính bên ngoài!
+        }
+
+        // 5. CÁC PHẦN TỬ KHÁC TRÊN TRANG CHÍNH:
+        // (Bản đồ số #province-map, các khối trượt ngang carousel, thẻ sản phẩm, banner, tiêu đề, ảnh...)
+        e.preventDefault();
+        if (window.scrollBy) {
+            window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
+        } else if (document.scrollingElement) {
+            document.scrollingElement.scrollTop += delta;
+        } else {
+            document.documentElement.scrollTop += delta;
+            document.body.scrollTop += delta;
+        }
+    }, { capture: true, passive: false });
+})();
+
 </script>
 
 </body>
