@@ -4025,8 +4025,8 @@ Khơi Nguồn Di Sản Việt</span>
  </div>
                     <div class="flex flex-wrap items-center gap-1.5 mt-2 text-[11px]">
                         <span class="text-[10px] font-bold text-slate-500 uppercase">Gợi ý:</span>
-                        <button type="button" onclick="quickFilterSearch('Trà Shan Tuyết')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10.5px] font-semibold cursor-pointer transition">Trà Shan Tuyết</button>
-                        <button type="button" onclick="quickFilterSearch('Bưởi Tân Triều')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10.5px] font-semibold cursor-pointer transition">Bưởi Tân Triều</button>
+                        <button type="button" onclick="quickFilterSearch('Chè Shan tuyết')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10.5px] font-semibold cursor-pointer transition">Chè Shan tuyết</button>
+                        <button type="button" onclick="quickFilterSearch('Hạt điều')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10.5px] font-semibold cursor-pointer transition">Hạt điều</button>
                         <button type="button" onclick="quickFilterSearch('Cà phê')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10.5px] font-semibold cursor-pointer transition">Cà phê</button>
                         <button type="button" onclick="quickFilterSearch('Mật ong')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10.5px] font-semibold cursor-pointer transition">Mật ong</button>
                     </div>
@@ -7256,16 +7256,37 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             }
 
             if (terms.length > 0) {
-                filtered = filtered.filter(product => {
-                    let searchableText = productSearchText.get(product);
-                    if (searchableText === undefined) {
-                        searchableText = normalizeSearchText(
+                const buildSearchable = product => {
+                    let text = productSearchText.get(product);
+                    if (text === undefined) {
+                        text = normalizeSearchText(
                             `${product.name} ${product.nameEn || productNamesEn[product.id - 1] || ''} ${product.region} ${product.desc} ${product.descEn || ''} ${product.tag} ${product.tagEn || ''}`
                         );
-                        productSearchText.set(product, searchableText);
+                        if (/\bche\b/.test(text)) text += ' tra';
+                        if (/\btra\b/.test(text)) text += ' che';
+                        if (product.region && normalizeSearchText(product.region) === 'dong nai') {
+                            text += ' buoi tan trieu buoi duong la cam';
+                        }
+                        productSearchText.set(product, text);
                     }
+                    return text;
+                };
+
+                filtered = filtered.filter(product => {
+                    const searchableText = buildSearchable(product);
                     return terms.every(term => searchableText.includes(term));
                 });
+
+                // Auto-recovery nếu bộ lọc tỉnh/danh mục hẹp làm kết quả rỗng
+                if (filtered.length === 0 && (selectedProvince || currentCategory !== 'all' || (typeof currentShopeeStarFilter !== 'undefined' && currentShopeeStarFilter !== 'all'))) {
+                    const fallbackMatches = products.filter(product => {
+                        const searchableText = buildSearchable(product);
+                        return terms.every(term => searchableText.includes(term));
+                    });
+                    if (fallbackMatches.length > 0) {
+                        filtered = fallbackMatches;
+                    }
+                }
             }
 
             // Sắp xếp danh sách sản phẩm theo lựa chọn
@@ -16841,6 +16862,20 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <script>
 // Helper functions for EGA enhancements
 function quickFilterSearch(keyword) {
+    if (typeof selectedProvince !== 'undefined' && selectedProvince) {
+        selectedProvince = null;
+    }
+    if (typeof currentCategory !== 'undefined' && currentCategory !== 'all') {
+        currentCategory = 'all';
+        const allCatBtn = document.querySelector('[data-category="all"]');
+        if (allCatBtn) {
+            document.querySelectorAll('[data-category]').forEach(b => b.classList.remove('active', 'bg-ocopGreen', 'text-white'));
+            allCatBtn.classList.add('active', 'bg-ocopGreen', 'text-white');
+        }
+    }
+    if (typeof currentShopeeStarFilter !== 'undefined') {
+        currentShopeeStarFilter = 'all';
+    }
     const s = document.getElementById('product-search');
     if (s) {
         s.value = keyword;
