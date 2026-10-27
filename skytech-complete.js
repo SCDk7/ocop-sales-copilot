@@ -935,6 +935,26 @@
         const qtyInput = document.getElementById('order-qty-input');
         if (qtyInput) qtyInput.value = 1;
 
+        // Auto pre-fill customer recipient credentials if logged in
+        try {
+            const currentCust = typeof window.getCurrentCustomer === 'function' ? window.getCurrentCustomer() : null;
+            if (currentCust) {
+                const nameIn = document.getElementById('order-cust-name');
+                const phoneIn = document.getElementById('order-cust-phone');
+                const addrIn = document.getElementById('order-cust-address');
+                if (nameIn && !nameIn.value && currentCust.fullName) nameIn.value = currentCust.fullName;
+                if (phoneIn && !phoneIn.value && currentCust.phone) phoneIn.value = currentCust.phone;
+                if (addrIn && !addrIn.value && currentCust.address) addrIn.value = currentCust.address;
+            }
+        } catch (_) {}
+
+        // Reset applied voucher for fresh order
+        window.orderAppliedVoucher = null;
+        const vInput = document.getElementById('order-voucher-input');
+        if (vInput) vInput.value = '';
+        const vStatus = document.getElementById('order-voucher-status');
+        if (vStatus) { vStatus.className = 'hidden'; vStatus.textContent = ''; }
+
         window.updateOrderCalculations();
 
         modal.classList.remove('hidden');
@@ -971,7 +991,8 @@
         const goodsTotal = unitPrice * currentOrderQty;
         const shippingFee = 25000;
         const platformFee = 10000;
-        const grandTotal = goodsTotal + shippingFee + platformFee;
+        const voucherDiscount = window.orderAppliedVoucher ? window.orderAppliedVoucher.discount : 0;
+        const grandTotal = Math.max(0, goodsTotal + shippingFee + platformFee - voucherDiscount);
 
         const qtyDisplay = document.getElementById('calc-qty-display');
         if (qtyDisplay) qtyDisplay.textContent = currentOrderQty;
@@ -979,8 +1000,101 @@
         const goodsTotalEl = document.getElementById('calc-goods-total');
         if (goodsTotalEl) goodsTotalEl.textContent = goodsTotal.toLocaleString('vi-VN') + ' ₫';
 
+        const vRow = document.getElementById('calc-voucher-row');
+        const vCode = document.getElementById('calc-voucher-code');
+        const vDisc = document.getElementById('calc-voucher-discount');
+        if (vRow && vCode && vDisc) {
+            if (voucherDiscount > 0) {
+                vRow.classList.remove('hidden');
+                vCode.textContent = window.orderAppliedVoucher.code;
+                vDisc.textContent = '-' + voucherDiscount.toLocaleString('vi-VN') + ' ₫';
+            } else {
+                vRow.classList.add('hidden');
+            }
+        }
+
         const grandTotalEl = document.getElementById('calc-grand-total');
         if (grandTotalEl) grandTotalEl.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+
+        const bidvAmt = document.getElementById('bidv-transfer-amount');
+        if (bidvAmt) bidvAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+        const momoAmt = document.getElementById('momo-transfer-amount');
+        if (momoAmt) momoAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+        const codAmt = document.getElementById('cod-transfer-amount');
+        if (codAmt) codAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+
+        const qrImg = document.getElementById('order-bidv-qr');
+        if (qrImg) {
+            qrImg.src = 'https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=' + grandTotal + '&addInfo=OCOP%208829';
+        }
+    };
+
+    window.applyOrderVoucher = function() {
+        const input = document.getElementById('order-voucher-input');
+        const statusEl = document.getElementById('order-voucher-status');
+        if (!input || !statusEl) return;
+        const code = input.value.trim().toUpperCase();
+        if (!code) {
+            statusEl.className = 'text-[11px] font-bold text-rose-600 block';
+            statusEl.textContent = 'Vui lòng nhập mã voucher giảm giá!';
+            return;
+        }
+        const vouchers = {
+            'OCOP2026': { discount: 50000, label: 'Giảm 50.000 ₫ (Mã tri ân OCOP 2026)' },
+            'FREESHIP': { discount: 25000, label: 'Miễn phí vận chuyển toàn quốc (-25.000 ₫)' },
+            'GIAM20K': { discount: 20000, label: 'Giảm 20.000 ₫ cho mọi đơn hàng' },
+            'GIAM10K': { discount: 10000, label: 'Giảm 10.000 ₫' },
+            'GIAM50K': { discount: 50000, label: 'Giảm 50.000 ₫' },
+            'GIAM100K': { discount: 100000, minOrder: 500000, label: 'Giảm 100.000 ₫ cho đơn từ 500k' }
+        };
+        const v = vouchers[code];
+        if (!v) {
+            statusEl.className = 'text-[11px] font-bold text-rose-600 block';
+            statusEl.textContent = 'Mã voucher không hợp lệ hoặc đã hết lượt!';
+            return;
+        }
+        const unitPrice = currentOrderProduct ? currentOrderProduct.price || 0 : 0;
+        const goodsTotal = unitPrice * currentOrderQty;
+        if (v.minOrder && goodsTotal < v.minOrder) {
+            statusEl.className = 'text-[11px] font-bold text-amber-700 block';
+            statusEl.textContent = 'Mã ' + code + ' chỉ áp dụng cho đơn từ ' + v.minOrder.toLocaleString('vi-VN') + ' ₫!';
+            return;
+        }
+        window.orderAppliedVoucher = { code: code, discount: v.discount };
+        statusEl.className = 'text-[11px] font-bold text-emerald-700 block';
+        statusEl.textContent = '✅ Áp dụng thành công mã ' + code + ': ' + v.label;
+        window.updateOrderCalculations();
+    };
+
+    window.removeOrderVoucher = function() {
+        window.orderAppliedVoucher = null;
+        const input = document.getElementById('order-voucher-input');
+        if (input) input.value = '';
+        const statusEl = document.getElementById('order-voucher-status');
+        if (statusEl) {
+            statusEl.className = 'hidden';
+            statusEl.textContent = '';
+        }
+        window.updateOrderCalculations();
+    };
+
+    window.handleBuyNow = function(productId) {
+        const user = typeof window.getCurrentCustomer === 'function' ? window.getCurrentCustomer() : null;
+        if (!user || !user.username) {
+            window.pendingBuyNowProductId = productId;
+            if (typeof showToast === 'function') {
+                showToast('Vui lòng đăng nhập để tiếp tục mua ngay (như Shopee)!', 'info');
+            } else {
+                alert('Vui lòng đăng nhập để tiếp tục mua ngay (như Shopee)!');
+            }
+            if (typeof openCustomerAuthModal === 'function') {
+                openCustomerAuthModal();
+            }
+            return;
+        }
+        if (typeof openOnlineOrderModal === 'function') {
+            openOnlineOrderModal(productId);
+        }
     };
 
     window.submitOnlineOrder = function () {

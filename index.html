@@ -4959,7 +4959,28 @@ Khơi Nguồn Di Sản Việt</span>
                     </div>
  </div>
 
- <!-- 4. Phương Thức Thanh Toán (BIDV 8808661371, MoMo 0971280030, Ship COD) -->
+ <!-- 3.5. Nhập Mã Giảm Giá / Voucher OCOP (Shopee Style) -->
+                    <div class="p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-[11px] font-black text-amber-900 uppercase tracking-wide flex items-center gap-1.5">
+                                <i class="fa-solid fa-ticket text-amber-600"></i> Mã Giảm Giá / Voucher OCOP:
+                            </label>
+                            <span class="text-[10px] text-amber-800 font-bold bg-amber-200/80 px-2 py-0.5 rounded-md">Voucher Shopee Style</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="order-voucher-input" placeholder="Nhập mã: OCOP2026, FREESHIP, GIAM20K..." class="flex-1 px-3 py-2 border border-amber-300 rounded-xl text-xs font-bold text-slate-900 uppercase bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <button type="button" onclick="applyOrderVoucher()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs shadow-xs transition active:scale-95 cursor-pointer whitespace-nowrap">Áp Dụng</button>
+                        </div>
+                        <div id="order-voucher-status" class="hidden text-[11px] font-bold"></div>
+                        <div class="flex flex-wrap items-center gap-1.5 pt-1">
+                            <span class="text-[10.5px] text-slate-500 font-medium">Gợi ý mã:</span>
+                            <button type="button" onclick="document.getElementById('order-voucher-input').value='OCOP2026'; applyOrderVoucher();" class="px-2 py-0.5 rounded-md bg-white border border-amber-300 text-amber-800 text-[10.5px] font-bold hover:bg-amber-100 cursor-pointer transition">OCOP2026 (-50k)</button>
+                            <button type="button" onclick="document.getElementById('order-voucher-input').value='FREESHIP'; applyOrderVoucher();" class="px-2 py-0.5 rounded-md bg-white border border-amber-300 text-amber-800 text-[10.5px] font-bold hover:bg-amber-100 cursor-pointer transition">FREESHIP (-25k)</button>
+                            <button type="button" onclick="document.getElementById('order-voucher-input').value='GIAM20K'; applyOrderVoucher();" class="px-2 py-0.5 rounded-md bg-white border border-amber-300 text-amber-800 text-[10.5px] font-bold hover:bg-amber-100 cursor-pointer transition">GIAM20K (-20k)</button>
+                        </div>
+                    </div>
+
+                    <!-- 4. Phương Thức Thanh Toán (BIDV 8808661371, MoMo 0971280030, Ship COD) -->
  <div class="space-y-2.5 pt-1">
  <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">Chọn hình thức thanh toán:</label>
  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
@@ -5057,8 +5078,17 @@ Khơi Nguồn Di Sản Việt</span>
  <span>Tiền hàng gốc (Trả về HTX/Cửa hàng - <span id="calc-qty-display">1</span> sản phẩm):</span>
  <span class="font-bold text-slate-900" id="calc-goods-total">0 ₫</span>
  </div>
- <div class="flex items-center justify-between text-slate-700">
- <span>Phí vận chuyển tiêu chuẩn (Ship tận nơi):</span>
+ <div id="calc-voucher-row" class="hidden flex items-center justify-between text-emerald-800 font-bold bg-emerald-50 p-2.5 rounded-xl border border-emerald-300">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-tag text-emerald-600"></i>
+                            <span>Giảm giá Voucher OCOP (<strong id="calc-voucher-code" class="text-emerald-900 font-black"></strong>):</span>
+                            <button type="button" onclick="removeOrderVoucher()" class="text-rose-600 hover:text-rose-800 underline text-[10.5px] ml-1 cursor-pointer font-bold">(Hủy mã)</button>
+                        </div>
+                        <span id="calc-voucher-discount" class="text-sm font-black text-emerald-700">-0 ₫</span>
+                    </div>
+
+                    <div class="flex items-center justify-between text-slate-700">
+                        <span>Phí vận chuyển tiêu chuẩn (Ship tận nơi):</span>
  <span class="font-bold text-slate-800">25.000 ₫</span>
  </div>
  <div class="flex items-center justify-between text-sky-900 font-bold bg-sky-100/90 p-2.5 rounded-xl border border-sky-300">
@@ -6564,20 +6594,24 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <span>${sysMetrics.volume}</span>
                             <span>${sysMetrics.margin}</span>
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button type="button" onclick="openQuickView(${p.id})" class="btn-card-details lofi-btn-detail flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl font-bold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 transition-all shadow-2xs cursor-pointer" title="Xem chi tiết sản phẩm">
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <button type="button" onclick="openQuickView(${p.id})" class="btn-card-details lofi-btn-detail flex items-center justify-center gap-1 py-2 px-1.5 rounded-xl font-bold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 transition-all shadow-2xs cursor-pointer" title="Xem chi tiết sản phẩm">
                                 <i class="fa-solid fa-circle-info text-emerald-600"></i>
                                 <span>Chi tiết</span>
                             </button>
-                            <div class="flex items-center gap-1.5">
-                                <button type="button" onclick="addToCart(${p.id}); toggleCart(true)" class="product-action-cart lofi-btn-cart flex-1 flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl font-bold text-xs bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-xs cursor-pointer" title="Thêm sản phẩm vào giỏ hàng">
-                                    <i class="fa-solid fa-cart-shopping"></i>
-                                    <span>Giỏ hàng</span>
-                                </button>
-                                <button type="button" onclick="toggleWishlist(${p.id})" class="product-action-favorite lofi-btn-favorite w-9 h-9 shrink-0 flex items-center justify-center rounded-xl border ${isFav ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-emerald-50 hover:bg-rose-50 border-emerald-200 hover:border-rose-300 text-slate-400 hover:text-rose-500'} transition-all shadow-2xs cursor-pointer" aria-pressed="${isFav}" title="${isFav ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}">
-                                    <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-sm"></i>
-                                </button>
-                            </div>
+                            <button type="button" onclick="addToCart(${p.id}); toggleCart(true)" class="product-action-cart lofi-btn-cart flex items-center justify-center gap-1 py-2 px-1.5 rounded-xl font-bold text-xs bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-xs cursor-pointer" title="Thêm sản phẩm vào giỏ hàng">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <span>Giỏ hàng</span>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-1.5 mt-1">
+                            <button type="button" onclick="handleBuyNow(${p.id})" class="product-action-buy lofi-btn-buy btn-card-buy-online flex-1 py-2 px-2.5 rounded-xl font-black text-xs text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95" style="background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%) !important; color: #FFFFFF !important;" title="Mua ngay sản phẩm này (yêu cầu đăng nhập như Shopee)">
+                                <i class="fa-solid fa-bolt text-amber-200"></i>
+                                <span>Mua ngay</span>
+                            </button>
+                            <button type="button" onclick="toggleWishlist(${p.id})" class="product-action-favorite lofi-btn-favorite w-9 h-9 shrink-0 flex items-center justify-center rounded-xl border ${isFav ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-emerald-50 hover:bg-rose-50 border-emerald-200 hover:border-rose-300 text-slate-400 hover:text-rose-500'} transition-all shadow-2xs cursor-pointer" aria-pressed="${isFav}" title="${isFav ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}">
+                                <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-sm"></i>
+                            </button>
                         </div>
                         <!-- Auxiliary actions kept for accessibility and test suites -->
                         <div class="hidden" style="display:none!important;" aria-hidden="true">
@@ -15136,9 +15170,20 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
             updateCustomerHeaderUI();
             showCustomerAuthAlert('✅ Đăng nhập thành công! Chào mừng ' + (found.fullName || found.username), 'success');
-            setTimeout(() => {
-                switchCustomerAuthTab('orders');
-            }, 500);
+            if (window.pendingBuyNowProductId) {
+                const pid = window.pendingBuyNowProductId;
+                window.pendingBuyNowProductId = null;
+                if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
+                setTimeout(() => {
+                    if (typeof openOnlineOrderModal === 'function') {
+                        openOnlineOrderModal(pid);
+                    }
+                }, 400);
+            } else {
+                setTimeout(() => {
+                    switchCustomerAuthTab('orders');
+                }, 500);
+            }
         } else {
             showCustomerAuthAlert('❌ Sai tài khoản (Username/SĐT) hoặc mật khẩu!', 'error');
         }
@@ -15197,9 +15242,20 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
         updateCustomerHeaderUI();
         showCustomerAuthAlert('✅ Đăng ký tài khoản thành công! Tự động đăng nhập.', 'success');
-        setTimeout(() => {
-            switchCustomerAuthTab('orders');
-        }, 600);
+        if (window.pendingBuyNowProductId) {
+            const pid = window.pendingBuyNowProductId;
+            window.pendingBuyNowProductId = null;
+            if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
+            setTimeout(() => {
+                if (typeof openOnlineOrderModal === 'function') {
+                    openOnlineOrderModal(pid);
+                }
+            }, 400);
+        } else {
+            setTimeout(() => {
+                switchCustomerAuthTab('orders');
+            }, 600);
+        }
     }
     window.handleCustomerRegisterSubmit = handleCustomerRegisterSubmit;
 

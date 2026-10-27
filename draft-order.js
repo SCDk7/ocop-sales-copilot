@@ -7,6 +7,7 @@ let products = [];
 let key = crypto.randomUUID();
 let submitted = false;
 let submitting = false;
+let appliedVoucher = null;
 
 const money = value => Number(value || 0).toLocaleString('vi-VN') + ' ₫';
 
@@ -23,9 +24,61 @@ function updateSummary() {
             if (p) subtotal += p.price * qty;
         }
     }
+
+    const goodsEl = document.getElementById('order-goods-amount');
+    if (goodsEl) goodsEl.textContent = money(subtotal);
+
+    const discount = appliedVoucher ? appliedVoucher.discount : 0;
+    const vRow = document.getElementById('draft-voucher-row');
+    const vCode = document.getElementById('draft-applied-code');
+    const vAmt = document.getElementById('draft-voucher-discount-amount');
+    if (vRow && vCode && vAmt) {
+        if (discount > 0) {
+            vRow.style.display = 'flex';
+            vCode.textContent = appliedVoucher.code;
+            vAmt.textContent = '-' + money(discount);
+        } else {
+            vRow.style.display = 'none';
+        }
+    }
+
+    const finalTotal = Math.max(0, subtotal - discount);
     const totalEl = document.getElementById('order-total-amount');
-    if (totalEl) totalEl.textContent = money(subtotal);
+    if (totalEl) totalEl.textContent = money(finalTotal);
 }
+
+window.applyDraftVoucher = function() {
+    const input = document.getElementById('draft-voucher-input');
+    const statusEl = document.getElementById('draft-voucher-status');
+    if (!input || !statusEl) return;
+    const code = input.value.trim().toUpperCase();
+    if (!code) {
+        statusEl.style.display = 'block';
+        statusEl.style.color = '#dc2626';
+        statusEl.textContent = salesPage.text('Vui lòng nhập mã voucher!', 'Please enter voucher code!');
+        return;
+    }
+    const vouchers = {
+        'OCOP2026': { discount: 50000, label: 'Giảm 50.000 ₫ (Tri ân OCOP 2026)' },
+        'FREESHIP': { discount: 25000, label: 'Miễn phí vận chuyển (-25.000 ₫)' },
+        'GIAM20K': { discount: 20000, label: 'Giảm 20.000 ₫' },
+        'GIAM10K': { discount: 10000, label: 'Giảm 10.000 ₫' },
+        'GIAM50K': { discount: 50000, label: 'Giảm 50.000 ₫' },
+        'GIAM100K': { discount: 100000, minOrder: 500000, label: 'Giảm 100.000 ₫' }
+    };
+    const v = vouchers[code];
+    if (!v) {
+        statusEl.style.display = 'block';
+        statusEl.style.color = '#dc2626';
+        statusEl.textContent = salesPage.text('Mã voucher không hợp lệ!', 'Invalid voucher code!');
+        return;
+    }
+    appliedVoucher = { code: code, discount: v.discount };
+    statusEl.style.display = 'block';
+    statusEl.style.color = '#059669';
+    statusEl.textContent = salesPage.text('✅ Đã áp dụng mã ' + code + ': ' + v.label, '✅ Applied code ' + code);
+    updateSummary();
+};
 
 function addRow(initialId, initialQty = 1) {
     if (items.children.length >= 20) return;
@@ -119,6 +172,7 @@ function showDraft(draft) {
             draft.id,
             ...draft.lines.map(l => l.name + ' × ' + l.quantity + ': ' + money(l.unitPrice * l.quantity)),
             salesPage.text('Tổng tiền theo đơn: ', 'Order total: ') + (draft.total == null ? '—' : money(draft.total)),
+            draft.paymentMethod ? salesPage.text('Hình thức thanh toán: ', 'Payment method: ') + draft.paymentMethod : '',
             salesPage.text(draft.paymentStatus === 'paid' ? 'Người bán đã xác nhận thu tiền.' : 'Chưa có xác nhận đã thu tiền.', draft.paymentStatus === 'paid' ? 'Payment receipt confirmed by seller.' : 'Payment receipt is not confirmed.'),
             draft.trackingNumber ? salesPage.text('Thông tin giao hàng: ', 'Shipping reference: ') + draft.trackingNumber : ''
         ]) {
@@ -147,9 +201,24 @@ function showDraft(draft) {
         result.append(p);
     });
 
+    if (draft.voucherDiscount) {
+        const discP = document.createElement('p');
+        discP.textContent = salesPage.text('Mã giảm giá áp dụng: -' + money(draft.voucherDiscount), 'Voucher discount: -' + money(draft.voucherDiscount));
+        discP.style.color = '#059669';
+        discP.style.fontWeight = 'bold';
+        result.append(discP);
+    }
+
     const total = document.createElement('p');
-    total.textContent = salesPage.text('Tổng tiền hàng: ', 'Product subtotal: ') + money(draft.subtotal);
+    total.textContent = salesPage.text('Tổng tiền thanh toán: ', 'Total payment: ') + money(draft.subtotal);
     result.append(total);
+
+    if (draft.paymentMethod) {
+        const payP = document.createElement('p');
+        payP.textContent = salesPage.text('Hình thức thanh toán: ', 'Payment method: ') + draft.paymentMethod;
+        payP.style.fontWeight = 'bold';
+        result.append(payP);
+    }
 
     const note = document.createElement('p');
     note.className = 'detail';
@@ -188,6 +257,10 @@ form.onsubmit = async event => {
         return;
     }
 
+    const payMethodVal = data.get('payment_method');
+    const paymentMethodLabel = payMethodVal === 'vietqr' ? 'Chuyển khoản BIDV (VietQR)' : (payMethodVal === 'momo' ? 'Ví MoMo (0971280030)' : 'Ship COD Tận Nơi');
+    const voucherDiscount = appliedVoucher ? appliedVoucher.discount : 0;
+
     try {
         const response = await fetch(salesPage.api('/api/ai/draft-orders'), {
             method: 'POST',
@@ -200,13 +273,17 @@ form.onsubmit = async event => {
                 customer: {
                     name: data.get('name'),
                     phone: data.get('phone'),
-                    address: data.get('address')
+                    address: data.get('address'),
+                    paymentMethod: paymentMethodLabel,
+                    voucherCode: appliedVoucher ? appliedVoucher.code : ''
                 }
             })
         });
         const body = await response.json();
         if (!response.ok) throw new Error(salesPage.text(body.error || 'Không gửi được đơn hàng.', response.status === 409 ? 'Inventory is insufficient or this request was changed.' : 'Please check the recipient, phone, address and quantities, then retry.'));
         lastDraft = body.draft;
+        lastDraft.paymentMethod = paymentMethodLabel;
+        lastDraft.voucherDiscount = voucherDiscount;
         submitted = true;
         showDraft(lastDraft);
         status.textContent = lastDraft.status === 'pending_seller_confirmation'
@@ -214,14 +291,17 @@ form.onsubmit = async event => {
             : salesPage.text('Đã cập nhật trạng thái đơn hàng.', 'Order status refreshed.');
         try { localStorage.removeItem('ocop_cart'); } catch (_) {}
     } catch (error) {
-        // Offline resilient fallback: save order locally so customers never lose purchases
+        // Offline resilient fallback
+        const goodsSubtotal = lines.reduce((sum, line) => {
+            const p = products.find(x => x.productId === line.productId);
+            return sum + (p ? p.price * line.quantity : 0);
+        }, 0);
         const offlineDraft = {
             id: 'ORD-' + Date.now().toString(36).toUpperCase(),
             status: 'pending_seller_confirmation',
-            subtotal: lines.reduce((sum, line) => {
-                const p = products.find(x => x.productId === line.productId);
-                return sum + (p ? p.price * line.quantity : 0);
-            }, 0),
+            subtotal: Math.max(0, goodsSubtotal - voucherDiscount),
+            voucherDiscount: voucherDiscount,
+            paymentMethod: paymentMethodLabel,
             lines: lines.map(line => {
                 const p = products.find(x => x.productId === line.productId);
                 return { name: p ? p.name : 'Sản phẩm OCOP', unitPrice: p ? p.price : 0, quantity: line.quantity };
@@ -232,7 +312,7 @@ form.onsubmit = async event => {
             const savedOrders = JSON.parse(localStorage.getItem('ocop_customer_orders') || '[]');
             savedOrders.unshift({
                 ...offlineDraft,
-                customer: { name: data.get('name'), phone: data.get('phone'), address: data.get('address') },
+                customer: { name: data.get('name'), phone: data.get('phone'), address: data.get('address'), paymentMethod: paymentMethodLabel },
                 createdAt: new Date().toISOString()
             });
             localStorage.setItem('ocop_customer_orders', JSON.stringify(savedOrders));
