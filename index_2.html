@@ -7219,7 +7219,12 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 window.provinceMap = provinceMap;
                 if (mapContainer) {
                     mapContainer.addEventListener('wheel', function(e) {
-                        window.scrollBy({ top: e.deltaY, left: e.deltaX || 0, behavior: 'auto' });
+                        const introOverlay = document.getElementById('ocop-intro-overlay');
+                        if (introOverlay && !introOverlay.classList.contains('hidden') && introOverlay.style.display !== 'none') {
+                            introOverlay.scrollBy({ top: e.deltaY, left: e.deltaX || 0, behavior: 'auto' });
+                        } else {
+                            window.scrollBy({ top: e.deltaY, left: e.deltaX || 0, behavior: 'auto' });
+                        }
                     }, { capture: true, passive: true });
                 }
 

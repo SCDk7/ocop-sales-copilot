@@ -3816,13 +3816,17 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         }
 
         window.addEventListener('wheel', function(e) {
-            // A. Màn hình chờ Intro: Lăn chuột xuống tự động lướt mượt vào Chợ OCOP
+            // A. Màn hình chờ Intro: Cho phép cuộn xem toàn bộ nội dung màn hình chờ (Bản đồ, quà tặng, tính năng...)
+            // TUYỆT ĐỐI KHÔNG tự động nhảy vào chợ OCOP khi lăn chuột xuống.
             const overlay = document.getElementById('ocop-intro-overlay');
             if (overlay && !overlay.classList.contains('hidden') && overlay.style.display !== 'none') {
-                if (e.deltaY > 8) {
-                    if (typeof enterOcopMarket === 'function') {
-                        enterOcopMarket('all');
-                    }
+                const isMapInIntro = e.target && e.target.closest && e.target.closest('#province-map, .leaflet-container');
+                if (isMapInIntro) {
+                    overlay.scrollBy({
+                        top: e.deltaY,
+                        left: e.deltaX || 0,
+                        behavior: 'auto'
+                    });
                 }
                 return;
             }
