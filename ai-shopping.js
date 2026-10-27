@@ -112,7 +112,8 @@
     const productQuery = q
       .replace(/\btoi\s+(?=muon|can|co|tim|mua|chon|thich|dang|se|duoc|xin|hoi|lay|da\b|thieu\b|uu\b)/g,' ')
       .replace(/\b(?:cho|giup|voi|cua|huong dan|chi|bao|nhan vien)\s+toi\b/g,' ')
-      .replace(/\btoi\b(?!\s+(?:den|ly son|co don|trang|ngam))/g, ' ');
+      .replace(/\btoi\b(?!\s+(?:den|ly son|co don|trang|ngam))/g, ' ')
+      .replace(/\b(?:tra\s+(?:cuu|loi|gop|hang|lai|phi|don)|(?:kiem|dieu)\s+tra)\b/g, ' ');
     const categories = [['trà', /\b(tra|che|tea)\b/], ['cà phê', /ca phe|coffee/], ['mật ong', /mat ong|honey/], ['bánh', /banh|keo|snack/], ['yến', /yen sao|to yen/], ['gạo', /gao|rice/], ['sâm', /\b(sam|ginseng)\b/], ['tỏi', isGarlic ? /\b(toi|garlic)\b/ : /(?!)/], ['nước mắm', /nuoc mam|fish sauce/], ['hạt', /hat dieu|hat mac ca|mac ca|cashew|macadamia/]];
     const isAllProvinces = /(tat ca|tat ca cac tinh|tat ca tinh|toan quoc|63 tinh|xuyen viet|bac trung nam|3 mien|ba mien|lien tinh|nhieu tinh|cac tinh thanh|gom tinh|gom cac tinh|gom het)/.test(q);
     const allProvinces = [...new Set(products.map(p => p.region).filter(Boolean))].sort((a, b) => b.length - a.length);
@@ -127,6 +128,7 @@
       isComplaint: /doi tra|hang loi|hoan tien|khieu nai/.test(q),
       isCSKH: /cskh|hotline|lien he|admin/.test(q),
       isShipping: /phi ship|giao hang|van chuyen/.test(q),
+      isStoreLookup: /diem ban|showroom|chi duong|cua hang|ban do so|store location|directions/.test(q),
       isUsage: /cach pha|cach dung|bao quan/.test(q),
       isOcopKnowledge: /la gi|nguon goc|tieu chuan|cach |bao nhieu ngay|thoi tiet/.test(q),
       isAllProvinces,

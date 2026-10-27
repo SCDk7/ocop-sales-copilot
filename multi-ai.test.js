@@ -54,3 +54,9 @@ test('a reused catalogue ID cannot inherit another products showroom address',()
  const location=locationForProduct(product,{REFERENCE_STORE_MAP:{1:{productName:'Trà Hà Giang',region:'Hà Giang',primaryStore:{name:'Sai điểm bán',address:'Hà Giang'}}}});
  assert.equal(location.type,'map_search');assert.equal(location.address,'');assert(!location.mapUrl.includes('Sai'));
 });
+test('store lookup query returns showroom directory and never misclassifies tra cuu as tea',()=>{
+ const reply=catalogReply('Tra cứu mạng lưới showroom và điểm bán O2O chính hãng trên bản đồ số',PRODUCTS);
+ assert(reply.message.includes('Mạng lưới Showroom & Điểm bán O2O'));
+ assert(reply.message.includes('Hoàng Quốc Việt'));
+ assert(!reply.message.includes('Trà Phúc'));
+});

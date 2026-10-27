@@ -947,7 +947,8 @@ function extractSearchIntents(queryText, products = []) {
   const productQuery = normalized
     .replace(/\btoi\s+(?=muon|can|co|tim|mua|chon|thich|dang|se|duoc|xin|hoi|lay|da\b|thieu\b|uu\b)/g, ' ')
     .replace(/\b(?:cho|giup|voi|cua|huong dan|chi|bao|nhan vien)\s+toi\b/g, ' ')
-    .replace(/\btoi\b(?!\s+(?:den|ly son|co don|trang|ngam))/g, ' ');
+    .replace(/\btoi\b(?!\s+(?:den|ly son|co don|trang|ngam))/g, ' ')
+    .replace(/\b(?:tra\s+(?:cuu|loi|gop|hang|lai|phi|don)|(?:kiem|dieu)\s+tra)\b/g, ' ');
 
   const isComplaint = /\b(hang loi|hang bi loi|san pham bi loi|san pham loi|bi loi|bi hong|hu hong|vo nat|bi vo|bi be|mop meo|bi mop|bi dap|chay khet|het han|qua han|bi moc|am moc|doi mau|kem chat luong|thieu hang|giao thieu|giao nham|giao sai|sai hang|doi tra|tra hang|hoan tien|chua nhan duoc hang|chua nhan hang|mat tien|khieu nai|phan nan)\b|\b(loi|hong)\s+(hang|san pham|dong goi|nap|hop|chai|lo)\b|^(hang loi|loi|hong|doi tra|tra hang)$/.test(normalized);
 
@@ -955,7 +956,7 @@ function extractSearchIntents(queryText, products = []) {
 
   const isShipping = /(ship|giao hang|van chuyen|phi ship|bao lau|nhan hang|phi van chuyen|cod|thanh toan khi nhan|hoa toc|toan quoc)/.test(normalized);
 
-  const isStoreLookup = /diem ban|showroom|chi duong|store location|directions/.test(normalized);
+  const isStoreLookup = /diem ban|showroom|chi duong|cua hang|ban do so|store location|directions/.test(normalized);
   const isOcopKnowledge = !isStoreLookup && (/(ocop la gi|y nghia ocop|tieu chuan ocop|sao ocop|truy xuat|chinh hang|nguon goc)/.test(normalized) || /(?:4|5|bon|nam)\s*sao.*(?:la gi|nghia la|khac nhau|khac gi|tieu chuan)|(?:phan biet|so sanh|tieu chuan).*?(?:4|5|bon|nam)\s*sao/.test(normalized));
 
   const isUsage = /(cach dung|cach pha|cach che bien|huong dan su dung|cach nau|cach uong|cach bao quan|pha tra|chung yen)/.test(normalized);
@@ -1016,7 +1017,7 @@ function extractSearchIntents(queryText, products = []) {
   let isGift = /bieu|tang|sep|doi tac|bo me|ong ba|tet|mung|le|tri an|suc khoe|ra mat|thong gia|tan gia|khai truong|kieu bao/.test(normalized);
 
   let categoryOrKeyword = null;
-  if (/\b(tra|che|shan tuyet|dinh non|hoa vang|sen|oolong|suoi giang|moc chau)\b/.test(normalized)) categoryOrKeyword = "trà";
+  if (!/\b(?:tra\s+(?:cuu|loi|gop|hang|lai|phi|don)|(?:kiem|dieu)\s+tra)\b/.test(normalized) && /\b(tra|che|shan tuyet|dinh non|hoa vang|sen|oolong|suoi giang|moc chau)\b/.test(normalized)) categoryOrKeyword = "trà";
   else if (/\b(yen|yen sao|to yen)\b/.test(normalized)) categoryOrKeyword = "yến";
   else if (/\b(sam|sam ngoc linh)\b/.test(normalized)) categoryOrKeyword = "sâm";
   else if (/\b(mat ong|ong bac ha|ong hoa ca phe)\b/.test(normalized)) categoryOrKeyword = "mật ong";
@@ -1255,7 +1256,7 @@ async function handleAIChatRequest(req, res) {
     const body=composeDataReply([], {requiredClarification:budgetQuestion},validation.language);
     return res.json({...body,combos:[],geminiUnderstanding:{attempted:false,status:'clarification_required'},resolvedRequirements:{maxPrice:localIntent.maxPrice,minPrice:localIntent.minPrice},imageIds});
   }
-  const directCatalogRequest = !attachedImages.length && !localIntent.isOrderGuide && !localIntent.isComplaint && !localIntent.isCSKH && !localIntent.isShipping && !localIntent.isUsage && !localIntent.isOcopKnowledge
+  const directCatalogRequest = !attachedImages.length && !localIntent.isOrderGuide && !localIntent.isComplaint && !localIntent.isCSKH && !localIntent.isShipping && !localIntent.isUsage && !localIntent.isOcopKnowledge && !(localIntent.isStoreLookup && !localIntent.exactRegion && !localIntent.categoryOrKeyword)
     && Boolean(localIntent.isCombo || localIntent.isGift || localIntent.pricePreference || localIntent.categoryOrKeyword || localIntent.exactRegion || localIntent.regionKeyword || localIntent.maxPrice || localIntent.minStars);
   const prefetchPlan = planWikipedia(localIntent, null, lastMessage.text, validation.products, validation.language, attachedImages.length > 0);
   // Public knowledge lookup can run while Gemini interprets the conversation.
@@ -1305,7 +1306,7 @@ async function handleAIChatRequest(req, res) {
     if (localIntent.minStars) userIntent.minStars=localIntent.minStars;
   }
   const filteredProducts = filterProductsByIntent(validation.products, userIntent).filter(product => AIShopping.allowed(product, userIntent)).map(product => ({ ...product, customerReviewExcerpts: reviewStore.list(product.id).items.slice(0, 3).map(review => ({ rating: review.rating, comment: review.comment.slice(0, 350) })) }));
-  const shoppingRequest = !userIntent.isOrderGuide && !userIntent.isComplaint && !userIntent.isCSKH && !userIntent.isShipping && !userIntent.isUsage && !userIntent.isOcopKnowledge;
+  const shoppingRequest = !userIntent.isOrderGuide && !userIntent.isComplaint && !userIntent.isCSKH && !userIntent.isShipping && !userIntent.isUsage && !userIntent.isOcopKnowledge && !(userIntent.isStoreLookup && !userIntent.exactRegion && !userIntent.categoryOrKeyword);
   if (complaintClarification && !attachedImages.length && validation.messages.length === 1) userIntent.requiredClarification = complaintClarification;
   if (!attachedImages.length && shoppingRequest && userIntent.isCombo && !userIntent.maxPrice) userIntent.requiredClarification = validation.language === 'en' ? 'What is your maximum budget for each combo? I can suggest up to three different options.' : 'Anh/chị muốn mỗi combo trong ngân sách tối đa bao nhiêu? Mình sẽ gợi ý khoảng 3 phương án khác nhau nhé.';
   else if (semanticIntent?.needsClarification && semanticIntent.clarification && !(shoppingRequest && (userIntent.isCombo && userIntent.maxPrice || userIntent.pricePreference && !userIntent.isCombo || userIntent.purchaseMode && AIShopping.budgetClarification(lastUserMessage)))) userIntent.requiredClarification = semanticIntent.clarification;
