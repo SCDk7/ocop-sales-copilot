@@ -18043,7 +18043,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         if (authedAdmin) {
+            const adminNum = String(authedAdmin.adminId || authedAdmin.username || '1').replace(/\D/g, '') || '1';
+            const adminCode = authedAdmin.adminCode || authedAdmin.customerCode || ('AD26' + adminNum.padStart(8, '0'));
             const sessionUser = {
+                customerCode: adminCode,
+                adminCode: adminCode,
                 username: authedAdmin.username,
                 fullName: authedAdmin.fullName,
                 role: 'admin',

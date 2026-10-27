@@ -41,6 +41,10 @@
         return generateCode('NPP', 12);
     }
 
+    function generateAdminCode() {
+        return generateCode('AD', 12);
+    }
+
     // -------------------------------------------------------------
     // DANH SÁCH 6 NHÀ PHÂN PHỐI / HTX OCOP NÒNG CỐT (MÃ 12 KÝ TỰ)
     // -------------------------------------------------------------
@@ -125,6 +129,8 @@
     const SEED_ADMIN_ACCOUNTS = [
         {
             adminId: 'AD01',
+            adminCode: 'AD2600000001',
+            customerCode: 'AD2600000001',
             username: 'ThaoNguyenad01',
             password: '0000000',
             fullName: 'Thảo Nguyên (Admin 01)',
@@ -133,6 +139,8 @@
         },
         {
             adminId: 'AD02',
+            adminCode: 'AD2600000002',
+            customerCode: 'AD2600000002',
             username: 'KimNganad02',
             password: '1111111',
             fullName: 'Kim Ngân (Admin 02)',
@@ -141,6 +149,8 @@
         },
         {
             adminId: 'AD03',
+            adminCode: 'AD2600000003',
+            customerCode: 'AD2600000003',
             username: 'VinhPhucad03',
             password: '2222222',
             fullName: 'Vĩnh Phúc (Admin 03)',
@@ -149,6 +159,8 @@
         },
         {
             adminId: 'AD04',
+            adminCode: 'AD2600000004',
+            customerCode: 'AD2600000004',
             username: 'ThanhBinhad04',
             password: '3333333',
             fullName: 'Thanh Bình (Admin 04)',
@@ -162,6 +174,16 @@
         if (!Array.isArray(list) || list.length === 0) {
             list = SEED_ADMIN_ACCOUNTS.slice();
             setStorage('ocop_admin_accounts', list);
+        } else {
+            let changed = false;
+            list.forEach((a, idx) => {
+                if (!a.adminCode || !a.adminCode.startsWith('AD') || a.adminCode.length !== 12) {
+                    a.adminCode = 'AD26' + String(10000001 + idx).slice(-8);
+                    a.customerCode = a.adminCode;
+                    changed = true;
+                }
+            });
+            if (changed) setStorage('ocop_admin_accounts', list);
         }
         return list;
     }
@@ -1181,6 +1203,7 @@
     return {
         init: init,
         generateCustomerCode: generateCustomerCode,
+        generateAdminCode: generateAdminCode,
         getAdminAccounts: getAdminAccounts,
         authenticateAdmin: authenticateAdmin,
         generateDistributorCode: generateDistributorCode,

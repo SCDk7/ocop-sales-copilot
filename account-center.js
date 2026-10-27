@@ -23,7 +23,33 @@ function show(section='profile'){
 function field(form,label,value,name,type='text'){const l=node('label',label),i=node('input');i.name=name;i.type=type;i.value=value||'';i.maxLength=250;l.append(i);form.append(l);return i}
 function render(){const u=user();if(!u)return close();content.replaceChildren(node('h2',labels[tab]),node('p',u.fullName||u.username,'account-center-user'));
  if(tab==='password'){const p=node('p','Thay đổi mật khẩu đăng nhập của bạn.');content.append(p,button('Mở phần đổi mật khẩu',()=>{close();const auth=document.getElementById('customer-auth-modal');auth.classList.remove('hidden');auth.style.setProperty('display','flex','important');document.body.style.overflow='hidden';originalSwitch('chpass')}));return}
- if(tab==='profile'){const f=node('form');field(f,'Mã khách hàng (12 ký tự)',u.customerCode||'KH2600000001','customerCode').disabled=true;field(f,'Tên đăng nhập',u.username,'username').disabled=true;field(f,'Họ và tên',u.fullName,'fullName').required=true;field(f,'Số điện thoại',u.phone,'phone','tel');field(f,'Email',u.email,'email','email');const submit=node('button','Lưu thay đổi');submit.type='submit';const note=node('p','Thông tin được lưu trên trình duyệt này.','account-center-note');f.append(submit,note);f.onsubmit=e=>{e.preventDefault();const data=new FormData(f),next={...u,fullName:String(data.get('fullName')).trim(),phone:String(data.get('phone')).trim(),email:String(data.get('email')).trim()};if(!next.fullName)return;try{const db=read('ocop_customers',[]);const entry=db.find(c=>c.username===u.username);if(entry)Object.assign(entry,next);localStorage.setItem('ocop_customers',JSON.stringify(db));localStorage.setItem('ocop_current_user',JSON.stringify(next));window.updateCustomerHeaderUI?.();note.textContent='Đã lưu thông tin.'}catch{note.textContent='Không lưu được. Hãy kiểm tra quyền lưu dữ liệu của trình duyệt.'}};
+ if(tab==='profile'){
+  const f=node('form');
+  const isAdmin=u.role==='admin'||u.role==='super_admin'||u.isAdmin||Boolean(u.adminId)||['admin','ad','thaonguyenad01','kimnganad02','vinhphucad03','thanhbinhad04'].includes(String(u.username||'').toLowerCase());
+  const isDist=u.role==='distributor'||u.isDistributor;
+  let userCode=u.customerCode||u.adminCode||u.distributorCode||'';
+  if(isAdmin){
+    if(!userCode||!userCode.startsWith('AD')||userCode.length!==12){
+      const adNum=String(u.adminId||u.username||'1').replace(/\D/g,'')||'1';
+      userCode='AD26'+adNum.padStart(8,'0');
+    }
+  }else if(isDist){
+    if(!userCode||!userCode.startsWith('NPP')||userCode.length!==12){
+      userCode=u.distributorCode||'NPP260000001';
+    }
+  }else{
+    if(!userCode||userCode.length!==12||!userCode.startsWith('KH')){
+      userCode=userCode&&userCode.startsWith('KH')?userCode:'KH2600000001';
+    }
+  }
+  if(u.customerCode!==userCode){
+    u.customerCode=userCode;
+    if(isAdmin)u.adminCode=userCode;
+    try{localStorage.setItem('ocop_current_user',JSON.stringify(u));}catch(_){}
+  }
+  const codeLabel=isAdmin?'Mã quản trị viên (12 ký tự)':(isDist?'Mã nhà phân phối (12 ký tự)':'Mã khách hàng (12 ký tự)');
+  field(f,codeLabel,userCode,'customerCode').disabled=true;
+  field(f,'Tên đăng nhập',u.username,'username').disabled=true;field(f,'Họ và tên',u.fullName,'fullName').required=true;field(f,'Số điện thoại',u.phone,'phone','tel');field(f,'Email',u.email,'email','email');const submit=node('button','Lưu thay đổi');submit.type='submit';const note=node('p','Thông tin được lưu trên trình duyệt này.','account-center-note');f.append(submit,note);f.onsubmit=e=>{e.preventDefault();const data=new FormData(f),next={...u,fullName:String(data.get('fullName')).trim(),phone:String(data.get('phone')).trim(),email:String(data.get('email')).trim()};if(!next.fullName)return;try{const db=read('ocop_customers',[]);const entry=db.find(c=>c.username===u.username);if(entry)Object.assign(entry,next);localStorage.setItem('ocop_customers',JSON.stringify(db));localStorage.setItem('ocop_current_user',JSON.stringify(next));window.updateCustomerHeaderUI?.();note.textContent='Đã lưu thông tin.'}catch{note.textContent='Không lưu được. Hãy kiểm tra quyền lưu dữ liệu của trình duyệt.'}};
   const extraActions=node('div',null,'account-center-extra-actions');extraActions.style.cssText='margin-top:20px;padding-top:16px;border-top:1.5px dashed #bae6fd;display:flex;flex-direction:column;gap:8px;';
   extraActions.append(node('strong','Kênh đối tác & Quản lý:'));
   const btnRow=node('div');btnRow.style.cssText='display:flex;gap:8px;flex-wrap:wrap;';

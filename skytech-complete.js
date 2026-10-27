@@ -1081,7 +1081,11 @@
             window.closeAdminLoginModal();
             window.closeAdminHubModal();
 
+            const adminNum = String(authed.adminId || authed.username || '1').replace(/\D/g, '') || '1';
+            const adminCode = authed.adminCode || authed.customerCode || ('AD26' + adminNum.padStart(8, '0'));
             const sessionUser = {
+                customerCode: adminCode,
+                adminCode: adminCode,
                 username: authed.username,
                 fullName: authed.fullName,
                 role: 'admin',
