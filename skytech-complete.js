@@ -929,12 +929,261 @@
     // =========================================================================
     // ADMIN HUB CHOICE MODAL (MÃ PIN 2007 -> CHỌN TÀI CHÍNH HOẶC TIKTOK STUDIO)
     // =========================================================================
-    window.openAdminHubCardAction = function(type) {
-        window.closeAdminHubModal();
-        if (window.OcopAdminManagement) {
-            if (type === 'admin') {
+    // =========================================================================
+    // ADMIN SEPARATE USERNAME & PASSWORD LOGIN MODAL
+    // =========================================================================
+    window.closeAdminLoginModal = function () {
+        const modal = document.getElementById('admin-login-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.setProperty('display', 'none', 'important');
+        }
+    };
+
+    window.selectAdminLoginAccount = function (username) {
+        const uInput = document.getElementById('admin-login-username');
+        if (uInput) uInput.value = username;
+
+        const adminAccounts = (window.OcopAdminManagement && typeof window.OcopAdminManagement.getAdminAccounts === 'function')
+            ? window.OcopAdminManagement.getAdminAccounts()
+            : [];
+
+        adminAccounts.forEach(a => {
+            const pill = document.getElementById('pill-admin-' + a.username);
+            if (pill) {
+                const isSel = (a.username.toLowerCase() === username.toLowerCase());
+                pill.style.border = isSel ? '2px solid #0284C7' : '1px solid #BAE6FD';
+                pill.style.background = isSel ? '#E0F2FE' : '#FFFFFF';
+                pill.style.color = isSel ? '#0369A1' : '#334155';
+                pill.style.fontWeight = isSel ? '800' : '600';
+            }
+        });
+
+        const passInput = document.getElementById('admin-login-password');
+        const err = document.getElementById('admin-login-error');
+        if (err) err.style.display = 'none';
+        if (passInput) {
+            passInput.value = '';
+            passInput.style.borderColor = '#BAE6FD';
+            passInput.style.background = '#F8FAFC';
+            passInput.focus();
+        }
+    };
+
+    window.toggleAdminLoginPassVisibility = function () {
+        const input = document.getElementById('admin-login-password');
+        const icon = document.getElementById('admin-login-eye-icon');
+        if (!input) return;
+        if (input.type === 'password') {
+            input.type = 'text';
+            if (icon) { icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash'); }
+        } else {
+            input.type = 'password';
+            if (icon) { icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
+        }
+    };
+
+    window.submitAdminLogin = function () {
+        const uInput = document.getElementById('admin-login-username');
+        const pInput = document.getElementById('admin-login-password');
+        const err = document.getElementById('admin-login-error');
+        const card = document.getElementById('admin-login-card');
+
+        const username = (uInput ? uInput.value : '').trim();
+        const password = (pInput ? pInput.value : '').trim();
+
+        if (!username || !password) {
+            if (err) {
+                err.textContent = '⚠️ Vui lòng nhập đầy đủ Tên đăng nhập và Mật khẩu riêng!';
+                err.style.display = 'block';
+            }
+            if (!password && pInput) pInput.focus();
+            return;
+        }
+
+        let authed = null;
+        if (window.OcopAdminManagement && typeof window.OcopAdminManagement.authenticateAdmin === 'function') {
+            authed = window.OcopAdminManagement.authenticateAdmin(username, password);
+        }
+
+        if (authed) {
+            if (err) err.style.display = 'none';
+            window.closeAdminLoginModal();
+            window.closeAdminHubModal();
+
+            if (window.OcopAdminManagement) {
+                window.OcopAdminManagement.setActiveScope('webmaster', null, authed.username);
                 window.OcopAdminManagement.openAdminManagementModal('webmaster', null);
-            } else if (type === 'distributor') {
+            }
+
+            if (typeof window._adminLoginSuccessCallback === 'function') {
+                const cb = window._adminLoginSuccessCallback;
+                window._adminLoginSuccessCallback = null;
+                cb(authed);
+            }
+
+            if (typeof window.showToast === 'function') {
+                window.showToast('🔓 Xin chào ' + authed.fullName + '! Đăng nhập thành công với quyền Quản trị viên.', 'success');
+            }
+        } else {
+            if (err) {
+                err.textContent = '❌ Mật khẩu hoặc tên đăng nhập không chính xác cho tài khoản "' + username + '"! Vui lòng thử lại.';
+                err.style.display = 'block';
+            }
+            if (pInput) {
+                pInput.style.borderColor = '#DC2626';
+                pInput.style.background = '#FEF2F2';
+                pInput.value = '';
+                pInput.focus();
+            }
+            if (card) {
+                card.classList.remove('admin-pin-shake');
+                void card.offsetWidth;
+                card.classList.add('admin-pin-shake');
+            }
+        }
+    };
+
+    window.openAdminLoginModal = function (defaultUsername, onLoginSuccess) {
+        window.closeAdminHubModal();
+
+        let modal = document.getElementById('admin-login-modal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'admin-login-modal';
+            document.body.appendChild(modal);
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    window.closeAdminLoginModal();
+                }
+            });
+        }
+
+        modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.8) !important; backdrop-filter: blur(8px) !important;';
+
+        const adminAccounts = (window.OcopAdminManagement && typeof window.OcopAdminManagement.getAdminAccounts === 'function')
+            ? window.OcopAdminManagement.getAdminAccounts()
+            : [
+                { username: 'ThaoNguyenad01', fullName: 'Thảo Nguyên (Admin 01)' },
+                { username: 'KimNganad02', fullName: 'Kim Ngân (Admin 02)' },
+                { username: 'VinhPhucad03', fullName: 'Vĩnh Phúc (Admin 03)' },
+                { username: 'ThanhBinhad04', fullName: 'Thanh Bình (Admin 04)' }
+            ];
+
+        const currentSelected = defaultUsername || 'ThaoNguyenad01';
+
+        const pillsHtml = adminAccounts.map(a => {
+            const isSel = (a.username.toLowerCase() === currentSelected.toLowerCase());
+            const pillBorder = isSel ? '2px solid #0284C7' : '1px solid #BAE6FD';
+            const pillBg = isSel ? '#E0F2FE' : '#FFFFFF';
+            const pillColor = isSel ? '#0369A1' : '#334155';
+            const pillWeight = isSel ? '800' : '600';
+            return '<button type="button" onclick="selectAdminLoginAccount(\'' + a.username + '\')" id="pill-admin-' + a.username + '"' +
+                ' style="padding: 6px 12px !important; border-radius: 999px !important; font-size: 11.5px !important; font-weight: ' + pillWeight + ' !important; border: ' + pillBorder + ' !important; background: ' + pillBg + ' !important; color: ' + pillColor + ' !important; cursor: pointer !important; transition: all 0.2s !important; display: flex !important; align-items: center !important; gap: 5px !important; text-align: left !important;">' +
+                '<i class="fa-solid fa-user-shield" style="font-size: 11px !important; color: #0284C7 !important;"></i>' +
+                '<span>' + a.username + '</span>' +
+                '</button>';
+        }).join('');
+
+        modal.innerHTML = `
+            <div id="admin-login-card" style="position: relative !important; width: 100% !important; max-width: 480px !important; background: #FFFFFF !important; border: 2.5px solid #0284C7 !important; border-radius: 24px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.35) !important; color: #0F172A !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; text-align: left !important;">
+                
+                <button type="button" onclick="closeAdminLoginModal()" style="position: absolute !important; top: 18px !important; right: 18px !important; width: 34px !important; height: 34px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng">
+                    <i class="fa-solid fa-xmark" style="font-size: 15px !important;"></i>
+                </button>
+
+                <div style="display: flex !important; align-items: center !important; gap: 14px !important; margin-bottom: 18px !important;">
+                    <div style="width: 50px !important; height: 50px !important; border-radius: 16px !important; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 24px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3) !important; flex-shrink: 0 !important;">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0 0 4px !important; color: #0C4A6E !important; font-size: 1.25rem !important; font-weight: 900 !important; letter-spacing: -0.01em !important;">
+                            Đăng Nhập Quản Trị Viên (Admin)
+                        </h3>
+                        <p style="margin: 0 !important; color: #64748B !important; font-size: 12px !important; font-weight: 500 !important;">
+                            Mỗi Admin có Tên đăng nhập và Mật khẩu riêng
+                        </p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 16px !important;">
+                    <label style="display: block !important; font-size: 11.5px !important; font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: 0.04em !important; color: #0369A1 !important; margin-bottom: 8px !important;">
+                        Chọn tài khoản Quản trị viên:
+                    </label>
+                    <div style="display: flex !important; flex-wrap: wrap !important; gap: 6px !important;">
+                        ${pillsHtml}
+                    </div>
+                </div>
+
+                <form onsubmit="event.preventDefault(); submitAdminLogin();" style="margin: 0 !important;">
+                    <div style="margin-bottom: 14px !important;">
+                        <label for="admin-login-username" style="display: block !important; font-size: 12px !important; font-weight: 700 !important; color: #1E293B !important; margin-bottom: 6px !important;">
+                            Tên đăng nhập (Username):
+                        </label>
+                        <div style="position: relative !important;">
+                            <input type="text" id="admin-login-username" value="${currentSelected}" placeholder="Nhập tên đăng nhập Admin..." required autocomplete="username"
+                                   style="width: 100% !important; box-sizing: border-box !important; padding: 11px 14px 11px 38px !important; font-size: 14px !important; font-weight: 700 !important; border-radius: 12px !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; color: #0F172A !important; outline: none !important; transition: all 0.2s !important;">
+                            <i class="fa-solid fa-id-badge" style="position: absolute !important; left: 14px !important; top: 50% !important; transform: translateY(-50%) !important; color: #0284C7 !important; font-size: 14px !important;"></i>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 16px !important;">
+                        <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 6px !important;">
+                            <label for="admin-login-password" style="font-size: 12px !important; font-weight: 700 !important; color: #1E293B !important;">
+                                Mật khẩu riêng của Admin:
+                            </label>
+                            <span id="admin-pass-hint" style="font-size: 11px !important; color: #0284C7 !important; font-weight: 600 !important;">
+                                Mật khẩu riêng từng tài khoản
+                            </span>
+                        </div>
+                        <div style="position: relative !important;">
+                            <input type="password" id="admin-login-password" placeholder="Nhập mật khẩu riêng..." required autocomplete="current-password"
+                                   style="width: 100% !important; box-sizing: border-box !important; padding: 11px 42px 11px 38px !important; font-size: 15px !important; font-weight: 700 !important; letter-spacing: 0.1em !important; border-radius: 12px !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; color: #0F172A !important; outline: none !important; transition: all 0.2s !important;">
+                            <i class="fa-solid fa-lock" style="position: absolute !important; left: 14px !important; top: 50% !important; transform: translateY(-50%) !important; color: #0284C7 !important; font-size: 14px !important;"></i>
+                            <button type="button" onclick="toggleAdminLoginPassVisibility()" style="position: absolute !important; right: 12px !important; top: 50% !important; transform: translateY(-50%) !important; background: none !important; border: none !important; color: #64748B !important; cursor: pointer !important; padding: 4px !important;" title="Ẩn / Hiện mật khẩu">
+                                <i class="fa-solid fa-eye" id="admin-login-eye-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="admin-login-error" style="display: none; margin-bottom: 14px !important; padding: 10px 14px !important; border-radius: 10px !important; background: #FEF2F2 !important; border: 1.5px solid #FCA5A5 !important; color: #DC2626 !important; font-size: 12.5px !important; font-weight: 700 !important; text-align: center !important;">
+                        ❌ Mật khẩu hoặc tên đăng nhập không chính xác! Vui lòng thử lại.
+                    </div>
+
+                    <div style="display: flex !important; flex-direction: column !important; gap: 8px !important;">
+                        <button type="submit" id="btn-submit-admin-login" style="width: 100% !important; padding: 13px !important; border-radius: 12px !important; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; font-size: 14px !important; font-weight: 800 !important; border: none !important; cursor: pointer !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important; transition: all 0.2s !important;">
+                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                            <span>Đăng Nhập Cổng Quản Trị</span>
+                        </button>
+                        
+                        <button type="button" onclick="closeAdminLoginModal(); openAdminHubModal();" style="width: 100% !important; padding: 9px !important; border-radius: 12px !important; background: #F1F5F9 !important; color: #475569 !important; font-size: 12.5px !important; font-weight: 700 !important; border: none !important; cursor: pointer !important; transition: all 0.2s !important; text-align: center !important;">
+                            Quay lại Cổng Điều Phối (Admin Hub)
+                        </button>
+                    </div>
+                </form>
+            </div>
+        `;
+
+        modal.classList.remove('hidden');
+        modal.style.setProperty('display', 'flex', 'important');
+        modal.style.setProperty('z-index', '2147483647', 'important');
+
+        window._adminLoginSuccessCallback = onLoginSuccess;
+
+        setTimeout(() => {
+            const passInput = document.getElementById('admin-login-password');
+            if (passInput) passInput.focus();
+        }, 150);
+    };
+
+    window.openAdminHubCardAction = function(type) {
+        if (type === 'admin') {
+            window.closeAdminHubModal();
+            window.openAdminLoginModal();
+        } else if (type === 'distributor') {
+            window.closeAdminHubModal();
+            if (window.OcopAdminManagement) {
                 window.OcopAdminManagement.openAdminManagementModal('distributor', 'NPP260000001');
             }
         }
@@ -1007,13 +1256,18 @@
                             <p style="margin: 0 0 10px !important; font-size: 12.5px !important; color: #334155 !important; line-height: 1.45 !important; font-weight: 500 !important;">
                                 Quản lý khách hàng (mã 12 ký tự), tồn kho 252 sản phẩm OCOP &amp; theo dõi số lượng đã bán toàn quốc.
                             </p>
-                            <div style="background: rgba(255,255,255,0.7) !important; border-radius: 8px !important; padding: 6px 10px !important; font-size: 11px !important; color: #0369A1 !important; font-weight: 700 !important; margin-bottom: 14px !important; border: 1px dashed #7DD3FC !important;">
-                                👤 ThaoNguyenad01 • KimNganad02 • VinhPhucad03 • ThanhBinhad04
+                            <div style="background: rgba(255,255,255,0.7) !important; border-radius: 8px !important; padding: 8px 10px !important; font-size: 11.5px !important; color: #0369A1 !important; font-weight: 700 !important; margin-bottom: 14px !important; border: 1px dashed #7DD3FC !important; display: flex !important; flex-wrap: wrap !important; gap: 4px 8px !important; align-items: center !important;">
+                                <span style="font-weight: 800 !important;"><i class="fa-solid fa-users-gear mr-1"></i> 4 Admin:</span>
+                                <span onclick="event.stopPropagation(); openAdminLoginModal('ThaoNguyenad01');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản ThaoNguyenad01">ThaoNguyenad01</span> • 
+                                <span onclick="event.stopPropagation(); openAdminLoginModal('KimNganad02');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản KimNganad02">KimNganad02</span> • 
+                                <span onclick="event.stopPropagation(); openAdminLoginModal('VinhPhucad03');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản VinhPhucad03">VinhPhucad03</span> • 
+                                <span onclick="event.stopPropagation(); openAdminLoginModal('ThanhBinhad04');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản ThanhBinhad04">ThanhBinhad04</span>
                             </div>
                         </div>
 
-                        <button type="button" onclick="event.stopPropagation(); openAdminHubCardAction('admin')" style="width: 100% !important; padding: 12px 14px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3) !important; cursor: pointer !important;">
-                            <span>👉 Mở Cổng Quản Trị Admin</span>
+                        <button type="button" onclick="event.stopPropagation(); openAdminLoginModal()" style="width: 100% !important; padding: 12px 14px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3) !important; cursor: pointer !important;">
+                            <i class="fa-solid fa-lock" style="font-size: 13px !important;"></i>
+                            <span>👉 Mở Cổng Quản Trị Admin (Mật Khẩu Riêng)</span>
                         </button>
                     </div>
 
@@ -1674,6 +1928,7 @@
         // KHÔNG CHẶN click bên trong PIN modal, Admin Hub modal, Bảng Quản Trị, hoặc TikTok Studio
         if (e.target.closest('#admin-pin-modal') ||
             e.target.closest('#admin-hub-modal') ||
+            e.target.closest('#admin-login-modal') ||
             e.target.closest('#ai-financial-modal') ||
             e.target.closest('#tiktok-studio-modal') ||
             e.target.closest('#online-order-modal') ||

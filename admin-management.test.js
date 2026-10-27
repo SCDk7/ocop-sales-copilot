@@ -125,3 +125,50 @@ test('Scoping Engine isolates data between Webmaster and Distributor', () => {
     assert.equal(distData.products.length, 2, 'Distributor sees only their 2 products');
     assert.ok(distData.products.every(p => p.region === 'Hải Phòng'), 'All scoped products must be from Hải Phòng');
 });
+
+test('Admin separate username and password authentication verification', () => {
+    const fs = require('node:fs');
+    const skyJs = fs.readFileSync('skytech-complete.js', 'utf8');
+
+    // 1. Each admin has unique separate username and password
+    const admins = Admin.getAdminAccounts();
+    const usernames = admins.map(a => a.username);
+    const passwords = admins.map(a => a.password);
+    assert.equal(new Set(usernames).size, 4, 'All 4 usernames must be unique');
+    assert.equal(new Set(passwords).size, 4, 'All 4 passwords must be unique');
+
+    // 2. Cross-authentication failure (admin A cannot authenticate with admin B password)
+    assert.equal(Admin.authenticateAdmin('ThaoNguyenad01', '1111111'), null, 'ThaoNguyen cannot use KimNgan pass');
+    assert.equal(Admin.authenticateAdmin('KimNganad02', '0000000'), null, 'KimNgan cannot use ThaoNguyen pass');
+    assert.equal(Admin.authenticateAdmin('VinhPhucad03', '3333333'), null, 'VinhPhuc cannot use ThanhBinh pass');
+    assert.equal(Admin.authenticateAdmin('ThanhBinhad04', '2222222'), null, 'ThanhBinh cannot use VinhPhuc pass');
+    assert.equal(Admin.authenticateAdmin('ThaoNguyenad01', 'wrong_pass'), null, 'Wrong password must fail');
+    assert.equal(Admin.authenticateAdmin('nonexistent', '0000000'), null, 'Nonexistent admin must fail');
+
+    // 3. Correct credentials succeed
+    const a1 = Admin.authenticateAdmin('ThaoNguyenad01', '0000000');
+    assert.ok(a1);
+    assert.equal(a1.username, 'ThaoNguyenad01');
+
+    const a2 = Admin.authenticateAdmin('KimNganad02', '1111111');
+    assert.ok(a2);
+    assert.equal(a2.username, 'KimNganad02');
+
+    const a3 = Admin.authenticateAdmin('VinhPhucad03', '2222222');
+    assert.ok(a3);
+    assert.equal(a3.username, 'VinhPhucad03');
+
+    const a4 = Admin.authenticateAdmin('ThanhBinhad04', '3333333');
+    assert.ok(a4);
+    assert.equal(a4.username, 'ThanhBinhad04');
+
+    // 4. Admin management exports logoutAdmin
+    assert.equal(typeof Admin.logoutAdmin, 'function', 'Admin.logoutAdmin must be exported');
+
+    // 5. SkyTech Admin Login Modal Engine validation
+    assert.ok(skyJs.includes('window.openAdminLoginModal'), 'openAdminLoginModal is defined in skytech-complete.js');
+    assert.ok(skyJs.includes('window.submitAdminLogin'), 'submitAdminLogin is defined in skytech-complete.js');
+    assert.ok(skyJs.includes('window.selectAdminLoginAccount'), 'selectAdminLoginAccount is defined in skytech-complete.js');
+    assert.ok(skyJs.includes('admin-login-modal'), 'admin-login-modal exists in skytech-complete.js');
+    assert.ok(skyJs.includes('openAdminLoginModal()'), 'Card 1 button invokes openAdminLoginModal');
+});

@@ -668,6 +668,10 @@
                                 ${selectOptions}
                             </select>
                         </div>
+                        <button type="button" onclick="OcopAdminManagement.logoutAdmin()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-900/60 hover:bg-rose-800 text-rose-200 border border-rose-500/50 text-xs font-bold transition cursor-pointer" title="Đăng xuất khỏi phiên quản trị">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Đăng xuất</span>
+                        </button>
                         <button type="button" onclick="OcopAdminManagement.closeAdminManagementModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-sm cursor-pointer transition" title="Đóng cửa sổ quản trị (Esc)">
                             <i class="fa-solid fa-xmark text-sm"></i>
                             <span>Đóng</span>
@@ -1089,10 +1093,31 @@
         renderAdminManagementUI();
     }
 
+    function logoutAdmin() {
+        closeAdminManagementModal();
+        if (typeof window !== 'undefined') {
+            if (typeof window.showToast === 'function') {
+                window.showToast('Đã đăng xuất khỏi tài khoản Quản trị.', 'info');
+            }
+            if (typeof window.openAdminHubModal === 'function') {
+                window.openAdminHubModal();
+            }
+        }
+    }
+
     function onRoleSelectChange(val) {
         if (val.startsWith('admin:')) {
             const u = val.replace('admin:', '');
-            switchAdminRole('webmaster', null, u);
+            const currentScope = getActiveScope();
+            if (currentScope.role === 'webmaster' && currentScope.adminUsername === u) return;
+
+            if (typeof window !== 'undefined' && typeof window.openAdminLoginModal === 'function') {
+                window.openAdminLoginModal(u, function (authed) {
+                    switchAdminRole('webmaster', null, authed.username);
+                });
+            } else {
+                switchAdminRole('webmaster', null, u);
+            }
         } else if (val === 'webmaster') {
             switchAdminRole('webmaster', null, 'ThaoNguyenad01');
         } else {
@@ -1126,7 +1151,8 @@
         switchAdminTab: switchAdminTab,
         switchAdminRole: switchAdminRole,
         saveStockInput: saveStockInput,
-        onRoleSelectChange: onRoleSelectChange
+        onRoleSelectChange: onRoleSelectChange,
+        logoutAdmin: logoutAdmin
     };
 }));
 
