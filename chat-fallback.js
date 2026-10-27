@@ -10,6 +10,9 @@
         const assistant=typeof module==='object'&&module.exports?require('./ai-scenarios'):root.OCOPSalesAssistant;
         const scenario=assistant?.scenarioReply(query,language);
         if(scenario) return {...scenario,text_response:scenario.message,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],localFallback:true,aiProvider:'local_catalog',integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
+        const consultant=typeof module==='object'&&module.exports?require('./product-consultant'):root.OCOPProductConsultant;
+        const consultReply=consultant?.resolveProductConsultation(query,products,language,history);
+        if(consultReply) return {...consultReply,localFallback:true,aiProvider:'product_consultant'};
         const shopping=typeof module==='object'&&module.exports?require('./ai-shopping'):root.AIShopping;
         const locations=typeof module==='object'&&module.exports?require('./product-locations'):root.OCOPProductLocations;
         const intent=shopping.resolve([...history,{role:'user',text:query}],products);

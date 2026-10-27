@@ -15,7 +15,7 @@ const {waitForSignal} = require('./ai-deadline.js');
 const {planWikipedia} = require('./ai-wikipedia.js');
 const {composeDataReply} = require('./ai-data-reply.js');
 const {scenarioInstruction,scenarioReply} = require('./ai-scenarios.js');
-const CatalogFacts = require('./catalog-facts');
+const CatalogFacts = require('./catalog-facts'); const ProductConsultant = require('./product-consultant');
 const {answerTrainingQuery} = require('./product-training');
 const {createCommerceShopping} = require('./commerce-shopping');
 const {createKnowledge}=require('./product-knowledge');
@@ -1243,6 +1243,8 @@ async function handleAIChatRequest(req, res) {
   if(trainedFAQReply) return res.json({...trainedFAQReply,imageIds});
   const catalogFactReply = !attachedImages.length && CatalogFacts.answer(lastMessage.text, validation.products, validation.language, validation.messages.slice(0,-1));
   if (catalogFactReply) return res.json({...catalogFactReply,imageIds});
+  const consultReply = !attachedImages.length && ProductConsultant.resolveProductConsultation(lastMessage.text, validation.products, validation.language, validation.messages.slice(0,-1));
+  if (consultReply) return res.json({...consultReply, imageIds});
   const scenario = !attachedImages.length && scenarioReply(lastMessage.text,validation.language);
   if (scenario) {
     const body=composeDataReply([], {requiredClarification:scenario.message},validation.language);

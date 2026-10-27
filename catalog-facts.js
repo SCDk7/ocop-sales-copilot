@@ -7,6 +7,7 @@
         const q = normalize(query), en = language === 'en';
         if (!/gia bao nhieu|gia ban|may sao|bao nhieu sao|xuat xu|nguon goc|quy cach|dong goi|price|star rating|origin|packaging/.test(q)) return null;
         if (/khieu nai|doi tra|hoan tien|bi moc|bi hong|damaged|refund/.test(q)) return null;
+        if (/cau chuyen|van hoa|story|culture|showroom|dia chi|diem ban|o2o|tu van|gioi thieu|consult|co gi|co j|dac diem|thanh phan|nhu the nao|chi tiet|huong vi|ngon khong/.test(q)) return null;
         const tokens = text => [...new Set(normalize(text).split(' ').filter(word => word.length > 1 && !stop.has(word)))];
         function matches(text) {
             const words = new Set(tokens(text));
