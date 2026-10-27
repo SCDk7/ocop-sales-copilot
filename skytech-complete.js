@@ -463,7 +463,7 @@
 
         const statusEl = document.getElementById('province-selection-status');
         if (statusEl) {
-            statusEl.textContent = 'Chưa chọn tỉnh/thành • Hiển thị 252 đặc sản toàn quốc';
+            statusEl.textContent = 'Chưa chọn tỉnh/thành • Hiển thị 520+ đặc sản toàn quốc';
             statusEl.style.color = '#0369A1';
             statusEl.style.fontWeight = '700';
         }
@@ -585,6 +585,7 @@
                 </div>
             `;
             document.body.appendChild(modal);
+            modal.addEventListener('click', function (e) { if (e.target === modal) window.closeTikTokStudioModal(); });
 
             const input = document.getElementById('admin-pin-input');
             if (input) {
@@ -1682,7 +1683,7 @@
             
             // Group 2: 63 Provinces
             const grpOther = document.createElement('optgroup');
-            grpOther.label = '🌾 252+ ĐẶC SẢN OCOP 63 TỈNH THÀNH';
+            grpOther.label = '🌾 520+ ĐẶC SẢN OCOP 63 TỈNH THÀNH';
 
             all.forEach(p => {
                 const opt = document.createElement('option');
@@ -2823,7 +2824,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         // Cập nhật câu chào của Chatbot
         const greeting = document.getElementById('chat-greeting');
         if (greeting) {
-            greeting.textContent = 'Xin chào! Tôi là Trợ Lý AI OCOP Sales Copilot — Đồng hành cùng bạn khám phá tinh hoa 252 đặc sản OCOP 63 tỉnh thành, tra cứu mạng lưới điểm bán chính hãng và tư vấn giỏ quà tặng doanh nghiệp.';
+            greeting.textContent = 'Xin chào! Tôi là Trợ Lý AI OCOP Sales Copilot — Đồng hành cùng bạn khám phá tinh hoa 520+ đặc sản OCOP 63 tỉnh thành, tra cứu mạng lưới điểm bán chính hãng và tư vấn giỏ quà tặng doanh nghiệp.';
         }
         const guidance = document.getElementById('chat-guidance');
         if (guidance) {

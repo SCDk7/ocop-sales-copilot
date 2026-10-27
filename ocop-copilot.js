@@ -386,10 +386,7 @@
                         <i class="fa-solid fa-cart-plus text-amber-400"></i>
                         <span>${en ? 'Add to Cart' : 'Thêm vào giỏ'}</span>
                     </button>
-                    <button type="button" onclick="OcopSalesCopilot.openOrderModal([${idsString}])" class="rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black py-2 px-2.5 text-[11px] shadow-lg transition flex items-center justify-center gap-1.5 cursor-pointer">
-                        <i class="fa-solid fa-bolt"></i>
-                        <span>${en ? 'Order Now' : 'Đặt combo này ngay'}</span>
-                    </button>
+                    <button type="button" onclick="if(typeof openOnlineOrderModal==='function'){openOnlineOrderModal(${productIds[0]});}else{OcopSalesCopilot.openOrderModal([${idsString}]);} " class="rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black py-2 px-2.5 text-[11px] shadow-lg transition flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-cart-shopping"></i><span>${en ? '🛒 Order Online Now' : '🛒 Đặt Mua Online Ngay'}</span></button>
                 </div>
             </div>
         `;
@@ -455,9 +452,7 @@
                             <button type="button" onclick="addToCart(${p.id})" class="px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold text-[10px] cursor-pointer transition">
                                 + ${en ? 'Cart' : 'Giỏ'}
                             </button>
-                            <button type="button" onclick="OcopSalesCopilot.openOrderModal([${p.id}])" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[10px] cursor-pointer transition">
-                                ${en ? 'Buy' : 'Mua ngay'}
-                            </button>
+                            <button type="button" onclick="if(typeof openOnlineOrderModal==='function'){openOnlineOrderModal(${p.id});}else{OcopSalesCopilot.openOrderModal([${p.id}]);} " class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-sky-600 to-blue-600 text-white font-black text-[10px] cursor-pointer transition flex items-center gap-1 shadow-xs" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important;"><i class="fa-solid fa-cart-shopping text-[9px]"></i> 🛒 ${en ? 'Order Online' : 'Đặt Mua Online Ngay'}</button>
                         </div>
                     </div>
                 `).join('')}
