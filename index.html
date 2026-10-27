@@ -299,15 +299,15 @@
             transform: translate3d(0, 0, 0);
             will-change: transform, opacity;
             border-radius: 1rem !important;
-            background: #FFFFFF !important;
-            border: 1px solid rgba(16, 185, 129, 0.25) !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+            background: #F0F9FF !important;
+            border: 1.5px solid #BAE6FD !important;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
         }
         #product-grid .product-card:hover {
             transform: translate3d(0, -4px, 0) !important;
-            border-color: rgba(16, 185, 129, 0.6) !important;
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.12) !important;
+            border-color: #38BDF8 !important;
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.16) !important;
         }
         #product-grid .product-card-image-wrap {
             position: relative !important;
@@ -775,11 +775,11 @@
             color: #0F172A;
         }
         #product-grid .product-card {
-            background: #FFFFFF !important;
+            background: #F0F9FF !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
-            border: 1.5px solid rgba(224, 242, 254, 0.95) !important;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+            border: 1.5px solid #BAE6FD !important;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08) !important;
             transition: all 0.25s ease-in-out !important;
         }
         #product-grid .product-card:hover {
@@ -1607,10 +1607,10 @@
             align-items: center;
             gap: 0.7rem;
             padding: 0.65rem;
-            border: 1px solid rgba(15, 56, 44, 0.12);
+            border: 1.5px solid #BAE6FD;
             border-radius: 0.9rem;
-            background: rgba(255, 255, 255, 0.78);
-            box-shadow: 0 3px 10px rgba(15, 56, 44, 0.05);
+            background: #F0F9FF;
+            box-shadow: 0 3px 10px rgba(2, 132, 199, 0.06);
             cursor: pointer;
             transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
         }
@@ -2226,8 +2226,8 @@
             border-top: 1px solid rgba(212, 175, 55, 0.35) !important;
         }
         #products-section .product-card {
-            border-color: rgba(212, 175, 55, 0.35);
-            background: rgba(10, 26, 20, 0.85);
+            border-color: #BAE6FD !important;
+            background: #F0F9FF !important;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
             transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease, background-color 0.24s ease;
         }
@@ -7024,9 +7024,9 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(p.id) : null;
 
                 let cardHtml = `
-                <div class="product-card lofi-organic-card bg-white rounded-xl border border-emerald-100 overflow-hidden shadow-xs hover:shadow-md flex flex-col justify-between h-full group relative transition-all duration-300" data-product-id="${p.id}">
+                <div class="product-card lofi-organic-card rounded-xl overflow-hidden shadow-xs hover:shadow-md flex flex-col justify-between h-full group relative transition-all duration-300" style="background: #F0F9FF !important; border: 1.5px solid #BAE6FD !important;" data-product-id="${p.id}">
                     <div class="product-card-top flex flex-col flex-1">
-                        <div class="product-card-image-wrap relative h-40 sm:h-44 overflow-hidden bg-emerald-50/40">
+                        <div class="product-card-image-wrap relative h-40 sm:h-44 overflow-hidden" style="background: #FFFFFF !important;">
                             <img src="${p.img}" alt="${productName}" loading="lazy" decoding="async" class="product-card-image w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
 
                             <!-- Nhãn Phân Hạng Sao OCOP Thanh Lịch -->
@@ -7040,11 +7040,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <!-- Nút Xem Nhanh đè ảnh đã bỏ theo yêu cầu người dùng -->
                         </div>
 
-                        <!-- Thông Tin Tinh Gọn Trên Thẻ Sản Phẩm (Đều nhau, nhỏ gọn) -->
-                        <div class="product-card-body px-2.5 pt-2 pb-1.5 space-y-1.5 flex flex-col flex-1">
+                        <!-- Thông Tin Tinh Gọn Trên Thẻ Sản Phẩm (Nền Xanh Nhạt Tech Tinh Tế) -->
+                        <div class="product-card-body px-2.5 pt-2 pb-1.5 space-y-1.5 flex flex-col flex-1" style="background: #F0F9FF !important;">
                             <div class="flex items-center justify-between text-[10px] font-bold h-[20px]">
-                                <span class="inline-flex items-center gap-1 font-semibold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded-md border border-emerald-200/80 text-[9.5px]">
-                                    <i class="fa-solid fa-location-dot text-emerald-600 text-[8.5px]"></i>
+                                <span class="inline-flex items-center gap-1 font-semibold text-sky-900 bg-sky-100/90 px-1.5 py-0.5 rounded-md border border-sky-200 text-[9.5px]">
+                                    <i class="fa-solid fa-location-dot text-sky-600 text-[8.5px]"></i>
                                     <span>${p.region}</span>
                                 </span>
                                 <span data-review-summary ${getProductReviewLabel(p) ? '' : 'hidden'} class="flex items-center gap-1 font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-200 text-[9.5px]">
@@ -7052,14 +7052,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                     <button type="button" data-review-product-id="${p.id}" onclick="openProductReviews(${p.id})" class="hover:underline cursor-pointer">${getProductReviewLabel(p)}</button>
                                 </span>
                             </div>
-                            <h3 class="font-bold text-[12.5px] text-slate-800 group-hover:text-emerald-700 transition-colors duration-200 line-clamp-2 leading-snug h-[34px] max-h-[34px] overflow-hidden" title="${productName}">${productName}</h3>
+                            <h3 class="font-bold text-[12.5px] text-slate-800 group-hover:text-sky-700 transition-colors duration-200 line-clamp-2 leading-snug h-[34px] max-h-[34px] overflow-hidden" title="${productName}">${productName}</h3>
 
-                            <!-- GIÁ BÁN SẢN PHẨM RÕ RÀNG (TÔNG XANH HỮU CƠ ĐẬM) -->
-                            <div class="product-card-price flex items-center justify-between py-1 px-2 my-0.5 rounded-lg border border-emerald-200/80 bg-emerald-50/70 shadow-2xs h-[28px]">
-                                <span class="text-[10px] font-bold text-emerald-900 flex items-center gap-1">
-                                    <i class="fa-solid fa-tag text-emerald-600 text-[9px]"></i> ${({vi:'Giá:',en:'Price:',zh:'价格:',ko:'가격:',ja:'価格:'})[currentLanguage]||'Giá:'}
+                            <!-- GIÁ BÁN SẢN PHẨM RÕ RÀNG (TÔNG XANH DƯƠNG NHẠT TECH) -->
+                            <div class="product-card-price flex items-center justify-between py-1 px-2 my-0.5 rounded-lg border border-sky-200/90 shadow-2xs h-[28px]" style="background: #FFFFFF !important;">
+                                <span class="text-[10px] font-bold text-sky-900 flex items-center gap-1">
+                                    <i class="fa-solid fa-tag text-sky-600 text-[9px]"></i> ${({vi:'Giá:',en:'Price:',zh:'价格:',ko:'가격:',ja:'価格:'})[currentLanguage]||'Giá:'}
                                 </span>
-                                <span class="product-price-value text-xs font-black text-emerald-800" style="font-size: 12px !important; line-height: 1.3 !important;">
+                                <span class="product-price-value text-xs font-black text-sky-800" style="font-size: 12px !important; line-height: 1.3 !important;">
                                     ${getProductPriceLabel(p) || ((p.price || 0).toLocaleString('vi-VN') + ' ₫')}
                                 </span>
                             </div>
@@ -7074,7 +7074,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     </div>
 
                     <!-- Footer Thẻ: 2 Nút Cân Đối (Chi Tiết & Giỏ Hàng) -->
-                    <div class="product-card-footer px-3 py-2.5 flex flex-col gap-1.5 bg-white border-t border-emerald-100 mt-auto">
+                    <div class="product-card-footer px-3 py-2.5 flex flex-col gap-1.5 mt-auto" style="background: #F0F9FF !important; border-top: 1px solid #BAE6FD !important;">
                         <!-- Preserved for unit test assertions (hidden) -->
                         <div class="hidden" style="display:none!important;" aria-hidden="true">
                             <button type="button" onclick="activateProductReconciliation(${p.id})"></button>
@@ -7082,8 +7082,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <span>${sysMetrics.margin}</span>
                         </div>
                         <div class="product-detail-row w-full mb-1.5">
-                            <button type="button" onclick="openQuickView(${p.id})" class="btn-card-details lofi-btn-detail w-full flex items-center justify-center gap-1 py-1 px-2 rounded-lg font-bold text-[11px] bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 transition-all shadow-2xs cursor-pointer h-[30px]" title="${({vi:'Xem chi tiết sản phẩm',en:'View product details',zh:'查看商品详情',ko:'상품 상세정보 보기',ja:'商品の詳細を見る'})[currentLanguage]||'Xem chi tiết sản phẩm'}">
-                                <i class="fa-solid fa-circle-info text-emerald-600"></i>
+                            <button type="button" onclick="openQuickView(${p.id})" class="btn-card-details lofi-btn-detail w-full flex items-center justify-center gap-1 py-1 px-2 rounded-lg font-bold text-[11px] bg-white hover:bg-sky-100 text-sky-900 border border-sky-300 transition-all shadow-2xs cursor-pointer h-[30px]" style="background: #FFFFFF !important; color: #0369A1 !important; border: 1px solid #BAE6FD !important;" title="${({vi:'Xem chi tiết sản phẩm',en:'View product details',zh:'查看商品详情',ko:'상품 상세정보 보기',ja:'商品の詳細を見る'})[currentLanguage]||'Xem chi tiết sản phẩm'}">
+                                <i class="fa-solid fa-circle-info text-sky-600"></i>
                                 <span>${({vi:'Chi tiết',en:'Details',zh:'详情',ko:'상세보기',ja:'詳細'})[currentLanguage]||'Chi tiết'}</span>
                             </button>
                         </div>
@@ -7092,10 +7092,10 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 <i class="fa-solid fa-bolt text-amber-200"></i>
                                 <span class="truncate">${({vi:'Mua ngay',en:'Buy Now',zh:'立即购买',ko:'바로구매',ja:'今すぐ購入'})[currentLanguage]||'Mua ngay'}</span>
                             </button>
-                            <button type="button" onclick="addToCart(${p.id});" class="product-action-cart lofi-btn-cart flex items-center justify-center rounded-xl font-bold text-xs bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 32px !important; height: 32px !important; border-radius: 0.5rem !important;" title="${({vi:'Thêm sản phẩm vào giỏ hàng',en:'Add to cart',zh:'加入购物车',ko:'장바구니 담기',ja:'カートに追加'})[currentLanguage]||'Thêm sản phẩm vào giỏ hàng'}">
-                                <i class="fa-solid fa-cart-shopping text-sm"></i>
+                            <button type="button" onclick="addToCart(${p.id});" class="product-action-cart lofi-btn-cart flex items-center justify-center rounded-xl font-bold text-xs text-white transition-all shadow-xs cursor-pointer hover:bg-sky-700" style="flex: 1 1 0% !important; min-width: 32px !important; height: 32px !important; border-radius: 0.5rem !important; background: #0284C7 !important;" title="${({vi:'Thêm sản phẩm vào giỏ hàng',en:'Add to cart',zh:'加入购物车',ko:'장바구니 담기',ja:'カートに追加'})[currentLanguage]||'Thêm sản phẩm vào giỏ hàng'}">
+                                <i class="fa-solid fa-cart-shopping text-sm text-white"></i>
                             </button>
-                            <button type="button" onclick="toggleWishlist(${p.id})" class="product-action-favorite lofi-btn-favorite flex items-center justify-center rounded-xl border ${isFav ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-emerald-50 hover:bg-rose-50 border-emerald-200 hover:border-rose-300 text-slate-400 hover:text-rose-500'} transition-all shadow-2xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 32px !important; height: 32px !important; border-radius: 0.5rem !important;" aria-pressed="${isFav}" title="${isFav ? ({vi:'Bỏ yêu thích',en:'Remove from wishlist',zh:'取消收藏',ko:'위시리스트에서 삭제',ja:'お気に入りから削除'})[currentLanguage]||'Bỏ yêu thích' : ({vi:'Thêm vào yêu thích',en:'Add to wishlist',zh:'加入收藏',ko:'위시리스트에 추가',ja:'お気に入りに追加'})[currentLanguage]||'Thêm vào yêu thích'}">
+                            <button type="button" onclick="toggleWishlist(${p.id})" class="product-action-favorite lofi-btn-favorite flex items-center justify-center rounded-xl border ${isFav ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-white hover:bg-rose-50 border-sky-200 hover:border-rose-300 text-slate-400 hover:text-rose-500'} transition-all shadow-2xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 32px !important; height: 32px !important; border-radius: 0.5rem !important; background: #FFFFFF !important;" aria-pressed="${isFav}" title="${isFav ? ({vi:'Bỏ yêu thích',en:'Remove from wishlist',zh:'取消收藏',ko:'위시리스트에서 삭제',ja:'お気に入りから削除'})[currentLanguage]||'Bỏ yêu thích' : ({vi:'Thêm vào yêu thích',en:'Add to wishlist',zh:'加入收藏',ko:'위시리스트에 추가',ja:'お気に入りに追加'})[currentLanguage]||'Thêm vào yêu thích'}">
                                 <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-sm"></i>
                             </button>
                         </div>
