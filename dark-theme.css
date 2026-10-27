@@ -1,0 +1,703 @@
+/* ============================================================
+   DARK THEME + PERFORMANCE OPTIMIZATION
+   OCOP Sales Copilot — Dark Mode Override
+   DARK THEME OVERRIDE — OCOP Sales Copilot
+   Load sau skytech-complete.css để override màu sáng
+   Tối ưu hiệu suất cuộn, giảm lag trang web
+   ============================================================ */
+
+/* ── 1. CSS VARIABLES — BỘ MÀU TỐI CHUẨN ─────────────────── */
+:root {
+    --dark-bg-primary:    #0a0f0d;
+    --dark-bg-secondary:  #0d1410;
+    --dark-bg-card:       #111a16;
+    --dark-bg-glass:      rgba(13, 20, 16, 0.95);
+    --dark-border:        rgba(212, 175, 55, 0.2);
+    --dark-border-hover:  rgba(212, 175, 55, 0.6);
+    --dark-text-primary:  #f1f5f9;
+    --dark-text-muted:    #94a3b8;
+    --dark-text-subtle:   #64748b;
+    --dark-accent-gold:   #d4af37;
+    --dark-accent-green:  #34d399;
+    --dark-accent-sky:    #38bdf8;
+/* ── 1. BODY & NỀN TOÀN TRANG — OVERRIDE SKYTECH LIGHT ───── */
+html,
+html body,
+body,
+body.catalog-browsing {
+    background: #07120e !important;
+    background-color: #07120e !important;
+    background-image:
+        radial-gradient(ellipse at 10% 0%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 100%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+        linear-gradient(180deg, #07120e 0%, #0a0f0d 50%, #080d0b 100%) !important;
+    background-attachment: scroll !important;
+    color: #f1f5f9 !important;
+}
+
+/* ── 2. PERFORMANCE: RENDERING HINTS ──────────────────────── */
+html {
+    /* Ngăn layout shift khi scroll */
+    overflow-x: clip;
+    /* Scroll mượt hơn trên mobile */
+    -webkit-overflow-scrolling: touch;
+/* Override main & section cũng bị skytech set màu sáng */
+main,
+body > main,
+main.flex-1 {
+    background: transparent !important;
+    color: #f1f5f9 !important;
+}
+
+body {
+    /* GPU compositing layer cho toàn trang */
+    transform: translateZ(0);
+    /* Tắt overscroll bounce gây layout recalc */
+    overscroll-behavior-y: none;
+section {
+    background: transparent !important;
+}
+
+/* Tắt toàn bộ animation khi user prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+/* ── 3. BODY — NỀN TỐI TOÀN TRANG ────────────────────────── */
+body,
+.bg-ocop-ambient,
+html body {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    background-color: var(--dark-bg-primary) !important;
+    background-image:
+        radial-gradient(ellipse at 10% 0%,   rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 100%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+        linear-gradient(180deg, #07120e 0%, #0a0f0d 40%, #080d0b 100%) !important;
+    color: var(--dark-text-primary) !important;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+/* ── 2. SCROLLBAR ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #07120e; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #1b6b4a, #d4af37); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+
+/* ── 4. ANNOUNCEMENT BAR ──────────────────────────────────── */
+/* ── 3. ANNOUNCEMENT BAR ──────────────────────────────────── */
+.top-announcement-bar {
+    background: linear-gradient(90deg, #050e0a 0%, #07120e 50%, #050e0a 100%) !important;
+    background: #07120e !important;
+    color: #fef08a !important;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+}
+.top-announcement-bar * {
+    color: #fef08a !important;
+}
+
+/* ── 5. HEADER ────────────────────────────────────────────── */
+body > header {
+/* ── 4. HEADER ────────────────────────────────────────────── */
+body > header,
+header {
+    background: rgba(7, 18, 14, 0.97) !important;
+    border-bottom: 1px solid var(--dark-border) !important;
+    /* Tối ưu: giảm blur để cải thiện GPU performance */
+    border-bottom: 1px solid rgba(212, 175, 55, 0.22) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4) !important;
+    /* Containment để tránh layout recalc */
+    contain: layout style !important;
+}
+
+/* ── 6. HERO SECTION ──────────────────────────────────────── */
+#shop-hero {
+    background: transparent !important;
+/* Text màu trong header */
+body > header .text-gray-700,
+body > header .text-gray-800,
+body > header .text-gray-900,
+body > header [class*="text-slate"],
+body > header [class*="text-navy"] {
+    color: #f1f5f9 !important;
+}
+#shop-hero h2,
+#shop-hero .text-gray-900,
+#shop-hero h1, #shop-hero h3 {
+    color: var(--dark-text-primary) !important;
+}
+#shop-hero p,
+#shop-hero .text-gray-700,
+#shop-hero .text-gray-600 {
+    color: var(--dark-text-muted) !important;
+}
+#shop-hero .bg-emerald-50\/80,
+#shop-hero .bg-amber-50\/80,
+#shop-hero .bg-white {
+    background: rgba(13, 26, 20, 0.8) !important;
+    border-color: var(--dark-border) !important;
+}
+
+/* ── 7. MAIN CONTENT & TEXT ───────────────────────────────── */
+main,
+main .text-gray-900,
+main h1, main h2, main h3, main h4, main h5, main h6 {
+    color: var(--dark-text-primary) !important;
+}
+main .text-gray-700,
+main .text-gray-600,
+main .text-gray-500 {
+    color: var(--dark-text-muted) !important;
+}
+main .text-gray-400 {
+    color: var(--dark-text-subtle) !important;
+}
+
+/* ── 8. GLASS PANELS / SIDEBAR ───────────────────────────── */
+/* ── 5. GLASS PANELS / CARDS ─────────────────────────────── */
+.glass-panel,
+.glass-card,
+#catalog-sidebar .glass-panel,
+#catalog-sidebar > div > div,
+.why-us-card,
+.bg-white,
+.bg-gray-50,
+.bg-gray-100 {
+    background: var(--dark-bg-card) !important;
+    border: 1px solid var(--dark-border) !important;
+    /* Giảm backdrop-filter: tắt blur trên các panel phụ để tiết kiệm GPU */
+.why-us-card {
+    background: rgba(13, 20, 16, 0.95) !important;
+    border: 1px solid rgba(212, 175, 55, 0.2) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+    color: var(--dark-text-primary) !important;
+    color: #f1f5f9 !important;
+}
+#catalog-sidebar .glass-panel,
+#catalog-sidebar > div > div {
+    background: rgba(10, 17, 13, 0.98) !important;
+    border: 1px solid rgba(212, 175, 55, 0.18) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    color: #f1f5f9 !important;
+}
+
+/* Sidebar cụ thể */
+/* ── 6. SIDEBAR ───────────────────────────────────────────── */
+#catalog-sidebar {
+    background: rgba(10, 17, 13, 0.98) !important;
+    border-right: 1px solid var(--dark-border) !important;
+    background: #0d1410 !important;
+    color: #f1f5f9 !important;
+}
+#catalog-sidebar * {
+    color: #f1f5f9;
+}
+
+/* ── 9. PRODUCT CARDS — ĐÃ TỐI ƯU PERFORMANCE ───────────── */
+/* ── 7. PRODUCT CARDS ─────────────────────────────────────── */
+#product-grid .product-card {
+    background: var(--dark-bg-card) !important;
+    background: #111a16 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(212, 175, 55, 0.18) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4) !important;
+    /* Performance: tắt backdrop-filter trên card */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    /* GPU layer riêng để tránh repaint */
+    color: #f1f5f9 !important;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+#product-grid .product-card:hover {
+    transform: translate3d(0, -4px, 0) !important;
+    border-color: rgba(212, 175, 55, 0.65) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 18px rgba(212, 175, 55, 0.2) !important;
+}
+
+/* Text trong card */
+#product-grid .product-card * {
+    color: #f1f5f9 !important;
+}
+#product-grid .product-card h3 {
+    color: var(--dark-text-primary) !important;
+    color: #f1f5f9 !important;
+}
+#product-grid .product-card h3:hover {
+    color: var(--dark-accent-sky) !important;
+    color: #38bdf8 !important;
+}
+#product-grid .product-card p,
+#product-grid .product-card .text-gray-500,
+#product-grid .product-card .text-gray-600 {
+    color: var(--dark-text-muted) !important;
+#product-grid .product-card .text-muted,
+#product-grid .product-card [class*="text-slate"],
+#product-grid .product-card [class*="text-gray"] {
+    color: #94a3b8 !important;
+}
+#product-grid .product-card .text-gray-400 {
+    color: var(--dark-text-subtle) !important;
+}
+
+/* Image wrap trong card */
+#product-grid .product-card-image-wrap {
+    background: radial-gradient(circle, #0f2d20 0%, #071810 100%) !important;
+}
+
+/* ── 10. CATEGORY SIDEBAR BUTTONS ────────────────────────── */
+.cat-side-btn,
+.mob-cat-btn {
+/* Giá tiền */
+#product-grid .product-card .text-ocopGreen,
+#product-grid .product-card [class*="text-green"],
+#product-grid .product-card [class*="text-emerald"] {
+    color: #34d399 !important;
+}
+
+/* ── 8. CATEGORY BUTTONS ──────────────────────────────────── */
+.cat-side-btn {
+    background: rgba(13, 20, 16, 0.8) !important;
+    border-color: var(--dark-border) !important;
+    color: var(--dark-text-muted) !important;
+    border-color: rgba(212, 175, 55, 0.2) !important;
+    color: #94a3b8 !important;
+    transition: all 0.15s ease !important;
+}
+.cat-side-btn:hover,
+.mob-cat-btn:hover {
+.cat-side-btn:hover {
+    background: rgba(16, 185, 129, 0.12) !important;
+    border-color: rgba(16, 185, 129, 0.4) !important;
+    color: var(--dark-accent-green) !important;
+    color: #34d399 !important;
+}
+.cat-side-btn.active,
+.mob-cat-btn.active {
+.cat-side-btn.active {
+    background: #0f2b1f !important;
+    border-color: #d4af37 !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+.mob-cat-btn {
+    background: rgba(13, 20, 16, 0.8) !important;
+    color: #94a3b8 !important;
+    border-color: rgba(212, 175, 55, 0.2) !important;
+}
+.mob-cat-btn.active {
+    background: #0f2b1f !important;
+    border-color: #d4af37 !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+}
+
+/* ── 11. BUTTONS & INTERACTIVE ELEMENTS ──────────────────── */
+button.bg-white,
+a.bg-white,
+.btn-light {
+    background: rgba(17, 24, 39, 0.9) !important;
+    color: var(--dark-text-primary) !important;
+    border-color: var(--dark-border) !important;
+/* ── 9. HERO SECTION TEXT ─────────────────────────────────── */
+#shop-hero h1, #shop-hero h2, #shop-hero h3,
+#shop-hero p,
+#shop-hero [class*="text-slate"],
+#shop-hero [class*="text-gray"],
+#shop-hero [class*="text-navy"] {
+    color: #f1f5f9 !important;
+}
+#shop-hero [class*="text-slate-600"],
+#shop-hero [class*="text-gray-600"],
+#shop-hero [class*="text-gray-700"] {
+    color: #94a3b8 !important;
+}
+#shop-hero .bg-white,
+#shop-hero [class*="bg-emerald"],
+#shop-hero [class*="bg-green"],
+#shop-hero [class*="bg-amber"],
+#shop-hero [class*="bg-sky"] {
+    background: rgba(13, 26, 20, 0.8) !important;
+    border-color: rgba(212, 175, 55, 0.2) !important;
+}
+
+/* Nút thêm giỏ hàng */
+.add-to-cart-btn,
+button[class*="cart"],
+button[class*="buy"] {
+    transition: all 0.15s ease !important;
+/* ── 10. WHY CHOOSE US SECTION ────────────────────────────── */
+#why-choose-us-section,
+#why-choose-us-section * {
+    color: #f1f5f9 !important;
+}
+#why-choose-us-section .bg-white,
+#why-choose-us-section [class*="bg-sky"],
+#why-choose-us-section [class*="bg-blue"],
+#why-choose-us-section [class*="bg-gray"] {
+    background: #111a16 !important;
+    border-color: rgba(212, 175, 55, 0.18) !important;
+}
+
+/* ── 11. AI CONTENT STUDIO ────────────────────────────────── */
+#ai-content-studio-section,
+#ai-content-studio-section [class*="bg-white"],
+#ai-content-studio-section [class*="bg-sky"],
+#ai-content-studio-section [class*="bg-slate"] {
+    background: #0d1410 !important;
+    color: #f1f5f9 !important;
+}
+#ai-content-studio-section * {
+    color: #f1f5f9 !important;
+}
+
+/* ── 12. FOOTER ───────────────────────────────────────────── */
+footer,
+#contact-footer,
+body footer#contact-footer {
+    background: #05100b !important;
+    border-top: 1px solid var(--dark-border) !important;
+    color: var(--dark-text-muted) !important;
+    border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+    color: #94a3b8 !important;
+}
+#contact-footer h5, #contact-footer h6,
+#contact-footer span, #contact-footer a,
+footer h5, footer h6, footer p {
+    color: var(--dark-text-primary) !important;
+#contact-footer *,
+footer * {
+    color: #f1f5f9 !important;
+}
+footer a:hover {
+    color: var(--dark-accent-gold) !important;
+    color: #d4af37 !important;
+}
+
+/* ── 13. FORMS & INPUTS ───────────────────────────────────── */
+input, textarea, select {
+input[type="text"], input[type="search"], input[type="email"],
+textarea, select {
+    background: rgba(13, 20, 16, 0.9) !important;
+    color: var(--dark-text-primary) !important;
+    border-color: var(--dark-border) !important;
+    color: #f1f5f9 !important;
+    border-color: rgba(212, 175, 55, 0.25) !important;
+}
+input::placeholder, textarea::placeholder {
+    color: var(--dark-text-subtle) !important;
+    color: #64748b !important;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: rgba(212, 175, 55, 0.65) !important;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15) !important;
+    outline: none !important;
+}
+
+/* ── 14. BADGES & LABELS ──────────────────────────────────── */
+.badge,
+.tag,
+span[class*="bg-green"],
+span[class*="bg-emerald"] {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: var(--dark-accent-green) !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+/* ── 14. BACKGROUND HELPER CLASSES ───────────────────────── */
+.bg-white {
+    background-color: #111a16 !important;
+}
+span[class*="bg-amber"],
+span[class*="bg-yellow"] {
+    background: rgba(212, 175, 55, 0.15) !important;
+    color: #fbbf24 !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+.bg-gray-50, .bg-slate-50 {
+    background-color: #0d1410 !important;
+}
+span[class*="bg-blue"],
+span[class*="bg-sky"] {
+    background: rgba(56, 189, 248, 0.15) !important;
+    color: var(--dark-accent-sky) !important;
+    border: 1px solid rgba(56, 189, 248, 0.3) !important;
+.bg-gray-100, .bg-slate-100 {
+    background-color: #111a16 !important;
+}
+
+/* ── 15. SCROLLBAR — DARK STYLE ──────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+[class*="bg-sky-50"], [class*="bg-blue-50"] {
+    background-color: rgba(14, 165, 233, 0.08) !important;
+}
+::-webkit-scrollbar-track {
+    background: #0a0f0d;
+[class*="bg-emerald-50"], [class*="bg-green-50"] {
+    background-color: rgba(16, 185, 129, 0.08) !important;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #1b6b4a, #d4af37);
+    border-radius: 10px;
+[class*="bg-amber-50"], [class*="bg-yellow-50"] {
+    background-color: rgba(212, 175, 55, 0.08) !important;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #d4af37;
+}
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #1b6b4a #0a0f0d;
+}
+
+/* ── 16. MODALS / DRAWERS ─────────────────────────────────── */
+.modal-bg,
+[id*="modal"],
+[id*="drawer"],
+.overlay {
+    background: rgba(0, 0, 0, 0.75) !important;
+/* ── 15. TEXT HELPER CLASSES ──────────────────────────────── */
+.text-gray-900, .text-slate-900, [class*="text-navy"] {
+    color: #f1f5f9 !important;
+}
+.modal-content,
+[id*="modal"] > div,
+[id*="drawer"] > div {
+    background: var(--dark-bg-card) !important;
+    border: 1px solid var(--dark-border) !important;
+    color: var(--dark-text-primary) !important;
+.text-gray-800, .text-slate-800 {
+    color: #e2e8f0 !important;
+}
+
+/* ── 17. TAILWIND UTILITY OVERRIDES ──────────────────────── */
+.text-gray-900 { color: var(--dark-text-primary) !important; }
+.text-gray-800 { color: #e2e8f0 !important; }
+.text-gray-700 { color: var(--dark-text-muted) !important; }
+.text-gray-600 { color: #8b9ab0 !important; }
+.text-gray-500 { color: var(--dark-text-subtle) !important; }
+.bg-white       { background-color: var(--dark-bg-card) !important; }
+.bg-gray-50     { background-color: #0d1410 !important; }
+.bg-gray-100    { background-color: #111a16 !important; }
+.bg-gray-200    { background-color: #162019 !important; }
+.border-gray-200 { border-color: var(--dark-border) !important; }
+.border-gray-300 { border-color: rgba(212, 175, 55, 0.25) !important; }
+.divide-gray-200 > * + * { border-color: var(--dark-border) !important; }
+
+/* ── 18. PERFORMANCE: SCROLL CONTAINMENT ─────────────────── */
+/* Content visibility: tắt render các phần tử ngoài viewport */
+#product-grid .product-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 380px;
+.text-gray-700, .text-slate-700 {
+    color: #94a3b8 !important;
+}
+
+/* Layout containment ngăn reflow lan rộng */
+#products-section     { contain: layout !important; }
+#catalog-sidebar      { contain: layout style !important; }
+#catalog-layout-wrapper { contain: layout !important; }
+
+/* ── 19. PERFORMANCE: TẮT ANIMATION KHI SCROLL ───────────── */
+/* Giảm will-change để tránh tạo quá nhiều compositor layer */
+#product-grid .product-card {
+    will-change: transform !important;
+.text-gray-600, .text-slate-600 {
+    color: #8b9ab0 !important;
+}
+/* Reset will-change khi không hover */
+#product-grid .product-card:not(:hover) {
+    will-change: auto !important;
+.text-gray-500, .text-slate-500 {
+    color: #64748b !important;
+}
+
+/* ── 20. PERFORMANCE: GIẢM BLUR EFFECT ───────────────────── */
+/* backdrop-filter rất nặng về GPU — chỉ giữ ở header & chat */
+.glass-panel,
+.glass-card,
+.why-us-card,
+#catalog-sidebar .glass-panel,
+#catalog-sidebar > div > div {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+.border-gray-200, .border-slate-200 {
+    border-color: rgba(212, 175, 55, 0.18) !important;
+}
+
+/* ── 21. CANVAS / PARTICLE ────────────────────────────────── */
+/* ── 16. CANVAS / PARTICLE ────────────────────────────────── */
+#ambient-stardust-canvas,
+#scroll-ambient-background,
+#ocop-advanced-3d-bg {
+#skytech-canvas {
+    opacity: 0.3 !important;
+    /* Tắt pointer events để tránh re-paint không cần thiết */
+    pointer-events: none !important;
+}
+
+/* ── 22. SECTION BACKGROUNDS ─────────────────────────────── */
+section,
+article,
+.section-wrapper {
+    background: transparent !important;
+}
+/* ── 17. PERFORMANCE: CONTAINMENT ────────────────────────── */
+#products-section       { contain: layout !important; }
+#catalog-sidebar        { contain: layout style !important; }
+#catalog-layout-wrapper { contain: layout !important; }
+
+/* Featured / highlighted sections */
+.featured-section,
+.promo-banner,
+[class*="bg-emerald"],
+[class*="bg-green-50"],
+[class*="bg-green-100"] {
+    background: rgba(16, 185, 129, 0.08) !important;
+    border-color: rgba(16, 185, 129, 0.2) !important;
+/* Content visibility: lazy render card ngoài viewport */
+#product-grid .product-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 380px;
+}
+[class*="bg-amber-50"],
+[class*="bg-yellow-50"] {
+    background: rgba(212, 175, 55, 0.08) !important;
+    border-color: rgba(212, 175, 55, 0.2) !important;
+}
+[class*="bg-blue-50"],
+[class*="bg-sky-50"] {
+    background: rgba(56, 189, 248, 0.08) !important;
+    border-color: rgba(56, 189, 248, 0.2) !important;
+}
+
+/* ── 23. STAT CARDS / INFO BOXES ─────────────────────────── */
+.stat-card,
+.info-card,
+.metric-card,
+[class*="rounded-xl"].bg-white,
+[class*="rounded-2xl"].bg-white,
+[class*="rounded-lg"].bg-white {
+    background: var(--dark-bg-card) !important;
+    border: 1px solid var(--dark-border) !important;
+    color: var(--dark-text-primary) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+/* ── 18. PERFORMANCE: WILL-CHANGE MINIMAL ────────────────── */
+#product-grid .product-card:not(:hover) {
+    will-change: auto !important;
+}
+
+/* ── 24. TABLE ────────────────────────────────────────────── */
+table {
+    background: transparent !important;
+    color: var(--dark-text-primary) !important;
+}
+thead, th {
+    background: rgba(13, 27, 21, 0.9) !important;
+    color: var(--dark-accent-gold) !important;
+    border-color: var(--dark-border) !important;
+}
+tbody tr {
+    border-color: rgba(212, 175, 55, 0.1) !important;
+}
+tbody tr:hover {
+    background: rgba(16, 185, 129, 0.06) !important;
+}
+td {
+    color: var(--dark-text-primary) !important;
+    border-color: rgba(255,255,255,0.05) !important;
+}
+
+/* ── 25. LOADING SKELETON ─────────────────────────────────── */
+.skeleton,
+[class*="animate-pulse"] {
+    background: linear-gradient(90deg,
+        rgba(255,255,255,0.04) 25%,
+        rgba(255,255,255,0.08) 50%,
+        rgba(255,255,255,0.04) 75%) !important;
+    background-size: 200% 100% !important;
+    animation: skeletonShimmer 1.5s infinite !important;
+}
+@keyframes skeletonShimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ── 26. HOVER STATES TOÀN CỤC ────────────────────────────── */
+a:not([class]) {
+    color: var(--dark-accent-sky) !important;
+}
+a:not([class]):hover {
+    color: var(--dark-accent-gold) !important;
+}
+
+/* ── 27. DIVIDERS ────────────────────────────────────────────*/
+hr, .divider {
+    border-color: var(--dark-border) !important;
+    opacity: 0.5 !important;
+}
+
+/* ── 28. MAP SECTION ──────────────────────────────────────── */
+#province-map-section,
+.leaflet-container {
+    background: #07120e !important;
+}
+.leaflet-tile {
+    filter: brightness(0.6) invert(1) hue-rotate(175deg) !important;
+}
+
+/* ── 29. PRICE COLORS ─────────────────────────────────────── */
+.price-current,
+.text-ocopGreen,
+[class*="text-green"],
+[class*="text-emerald"] {
+    color: var(--dark-accent-green) !important;
+}
+.price-original,
+[class*="line-through"] {
+    color: var(--dark-text-subtle) !important;
+}
+
+/* ── 30. MOBILE PERFORMANCE ───────────────────────────────── */
+/* ── 19. MOBILE PERFORMANCE ───────────────────────────────── */
+@media (max-width: 767px), (pointer: coarse) {
+    /* Tắt tất cả backdrop-filter trên mobile để tiết kiệm GPU */
+    * {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    /* Chỉ giữ lại header blur tối thiểu */
+    body > header {
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+    /* Tắt transition trên mobile để scroll không lag */
+    #product-grid .product-card {
+        transition: none !important;
+        will-change: auto !important;
+    }
+    /* Tắt particle animations trên mobile */
+    #ambient-stardust-canvas,
+    #scroll-ambient-background {
+    #scroll-ambient-background,
+    #skytech-canvas {
+        display: none !important;
+    }
+}
+
+/* ── 20. REDUCED MOTION ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

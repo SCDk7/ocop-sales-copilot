@@ -1,33 +1,3 @@
-
-    window.switchOrderPaymentMethod = function (method) {
-        const pBidv = document.getElementById('panel-payment-bidv');
-        const pMomo = document.getElementById('panel-payment-momo');
-        const pCod = document.getElementById('panel-payment-cod');
-        const lBidv = document.getElementById('payment-label-bidv');
-        const lMomo = document.getElementById('payment-label-momo');
-        const lCod = document.getElementById('payment-label-cod');
-
-        if (pBidv) pBidv.classList.toggle('hidden', method !== 'bidv');
-        if (pMomo) pMomo.classList.toggle('hidden', method !== 'momo');
-        if (pCod) pCod.classList.toggle('hidden', method !== 'cod');
-
-        if (lBidv) {
-            lBidv.className = method === 'bidv'
-                ? 'flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition'
-                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-sky-400 transition';
-        }
-        if (lMomo) {
-            lMomo.className = method === 'momo'
-                ? 'flex items-center gap-2 p-2.5 rounded-xl border-2 border-[#D82D8B] bg-pink-50/70 cursor-pointer font-black text-slate-900 transition'
-                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-pink-400 transition';
-        }
-        if (lCod) {
-            lCod.className = method === 'cod'
-                ? 'flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition'
-                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-sky-400 transition';
-        }
-    };
-
 /**
  * MODERN SKY-TECH & CLEAN SAPPHIRE CONTROLLER
  * AI Digital Business Challenge 2026 • OCOP Sales Copilot
@@ -177,27 +147,85 @@
 
     // 2. TÁCH BIỆT HOÀN TOÀN MÀN HÌNH MỞ ĐẦU VÀ THANH HEADER BÊN TRONG
     function setupIntroHeaderIsolation() {
-        const intro = document.getElementById('ocop-intro-overlay');
-        const header = document.querySelector('header');
+        function syncHeaderVisibility() {
+            const intro = document.getElementById('ocop-intro-overlay');
+            const headers = document.querySelectorAll('header, .storefront-header, #storefront-main-header');
+            const isIntroOpen = intro && !intro.classList.contains('hidden') && intro.style.display !== 'none';
+            const isBrowsing = document.body.classList.contains('catalog-browsing');
 
-        if (intro && header) {
-            const isIntroOpen = !intro.classList.contains('hidden') && intro.style.display !== 'none';
-            if (isIntroOpen) {
-                header.style.display = 'none';
-            } else {
-                header.style.display = '';
-            }
+            headers.forEach(header => {
+                if (isIntroOpen || !isBrowsing) {
+                    header.classList.add('hidden');
+                    header.style.setProperty('display', 'none', 'important');
+                    header.style.setProperty('visibility', 'hidden', 'important');
+                    header.style.setProperty('opacity', '0', 'important');
+                    header.style.setProperty('pointer-events', 'none', 'important');
+                } else {
+                    header.classList.remove('hidden');
+                    header.style.removeProperty('display');
+                    header.style.removeProperty('visibility');
+                    header.style.removeProperty('opacity');
+                    header.style.removeProperty('pointer-events');
+                    header.style.setProperty('display', 'block', 'important');
+                    header.style.setProperty('visibility', 'visible', 'important');
+                    header.style.setProperty('opacity', '1', 'important');
+                    header.style.setProperty('pointer-events', 'auto', 'important');
+                }
+            });
         }
+
+        // Đồng bộ ngay lập tức
+        syncHeaderVisibility();
 
         if (typeof window.enterOcopMarket === 'function' && !window._enterOcopMarketHooked) {
             const origEnter = window.enterOcopMarket;
             window.enterOcopMarket = function (mode, onEntered) {
-                if (header) header.style.display = '';
-                return origEnter.apply(this, arguments);
+                document.body.classList.add('catalog-browsing');
+                const res = origEnter.apply(this, arguments);
+                setTimeout(syncHeaderVisibility, 50);
+                setTimeout(syncHeaderVisibility, 480);
+                return res;
             };
             window._enterOcopMarketHooked = true;
         }
+
+        if (typeof window.openIntroModal === 'function' && !window._openIntroModalHooked) {
+            const origOpen = window.openIntroModal;
+            window.openIntroModal = function () {
+                document.body.classList.remove('catalog-browsing');
+                const res = origOpen.apply(this, arguments);
+                syncHeaderVisibility();
+                return res;
+            };
+            window._openIntroModalHooked = true;
+        }
+
+        if (typeof window.openProvinceProductDetails === 'function' && !window._openProvinceProductDetailsHooked) {
+            const origOpenDetails = window.openProvinceProductDetails;
+            window.openProvinceProductDetails = function () {
+                document.body.classList.add('catalog-browsing');
+                const res = origOpenDetails.apply(this, arguments);
+                syncHeaderVisibility();
+                return res;
+            };
+            window._openProvinceProductDetailsHooked = true;
+        }
+
+        const intro = document.getElementById('ocop-intro-overlay');
+        if (intro && window.MutationObserver) {
+            new MutationObserver(syncHeaderVisibility).observe(intro, {
+                attributes: true,
+                attributeFilter: ['class', 'style', 'hidden']
+            });
+        }
+
+        window.addEventListener('resize', syncHeaderVisibility, { passive: true });
+        window.addEventListener('DOMContentLoaded', syncHeaderVisibility);
+        window.addEventListener('load', syncHeaderVisibility);
     }
+
+    // Thực thi ngay lập tức để thanh header không bao giờ bị chớp hoặc hiển thị ở màn hình chờ
+    setupIntroHeaderIsolation();
 
     // 3. BẢN ĐỒ ĐỊA LÝ VIỆT NAM TƯƠNG TÁC (SẮC SẢO, RÕ NÉT, 63 TỈNH THÀNH & HOÀNG SA, TRƯỜNG SA)
     window.selectProvinceFromMap = function (provinceName, provinceId) {
@@ -316,9 +344,9 @@
         const mapContainer = document.getElementById('province-map');
         if (!mapContainer) return;
 
-        // Container styling: 450px height, border-radius 16px, border 2px solid #38BDF8
-        mapContainer.style.setProperty('height', '450px', 'important');
-        mapContainer.style.setProperty('min-height', '450px', 'important');
+        // Đảm bảo chiều cao rõ ràng cho container bản đồ Leaflet
+        mapContainer.style.setProperty('height', '300px', 'important');
+        mapContainer.style.setProperty('min-height', '260px', 'important');
         mapContainer.style.setProperty('width', '100%', 'important');
         mapContainer.style.setProperty('border-radius', '16px', 'important');
         mapContainer.style.setProperty('overflow', 'hidden', 'important');
@@ -494,11 +522,11 @@
             };
         }
 
-        // Nút Quản Trị & Studio AI
+        // Nút Quản Trị Hệ Thống
         let btnPin = document.getElementById('btn-header-admin-pin');
         if (btnPin) {
-            btnPin.innerHTML = '<i class="fa-solid fa-lock text-sky-400"></i> <span>🔐 Quản Trị &amp; Studio AI</span>';
-            btnPin.setAttribute('title', 'Cổng Quản Trị Doanh Thu & Studio AI TikTok (Yêu cầu mã PIN: 2007)');
+            btnPin.innerHTML = '<i class="fa-solid fa-lock text-sky-400"></i> <span>🔐 Quản Trị Hệ Thống</span>';
+            btnPin.setAttribute('title', 'Cổng Quản Trị Toàn Quyền Admin & Nhà Phân Phối (Yêu cầu mật khẩu)');
             btnPin.onclick = function (e) {
                 if (e) e.preventDefault();
                 promptAdminPinModal();
@@ -542,59 +570,64 @@
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'admin-pin-modal';
-            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.65) !important; backdrop-filter: blur(4px) !important;';
-            modal.innerHTML = `
-                <div id="admin-pin-card" style="position: relative !important; width: 100% !important; max-width: 440px !important; background: #FFFFFF !important; border: 2.5px solid #0284C7 !important; border-radius: 24px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.3) !important; color: #0F172A !important; font-family: inherit !important; text-align: center !important;">
-                    <button type="button" onclick="closeAdminPinModal()" style="position: absolute !important; top: 16px !important; right: 16px !important; width: 32px !important; height: 32px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng">
-                        <i class="fa-solid fa-xmark" style="font-size: 14px !important;"></i>
-                    </button>
-                    
-                    <div style="width: 56px !important; height: 56px !important; margin: 0 auto 12px !important; border-radius: 18px !important; background: #E0F2FE !important; color: #0284C7 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 24px !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-
-                    <h3 style="margin: 0 0 8px !important; color: #0C4A6E !important; font-size: 1.22rem !important; font-weight: 900 !important; letter-spacing: -0.01em !important;">
-                        🔐 XÁC THỰC QUẢN TRỊ VIÊN (ADMIN)
-                    </h3>
-
-                    <p style="margin: 0 0 20px !important; color: #334155 !important; font-size: 13.5px !important; line-height: 1.5 !important; font-weight: 500 !important;">
-                        Khu vực bảo mật doanh thu & tiền lời dành riêng cho Chủ Web. Khách hàng vui lòng quay lại.
-                    </p>
-
-                    <div style="margin-bottom: 16px !important; text-align: left !important;">
-                        <label for="admin-pin-input" style="display: block !important; font-size: 12px !important; font-weight: 700 !important; color: #0369A1 !important; margin-bottom: 6px !important;">
-                            Mã PIN Quản Trị:
-                        </label>
-                        <input type="password" id="admin-pin-input" maxlength="10" placeholder="Nhập mã PIN quản trị..." autocomplete="off"
-                               style="width: 100% !important; box-sizing: border-box !important; padding: 12px 16px !important; font-size: 16px !important; font-weight: 700 !important; text-align: center !important; letter-spacing: 0.15em !important; border-radius: 12px !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; color: #0F172A !important; outline: none !important; transition: all 0.2s !important;">
-                        <p id="admin-pin-error" style="display: none; margin: 8px 0 0 !important; color: #DC2626 !important; font-size: 12.5px !important; font-weight: 700 !important; text-align: center !important;">
-                            ❌ Mã PIN không chính xác! Bạn không có quyền truy cập.
-                        </p>
-                    </div>
-
-                    <div style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 12px !important; margin-top: 20px !important;">
-                        <button type="button" onclick="closeAdminPinModal()"
-                                style="flex: 1 !important; padding: 12px 18px !important; border-radius: 12px !important; background: #F1F5F9 !important; color: #475569 !important; font-weight: 700 !important; font-size: 14px !important; border: 1px solid #E2E8F0 !important; cursor: pointer !important; transition: all 0.2s !important;">
-                            Hủy Bỏ
-                        </button>
-                        <button type="button" onclick="verifyAdminPin()"
-                                style="flex: 1 !important; padding: 12px 20px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 14px !important; border: none !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important; cursor: pointer !important; transition: all 0.2s !important;">
-                            Mở Khóa
-                        </button>
-                    </div>
-                </div>
-            `;
             document.body.appendChild(modal);
+        }
+        modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.65) !important; backdrop-filter: blur(4px) !important;';
+        modal.innerHTML = `
+            <div id="admin-pin-card" style="position: relative !important; width: 100% !important; max-width: 440px !important; background: #FFFFFF !important; border: 2.5px solid #0284C7 !important; border-radius: 24px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.3) !important; color: #0F172A !important; font-family: inherit !important; text-align: center !important;">
+                <button type="button" onclick="closeAdminPinModal()" style="position: absolute !important; top: 16px !important; right: 16px !important; width: 32px !important; height: 32px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng">
+                    <i class="fa-solid fa-xmark" style="font-size: 14px !important;"></i>
+                </button>
+                
+                <div style="width: 56px !important; height: 56px !important; margin: 0 auto 12px !important; border-radius: 18px !important; background: #E0F2FE !important; color: #0284C7 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 24px !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
 
-            const input = document.getElementById('admin-pin-input');
-            if (input) {
-                input.addEventListener('keydown', function (e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        window.verifyAdminPin();
-                    }
-                });
-            }
+                <h3 style="margin: 0 0 8px !important; color: #0C4A6E !important; font-size: 1.22rem !important; font-weight: 900 !important; letter-spacing: -0.01em !important;">
+                    🔐 XÁC THỰC QUẢN TRỊ VIÊN (ADMIN)
+                </h3>
+
+                <p style="margin: 0 0 20px !important; color: #334155 !important; font-size: 13.5px !important; line-height: 1.5 !important; font-weight: 500 !important;">
+                    Khu vực bảo mật dành riêng cho Ban quản trị OCOP & Chủ Web.
+                </p>
+
+                <div style="margin-bottom: 16px !important; text-align: left !important;">
+                    <label for="admin-pin-input" style="display: block !important; font-size: 12px !important; font-weight: 700 !important; color: #0369A1 !important; margin-bottom: 6px !important;">
+                        Nhập mật khẩu quản trị hoặc mã xác thực:
+                    </label>
+                    <div style="position: relative !important;">
+                        <input type="password" id="admin-pin-input" maxlength="25" placeholder="Nhập mã bảo mật quản trị..." autocomplete="off"
+                               style="width: 100% !important; box-sizing: border-box !important; padding: 12px 42px 12px 16px !important; font-size: 16px !important; font-weight: 700 !important; text-align: center !important; letter-spacing: 0.15em !important; border-radius: 12px !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; color: #0F172A !important; outline: none !important; transition: all 0.2s !important;">
+                        <button type="button" onclick="toggleAdminPinVisibility()" style="position: absolute !important; right: 12px !important; top: 50% !important; transform: translateY(-50%) !important; background: none !important; border: none !important; color: #64748B !important; cursor: pointer !important; padding: 4px !important;" title="Ẩn / Hiện mật khẩu">
+                            <i class="fa-solid fa-eye" id="admin-pin-eye-icon"></i>
+                        </button>
+                    </div>
+                    <p id="admin-pin-error" style="display: none; margin: 8px 0 0 !important; color: #DC2626 !important; font-size: 12.5px !important; font-weight: 700 !important; text-align: center !important;">
+                        ❌ Mã xác thực không chính xác! Vui lòng thử lại.
+                    </p>
+                </div>
+
+                <div style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 12px !important; margin-top: 20px !important;">
+                    <button type="button" onclick="closeAdminPinModal()"
+                            style="flex: 1 !important; padding: 12px 18px !important; border-radius: 12px !important; background: #F1F5F9 !important; color: #475569 !important; font-weight: 700 !important; font-size: 14px !important; border: 1px solid #E2E8F0 !important; cursor: pointer !important; transition: all 0.2s !important;">
+                        Hủy Bỏ
+                    </button>
+                    <button type="button" onclick="verifyAdminPin()"
+                            style="flex: 1 !important; padding: 12px 20px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 14px !important; border: none !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important; cursor: pointer !important; transition: all 0.2s !important;">
+                        Mở Khóa
+                    </button>
+                </div>
+            </div>
+        `;
+
+        const input = document.getElementById('admin-pin-input');
+        if (input) {
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    window.verifyAdminPin();
+                }
+            });
         }
 
         modal.classList.remove('hidden');
@@ -608,13 +641,29 @@
 
         const input = document.getElementById('admin-pin-input');
         if (input) {
+            input.type = 'password';
             input.value = '';
             input.style.borderColor = '#BAE6FD';
             input.style.background = '#F8FAFC';
+            const icon = document.getElementById('admin-pin-eye-icon');
+            if (icon) { icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
             setTimeout(() => input.focus(), 80);
         }
         const err = document.getElementById('admin-pin-error');
         if (err) err.style.display = 'none';
+    };
+
+    window.toggleAdminPinVisibility = function () {
+        const input = document.getElementById('admin-pin-input');
+        const icon = document.getElementById('admin-pin-eye-icon');
+        if (!input) return;
+        if (input.type === 'password') {
+            input.type = 'text';
+            if (icon) { icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash'); }
+        } else {
+            input.type = 'password';
+            if (icon) { icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
+        }
     };
 
     window.closeAdminPinModal = function () {
@@ -631,12 +680,33 @@
         const card = document.getElementById('admin-pin-card');
         const pin = (input ? input.value : '').trim();
 
-        if (pin === '2007') {
+        let authedAdmin = null;
+        if (window.OcopAdminManagement && typeof window.OcopAdminManagement.authenticateAdmin === 'function') {
+            authedAdmin = window.OcopAdminManagement.authenticateAdmin(pin);
+        }
+
+        const isMaster = (pin === '2007');
+        const isDistributor = (pin.toUpperCase().startsWith('NPP') || pin === '123456');
+
+        if (isMaster || authedAdmin || isDistributor) {
             if (err) err.style.display = 'none';
             window.closeAdminPinModal();
+
+            if (authedAdmin) {
+                if (window.OcopAdminManagement && typeof window.OcopAdminManagement.setActiveScope === 'function') {
+                    window.OcopAdminManagement.setActiveScope('webmaster', null, authedAdmin.username);
+                }
+            } else if (isDistributor) {
+                const distCode = pin.toUpperCase().startsWith('NPP') ? pin.toUpperCase() : 'NPP260000001';
+                if (window.OcopAdminManagement && typeof window.OcopAdminManagement.setActiveScope === 'function') {
+                    window.OcopAdminManagement.setActiveScope('distributor', distCode);
+                }
+            }
+
             window.openAdminHubModal();
             if (typeof showToast === 'function') {
-                showToast('🔓 Xác thực Quản Trị thành công!', 'success');
+                const title = authedAdmin ? authedAdmin.fullName : (isDistributor ? 'Nhà Phân Phối' : 'Chủ Web Master');
+                showToast('🔓 Xin chào ' + title + '! Mở khóa Quản Trị thành công.', 'success');
             }
         } else {
             if (err) err.style.display = 'block';
@@ -657,6 +727,17 @@
     // =========================================================================
     // ADMIN HUB CHOICE MODAL (MÃ PIN 2007 -> CHỌN TÀI CHÍNH HOẶC TIKTOK STUDIO)
     // =========================================================================
+    window.openAdminHubCardAction = function(type) {
+        window.closeAdminHubModal();
+        if (window.OcopAdminManagement) {
+            if (type === 'admin') {
+                window.OcopAdminManagement.openAdminManagementModal('webmaster', null);
+            } else if (type === 'distributor') {
+                window.OcopAdminManagement.openAdminManagementModal('distributor', 'NPP260000001');
+            }
+        }
+    };
+
     window.openAdminHubModal = function () {
         // Tắt hẳn bảng nhập mã PIN bên ngoài
         window.closeAdminPinModal();
@@ -671,90 +752,7 @@
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'admin-hub-modal';
-            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.75) !important; backdrop-filter: blur(6px) !important;';
-            modal.innerHTML = `
-                <div id="admin-hub-card" style="position: relative !important; width: 100% !important; max-width: 680px !important; background: #FFFFFF !important; border: 2.5px solid #38BDF8 !important; border-radius: 28px !important; padding: 32px 28px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.3) !important; color: #0F172A !important; font-family: inherit !important;">
-                    
-                    <button type="button" onclick="closeAdminHubModal()" style="position: absolute !important; top: 18px !important; right: 18px !important; width: 36px !important; height: 36px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng Admin Hub">
-                        <i class="fa-solid fa-xmark" style="font-size: 16px !important;"></i>
-                    </button>
-
-                    <!-- Header -->
-                    <div style="text-align: center !important; margin-bottom: 24px !important;">
-                        <div style="display: inline-flex !important; align-items: center !important; gap: 8px !important; padding: 4px 14px !important; border-radius: 999px !important; background: #E0F2FE !important; color: #0284C7 !important; font-size: 11px !important; font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: 0.05em !important; margin-bottom: 8px !important; border: 1px solid #BAE6FD !important;">
-                            <i class="fa-solid fa-shield-halved text-sky-500"></i>
-                            <span>CỔNG QUẢN TRỊ TRUNG TÂM • ADMIN HUB 2026</span>
-                        </div>
-                        <h2 style="margin: 0 0 6px !important; color: #0C4A6E !important; font-size: 1.45rem !important; font-weight: 900 !important; letter-spacing: -0.02em !important;">
-                            🏛️ TRUNG TÂM ĐIỀU HÀNH CHỦ WEB
-                        </h2>
-                        <p style="margin: 0 !important; color: #475569 !important; font-size: 13.5px !important; font-weight: 500 !important; line-height: 1.5 !important;">
-                            Chào mừng Webmaster! Vui lòng chọn phân hệ bạn muốn truy cập:
-                        </p>
-                    </div>
-
-                    <!-- 2 Large Interactive Cards -->
-                    <div style="display: grid !important; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important; gap: 18px !important; margin-bottom: 20px !important;">
-                        
-                        <!-- CARD 1: FINANCIAL REVENUE DASHBOARD -->
-                        <div class="admin-hub-card" onclick="selectAdminHubPortal('revenue')"
-                             style="position: relative !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; border-radius: 20px !important; padding: 24px 20px !important; cursor: pointer !important; transition: all 0.25s ease !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; text-align: left !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;">
-                            
-                            <div style="margin-bottom: 16px !important;">
-                                <div style="display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 14px !important;">
-                                    <div style="width: 48px !important; height: 48px !important; border-radius: 14px !important; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 20px !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3) !important;">
-                                        <i class="fa-solid fa-chart-line"></i>
-                                    </div>
-                                    <span style="font-size: 10px !important; font-weight: 800 !important; text-transform: uppercase !important; padding: 3px 8px !important; border-radius: 6px !important; background: #FEF08A !important; color: #854D0E !important;">
-                                        Tài Chính O2O
-                                    </span>
-                                </div>
-                                <h3 style="margin: 0 0 6px !important; font-size: 1.1rem !important; font-weight: 900 !important; color: #0C4A6E !important;">
-                                    📊 Quản Trị Doanh Thu &amp; Lợi Nhuận
-                                </h3>
-                                <p style="margin: 0 !important; font-size: 12.5px !important; color: #475569 !important; line-height: 1.45 !important; font-weight: 500 !important;">
-                                    Báo cáo tài chính GMV 875M, Hoa hồng 415.6M, Tài trợ 70M, Biên lợi nhuận 34.8% và mô phỏng O2O.
-                                </p>
-                            </div>
-
-                            <button type="button" onclick="event.stopPropagation(); selectAdminHubPortal('revenue')" style="width: 100% !important; padding: 11px 16px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3) !important; cursor: pointer !important;">
-                                <span>👉 Mở Bảng Quản Trị Doanh Thu</span>
-                            </button>
-                        </div>
-
-                        <!-- CARD 2: TIKTOK STUDIO -->
-                        <div class="admin-hub-card" onclick="selectAdminHubPortal('tiktok')"
-                             style="position: relative !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; border-radius: 20px !important; padding: 24px 20px !important; cursor: pointer !important; transition: all 0.25s ease !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; text-align: left !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;">
-                            
-                            <div style="margin-bottom: 16px !important;">
-                                <div style="display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 14px !important;">
-                                    <div style="width: 48px !important; height: 48px !important; border-radius: 14px !important; background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%) !important; color: #FFFFFF !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 22px !important; box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3) !important;">
-                                        <i class="fa-brands fa-tiktok"></i>
-                                    </div>
-                                    <span style="font-size: 10px !important; font-weight: 800 !important; text-transform: uppercase !important; padding: 3px 8px !important; border-radius: 6px !important; background: #E0F2FE !important; color: #0284C7 !important;">
-                                        AI Studio 2026
-                                    </span>
-                                </div>
-                                <h3 style="margin: 0 0 6px !important; font-size: 1.1rem !important; font-weight: 900 !important; color: #0C4A6E !important;">
-                                    🎬 Studio AI Tạo Video TikTok
-                                </h3>
-                                <p style="margin: 0 !important; font-size: 12.5px !important; color: #475569 !important; line-height: 1.45 !important; font-weight: 500 !important;">
-                                    Tự động viết kịch bản viral, tạo video thương mại 9:16 sắc nét kéo traffic về Bản Đồ Số 63 Tỉnh Thành.
-                                </p>
-                            </div>
-
-                            <button type="button" onclick="event.stopPropagation(); selectAdminHubPortal('tiktok')" style="width: 100% !important; padding: 11px 16px !important; border-radius: 12px !important; background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%) !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(225, 29, 72, 0.3) !important; cursor: pointer !important;">
-                                <span>👉 Mở Studio Video TikTok</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Footer Note (NO PIN DISPLAYED) -->
-                    <div style="background: #F1F5F9 !important; border-radius: 12px !important; padding: 10px 16px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 12px !important; color: #475569 !important; text-align: center !important;">
-                        <span style="font-weight: 600 !important;"><i class="fa-solid fa-arrows-rotate text-sky-500 mr-1.5"></i> Có nút chuyển đổi qua lại nhanh giữa 2 phân hệ mà không cần nhập lại mã PIN.</span>
-                    </div>
-                </div>
-            `;
+            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.75) !important; backdrop-filter: blur(6px) !important; overflow-y: auto !important;';
             document.body.appendChild(modal);
 
             modal.addEventListener('click', function(e) {
@@ -763,6 +761,96 @@
                 }
             });
         }
+
+        modal.innerHTML = `
+            <div id="admin-hub-card" style="position: relative !important; width: 100% !important; max-width: 860px !important; max-height: 92vh !important; overflow-y: auto !important; background: #FFFFFF !important; border: 2.5px solid #38BDF8 !important; border-radius: 28px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.3) !important; color: #0F172A !important; font-family: inherit !important;">
+                
+                <button type="button" onclick="closeAdminHubModal()" style="position: absolute !important; top: 18px !important; right: 18px !important; width: 36px !important; height: 36px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng Admin Hub">
+                    <i class="fa-solid fa-xmark" style="font-size: 16px !important;"></i>
+                </button>
+
+                <!-- Header -->
+                <div style="text-align: center !important; margin-bottom: 22px !important;">
+                    <div style="display: inline-flex !important; align-items: center !important; gap: 8px !important; padding: 4px 14px !important; border-radius: 999px !important; background: #E0F2FE !important; color: #0284C7 !important; font-size: 11px !important; font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: 0.05em !important; margin-bottom: 8px !important; border: 1px solid #BAE6FD !important;">
+                        <i class="fa-solid fa-shield-halved text-sky-500"></i>
+                        <span>CỔNG QUẢN TRỊ TRUNG TÂM • ADMIN HUB 2026</span>
+                    </div>
+                    <h2 style="margin: 0 0 6px !important; color: #0C4A6E !important; font-size: 1.45rem !important; font-weight: 900 !important; letter-spacing: -0.02em !important;">
+                        🏛️ TRUNG TÂM ĐIỀU HÀNH CHỦ WEB
+                    </h2>
+                    <p style="margin: 0 !important; color: #475569 !important; font-size: 13.5px !important; font-weight: 500 !important; line-height: 1.5 !important;">
+                        Chào mừng Webmaster! Vui lòng chọn phân hệ bạn muốn truy cập:
+                    </p>
+                </div>
+
+                <!-- 2 Large Interactive Cards: Admin Management & Distributor Management -->
+                <div style="display: grid !important; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; gap: 16px !important; margin-bottom: 20px !important;">
+                    
+                    <!-- CARD 1: QUẢN TRỊ CỦA ADMIN -->
+                    <div class="admin-hub-card" onclick="openAdminHubCardAction('admin')"
+                         style="position: relative !important; background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%) !important; border: 2px solid #0284C7 !important; border-radius: 20px !important; padding: 22px 20px !important; cursor: pointer !important; transition: all 0.25s ease !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; text-align: left !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.12) !important;">
+                        
+                        <div>
+                            <div style="display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 12px !important;">
+                                <div style="width: 44px !important; height: 44px !important; border-radius: 12px !important; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 20px !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3) !important;">
+                                    <i class="fa-solid fa-crown"></i>
+                                </div>
+                                <span style="font-size: 9.5px !important; font-weight: 800 !important; text-transform: uppercase !important; padding: 3px 8px !important; border-radius: 6px !important; background: #0284C7 !important; color: #FFFFFF !important;">
+                                    4 TÀI KHOẢN ADMIN
+                                </span>
+                            </div>
+                            <h3 style="margin: 0 0 6px !important; font-size: 1.1rem !important; font-weight: 900 !important; color: #0C4A6E !important;">
+                                👑 Quản Trị Hệ Thống (Admin)
+                            </h3>
+                            <p style="margin: 0 0 10px !important; font-size: 12.5px !important; color: #334155 !important; line-height: 1.45 !important; font-weight: 500 !important;">
+                                Quản lý khách hàng (mã 12 ký tự), tồn kho 252 sản phẩm OCOP &amp; theo dõi số lượng đã bán toàn quốc.
+                            </p>
+                            <div style="background: rgba(255,255,255,0.7) !important; border-radius: 8px !important; padding: 6px 10px !important; font-size: 11px !important; color: #0369A1 !important; font-weight: 700 !important; margin-bottom: 14px !important; border: 1px dashed #7DD3FC !important;">
+                                👤 ThaoNguyenad01 • KimNganad02 • VinhPhucad03 • ThanhBinhad04
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="event.stopPropagation(); openAdminHubCardAction('admin')" style="width: 100% !important; padding: 12px 14px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3) !important; cursor: pointer !important;">
+                            <span>👉 Mở Cổng Quản Trị Admin</span>
+                        </button>
+                    </div>
+
+                    <!-- CARD 2: QUẢN TRỊ NHÀ PHÂN PHỐI -->
+                    <div class="admin-hub-card" onclick="openAdminHubCardAction('distributor')"
+                         style="position: relative !important; background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%) !important; border: 2px solid #16A34A !important; border-radius: 20px !important; padding: 22px 20px !important; cursor: pointer !important; transition: all 0.25s ease !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; text-align: left !important; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.12) !important;">
+                        
+                        <div>
+                            <div style="display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 12px !important;">
+                                <div style="width: 44px !important; height: 44px !important; border-radius: 12px !important; background: linear-gradient(135deg, #16A34A 0%, #15803D 100%) !important; color: #FFFFFF !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 20px !important; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3) !important;">
+                                    <i class="fa-solid fa-store"></i>
+                                </div>
+                                <span style="font-size: 9.5px !important; font-weight: 800 !important; text-transform: uppercase !important; padding: 3px 8px !important; border-radius: 6px !important; background: #16A34A !important; color: #FFFFFF !important;">
+                                    6 NHÀ PHÂN PHỐI OCOP
+                                </span>
+                            </div>
+                            <h3 style="margin: 0 0 6px !important; font-size: 1.1rem !important; font-weight: 900 !important; color: #14532D !important;">
+                                🏬 Quản Trị Nhà Phân Phối
+                            </h3>
+                            <p style="margin: 0 0 10px !important; font-size: 12.5px !important; color: #334155 !important; line-height: 1.45 !important; font-weight: 500 !important;">
+                                Phân vùng dữ liệu cô lập cho từng HTX. Quản lý kho hàng vùng miền, cập nhật số lượng tồn &amp; đơn hàng riêng.
+                            </p>
+                            <div style="background: rgba(255,255,255,0.7) !important; border-radius: 8px !important; padding: 6px 10px !important; font-size: 11px !important; color: #15803D !important; font-weight: 700 !important; margin-bottom: 14px !important; border: 1px dashed #86EFAC !important;">
+                                📍 Hải Phòng • Hà Nội • Đồng Nai • Hòa Bình • Cà Mau...
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="event.stopPropagation(); openAdminHubCardAction('distributor')" style="width: 100% !important; padding: 12px 14px !important; border-radius: 12px !important; background: #16A34A !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(22, 163, 74, 0.3) !important; cursor: pointer !important;">
+                            <span>👉 Mở Cổng Nhà Phân Phối</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer Note -->
+                <div style="background: #F1F5F9 !important; border-radius: 12px !important; padding: 10px 16px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 12px !important; color: #475569 !important; text-align: center !important;">
+                    <span style="font-weight: 600 !important;"><i class="fa-solid fa-arrows-rotate text-sky-500 mr-1.5"></i> Có thể chuyển đổi qua lại nhanh giữa các phân hệ quản trị mà không cần nhập lại mật khẩu.</span>
+                </div>
+            </div>
+        `;
 
         modal.classList.remove('hidden');
         modal.style.setProperty('display', 'flex', 'important');
@@ -818,7 +906,6 @@
 
         currentOrderProduct = p;
         currentOrderQty = 1;
-        window.currentOrderCode = '' + (8800 + Math.floor(Math.random() * 1100));
 
         const modal = document.getElementById('online-order-modal');
         if (!modal) return;
@@ -848,23 +935,7 @@
         const qtyInput = document.getElementById('order-qty-input');
         if (qtyInput) qtyInput.value = 1;
 
-        // Tự động điền thông tin nếu khách hàng đã đăng nhập
-        const curUser = (typeof window.getCurrentCustomer === 'function') ? window.getCurrentCustomer() : null;
-        if (curUser) {
-            const nameInput = document.getElementById('order-cust-name');
-            const phoneInput = document.getElementById('order-cust-phone');
-            const addrInput = document.getElementById('order-cust-address');
-            if (nameInput && !nameInput.value) nameInput.value = curUser.fullName || '';
-            if (phoneInput && !phoneInput.value) phoneInput.value = curUser.phone || '';
-            if (addrInput && !addrInput.value) addrInput.value = curUser.address || '';
-        }
-
         window.updateOrderCalculations();
-
-        // Default to BIDV payment
-        if (typeof window.switchOrderPaymentMethod === 'function') {
-            window.switchOrderPaymentMethod('bidv');
-        }
 
         modal.classList.remove('hidden');
         modal.style.setProperty('display', 'flex', 'important');
@@ -910,32 +981,6 @@
 
         const grandTotalEl = document.getElementById('calc-grand-total');
         if (grandTotalEl) grandTotalEl.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
-
-        // Cập nhật thông tin thanh toán BIDV & MoMo
-        const orderCode = window.currentOrderCode || '8829';
-        const bidvUrl = 'https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=' + grandTotal + '&addInfo=OCOP%20' + orderCode;
-        const momoUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=2|99|0971280030|||0|0|' + grandTotal + '|OCOP%20' + orderCode + '|transfer_myqr';
-
-        const bidvImg = document.getElementById('order-bidv-qr');
-        if (bidvImg) bidvImg.src = bidvUrl;
-
-        const momoImg = document.getElementById('order-momo-qr');
-        if (momoImg) momoImg.src = momoUrl;
-
-        const bidvAmt = document.getElementById('bidv-transfer-amount');
-        if (bidvAmt) bidvAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
-
-        const momoAmt = document.getElementById('momo-transfer-amount');
-        if (momoAmt) momoAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
-
-        const codAmt = document.getElementById('cod-transfer-amount');
-        if (codAmt) codAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
-
-        const bidvMemo = document.getElementById('bidv-transfer-memo');
-        if (bidvMemo) bidvMemo.textContent = 'OCOP ' + orderCode;
-
-        const momoMemo = document.getElementById('momo-transfer-memo');
-        if (momoMemo) momoMemo.textContent = 'OCOP ' + orderCode;
     };
 
     window.submitOnlineOrder = function () {
@@ -956,8 +1001,9 @@
             nameInput?.focus();
             return;
         }
-        if (!customerPhone || customerPhone.length < 9) {
-            alert('Vui lòng nhập Số điện thoại nhận hàng hợp lệ!');
+                const digitsOnly = (customerPhone || '').replace(/\D/g, '');
+        if (!customerPhone || /[^0-9]/.test(customerPhone) || digitsOnly.length < 10 || digitsOnly.length > 11 || !digitsOnly.startsWith('0')) {
+            alert('Số điện thoại nhận hàng không hợp lệ! Vui lòng chỉ nhập 10 chữ số (bắt đầu bằng số 0, cấm nhập chữ cái).');
             phoneInput?.focus();
             return;
         }
@@ -968,19 +1014,21 @@
         }
 
         const paymentInput = document.querySelector('input[name="order-payment"]:checked');
-        let paymentMethod = '🚚 Ship COD';
-        if (paymentInput) {
-            if (paymentInput.value === 'bidv' || paymentInput.value === 'vietqr') {
-                paymentMethod = '🏦 Đã CK BIDV 8808661371';
-            } else if (paymentInput.value === 'momo') {
-                paymentMethod = '📱 Đã CK MoMo 0971280030';
-            } else {
-                paymentMethod = '🚚 Ship COD';
-            }
-        }
+        const paymentMethod = paymentInput ? (paymentInput.value === 'vietqr' ? 'Chuyển khoản QR ngân hàng' : 'Thanh toán khi nhận hàng (COD)') : 'COD';
 
-        const orderCode = window.currentOrderCode || ('' + (8800 + Math.floor(Math.random() * 1100)));
-        const orderId = '#OCOP-' + orderCode;
+        const p = currentOrderProduct;
+        const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(p.id) : null;
+        const storeName = storeInfo ? storeInfo.primaryStore.name : ('Showroom OCOP ' + p.region);
+
+        const unitPrice = p.price || 0;
+        const goodsTotal = unitPrice * currentOrderQty;
+        const shippingFee = 25000;
+        const platformFee = 10000;
+        const webmasterCommission = Math.round(goodsTotal * 0.08);
+        const webmasterProfit = platformFee + webmasterCommission;
+        const grandTotal = goodsTotal + shippingFee + platformFee;
+
+        const orderId = '#OCOP-' + (8800 + Math.floor(Math.random() * 1100));
 
         const orderData = {
             orderId: orderId,
@@ -989,7 +1037,6 @@
             shippingAddress: customerAddress,
             customerNote: customerNote,
             paymentMethod: paymentMethod,
-            username: (typeof window.getCurrentCustomer === 'function' && window.getCurrentCustomer()) ? window.getCurrentCustomer().username : null,
             productId: p.id,
             productName: p.name,
             productImg: p.img,
@@ -3416,7 +3463,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         setupInteractiveVietnamMap();
         polishHeader();
         setupPartnerRegistrationModal();
-        hookRenderProducts();
+        if (typeof hookRenderProducts === 'function') hookRenderProducts();
         enhanceProductCardElements();
         upgradeChatbotAvatar();
         transformEntireWebColors();
@@ -3431,3 +3478,50 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
 })();
 
+
+
+    // SMOOTH MOUSE WHEEL SCROLL ASSURANCE & INTRO TRANSITION
+    window.addEventListener('wheel', function(e) {
+        const hasOpenModal = document.querySelector('.modal:not(.hidden):not([style*="display: none"]), [id$="-modal"]:not(.hidden):not([style*="display: none"]):not(#ocop-intro-overlay)');
+        if (!hasOpenModal) {
+            if (document.body.style.overflow === 'hidden') {
+                document.body.style.overflow = '';
+            }
+            if (document.documentElement.style.overflow === 'hidden') {
+                document.documentElement.style.overflow = '';
+            }
+        }
+    }, { passive: true });
+
+    // Hỗ trợ lăn chuột ở Màn chờ (Intro) để tự động trượt mượt mà vào Chợ OCOP
+    (function setupIntroMouseWheel() {
+        function attachWheel() {
+            const overlay = document.getElementById('ocop-intro-overlay');
+            if (!overlay || overlay.dataset.wheelHooked) return;
+            overlay.dataset.wheelHooked = 'true';
+            let wheelDelta = 0;
+            let wheelTimer = null;
+            overlay.addEventListener('wheel', function(e) {
+                if (overlay.classList.contains('hidden')) return;
+                const isBottom = (overlay.scrollHeight - overlay.scrollTop - overlay.clientHeight) <= 20;
+                if (e.deltaY > 0) {
+                    wheelDelta += e.deltaY;
+                    clearTimeout(wheelTimer);
+                    wheelTimer = setTimeout(() => { wheelDelta = 0; }, 320);
+                    if (wheelDelta > 100 || isBottom) {
+                        wheelDelta = 0;
+                        if (typeof enterOcopMarket === 'function') {
+                            enterOcopMarket('all');
+                        }
+                    }
+                } else {
+                    wheelDelta = 0;
+                }
+            }, { passive: true });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', attachWheel);
+        } else {
+            attachWheel();
+        }
+    })();

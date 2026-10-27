@@ -5,7 +5,6 @@
     function applySummary(summary) {
         const product = products.find(p => p.id === summary.productId);
         if (!product) return;
-        if ((product.reviews || 0) > summary.reviews) return;
         product.rating = summary.rating;
         product.reviews = summary.reviews;
         document.querySelectorAll('[data-review-product-id="' + product.id + '"]').forEach(el => {
@@ -200,6 +199,13 @@
                 if (!cache.has(productId)) section.querySelector('[data-real-review-summary]').textContent = text('Chưa tải được đánh giá. Đóng rồi mở phần này để thử lại.', 'Could not load reviews. Close and reopen this section to retry.');
             }
         }
+    };
+    window.openProductReviews = function(productId) {
+        window.openQuickView(Number(productId));
+        const section=document.getElementById('product-review-section');
+        const toggle=section?.querySelector('[data-review-toggle]');
+        if(toggle?.getAttribute('aria-expanded')==='false') toggle.click();
+        section?.scrollIntoView({block:'start',behavior:'smooth'});
     };
     window.addEventListener('DOMContentLoaded', refreshSummaries);
     window.refreshProductReviewLanguage = function () {

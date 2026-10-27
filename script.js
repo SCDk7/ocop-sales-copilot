@@ -54,7 +54,7 @@ function addProductToCart(productIdOrName) {
         else appCart.push({ ...product, quantity: 1 });
     }
     updateCartUI();
-    showSingleToast(`Đã nạp "${product.name}" vào bảng phân tích dòng tiền!`);
+    showSingleToast(`Đã thêm "${product.name}" vào giỏ hàng!`);
     return product;
 }
 
@@ -118,10 +118,9 @@ function renderChatProducts(bubbleEl, productIds) {
                 <div class="min-w-0 pr-2">
                     <p class="font-bold text-gray-900 truncate">${prod.name}</p>
                     <p class="text-[10px] text-amber-700 font-semibold">${prod.stars || 5}⭐ OCOP • ${prod.region || ''} • ${(prod.price || 0).toLocaleString('vi-VN')}đ</p>
-                    <p class="text-[9px] text-emerald-700 font-bold mt-0.5">[Sản lượng số hóa: 1.200 đơn vị • Biên lợi nhuận: +23.5%]</p>
                 </div>
-                <button type="button" onclick="activateProductReconciliation(${prod.id})" class="px-2.5 py-1 bg-amber-400 text-slate-950 font-black text-[10px] rounded-lg hover:bg-amber-300 transition shrink-0 cursor-pointer shadow-sm">
-                    📊 Phân Tích Dòng Tiền
+                <button type="button" onclick="openQuickView(${prod.id})" class="px-2.5 py-1 bg-amber-400 text-slate-950 font-black text-[10px] rounded-lg hover:bg-amber-300 transition shrink-0 cursor-pointer shadow-sm">
+                    Xem sản phẩm
                 </button>
             </div>
         `;
@@ -151,6 +150,11 @@ function updateDynamicChipsUI(chips) {
 
 // ── 3. MAIN MESSAGE DISPATCHER WITH RESILIENT FALLBACK ─────────────────────
 async function sendChatMessage(customPrompt) {
+    if (typeof window.sendAIMessage === 'function') {
+        const input = getActiveChatInput();
+        if (input && customPrompt) input.value = customPrompt;
+        return window.sendAIMessage();
+    }
     const inputEl = getActiveChatInput();
     const messageText = String(customPrompt || (inputEl ? inputEl.value : '')).trim();
     if (!messageText) return;
@@ -176,7 +180,7 @@ async function sendChatMessage(customPrompt) {
     }
 
     try {
-        const endpoint = window.location.protocol === 'file:' ? 'http://localhost:3000/api/ai/chat' : '/api/ai/chat';
+        const endpoint = typeof window.getAIEndpoint === 'function' ? window.getAIEndpoint('/api/ai/chat') : window.location.protocol === 'file:' ? 'http://localhost:3000/api/ai/chat' : '/api/ai/chat';
         let response = null;
 
         try {
@@ -232,27 +236,9 @@ async function sendChatMessage(customPrompt) {
     }
 }
 
-function getLocalCatalogFallbackText(query) {
-    const q = query.toLowerCase();
-    if (q.includes('trà') || q.includes('chè')) {
-        return 'Dạ, vùng cao Tây Bắc và Thái Nguyên nổi tiếng với các dòng trà thượng hạng như Trà Shan Tuyết Cổ Thụ Hà Giang và Trà Đinh Nõn Tân Cương. Em xin gửi thông số dòng tiền và điều phối điểm bán O2O của các đặc sản OCOP bên dưới ạ!';
-    }
-    if (q.includes('lợi nhuận') || q.includes('dòng tiền') || q.includes('tài chính')) {
-        return 'Dạ, hệ thống OCOP Copilot đã tự động đồng bộ dòng tiền với biên lợi nhuận gộp 38% (COGS 62%), chiết khấu liên kết CHM 7% và lợi nhuận ròng mục tiêu 23.5%. Anh/Chị có thể kích hoạt mô phỏng chi tiết ngay bên dưới!';
-    }
-    if (q.includes('điểm bán') || q.includes('showroom') || q.includes('o2o')) {
-        return 'Dạ, mạng lưới Showroom O2O liên kết đang vận hành tại các trục giao thương trọng điểm. Hệ thống đã đồng bộ tọa độ số hóa điểm bán thực tế kèm vị trí Google Maps!';
-    }
-    return 'Dạ, em là Trợ lý Điều hành Số & Quản trị Tài chính OCOP! Em sẵn sàng phân tích dòng tiền, điều phối sản lượng O2O và đối soát chiết khấu liên kết cho 252 đặc sản OCOP 63 tỉnh thành!';
-}
+function getLocalCatalogFallbackText(query) { return window.OCOPChatFallback ? window.OCOPChatFallback.catalogReply(query,localOcopProducts,'vi').message : 'Anh/chị cho biết sản phẩm hoặc tỉnh muốn tìm nhé.'; }
 
-function getLocalMatchingProductIds(query) {
-    const q = query.toLowerCase();
-    if (q.includes('trà') || q.includes('chè')) return [2, 3, 47];
-    if (q.includes('200k') || q.includes('dưới')) return [8, 17];
-    if (q.includes('quà')) return [1, 4];
-    return [1, 2, 8];
-}
+function getLocalMatchingProductIds(query) { return window.OCOPChatFallback ? window.OCOPChatFallback.catalogReply(query,localOcopProducts,'vi').productIds : []; }
 
 // ── 4. EVENT LISTENERS INITIALIZATION ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -260,14 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('chat-send-button') || document.getElementById('send-btn');
     const inputEl = getActiveChatInput();
 
-    if (sendBtn) {
+    if (sendBtn && !sendBtn.getAttribute('onclick')) {
         sendBtn.addEventListener('click', (e) => {
             e.preventDefault();
             sendChatMessage();
         });
     }
 
-    if (inputEl) {
+    if (inputEl && !inputEl.getAttribute('onkeydown')) {
         inputEl.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -379,7 +365,7 @@ function showSingleToast(message) {
 
 // Expose globals for inline HTML event handlers
 if (typeof window !== 'undefined') {
-    window.sendQuickPrompt = sendChatMessage;
+    if (typeof window.sendQuickPrompt !== 'function') window.sendQuickPrompt = sendChatMessage;
     window.addProductToCart = addProductToCart;
     window.showSingleToast = showSingleToast;
 }

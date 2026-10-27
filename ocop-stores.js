@@ -7456,8 +7456,7 @@
     let p = typeof productOrId === 'object' ? productOrId : null;
     if (!p) {
       const id = Number(productOrId);
-      const catalog = (typeof window !== 'undefined' && window.PRODUCTS ? window.PRODUCTS : null) ||
-                      (typeof products !== 'undefined' ? products : null) ||
+      const catalog = (typeof products !== 'undefined' ? products : null) ||
                       (typeof PRODUCTS !== 'undefined' ? PRODUCTS : null) ||
                       (globalThis.PRODUCTS || shopProducts);
       p = Array.isArray(catalog) ? catalog.find(item => item.id === id) : null;
@@ -7483,18 +7482,18 @@
       };
     }
 
-    const producerName = p.producerName || (districtFacility
+    const producerName = districtFacility
       ? ('Hợp tác xã / Cơ sở OCOP ' + districtFacility + ' – ' + p.region)
-      : ('Hợp tác xã / Cơ sở OCOP ' + p.region));
-    const storeName = p.storeName || ('Showroom & Điểm bán OCOP ' + shortName);
+      : ('Hợp tác xã / Cơ sở OCOP ' + p.region);
+    const storeName = 'Showroom & Điểm bán OCOP ' + shortName;
 
     let districtName = districtFacility;
     if (districtFacility && districtFacility.includes('(')) {
       const match = districtFacility.match(/\((.*?)\)/);
       if (match) districtName = match[1].trim();
     }
-    const storeAddress = p.producerAddress || ((districtName ? (districtName + ', ') : '') + p.region + ', Việt Nam');
-    const hotline = p.storePhone || ((refStore && refStore.hotline) ? refStore.hotline : '098.345.6789');
+    const storeAddress = (districtName ? (districtName + ', ') : '') + p.region + ', Việt Nam';
+    const hotline = (refStore && refStore.hotline) ? refStore.hotline : '098.345.6789';
     const certDecision = (refStore && refStore.certDecision && refStore.certDecision.includes(p.region))
       ? refStore.certDecision
       : ('QĐ số ' + ((p.id * 17) % 3000 + 1000) + '/QĐ-UBND Tỉnh ' + p.region + ' (OCOP ' + (p.stars || 4) + ' Sao)');
