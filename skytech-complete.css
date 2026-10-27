@@ -2636,3 +2636,58 @@ button[onclick*="copyHeroVoucher"]:focus {
 #featured-product-card button:active {
     outline: none;
 }
+
+/* ==========================================================================
+   CUSTOMER & ADMIN AUTH MODAL SUBMIT BUTTONS (Bảo đảm chữ và màu luôn hiển thị)
+   ========================================================================== */
+#customer-auth-modal #btn-cust-login-submit,
+#customer-auth-modal #btn-cust-chpass-submit,
+#customer-auth-modal button[onclick*="handleCustomerLoginSubmit"],
+#customer-auth-modal button[onclick*="handleCustomerChangePassSubmit"] {
+    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+    background-color: #0284C7 !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #38BDF8 !important;
+    min-height: 46px !important;
+    font-weight: 900 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35) !important;
+}
+
+#customer-auth-modal #btn-cust-login-submit *,
+#customer-auth-modal #btn-cust-chpass-submit *,
+#customer-auth-modal button[onclick*="handleCustomerLoginSubmit"] *,
+#customer-auth-modal button[onclick*="handleCustomerChangePassSubmit"] * {
+    color: #FFFFFF !important;
+    font-weight: 900 !important;
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#customer-auth-modal #btn-cust-reg-submit,
+#customer-auth-modal button[onclick*="handleCustomerRegisterSubmit"] {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    background-color: #059669 !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #34D399 !important;
+    min-height: 46px !important;
+    font-weight: 900 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.35) !important;
+}
+
+#customer-auth-modal #btn-cust-reg-submit *,
+#customer-auth-modal button[onclick*="handleCustomerRegisterSubmit"] * {
+    color: #FFFFFF !important;
+    font-weight: 900 !important;
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
