@@ -4141,3 +4141,133 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             // Trình duyệt cuộn tự nhiên hoặc hỗ trợ nếu phần tử con chặn bubbling
         }, { capture: true, passive: true });
     })();
+
+
+    // =========================================================================
+    // HERO SHOWCASE & PROMOTIONS ENGINE
+    // =========================================================================
+    const HERO_FEATURED_ITEMS = [
+        {
+            id: 506,
+            name: 'Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)',
+            region: 'Đồng Nai • OCOP 4★',
+            price: '160.000 ₫',
+            origPrice: '195.000 ₫',
+            discount: '-18%',
+            img: 'images/catalog/web-latest-171.jpg',
+            badge: '★ TINH HOA NÔNG SẢN VIỆT',
+            tag: '🔥 TOP 1 BÁN CHẠY'
+        },
+        {
+            id: 336,
+            name: 'Trà Phúc / Trà Lộc / Trà Thọ - Tinh hoa đặc sản Thủ Đô (OCOP 5 Sao)',
+            region: 'Hà Nội • OCOP 5★',
+            price: '1.850.000 ₫',
+            origPrice: '2.000.000 ₫',
+            discount: '-8%',
+            img: 'images/catalog/web-latest-1.jpg',
+            badge: '★ OCOP 5 SAO QUỐC GIA',
+            tag: '👑 QUÀ BIẾU CAO CẤP'
+        },
+        {
+            id: 340,
+            name: 'Trà xanh cổ thụ Phìn Hồ hộp 100g - Chè di sản Hoàng Su Phì (OCOP 5 Sao)',
+            region: 'Hà Giang • OCOP 5★',
+            price: '520.000 ₫',
+            origPrice: '600.000 ₫',
+            discount: '-13%',
+            img: 'images/p2.jpg',
+            badge: '★ CHÈ CỔ THỤ DI SẢN',
+            tag: '⚡ DEAL HÔM NAY'
+        }
+    ];
+
+    window.selectHeroFeaturedProduct = function (index) {
+        const item = HERO_FEATURED_ITEMS[index];
+        if (!item) return;
+
+        for (let i = 0; i < HERO_FEATURED_ITEMS.length; i++) {
+            const btn = document.getElementById('hero-tab-btn-' + i);
+            if (btn) {
+                if (i === index) {
+                    btn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-black bg-sky-600 text-white shadow-xs cursor-pointer border border-sky-600 transition';
+                } else {
+                    btn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-sky-50 text-sky-800 hover:bg-sky-100 cursor-pointer border border-sky-200 transition';
+                }
+            }
+        }
+
+        const img = document.getElementById('hero-product-img');
+        if (img) {
+            img.src = item.img;
+            img.alt = item.name;
+        }
+
+        const badge = document.getElementById('i18n-hero-badge-tag');
+        if (badge) badge.textContent = item.badge;
+
+        const tag = document.getElementById('hero-feat-tag');
+        if (tag) tag.textContent = item.tag;
+
+        const title = document.getElementById('hero-feat-title');
+        if (title) title.textContent = item.name;
+
+        const region = document.getElementById('hero-feat-region');
+        if (region) region.textContent = item.region;
+
+        const price = document.getElementById('hero-feat-price');
+        if (price) price.textContent = item.price;
+
+        const origPrice = document.getElementById('hero-feat-orig-price');
+        if (origPrice) origPrice.textContent = item.origPrice;
+
+        const discount = document.getElementById('hero-feat-discount');
+        if (discount) discount.textContent = item.discount;
+
+        const buyBtn = document.getElementById('hero-feat-buy-btn');
+        if (buyBtn) buyBtn.setAttribute('onclick', 'addToCart(' + item.id + '); toggleCart(true);');
+
+        const viewBtn = document.getElementById('hero-feat-view-btn');
+        if (viewBtn) viewBtn.setAttribute('onclick', 'openQuickView(' + item.id + ');');
+
+        const aiBtn = document.getElementById('hero-feat-ai-btn');
+        if (aiBtn) aiBtn.setAttribute('onclick', 'consultProductWithAI(' + item.id + ');');
+    };
+
+    window.copyHeroVoucher = function (code, desc) {
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(code).catch(() => {});
+            }
+        } catch (_) {}
+        if (typeof showToast === 'function') {
+            showToast('🎟️ Đã lưu mã [' + code + ']: ' + desc + '! Áp dụng khi đặt hàng.', 'success');
+        }
+    };
+
+    window.initHeroPromoCountdown = function () {
+        function tick() {
+            const now = new Date();
+            const end = new Date();
+            end.setHours(23, 59, 59, 999);
+            const diff = Math.max(0, end - now);
+            const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+            const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+            const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+
+            const elH = document.getElementById('hero-countdown-h');
+            const elM = document.getElementById('hero-countdown-m');
+            const elS = document.getElementById('hero-countdown-s');
+            if (elH) elH.textContent = hours;
+            if (elM) elM.textContent = minutes;
+            if (elS) elS.textContent = seconds;
+        }
+        tick();
+        setInterval(tick, 1000);
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.initHeroPromoCountdown);
+    } else {
+        window.initHeroPromoCountdown();
+    }

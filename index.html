@@ -3085,19 +3085,165 @@ Khơi Nguồn Di Sản Việt</span>
  </div>
  </div>
 
- <div class="lg:col-span-5">
+ <div class="lg:col-span-5 space-y-4">
+ <!-- KHỐI 1: SIÊU ƯU ĐÃI & FLASH SALE HÔM NAY (CỰC KỲ LỢI CHO SHOP: TĂNG ĐƠN TỪ 399K & COMBO QUÀ VIP) -->
+ <div class="rounded-3xl border-2 border-sky-300 p-4 sm:p-5 shadow-md relative overflow-hidden" style="background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%) !important;">
+     <!-- Header Ưu đãi & Countdown -->
+     <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-sky-200">
+         <div class="flex items-center gap-2">
+             <span class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black uppercase tracking-wider bg-rose-600 text-white shadow-2xs flex items-center gap-1 animate-pulse">
+                 <i class="fa-solid fa-bolt"></i> FLASH SALE
+             </span>
+             <span class="text-xs font-black text-slate-900 tracking-tight">SIÊU KHUYẾN MÃI OCOP</span>
+         </div>
+         <!-- Countdown Timer -->
+         <div class="flex items-center gap-1 text-[11px] font-extrabold text-rose-700 bg-white/90 border border-rose-200 px-2.5 py-1 rounded-xl shadow-2xs">
+             <i class="fa-regular fa-clock text-rose-600 text-xs"></i>
+             <span class="hidden sm:inline">Còn:</span>
+             <span id="hero-countdown-h" class="bg-rose-600 text-white px-1.5 py-0.5 rounded font-black text-[10.5px]">08</span>:
+             <span id="hero-countdown-m" class="bg-rose-600 text-white px-1.5 py-0.5 rounded font-black text-[10.5px]">45</span>:
+             <span id="hero-countdown-s" class="bg-rose-600 text-white px-1.5 py-0.5 rounded font-black text-[10.5px]">20</span>
+         </div>
+     </div>
+
+     <!-- 3 Thẻ Voucher Siêu Lời Cho Chủ Shop -->
+     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+         <!-- Voucher 1 -->
+         <div class="bg-white rounded-2xl p-2.5 border border-sky-200 shadow-2xs flex flex-col justify-between text-left hover:border-sky-400 transition">
+             <div>
+                 <div class="flex items-center justify-between mb-1">
+                     <span class="text-[9.5px] font-black uppercase tracking-wider bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded">ĐƠN TỪ 399K</span>
+                     <span class="text-[10px] font-black text-rose-600">-50.000₫</span>
+                 </div>
+                 <div class="text-[11px] font-extrabold text-slate-900 leading-tight">Giảm ngay 50K</div>
+                 <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-sky-700">OCOP50K</strong></div>
+             </div>
+             <button type="button" onclick="copyHeroVoucher('OCOP50K', 'Giảm 50K cho đơn từ 399K')" class="mt-2 w-full py-1 px-2 rounded-lg bg-sky-600 hover:bg-sky-700 active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
+                 <i class="fa-regular fa-copy"></i>
+                 <span>Lưu Mã</span>
+             </button>
+         </div>
+
+         <!-- Voucher 2 -->
+         <div class="bg-white rounded-2xl p-2.5 border border-amber-300 shadow-2xs flex flex-col justify-between text-left hover:border-amber-400 transition" style="background: linear-gradient(180deg, #FFFFFF 0%, #FEFCE8 100%) !important;">
+             <div>
+                 <div class="flex items-center justify-between mb-1">
+                     <span class="text-[9.5px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded">COMBO QUÀ VIP</span>
+                     <span class="text-[10px] font-black text-amber-600">-100.000₫</span>
+                 </div>
+                 <div class="text-[11px] font-extrabold text-slate-900 leading-tight">Giảm 100K + Quà</div>
+                 <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-amber-700">COMBOVIP</strong></div>
+             </div>
+             <button type="button" onclick="copyHeroVoucher('COMBOVIP', 'Giảm 100K + Tặng Hộp Quà OCOP cho đơn từ 899K')" class="mt-2 w-full py-1 px-2 rounded-lg bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
+                 <i class="fa-regular fa-copy"></i>
+                 <span>Lưu Mã</span>
+             </button>
+         </div>
+
+         <!-- Voucher 3 -->
+         <div class="bg-white rounded-2xl p-2.5 border border-emerald-200 shadow-2xs flex flex-col justify-between text-left hover:border-emerald-400 transition" style="background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%) !important;">
+             <div>
+                 <div class="flex items-center justify-between mb-1">
+                     <span class="text-[9.5px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 px-1.5 py-0.5 rounded">FREESHIP 499K</span>
+                     <span class="text-[10px] font-black text-emerald-600">0 ĐỒNG</span>
+                 </div>
+                 <div class="text-[11px] font-extrabold text-slate-900 leading-tight">Miễn phí ship</div>
+                 <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-emerald-700">FREESHIP</strong></div>
+             </div>
+             <button type="button" onclick="copyHeroVoucher('FREESHIP', 'Miễn phí vận chuyển toàn quốc cho đơn từ 499K')" class="mt-2 w-full py-1 px-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
+                 <i class="fa-regular fa-copy"></i>
+                 <span>Lưu Mã</span>
+             </button>
+         </div>
+     </div>
+ </div>
+
+ <!-- KHỐI 2: TRƯNG BÀY SẢN PHẨM NỔI BẬT NHẤT (CARD TƯƠNG TÁC CAO CẤP) -->
  <div id="featured-product-card" role="button" tabindex="0" aria-label="Xem sản phẩm" onclick="openFeaturedProduct()" onkeydown="if(event.target === this &amp;&amp; (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openFeaturedProduct(); }" class="border border-sky-200 p-4 rounded-3xl shadow-lg relative overflow-hidden bg-white" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.08) !important;">
- <h2 class="featured-section-title">Đặc sản nổi bật</h2><div class="featured-image-frame h-72 rounded-2xl overflow-hidden relative shadow-md">
- <img id="hero-product-img" fetchpriority="high" src="images/catalog/web-latest-171.jpg" alt="Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)" class="w-full h-full object-cover" loading="eager" decoding="async">
- <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5 text-white">
- <span id="i18n-hero-badge-tag" class="bg-sky-600 text-white font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-1.5 shadow">
- ★ TINH HOA NÔNG SẢN VIỆT
- </span>
- <h3 class="text-xl font-bold tracking-wide text-white">NATIONAL OCOP PLATFORM</h3>
- <p class="text-xs text-sky-100 mt-0.5 font-medium" id="i18n-hero-banner-sub">Kết Nối Trực Tiếp Hợp Tác Xã Bản Địa • Bảo Chứng Chất Lượng OCOP Quốc Gia</p>
- </div>
- </div>
- 
+     
+     <!-- Header tiêu đề & Tabs chọn sản phẩm -->
+     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+         <h2 class="featured-section-title font-black text-slate-900 text-sm sm:text-base m-0 flex items-center gap-1.5" style="color: #0C4A6E !important; margin: 0 !important;">
+             <i class="fa-solid fa-award text-amber-500"></i>
+             <span>Đặc sản nổi bật</span>
+         </h2>
+         <div class="flex items-center gap-1.5" onclick="event.stopPropagation();">
+             <button type="button" id="hero-tab-btn-0" onclick="selectHeroFeaturedProduct(0)" class="px-2.5 py-1 rounded-lg text-[11px] font-black bg-sky-600 text-white shadow-xs cursor-pointer border border-sky-600 transition" title="Trà Khổ Qua Rừng Đồng Nai">
+                 🍵 Đồng Nai
+             </button>
+             <button type="button" id="hero-tab-btn-1" onclick="selectHeroFeaturedProduct(1)" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-sky-50 text-sky-800 hover:bg-sky-100 cursor-pointer border border-sky-200 transition" title="Trà Đinh Ngọc Tân Cương Thái Nguyên">
+                 ⭐ Thái Nguyên
+             </button>
+             <button type="button" id="hero-tab-btn-2" onclick="selectHeroFeaturedProduct(2)" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-sky-50 text-sky-800 hover:bg-sky-100 cursor-pointer border border-sky-200 transition" title="Trà Xanh Cổ Thụ Hà Giang">
+                 🏔️ Hà Giang
+             </button>
+         </div>
+     </div>
+
+     <!-- Khung ảnh sản phẩm -->
+     <div class="featured-image-frame h-56 sm:h-64 rounded-2xl overflow-hidden relative shadow-md">
+         <img id="hero-product-img" fetchpriority="high" src="images/catalog/web-latest-171.jpg" alt="Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)" class="w-full h-full object-cover" loading="eager" decoding="async">
+         
+         <!-- Top tag -->
+         <div class="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+             <span id="hero-feat-tag" class="bg-rose-600 text-white font-black text-[10px] px-2.5 py-1 rounded-full uppercase shadow-sm">
+                 🔥 TOP 1 BÁN CHẠY
+             </span>
+         </div>
+
+         <!-- Gradient overlay text -->
+         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent flex flex-col justify-end p-4 text-white">
+             <span id="i18n-hero-badge-tag" class="bg-sky-600 text-white font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit mb-1.5 shadow">
+                 ★ TINH HOA NÔNG SẢN VIỆT
+             </span>
+             <h3 class="text-base sm:text-lg font-black tracking-wide text-white leading-tight">NATIONAL OCOP PLATFORM</h3>
+             <p class="text-[11px] text-sky-100 mt-0.5 font-medium line-clamp-1" id="i18n-hero-banner-sub">Kết Nối Trực Tiếp Hợp Tác Xã Bản Địa • Bảo Chứng Chất Lượng OCOP Quốc Gia</p>
+         </div>
+     </div>
+
+     <!-- Chi tiết sản phẩm & Giá khuyến mãi & Nút hành động -->
+     <div class="pt-3.5 space-y-3" onclick="event.stopPropagation();">
+         <div>
+             <div class="flex items-center justify-between text-xs mb-1">
+                 <span id="hero-feat-region" class="font-extrabold text-sky-800 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-md">
+                     Đồng Nai • OCOP 4★
+                 </span>
+                 <span class="text-amber-500 font-bold flex items-center gap-1 text-[11px]">
+                     <i class="fa-solid fa-star"></i> 4.9/5 (1.200+ đánh giá)
+                 </span>
+             </div>
+             <h4 id="hero-feat-title" class="font-black text-slate-900 text-sm leading-snug line-clamp-2">
+                 Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)
+             </h4>
+         </div>
+
+         <!-- Hàng Giá Niêm Yết & Khuyến Mãi -->
+         <div class="flex items-baseline justify-between py-1 border-y border-slate-100">
+             <div class="flex items-baseline gap-2">
+                 <span id="hero-feat-price" class="text-xl font-black text-emerald-700">160.000 ₫</span>
+                 <s id="hero-feat-orig-price" class="text-xs text-slate-400 font-semibold">195.000 ₫</s>
+             </div>
+             <span id="hero-feat-discount" class="text-[11px] font-black text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
+                 -18% TIẾT KIỆM
+             </span>
+         </div>
+
+         <!-- 3 Nút Hành Động -->
+         <div class="grid grid-cols-3 gap-2 pt-1">
+             <button type="button" id="hero-feat-buy-btn" onclick="addToCart(506); toggleCart(true);" class="py-2.5 px-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-95 text-white font-extrabold text-xs shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer" title="Thêm vào giỏ hàng">
+                 <i class="fa-solid fa-cart-shopping"></i>
+                 <span>Mua Ngay</span>
+             </button>
+             <button type="button" id="hero-feat-view-btn" onclick="openQuickView(506);" class="py-2.5 px-2 rounded-xl bg-sky-50 hover:bg-sky-100 active:scale-95 text-sky-900 border border-sky-300 font-extrabold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer" title="Xem chi tiết đặc sản">
+                 <i class="fa-solid fa-circle-info text-sky-700"></i>
+                 <span>Chi Tiết</span>
+             </button>
+             <button type="button" id="hero-feat-ai-btn" onclick="consultProductWithAI(506);" class="py-2.5 px-2 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-black text-xs shadow-sm transition flex items-center justify-center gap-1 cursor-pointer" title="Hỏi AI tư vấn về đặc sản này">
+                 <i class="fa-solid fa-wand-magic-sparkles text-slate-950"></i>
+                 <span>AI Tư Vấn</span>
+             </button>
+         </div>
+     </div>
  </div>
  </div>
  </div>
