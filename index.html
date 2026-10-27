@@ -2801,7 +2801,7 @@
 
  <div class="flex items-center space-x-2 sm:space-x-3">
  <button type="button" id="btn-intro-header-explore" onclick="enterOcopMarket('all')" class="px-4 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-md hover:opacity-95" style="background: #0284C7 !important; color: #FFFFFF !important; border: 1px solid #0369A1 !important; font-weight: 800 !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3) !important;">
- <span style="color: #FFFFFF !important; font-weight: 800 !important;">Vào trang</span>
+ <span id="btn-intro-header-explore-text" style="color: #FFFFFF !important; font-weight: 800 !important;">Vào trang</span>
  </button>
  <div class="lang-dropdown-container" id="intro-lang-dropdown-container" style="position: relative !important; z-index: 1000000 !important;">
  <button type="button" id="intro-lang-dropdown-btn" onclick="toggleLanguageDropdown(event, 'intro-lang-dropdown-menu')" class="lang-dropdown-btn" aria-haspopup="true" aria-expanded="false" title="Chọn ngôn ngữ / Select Language">
@@ -2983,10 +2983,10 @@ Khơi Nguồn Di Sản Việt</span>
  <!-- 2 Central Navigation Items in .header-primary-nav -->
  <nav class="header-primary-nav hidden md:inline-flex items-center" style="display: inline-flex !important; gap: 10px !important; flex-wrap: nowrap !important;" aria-label="Thanh điều hướng trung tâm">
  <button type="button" onclick="scrollToProducts()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" style="white-space: nowrap !important; height: 38px; color: #0369A1 !important; background: #F0F9FF !important; border: 1px solid #7DD3FC !important;">
- <span>🌟 Đặc Sản 63 Tỉnh Thành</span>
+ <span id="header-nav-products-label">🌟 Đặc Sản 63 Tỉnh Thành</span>
  </button>
  <button type="button" onclick="openAllStoresModal()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" style="white-space: nowrap !important; height: 38px; color: #0369A1 !important; background: #F0F9FF !important; border: 1px solid #7DD3FC !important;">
- <span>🗺️ Điểm Bán OCOP</span>
+ <span id="header-nav-stores-label">🗺️ Điểm Bán OCOP</span>
  </button>
  </nav>
 
@@ -6593,7 +6593,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <!-- GIÁ BÁN SẢN PHẨM RÕ RÀNG (TÔNG XANH HỮU CƠ ĐẬM) -->
                             <div class="product-card-price flex items-center justify-between py-1.5 px-3 my-1 rounded-xl border border-emerald-200/80 bg-emerald-50/70 shadow-2xs">
                                 <span class="text-[11px] font-bold text-emerald-900 flex items-center gap-1">
-                                    <i class="fa-solid fa-tag text-emerald-600 text-[10px]"></i> Giá:
+                                    <i class="fa-solid fa-tag text-emerald-600 text-[10px]"></i> ${({vi:'Giá:',en:'Price:',zh:'价格:',ko:'가격:',ja:'価格:'})[currentLanguage]||'Giá:'}
                                 </span>
                                 <span class="product-price-value text-sm font-black text-emerald-800" style="font-size: 13px !important; line-height: 1.35 !important;">
                                     ${getProductPriceLabel(p) || ((p.price || 0).toLocaleString('vi-VN') + ' ₫')}
@@ -6618,20 +6618,20 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <span>${sysMetrics.margin}</span>
                         </div>
                         <div class="product-detail-row w-full mb-1.5">
-                            <button type="button" onclick="openQuickView(${p.id})" class="btn-card-details lofi-btn-detail w-full flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl font-bold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 transition-all shadow-2xs cursor-pointer" title="Xem chi tiết sản phẩm">
+                            <button type="button" onclick="openQuickView(${p.id})" class="btn-card-details lofi-btn-detail w-full flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl font-bold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 transition-all shadow-2xs cursor-pointer" title="${({vi:'Xem chi tiết sản phẩm',en:'View product details',zh:'查看商品详情',ko:'상품 상세정보 보기',ja:'商品の詳細を見る'})[currentLanguage]||'Xem chi tiết sản phẩm'}">
                                 <i class="fa-solid fa-circle-info text-emerald-600"></i>
-                                <span>Chi tiết</span>
+                                <span>${({vi:'Chi tiết',en:'Details',zh:'详情',ko:'상세보기',ja:'詳細'})[currentLanguage]||'Chi tiết'}</span>
                             </button>
                         </div>
                         <div class="product-action-row flex items-center gap-1.5 w-full">
-                            <button type="button" onclick="handleBuyNow(${p.id})" class="product-action-buy lofi-btn-buy btn-card-buy-online flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl font-black text-xs text-white transition-all shadow-xs cursor-pointer active:scale-95" style="flex: 2 1 0% !important; min-width: 0 !important; height: 38px !important; background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%) !important; color: #FFFFFF !important;" title="Mua ngay sản phẩm này (yêu cầu đăng nhập như Shopee)">
+                            <button type="button" onclick="handleBuyNow(${p.id})" class="product-action-buy lofi-btn-buy btn-card-buy-online flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl font-black text-xs text-white transition-all shadow-xs cursor-pointer active:scale-95" style="flex: 2 1 0% !important; min-width: 0 !important; height: 38px !important; background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%) !important; color: #FFFFFF !important;" title="${({vi:'Mua ngay sản phẩm này (yêu cầu đăng nhập như Shopee)',en:'Buy this product now',zh:'立即购买该商品',ko:'이 상품 바로구매',ja:'この商品を今すぐ購入'})[currentLanguage]||'Mua ngay'}">
                                 <i class="fa-solid fa-bolt text-amber-200"></i>
-                                <span class="truncate">Mua ngay</span>
+                                <span class="truncate">${({vi:'Mua ngay',en:'Buy Now',zh:'立即购买',ko:'바로구매',ja:'今すぐ購入'})[currentLanguage]||'Mua ngay'}</span>
                             </button>
-                            <button type="button" onclick="addToCart(${p.id}); toggleCart(true)" class="product-action-cart lofi-btn-cart flex items-center justify-center rounded-xl font-bold text-xs bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 38px !important; height: 38px !important;" title="Thêm sản phẩm vào giỏ hàng">
+                            <button type="button" onclick="addToCart(${p.id}); toggleCart(true)" class="product-action-cart lofi-btn-cart flex items-center justify-center rounded-xl font-bold text-xs bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 38px !important; height: 38px !important;" title="${({vi:'Thêm sản phẩm vào giỏ hàng',en:'Add to cart',zh:'加入购物车',ko:'장바구니 담기',ja:'カートに追加'})[currentLanguage]||'Thêm sản phẩm vào giỏ hàng'}">
                                 <i class="fa-solid fa-cart-shopping text-sm"></i>
                             </button>
-                            <button type="button" onclick="toggleWishlist(${p.id})" class="product-action-favorite lofi-btn-favorite flex items-center justify-center rounded-xl border ${isFav ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-emerald-50 hover:bg-rose-50 border-emerald-200 hover:border-rose-300 text-slate-400 hover:text-rose-500'} transition-all shadow-2xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 38px !important; height: 38px !important;" aria-pressed="${isFav}" title="${isFav ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}">
+                            <button type="button" onclick="toggleWishlist(${p.id})" class="product-action-favorite lofi-btn-favorite flex items-center justify-center rounded-xl border ${isFav ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-emerald-50 hover:bg-rose-50 border-emerald-200 hover:border-rose-300 text-slate-400 hover:text-rose-500'} transition-all shadow-2xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 38px !important; height: 38px !important;" aria-pressed="${isFav}" title="${isFav ? ({vi:'Bỏ yêu thích',en:'Remove from wishlist',zh:'取消收藏',ko:'위시리스트에서 삭제',ja:'お気に入りから削除'})[currentLanguage]||'Bỏ yêu thích' : ({vi:'Thêm vào yêu thích',en:'Add to wishlist',zh:'加入收藏',ko:'위시리스트에 추가',ja:'お気に入りに追加'})[currentLanguage]||'Thêm vào yêu thích'}">
                                 <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-sm"></i>
                             </button>
                         </div>
@@ -13691,6 +13691,426 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         function translateRemainingPageText() {
             const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
 
+            // --- Comprehensive Multi-Language UI Text Synchronization ---
+            const safeSetText = (sel, texts) => {
+                const el = typeof sel === 'string' ? document.querySelector(sel) : sel;
+                if (el && texts[lang]) el.textContent = texts[lang];
+            };
+
+            // A. Header Navigation & Actions
+            safeSetText('#header-nav-products-label', {
+                vi: '🌟 Đặc Sản 63 Tỉnh Thành',
+                en: '🌟 63 Provinces Specialties',
+                zh: '🌟 63省特色名产',
+                ko: '🌟 63개 성·시 특산물',
+                ja: '🌟 63省・市特産品'
+            });
+            safeSetText('#header-nav-stores-label', {
+                vi: '🗺️ Điểm Bán OCOP',
+                en: '🗺️ OCOP Stores',
+                zh: '🗺️ OCOP销售门店',
+                ko: '🗺️ OCOP 매장 안내',
+                ja: '🗺️ OCOP販売店舗'
+            });
+            safeSetText('#header-cart-toggle span:not(#header-cart-count)', {
+                vi: 'Giỏ hàng',
+                en: 'Cart',
+                zh: '购物车',
+                ko: '장바구니',
+                ja: 'カート'
+            });
+            safeSetText('#btn-intro-header-explore-text', {
+                vi: 'Vào trang',
+                en: 'Enter Store',
+                zh: '进入商城',
+                ko: '쇼핑몰 입장',
+                ja: 'ショップへ'
+            });
+
+            // B. Hero Feature Cards & CTAs
+            safeSetText('#i18n-hero-feat1-title', {
+                vi: 'Bản Đồ Số 63 Tỉnh Thành',
+                en: '63 Provinces Map',
+                zh: '63省数字地图',
+                ko: '63개 성·시 디지털 지도',
+                ja: '63省・市デジタルマップ'
+            });
+            safeSetText('#i18n-hero-feat2-title', {
+                vi: 'Đặc Sản Vùng Miền Việt Nam',
+                en: 'Specialties from Vietnam',
+                zh: '越南地标特产',
+                ko: '베트남 지역 특산물',
+                ja: 'ベトナム地域特産品'
+            });
+            safeSetText('#i18n-hero-feat3-title', {
+                vi: '24/7 AI Dispatch Copilot',
+                en: '24/7 AI Dispatch Copilot',
+                zh: '24/7 AI 调度 Copilot',
+                ko: '24/7 AI 디스패치 코파일럿',
+                ja: '24/7 AI 配送コパイロット'
+            });
+            safeSetText('#i18n-hero-feat4-title', {
+                vi: 'AI Financial Engine',
+                en: 'AI Financial Engine',
+                zh: 'AI 财务分析引擎',
+                ko: 'AI 재무 분석 엔진',
+                ja: 'AI 財務分析エンジン'
+            });
+            safeSetText('#i18n-hero-btn-stores', {
+                vi: '🗺️ Mạng Lưới Điểm Bán OCOP',
+                en: '🗺️ OCOP Store Network',
+                zh: '🗺️ 全国 OCOP 销售网络',
+                ko: '🗺️ OCOP 매장 네트워크',
+                ja: '🗺️ OCOP販売ネットワーク'
+            });
+            safeSetText('#i18n-hero-btn-copilot', {
+                vi: '🎁 Trợ Lý Tư Vấn Combo OCOP',
+                en: '🎁 AI Combo Consulting Copilot',
+                zh: '🎁 AI 特产礼盒咨询助手',
+                ko: '🎁 AI 맞춤 세트 상담 코파일럿',
+                ja: '🎁 AI特産品コンボ相談コパイロット'
+            });
+            safeSetText('.featured-section-title', {
+                vi: 'Đặc sản nổi bật',
+                en: 'Featured Specialty',
+                zh: '精选特色产品',
+                ko: '추천 대표 특산품',
+                ja: '注目の厳選特産品'
+            });
+            safeSetText('#i18n-hero-badge-tag', {
+                vi: '★ TINH HOA NÔNG SẢN VIỆT',
+                en: '★ VIETNAMESE PREMIUM SPECIALTY',
+                zh: '★ 越南优质农产名品',
+                ko: '★ 베트남 프리미엄 특산물',
+                ja: '★ ベトナム厳選名産品'
+            });
+            safeSetText('#i18n-hero-banner-sub', {
+                vi: 'Kết Nối Trực Tiếp Hợp Tác Xã Bản Địa • Bảo Chứng Chất Lượng OCOP Quốc Gia',
+                en: 'Direct Connection to Local Cooperatives • National OCOP Quality Guarantee',
+                zh: '直连地方源头合作社 • 国家级 OCOP 品质认证',
+                ko: '산지 협동조합 직결 • 국가 공인 OCOP 품질 보증',
+                ja: '産地協同組合と直接連携 • 国家認定OCOP品質保証'
+            });
+
+            // C. Why Choose Us Section
+            safeSetText('#why-choose-us-section div.inline-flex span', {
+                vi: 'CHUỖI CUNG ỨNG SỐ OCOP 4.0',
+                en: 'OCOP 4.0 DIGITAL SUPPLY CHAIN',
+                zh: 'OCOP 4.0 数字供应链',
+                ko: 'OCOP 4.0 디지털 공급망',
+                ja: 'OCOP 4.0 デジタルサプライチェーン'
+            });
+            safeSetText('#why-choose-us-section h2 > span:nth-child(2)', {
+                vi: 'CAM KẾT VẬN HÀNH CHUỖI CUNG ỨNG SỐ TOÀN DIỆN',
+                en: 'COMPREHENSIVE DIGITAL SUPPLY CHAIN COMMITMENT',
+                zh: '全面数字化供应链运营承诺',
+                ko: '종합 디지털 공급망 운영 약속',
+                ja: '包括的なデジタルサプライチェーン運用の誓約'
+            });
+            safeSetText('#why-choose-us-section p', {
+                vi: 'Nền tảng chuẩn hóa dữ liệu pháp lý, tối ưu logistics vựa vùng và giải phóng năng lực cạnh tranh cho hợp tác xã nông sản 63 tỉnh thành.',
+                en: 'Standardizing legal data, optimizing regional logistics and unlocking competitiveness for cooperatives across 63 provinces.',
+                zh: '标准化合规数据，优化区域物流枢纽，赋能全国63省市农业合作社核心竞争力。',
+                ko: '규제 데이터 표준화, 지역 물류 최적화 및 전국 63개 성·시 농업 협동조합의 경쟁력 극대화.',
+                ja: '法務データの標準化、地域物流の最適化、全国63省・市の農業協同組合の競争力強化を支援。'
+            });
+            safeSetText('#i18n-why-pillar1', {
+                vi: 'Nguồn gốc rõ ràng',
+                en: 'Clear Origin & Traceability',
+                zh: '产地明确透明',
+                ko: '명확한 원산지 추적',
+                ja: '明確な原産地・トレーサビリティ'
+            });
+            safeSetText('#i18n-why-pillar1-desc', {
+                vi: 'Thông tin và số sao OCOP.',
+                en: 'Verified OCOP star ratings & legal certification.',
+                zh: '认证信息与 OCOP 星级。',
+                ko: '인증 정보 및 OCOP 스타 등급.',
+                ja: '認証情報とOCOPスター等級。'
+            });
+            safeSetText('#i18n-why-badge1', {
+                vi: 'Thông tin minh bạch',
+                en: 'Transparent Information',
+                zh: '透明公开信息',
+                ko: '투명한 정보',
+                ja: '透明な情報開示'
+            });
+            safeSetText('#i18n-why-pillar2', {
+                vi: 'Câu chuyện đặc sản',
+                en: 'Specialty Stories',
+                zh: '地方特色故事',
+                ko: '특산물 이야기',
+                ja: '特産品ストーリー'
+            });
+            safeSetText('#i18n-why-pillar2-desc', {
+                vi: 'Khám phá văn hóa vùng miền.',
+                en: 'Explore rich regional culture and traditions.',
+                zh: '探索深厚地域文化。',
+                ko: '다채로운 지역 문화 탐색.',
+                ja: '豊かな地域文化を探求。'
+            });
+            safeSetText('#i18n-why-badge2', {
+                vi: 'Di sản Việt',
+                en: 'Vietnamese Heritage',
+                zh: '越南文化遗产',
+                ko: '베트남 문화유산',
+                ja: 'ベトナム遺産'
+            });
+            safeSetText('#i18n-why-pillar3', {
+                vi: 'Tìm điểm bán',
+                en: 'Store Locator',
+                zh: '查找销售门店',
+                ko: '매장 찾기',
+                ja: '店舗検索'
+            });
+            safeSetText('#i18n-why-pillar3-desc', {
+                vi: 'Tra cứu cửa hàng trên bản đồ.',
+                en: 'Find official showrooms & stores on map.',
+                zh: '在数字地图上检索实体门店。',
+                ko: '디지털 지도에서 공식 매장 검색.',
+                ja: 'デジタル地図で公式店舗を検索。'
+            });
+            safeSetText('#i18n-why-badge3', {
+                vi: 'Kết nối địa phương',
+                en: 'Local Connection',
+                zh: '连接地方源头',
+                ko: '지역 네트워크 연결',
+                ja: '地域接続'
+            });
+            safeSetText('#i18n-why-pillar4', {
+                vi: 'Tư vấn 24/7',
+                en: '24/7 AI Consultation',
+                zh: '24/7 全天候咨询',
+                ko: '24/7 AI 상담',
+                ja: '24/7 AI相談'
+            });
+            safeSetText('#i18n-why-pillar4-desc', {
+                vi: 'Hỗ trợ chọn quà và đặt hàng.',
+                en: 'Assistance in selecting gifts & ordering.',
+                zh: '协助选礼与便捷订购。',
+                ko: '맞춤 선물 추천 및 주문 지원.',
+                ja: 'ギフト選びと注文をサポート。'
+            });
+            safeSetText('#i18n-why-badge4', {
+                vi: 'Trợ lý sản phẩm',
+                en: 'Product Assistant',
+                zh: '智能产品助手',
+                ko: '상품 어시스턴트',
+                ja: '商品アシスタント'
+            });
+
+            // D. Trust Policy Bar (4 Columns)
+            const policyCards = document.querySelectorAll('#lofi-trust-policy-bar .grid > div');
+            if (policyCards && policyCards.length >= 4) {
+                const policies = [
+                    {
+                        h4: { vi: '100% Chuẩn OCOP', en: '100% OCOP Certified', zh: '100% OCOP 认证', ko: '100% OCOP 정품', ja: '100% OCOP認証' },
+                        p: { vi: 'Đạt 3–5 Sao kiểm định quốc gia', en: 'National 3-5 star verified', zh: '国家 3-5 星级品质认证', ko: '국가 공인 3~5스타 인증', ja: '国家3〜5つ星認証品質' }
+                    },
+                    {
+                        h4: { vi: 'Giao Hàng Toàn Quốc', en: 'Nationwide Delivery', zh: '全国安全配送', ko: '전국 안전 배송', ja: '全国配送対応' },
+                        p: { vi: 'Đóng gói chuẩn nông sản sạch', en: 'Clean produce standard packaging', zh: '标准保鲜卫生包装', ko: '표준 보존 안심 포장', ja: '標準保存・安心梱包' }
+                    },
+                    {
+                        h4: { vi: 'Đồng Kiểm Khi Nhận', en: 'Inspect On Delivery', zh: '开箱验货再付款', ko: '수령 시 실물 검수', ja: '受取時実物確認可能' },
+                        p: { vi: 'Kiểm tra đúng hàng mới trả tiền', en: 'Pay only after verifying items', zh: '确认无误后再行支付', ko: '상품 확인 후 안심 결제', ja: '商品確認後のお支払い' }
+                    },
+                    {
+                        h4: { vi: 'Đổi Trả Uy Tín 7 Ngày', en: '7-Day Easy Returns', zh: '7天无忧退换', ko: '7일 안심 반품/교환', ja: '7日間安心返品対応' },
+                        p: { vi: 'Hỗ trợ nhanh nếu lỗi sản xuất', en: 'Fast support for defects', zh: '质量问题快速售后处理', ko: '제조 결함 시 빠른 지원', ja: '初期不良時の迅速サポート' }
+                    }
+                ];
+                policyCards.forEach((card, idx) => {
+                    if (policies[idx]) {
+                        const h4 = card.querySelector('h4');
+                        const p = card.querySelector('p');
+                        if (h4) h4.textContent = policies[idx].h4[lang] || policies[idx].h4.vi;
+                        if (p) p.textContent = policies[idx].p[lang] || policies[idx].p.vi;
+                    }
+                });
+            }
+
+            // E. AI Content Studio Section
+            safeSetText('#ai-content-studio-section .inline-flex span', {
+                vi: 'AI Marketing & Content Studio • Trợ Lý Sáng Tạo Số',
+                en: 'AI Marketing & Content Studio • Digital Creative Assistant',
+                zh: 'AI 营销与内容工作室 • 数字化创意助手',
+                ko: 'AI 마케팅 & 콘텐츠 스튜디오 • 디지털 창작 어시스턴트',
+                ja: 'AIマーケティング＆コンテンツスタジオ • デジタル制作アシスタント'
+            });
+            safeSetText('#ai-content-studio-section h3', {
+                vi: 'AI Tự Động Hóa Truyền Thông & Xuất Khẩu Đặc Sản OCOP',
+                en: 'AI-Automated Media & Export Promotion for OCOP Specialties',
+                zh: 'AI 自动化 OCOP 特产全渠道传播与出口推广',
+                ko: 'OCOP 특산품 미디어 홍보 및 수출 자동화 AI 솔루션',
+                ja: 'OCOP特産品のメディア展開＆輸出促進AI自動化ソリューション'
+            });
+            safeSetText('#ai-content-studio-section p', {
+                vi: 'Công cụ Generative AI độc quyền giúp Hợp tác xã (HTX) chỉ với 1 click: Tự động viết câu chuyện văn hóa vùng miền (Storytelling), bài đăng mạng xã hội bắt trend và bản dịch đa ngôn ngữ phục vụ xúc tiến thương mại quốc tế.',
+                en: 'Exclusive Generative AI tool enabling cooperatives in 1 click: Write cultural storytelling, trending social media posts, and multilingual translations for international trade.',
+                zh: '专属生成式 AI 工具，合作社仅需一键：自动撰写地域文化故事、社媒热门推文以及国际经贸多语种译文。',
+                ko: '협동조합을 위한 원클릭 생성형 AI 툴: 지역 문화 스토리텔링, 트렌디한 SNS 게시물 및 해외 무역용 다국어 번역 자동 생성.',
+                ja: '協同組合向けワンクリック生成AIツール：地域文化ストーリーテリング、SNS投稿、国際貿易向け多言語翻訳を自動生成。'
+            });
+            safeSetText('#ai-content-studio-section label[for="studio-product-select"]', {
+                vi: '1. Chọn Sản Phẩm OCOP Cần Quảng Bá:',
+                en: '1. Select OCOP Specialty to Promote:',
+                zh: '1. 选择需推广的 OCOP 特产：',
+                ko: '1. 홍보할 OCOP 특산품 선택:',
+                ja: '1. プロモーションするOCOP特産品を選択：'
+            });
+            safeSetText('#ai-content-studio-section label:not([for])', {
+                vi: '2. Chọn Định Dạng Nội Dung Mục Tiêu:',
+                en: '2. Select Target Content Format:',
+                zh: '2. 选择目标内容格式：',
+                ko: '2. 목표 콘텐츠 형식 선택:',
+                ja: '2. ターゲットコンテンツ形式を選択：'
+            });
+            safeSetText('#btn-mode-pr span:first-of-type', {
+                vi: 'Bài Báo PR', en: 'PR Article', zh: 'PR 文章', ko: 'PR 기사', ja: 'PR記事'
+            });
+            safeSetText('#btn-mode-social span:first-of-type', {
+                vi: 'Mạng Xã Hội', en: 'Social Media', zh: '社交媒体', ko: '소셜 미디어', ja: 'SNS投稿'
+            });
+            safeSetText('#btn-mode-export span:first-of-type', {
+                vi: 'Xuất Khẩu', en: 'Export', zh: '对外出口', ko: '해외 수출', ja: '海外輸出'
+            });
+            safeSetText('#btn-studio-generate span', {
+                vi: '✨ AI Viết Bài Quảng Bá Ngay (1-Click)',
+                en: '✨ Generate AI Promotion Content (1-Click)',
+                zh: '✨ AI 一键生成推广内容',
+                ko: '✨ AI 프로모션 콘텐츠 1초 생성',
+                ja: '✨ AIプロモーション記事を即時作成（1クリック）'
+            });
+            safeSetText('#studio-copy-label', {
+                vi: 'Sao chép', en: 'Copy', zh: '复制', ko: '복사', ja: 'コピー'
+            });
+
+            // F. Catalog Header, Sort & Controls
+            safeSetText('#catalog-main-content div:first-child .fa-store + span', {
+                vi: 'Đặc Sản Tuyển Chọn',
+                en: 'Featured Specialties',
+                zh: '精选特色产品',
+                ko: '엄선 대표 특산물',
+                ja: '厳選された名産品'
+            });
+            safeSetText('#i18n-sort-default', {
+                vi: 'Đặc sản tiêu biểu toàn quốc',
+                en: 'Nationwide Featured Specialties',
+                zh: '全国代表性特产',
+                ko: '전국 대표 특산물',
+                ja: '全国の代表的な名産品'
+            });
+            safeSetText('#i18n-sort-stars', {
+                vi: 'Chứng nhận OCOP 5 Sao → 4 Sao',
+                en: 'OCOP 5-Star → 4-Star Certified',
+                zh: 'OCOP 5星 → 4星认证',
+                ko: 'OCOP 5스타 → 4스타 인증순',
+                ja: 'OCOP 5つ星 → 4つ星認証順'
+            });
+            safeSetText('#i18n-sort-volume', {
+                vi: 'Được du khách & B2B quan tâm nhất',
+                en: 'Most Popular among Visitors & B2B',
+                zh: '最受游客与企业欢迎',
+                ko: '방문객 및 B2B 인기순',
+                ja: '観光客・B2Bで最も注目'
+            });
+            safeSetText('#i18n-sort-margin-asc', {
+                vi: 'Giá tham khảo: Thấp → Cao',
+                en: 'Price: Low → High',
+                zh: '参考价格：低 → 高',
+                ko: '가격순: 낮은순 → 높은순',
+                ja: '参考価格：安い順 → 高い順'
+            });
+            safeSetText('#i18n-sort-margin-desc', {
+                vi: 'Giá tham khảo: Cao → Thấp',
+                en: 'Price: High → Low',
+                zh: '参考价格：高 → 低',
+                ko: '가격순: 높은순 → 낮은순',
+                ja: '参考価格：高い順 → 安い順'
+            });
+            safeSetText('#i18n-toolbar-btn-reset', {
+                vi: 'Đặt lại', en: 'Reset', zh: '重置', ko: '초기화', ja: 'リセット'
+            });
+
+            // G. Sidebar Regions & Filters
+            safeSetText('#i18n-macro-region-title', {
+                vi: 'Khám Phá 3 Miền', en: 'Explore 3 Regions', zh: '探索三大地域', ko: '3대 지역 탐색', ja: '3大地域を探索'
+            });
+            safeSetText('#macro-region-hint', {
+                vi: 'Số sản phẩm', en: 'Items count', zh: '商品数量', ko: '상품 수', ja: '商品数'
+            });
+            safeSetText('#macro-region-pills button[data-macro-region="bac"]', {
+                vi: '🏔️ Bắc', en: '🏔️ North', zh: '🏔️ 北部', ko: '🏔️ 북부', ja: '🏔️ 北部'
+            });
+            safeSetText('#macro-region-pills button[data-macro-region="trung"]', {
+                vi: '🌊 Trung', en: '🌊 Central', zh: '🌊 中部', ko: '🌊 중부', ja: '🌊 中部'
+            });
+            safeSetText('#macro-region-pills button[data-macro-region="nam"]', {
+                vi: '🌴 Nam', en: '🌴 South', zh: '🌴 南部', ko: '🌴 남부', ja: '🌴 南部'
+            });
+            safeSetText('#i18n-sidebar-prov-title', {
+                vi: 'Bộ Lọc 63 Tỉnh Thành',
+                en: '63 Provinces Filter',
+                zh: '63省市筛选',
+                ko: '63개 성·시 필터',
+                ja: '63省・市フィルター'
+            });
+            safeSetText('#i18n-opt-all-provinces', {
+                vi: '-- Tất cả 63 Tỉnh Thành --',
+                en: '-- All 63 Provinces & Cities --',
+                zh: '-- 全部63个省市 --',
+                ko: '-- 전국 63개 성·시 전체 --',
+                ja: '-- 全63省・市すべて --'
+            });
+            safeSetText('#i18n-b2b-box-title', {
+                vi: 'AI THIẾT KẾ GÓI QUÀ B2B & TỐI ƯU NGÂN SÁCH',
+                en: 'AI B2B CORPORATE GIFT SET DESIGN & BUDGET OPTIMIZATION',
+                zh: 'AI B2B 企业礼品方案与预算优化',
+                ko: 'AI B2B 맞춤 기업 선물 세트 기획 및 예산 최적화',
+                ja: 'AI B2B法人向けギフトセット企画＆予算最適化'
+            });
+            safeSetText('#i18n-b2b-box-desc', {
+                vi: 'Chọn mức ngân sách mục tiêu, AI tự động cấu hình danh mục đặc sản OCOP tối ưu giá trị và biên lợi nhuận!',
+                en: 'Select target budget, AI automatically configs OCOP specialty sets optimizing value & margins!',
+                zh: '选择目标预算，AI 自动配置最具文化价值与利润空间的 OCOP 地标特产组合！',
+                ko: '목표 예산을 선택하면 AI가 가치와 마진을 극대화한 OCOP 특산품 세트를 자동 구성합니다!',
+                ja: '目標予算を選択すると、AIが価値と利益率を最適化したOCOP特産品セットを自動構成します！'
+            });
+            safeSetText('#i18n-b2b-box-btn', {
+                vi: 'Mở Chatbot AI Tư Vấn 24/7',
+                en: 'Open 24/7 AI Consulting Chatbot',
+                zh: '打开 24/7 AI 咨询助手',
+                ko: '24/7 AI 상담 챗봇 열기',
+                ja: '24/7 AI相談チャットボットを開く'
+            });
+            safeSetText('#i18n-marquee-label', {
+                vi: 'ĐIỂM BÁN OCOP', en: 'OCOP STORES', zh: 'OCOP 门店', ko: 'OCOP 매장', ja: 'OCOP店舗'
+            });
+
+            // H. Mobile Categories Bar Labels
+            document.querySelectorAll('.mob-category-label').forEach(el => {
+                const cat = el.dataset.category;
+                const catMap = {
+                    all: { vi: 'Tất cả', en: 'All', zh: '全部', ko: '전체', ja: 'すべて' },
+                    tea: { vi: 'Thảo Dược', en: 'Herbs & Tea', zh: '草药与茶', ko: '한방 약재·차', ja: '生薬・ハーブ茶' },
+                    gift: { vi: 'Quà Tặng', en: 'Premium Gifts', zh: '文化礼品', ko: '프리미엄 선물', ja: 'プレミアムギフト' },
+                    food: { vi: 'Nông Sản', en: 'Agro-Products', zh: '农产深加工', ko: '농산 가공품', ja: '農産加工品' },
+                    snack: { vi: 'Đặc Sản', en: 'Specialties', zh: '地方原味', ko: '토속 특산물', ja: '地域特産品' },
+                    spice: { vi: 'Gia Vị', en: 'Spices', zh: '风土香料', ko: '특산 양념', ja: '特有香辛料' },
+                    '5star': { vi: 'OCOP 5 Sao', en: 'OCOP 5-Star', zh: 'OCOP 5星', ko: 'OCOP 5스타', ja: 'OCOP 5つ星' },
+                    '4star': { vi: 'OCOP 4 Sao', en: 'OCOP 4-Star', zh: 'OCOP 4星', ko: 'OCOP 4스타', ja: 'OCOP 4つ星' }
+                };
+                if (cat && catMap[cat]) {
+                    el.textContent = catMap[cat][lang] || catMap[cat].vi;
+                }
+            });
+
+            // Also invoke updateCustomerHeaderUI() to ensure customer button text is localized
+            if (typeof updateCustomerHeaderUI === 'function') {
+                updateCustomerHeaderUI();
+            }
+
             const i18nMapping = [
                 {
                     selector: '#intro-lucky-card .tracking-wide',
@@ -14952,6 +15372,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         const btn = document.getElementById('btn-customer-account');
         if (!label) return;
 
+        const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
+        const loginMap = {
+            vi: '👤 Đăng Nhập',
+            en: '👤 Sign In',
+            zh: '👤 登录',
+            ko: '👤 로그인',
+            ja: '👤 ログイン'
+        };
         if (user && user.username) {
             const displayName = user.fullName ? user.fullName.split(' ').slice(-1)[0] : user.username;
             label.textContent = '👤 ' + displayName + ' ▾';
@@ -14959,10 +15387,10 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 btn.style.setProperty('background', '#F0F9FF', 'important');
                 btn.style.setProperty('border-color', '#0284C7', 'important');
                 btn.style.setProperty('color', '#0284C7', 'important');
-                btn.setAttribute('title', 'Tài khoản: ' + (user.fullName || user.username) + ' (Bấm để quản lý đơn hàng & đổi mật khẩu)');
+                btn.setAttribute('title', (user.fullName || user.username));
             }
         } else {
-            label.textContent = '👤 Đăng Nhập';
+            label.textContent = loginMap[lang] || loginMap.vi;
             if (btn) {
                 btn.style.setProperty('background', '#FFFFFF', 'important');
                 btn.style.setProperty('border-color', '#0284C7', 'important');
