@@ -19,4 +19,5 @@ const html = fs.readFileSync(file, 'utf8').replace(
   /assets\/tailwind\.css\?v=[a-z0-9_]+/g, 'assets/tailwind.css?v=' + hash
 );
 fs.writeFileSync(file, html.replace(/^\uFEFF/, '').trimEnd() + '\n');
+require('./sync-client-assets.cjs').syncClientAssets(root);
 console.log('Built local Tailwind CSS: ' + fs.statSync(cssPath).size + ' bytes');

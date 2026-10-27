@@ -2,6 +2,7 @@
 const shopping = require('./ai-shopping');
 const {trainedProductReply} = require('./product-training');
 const {resolveProductConsultation} = require('./product-consultant');
+const {regionalAdviceMessage} = require('./product-locations');
 function isWikipediaURL(value) {
   try {
     const url=new URL(value);
@@ -50,6 +51,10 @@ function composeDataReply(products, intent, language, wikiSources = [], intentPr
     const scoped=intent.categoryOrKeyword || intent.exactRegion || intent.regionKeyword || intent.maxPrice || intent.minStars || products.length<=3;
     reply={message:scoped ? (items.length ? (en ? 'Products matching your request:\n' : 'Các sản phẩm phù hợp với yêu cầu của anh/chị:\n')+items.map(p=>'• '+(en ? p.nameEn || p.name : p.name)+': '+p.price.toLocaleString('vi-VN')+' ₫'+(p.packaging ? ' / '+(en ? p.packagingEn || p.packaging : p.packaging) : '')+(items.length===1 && (p.description || p.desc) ? '\n'+(p.description || p.desc) : '')).join('\n') : (en ? 'No product matches all your requirements. Would you like to adjust the budget or product type?' : 'Chưa có món đáp ứng đầy đủ yêu cầu. Anh/chị muốn thay đổi mức giá hoặc loại sản phẩm không?')) : (en ? 'How can I help? Please tell me the product, province, or budget you are looking for.' : 'Mình có thể giúp anh/chị tìm món gì? Anh/chị cho biết sản phẩm, tỉnh thành hoặc ngân sách nhé.'),productIds:scoped ? items.map(p=>p.id) : []};
   }
+
+  const regionalAdvice = !intent.requiredClarification && !intent.verifiedReviewMessage && !intent.isCombo && !intent.isGift
+    ? regionalAdviceMessage((reply.productIds||[]).map(id=>products.find(product=>product.id===id)).filter(Boolean),intent,language) : null;
+  if (regionalAdvice) reply.message=regionalAdvice;
 
   const hasUsefulContext = intent.isOcopKnowledge || intent.isUsage || (reply.productIds || []).length > 0;
   const sources = hasUsefulContext && !intent.requiredClarification && !intent.verifiedReviewMessage && !intent.isComplaint && !intent.isCSKH && !intent.isShipping && !intent.isOrderGuide

@@ -66,12 +66,12 @@
     }
     function close(){if(!opened||!panel)return;opened=false;panel.classList.remove('cart-ui-panel-open');panel.inert=true;panel.setAttribute('aria-hidden','true');overlay.hidden=true;document.body.style.overflow=previousOverflow;if(previousFocus?.isConnected)previousFocus.focus();}
     function open(){if(!panel)return;if(!opened){previousFocus=document.activeElement;previousOverflow=document.body.style.overflow;}try{const raw=manager.storage?.getItem('ocop_cart');if(raw){const saved=JSON.parse(raw);if(Array.isArray(saved))manager.cart=saved;}}catch(_){}opened=true;render();panel.inert=false;panel.setAttribute('aria-hidden','false');overlay.hidden=false;panel.classList.add('cart-ui-panel-open');document.body.style.overflow='hidden';panel.querySelector('[data-action="close"]').focus();}
-    function add(id){const p=catalogue().find(p=>p.id===Number(id));if(!p)return;lines();manager.addToCart(p,1);selected.add(p.id);render();root.showToast?.(text('Đã thêm vào giỏ hàng.','Added to your cart.'),'success');}
+    function add(id){const p=catalogue().find(p=>p.id===Number(id));if(!p)return;lines();manager.addToCart(p,1);selected.add(p.id);render();root.showToast?.(text('Đã thêm vào giỏ hàng.','Added to your cart.'),'success');return p;}
+    function addProduct(idOrName){if(!String(idOrName??'').trim())return null;const product=typeof idOrName==='number'?catalogue().find(p=>p.id===idOrName):catalogue().find(p=>p.name.toLowerCase().includes(String(idOrName).trim().toLowerCase()));return product?add(product.id):null;}
     function quantity(id,delta){const p=lines().find(p=>p.id===Number(id));if(!p||!Number.isInteger(delta))return;p.quantity=Math.max(1,Math.min(99,p.quantity+delta));manager.save();render();}
     function remove(id){manager.removeFromCart(Number(id));render();}
     function checkout(){
         let rows = selectedLines();
-        if (!rows || !rows.length) rows = lines();
         if (!rows || !rows.length) {
             if (typeof root.showToast === 'function') root.showToast('Vui lòng chọn ít nhất 1 sản phẩm để mua hàng!', 'info');
             else if (typeof alert === 'function') alert('Vui lòng chọn ít nhất 1 sản phẩm để mua hàng!');
@@ -131,7 +131,7 @@
         document.addEventListener('keydown',event=>{if(!opened)return;if(event.key==='Escape'){event.preventDefault();close();}if(event.key==='Tab'){const nodes=[...panel.querySelectorAll('button:not(:disabled),input:not(:disabled)')].filter(n=>n.getClientRects().length),first=nodes[0],last=nodes[nodes.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}});
         root.addEventListener('storage',event=>{if(event.key==='ocop_cart'){manager=new root.CartManager();render();}});
         Object.assign(root,{openCartUI:open,closeCartUI:close,renderCartUIItems:render,changeCartUIQty:quantity,removeFromCartUI:remove,proceedCheckoutFromCart:checkout,
-            addToCart:add,activateProductReconciliation:add,removeFromCart:remove,updateCartQty:quantity,renderCartItems:render,updateCartBadge:render,
+            addToCart:add,addProductToCart:addProduct,activateProductReconciliation:add,removeFromCart:remove,updateCartQty:quantity,renderCartItems:render,updateCartBadge:render,
             getCartTotal:()=>lines().reduce((s,p)=>s+p.price*p.quantity,0),toggleCart:force=>{if(force===false||(force===undefined&&opened))close();else open();},
             addProductsToCart:ids=>{for(const id of new Set(ids))add(id);open();},isCartUIOpen:()=>opened});
         root.OCOPCartUI.ready=true;root.OCOPCartUI.lines=lines;root.OCOPCartUI.selectedLines=selectedLines;render();

@@ -469,6 +469,24 @@ header h1 {
 }
 
 /* Cột Bộ Lọc Bên Trái (Sidebar) */
+#catalog-sidebar-scroll {
+    top: calc(var(--storefront-nav-height, 60px) + 16px) !important;
+    max-height: calc(100vh - var(--storefront-nav-height, 60px) - 32px) !important;
+    max-height: calc(100dvh - var(--storefront-nav-height, 60px) - 32px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: #0284c7 #e0f2fe;
+    scrollbar-gutter: stable;
+    overscroll-behavior-y: auto !important;
+    padding-right: 8px;
+    touch-action: pan-y;
+}
+#catalog-sidebar-scroll::-webkit-scrollbar { display: block !important; width: 8px !important; }
+#catalog-sidebar-scroll::-webkit-scrollbar-track { background: #e0f2fe; border-radius: 8px; }
+#catalog-sidebar-scroll::-webkit-scrollbar-thumb { background: #0284c7; border-radius: 8px; }
+#catalog-sidebar-scroll:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+
 #catalog-sidebar,
 #catalog-sidebar > div {
     background: transparent !important;
@@ -2150,7 +2168,7 @@ body footer#contact-footer a:hover {
 #ocop-intro-overlay .intro-feature-grid,
 #shop-hero .hero-feature-grid {
     display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 6px !important;
     width: 100% !important;
     max-width: 640px !important;
@@ -2592,11 +2610,11 @@ body.catalog-browsing #storefront-main-header {
 }
 
 /* Bảo hiểm đa tầng: Nếu chưa vào duyệt hoặc màn hình chờ đang mở thì triệt để ẩn */
-body:not(.catalog-browsing) header,
+body:not(.catalog-browsing) #storefront-main-header,
 body:not(.catalog-browsing) .storefront-header,
-#ocop-intro-overlay:not(.hidden) ~ header,
+#ocop-intro-overlay:not(.hidden) ~ #storefront-main-header,
 #ocop-intro-overlay:not(.hidden) ~ .storefront-header,
-body:has(#ocop-intro-overlay:not(.hidden)) header,
+body:has(#ocop-intro-overlay:not(.hidden)) #storefront-main-header,
 body:has(#ocop-intro-overlay:not(.hidden)) .storefront-header {
     display: none !important;
     visibility: hidden !important;
@@ -2621,7 +2639,7 @@ body #ocop-intro-overlay:not(.hidden) {
 @media (min-width: 1024px) {
     #ocop-intro-overlay:not(.hidden),
     body #ocop-intro-overlay:not(.hidden) {
-        overflow-y: hidden !important;
+        overflow-y: auto !important;
         height: 100vh !important;
         max-height: 100vh !important;
     }
@@ -2680,6 +2698,35 @@ button[onclick*="copyHeroVoucher"]:focus {
 /* ==========================================================================
    CUSTOMER & ADMIN AUTH MODAL SUBMIT BUTTONS (Bảo đảm chữ và màu luôn hiển thị)
    ========================================================================== */
+/* Keep account dialogs above catalogue sections, navigation, chat and the intro. */
+#customer-auth-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483600 !important;
+    width: 100% !important;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0 !important;
+    padding: 16px !important;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.7) !important;
+    isolation: isolate;
+    transform: none !important;
+}
+#customer-auth-modal.hidden { display: none !important; }
+#customer-auth-modal:not(.hidden) { display: flex !important; }
+#customer-auth-modal > .customer-auth-panel {
+    width: min(100%, 32rem) !important;
+    max-height: calc(100vh - 32px) !important;
+    max-height: calc(100dvh - 32px) !important;
+    min-height: 0;
+    margin: auto !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+}
+
 #customer-auth-modal #btn-cust-login-submit,
 #customer-auth-modal #btn-cust-chpass-submit,
 #customer-auth-modal button[onclick*="handleCustomerLoginSubmit"],

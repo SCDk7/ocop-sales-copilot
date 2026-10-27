@@ -1,13 +1,33 @@
 (function(root){
     'use strict';
+    const analyzer=typeof module==='object'&&module.exports?require('./ai-request-analysis'):root.OCOPRequestAnalysis;
+    function imageUnavailableReply(language='vi',query='',products=[],history=[]) {
+        const analysis=analyzer.analyzeCustomerRequest([...history,{role:'user',text:query}],products,{language,hasImages:true});
+        const message = language === 'en'
+            ? 'Image recognition is currently unavailable. Please provide the product name or visible label text so I can help with product information or your complaint.'
+            : 'Hiện em chưa nhận diện được ảnh. Anh/chị cho em tên sản phẩm hoặc nội dung trên nhãn để em tư vấn, hỗ trợ hoặc tiếp nhận khiếu nại nhé.';
+        return {message,text_response:message,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],imageMatchStatus:'unknown',understandingStatus:'needs_clarification',handoffAdmin:Boolean(analysis.intent.isComplaint||analysis.intent.isCSKH),localFallback:true,aiProvider:'local_catalog',requestAnalysis:{...analysis.summary,needsClarification:true},integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
+    }
     function catalogReply(query,products,language='vi',history=[]){
+        const analysis=analyzer.analyzeCustomerRequest([...history,{role:'user',text:query}],products,{language});
+        const reply=catalogReplyAfterAnalysis(query,products,language,history,analysis);
+        return {...reply,requestAnalysis:{...analysis.summary,needsClarification:Boolean(analysis.summary.needsClarification||reply.understandingStatus==='needs_clarification')}};
+    }
+    function catalogReplyAfterAnalysis(query,products,language,history,analysis){
+        const intent=analysis.intent;
+        const assistant=typeof module==='object'&&module.exports?require('./ai-scenarios'):root.OCOPSalesAssistant;
+        if(analysis.clarification)return {message:analysis.clarification,text_response:analysis.clarification,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],understandingStatus:'needs_clarification',localFallback:true,aiProvider:'local_catalog'};
+        if(intent.isComplaint||intent.isCSKH){
+            const scenario=assistant?.scenarioReply(query,language);
+            const message=scenario?.message||(language==='en'?'Please describe the issue with your order. You can contact staff using the support button below.':'Anh/chị mô tả vấn đề cần hỗ trợ với đơn hàng nhé. Anh/chị có thể liên hệ nhân viên qua nút hỗ trợ bên dưới.');
+            return {message,text_response:message,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],handoffAdmin:true,localFallback:true,aiProvider:'local_catalog',integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
+        }
         const training=typeof module==='object'&&module.exports?require('./product-training'):root.OCOPProductTraining;
         const trainedReply=training?.answerTrainingQuery(query,products,language,history);
         if(trainedReply) return {...trainedReply,localFallback:true};
         const facts=typeof module==='object'&&module.exports?require('./catalog-facts'):root.OCOPCatalogFacts;
         const factReply=facts?.answer(query,products,language,history);
         if(factReply) return {...factReply,localFallback:true,aiProvider:'local_catalog'};
-        const assistant=typeof module==='object'&&module.exports?require('./ai-scenarios'):root.OCOPSalesAssistant;
         const scenario=assistant?.scenarioReply(query,language);
         if(scenario) return {...scenario,text_response:scenario.message,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],localFallback:true,aiProvider:'local_catalog',integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
         const consultant=typeof module==='object'&&module.exports?require('./product-consultant'):root.OCOPProductConsultant;
@@ -17,7 +37,6 @@
         const locations=typeof module==='object'&&module.exports?require('./product-locations'):root.OCOPProductLocations;
         const normQ = (query || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd');
         const isGeneralShowroom = (/(?:mang luoi|he thong|danh sach|tra cuu)\s+(?:cac\s+)?(?:showroom|diem ban|cua hang)\b|(?:showroom|diem ban|store|store location)\s*(?:network|o2o|he thong|mang luoi)\b|(?:network|list of)\s+(?:showrooms?|stores?)|(?:showroom|diem ban)\s+o2o|o2o\s+(?:showroom|diem ban|store)|(?:ban do so|digital map).*(?:showroom|diem ban|store)|(?:showroom|diem ban|store).*(?:ban do so|digital map)/i.test(normQ) || (/diem ban|showroom/i.test(normQ) && /toan quoc|tat ca|he thong|chinh hang|ban do|nationwide|all stores/i.test(normQ))) && !/(?:san pham nay|mon nay|hang nay|this product|this item)/i.test(normQ);
-        const intent=shopping.resolve([...history,{role:'user',text:query}],products);
         if (isGeneralShowroom) {
             intent.isStoreLookup = true;
             intent.categoryOrKeyword = null;
@@ -55,19 +74,11 @@
             ids=selected.map(p=>p.id);
             message=selected.length?(en?'Products matching your request:\n':'Dạ, anh/chị tham khảo các sản phẩm trong danh mục:\n')+selected.map(p=>`• ${en?p.nameEn||p.name:p.name} (${p.region}) — ${p.price.toLocaleString('vi-VN')} ₫/${p.packaging||'đơn vị'}`).join('\n')
                 :scoped?(en?'No catalogue item matches these requirements. Would you like to adjust the province or product type?':'Chưa có sản phẩm phù hợp trong danh mục. Anh/chị muốn đổi tỉnh hoặc loại sản phẩm không?')
-                :(/ảnh|anh|hinh anh|photo|image|picture|nhin|xem|day la/i.test(query)
-                ? (function() {
-                    const isQue = /que|cinnamon/i.test(query);
-                    const topProds = isQue ? products.filter(p => /quế|cinnamon/i.test(p.name)) : products.filter(p => p.stars === 5 || p.id === 349 || p.id === 506);
-                    ids = topProds.slice(0, 3).map(p => p.id);
-                    return en
-                        ? 'I have received your image! Here are recommended 5-star OCOP specialties from our official catalogue for your reference:'
-                        : 'Dạ, em đã nhận được hình ảnh nông đặc sản của anh/chị! Hệ thống OCOP Quốc Gia xin gợi ý các sản phẩm chuẩn sao chính hãng nổi bật tương ứng dưới đây để anh/chị tham khảo ngay nhé:';
-                })()
-                : (en?'Which product, province or gift budget are you interested in?':'Anh/chị muốn tìm sản phẩm, đặc sản tỉnh nào hoặc quà trong ngân sách bao nhiêu ạ?'));
+                : (en?'Which product, province or gift budget are you interested in?':'Anh/chị muốn tìm sản phẩm, đặc sản tỉnh nào hoặc quà trong ngân sách bao nhiêu ạ?');
+            message=locations?.regionalAdviceMessage(selected,intent,language)||message;
         }
         const reply={message,text_response:message,productIds:ids,suggested_products:ids,combos,dynamic_chips:en?['Find products','Gift ideas','Store locations']:['Tìm đặc sản','Gợi ý quà biếu','Tìm điểm bán'],handoffAdmin:Boolean(intent.isComplaint||intent.isCSKH),localFallback:true,aiProvider:'local_catalog',integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
         return locations?locations.appendProductLocations(reply,products,intent,root.OcopStores,language):reply;
     }
-    if(typeof module==='object'&&module.exports)module.exports={catalogReply};else root.OCOPChatFallback={catalogReply};
+    if(typeof module==='object'&&module.exports)module.exports={catalogReply,imageUnavailableReply};else root.OCOPChatFallback={catalogReply,imageUnavailableReply};
 })(typeof globalThis!=='undefined'?globalThis:this);

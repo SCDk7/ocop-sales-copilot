@@ -1,7 +1,7 @@
 /**
  * MODERN SKY-TECH & CLEAN SAPPHIRE CONTROLLER
- * AI Digital Business Challenge 2026 • OCOP Sales Copilot
- * 
+ * AI Digital Business Challenge 2026 • OCOP Sales
+ *
  * 100% Zero-lag architecture: No recursive DOM mutations, no setInterval loops.
  * Features:
  * 1. Sky-Tech Blue & Clean White palette applied across 100% of the UI
@@ -147,9 +147,11 @@
 
     // 2. TÁCH BIỆT HOÀN TOÀN MÀN HÌNH MỞ ĐẦU VÀ THANH HEADER BÊN TRONG
     function setupIntroHeaderIsolation() {
+        if (window._introHeaderIsolationReady) return;
+        window._introHeaderIsolationReady = true;
         function syncHeaderVisibility() {
             const intro = document.getElementById('ocop-intro-overlay');
-            const headers = document.querySelectorAll('header, .storefront-header, #storefront-main-header');
+            const headers = document.querySelectorAll('.storefront-header, #storefront-main-header');
             const isIntroOpen = intro && !intro.classList.contains('hidden') && intro.style.display !== 'none';
             const isBrowsing = document.body.classList.contains('catalog-browsing');
 
@@ -632,7 +634,7 @@
         // 1. Move and show the Red Map Pin on SVG
         const pin = document.getElementById('svg-active-red-pin');
         const coords = VN_63_COORDINATES[provName] || Object.values(VN_63_COORDINATES).find(c => provName.includes(c.id)) || { x: 325, y: 625 };
-        
+
         if (pin) {
             pin.setAttribute('transform', 'translate(' + coords.x + ', ' + coords.y + ')');
             pin.style.display = 'block';
@@ -715,6 +717,7 @@
 
         const statusEl = document.getElementById('province-selection-status');
         if (statusEl) {
+            statusEl.textContent = 'Chưa chọn tỉnh/thành • Hiển thị 252 đặc sản toàn quốc';
             statusEl.textContent = 'Chưa chọn tỉnh/thành • Hiển thị 520+ đặc sản toàn quốc';
             statusEl.style.color = '#0369A1';
             statusEl.style.fontWeight = '700';
@@ -743,7 +746,7 @@
             panel.innerHTML = '';
         }
     };
-    
+
     window.setupInteractiveVietnamMap = setupInteractiveVietnamMap;
     // window.initializeProvinceMap preserved for satellite map
 
@@ -842,65 +845,55 @@
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'admin-pin-modal';
-            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.65) !important; backdrop-filter: blur(4px) !important;';
-            modal.innerHTML = `
-                <div id="admin-pin-card" style="position: relative !important; width: 100% !important; max-width: 440px !important; background: #FFFFFF !important; border: 2.5px solid #0284C7 !important; border-radius: 24px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.3) !important; color: #0F172A !important; font-family: inherit !important; text-align: center !important;">
-                    <button type="button" onclick="closeAdminPinModal()" style="position: absolute !important; top: 16px !important; right: 16px !important; width: 32px !important; height: 32px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng">
-                        <i class="fa-solid fa-xmark" style="font-size: 14px !important;"></i>
-                    </button>
-                    
-                    <div style="width: 56px !important; height: 56px !important; margin: 0 auto 12px !important; border-radius: 18px !important; background: #E0F2FE !important; color: #0284C7 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 24px !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-
-                    <h3 style="margin: 0 0 8px !important; color: #0C4A6E !important; font-size: 1.22rem !important; font-weight: 900 !important; letter-spacing: -0.01em !important;">
-                        🔐 XÁC THỰC QUẢN TRỊ VIÊN (ADMIN)
-                    </h3>
-
-                    <p style="margin: 0 0 20px !important; color: #334155 !important; font-size: 13.5px !important; line-height: 1.5 !important; font-weight: 500 !important;">
-                        Khu vực bảo mật dành riêng cho Ban quản trị OCOP & Chủ Web.
-                    </p>
-
-                    <div style="margin-bottom: 16px !important; text-align: left !important;">
-                        <label for="admin-pin-input" style="display: block !important; font-size: 12px !important; font-weight: 700 !important; color: #0369A1 !important; margin-bottom: 6px !important;">
-                            Nhập mật khẩu quản trị hoặc mã xác thực:
-                        </label>
-                        <div style="position: relative !important;">
-                            <input type="password" id="admin-pin-input" maxlength="25" placeholder="Nhập mã bảo mật quản trị..." autocomplete="off"
-                                   style="width: 100% !important; box-sizing: border-box !important; padding: 12px 42px 12px 16px !important; font-size: 16px !important; font-weight: 700 !important; text-align: center !important; letter-spacing: 0.15em !important; border-radius: 12px !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; color: #0F172A !important; outline: none !important; transition: all 0.2s !important;">
-                            <button type="button" onclick="toggleAdminPinVisibility()" style="position: absolute !important; right: 12px !important; top: 50% !important; transform: translateY(-50%) !important; background: none !important; border: none !important; color: #64748B !important; cursor: pointer !important; padding: 4px !important;" title="Ẩn / Hiện mật khẩu">
-                                <i class="fa-solid fa-eye" id="admin-pin-eye-icon"></i>
-                            </button>
-                        </div>
-                        <p id="admin-pin-error" style="display: none; margin: 8px 0 0 !important; color: #DC2626 !important; font-size: 12.5px !important; font-weight: 700 !important; text-align: center !important;">
-                            ❌ Mã xác thực không chính xác! Vui lòng thử lại.
-                        </p>
-                    </div>
-
-                    <div style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 12px !important; margin-top: 20px !important;">
-                        <button type="button" onclick="closeAdminPinModal()"
-                                style="flex: 1 !important; padding: 12px 18px !important; border-radius: 12px !important; background: #F1F5F9 !important; color: #475569 !important; font-weight: 700 !important; font-size: 14px !important; border: 1px solid #E2E8F0 !important; cursor: pointer !important; transition: all 0.2s !important;">
-                            Hủy Bỏ
-                        </button>
-                        <button type="button" onclick="verifyAdminPin()"
-                                style="flex: 1 !important; padding: 12px 20px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 14px !important; border: none !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important; cursor: pointer !important; transition: all 0.2s !important;">
-                            Mở Khóa
-                        </button>
-                    </div>
-                </div>
-            `;
             document.body.appendChild(modal);
-
-            const input = document.getElementById('admin-pin-input');
-            if (input) {
-                input.addEventListener('keydown', function (e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        window.verifyAdminPin();
-                    }
-                });
-            }
         }
+        modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.65) !important; backdrop-filter: blur(4px) !important;';
+        modal.innerHTML = `
+            <div id="admin-pin-card" style="position: relative !important; width: 100% !important; max-width: 440px !important; background: #FFFFFF !important; border: 2.5px solid #0284C7 !important; border-radius: 24px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.3) !important; color: #0F172A !important; font-family: inherit !important; text-align: center !important;">
+                <button type="button" onclick="closeAdminPinModal()" style="position: absolute !important; top: 16px !important; right: 16px !important; width: 32px !important; height: 32px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng">
+                    <i class="fa-solid fa-xmark" style="font-size: 14px !important;"></i>
+                </button>
+
+                <div style="width: 56px !important; height: 56px !important; margin: 0 auto 12px !important; border-radius: 18px !important; background: #E0F2FE !important; color: #0284C7 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 24px !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+
+                <h3 style="margin: 0 0 8px !important; color: #0C4A6E !important; font-size: 1.22rem !important; font-weight: 900 !important; letter-spacing: -0.01em !important;">
+                    🔐 XÁC THỰC QUẢN TRỊ VIÊN (ADMIN)
+                </h3>
+
+                <p style="margin: 0 0 20px !important; color: #334155 !important; font-size: 13.5px !important; line-height: 1.5 !important; font-weight: 500 !important;">
+                    Khu vực bảo mật dành riêng cho Ban quản trị OCOP & Chủ Web.
+                </p>
+
+                <div style="margin-bottom: 16px !important; text-align: left !important;">
+                    <label for="admin-pin-input" style="display: block !important; font-size: 12px !important; font-weight: 700 !important; color: #0369A1 !important; margin-bottom: 6px !important;">
+                        Nhập mật khẩu quản trị hoặc mã xác thực:
+                    </label>
+                    <div style="position: relative !important;">
+                        <input type="password" id="admin-pin-input" maxlength="25" placeholder="Nhập mã bảo mật quản trị..." autocomplete="off"
+                               style="width: 100% !important; box-sizing: border-box !important; padding: 12px 42px 12px 16px !important; font-size: 16px !important; font-weight: 700 !important; text-align: center !important; letter-spacing: 0.15em !important; border-radius: 12px !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; color: #0F172A !important; outline: none !important; transition: all 0.2s !important;">
+                        <button type="button" onclick="toggleAdminPinVisibility()" style="position: absolute !important; right: 12px !important; top: 50% !important; transform: translateY(-50%) !important; background: none !important; border: none !important; color: #64748B !important; cursor: pointer !important; padding: 4px !important;" title="Ẩn / Hiện mật khẩu">
+                            <i class="fa-solid fa-eye" id="admin-pin-eye-icon"></i>
+                        </button>
+                    </div>
+                    <p id="admin-pin-error" style="display: none; margin: 8px 0 0 !important; color: #DC2626 !important; font-size: 12.5px !important; font-weight: 700 !important; text-align: center !important;">
+                        ❌ Mã xác thực không chính xác! Vui lòng thử lại.
+                    </p>
+                </div>
+
+                <div style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 12px !important; margin-top: 20px !important;">
+                    <button type="button" onclick="closeAdminPinModal()"
+                            style="flex: 1 !important; padding: 12px 18px !important; border-radius: 12px !important; background: #F1F5F9 !important; color: #475569 !important; font-weight: 700 !important; font-size: 14px !important; border: 1px solid #E2E8F0 !important; cursor: pointer !important; transition: all 0.2s !important;">
+                        Hủy Bỏ
+                    </button>
+                    <button type="button" onclick="verifyAdminPin()"
+                            style="flex: 1 !important; padding: 12px 20px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 14px !important; border: none !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important; cursor: pointer !important; transition: all 0.2s !important;">
+                        Mở Khóa
+                    </button>
+                </div>
+            </div>
+        `;
 
         modal.classList.remove('hidden');
         modal.style.setProperty('display', 'flex', 'important');
@@ -911,15 +904,21 @@
             card.classList.remove('admin-pin-shake');
         }
 
-        const input = document.getElementById('admin-pin-input');
-        if (input) {
-            input.type = 'password';
-            input.value = '';
-            input.style.borderColor = '#BAE6FD';
-            input.style.background = '#F8FAFC';
+        const pinInput = document.getElementById('admin-pin-input');
+        if (pinInput) {
+            pinInput.type = 'password';
+            pinInput.value = '';
+            pinInput.style.borderColor = '#BAE6FD';
+            pinInput.style.background = '#F8FAFC';
             const icon = document.getElementById('admin-pin-eye-icon');
             if (icon) { icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
-            setTimeout(() => input.focus(), 80);
+            pinInput.onkeydown = function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    window.verifyAdminPin();
+                }
+            };
+            setTimeout(() => pinInput.focus(), 80);
         }
         const err = document.getElementById('admin-pin-error');
         if (err) err.style.display = 'none';
@@ -1172,7 +1171,7 @@
 
         modal.innerHTML = `
             <div id="admin-login-card" style="position: relative !important; width: 100% !important; max-width: 480px !important; background: #FFFFFF !important; border: 2.5px solid #0284C7 !important; border-radius: 24px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.35) !important; color: #0F172A !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; text-align: left !important;">
-                
+
                 <button type="button" onclick="closeAdminLoginModal()" style="position: absolute !important; top: 18px !important; right: 18px !important; width: 34px !important; height: 34px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng">
                     <i class="fa-solid fa-xmark" style="font-size: 15px !important;"></i>
                 </button>
@@ -1240,7 +1239,7 @@
                             <i class="fa-solid fa-arrow-right-to-bracket"></i>
                             <span>Đăng Nhập Cổng Quản Trị</span>
                         </button>
-                        
+
                         <button type="button" onclick="closeAdminLoginModal(); openAdminHubModal();" style="width: 100% !important; padding: 9px !important; border-radius: 12px !important; background: #F1F5F9 !important; color: #475569 !important; font-size: 12.5px !important; font-weight: 700 !important; border: none !important; cursor: pointer !important; transition: all 0.2s !important; text-align: center !important;">
                             Quay lại Cổng Điều Phối (Admin Hub)
                         </button>
@@ -1328,7 +1327,7 @@
 
         modal.innerHTML = `
             <div id="admin-hub-card" style="position: relative !important; width: 100% !important; max-width: 860px !important; max-height: 92vh !important; overflow-y: auto !important; background: #FFFFFF !important; border: 2.5px solid #38BDF8 !important; border-radius: 28px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.3) !important; color: #0F172A !important; font-family: inherit !important;">
-                
+
                 <button type="button" onclick="closeAdminHubModal()" style="position: absolute !important; top: 18px !important; right: 18px !important; width: 36px !important; height: 36px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng Admin Hub">
                     <i class="fa-solid fa-xmark" style="font-size: 16px !important;"></i>
                 </button>
@@ -1349,11 +1348,11 @@
 
                 <!-- 2 Large Interactive Cards: Admin Management & Distributor Management -->
                 <div style="display: grid !important; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; gap: 16px !important; margin-bottom: 20px !important;">
-                    
+
                     <!-- CARD 1: QUẢN TRỊ CỦA ADMIN -->
                     <div class="admin-hub-card" onclick="openAdminHubCardAction('admin')"
                          style="position: relative !important; background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%) !important; border: 2px solid #0284C7 !important; border-radius: 20px !important; padding: 22px 20px !important; cursor: pointer !important; transition: all 0.25s ease !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; text-align: left !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.12) !important;">
-                        
+
                         <div>
                             <div style="display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 12px !important;">
                                 <div style="width: 44px !important; height: 44px !important; border-radius: 12px !important; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 20px !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3) !important;">
@@ -1371,9 +1370,9 @@
                             </p>
                             <div style="background: rgba(255,255,255,0.7) !important; border-radius: 8px !important; padding: 8px 10px !important; font-size: 11.5px !important; color: #0369A1 !important; font-weight: 700 !important; margin-bottom: 14px !important; border: 1px dashed #7DD3FC !important; display: flex !important; flex-wrap: wrap !important; gap: 4px 8px !important; align-items: center !important;">
                                 <span style="font-weight: 800 !important;"><i class="fa-solid fa-users-gear mr-1"></i> 4 Admin:</span>
-                                <span onclick="event.stopPropagation(); openAdminLoginModal('ThaoNguyenad01');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản ThaoNguyenad01">ThaoNguyenad01</span> • 
-                                <span onclick="event.stopPropagation(); openAdminLoginModal('KimNganad02');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản KimNganad02">KimNganad02</span> • 
-                                <span onclick="event.stopPropagation(); openAdminLoginModal('VinhPhucad03');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản VinhPhucad03">VinhPhucad03</span> • 
+                                <span onclick="event.stopPropagation(); openAdminLoginModal('ThaoNguyenad01');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản ThaoNguyenad01">ThaoNguyenad01</span> •
+                                <span onclick="event.stopPropagation(); openAdminLoginModal('KimNganad02');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản KimNganad02">KimNganad02</span> •
+                                <span onclick="event.stopPropagation(); openAdminLoginModal('VinhPhucad03');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản VinhPhucad03">VinhPhucad03</span> •
                                 <span onclick="event.stopPropagation(); openAdminLoginModal('ThanhBinhad04');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản ThanhBinhad04">ThanhBinhad04</span>
                             </div>
                         </div>
@@ -1387,7 +1386,7 @@
                     <!-- CARD 2: QUẢN TRỊ NHÀ PHÂN PHỐI -->
                     <div class="admin-hub-card" onclick="openAdminHubCardAction('distributor')"
                          style="position: relative !important; background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%) !important; border: 2px solid #16A34A !important; border-radius: 20px !important; padding: 22px 20px !important; cursor: pointer !important; transition: all 0.25s ease !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; text-align: left !important; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.12) !important;">
-                        
+
                         <div>
                             <div style="display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 12px !important;">
                                 <div style="width: 44px !important; height: 44px !important; border-radius: 12px !important; background: linear-gradient(135deg, #16A34A 0%, #15803D 100%) !important; color: #FFFFFF !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 20px !important; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3) !important;">
@@ -1458,7 +1457,7 @@
         openRealFinancialDashboard();
     };
 
-    
+
     // =========================================================================
     // HỆ THỐNG ĐẶT MUA ONLINE SHIP TẬN NƠI & THU PHÍ NỀN TẢNG 10.000Đ CHO CHỦ WEB
     // =========================================================================
@@ -1962,7 +1961,7 @@
                 const mockOrders = [
                     { id: '#OCOP-8842', name: 'Combo 3 Hộp Trà Khổ Qua Rừng Hiệp Vân (Đồng Nai)', total: 720000, comm: 57600, time: '2 phút trước', channel: 'VietQR Showroom' },
                     { id: '#OCOP-8839', name: 'Bộ Bình Trà Gốm Sứ Men Lam Cổ Bát Tràng (Hà Nội)', total: 2000000, comm: 160000, time: '8 phút trước', channel: 'Pre-Order Web' },
-                    { id: '#OCOP-8835', name: 'Hộp Trà Oolong Cầu Đất Thượng Hạng (Lâm Đồng)', total: 680000, comm: 54400, time: '14 phút trước', channel: 'AI Copilot Chat' }
+                    { id: '#OCOP-8835', name: 'Hộp Trà Oolong Cầu Đất Thượng Hạng (Lâm Đồng)', total: 680000, comm: 54400, time: '14 phút trước', channel: 'AI Chat' }
                 ];
 
                 mockOrders.forEach(o => {
@@ -2368,7 +2367,7 @@
 
                     <!-- Phone Frame -->
                     <div class="tiktok-phone-mockup" style="width: 300px; height: 533px; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.25); border: 1.5px solid #38BDF8; background: #0F172A; position: relative; margin: 0 auto;">
-                        
+
                         <canvas id="tiktok-canvas" width="540" height="960" style="width: 100%; height: 100%; display: block; object-fit: cover;"></canvas>
                     </div>
 
@@ -2378,12 +2377,12 @@
                             <i class="fa-solid fa-play"></i>
                             <span id="txt-tiktok-play">▶️ Phát / Xem Thử Video TikTok</span>
                         </button>
-                        
+
                         <button type="button" id="btn-tiktok-download" onclick="downloadTikTokVideo()" class="w-full py-2.5 px-4 rounded-xl font-black text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition hover:opacity-95" style="background: linear-gradient(135deg, #059669 0%, #10B981 100%); color: #FFFFFF; border: none;">
                             <i class="fa-solid fa-download"></i>
                             <span id="txt-tiktok-download">📥 Tải Video Về Máy (.WebM / .MP4)</span>
                         </button>
-                        
+
                         <button type="button" id="btn-tiktok-upload" onclick="openTikTokUploadCenter()" class="w-full py-2.5 px-4 rounded-xl font-black text-xs flex items-center justify-center gap-2 cursor-pointer shadow-xs transition hover:bg-slate-800" style="background: #0F172A; color: #FFFFFF; border: 1px solid #334155;">
                             <i class="fa-brands fa-tiktok text-rose-400"></i>
                             <span>🚀 Mở TikTok Upload Center</span>
@@ -2406,13 +2405,14 @@
 
         if (select.children.length === 0) {
             const all = getAllAvailableProducts();
-            
+
             // Group 1: Dong Nai Highlights
             const grpDongNai = document.createElement('optgroup');
             grpDongNai.label = '🌟 ĐẶC SẢN NỔI BẬT ĐỒNG NAI (DIGITALFEST 2026)';
-            
+
             // Group 2: 63 Provinces
             const grpOther = document.createElement('optgroup');
+            grpOther.label = '🌾 252+ ĐẶC SẢN OCOP 63 TỈNH THÀNH';
             grpOther.label = '🌾 520+ ĐẶC SẢN OCOP 63 TỈNH THÀNH';
 
             all.forEach(p => {
@@ -2592,7 +2592,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
     // =========================================================================
     // HTML5 CANVAS 9:16 TIKTOK VIDEO GENERATOR ENGINE
     // =========================================================================
-    
+
     // =========================================================================
     // NATURAL AI VOICEOVER & AUDIO DUCKING ENGINE
     // =========================================================================
@@ -2666,7 +2666,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         tiktokBgGainNode.gain.setTargetAtTime(targetVol, tiktokAudioCtx.currentTime, 0.2);
     }
 
-    
+
     // =========================================================================
     // DẬP TẮT ÂM THANH TRIỆT ĐỂ (STOP ALL TIKTOK VIDEO & VOICEOVER)
     // =========================================================================
@@ -2750,7 +2750,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             .map(l => cleanTextForSpeech(l))
             .filter(l => l.length > 5);
         if (lines.length >= 4) return lines.slice(0, 4);
-        
+
         const allText = cleanTextForSpeech(scriptText);
         const sentences = allText.split(/(?<=[.!?])\s+/).filter(s => s.length > 5);
         return sentences.slice(0, 4);
@@ -2803,14 +2803,14 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
             const voices = window.speechSynthesis.getVoices() || [];
             if (tiktokVoiceMode === 'female_natural') {
-                const femaleVoice = 
+                const femaleVoice =
                     voices.find(v => /hoaimy/i.test(v.name) && v.lang.startsWith('vi')) ||
                     voices.find(v => /google\s+ti[ếe]ng\s+vi[ệe]t/i.test(v.name) && v.lang.startsWith('vi')) ||
                     voices.find(v => /female|nu|linh/i.test(v.name) && v.lang.startsWith('vi')) ||
                     voices.find(v => v.lang.startsWith('vi'));
                 if (femaleVoice) utter.voice = femaleVoice;
             } else if (tiktokVoiceMode === 'male_warm') {
-                const maleVoice = 
+                const maleVoice =
                     voices.find(v => /namminh/i.test(v.name) && v.lang.startsWith('vi')) ||
                     voices.find(v => /male|nam|minh/i.test(v.name) && v.lang.startsWith('vi')) ||
                     voices.find(v => v.lang.startsWith('vi'));
@@ -3554,7 +3554,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         // Cập nhật câu chào của Chatbot
         const greeting = document.getElementById('chat-greeting');
         if (greeting) {
-            greeting.textContent = 'Xin chào! Tôi là Trợ Lý AI OCOP Sales Copilot — Đồng hành cùng bạn khám phá tinh hoa 520+ đặc sản OCOP 63 tỉnh thành, tra cứu mạng lưới điểm bán chính hãng và tư vấn giỏ quà tặng doanh nghiệp.';
+            greeting.textContent = "Chào anh/chị! Em hỗ trợ chọn đặc sản OCOP, kiểm tra giá và thông tin trong danh mục, hướng dẫn đặt hàng và tiếp nhận khiếu nại. Anh/chị muốn tư vấn sản phẩm, đặt mua hay cần hỗ trợ đơn hàng ạ?";
         }
         const guidance = document.getElementById('chat-guidance');
         if (guidance) {
@@ -3588,7 +3588,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         document.querySelectorAll('.product-card, #product-grid > div').forEach(card => {
             card.style.background = '#FFFFFF';
             card.style.borderColor = '#BAE6FD';
-            
+
             const storeBox = card.querySelector('.store-info-box, .product-card-store-box, div[class*="bg-slate-900"], div[class*="bg-black"], div[class*="bg-emerald-950"]');
             if (storeBox) {
                 storeBox.style.background = '#F0F9FF';
@@ -3630,7 +3630,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         });
     }
 
-    
+
     // GLOBAL ESCAPE KEY LISTENER (ĐÓNG TẤT CẢ CÁC MODAL KHI BẤM ESC)
     window.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' || e.key === 'Esc') {
@@ -3659,9 +3659,9 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         }
     });
 
-    
+
     // HỎI AI VỀ ĐIỂM BÁN & SẢN PHẨM (TỰ ĐỘNG ĐÓNG MODAL ĐIỂM BÁN & MỞ CHATBOT)
-    
+
     // =========================================================================
     // STANDALONE TIKTOK STUDIO MODAL (DIRECT FROM HEADER OR CATALOG)
     // =========================================================================
@@ -3818,12 +3818,12 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                                 <i class="fa-solid fa-play"></i>
                                 <span id="txt-modal-play">▶️ Xem Thử Video</span>
                             </button>
-                            
+
                             <button type="button" id="btn-modal-download" onclick="downloadTikTokModalVideo()" class="w-full py-2.5 px-4 rounded-xl font-black text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition hover:opacity-95" style="background: linear-gradient(135deg, #059669 0%, #10B981 100%); color: #FFFFFF; border: none;">
                                 <i class="fa-solid fa-download"></i>
                                 <span id="txt-modal-download">📥 Tải Video Về Máy (.WebM / .MP4)</span>
                             </button>
-                            
+
                             <button type="button" onclick="openTikTokUploadCenterModal()" class="w-full py-2.5 px-4 rounded-xl font-black text-xs flex items-center justify-center gap-2 cursor-pointer shadow-xs transition hover:bg-slate-800" style="background: #0F172A; color: #FFFFFF; border: 1px solid #334155;">
                                 <i class="fa-brands fa-tiktok text-rose-400"></i>
                                 <span>🎵 Mở TikTok Để Đăng Bài</span>
@@ -3847,6 +3847,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             const grpDongNai = document.createElement('optgroup');
             grpDongNai.label = '🌟 ĐẶC SẢN NỔI BẬT ĐỒNG NAI (DIGITALFEST 2026)';
             const grpOther = document.createElement('optgroup');
+            grpOther.label = '🌾 252+ ĐẶC SẢN OCOP 63 TỈNH THÀNH';
             grpOther.label = '🌾 520+ ĐẶC SẢN OCOP 63 TỈNH THÀNH';
 
             all.forEach(p => {
@@ -4034,7 +4035,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
     };
 
     // Canvas rendering for modal
-    
+
     function drawTikTokCanvasModalFrame() {
         const canvas = document.getElementById('tiktok-canvas-modal');
         if (!canvas) return;
@@ -4142,12 +4143,6 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
     // KHỞI CHẠY TẤT CẢ (CHỈ CHẠY 1 LẦN KHI LOAD, ZERO-LAG)
     function initAll() {
-        try {
-            sessionStorage.removeItem('ocop_chat_history_v1');
-            if (typeof window.resetAIChatHistory === 'function') {
-                window.resetAIChatHistory();
-            }
-        } catch (_) {}
         initSkyTechCanvas();
         setupIntroHeaderIsolation();
         if (!window.provinceMap && typeof setupInteractiveVietnamMap === 'function') setupInteractiveVietnamMap();
@@ -4191,53 +4186,14 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
         window.addEventListener('wheel', function(e) {
             // Hệ số tăng tốc độ con lăn chuột: nhanh thêm ~35% (lướt nhẹ, mượt mà và không giật lag)
-            const SPEED_BOOST = 0.35;
-
-            // A0. BẢNG SẢN PHẨM / ĐIỂM BÁN TỈNH THÀNH TRÊN BẢN ĐỒ:
-            // Cho phép cuộn con lăn chuột mượt mà ở bất kỳ vị trí nào bên trong bảng sản phẩm đặc sản tỉnh
-            const provPanel = e.target && e.target.closest && e.target.closest('#province-products-panel, #province-stores-panel');
-            if (provPanel && !provPanel.classList.contains('hidden') && provPanel.style.display !== 'none') {
-                const grid = provPanel.querySelector('#province-products-grid, .province-products-grid, #province-stores-list');
-                const scrollTarget = (provPanel.scrollHeight > provPanel.clientHeight + 2) ? provPanel :
-                                     (grid && grid.scrollHeight > grid.clientHeight + 2 ? grid : provPanel);
-                if (e.deltaY !== 0) {
-                    const before = scrollTarget.scrollTop;
-                    scrollTarget.scrollBy({
-                        top: e.deltaY * 1.35,
-                        behavior: 'auto'
-                    });
-                    if (scrollTarget.scrollTop === before && grid && scrollTarget !== grid) {
-                        grid.scrollBy({
-                            top: e.deltaY * 1.35,
-                            behavior: 'auto'
-                        });
-                    }
-                }
-                if (e.cancelable) e.preventDefault();
-                return;
-            }
+            const SPEED_BOOST = 1.35;
+            if (e.ctrlKey || e.deltaY === 0 || !e.cancelable) return;
+            const delta = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
 
             // A. Màn hình chờ Intro: Cho phép cuộn xem toàn bộ nội dung màn hình chờ (Bản đồ, quà tặng, tính năng...)
-            const overlay = document.getElementById('ocop-intro-overlay');
-            if (overlay && !overlay.classList.contains('hidden') && overlay.style.display !== 'none') {
-                const isMapInIntro = e.target && e.target.closest && e.target.closest('#province-map, .leaflet-container');
-                if (isMapInIntro) {
-                    overlay.scrollBy({
-                        top: e.deltaY * 1.35,
-                        left: (e.deltaX || 0) * 1.35,
-                        behavior: 'auto'
-                    });
-                    if (e.cancelable) e.preventDefault();
-                } else if (e.deltaY !== 0) {
-                    overlay.scrollBy({
-                        top: e.deltaY * SPEED_BOOST,
-                        left: 0,
-                        behavior: 'auto'
-                    });
-                }
-                return;
-            }
+            // TUYỆT ĐỐI KHÔNG tự động nhảy vào chợ OCOP khi lăn chuột xuống.
 
+            // B. Kiểm tra modal đang mở thực sự (cho phép cuộn bên trong modal)
             // B1. GIỎ HÀNG OCOP (#cart-ui-panel, #cart-ui-overlay, #cart-drawer):
             // Cho phép cuộn danh sách sản phẩm ở BẤT CỨ VỊ TRÍ NÀO trong giỏ hàng
             // (kể cả Header "Giỏ hàng của bạn", Footer "Tổng tiền hàng / Mua hàng", viền, khoảng trống hay nền backdrop bên ngoài).
@@ -4262,8 +4218,8 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
                 if (cartScroll && e.deltaY !== 0) {
                     cartScroll.scrollBy({
-                        top: e.deltaY * 1.35,
-                        behavior: 'auto'
+                        top: delta * SPEED_BOOST,
+                        behavior: 'instant'
                     });
                 }
                 e._cartScrolled = true;
@@ -4282,29 +4238,38 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                 '#order-success-modal:not(.hidden):not([style*="display: none"]), ' +
                 '#customer-auth-modal:not(.hidden):not([style*="display: none"]), ' +
                 '#partner-registration-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#admin-management-modal:not(.hidden):not([style*="display: none"]), ' +
                 '#cart-ui-panel.cart-ui-panel-open, ' +
                 '#cart-drawer:not(.hidden):not([style*="display: none"]), ' +
                 '.account-center:not([hidden])'
             );
 
             if (openModal) {
+                // Người dùng đang tương tác trong modal, giữ nguyên cuộn tự nhiên của modal
                 // Người dùng đang tương tác trong modal, tăng nhẹ tốc độ cuộn bên trong modal
-                let scrollable = getScrollableContainer(e.target);
+                let scrollable = openModal.contains(e.target) ? getScrollableContainer(e.target) : null;
                 if (!scrollable) {
                     // Nếu con trỏ chuột đang ở Header/Footer/khoảng trống của modal, tìm vùng cuộn nội bộ của modal đó
-                    scrollable = openModal.querySelector('.overflow-y-auto, [class*="overflow-y-auto"], [style*="overflow-y: auto"], [style*="overflow-y: scroll"], .modal-body, .cart-ui-items') || openModal;
+                    scrollable = openModal.querySelector('.overflow-y-auto, [class*="overflow-y-auto"], [style*="overflow-y: auto"], [style*="overflow-y: scroll"], .modal-body, .cart-ui-items, .account-center-content') || openModal;
                 }
                 if (scrollable && e.deltaY !== 0) {
                     const canScrollDown = e.deltaY > 0 && scrollable.scrollTop + scrollable.clientHeight < scrollable.scrollHeight - 1;
                     const canScrollUp = e.deltaY < 0 && scrollable.scrollTop > 1;
                     if (canScrollDown || canScrollUp) {
                         scrollable.scrollBy({
-                            top: e.deltaY * SPEED_BOOST,
-                            behavior: 'auto'
+                            top: delta * SPEED_BOOST,
+                            behavior: 'instant'
                         });
                         if (e.cancelable) e.preventDefault();
                     }
                 }
+                return;
+            }
+
+            const overlay = document.getElementById('ocop-intro-overlay');
+            if (overlay && !overlay.classList.contains('hidden') && overlay.style.display !== 'none') {
+                overlay.scrollBy({top: delta * SPEED_BOOST, behavior: 'instant'});
+                e.preventDefault();
                 return;
             }
 
@@ -4318,42 +4283,46 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
             // D. BẢN ĐỒ VỆ TINH LEAFLET (#province-map):
             // Leaflet mặc định nuốt sự kiện wheel khiến trang bị khựng khi để chuột trên bản đồ.
+            // Bắt sự kiện ở Capture phase và trực tiếp cuộn trang mượt mà!
             // Bắt sự kiện ở Capture phase và trực tiếp cuộn trang nhanh mượt mà!
             const isMap = e.target && e.target.closest && e.target.closest('#province-map, .leaflet-container');
             if (isMap) {
                 window.scrollBy({
-                    top: e.deltaY * 1.35,
+                    top: delta * SPEED_BOOST,
                     left: (e.deltaX || 0) * 1.35,
-                    behavior: 'auto'
+                    behavior: 'instant'
                 });
                 if (e.cancelable) e.preventDefault();
                 return;
             }
 
             // E. Kiểm tra nếu phần tử dưới chuột có thanh cuộn riêng (ví dụ textarea, danh sách chat)
-            const scrollable = getScrollableContainer(e.target);
+            const scrollable = e.target.closest?.('#catalog-sidebar, #catalog-sidebar-scroll, #ai-chat-window, textarea, [contenteditable="true"]') ? getScrollableContainer(e.target) : null;
             if (scrollable) {
                 const canScrollDown = e.deltaY > 0 && scrollable.scrollTop + scrollable.clientHeight < scrollable.scrollHeight - 1;
                 const canScrollUp = e.deltaY < 0 && scrollable.scrollTop > 1;
                 if (canScrollDown || canScrollUp) {
+                    // Cuộn nội dung chat một lần và chặn cuộn mặc định trùng lặp.
                     if (e.deltaY !== 0) {
                         scrollable.scrollBy({
-                            top: e.deltaY * SPEED_BOOST,
-                            behavior: 'auto'
+                            top: delta * SPEED_BOOST,
+                            behavior: 'instant'
                         });
+                        e.preventDefault();
                     }
                     return;
                 }
             }
 
             // F. Mọi vị trí khác trên trang (Hero, Header, Sidebar, Cards, Footer, v.v.):
-            // Trình duyệt cuộn tự nhiên 100%, cộng thêm 35% cuộn bổ trợ giúp cuộn trang nhanh nhạy và lướt mượt hơn!
+            // Cuộn trang trực tiếp để các vùng con không giữ lại sự kiện bánh xe.
             if (e.deltaY !== 0) {
                 window.scrollBy({
-                    top: e.deltaY * SPEED_BOOST,
+                    top: delta * SPEED_BOOST,
                     left: 0,
-                    behavior: 'auto'
+                    behavior: 'instant'
                 });
+                e.preventDefault();
             }
         }, { capture: true, passive: false });
     })();

@@ -2,8 +2,6 @@
     // Neutralized account client: purely offline B2B2C mode for GitHub Pages & Digital Challenge 2026.
     try {
         localStorage.removeItem('ocop-session-token');
-        localStorage.removeItem('ocop_current_user');
-        localStorage.removeItem('ocop_users_db');
     } catch (_) {}
 
     window.currentUser = null;
