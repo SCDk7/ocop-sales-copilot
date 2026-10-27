@@ -871,3 +871,42 @@ body:not(.catalog-browsing) #mobile-cro-bottom-bar,
     pointer-events: none !important;
     z-index: -9999 !important;
 }
+
+
+/* Ensure Quản Trị button is always visible on all devices */
+#btn-header-admin-pin,
+button#btn-header-admin-pin {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex-shrink: 0 !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    background: #0F172A !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #38BDF8 !important;
+    border-radius: 999px !important;
+}
+
+@media (max-width: 767px) {
+    .header-right-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        overflow-x: auto !important;
+        max-width: calc(100vw - 90px) !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+    }
+    .header-right-actions::-webkit-scrollbar {
+        display: none !important;
+    }
+    #btn-header-admin-pin {
+        display: inline-flex !important;
+        visibility: visible !important;
+        padding: 4px 10px !important;
+        font-size: 11px !important;
+        height: 32px !important;
+        flex-shrink: 0 !important;
+    }
+}

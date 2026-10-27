@@ -525,7 +525,9 @@
         // Nút Quản Trị Hệ Thống
         let btnPin = document.getElementById('btn-header-admin-pin');
         if (btnPin) {
-            btnPin.innerHTML = '<i class="fa-solid fa-lock text-sky-400"></i> <span>🔐 Quản Trị Hệ Thống</span>';
+            btnPin.innerHTML = '<i class="fa-solid fa-lock text-white" aria-hidden="true"></i> <span>Quản trị</span>';
+        btnPin.style.display = 'inline-flex';
+        btnPin.style.visibility = 'visible';
             btnPin.setAttribute('title', 'Cổng Quản Trị Toàn Quyền Admin & Nhà Phân Phối (Yêu cầu mật khẩu)');
             btnPin.onclick = function (e) {
                 if (e) e.preventDefault();
