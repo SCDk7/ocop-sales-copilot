@@ -69,7 +69,36 @@
     function add(id){const p=catalogue().find(p=>p.id===Number(id));if(!p)return;lines();manager.addToCart(p,1);selected.add(p.id);render();root.showToast?.(text('Đã thêm vào giỏ hàng.','Added to your cart.'),'success');}
     function quantity(id,delta){const p=lines().find(p=>p.id===Number(id));if(!p||!Number.isInteger(delta))return;p.quantity=Math.max(1,Math.min(99,p.quantity+delta));manager.save();render();}
     function remove(id){manager.removeFromCart(Number(id));render();}
-    function checkout(){const rows=selectedLines();if(!rows.length||rows.length>20)return;manager?.save?.();root.location.assign(new URL(checkoutURL(rows),document.baseURI).href);}
+    function checkout(){
+        let rows = selectedLines();
+        if (!rows || !rows.length) rows = lines();
+        if (!rows || !rows.length) {
+            if (typeof root.showToast === 'function') root.showToast('Vui lòng chọn ít nhất 1 sản phẩm để mua hàng!', 'info');
+            else if (typeof alert === 'function') alert('Vui lòng chọn ít nhất 1 sản phẩm để mua hàng!');
+            return;
+        }
+        if (rows.length > 20) {
+            if (typeof root.showToast === 'function') root.showToast('Mỗi yêu cầu tối đa 20 sản phẩm.', 'info');
+            return;
+        }
+        if (typeof root.getCurrentCustomer === 'function') {
+            const user = root.getCurrentCustomer();
+            if (!user || !user.username) {
+                root.pendingCartCheckout = true;
+                if (typeof root.showToast === 'function') root.showToast('Vui lòng đăng nhập tài khoản để tiếp tục mua hàng (như Shopee)!', 'info');
+                else if (typeof alert === 'function') alert('Vui lòng đăng nhập tài khoản để tiếp tục mua hàng (như Shopee)!');
+                if (typeof root.openCustomerAuthModal === 'function') root.openCustomerAuthModal();
+                return;
+            }
+        }
+        manager?.save?.();
+        const dest = new URL(checkoutURL(rows), document.baseURI).href;
+        try {
+            root.location.assign(dest);
+        } catch (_) {
+            root.location.href = dest;
+        }
+    }
     function init(){
         if(root.OCOPCartUI.ready||typeof root.CartManager!=='function')return;
         manager=new root.CartManager();
@@ -94,7 +123,7 @@
         const total=el('p','cart-ui-total-row cart-ui-total',text('Tổng tiền hàng','Product total')),amount=el('strong');amount.id='cart-ui-total';total.append(amount);
         const selectedCount=el('p','cart-ui-selected-count');selectedCount.id='cart-ui-selected-count';
         const note=el('p','cart-ui-note');note.id='cart-ui-checkout-note';
-        const actions=el('div','cart-ui-actions'),order=btn(text('Mua hàng','Continue to order'),'checkout');order.id='cart-ui-checkout-btn';order.classList.add('cart-ui-primary');
+        const actions=el('div','cart-ui-actions'),order=btn(text('Mua hàng','Continue to order'),'checkout');order.id='cart-ui-checkout-btn';order.classList.add('cart-ui-primary');order.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();}checkout();};
         const summary=el('div','cart-ui-summary');summary.append(sub,total,selectedCount,note);actions.append(order,btn(text('Tiếp tục mua sắm','Continue shopping'),'close'));totals.append(summary,actions);panel.append(header,content,totals);document.body.append(overlay,panel);
         panel.addEventListener('click',event=>{const button=event.target.closest('button[data-action]');if(!button)return;const id=Number(button.dataset.productId);switch(button.dataset.action){case'close':close();break;case'plus':quantity(id,1);break;case'minus':quantity(id,-1);break;case'remove':remove(id);break;case'remove-selected':manager.cart=lines().filter(product=>!selected.has(product.id));manager.save();render();break;case'checkout':checkout();break;case'view':close();root.openQuickView?.(id);break;}});
         panel.addEventListener('change',event=>{const input=event.target,id=Number(input.dataset.productId);if(input.dataset.action==='select'){if(input.checked)selected.add(id);else selected.delete(id);render();}else if(input.dataset.action==='select-all'){selected.clear();if(input.checked)for(const product of lines())selected.add(product.id);render();}else if(input.dataset.action==='quantity'){const product=lines().find(product=>product.id===id),value=Number(input.value);if(product&&Number.isInteger(value)&&value>=1&&value<=99){product.quantity=value;manager.save();}render();}});

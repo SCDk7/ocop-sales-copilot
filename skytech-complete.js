@@ -343,7 +343,7 @@
 
     function setupInteractiveVietnamMap() {
         const mapContainer = document.getElementById('province-map');
-        if (!mapContainer) return;
+        if (!mapContainer || window.provinceMap || mapContainer._leaflet_id || mapContainer.querySelector('.leaflet-pane')) return;
 
         // Container styling: 440px, Dark-Navy #0B2239, border-radius 16px, border 2px solid #38BDF8
         mapContainer.style.setProperty('background', '#0B2239', 'important');
@@ -811,7 +811,7 @@
     };
     
     window.setupInteractiveVietnamMap = setupInteractiveVietnamMap;
-    window.initializeProvinceMap = setupInteractiveVietnamMap;
+    // window.initializeProvinceMap preserved for satellite map
 
 
     // 4. POLISH HEADER: ĐĂNG KÝ ĐIỂM BÁN & 🔐 QUẢN TRỊ CHỦ WEB
@@ -3879,7 +3879,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
     function initAll() {
         initSkyTechCanvas();
         setupIntroHeaderIsolation();
-        setupInteractiveVietnamMap();
+        if (!window.provinceMap && typeof setupInteractiveVietnamMap === 'function') setupInteractiveVietnamMap();
         polishHeader();
         setupPartnerRegistrationModal();
         if (typeof hookRenderProducts === 'function') hookRenderProducts();
