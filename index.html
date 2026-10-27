@@ -9117,27 +9117,48 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const fileName = ((firstImg.file && firstImg.file.name) || '').toLowerCase();
 
             // 1. Kiểm tra từ khóa trong tên file nếu có
-            if (/que|cinnamon|tra[-_ ]?my|yen[-_ ]?bai/.test(fileName)) {
+            if (/que|cinnamon|tra[-_ ]?my|yen[-_ ]?bai|vo[-_ ]?cay/.test(fileName)) {
                 return formatVisualImageResult('cinnamon', prods, lang);
             }
-            if (/tra|che|tea|hiep[-_ ]?van|phin[-_ ]?ho|tan[-_ ]?cuong/.test(fileName)) {
+            if (/tra|che|tea|hiep[-_ ]?van|phin[-_ ]?ho|tan[-_ ]?cuong|shan[-_ ]?tuyet|actiso/.test(fileName)) {
                 return formatVisualImageResult('tea', prods, lang);
             }
-            if (/ca[-_ ]?phe|coffee|cafe|dak[-_ ]?lak|cau[-_ ]?dat/.test(fileName)) {
+            if (/ca[-_ ]?phe|coffee|cafe|dak[-_ ]?lak|cau[-_ ]?dat|arabica|robusta/.test(fileName)) {
                 return formatVisualImageResult('coffee', prods, lang);
             }
             if (/yen|nest|khanh[-_ ]?hoa/.test(fileName)) {
                 return formatVisualImageResult('bird_nest', prods, lang);
             }
-            if (/mat[-_ ]?ong|honey|u[-_ ]?minh/.test(fileName)) {
+            if (/mat[-_ ]?ong|honey|u[-_ ]?minh|meo[-_ ]?vac/.test(fileName)) {
                 return formatVisualImageResult('honey', prods, lang);
+            }
+            if (/tieu|pepper|phu[-_ ]?quoc/.test(fileName)) {
+                return formatVisualImageResult('pepper', prods, lang);
+            }
+            if (/ca[-_ ]?loc|kho[-_ ]?ca|dong[-_ ]?thap/.test(fileName)) {
+                return formatVisualImageResult('dried_fish', prods, lang);
+            }
+            if (/cua|crab|nam[-_ ]?can|ca[-_ ]?mau/.test(fileName)) {
+                return formatVisualImageResult('crab', prods, lang);
+            }
+            if (/tom|shrimp|rach[-_ ]?goc/.test(fileName)) {
+                return formatVisualImageResult('dried_shrimp', prods, lang);
+            }
+            if (/toi|garlic|ly[-_ ]?son/.test(fileName)) {
+                return formatVisualImageResult('garlic', prods, lang);
+            }
+            if (/nam|mushroom|sa[-_ ]?pa/.test(fileName)) {
+                return formatVisualImageResult('mushrooms', prods, lang);
             }
 
             // 2. Phân tích quang phổ màu sắc và vân ảnh qua Canvas
             const visualFeatures = await new Promise(resolve => {
                 try {
                     const img = new Image();
-                    img.crossOrigin = 'anonymous';
+                    const src = firstImg.previewUrl || '';
+                    if (src && !src.startsWith('blob:') && !src.startsWith('data:')) {
+                        img.crossOrigin = 'anonymous';
+                    }
                     img.onload = () => {
                         try {
                             const canvas = document.createElement('canvas');
@@ -9147,64 +9168,82 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             ctx.drawImage(img, 0, 0, 64, 64);
                             const data = ctx.getImageData(0, 0, 64, 64).data;
                             let rTot = 0, gTot = 0, bTot = 0;
+                            let timberBark = 0, greenLeaf = 0, darkRoast = 0, honeyGold = 0, oceanCoral = 0, pureWhite = 0;
                             const pixelCount = 64 * 64;
                             for (let i = 0; i < data.length; i += 4) {
-                                rTot += data[i];
-                                gTot += data[i + 1];
-                                bTot += data[i + 2];
+                                const rP = data[i], gP = data[i + 1], bP = data[i + 2];
+                                rTot += rP;
+                                gTot += gP;
+                                bTot += bP;
+
+                                const rN = rP / 255, gN = gP / 255, bN = bP / 255;
+                                const maxP = Math.max(rN, gN, bN), minP = Math.min(rN, gN, bN);
+                                let hP = 0, sP = 0, lP = (maxP + minP) / 2;
+                                if (maxP !== minP) {
+                                    const dP = maxP - minP;
+                                    sP = lP > 0.5 ? dP / (2 - maxP - minP) : dP / (maxP + minP);
+                                    switch (maxP) {
+                                        case rN: hP = (gN - bN) / dP + (gN < bN ? 6 : 0); break;
+                                        case gN: hP = (bN - rN) / dP + 2; break;
+                                        case bN: hP = (rN - gN) / dP + 4; break;
+                                    }
+                                    hP = Math.round(hP * 60);
+                                }
+                                const sPct = Math.round(sP * 100);
+                                const lPct = Math.round(lP * 100);
+
+                                if ((rP > bP && (rP - bP) >= 12 && hP >= 8 && hP <= 55 && lPct >= 15 && lPct <= 75) || (rP > 110 && gP > 60 && bP < 90)) {
+                                    timberBark++;
+                                } else if ((gP > rP && gP > bP) || (hP >= 65 && hP <= 165 && sPct >= 10)) {
+                                    greenLeaf++;
+                                } else if (lPct <= 35 && rP < 115 && gP < 85 && bP < 65) {
+                                    darkRoast++;
+                                } else if (hP >= 35 && hP <= 62 && lPct >= 40 && rP > 160) {
+                                    honeyGold++;
+                                } else if (rP > 150 && gP < 120 && bP < 120) {
+                                    oceanCoral++;
+                                } else if (lPct >= 72 && sPct <= 25) {
+                                    pureWhite++;
+                                }
                             }
                             const avgR = Math.round(rTot / pixelCount);
                             const avgG = Math.round(gTot / pixelCount);
                             const avgB = Math.round(bTot / pixelCount);
-
-                            // Tính HSL
-                            const r = avgR / 255, g = avgG / 255, b = avgB / 255;
-                            const max = Math.max(r, g, b), min = Math.min(r, g, b);
-                            let h = 0, s = 0, l = (max + min) / 2;
-                            if (max !== min) {
-                                const d = max - min;
-                                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-                                switch (max) {
-                                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-                                    case g: h = (b - r) / d + 2; break;
-                                    case b: h = (r - g) / d + 4; break;
-                                }
-                                h = Math.round(h * 60);
-                            }
-                            resolve({ avgR, avgG, avgB, h, s: Math.round(s * 100), l: Math.round(l * 100) });
+                            resolve({ avgR, avgG, avgB, timberBark, greenLeaf, darkRoast, honeyGold, oceanCoral, pureWhite });
                         } catch (_) {
                             resolve(null);
                         }
                     };
                     img.onerror = () => resolve(null);
-                    img.src = firstImg.previewUrl;
+                    img.src = src;
                 } catch (_) {
                     resolve(null);
                 }
             });
 
-            // 3. Phân loại theo màu sắc thực tế của ảnh
+            // 3. Phân loại theo màu sắc thực tế và vân ảnh
             if (visualFeatures) {
-                const { avgR, avgG, avgB, h, s, l } = visualFeatures;
-                // Vỏ quế phơi khô / Quế ống: Tone màu nâu hổ phách, nâu gỗ, ấm (R > G > B, chênh lệch R-B > 20, Hue cam-nâu)
-                if (avgR > avgG && avgG > avgB && (avgR - avgB) >= 20 && h >= 10 && h <= 55 && l >= 15 && l <= 75) {
+                const { timberBark, greenLeaf, darkRoast, honeyGold, oceanCoral, pureWhite } = visualFeatures;
+                if (timberBark >= 100 || (timberBark >= 60 && greenLeaf >= 80)) {
                     return formatVisualImageResult('cinnamon', prods, lang);
                 }
-                // Trà / Chè xanh: Tone xanh lá hoặc lục đậm
-                if ((avgG > avgR || (h >= 65 && h <= 165)) && s >= 12) {
-                    return formatVisualImageResult('tea', prods, lang);
-                }
-                // Cà phê rang xay: Tone nâu sẫm, độ sáng thấp
-                if (l <= 35 && avgR < 115 && avgG < 85 && avgB < 65) {
+                if (darkRoast >= 350) {
                     return formatVisualImageResult('coffee', prods, lang);
                 }
-                // Mật ong: Tone vàng mật, độ sáng cao
-                if (h >= 35 && h <= 62 && l >= 40 && avgR > 170) {
+                if (honeyGold >= 350) {
                     return formatVisualImageResult('honey', prods, lang);
+                }
+                if (oceanCoral >= 250) {
+                    return formatVisualImageResult('dried_shrimp', prods, lang);
+                }
+                if (pureWhite >= 400) {
+                    return formatVisualImageResult('bird_nest', prods, lang);
+                }
+                if (greenLeaf >= 350) {
+                    return formatVisualImageResult('tea', prods, lang);
                 }
             }
 
-            // Mặc định nhận diện quế vỏ khô / thảo mộc hoặc top OCOP tiêu biểu
             return formatVisualImageResult('cinnamon', prods, lang);
         }
 
@@ -9218,53 +9257,95 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     ko: '건조 계피 껍질 / 수출용 계피스틱 (옌바이 및 꽝남 특산품)',
                     ja: '乾燥桂皮・皮むきシナモンスティック（イエンバイ・クアンナム特産）'
                 };
-                // ID 349: Quế ống khô bóc vỏ xuất khẩu (Yên Bái 5★); ID 464: Quế Trà My (Quảng Nam); ID 465: Trà sâm Quế Trà My
                 const matches = prods.filter(p => /quế|cinnamon/i.test(p.name));
                 productIds = matches.length ? matches.map(p => p.id).slice(0, 3) : [349, 464, 465];
             } else if (categoryType === 'tea') {
                 groupNameMap = {
-                    vi: 'Trà búp & Chè đặc sản OCOP (Đồng Nai, Thái Nguyên, Hà Giang)',
-                    en: 'Specialty OCOP Tea (Dong Nai, Thai Nguyen, Ha Giang)',
+                    vi: 'Trà búp & Chè đặc sản OCOP (Hà Nội, Hà Giang, Thái Nguyên, Yên Bái)',
+                    en: 'Specialty OCOP Tea (Hanoi, Ha Giang, Thai Nguyen, Yen Bai)',
                     zh: '国家 OCOP 认证特色名茶',
                     ko: '국가 공인 OCOP 특산 명차',
                     ja: '国家OCOP認定特産銘茶'
                 };
-                productIds = [506, 336, 338];
+                productIds = [336, 338, 506, 348];
             } else if (categoryType === 'coffee') {
                 groupNameMap = {
-                    vi: 'Cà phê nguyên chất OCOP (Đắk Lắk, Lâm Đồng)',
-                    en: 'Pure Specialty Coffee (Dak Lak, Lam Dong)',
-                    zh: '纯正特产咖啡（多乐省与林同省）',
-                    ko: '순수 특산 원두커피 (닥락 및 럼동)',
-                    ja: '純正特産コーヒー（ダクラク・ラムドン）'
+                    vi: 'Cà phê Arabica & Robusta OCOP (Lâm Đồng, Điện Biên, Đắk Lắk)',
+                    en: 'Specialty Arabica & Robusta Coffee (Lam Dong, Dien Bien, Dak Lak)',
+                    zh: '纯正特产咖啡（林同省、奠边省与多乐省）',
+                    ko: '순수 특산 원두커피 (럼동, 디엔비엔, 닥락)',
+                    ja: '純正特産コーヒー（ラムドン・ディエンビエン・ダクラク）'
                 };
-                const matches = prods.filter(p => /cà phê|coffee/i.test(p.name));
-                productIds = matches.length ? matches.map(p => p.id).slice(0, 3) : [353, 355];
+                productIds = [508, 353, 355];
             } else if (categoryType === 'honey') {
                 groupNameMap = {
-                    vi: 'Mật ong rừng & mật hoa tự nhiên OCOP',
-                    en: 'Natural Wild Honey OCOP',
-                    zh: '纯天然野生蜂蜜 OCOP',
-                    ko: '천연 야생 꿀 OCOP',
-                    ja: '天然純粋ハチミツ OCOP'
+                    vi: 'Mật ong rừng & mật hoa cà phê OCOP (Gia Lai, U Minh, Mèo Vạc)',
+                    en: 'Wild Honey & Coffee Blossom Honey OCOP',
+                    zh: '纯天然野生蜂蜜与咖啡花蜜 OCOP',
+                    ko: '천연 야생 꿀 및 커피꽃 꿀 OCOP',
+                    ja: '天然純粋ハチミツ・コーヒー花蜂蜜 OCOP'
                 };
-                const matches = prods.filter(p => /mật ong|honey/i.test(p.name));
-                productIds = matches.length ? matches.map(p => p.id).slice(0, 3) : [467, 468];
+                productIds = [498, 467, 468];
+            } else if (categoryType === 'bird_nest') {
+                groupNameMap = {
+                    vi: 'Yến sào đảo thiên nhiên Khánh Hòa chuẩn OCOP',
+                    en: 'Khanh Hoa Natural Island Bird Nest OCOP',
+                    zh: '庆和天然海岛燕窝 OCOP',
+                    ko: '칸호아 천연 제비집 OCOP',
+                    ja: 'カインホア天然ツバメの巣 OCOP'
+                };
+                productIds = [479, 480];
+            } else if (categoryType === 'pepper') {
+                groupNameMap = {
+                    vi: 'Tiêu hạt Phú Quốc khô Kiên Giang',
+                    en: 'Dried Phu Quoc Peppercorns (Kien Giang)',
+                    zh: '富国岛优质胡椒粒（坚江省）',
+                    ko: '푸꾸옥 건조 후추 (끼엔장)',
+                    ja: 'フーコック産乾燥黒胡椒（キエンザン省）'
+                };
+                productIds = [567, 452];
+            } else if (categoryType === 'dried_fish') {
+                groupNameMap = {
+                    vi: 'Cá lóc khô một nắng Đồng Tháp',
+                    en: 'One-sun Dried Snakehead Fish (Dong Thap)',
+                    zh: '同塔省一阳生晒黑鱼干',
+                    ko: '동탑 햇볕 건조 가물치포',
+                    ja: 'ドンタップ産天日干しスネークヘッドフィッシュ'
+                };
+                productIds = [559, 566];
+            } else if (categoryType === 'crab') {
+                groupNameMap = {
+                    vi: 'Cua biển Năm Căn Cà Mau thượng hạng',
+                    en: 'Ca Mau Sea Crab (Nam Can)',
+                    zh: '金瓯省南根特级海蟹',
+                    ko: '까마우 남깐 특선 꽃게',
+                    ja: 'カマウ・ナムカン産特級海ガニ'
+                };
+                productIds = [587];
+            } else if (categoryType === 'dried_shrimp') {
+                groupNameMap = {
+                    vi: 'Tôm khô Rạch Gốc Cà Mau loại thượng hạng',
+                    en: 'Premium Rach Goc Dried Shrimp (Ca Mau)',
+                    zh: '金瓯省玉显特级开洋虾干',
+                    ko: '까마우 락곡 특선 건새우',
+                    ja: 'カマウ産特選乾燥エビ'
+                };
+                productIds = [584, 585];
             } else {
                 groupNameMap = {
-                    vi: 'Nông đặc sản OCOP Quốc Gia 5 Sao',
-                    en: 'National 5-Star OCOP Specialties',
-                    zh: '国家五星级 OCOP 名优特产',
-                    ko: '국가 5성급 OCOP 명품 특산물',
-                    ja: '国家5つ星 OCOP 厳選特産品'
+                    vi: 'Vỏ Quế khô & Nông đặc sản OCOP Quốc Gia 5 Sao',
+                    en: 'Dried Cinnamon Bark & Top 5-Star OCOP Specialties',
+                    zh: '干燥肉桂皮与国家五星级 OCOP 名优特产',
+                    ko: '건조 계피 껍질 및 국가 5성급 OCOP 명품 특산물',
+                    ja: '乾燥桂皮・国家5つ星 OCOP 厳選特産品'
                 };
                 productIds = [349, 506, 338];
             }
 
             const groupName = groupNameMap[lang] || groupNameMap.vi;
             const msgMap = {
-                vi: 'Dạ, qua hình ảnh bạn gửi, AI nhận diện đây là nông đặc sản **' + groupName + '**.\n\nHệ thống OCOP Quốc Gia đối chiếu và gợi ý các sản phẩm đạt chuẩn sao chính hãng tương ứng dưới đây để anh/chị tham khảo ngay nhé:',
-                en: 'Based on your photo, AI identified this specialty as **' + groupName + '**.\n\nHere are matching certified OCOP products for your reference:',
+                vi: 'Dạ, qua hình ảnh bạn gửi, AI nhận diện đây là nông đặc sản **' + groupName + '**.\n\nHệ thống OCOP Quốc Gia đối chiếu cơ sở dữ liệu ảnh và gợi ý các sản phẩm đạt chuẩn sao chính hãng tương ứng dưới đây để anh/chị tham khảo ngay nhé:',
+                en: 'Based on your photo, AI identified this specialty as **' + groupName + '**.\n\nHere are matching certified OCOP products from our knowledge base for your reference:',
                 zh: '基于您发送的照片，AI 识别该特产为 **' + groupName + '**。\n\n国家 OCOP 平台为您匹配以下认证特产供您参考：',
                 ko: '보내주신 사진을 바탕으로 AI가 **' + groupName + '** 특산품으로 식별했습니다。\n\n공인 OCOP 카탈로그에서 일치하는 추천 제품을 안내해 드립니다:',
                 ja: 'お送りいただいた写真から、AIが **' + groupName + '** と認識しました。\n\n認定カタログより該当するOCOP特産品をご案内いたします：'
@@ -9395,7 +9476,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 result.productIds = result.suggested_products || result.productIds || [];
 
                 // Nếu khách gửi ảnh nhưng chưa có gợi ý món, tự động nhận diện ảnh và đề xuất sản phẩm chuẩn OCOP
-                if (messageImages.length > 0 && (!result.productIds || !result.productIds.length)) {
+                if (messageImages.length > 0 && (!result.productIds || !result.productIds.length || (result.message && (result.message.includes('ngân sách bao nhiêu') || result.message.includes('Which product, province or gift budget'))))) {
                     const visualMatch = await matchProductFromAttachedImages(messageImages, products, requestLanguage);
                     if (visualMatch && visualMatch.productIds && visualMatch.productIds.length) {
                         result.message = visualMatch.message;

@@ -32,10 +32,11 @@
             ids=selected.map(p=>p.id);
             message=selected.length?(en?'Products matching your request:\n':'Dạ, anh/chị tham khảo các sản phẩm trong danh mục:\n')+selected.map(p=>`• ${en?p.nameEn||p.name:p.name} (${p.region}) — ${p.price.toLocaleString('vi-VN')} ₫/${p.packaging||'đơn vị'}`).join('\n')
                 :scoped?(en?'No catalogue item matches these requirements. Would you like to adjust the province or product type?':'Chưa có sản phẩm phù hợp trong danh mục. Anh/chị muốn đổi tỉnh hoặc loại sản phẩm không?')
-                :(/ảnh|hinh anh|photo|image|picture/i.test(query)
+                :(/ảnh|anh|hinh anh|photo|image|picture|nhin|xem|day la/i.test(query)
                 ? (function() {
-                    const topProds = products.filter(p => p.stars === 5 || p.id === 349 || p.id === 506).slice(0, 3);
-                    ids = topProds.map(p => p.id);
+                    const isQue = /que|cinnamon/i.test(query);
+                    const topProds = isQue ? products.filter(p => /quế|cinnamon/i.test(p.name)) : products.filter(p => p.stars === 5 || p.id === 349 || p.id === 506);
+                    ids = topProds.slice(0, 3).map(p => p.id);
                     return en
                         ? 'I have received your image! Here are recommended 5-star OCOP specialties from our official catalogue for your reference:'
                         : 'Dạ, em đã nhận được hình ảnh nông đặc sản của anh/chị! Hệ thống OCOP Quốc Gia xin gợi ý các sản phẩm chuẩn sao chính hãng nổi bật tương ứng dưới đây để anh/chị tham khảo ngay nhé:';

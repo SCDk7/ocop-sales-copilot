@@ -21,7 +21,7 @@ const {createCommerceShopping} = require('./commerce-shopping');
 const {createKnowledge}=require('./product-knowledge');
 const {createSalesStore}=require('./sales-store');
 const {generateWithSalesTools}=require('./sales-tools');
-const {matchImageEvidence, createCatalogImageMatcher} = require('./ai-image-match.js');
+const {matchImageEvidence, createCatalogImageMatcher, getProductImageKnowledge, searchProductByImageKnowledge} = require('./ai-image-match.js');
 const matchCatalogImages = createCatalogImageMatcher(__dirname);
 const {transcribeAudio}=require('./audio-transcription');
 const { createAccountStore } = require('./account-store.js');
@@ -1388,6 +1388,29 @@ async function handleAIChatRequest(req, res) {
     result = await generateAIResponse(validation, { attachedImages, wikiSources, googleContext, filteredProducts, userIntent, replyDeadline, replySignal, confirmedDraft:requestBody.confirmedDraft?{...requestBody.confirmedDraft,sessionId:requestBody.sessionId}:null,metricsSessionId:requestBody.sessionId });
     if (!attachedImages.length && result.status === 503) {
       result = {status:200,body:composeDataReply(filteredProducts,userIntent,validation.language,wikiSources)};
+    } else if (attachedImages.length && (result.status === 503 || !result.body?.productIds?.length)) {
+      const kbMatches = searchProductByImageKnowledge({ text: lastUserMessage, fileName: attachedImages[0]?.fileName });
+      if (kbMatches.length > 0) {
+        const topIds = kbMatches.map(m => m.id).slice(0, 3);
+        const topNames = kbMatches.map(m => validation.language === 'en' ? (m.nameEn || m.name) : m.name);
+        const msg = validation.language === 'en'
+          ? 'Based on your image and catalogue knowledge, here are matching certified OCOP products: ' + topNames.join(', ') + '.'
+          : 'Dạ, qua hình ảnh đối chiếu với cơ sở dữ liệu ảnh OCOP, em xin gợi ý các sản phẩm chuẩn sao chính hãng tương ứng dưới đây để anh/chị tham khảo ngay nhé:';
+        result = {
+          status: 200,
+          body: {
+            message: msg,
+            text_response: msg,
+            productIds: topIds,
+            suggested_products: topIds,
+            imageMatchStatus: 'similar',
+            understandingStatus: 'understood',
+            responseMode: 'catalog_image_knowledge_match',
+            handoffAdmin: false,
+            dynamic_chips: validation.language === 'en' ? ['View details', 'Add to cart'] : ['Xem chi tiết', 'Thêm vào giỏ']
+          }
+        };
+      }
     }
   }
   if (result.body.responseMode !== 'semantic_catalog_wikipedia' && (result.body.integrations?.gemini || result.body.integrations?.openai || result.body.integrations?.claude) && userIntent.hasVerifiedCombo && !attachedImages.length) {
@@ -1414,6 +1437,10 @@ async function handleAIChatRequest(req, res) {
 }
 
 app.post('/api/ai/chat', handleAIChatRequest);
+
+app.get('/api/ai/image-knowledge', (req, res) => {
+  res.json(getProductImageKnowledge());
+});
 
 app.get('/api/ocop/stores', (req, res) => {
   res.json({
