@@ -4030,10 +4030,10 @@ Khơi Nguồn Di Sản Việt</span>
                         <button type="button" onclick="quickFilterSearch('Cà phê')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10.5px] font-semibold cursor-pointer transition">Cà phê</button>
                         <button type="button" onclick="quickFilterSearch('Mật ong')" class="px-2 py-0.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10.5px] font-semibold cursor-pointer transition">Mật ong</button>
                     </div>
-                    <div class="flex items-center gap-1.5 flex-wrap p-2 rounded-xl bg-emerald-50/70 border border-emerald-200 mt-2 text-xs">
-                        <span class="font-bold text-emerald-900 flex items-center gap-1 text-[11px]">
+                    <div class="flex items-center gap-1.5 flex-wrap p-2 rounded-xl bg-emerald-50/70 border border-emerald-200 mt-2 text-xs" onclick="if(event.target === this) triggerAIComboPrompt('Tư vấn cho tôi các gói combo đặc sản OCOP phù hợp làm quà tặng')">
+                        <button type="button" onclick="triggerAIComboPrompt('Tư vấn cho tôi các gói combo đặc sản OCOP phù hợp làm quà tặng')" class="font-bold text-emerald-900 hover:text-emerald-700 flex items-center gap-1 text-[11px] cursor-pointer bg-transparent border-none p-0 focus:outline-hidden" title="Mở Trợ lý AI tư vấn Combo">
                             <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Combo AI:
-                        </span>
+                        </button>
                         <button type="button" onclick="triggerAIComboPrompt('gợi ý combo quà tặng 500k')" class="px-2 py-0.5 rounded-lg bg-white hover:bg-emerald-100 text-emerald-800 font-bold border border-emerald-300 text-[10.5px] shadow-2xs transition cursor-pointer">500k</button>
                         <button type="button" onclick="triggerAIComboPrompt('gợi ý combo quà tặng 1 triệu')" class="px-2 py-0.5 rounded-lg bg-white hover:bg-emerald-100 text-emerald-800 font-bold border border-emerald-300 text-[10.5px] shadow-2xs transition cursor-pointer">1 Triệu</button>
                         <button type="button" onclick="triggerAIComboPrompt('combo 3tr 3 món cao cấp')" class="px-2 py-0.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[10.5px] shadow-2xs transition cursor-pointer">VIP 3 Tr</button>
@@ -8876,6 +8876,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             if (promptText === 'Mở liên hệ Admin') {
                 toggleAdminSupport();
                 return;
+            }
+            if (typeof openAIChat === 'function') {
+                openAIChat();
+            } else if (typeof toggleAIChat === 'function') {
+                toggleAIChat(true);
             }
             const isComplaintPrompt = /(hàng lỗi|hang loi|nhận hàng bị lỗi|nhan hang bi loi|đổi trả|doi tra|hoàn hàng|hoan hang|giao sai|sai hàng|lack|missing item)/i.test(normalized);
             if (isComplaintPrompt) {
@@ -16846,9 +16851,22 @@ function quickFilterSearch(keyword) {
 window.quickFilterSearch = quickFilterSearch;
 
 function triggerAIComboPrompt(promptText) {
-    if (typeof toggleAIChat === 'function') {
-        const chatWidget = document.getElementById('ai-chat-widget');
-        if (chatWidget && chatWidget.classList.contains('hidden')) toggleAIChat();
+    if (typeof openAIChat === 'function') {
+        openAIChat();
+    } else if (typeof toggleAIChat === 'function') {
+        toggleAIChat(true);
+    }
+    const win = document.getElementById('ai-chat-window');
+    if (win) {
+        win.classList.remove('hidden');
+        win.removeAttribute('hidden');
+        win.style.display = 'flex';
+    }
+    const widget = document.getElementById('ai-chat-widget');
+    if (widget) {
+        widget.classList.remove('hidden');
+        widget.removeAttribute('hidden');
+        widget.style.display = '';
     }
     const input = document.getElementById('ai-chat-input');
     if (input) {
