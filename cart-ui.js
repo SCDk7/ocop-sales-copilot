@@ -69,7 +69,7 @@
     function add(id){const p=catalogue().find(p=>p.id===Number(id));if(!p)return;lines();manager.addToCart(p,1);selected.add(p.id);render();root.showToast?.(text('Đã thêm vào giỏ hàng.','Added to your cart.'),'success');}
     function quantity(id,delta){const p=lines().find(p=>p.id===Number(id));if(!p||!Number.isInteger(delta))return;p.quantity=Math.max(1,Math.min(99,p.quantity+delta));manager.save();render();}
     function remove(id){manager.removeFromCart(Number(id));render();}
-    function checkout(){const rows=selectedLines();if(!rows.length||rows.length>20)return;root.location.assign(new URL(checkoutURL(rows),document.baseURI).href);}
+    function checkout(){const rows=selectedLines();if(!rows.length||rows.length>20)return;manager?.save?.();root.location.assign(new URL(checkoutURL(rows),document.baseURI).href);}
     function init(){
         if(root.OCOPCartUI.ready||typeof root.CartManager!=='function')return;
         manager=new root.CartManager();
