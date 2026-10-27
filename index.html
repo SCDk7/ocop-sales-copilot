@@ -336,11 +336,40 @@
             margin-top: auto !important;
             width: 100% !important;
         }
-        #product-grid .product-card-footer > div {
-            min-height: 48px;
+        #product-grid .product-card-footer > div:not(.product-action-row):not(.product-detail-row) {
+            min-height: auto;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+        }
+        #product-grid .product-card-footer .product-detail-row {
+            width: 100% !important;
+            display: block !important;
+            margin-bottom: 6px !important;
+        }
+        #product-grid .product-card-footer .product-action-row {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 6px !important;
+            width: 100% !important;
+        }
+        #product-grid .product-card-footer .product-action-row > .product-action-buy {
+            flex: 2 1 0% !important;
+            min-width: 0 !important;
+            height: 38px !important;
+        }
+        #product-grid .product-card-footer .product-action-row > .product-action-cart {
+            flex: 1 1 0% !important;
+            min-width: 38px !important;
+            height: 38px !important;
+            padding: 0 !important;
+        }
+        #product-grid .product-card-footer .product-action-row > .product-action-favorite {
+            flex: 1 1 0% !important;
+            min-width: 38px !important;
+            height: 38px !important;
+            padding: 0 !important;
         }
         .neon-gold-glow,
         .gold-card-glow {
@@ -6588,22 +6617,21 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             <span>${sysMetrics.volume}</span>
                             <span>${sysMetrics.margin}</span>
                         </div>
-                        <div class="grid grid-cols-2 gap-1.5">
-                            <button type="button" onclick="openQuickView(${p.id})" class="btn-card-details lofi-btn-detail flex items-center justify-center gap-1 py-2 px-1.5 rounded-xl font-bold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 transition-all shadow-2xs cursor-pointer" title="Xem chi tiết sản phẩm">
+                        <div class="product-detail-row w-full mb-1.5">
+                            <button type="button" onclick="openQuickView(${p.id})" class="btn-card-details lofi-btn-detail w-full flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl font-bold text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 transition-all shadow-2xs cursor-pointer" title="Xem chi tiết sản phẩm">
                                 <i class="fa-solid fa-circle-info text-emerald-600"></i>
                                 <span>Chi tiết</span>
                             </button>
-                            <button type="button" onclick="addToCart(${p.id}); toggleCart(true)" class="product-action-cart lofi-btn-cart flex items-center justify-center gap-1 py-2 px-1.5 rounded-xl font-bold text-xs bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-xs cursor-pointer" title="Thêm sản phẩm vào giỏ hàng">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                                <span>Giỏ hàng</span>
-                            </button>
                         </div>
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <button type="button" onclick="handleBuyNow(${p.id})" class="product-action-buy lofi-btn-buy btn-card-buy-online flex-1 py-2 px-2.5 rounded-xl font-black text-xs text-white bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95" style="background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%) !important; color: #FFFFFF !important;" title="Mua ngay sản phẩm này (yêu cầu đăng nhập như Shopee)">
+                        <div class="product-action-row flex items-center gap-1.5 w-full">
+                            <button type="button" onclick="handleBuyNow(${p.id})" class="product-action-buy lofi-btn-buy btn-card-buy-online flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl font-black text-xs text-white transition-all shadow-xs cursor-pointer active:scale-95" style="flex: 2 1 0% !important; min-width: 0 !important; height: 38px !important; background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%) !important; color: #FFFFFF !important;" title="Mua ngay sản phẩm này (yêu cầu đăng nhập như Shopee)">
                                 <i class="fa-solid fa-bolt text-amber-200"></i>
-                                <span>Mua ngay</span>
+                                <span class="truncate">Mua ngay</span>
                             </button>
-                            <button type="button" onclick="toggleWishlist(${p.id})" class="product-action-favorite lofi-btn-favorite w-9 h-9 shrink-0 flex items-center justify-center rounded-xl border ${isFav ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-emerald-50 hover:bg-rose-50 border-emerald-200 hover:border-rose-300 text-slate-400 hover:text-rose-500'} transition-all shadow-2xs cursor-pointer" aria-pressed="${isFav}" title="${isFav ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}">
+                            <button type="button" onclick="addToCart(${p.id}); toggleCart(true)" class="product-action-cart lofi-btn-cart flex items-center justify-center rounded-xl font-bold text-xs bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 38px !important; height: 38px !important;" title="Thêm sản phẩm vào giỏ hàng">
+                                <i class="fa-solid fa-cart-shopping text-sm"></i>
+                            </button>
+                            <button type="button" onclick="toggleWishlist(${p.id})" class="product-action-favorite lofi-btn-favorite flex items-center justify-center rounded-xl border ${isFav ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-emerald-50 hover:bg-rose-50 border-emerald-200 hover:border-rose-300 text-slate-400 hover:text-rose-500'} transition-all shadow-2xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 38px !important; height: 38px !important;" aria-pressed="${isFav}" title="${isFav ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}">
                                 <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-sm"></i>
                             </button>
                         </div>
