@@ -713,101 +713,11 @@
     // Store directory lookup and renderer
     window.renderProvinceStoresPanel = function (provinceName) {
         const panel = document.getElementById('province-stores-panel');
-        if (!panel) return;
-        if (!provinceName || provinceName === 'all') {
+        if (panel) {
             panel.classList.add('hidden');
+            panel.style.setProperty('display', 'none', 'important');
             panel.innerHTML = '';
-            return;
         }
-
-        let stores = [];
-        if (typeof findStoresForProvinceName === 'function') {
-            stores = findStoresForProvinceName(provinceName);
-        } else if (window.OcopStores && window.OcopStores.STORE_MAP) {
-            for (let [key, val] of Object.entries(window.OcopStores.STORE_MAP)) {
-                if (key.toLowerCase().includes(provinceName.toLowerCase()) || provinceName.toLowerCase().includes(key.toLowerCase())) {
-                    stores.push(val);
-                }
-            }
-        }
-
-        if (!stores || stores.length === 0) {
-            panel.innerHTML = `
-                <div class="p-4 rounded-xl border border-sky-200 bg-white shadow-xs text-center">
-                    <p class="text-xs font-bold text-slate-600 m-0">
-                        📍 Đang cập nhật showroom chính thức tại ${provinceName}. Bạn có thể đặt giao hàng online qua hệ thống O2O OCOP!
-                    </p>
-                </div>
-            `;
-            panel.classList.remove('hidden');
-            return;
-        }
-
-        const storeCardsHtml = stores.map(s => {
-            const sName = s.primaryStore?.name || s.producerName || s.productName || ('Điểm Bán OCOP ' + provinceName);
-            const sAddress = s.primaryStore?.address || s.producerAddress || 'Trung tâm Trưng bày & Giới thiệu Sản phẩm OCOP ' + provinceName;
-            const sPhone = s.primaryStore?.phone || s.hotline || '1900.8888';
-            const sHours = s.primaryStore?.hours || '08:00 - 21:00';
-            const sStars = s.stars || 5;
-            const starIcons = '⭐'.repeat(sStars);
-            const mapUrl = s.mapUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(sName + ' ' + sAddress));
-
-            return `
-                <div class="bg-white border-1.5 border-sky-300 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between" style="border: 1.5px solid #7DD3FC; background: #FFFFFF;">
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-2">
-                            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-200">
-                                ${starIcons} OCOP ${sStars} SAO
-                            </span>
-                            <span class="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Đang mở cửa
-                            </span>
-                        </div>
-                        <h4 class="font-black text-sm text-sky-950 mb-1.5 line-clamp-1">${sName}</h4>
-                        <p class="text-xs text-slate-600 mb-2 flex items-start gap-1.5">
-                            <i class="fa-solid fa-location-dot text-rose-500 mt-0.5 shrink-0"></i>
-                            <span class="line-clamp-2">${sAddress}</span>
-                        </p>
-                    </div>
-                    <div class="pt-2 border-t border-sky-100 flex items-center justify-between gap-2 text-xs">
-                        <span class="font-bold text-slate-700 flex items-center gap-1">
-                            <i class="fa-solid fa-phone text-sky-600"></i> ${sPhone}
-                        </span>
-                        <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-bold transition flex items-center gap-1 cursor-pointer">
-                            <span>Chỉ đường</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                        </a>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        panel.innerHTML = `
-            <div class="p-4 sm:p-5 rounded-2xl border-2 border-sky-300 shadow-md space-y-3" style="background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-sky-200 pb-2.5">
-                    <div class="flex items-center gap-2">
-                        <span class="w-8 h-8 rounded-xl bg-sky-600 text-white flex items-center justify-center font-black text-sm shadow-sm">
-                            <i class="fa-solid fa-store"></i>
-                        </span>
-                        <div>
-                            <h3 class="font-black text-sm sm:text-base text-sky-950 m-0">
-                                🏪 Cửa Hàng &amp; Điểm Bán Chứng Nhận OCOP tại ${provinceName}
-                            </h3>
-                            <p class="text-xs text-sky-800 m-0 font-medium">
-                                Hệ thống phân phối O2O kết nối trực tiếp nhà sản xuất &amp; showroom đạt chuẩn
-                            </p>
-                        </div>
-                    </div>
-                    <span class="text-xs font-black text-sky-700 bg-white px-2.5 py-1 rounded-lg border border-sky-200 shadow-xs">
-                        ${stores.length} Điểm Bán Khả Dụng
-                    </span>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    ${storeCardsHtml}
-                </div>
-            </div>
-        `;
-        panel.classList.remove('hidden');
     };
     
     window.setupInteractiveVietnamMap = setupInteractiveVietnamMap;
