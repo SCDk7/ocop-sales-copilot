@@ -17,7 +17,9 @@ function relevantWikiSource(source,query) {
   if(/dien vien|ca si|actor|actress|politician|footballer/.test(title))return false;
   const words=[...new Set(norm(query).split(/[^a-z0-9]+/).filter(w=>w.length>1&&!['toi','minh','muon','tim','kiem','nguon','goc','tu','dau','san','pham','co','cua','ve','the','what','from','about','is'].includes(w)))];
   const titleWords=new Set(title.split(/[^a-z0-9]+/));
-  return words.length>0&&words.filter(w=>titleWords.has(w)).length/words.length>=0.6;
+  const wordOverlap = words.length>0 ? words.filter(w=>titleWords.has(w)).length/words.length : 0;
+  const titleOverlap = titleWords.size>=2 ? [...titleWords].filter(w=>words.includes(w)).length/titleWords.size : 0;
+  return wordOverlap>=0.6 || titleOverlap>=0.8;
 }
 async function lookupGoogle(query,config,language='vi') {
   const empty={text:'',sources:[],suggestions:'',searched:false};if(!config?.apiKey||!query)return empty;

@@ -16,3 +16,15 @@ test('OCOP background does not cite generic country or political pages', () => {
   assert.equal(relevantWikiSource({title:'Việt Nam',extract:'Một quốc gia'},query),false);
   assert.equal(relevantWikiSource({title:'Mỗi xã một sản phẩm',extract:'Chương trình OCOP'},query),true);
 });
+test('Wikipedia plans product inquiries to relevant specialty topics and accepts matched articles', () => {
+  const {planWikipedia} = require('./ai-wikipedia');
+  const {relevantWikiSource} = require('./ai-grounding');
+  const {PRODUCTS} = require('./data');
+  const phoNhi = planWikipedia({}, null, 'Cho mình hỏi về Trà Phổ Nhĩ có nguồn gốc thế nào?', PRODUCTS);
+  assert(phoNhi.query.includes('Trà Phổ Nhĩ'));
+  assert(phoNhi.topics.includes('Trà Phổ Nhĩ'));
+  assert.equal(relevantWikiSource({title:'Trà Phổ Nhĩ',extract:'Trà Phổ Nhĩ lên men'}, 'Trà Phổ Nhĩ'), true);
+  const dtht = planWikipedia({}, null, 'Đông trùng hạ thảo có công dụng gì?', PRODUCTS);
+  assert(dtht.query.includes('Đông Trùng Hạ Thảo'));
+  assert.equal(relevantWikiSource({title:'Đông trùng hạ thảo',extract:'Đông trùng nấm dược liệu'}, 'Đông Trùng Hạ Thảo'), true);
+});

@@ -803,7 +803,7 @@ function buildAISystemInstruction({ products, filteredProducts = [], language },
 Nhiệm vụ:
 - Hiểu nhu cầu, ngân sách, địa phương và mục đích mua.
 - Gợi ý sản phẩm dựa trên danh mục và hồ sơ được cung cấp.
-- Kể câu chuyện đặc sản ngắn gọn, đúng nguồn.
+- Kể câu chuyện đặc sản ngắn gọn, đúng nguồn; khi khách hàng hỏi về sản phẩm hay nguồn gốc, kết hợp thông tin danh mục cửa hàng (tên chuẩn, số sao OCOP, giá niêm yết) cùng tri thức văn hóa, địa lý từ nguồn Wikipedia được cung cấp để giải đáp trọn vẹn và tôn vinh đặc sản.
 - Hỗ trợ tạo đơn nháp và chuyển người bán xác nhận khi backend có chức năng tương ứng.
 
 Quy tắc:
