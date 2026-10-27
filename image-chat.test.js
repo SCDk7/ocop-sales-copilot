@@ -5,7 +5,7 @@ const source=fs.readFileSync('server.js','utf8');
 const products=[{id:1,name:'Trà',region:'Hà Nội',price:100000},{id:2,name:'Cà phê',region:'Đắk Lắk',price:200000},{id:3,name:'Cacao',region:'Đắk Lắk',price:300000}];
 test('an attached photo bypasses text-only intent and reaches vision with its caption',async()=>{
  const image={id:'00000000-0000-0000-0000-000000000001',mimeType:'image/png',bytes:20,fileName:'test.png'};let visionCalls=0;
- const context={console,Date,AbortSignal,Promise,Set,AIShopping:shopping,AIIntent:{understand:()=>{throw Error('Text-only intent must not run')},merge:local=>local},
+ const context={console,Date,AbortSignal,Promise,Set,process:{env:{}},commerceShopping:require('./commerce-shopping').createCommerceShopping(),appendProductLocations:require('./product-locations').appendProductLocations,OcopStores:{},AIShopping:shopping,AIIntent:{understand:()=>{throw Error('Text-only intent must not run')},merge:local=>local},
   isAIRateLimited:()=>false,validateAIRequest:body=>({...body,products}),getRestrictedTopicReply:()=>null,MAX_CHAT_IMAGES_PER_MESSAGE:10,chatImages:[image],saveChatImages:()=>{},aiWebsiteCatalog:{products},
   extractSearchIntents:shopping.analyze,planWikipedia:()=>({query:'',topics:[],skipReason:'private_or_image_context'}),getAIModelConfiguration:()=>({model:'test',apiKey:'test'}),
   getGeneralComplaintClarification:()=>null,filterProductsByIntent:()=>products,reviewStore:{list:()=>({items:[]})},normalizeCatalogTerm:shopping.normalize,waitForSignal,
@@ -70,4 +70,6 @@ test('image matching respects visible region and never guesses from a caption or
  assert.deepEqual(matchImageEvidence(catalog,{label:'Cà phê Điện Biên',productType:'unknown'}),[]);
  assert.deepEqual(matchImageEvidence(products,{label:'Cà phê Hà Nội',productType:'Cà phê'}),[]);
  assert.deepEqual(matchImageEvidence(products,{label:'',productType:'Đồ chơi'}),[]);
+ const mienMatches=matchImageEvidence(catalog,{label:'Miến dong Trà Lĩnh',productType:'Miến dong'});
+ assert.equal(mienMatches.includes(425),true);
 });

@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dữ liệu hỗ trợ khách hàng - OCOP</title>
-    <style>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Dữ liệu hỗ trợ khách hàng - OCOP</title>
+ <style>
         :root { color-scheme: light; font-family: system-ui, sans-serif; color: #19382c; background: #f5f6f1; }
         * { box-sizing: border-box; }
         body { margin: 0; padding: 2rem 1rem; }
@@ -38,38 +38,38 @@
     </style>
 </head>
 <body>
-    <main>
-        <header>
-            <h1>Dữ liệu hỗ trợ khách hàng</h1>
-            <button id="logout-button" type="button" hidden>Đăng xuất</button>
-        </header>
-        <section id="login-panel" class="panel">
-            <h2>Đăng nhập nhân viên</h2>
-            <p class="hint">Ảnh khách gửi và bản ghi âm (nếu có) được lưu trên máy chủ đến khi nhân viên xóa. Chỉ nhân viên có mật khẩu quản trị mới xem hoặc xóa được.</p>
-            <form id="login-form">
-                <label for="admin-password">Mật khẩu quản trị</label>
-                <input id="admin-password" type="password" autocomplete="current-password" required>
-                <button type="submit">Đăng nhập</button>
-            </form>
-            <p id="login-error" class="error" role="alert" hidden></p>
-        </section>
-        <section id="recordings-panel" class="panel" hidden>
-            <div class="recording-head">
-                <h2>Danh sách bản ghi</h2>
-                <button id="refresh-button" type="button">Tải lại</button>
-            </div>
-            <p id="recordings-status" class="hint" role="status"></p>
-            <div id="recordings-list"></div>
-            <hr style="margin:1.5rem 0;border:0;border-top:1px solid #dce6dc">
-            <div class="recording-head">
-                <h2>Ảnh khách gửi trong chat</h2>
-                <button id="refresh-images-button" type="button">Tải lại ảnh</button>
-            </div>
-            <p id="images-status" class="hint" role="status"></p>
-            <div id="images-list"></div>
-        </section>
-    </main>
-    <script>
+ <main>
+ <header>
+ <h1>Dữ liệu hỗ trợ khách hàng</h1>
+ <button id="logout-button" type="button" hidden>Đăng xuất</button>
+ </header>
+ <section id="login-panel" class="panel">
+ <h2>Đăng nhập nhân viên</h2>
+ <p class="hint">Ảnh khách gửi và bản ghi âm (nếu có) được lưu trên máy chủ đến khi nhân viên xóa. Chỉ nhân viên có mật khẩu quản trị mới xem hoặc xóa được.</p>
+ <form id="login-form">
+ <label for="admin-password">Mật khẩu quản trị</label>
+ <input id="admin-password" type="password" autocomplete="current-password" required>
+ <button type="submit">Đăng nhập</button>
+ </form>
+ <p id="login-error" class="error" role="alert" hidden></p>
+ </section>
+ <section id="recordings-panel" class="panel" hidden>
+ <div class="recording-head">
+ <h2>Danh sách bản ghi</h2>
+ <button id="refresh-button" type="button">Tải lại</button>
+ </div>
+ <p id="recordings-status" class="hint" role="status"></p>
+ <div id="recordings-list"></div>
+ <hr style="margin:1.5rem 0;border:0;border-top:1px solid #dce6dc">
+ <div class="recording-head">
+ <h2>Ảnh khách gửi trong chat</h2>
+ <button id="refresh-images-button" type="button">Tải lại ảnh</button>
+ </div>
+ <p id="images-status" class="hint" role="status"></p>
+ <div id="images-list"></div>
+ </section>
+ </main>
+ <script>
         const loginPanel = document.getElementById('login-panel');
         const recordingsPanel = document.getElementById('recordings-panel');
         const loginError = document.getElementById('login-error');
@@ -250,5 +250,6 @@
         document.getElementById('refresh-images-button').addEventListener('click', loadChatImages);
         loadRecordings();
     </script>
+<script src="ui-branding.js?v=20261026-no-branding"></script>
 </body>
 </html>

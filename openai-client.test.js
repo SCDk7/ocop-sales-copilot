@@ -5,26 +5,26 @@ const config={apiKey:'gemini-test-key',model:'gemini-3.1-flash-lite',openai:{api
 const answer={message:'According to supplied Wikipedia: tea.',productIds:[336]};
 const payload={system_instruction:{parts:[{text:'Wikipedia: Trà Việt Nam. Catalogue price: 2000000 VND.'}]},contents:[{role:'user',parts:[{text:'Find tea'}]},{role:'model',parts:[{text:'Which province?'}]},{role:'user',parts:[{text:'Hà Nội'}]}],generationConfig:{maxOutputTokens:1100,responseSchema:{type:'OBJECT',properties:{message:{type:'STRING'},productIds:{type:'ARRAY',items:{type:'INTEGER'}}},required:['message','productIds']}}};
 const openAIResponse=()=>new Response(JSON.stringify({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify(answer)}]}]}),{status:200});
-test('Gemini success never calls OpenAI',async()=>{
+test('ensemble consults Gemini and OpenAI and reports the actual providers',async()=>{
  const calls=[];const result=await generatePreferredContent(config,payload,{sleep:async()=>{},fetcher:async url=>{
-  calls.push(url);return new Response(JSON.stringify({candidates:[{content:{parts:[{text:JSON.stringify(answer)}]}}]}));
+  calls.push(url);return url.startsWith('https://api.openai.com/')?openAIResponse():new Response(JSON.stringify({candidates:[{content:{parts:[{text:JSON.stringify(answer)}]}}]}));
  }});
- assert.equal(result.provider,'gemini');assert.equal(calls.length,1);assert(calls[0].startsWith('https://generativelanguage.googleapis.com/'));
+ assert.equal(result.provider,'gemini');assert.equal(calls.length,2);assert.deepEqual(result.providersUsed,['gemini','openai']);
 });
-test('Gemini failure never calls OpenAI even when a legacy key exists',async()=>{
+test('Gemini failure can fall back to a valid OpenAI response',async()=>{
  const calls=[];
  const result=await generatePreferredContent(config,payload,{sleep:async()=>{},fetcher:async url=>{
-  calls.push(url);return new Response('{}',{status:503});
+  calls.push(url);return url.startsWith('https://api.openai.com/')?openAIResponse():new Response('{}',{status:503});
  }});
- assert.equal(result.provider,'gemini');assert.equal(result.response.status,503);assert.equal(calls.length,3);
- assert(calls.every(url=>url.startsWith('https://generativelanguage.googleapis.com/')));
+ assert.equal(result.provider,'openai');assert.equal(result.response.status,200);assert.equal(calls.length,2);
+ assert.deepEqual(result.providersUsed,['openai']);
 });
-test('missing Gemini key cannot use OpenAI, and Gemini overload stays a failure',async()=>{
+test('missing keys and provider overload are reported without fabricated answers',async()=>{
  let openaiCalls=0;
  const fetcher=async url=>{if(url.startsWith('https://api.openai.com/'))openaiCalls++;return new Response('{}',{status:503})};
  const result=await generatePreferredContent({...config,openai:{}},payload,{sleep:async()=>{},fetcher});
- assert.equal(result.response.status,503);assert.equal(result.provider,'gemini');assert.equal(openaiCalls,0);
- await assert.rejects(()=>generatePreferredContent({...config,apiKey:''},payload,{sleep:async()=>{},fetcher}),/Gemini configuration/);
+ assert.equal(result.response.status,503);assert.equal(result.provider,'unavailable');assert.equal(openaiCalls,0);
+ await assert.rejects(()=>generatePreferredContent({apiKey:''},payload,{sleep:async()=>{},fetcher}),/AI configuration/);
  assert.equal(openaiCalls,0);
 });
 test('OpenAI preserves image inputs and rejects Gemini files, refusal and incomplete responses',async()=>{

@@ -1,0 +1,1009 @@
+/* ==========================================================================
+   GLOBAL RESPONSIVE OPTIMIZATION (Chrome, Edge, Safari, Mobile & Desktop)
+   Tự động căn chỉnh & co giãn giao diện chuẩn xác cho mọi độ phân giải màn hình
+   ========================================================================== */
+
+/* 1. Reset chống tràn ngang toàn diện */
+html, body {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* Đảm bảo hình ảnh và iframe không vỡ layout */
+img, video, canvas, iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 2. Căn chỉnh Container và Khoảng cách tự co giãn */
+.max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl {
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: clamp(12px, 3vw, 24px) !important;
+    padding-right: clamp(12px, 3vw, 24px) !important;
+}
+
+/* 3. Hero Section Responsive */
+#shop-hero {
+    width: 100% !important;
+    padding-top: clamp(1rem, 2.5vw, 2.5rem) !important;
+    padding-bottom: clamp(1rem, 2.5vw, 2.5rem) !important;
+}
+
+#shop-hero h2 {
+    font-size: clamp(1.4rem, 3.2vw, 2.65rem) !important;
+    line-height: 1.25 !important;
+    word-break: break-word;
+}
+
+#shop-hero p {
+    font-size: clamp(0.85rem, 1.2vw, 1rem) !important;
+    line-height: 1.55 !important;
+}
+
+/* 4. 4 Thẻ tính năng (Feature Cards) co giãn linh hoạt trên mọi kích thước */
+#ocop-intro-overlay .intro-feature-grid,
+#shop-hero .hero-feature-grid {
+    display: grid !important;
+    width: 100% !important;
+    max-width: 640px !important;
+    gap: clamp(6px, 1.2vw, 12px) !important;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+/* Desktop & Tablet lớn (>= 640px): 4 cột */
+@media (min-width: 640px) {
+    #ocop-intro-overlay .intro-feature-grid,
+    #shop-hero .hero-feature-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+}
+
+/* Mobile & màn hình nhỏ (< 640px): 2 cột x 2 hàng cân đối, không bị chèn ép */
+@media (max-width: 639px) {
+    #ocop-intro-overlay .intro-feature-grid,
+    #shop-hero .hero-feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+#ocop-intro-overlay .intro-feature-grid .compact-feature-card,
+#shop-hero .hero-feature-grid .compact-feature-card {
+    min-height: clamp(54px, 7vw, 68px) !important;
+    padding: clamp(6px, 1.2vw, 10px) 6px !important;
+    border-radius: clamp(10px, 1.5vw, 14px) !important;
+    width: 100% !important;
+}
+
+#ocop-intro-overlay .intro-feature-grid .compact-feature-card span,
+#shop-hero .hero-feature-grid .compact-feature-card span {
+    font-size: clamp(10px, 1.1vw, 12px) !important;
+    line-height: 1.35 !important;
+    font-weight: 800 !important;
+}
+
+/* 5. Khung danh mục & Lưới sản phẩm Responsive */
+@media (max-width: 1023px) {
+    #catalog-layout-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+    #catalog-sidebar {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Lưới sản phẩm co giãn mượt chuẩn Mobile E-Commerce: 2 cột trên điện thoại */
+@media (max-width: 768px) {
+    #product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+    }
+    .product-card {
+        padding: 8px 6px !important;
+        border-radius: 14px !important;
+    }
+    .product-card img,
+    .product-card-image {
+        height: 125px !important;
+        object-fit: cover !important;
+        border-radius: 10px !important;
+    }
+    .product-card h3,
+    .product-card h4,
+    .product-card-title {
+        font-size: 11.5px !important;
+        line-height: 1.3 !important;
+        min-height: 2.6em !important;
+        margin-bottom: 4px !important;
+    }
+    .product-card-price {
+        font-size: 12px !important;
+        margin-bottom: 4px !important;
+    }
+    .product-card-footer {
+        padding: 4px !important;
+        gap: 4px !important;
+    }
+    .product-card-footer button {
+        min-height: 28px !important;
+        padding: 3px 2px !important;
+        font-size: 9.5px !important;
+    }
+}
+
+@media (max-width: 340px) {
+    #product-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1199px) {
+    #product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 18px !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    #product-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 20px !important;
+    }
+}
+
+/* 6. Màn hình Intro Overlay hiển thị vừa vặn trên mọi khung nhìn */
+#ocop-intro-overlay {
+    padding: clamp(10px, 2.5vw, 24px) !important;
+}
+
+#ocop-intro-overlay .intro-stage {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+/* 7. Modal và Drawer trên thiết bị di động */
+@media (max-width: 640px) {
+    #ai-chat-window {
+        width: calc(100vw - 20px) !important;
+        right: 10px !important;
+        bottom: 80px !important;
+        max-height: 80vh !important;
+        border-radius: 16px !important;
+    }
+    
+    #cart-ui-panel {
+        width: 100vw !important;
+    }
+}
+
+/* 8. Fix language dropdown stacking context (đảm bảo menu đổi ngôn ngữ luôn nổi lên trên cùng) */
+#ocop-intro-overlay .intro-header,
+.intro-header {
+    position: relative !important;
+    z-index: 999999 !important;
+}
+
+#ocop-intro-overlay .intro-stage,
+.intro-stage {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+#ocop-intro-overlay .intro-regions,
+.intro-regions,
+.intro-map-console {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+.lang-dropdown-container,
+#intro-lang-dropdown-container,
+#header-lang-dropdown-container {
+    position: relative !important;
+    z-index: 1000000 !important;
+}
+
+.lang-dropdown-menu,
+#intro-lang-dropdown-menu,
+#header-lang-dropdown-menu {
+    position: absolute !important;
+    z-index: 1000001 !important;
+}
+
+/* 9. Center intro subtitle (căn giữa tiêu đề phụ 3 dòng) */
+#ocop-intro-overlay #i18n-intro-title2,
+#i18n-intro-title2 {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    gap: 5px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+#ocop-intro-overlay #i18n-intro-title2 > span,
+#i18n-intro-title2 > span {
+    display: block !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: center !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* ==========================================================================
+   LOFI ORGANIC THEME — XANH NHẠT TỰ NHIÊN & TINH GỌN SẢN PHẨM
+   Cảm hứng: themes.sapo.vn/demo/lofi-organic
+   Tông màu xanh nhạt organic, thoáng đãng, căn chỉnh chuẩn mọi màn hình
+   ========================================================================== */
+
+/* 1. Nền tổng thể xanh nhạt Organic */
+body, .bg-ocop-ambient {
+    background-color: #F4F9F4 !important;
+    background-image:
+        radial-gradient(circle at 10% 15%, rgba(220, 245, 225, 0.75) 0%, transparent 40rem),
+        radial-gradient(circle at 90% 25%, rgba(235, 250, 238, 0.85) 0%, transparent 45rem),
+        linear-gradient(180deg, #F3F9F4 0%, #FAFCFA 25%, #F1F8F2 70%, #F5FAF5 100%) !important;
+    color: #1E293B !important;
+}
+
+/* 2. Khung thẻ sản phẩm Lofi Organic */
+#product-grid .product-card,
+.product-card {
+    background: #FFFFFF !important;
+    border: 1px solid #D8EED9 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 14px rgba(45, 106, 79, 0.06) !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+}
+
+#product-grid .product-card:hover,
+.product-card:hover {
+    transform: translateY(-4px) !important;
+    border-color: #52B788 !important;
+    box-shadow: 0 12px 28px rgba(45, 106, 79, 0.14) !important;
+}
+
+/* Khung ảnh sản phẩm */
+#product-grid .product-card-image-wrap,
+.product-card-image-wrap {
+    background: #F4F9F4 !important;
+    border-bottom: 1px solid #EBF5EC !important;
+    height: 220px !important;
+}
+
+#product-grid .product-card-image,
+.product-card-image {
+    transition: transform 0.35s ease !important;
+}
+
+#product-grid .product-card:hover .product-card-image {
+    transform: scale(1.04) !important;
+}
+
+/* Tiêu đề sản phẩm */
+#product-grid .product-card h3,
+.product-card h3 {
+    color: #133826 !important;
+    font-weight: 700 !important;
+}
+
+#product-grid .product-card:hover h3,
+.product-card:hover h3 {
+    color: #2D6A4F !important;
+}
+
+/* Giá sản phẩm */
+#product-grid .product-card-price,
+.product-card-price {
+    background: #F0FDF4 !important;
+    border: 1px solid #BBF7D0 !important;
+}
+
+#product-grid .product-price-value,
+.product-price-value {
+    color: #166534 !important;
+    font-weight: 800 !important;
+}
+
+/* Footer thẻ sản phẩm */
+#product-grid .product-card-footer,
+.product-card-footer {
+    background: #FFFFFF !important;
+    border-top: 1px solid #EBF5EC !important;
+}
+
+/* Nút Chi tiết sản phẩm */
+.btn-card-details,
+.lofi-btn-detail {
+    background: #E8F5E9 !important;
+    color: #1B4332 !important;
+    border: 1.5px solid #A7F3D0 !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-card-details:hover,
+.lofi-btn-detail:hover {
+    background: #D8F3DC !important;
+    color: #081C15 !important;
+    border-color: #74C69D !important;
+}
+
+/* Nút Giỏ hàng */
+.product-action-cart,
+.lofi-btn-cart {
+    background: #2D6A4F !important;
+    color: #FFFFFF !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+}
+
+.product-action-cart:hover,
+.lofi-btn-cart:hover {
+    background: #1B4332 !important;
+    color: #FFFFFF !important;
+}
+
+/* 3. Modal Chi Tiết Sản Phẩm (Lofi Organic) */
+#quickview-modal .relative.bg-white {
+    background: #FFFFFF !important;
+    border: 1.5px solid #A7F3D0 !important;
+    border-radius: 24px !important;
+    box-shadow: 0 20px 50px rgba(45, 106, 79, 0.2) !important;
+}
+
+#quickview-content h3 {
+    color: #133826 !important;
+}
+
+/* 4. Sidebar Danh Mục & Bộ Lọc Tỉnh Thành */
+#catalog-sidebar .glass-panel {
+    background: #FFFFFF !important;
+    border: 1px solid #D8EED9 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 16px rgba(45, 106, 79, 0.05) !important;
+}
+
+.cat-side-btn.active {
+    background: #2D6A4F !important;
+    color: #FFFFFF !important;
+    border-left: 4px solid #52B788 !important;
+}
+
+.prov-chip-btn {
+    background: #F0FDF4 !important;
+    border: 1px solid #BBF7D0 !important;
+    color: #166534 !important;
+}
+
+.prov-chip-btn.active {
+    background: #2D6A4F !important;
+    color: #FFFFFF !important;
+    border-color: #52B788 !important;
+}
+
+/* 10. Mobile CRO Bottom Action Bar (EGA AutoCare Style) */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 60px !important;
+    }
+    #mobile-cro-bottom-bar {
+        display: flex !important;
+    }
+    #chatbot-fab-container,
+    .chatbot-fab {
+        bottom: 74px !important;
+    }
+}
+
+@media (min-width: 769px) {
+    #mobile-cro-bottom-bar {
+        display: none !important;
+    }
+}
+
+/* 11. Chatbox Product Recommendation Price Highlight */
+#ai-chat-widget .chat-rec-price,
+.chat-rec-price {
+    color: #15803d !important;
+    -webkit-text-fill-color: #15803d !important;
+    font-weight: 900 !important;
+    font-size: 14px !important;
+}
+
+/* ============================================================== */
+/* 10. ROCK-SOLID MODAL CENTERING, Z-INDEX & HIGH CONTRAST        */
+/* ============================================================== */
+#ocop-store-modal,
+#ocop-all-stores-modal {
+    z-index: 10000000 !important;
+    position: fixed !important;
+    inset: 0 !important;
+    display: none;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem !important;
+    background: rgba(15, 23, 42, 0.72) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+
+#ocop-store-modal:not(.hidden),
+#ocop-all-stores-modal:not(.hidden) {
+    display: flex !important;
+}
+
+#ocop-store-modal > .relative.bg-white,
+#ocop-all-stores-modal > .relative.bg-white,
+#ocop-store-modal .max-w-3xl,
+#ocop-all-stores-modal .max-w-4xl {
+    max-height: min(88vh, 760px) !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    border-radius: 24px !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #CBD5E1 !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45) !important;
+    margin: auto !important;
+}
+
+#ocop-store-modal .rounded-t-3xl,
+#ocop-all-stores-modal .rounded-t-3xl {
+    flex-shrink: 0 !important;
+}
+
+#ocop-store-modal-body,
+#ocop-all-stores-body {
+    overflow-y: auto !important;
+    flex: 1 1 auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 1.25rem 1.25rem 2.5rem 1.25rem !important;
+    background: #FAFAFA !important;
+}
+
+/* Crystal-clear dark text contrast inside Store Modals */
+#ocop-store-modal-body h4,
+#ocop-store-modal-body h5,
+#ocop-store-modal-body strong,
+#ocop-all-stores-body h4,
+#ocop-all-stores-body h5,
+#ocop-all-stores-body strong {
+    color: #0F172A !important;
+    -webkit-text-fill-color: #0F172A !important;
+}
+
+#ocop-store-modal-body p,
+#ocop-store-modal-body span:not([class*="text-emerald"]):not([class*="text-amber"]):not([class*="text-red"]):not([class*="text-sky"]):not([class*="text-white"]):not([class*="bg-"]),
+#ocop-all-stores-body p,
+#ocop-all-stores-body span:not([class*="text-emerald"]):not([class*="text-amber"]):not([class*="text-red"]):not([class*="text-sky"]):not([class*="text-white"]):not([class*="bg-"]) {
+    color: #334155 !important;
+}
+
+/* ============================================================== */
+/* 11. 4 TRỤ CỘT BẢN ĐỒ & TÍNH NĂNG HERO HIGH CONTRAST BOLD TEXT */
+/* ============================================================== */
+#ocop-intro-overlay .intro-feature-grid .compact-feature-card,
+#shop-hero .hero-feature-grid .compact-feature-card,
+.compact-feature-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #BAE6FD !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08) !important;
+    padding: 8px 6px !important;
+}
+
+#ocop-intro-overlay .intro-feature-grid .compact-feature-card span,
+#shop-hero .hero-feature-grid .compact-feature-card span,
+.compact-feature-card span {
+    font-size: clamp(10px, 1.1vw, 12px) !important;
+    line-height: 1.35 !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+    -webkit-text-fill-color: #0F172A !important;
+    display: block !important;
+    text-align: center !important;
+    margin-top: 4px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* ============================================================== */
+/* 12. COMBO ITEM PRICE DISPLAY IN AI CHAT RECOMMENDATIONS       */
+/* ============================================================== */
+#ai-chat-widget #ai-chat-window .combo-item-price,
+#ai-chat-widget .combo-item-price,
+.combo-item-price {
+    color: #15803d !important;
+    -webkit-text-fill-color: #15803d !important;
+    font-weight: 800 !important;
+    font-size: 11.5px !important;
+    display: inline-block !important;
+}
+
+/* ==========================================================================
+   BỎ HOÀN TOÀN ĐỊA CHỈ TRÊN THẺ SẢN PHẨM BÊN NGOÀI (CHỈ ĐỂ TRONG MODAL CHI TIẾT)
+   ========================================================================== */
+.product-card .store-info-box,
+.product-card .mx-3.mb-2,
+.product-card-store-box,
+.product-card div[class*="bg-sky-50"]:has(.fa-landmark),
+.product-card div:has(> .store-name),
+.product-card .store-name,
+.product-card .store-address,
+.product-card .store-phone {
+    display: none !important;
+}
+
+/* ==========================================================================
+   HỖ TRỢ DÙNG CON LĂN CHUỘT NGOÀI & TOUCHPAD LĂN TRANG WEB MƯỢT MÀ
+   ========================================================================== */
+html {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scroll-behavior: smooth;
+    min-height: 100% !important;
+    height: auto !important;
+}
+
+body {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    min-height: 100vh !important;
+    height: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    position: relative;
+    width: 100%;
+}
+
+/* Scrollbar toàn trang đẹp mắt, đồng bộ và dễ thao tác chuột */
+::-webkit-scrollbar {
+    width: 9px !important;
+    height: 9px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: #F1F5F9 !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #047857 !important;
+    border-radius: 10px !important;
+    border: 2px solid #F1F5F9 !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #065F46 !important;
+}
+
+/* Cho phép lăn chuột mượt mà bên trong màn Intro */
+#ocop-intro-overlay {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-behavior: smooth !important;
+    overscroll-behavior: contain !important;
+}
+
+/* Cho phép lăn chuột mượt mà bên trong tất cả Modal */
+#admin-hub-modal,
+#admin-management-modal,
+#quickview-modal,
+#ocop-store-modal,
+#ocop-all-stores-modal,
+#partner-registration-modal,
+#customer-auth-modal {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+#admin-hub-card,
+#admin-mgmt-container,
+#ocop-store-modal-body,
+#ocop-all-stores-body,
+#quickview-content {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+
+/* Ẩn hoàn toàn header ở màn hình chờ (Intro Overlay) */
+header.storefront-header,
+header,
+.storefront-header,
+#storefront-main-header {
+    display: none !important;
+}
+
+body.catalog-browsing header.storefront-header,
+body.catalog-browsing header,
+body.catalog-browsing .storefront-header,
+body.catalog-browsing #storefront-main-header {
+    display: block !important;
+}
+
+body:not(.catalog-browsing) header,
+body:not(.catalog-browsing) .storefront-header,
+#ocop-intro-overlay:not(.hidden) ~ header,
+#ocop-intro-overlay:not(.hidden) ~ .storefront-header {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#ocop-intro-overlay:not(.hidden) {
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    inset: 0 !important;
+    z-index: 99999999 !important;
+}
+
+
+/* Ẩn hoàn toàn nút Xem nhanh nổi trên ảnh thẻ sản phẩm */
+.product-card-image-wrap button[onclick*="openQuickView"],
+.product-card .btn-quickview-overlay,
+.product-card-image-wrap .btn-quick-view {
+    display: none !important;
+}
+
+
+/* Ẩn vĩnh viễn dòng thông báo quyền micro dưới khung chat theo yêu cầu */
+#chat-voice-status,
+p#chat-voice-status {
+    display: none !important;
+}
+
+/* Phân trang số cho danh mục Đặc sản OCOP */
+.catalog-page-btn {
+    min-width: 38px;
+    height: 38px;
+    padding: 0 8px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.catalog-page-btn.is-active {
+    background: #047857 !important;
+    color: #ffffff !important;
+    border-color: #047857 !important;
+    box-shadow: 0 4px 12px rgba(4, 120, 87, 0.28) !important;
+    cursor: default;
+}
+
+.catalog-page-nav-btn {
+    height: 38px;
+    border-radius: 12px;
+    user-select: none;
+}
+
+/* ============================================================== */
+/* TỐI ƯU TOÀN DIỆN CHO GIAO DIỆN ĐIỆN THOẠI DI ĐỘNG (MOBILE)    */
+/* ============================================================== */
+
+@media (max-width: 768px) {
+    /* Khoảng đệm phía dưới để không bị thanh Bottom Bar che nội dung */
+    body.catalog-browsing {
+        padding-bottom: 68px !important;
+    }
+
+    /* Thanh điều hướng cố định dưới đáy chuẩn Mobile CRO */
+    #mobile-cro-bottom-bar {
+        display: flex !important;
+        z-index: 9999 !important;
+        background: rgba(255, 255, 255, 0.98) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08) !important;
+        height: 56px !important;
+    }
+
+    /* Tối ưu Header trên mobile */
+    .storefront-header {
+        padding: 4px 8px !important;
+    }
+    .storefront-header > div {
+        padding-inline: 8px !important;
+        height: auto !important;
+        min-height: 48px !important;
+        gap: 6px !important;
+    }
+    .header-primary-nav {
+        display: none !important; /* Dùng thanh bottom bar thuận tiện hơn cho ngón tay cái */
+    }
+    .header-right-actions {
+        gap: 4px !important;
+    }
+    .header-right-actions > button,
+    .header-right-actions > a,
+    .header-right-actions > div {
+        padding: 5px 8px !important;
+        font-size: 11px !important;
+        height: 32px !important;
+    }
+
+    /* Tối ưu Modal Quản trị trên điện thoại */
+    #admin-mgmt-container {
+        max-height: 94vh !important;
+        width: 96vw !important;
+        margin: auto !important;
+        border-radius: 16px !important;
+    }
+    #admin-mgmt-container .p-6,
+    #admin-mgmt-container .p-5,
+    #admin-mgmt-container .px-6 {
+        padding: 10px 12px !important;
+    }
+    #admin-management-modal button[title*="Thoát"] {
+        top: 8px !important;
+        right: 8px !important;
+        padding: 5px 10px !important;
+        font-size: 11px !important;
+        border-radius: 12px !important;
+    }
+    #admin-management-modal table {
+        font-size: 11px !important;
+    }
+    #admin-management-modal th,
+    #admin-management-modal td {
+        padding: 8px 6px !important;
+    }
+}
+
+/* Ẩn triệt để thanh bottom bar khi ở màn hình intro chờ */
+body:not(.catalog-browsing) #mobile-cro-bottom-bar,
+#ocop-intro-overlay:not(.hidden) ~ #mobile-cro-bottom-bar {
+    display: none !important;
+}
+
+/* Phân trang số co giãn linh hoạt trên mobile */
+@media (max-width: 640px) {
+    .catalog-pagination-toolbar {
+        gap: 4px !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    .catalog-page-btn {
+        min-width: 32px !important;
+        height: 32px !important;
+        font-size: 11.5px !important;
+        padding: 0 4px !important;
+        border-radius: 8px !important;
+    }
+    .catalog-page-nav-btn {
+        height: 32px !important;
+        font-size: 11.5px !important;
+        padding: 0 8px !important;
+        border-radius: 8px !important;
+    }
+
+    /* Modal Nhập PIN & Chọn Cổng Quản Trị trên điện thoại */
+    #admin-pin-modal > div,
+    .admin-pin-card {
+        width: min(94vw, 380px) !important;
+        padding: 18px 14px !important;
+        border-radius: 18px !important;
+        margin: auto !important;
+    }
+
+    /* Màn hình chờ Intro trên điện thoại */
+    #ocop-intro-overlay {
+        padding: 10px !important;
+    }
+    #ocop-intro-overlay .intro-hero-title {
+        font-size: clamp(1.4rem, 6vw, 1.8rem) !important;
+    }
+    #ocop-intro-overlay .province-map {
+        height: 240px !important;
+        min-height: 200px !important;
+    }
+    #ocop-intro-overlay .intro-actions {
+        width: 100% !important;
+        flex-direction: column !important;
+    }
+    #ocop-intro-overlay .intro-actions button {
+        width: 100% !important;
+    }
+
+    /* Product card buttons on mobile: compact & balanced */
+    .product-card-footer {
+        padding: 8px 6px !important;
+        gap: 6px !important;
+    }
+    .btn-card-details,
+    .product-action-cart,
+    .product-action-buy {
+        font-size: 11px !important;
+        padding: 6px 4px !important;
+        border-radius: 10px !important;
+    }
+}
+
+
+/* Hide strategic dispatch line and quick pill buttons */
+#i18n-intro-quick-header,
+.intro-pill-btn {
+    display: none !important;
+}
+
+
+/* Ẩn triệt để Intro Overlay và giải phóng chuột hoàn toàn */
+#ocop-intro-overlay.hidden,
+#ocop-intro-overlay[hidden],
+#ocop-intro-overlay[style*="display: none"] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -9999 !important;
+}
+
+
+/* Ensure Quản Trị button is always visible on all devices */
+#btn-header-admin-pin,
+button#btn-header-admin-pin { display: none !important; }
+
+@media (max-width: 767px) {
+    .header-right-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        overflow-x: auto !important;
+        max-width: calc(100vw - 90px) !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+    }
+    .header-right-actions::-webkit-scrollbar {
+        display: none !important;
+    }
+    #btn-header-admin-pin { display: none !important; }
+}
+
+/* Ẩn hoàn toàn bảng danh sách điểm bán Lâm Đồng / tỉnh thành dưới bản đồ theo yêu cầu */
+#province-stores-panel {
+    display: none !important;
+}
+
+/* Ẩn nút Đăng Ký Điểm Bán & Quản Trị khỏi header (đã chuyển vào hồ sơ) */
+#btn-header-ocr,
+#btn-header-admin-pin {
+    display: none !important;
+}
+
+
+/* ==========================================================================
+   4 THẺ VÌ SAO CHỌN ĐẶC SẢN OCOP: NỀN TRẮNG TINH KHIẾT 100%, KHÔNG ÁM MÀU, CHỮ ĐEN TOÀN BỘ
+   ========================================================================== */
+#why-choose-us-section .why-us-card,
+.why-us-card {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1.5px solid #E2E8F0 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+    color: #000000 !important;
+}
+
+#why-choose-us-section .why-us-card:hover,
+.why-us-card:hover {
+    background: #FFFFFF !important;
+    border-color: #CBD5E1 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+    transform: none !important;
+}
+
+/* Ẩn các bóng màu vàng/xanh/hồng làm ám màu ở góc các thẻ */
+#why-choose-us-section .why-us-card [class*="blur"],
+.why-us-card [class*="blur"],
+#why-choose-us-section .why-us-card .blur-xl,
+.why-us-card .blur-xl {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Toàn bộ chữ trong 4 thẻ chuyển sang màu đen hoàn toàn */
+#why-choose-us-section [id*="i18n-why-pillar"],
+#why-choose-us-section .why-us-card h3,
+#why-choose-us-section .why-us-card h4,
+.why-us-card h3,
+.why-us-card h4 {
+    color: #000000 !important;
+    font-weight: 800 !important;
+}
+
+#why-choose-us-section [id*="i18n-why-pillar-desc"],
+#why-choose-us-section .why-us-card p,
+.why-us-card p {
+    color: #000000 !important;
+    font-weight: 500 !important;
+    opacity: 0.9 !important;
+}
+
+/* Viền ngăn cách và huy hiệu bên dưới chuyển sang nền trắng, viền xám nhẹ, chữ đen */
+#why-choose-us-section .why-us-card .border-t,
+.why-us-card .border-t {
+    border-top: 1px solid #F1F5F9 !important;
+}
+
+#why-choose-us-section .why-us-card [id*="i18n-why-badge"],
+.why-us-card [id*="i18n-why-badge"],
+#why-choose-us-section .why-us-card div:last-child:has([id*="i18n-why-badge"]),
+.why-us-card div:last-child:has([id*="i18n-why-badge"]) {
+    background: #F8FAFC !important;
+    border: 1px solid #E2E8F0 !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+}
+
+#why-choose-us-section .why-us-card div:last-child:has([id*="i18n-why-badge"]) i,
+.why-us-card div:last-child:has([id*="i18n-why-badge"]) i,
+#why-choose-us-section .why-us-card div:last-child:has([id*="i18n-why-badge"]) span,
+.why-us-card div:last-child:has([id*="i18n-why-badge"]) span {
+    color: #000000 !important;
+}
+
+/* 3-box Action Row on Product Card Footer */
+#product-grid .product-card-footer .product-action-row,
+.product-card-footer .product-action-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+}
+#product-grid .product-card-footer .product-action-row > .product-action-buy,
+.product-card-footer .product-action-row > .product-action-buy {
+    flex: 2 1 0% !important;
+    min-width: 0 !important;
+    height: 38px !important;
+}
+#product-grid .product-card-footer .product-action-row > .product-action-cart,
+.product-card-footer .product-action-row > .product-action-cart {
+    flex: 1 1 0% !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+}
+#product-grid .product-card-footer .product-action-row > .product-action-favorite,
+.product-card-footer .product-action-row > .product-action-favorite {
+    flex: 1 1 0% !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+}

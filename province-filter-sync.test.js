@@ -14,13 +14,15 @@ function loadFilterHelpers() {
     assert(html.includes('prov-chip-btn'), 'prov-chip-btn quick chips must exist');
 
     function normalizeProvinceName(value) {
-        return String(value || '')
+        const norm = String(value || '')
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .replace(/[đĐ]/g, 'd')
             .toLowerCase()
-            .replace(/^(tinh|thanh pho|tp\.?)\s+/i, '')
+            .replace(/^(tinh|thanh pho|tp\.?)\s*/i, '')
             .replace(/[^a-z0-9]/g, '');
+        if (norm === 'hcm' || norm === 'tphcm' || norm === 'hochiminh') return 'hochiminh';
+        return norm;
     }
 
     const MACRO_REGIONS = {
@@ -41,6 +43,8 @@ test('normalizeProvinceName maps all 63 real provinces correctly', () => {
     assert.equal(normalizeProvinceName('Đồng Nai'), normalizeProvinceName('dong nai'));
     assert.equal(normalizeProvinceName('Tỉnh Đồng Nai'), normalizeProvinceName('Dong Nai'));
     assert.equal(normalizeProvinceName('TP. Hồ Chí Minh'), normalizeProvinceName('Hồ Chí Minh'));
+    assert.equal(normalizeProvinceName('TP.HCM'), normalizeProvinceName('Thành phố Hồ Chí Minh'));
+    assert.equal(normalizeProvinceName('TP.HCM'), 'hochiminh');
     assert.equal(normalizeProvinceName('Hà Nội'), normalizeProvinceName('Thành phố Hà Nội'));
 });
 
@@ -110,9 +114,9 @@ test('Catalog parent wrapper and multi-column product grid layout validation', (
     assert(html.includes('id="catalog-main-content"'), 'Right content #catalog-main-content must exist');
 
     // 2. Kiểm tra CSS Grid cấu hình desktop: 320px 1fr, gap 32px, align-items: start
-    assert(html.includes('grid-template-columns: 320px 1fr'), 'CSS Grid must configure 320px 1fr columns');
+    assert(html.includes('grid-template-columns: 290px minmax(0, 1fr)'), 'Compact sidebar must leave shrinkable space for products');
     assert(html.includes('#catalog-sidebar {'), 'CSS must define #catalog-sidebar styles');
-    assert(html.includes('width: 320px'), 'Sidebar width must be locked at 320px');
+    assert(html.includes('width: 290px'), 'Sidebar must use the requested compact width');
 
     // 3. Kiểm tra #product-grid cấu hình 3 cột trên desktop
     assert(html.includes('grid-template-columns: repeat(3, 1fr)'), 'Desktop product grid must display 3 columns');
@@ -450,76 +454,20 @@ test('O2O Google Map showroom database, AI Dispatch resilience and cart retail s
     assert(html.includes('❖ Hệ thống đã xác thực chứng nhận OCOP Quốc gia • Dữ liệu tọa độ điểm bán đồng bộ real-time.'), 'Verified OCOP certification note must be rendered');
 });
 
-test('Anti-clutter UI, AI RAG cultural storytelling, and 5-language financial synchronization validation', () => {
-    const html = fs.readFileSync('index.html', 'utf8');
-
-    // 1. Khoảng thở thoáng đãng gap 48px và Header Flexbox chống đè chữ
-    assert(html.includes('gap: 48px !important'), 'Layout must have 48px gap breathable space');
-    assert(html.includes('gap: 20px !important'), 'Header nav must have 20px gap');
-    assert(html.includes('flex-wrap: nowrap !important'), 'Header nav must be nowrap');
-    assert(html.includes('white-space: nowrap !important'), 'Header nav buttons must have white-space nowrap');
-
-    // 2. Nút vàng trên thẻ sản phẩm sang 5 thứ tiếng
-    assert(html.includes('📊 Phân Tích Dòng Tiền'), 'VI yellow button');
-    assert(html.includes('📊 Analyze Cash Flow'), 'EN yellow button');
-    assert(html.includes('📊 分析现金流'), 'ZH yellow button');
-    assert(html.includes('📊 현금 흐름 분석'), 'KO yellow button');
-    assert(html.includes('📊 キャッシュフロー分析'), 'JA yellow button');
-
-    // 3. 4 chỉ số tài chính ròng khung điều phối bên phải sang 5 thứ tiếng
-    assert(html.includes('Tổng doanh thu dự kiến') && html.includes('Gross Revenue') && html.includes('总预期营收') && html.includes('총 예상 매출') && html.includes('総予想売上'), 'Gross revenue 5 languages');
-    assert(html.includes('Giá vốn hàng bán') && html.includes('COGS (Cost of Goods Sold)') && html.includes('销货成本 (COGS)') && html.includes('매출원가 (COGS)') && html.includes('売上原価（COGS）'), 'COGS 5 languages');
-    assert(html.includes('Chi phí vận hành nền tảng') && html.includes('OPEX (Platform Fees)') && html.includes('平台运营成本 (OPEX)') && html.includes('플랫폼 운영비 (OPEX)') && html.includes('プラットフォーム運営費（OPEX）'), 'OPEX 5 languages');
-    assert(html.includes('Tiền lời thực tế') && html.includes('Net Profit') && html.includes('实际净利润') && html.includes('실제 순이익') && html.includes('実際の純利益'), 'Net profit 5 languages');
-
-    // 4. Nút màu cam dưới cùng khung bên phải sang 5 thứ tiếng
-    assert(html.includes('Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền'), 'VI export button');
-    assert(html.includes('Export AI Financial Report & Cash Flow Reconciliation'), 'EN export button');
-    assert(html.includes('导出 AI 财务报告并核对现金流'), 'ZH export button');
-    assert(html.includes('AI 재무 보고서 내보내기 및 현금 흐름 정산'), 'KO export button');
-    assert(html.includes('AI財務レポートのエクスポートとキャッシュフロー照合'), 'JA export button');
-
-    // 5. Chatbot AI RAG: Câu chuyện di sản văn hóa, link Google Map, footer viễn trắc tài chính
-    assert(html.includes('getHeritageStory'), 'AI heritage storytelling function must be defined');
-    assert(html.includes('🗺️ [Xem vị trí Showroom đời thực trên Google Map]'), 'Google map link must be attached');
-    assert(html.includes('[HỆ THỐNG XÁC THỰC: Phân hạng OCOP chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5%]'), 'Financial telemetry footer must be attached');
+test('catalog fallback uses the requested province and no invented financial story', () => {
+ const {catalogReply}=require('./chat-fallback');const {PRODUCTS}=require('./data');
+ const reply=catalogReply('Đặc sản Đồng Nai và showroom chính hãng',PRODUCTS);
+ assert(reply.productIds.length>0);
+ assert(reply.productIds.every(id=>PRODUCTS.find(p=>p.id===id).region==='Đồng Nai'));
+ assert(!/Smart Contract|Biên lợi nhuận|COGS|Suối Giàng/.test(reply.message));
 });
 
-test('2026 Digital Business Platform Alignment, AI RAG telemetry, and dark tech UI validation', () => {
-    const html = fs.readFileSync('index.html', 'utf8');
-
-    // 1. Hero Title & 4 Feature Cards
-    assert(html.includes('Bản Đồ Số OCOP,') && html.includes('Khơi Nguồn Di Sản Việt'), 'Hero Title must read Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt');
-    assert(html.includes('id="i18n-hero-feat1-title"') && html.includes('Bản Đồ Số 63 Tỉnh Thành'), 'Feature 1 title');
-    assert(html.includes('id="i18n-hero-feat2-title"') && html.includes('Kho Tri Thức Di Sản Bản Địa'), 'Feature 2 title');
-    assert(html.includes('id="i18n-hero-feat3-title"') && html.includes('Hệ Điều Hành Copilot 24/7'), 'Feature 3 title');
-    assert(html.includes('id="i18n-hero-feat4-title"') && html.includes('AI Financial Engine'), 'Feature 4 title');
-
-    // 2. 4 Supply Chain Operational Commitment Cards (Pillars) in #why-choose-us-section
-    assert(html.includes('id="i18n-why-pillar1"') && html.includes('Chuẩn Hóa Nguồn Gốc Bản Địa'), 'Pillar 1 title');
-    assert(html.includes('id="i18n-why-pillar2"') && html.includes('Số Hóa Giá Trị Bản Sắc'), 'Pillar 2 title');
-    assert(html.includes('id="i18n-why-pillar3"') && html.includes('Tối Ưu Logistics & Chuỗi Cung Ứng'), 'Pillar 3 title');
-    assert(html.includes('id="i18n-why-pillar4"') && html.includes('Hệ Điều Hành Copilot 24/7'), 'Pillar 4 title');
-
-    // Localization for the 4 commitment pillars
-    assert(html.includes('Standardizing Indigenous Traceability') && html.includes('标准化原产地追溯'), 'Pillar 1 i18n');
-    assert(html.includes('Digitalizing Cultural Identity') && html.includes('数字化本土文化价值'), 'Pillar 2 i18n');
-    assert(html.includes('Optimizing Logistics & Supply Chain') && html.includes('优化物流与供应链'), 'Pillar 3 i18n');
-
-    // 3. Data navigation bar above Catalog
-    assert(html.includes('CƠ SỞ DỮ LIỆU CHỨNG NHẬN OCOP QUỐC GIA'), 'Catalog header text');
-    assert(html.includes('🗺️ KÍCH HOẠT BẢN ĐỒ SỐ O2O'), 'Activate O2O digital map button');
-    assert(html.includes('📸 AI QUÉT CHỨNG NHẬN (OCR)'), 'AI scan certificate button');
-
-    // 4. Strategic Banner Top Bar
-    assert(html.includes('❖ HỆ THỐNG ĐIỀU PHỐI ĐẶC SẢN OCOP TOÀN QUỐC • HỖ TRỢ CHUYỂN ĐỔI SỐ 63 TỈNH THÀNH • HOTLINE ĐIỀU PHỐI TRUNG TÂM: 1900 888 688'), 'Strategic Top Bar banner');
-
-    // 5. Telemetry Footer
-    assert(html.includes('[HỆ THỐNG ĐỒNG BỘ: Phân hạng chuẩn Quốc gia • Biên lợi nhuận mục tiêu: 22.5% • Trạng thái đối soát CHM: Đã phân bổ qua Smart Contract]'), 'Smart contract telemetry footer');
-
-    // 6. CSS Containment & Dark Tech Theme
-    assert(html.includes('contain-intrinsic-size: 380px !important'), 'contain-intrinsic-size 380px rule');
-    assert(html.includes('#0d1117'), 'Obsidian dark tech background color');
+test('catalog fallback prices follow the current catalogue rather than fixed demo statistics', () => {
+ const {catalogReply}=require('./chat-fallback');
+ const product={id:555,name:'Trà Đồng Nai',region:'Đồng Nai',price:321000,stars:5,category:'tea',packaging:'hộp'};
+ const reply=catalogReply('Trà Đồng Nai',[product]);
+ assert(reply.message.includes('321.000'));assert.deepEqual(reply.productIds,[555]);
+ const changed=catalogReply('Trà Đồng Nai',[{...product,price:456000}]);assert(changed.message.includes('456.000'));assert(!changed.message.includes('321.000'));
 });
 
 test('Draggable & Resizable AI Chatbox Engine validation', () => {
@@ -562,29 +510,28 @@ test('AI Chatbox Close Event & Product 338 Digital Alignment validation', () => 
     // 2. Miến dong Minh Hồng description text digital business alignment
     const newMienDongDesc = "Miến dong Minh Hồng (Hoài Đức) - Sản phẩm đạt chứng nhận OCOP 4 Sao của UBND Thành phố Hà Nội. Quy trình sản xuất khép kín, chuẩn hóa vùng nguyên liệu bản địa và đồng bộ dữ liệu chuỗi cung ứng trực tiếp trên nền tảng số.";
     assert(dataJs.includes(newMienDongDesc), 'data.js contains official OCOP certification description for Miến dong Minh Hồng');
-    assert(html.includes(newMienDongDesc), 'index.html contains official OCOP certification description for Miến dong Minh Hồng');
+    const descriptionFunction = html.match(/function getProductDescription\(product\) \{[^\n]+\}/)[0];
+    const nameFunction = html.match(/function getProductName\(product\) \{[^\n]+\}/)[0];
+    const display = require('node:vm').runInNewContext(`(${descriptionFunction})`, {currentLanguage:'vi'});
+    const displayName = require('node:vm').runInNewContext(`(${nameFunction})`, {currentLanguage:'vi'});
+    assert.equal(display(PRODUCTS.find(p=>p.id===338)),newMienDongDesc);
+    for (const id of [524,525,526]) {
+        const product=PRODUCTS.find(p=>p.id===id);
+        assert.equal(displayName(product),product.name,'Reused IDs must display their current catalogue names');
+    }
 
     // 3. Old retail boilerplate text removed for product 338
-    const { PRODUCTS } = require('./data');
     const p338 = PRODUCTS.find(p => p.id === 338);
     assert(p338, 'Product 338 exists');
     assert(!p338.desc.includes('danh sách chủ shop cung cấp; áp dụng một mức giá cao nhất cho sản phẩm, giỏ hàng và combo'), 'Old retail text removed from product 338 in data.js');
     assert.equal(p338.desc, newMienDongDesc, 'Product 338 description matches official text exactly');
 });
 
-test('Dong Nai specialty hero card, Google Map showroom links, and real OCOP alignment validation', () => {
-    const html = fs.readFileSync('index.html', 'utf8');
-
-    // 1. Hero right block displays real Dong Nai specialty image and info
-    assert(html.includes('images/catalog/web-latest-171.jpg'), 'Hero image must use real Dong Nai bitter melon tea image');
-    assert(html.includes('Trà khổ qua rừng túi lọc Hiệp Vân - Đặc sản Long Khánh, Đồng Nai (OCOP 4 Sao)'), 'Hero card title must match Dong Nai specialty');
-
-    // 2. Chatbot tea sommelier & 5-star recommendations sync with Hiep Van Dong Nai specialty
-    assert(!html.includes('• 🫖 **Bộ Trà Phúc Lộc Thọ (5 sao)**'), 'Old Phuc Loc Tho tea must be replaced in 5-star recommendations');
-    assert(html.includes('• 🍵 **Trà khổ qua rừng túi lọc Hiệp Vân (Đồng Nai - OCOP 4 Sao)**'), 'Hiep Van tea must be recommended in 5-star chat');
-
-    // 3. Product card showroom link has Google Map search link
-    assert(html.includes('storeInfo.mapUrl'), 'Product card must link showroom name to Google Maps');
+test('five-star Dong Nai recommendations use current catalogue records', () => {
+ const {catalogReply}=require('./chat-fallback');const {PRODUCTS}=require('./data');
+ const reply=catalogReply('Tìm đặc sản 5 sao ở Đồng Nai',PRODUCTS);
+ assert(reply.productIds.length>0);
+ for(const id of reply.productIds){const product=PRODUCTS.find(p=>p.id===id);assert.equal(product.region,'Đồng Nai');assert.equal(product.stars,5);}
 });
 
 test('onProvinceFilterChange financial dispatch and OcopSyncEngine configuration validation', () => {
@@ -600,50 +547,117 @@ test('onProvinceFilterChange financial dispatch and OcopSyncEngine configuration
     assert(html.includes("targetUrl: 'https://onrender.com'"), 'OcopSyncEngine targetUrl must be https://onrender.com');
     assert(html.includes("token: 'OCOP_2026_SECURE_TOKEN_AI_CHALLENGE_SYNC_998877'"), 'OcopSyncEngine secure token');
     assert(html.includes("'x-ocop-sync-token': this.token"), 'fetch headers include x-ocop-sync-token');
+
+    // 3. Ensure no undefined variable references in onProvinceFilterChange
+    assert(!html.includes('normTarget || layer.feature.properties.id === targetProvince'), 'no undefined targetProvince in map sync');
 });
 
 
 
 
 
-test('Footer layout flow, header navbar inline-flex, and Gemini API RAG integration validation', () => {
-    const html = fs.readFileSync('index.html', 'utf8');
-    const serverCode = fs.readFileSync('server.js', 'utf8');
-
-    assert(html.includes('#contact-footer {') && html.includes('position: relative !important;') && html.includes('margin-top: 64px !important;') && html.includes('margin-bottom: 0 !important;') && html.includes('display: block !important;'), 'Footer must have relative flow positioning and display block');
-    assert(html.includes('aside:has(a[href="draft-order.html"])') && html.includes('margin-top: 40px !important;') && html.includes('margin-bottom: 24px !important;'), 'Draft order aside relative positioning');
-    assert(html.includes('main.flex-1 {') && html.includes('min-height: auto !important;') && html.includes('height: auto !important;') && html.includes('z-index: 20 !important;'), 'Main container layout styling with height auto');
-    assert(html.includes('.header-primary-nav {') && html.includes('display: inline-flex !important;') && html.includes('gap: 18px !important;'), 'Header navigation inline-flex layout');
-
-    const GEMINI_PART1 = 'AQ.Ab8RN6J3EaFhFmcQNvKEY75OY8o9sQ3Ei';
-    const GEMINI_PART2 = 'UWqCWAjq_mkIo1MOw';
-    assert(html.includes(GEMINI_PART1) && html.includes(GEMINI_PART2), 'Frontend must include Gemini API key');
-    assert(serverCode.includes(GEMINI_PART1) && serverCode.includes(GEMINI_PART2), 'Backend server.js must include Gemini API key');
-    assert(html.includes('https://googleapis.com') && html.includes('gemini-1.5-flash'), 'Gemini model and URL integration');
-    assert(html.includes('[HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận mục tiêu 22.5% • Trạng thái đối soát CHM: Đã phân bổ tự động qua Smart Contract]'), 'Financial smart contract telemetry footer');
+test('browser chat uses the backend and does not ship a configured model credential', () => {
+ const html=fs.readFileSync('index.html','utf8');
+ assert(html.includes("getAIEndpoint('/api/ai/chat')"));
+ assert(!html.includes('isFinancialOrDispatchQuery'));
+ assert(html.includes('AbortSignal.timeout(35000)'));
+ assert(/const GEMINI_API_KEY\s*=\s*''/.test(html));
+ const {getAIConfiguration}=require('./ai-configuration');assert.throws(()=>getAIConfiguration({}),/not configured/);
 });
 
-test('AI Digital Business Challenge 2026: Gemini Cognitive & Wiki Data Engine validation', () => {
+test('Wikipedia remains supporting context and cannot change catalogue prices', () => {
+ const {composeDataReply}=require('./ai-data-reply');
+ const p={id:555,name:'Trà Đồng Nai',region:'Đồng Nai',price:321000,packaging:'hộp'};
+ const source={title:'Trà',url:'https://vi.wikipedia.org/wiki/Tr%C3%A0',extract:'Trà là thức uống từ lá cây chè.'};
+ const reply=composeDataReply([p],{categoryOrKeyword:'trà'},'vi',[source]);
+ assert(reply.message.includes('321.000'));assert.equal(reply.wikipediaSources[0].url,source.url);
+ assert.deepEqual(reply.productIds,[555]);
+});
+
+test('AI Tu Van quickview button opens chat, preserves and continues chat history', () => {
     const html = fs.readFileSync('index.html', 'utf8');
 
-    assert(html.includes('GEMINI COGNITIVE & WIKI DATA ENGINE'), 'Header comment for Gemini Cognitive & Wiki Data Engine');
-    assert(html.includes('async function getGeminiWikiResponse(userQuery)'), 'getGeminiWikiResponse function defined');
-    assert(html.includes('async function sendAIMessageExtended()'), 'sendAIMessageExtended function defined');
-    assert(html.includes('window.getGeminiWikiResponse = getGeminiWikiResponse;'), 'window.getGeminiWikiResponse exported');
-    assert(html.includes('window.sendAIMessageExtended = sendAIMessageExtended;'), 'window.sendAIMessageExtended exported');
+    // 1. Quickview modal buttons trigger consultProductWithAI
+    assert(html.includes('consultProductWithAI(${p.id})'), 'Quickview modal buttons call consultProductWithAI');
+    assert(!html.includes('onclick="closeQuickView(); if(typeof toggleAIChat===\'function\') toggleAIChat();"'), 'Old toggling call removed from quickview');
 
-    assert(html.includes('Trà khổ qua rừng túi lọc Hiệp Vân') && html.includes('525'), 'Hiep Van Bitter melon tea entry');
-    assert(html.includes('Bưởi đường lá cam Tân Triều') && html.includes('524'), 'Tan Trieu pomelo entry');
-    assert(html.includes('Gốm sứ tâm linh dòng men rạn cổ Bát Tràng') && html.includes('336'), 'Bat Trang ceramic entry');
-    assert(html.includes('Mật ong bạc hà Cao nguyên đá Mèo Vạc') && html.includes('342'), 'Meo Vac mint honey entry');
-    assert(html.includes('Cà phê bột Arabica Specialty Sơn La') && html.includes('360'), 'Son La Arabica coffee entry');
+    // 2. consultProductWithAI is defined and exported to window
+    assert(html.includes('function consultProductWithAI(productId)'), 'consultProductWithAI is defined');
+    assert(html.includes('window.consultProductWithAI = consultProductWithAI;'), 'consultProductWithAI is exported to window');
 
-    assert(html.includes('simulatedGross = 85000 * (1 + (matchedProductId % 5))'), 'simulatedGross formula');
-    assert(html.includes("type: 'ai_consultation'"), 'Financial dispatch type ai_consultation');
-    assert(html.includes('chmCommission: Math.round(simulatedGross * 0.07)'), 'CHM commission 7%');
-    assert(html.includes('cogs: Math.round(simulatedGross * 0.62)'), 'COGS 62%');
-    assert(html.includes('opex: Math.round(simulatedGross * 0.075)'), 'OPEX 7.5%');
-    assert(html.includes('netProfit: Math.round(simulatedGross * 0.235)'), 'Net profit 23.5%');
+    // 3. openAIChat unhides #ai-chat-widget
+    assert(html.includes("const widget = document.getElementById('ai-chat-widget');"), 'openAIChat gets ai-chat-widget element');
+    assert(html.includes("widget.removeAttribute('hidden');") || html.includes("widget.hidden = false;"), 'openAIChat unhides ai-chat-widget');
 
-    assert(html.includes('Gemini AI × Wiki System'), 'Gemini AI x Wiki System badge');
+    // 4. Chat history persistence and new chat reset
+    assert(html.includes('function saveAIChatHistory()'), 'saveAIChatHistory is defined');
+    assert(html.includes('function restoreAIChatHistory()'), 'restoreAIChatHistory is defined');
+    assert(html.includes('function resetAIChatHistory()'), 'resetAIChatHistory is defined');
+    assert(html.includes('id="ai-chat-reset-btn"'), 'ai-chat-reset-btn exists in AI chat header');
+    assert(html.includes('restoreAIChatHistory()'), 'restoreAIChatHistory called on page init');
+});
+
+test('Shopee-style Sort & Star Rating Filter Bar validation: Phổ biến, Bán chạy, Giá and 5-Star/4-Star OCOP tiers', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Shopee Sort & Star Rating Bar Elements in DOM
+    assert(html.includes('shopee-sort-bar-container'), 'Container for Shopee Sort Bar must exist');
+    assert(html.includes('id="shopee-tab-default"'), 'Shopee tab Phổ biến must exist');
+    assert(html.includes('id="shopee-tab-volume"'), 'Shopee tab Bán chạy must exist');
+    assert(html.includes('id="shopee-tier-all"'), 'Shopee star filter Tất cả must exist');
+    assert(html.includes('id="shopee-tier-5star"'), 'Shopee star filter 5 Sao must exist');
+    assert(html.includes('id="shopee-tier-4star"'), 'Shopee star filter 4 Sao must exist');
+    assert(html.includes('id="shopee-price-dropdown-btn"'), 'Shopee price dropdown button must exist');
+    assert(html.includes('id="shopee-price-menu"'), 'Shopee price menu must exist');
+
+    // 2. Shopee functions defined
+    assert(html.includes('function setShopeeStarFilter'), 'setShopeeStarFilter is defined');
+    assert(html.includes('window.setShopeeStarFilter = setShopeeStarFilter;'), 'setShopeeStarFilter exported to window');
+    assert(html.includes('function selectShopeeSort'), 'selectShopeeSort is defined');
+    assert(html.includes('function selectShopeePriceSort'), 'selectShopeePriceSort is defined');
+    assert(html.includes('function toggleShopeePriceDropdown'), 'toggleShopeePriceDropdown is defined');
+
+    // 3. Filter integration
+    assert(html.includes('currentShopeeStarFilter === 5'), 'filterProductsGlobal filters 5 stars');
+    assert(html.includes('currentShopeeStarFilter === 4'), 'filterProductsGlobal filters 4 stars');
+    assert(html.includes("currentShopeeStarFilter = 'all'"), 'resetFilters resets Shopee star filter');
+
+    // 4. Shopee styling branding
+    assert(html.includes('#EE4D2D'), 'Shopee iconic signature orange (#EE4D2D) used for active tabs');
+    assert(html.includes('★★★★★'), '5-star gold glyphs displayed');
+    assert(html.includes('★★★★☆'), '4-star gold glyphs displayed');
+});
+
+test('VN_63_COORDINATES and province dropdown deduplication: exactly 63 unique provinces without duplicate entries', () => {
+    const sky = fs.readFileSync('skytech-complete.js', 'utf8');
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Check VN_63_COORDINATES definition
+    assert(sky.includes('const VN_63_COORDINATES = {'), 'VN_63_COORDINATES must be defined');
+
+    // Extract VN_63_COORDINATES object via isolated evaluation
+    const vm = require('node:vm');
+    const sandbox = { window: {}, document: { getElementById: () => null } };
+    const match = sky.match(/const VN_63_COORDINATES = \{([\s\S]*?)\n    \};/);
+    assert(match, 'VN_63_COORDINATES match must exist');
+
+    const evalCode = 'const VN_63_COORDINATES = {' + match[1] + '\n}; VN_63_COORDINATES;';
+    const coords = vm.runInNewContext(evalCode, sandbox);
+    const keys = Object.keys(coords);
+
+    // Exactly 63 unique keys
+    assert.equal(keys.length, 63, 'VN_63_COORDINATES must have exactly 63 enumerable keys (1 per province)');
+
+    // Ensure VN-SG is present and only once in keys
+    const hcmKeys = keys.filter(k => k.toLowerCase().includes('hồ chí minh') || k.toLowerCase().includes('hcm'));
+    assert.equal(hcmKeys.length, 1, 'Ho Chi Minh City must have exactly 1 entry in VN_63_COORDINATES keys');
+    assert.equal(hcmKeys[0], 'TP. Hồ Chí Minh', 'Canonical name must be TP. Hồ Chí Minh');
+
+    // Check aliases are attached non-enumerably in skytech-complete.js
+    assert(sky.includes("['Thành phố Hồ Chí Minh', 'TP.HCM', 'Hồ Chí Minh'].forEach"), 'Non-enumerable aliases must be configured for Ho Chi Minh City');
+
+    // 2. Check dropdown deduplication in both skytech-complete.js and index.html
+    assert(sky.includes('const seen = new Set();'), 'Deduplication set must be used when populating options');
+    assert(sky.includes('const seenOptions = new Set();'), 'Post-append deduplication must run to eliminate duplicates');
+    assert(html.includes('const seen = new Set();'), 'GeoJSON population must deduplicate options');
 });

@@ -1,9 +1,10 @@
 'use strict';
 const {normalize}=require('./ai-shopping');
+const {trainingForProduct}=require('./product-training');
 const stop=new Set('la gi co khong cho toi minh anh chi shop nay cua va voi ve duoc san pham dac san ocop the a what is the of and product'.split(' '));
 function words(value){return normalize(value).replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(w=>w.length>1&&!stop.has(w));}
 function createKnowledge(products) {
- const documents=products.map(p=>({productId:p.id,title:p.name,region:p.region,source:'shop_catalogue',text:[p.name,p.nameEn,p.region,p.description||p.desc,p.descEn,p.packaging,p.packagingEn].filter(Boolean).join('\n').slice(0,4000)}));
+ const documents=products.map(p=>({productId:p.id,title:p.name,region:p.region,source:'shop_catalogue',text:[p.name,p.nameEn,p.region,p.description||p.desc,p.descEn,p.packaging,p.packagingEn,trainingForProduct(p)].filter(Boolean).join('\n').slice(0,7000)}));
  const rows=documents.map(d=>({document:d,tokens:words(d.text)}));
  const frequency=new Map();for(const row of rows)for(const token of new Set(row.tokens))frequency.set(token,(frequency.get(token)||0)+1);
  const average=rows.reduce((sum,row)=>sum+row.tokens.length,0)/Math.max(1,rows.length);

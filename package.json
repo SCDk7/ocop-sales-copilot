@@ -7,8 +7,12 @@
     "build:css": "node scripts/build-css.cjs",
     "start": "node server.js",
     "start:kpi": "node kpi-site/server.cjs",
-    "test": "node --test ai-shopping.test.js ai-intent.test.js ai-data-reply.test.js image-chat.test.js catalog-63.test.js ai-grounding.test.js product-reviews.test.js account-store.test.js gemini-client.test.js openai-client.test.js chat-dictation.test.js audio-transcription.test.js ai-deadline.test.js ai-scenarios.test.js ai-metrics.test.js sales-store.test.js sales-conversations.test.js product-knowledge.test.js sales-tools.test.js ai-business-knowledge.test.js voice-engine.test.js province-filter-sync.test.js kpi-site/server.test.cjs kpi-sync.test.js",
-    "build:kpi": "node kpi-site/build.cjs"
+    "test": "node --test ai-shopping.test.js ai-intent.test.js ai-data-reply.test.js image-chat.test.js catalog-63.test.js ai-grounding.test.js product-reviews.test.js account-store.test.js gemini-client.test.js openai-client.test.js chat-dictation.test.js audio-transcription.test.js ai-deadline.test.js ai-scenarios.test.js ai-metrics.test.js sales-store.test.js sales-conversations.test.js product-knowledge.test.js sales-tools.test.js ai-business-knowledge.test.js voice-engine.test.js province-filter-sync.test.js kpi-site/server.test.cjs kpi-sync.test.js catalog-facts.test.js spa-fallback.test.js cart-ui.test.js product-training.test.js commerce-shopping.test.js ui-branding.test.js",
+    "build:kpi": "node kpi-site/build.cjs",
+    "test:storefront": "node --test storefront-ui.test.js ai-scenarios.test.js",
+    "test:multi-ai": "node --test multi-ai.test.js openai-client.test.js ai-intent.test.js ai-data-reply.test.js",
+    "build:knowledge": "node scripts/build-tea-knowledge.cjs",
+    "test:commerce": "node --test commerce-shopping.test.js multi-ai.test.js product-training.test.js ai-grounding.test.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +32,7 @@
     "nodemailer": "^10.0.14"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^3.4.19",
+    "xlsx": "^0.18.5"
   }
 }

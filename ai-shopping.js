@@ -107,10 +107,15 @@
   }
   function analyze(text, products) {
     const q = normalize(text);
+    const isVoucher = /\b(ma giam gia|ma uu dai|ma khuyen mai|vouchers?|coupons?|promo codes?|discounts?)\b|\b(?:co|xin|cho|hoi|tim)\b.*\b(?:giam gia|khuyen mai|uu dai)\b|\b(?:giam gia|khuyen mai|uu dai)\b.*\b(?:khong|ko|gi|j|nao|chua)\b/i.test(q);
+    const isOrderGuide = /\b(huong dan|cach|lam sao|quy trinh|chi|hoi)\b.*\b(dat hang|mua hang|len don|order)\b|\b(dat hang|mua hang|order)\b.*\b(nhu the nao|the nao|huong dan|chi voi|chi giup)\b|\b(muon|can|huong dan)\s+(?:toi\s+)?(dat hang|mua hang)\b/i.test(q);
+    const isGarlic = /\btỏi\b/i.test(text) || /\b(toi den|toi ly son|toi co don|cu toi|tep toi|garlic)\b/.test(q);
     const productQuery = q
       .replace(/\btoi\s+(?=muon|can|co|tim|mua|chon|thich|dang|se|duoc|xin|hoi|lay|da\b|thieu\b|uu\b)/g,' ')
-      .replace(/\b(?:cho|giup|voi|cua)\s+toi\b/g,' ');
-    const categories = [['trà', /\b(tra|che|tea)\b/], ['cà phê', /ca phe|coffee/], ['mật ong', /mat ong|honey/], ['bánh', /banh|keo|snack/], ['yến', /yen sao|to yen/], ['gạo', /gao|rice/], ['sâm', /\b(sam|ginseng)\b/], ['tỏi', /\b(toi|garlic)\b/], ['nước mắm', /nuoc mam|fish sauce/], ['hạt', /hat dieu|hat mac ca|mac ca|cashew|macadamia/]];
+      .replace(/\b(?:cho|giup|voi|cua|huong dan|chi|bao|nhan vien)\s+toi\b/g,' ')
+      .replace(/\btoi\b(?!\s+(?:den|ly son|co don|trang|ngam))/g, ' ')
+      .replace(/\b(?:tra\s+(?:cuu|loi|gop|hang|lai|phi|don)|(?:kiem|dieu)\s+tra)\b/g, ' ');
+    const categories = [['trà', /\b(tra|che|tea)\b/], ['cà phê', /ca phe|coffee/], ['mật ong', /mat ong|honey/], ['bánh', /banh|keo|snack/], ['yến', /yen sao|to yen/], ['gạo', /gao|rice/], ['sâm', /\b(sam|ginseng)\b/], ['tỏi', isGarlic ? /\b(toi|garlic)\b/ : /(?!)/], ['nước mắm', /nuoc mam|fish sauce/], ['hạt', /hat dieu|hat mac ca|mac ca|cashew|macadamia/]];
     const isAllProvinces = /(tat ca|tat ca cac tinh|tat ca tinh|toan quoc|63 tinh|xuyen viet|bac trung nam|3 mien|ba mien|lien tinh|nhieu tinh|cac tinh thanh|gom tinh|gom cac tinh|gom het)/.test(q);
     const allProvinces = [...new Set(products.map(p => p.region).filter(Boolean))].sort((a, b) => b.length - a.length);
     const exactRegions = allProvinces.filter(r => {
@@ -118,18 +123,20 @@
       return nr.length >= 3 && q.includes(nr);
     });
     const exactRegion = exactRegions[0] || null;
-    return { ...budget(text), ...preferences(text), rawText: text,
+    return { ...budget(text), ...preferences(text), ...itemCount(text), rawText: text,
       isCombo: /combo|bo qua|gio qua|set qua|gift set|bundle/.test(q),
       isGift: /qua|bieu|tang|gift/.test(q),
       isComplaint: /doi tra|hang loi|hoan tien|khieu nai/.test(q),
       isCSKH: /cskh|hotline|lien he|admin/.test(q),
       isShipping: /phi ship|giao hang|van chuyen/.test(q),
+      isStoreLookup: /diem ban|showroom|chi duong|cua hang|ban do so|store location|directions/.test(q),
       isUsage: /cach pha|cach dung|bao quan/.test(q),
       isOcopKnowledge: /la gi|nguon goc|tieu chuan|cach |bao nhieu ngay|thoi tiet/.test(q),
       isAllProvinces,
       exactRegions,
       exactRegion,
-      categoryOrKeyword: categories.find(([, pattern]) => pattern.test(productQuery))?.[0] || null,
+      isVoucher, isOrderGuide,
+      categoryOrKeyword: isOrderGuide ? null : (categories.find(([, pattern]) => pattern.test(productQuery))?.[0] || null),
       regionKeyword: Object.keys(regions).find(region => q.includes(normalize(region))) || null,
       minStars: /5\s*sao|5\s*star/.test(q) ? 5 : /4\s*sao|4\s*star/.test(q) ? 4 : null };
   }
@@ -138,13 +145,14 @@
     let current = {};
     for (const message of messages.filter(m => m.role === 'user')) {
       current = { ...extract(normalizeComboSpelling(message.text), products), ...budget(message.text) };
+      if (current.isVoucher) { saved = {}; return { ...current, exactRegion: null, regionKeyword: null, categoryOrKeyword: null }; }
       current.isCombo ||= analyze(message.text, products).isCombo;
       current.regionKeyword ||= analyze(message.text, products).regionKeyword;
       // A per-item amount must never overwrite the total shopping budget.
       if (!Object.keys(budget(message.text)).length && preferences(message.text).perItemMax) { current.minPrice = null; current.maxPrice = null; }
       current.categoryOrKeyword ||= analyze(message.text, products).categoryOrKeyword;
       const q = normalize(message.text);
-      const followup = /^(?:\d|toi co|minh co|ngan sach|tai chinh|budget|duoi|tam|khoang|doi|con|chi|them|combo|bo qua|gio qua|set qua|gift set|bundle|moi mon|tung mon|gia tri|cao cap|khong chon|dung chon)/.test(q) || (!current.categoryOrKeyword && !current.exactRegion && !(current.exactRegions && current.exactRegions.length) && !current.isAllProvinces && q.length < 45) || Object.keys(budget(message.text)).length > 0 || Object.keys(itemCount(message.text)).length > 0;
+      const followup = /^(?:\d|toi co|minh co|ngan sach|tai chinh|budget|duoi|tam|khoang|doi|con|chi|them|combo|bo qua|gio qua|set qua|gift set|bundle|moi mon|tung mon|gia tri|cao cap|khong chon|dung chon|sao|s |tai sao|sao ko|sao khong|s ko|chua |chua du|khong du|ko du|uu tien|dua )/.test(q) || (!current.categoryOrKeyword && !current.exactRegion && !(current.exactRegions && current.exactRegions.length) && !current.isAllProvinces && q.length < 90) || Object.keys(budget(message.text)).length > 0 || Object.keys(itemCount(message.text)).length > 0 || Object.keys(preferences(message.text)).length > 0;
       const newRecommendation=/^(?:goi y|recommend|suggest)\s+(?:dac san|san pham|products|specialties)\b/.test(q);
       if ((!followup && !excludedTerms(message.text).length) || newRecommendation || /bat dau lai|yeu cau moi|start over/.test(q)) saved = {};
       if (current.isAllProvinces) {
@@ -183,6 +191,37 @@
       }
       if (itemCount(message.text).minItems===1 && itemCount(message.text).maxItems===1 && !current.isCombo) {
         saved.isCombo=false;saved.isGift=false;saved.purchaseMode='single';
+      }
+      if (current.isCombo && (current.maxPrice || current.minItems)) {
+        const currentHasRegion = Boolean(current.exactRegion || (current.exactRegions && current.exactRegions.length > 0) || current.regionKeyword || current.isAllProvinces);
+        if (!currentHasRegion && (saved.exactRegion || (saved.exactRegions && saved.exactRegions.length > 0) || saved.regionKeyword)) {
+          const targetMinItems = current.minItems || saved.minItems || 2;
+          const ceiling = current.maxPrice || saved.maxPrice;
+          if (ceiling && Array.isArray(products)) {
+            const regionProds = products.filter(p => regionMatches(p, saved) && Number.isSafeInteger(p.price) && p.price > 0 && p.price <= ceiling);
+            const topSum = regionProds.sort((a,b) => b.price - a.price).slice(0, targetMinItems).reduce((s, p) => s + p.price, 0);
+            if (!saved.isCombo || topSum < ceiling * 0.7) {
+              delete saved.exactRegion;
+              delete saved.exactRegions;
+              delete saved.regionKeyword;
+              delete saved.isAllProvinces;
+            }
+          } else if (!saved.isCombo) {
+            delete saved.exactRegion;
+            delete saved.exactRegions;
+            delete saved.regionKeyword;
+          }
+        }
+        if (!current.categoryOrKeyword && saved.categoryOrKeyword && Array.isArray(products)) {
+          const targetMinItems = current.minItems || saved.minItems || 2;
+          const ceiling = current.maxPrice || saved.maxPrice || Infinity;
+          const kw = normalize(saved.categoryOrKeyword);
+          const matchedCat = products.filter(p => allowed(p, saved) && Number.isSafeInteger(p.price) && p.price > 0 && p.price <= ceiling && normalize([p.name, p.category, p.desc, p.description].join(' ')).includes(kw));
+          if (matchedCat.length < targetMinItems || !saved.isCombo) {
+            delete saved.categoryOrKeyword;
+            current.categoryOrKeyword = null;
+          }
+        }
       }
       const exclusions = excludedTerms(message.text);
       if (exclusions.length) {
@@ -310,7 +349,12 @@
       if (closest(premiumProducts,intent)) products=premiumProducts;
     }
     const plans = [], seen = new Set();
-    for (let attempt = 0; attempt < 12 && plans.length < count; attempt++) {
+    const initialPlan = closest(products, intent);
+    if (initialPlan) {
+      seen.add(comboKey(initialPlan));
+      plans.push(initialPlan);
+    }
+    for (let attempt = 0; attempt < 24 && plans.length < count; attempt++) {
       const previous = plans.length ? plans[Math.floor(random() * plans.length)] : null;
       const blocked = previous ? previous.items[Math.floor(random() * previous.items.length)].id : null;
       // Shuffle before remapping IDs to break equal-price ties without changing catalogue IDs.
@@ -324,7 +368,8 @@
       seen.add(key);
       plans.push(plan);
     }
-    return plans;
+    plans.sort((a, b) => b.total - a.total || a.remaining - b.remaining);
+    return plans.slice(0, count);
   }
   function replyOptions(plans, intent, language) {
     const seen=new Set();
