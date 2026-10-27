@@ -592,3 +592,34 @@ test('AI Tu Van quickview button opens chat, preserves and continues chat histor
     assert(html.includes('id="ai-chat-reset-btn"'), 'ai-chat-reset-btn exists in AI chat header');
     assert(html.includes('restoreAIChatHistory()'), 'restoreAIChatHistory called on page init');
 });
+
+test('Shopee-style Sort & Star Rating Filter Bar validation: Phổ biến, Bán chạy, Giá and 5-Star/4-Star OCOP tiers', () => {
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Shopee Sort & Star Rating Bar Elements in DOM
+    assert(html.includes('shopee-sort-bar-container'), 'Container for Shopee Sort Bar must exist');
+    assert(html.includes('id="shopee-tab-default"'), 'Shopee tab Phổ biến must exist');
+    assert(html.includes('id="shopee-tab-volume"'), 'Shopee tab Bán chạy must exist');
+    assert(html.includes('id="shopee-tier-all"'), 'Shopee star filter Tất cả must exist');
+    assert(html.includes('id="shopee-tier-5star"'), 'Shopee star filter 5 Sao must exist');
+    assert(html.includes('id="shopee-tier-4star"'), 'Shopee star filter 4 Sao must exist');
+    assert(html.includes('id="shopee-price-dropdown-btn"'), 'Shopee price dropdown button must exist');
+    assert(html.includes('id="shopee-price-menu"'), 'Shopee price menu must exist');
+
+    // 2. Shopee functions defined
+    assert(html.includes('function setShopeeStarFilter'), 'setShopeeStarFilter is defined');
+    assert(html.includes('window.setShopeeStarFilter = setShopeeStarFilter;'), 'setShopeeStarFilter exported to window');
+    assert(html.includes('function selectShopeeSort'), 'selectShopeeSort is defined');
+    assert(html.includes('function selectShopeePriceSort'), 'selectShopeePriceSort is defined');
+    assert(html.includes('function toggleShopeePriceDropdown'), 'toggleShopeePriceDropdown is defined');
+
+    // 3. Filter integration
+    assert(html.includes('currentShopeeStarFilter === 5'), 'filterProductsGlobal filters 5 stars');
+    assert(html.includes('currentShopeeStarFilter === 4'), 'filterProductsGlobal filters 4 stars');
+    assert(html.includes("currentShopeeStarFilter = 'all'"), 'resetFilters resets Shopee star filter');
+
+    // 4. Shopee styling branding
+    assert(html.includes('#EE4D2D'), 'Shopee iconic signature orange (#EE4D2D) used for active tabs');
+    assert(html.includes('★★★★★'), '5-star gold glyphs displayed');
+    assert(html.includes('★★★★☆'), '4-star gold glyphs displayed');
+});
