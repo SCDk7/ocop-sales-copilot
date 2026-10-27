@@ -555,18 +555,26 @@ function validateAIRequest(body) {
     return { error: "Cuộc trò chuyện không hợp lệ. Vui lòng gửi nội dung tin nhắn." };
   }
 
+  const hasAttachedImages = (Array.isArray(body.imageIds) && body.imageIds.length > 0) || Boolean(body.imageData);
+
   let rawMessages = body.messages;
   if (!Array.isArray(rawMessages)) {
     const singleText = body.message || body.prompt || body.query || body.text;
     if (typeof singleText === "string" && singleText.trim()) {
       rawMessages = [{ role: "user", text: singleText.trim() }];
+    } else if (hasAttachedImages) {
+      rawMessages = [{ role: "user", text: body.language === 'en' ? "Find OCOP products matching this image" : "Tìm sản phẩm OCOP qua hình ảnh này" }];
     } else {
       return { error: "Cuộc trò chuyện không hợp lệ. Vui lòng gửi nội dung tin nhắn." };
     }
   }
 
   if (rawMessages.length === 0 || rawMessages.length > MAX_AI_MESSAGES) {
-    return { error: "Cuộc trò chuyện không hợp lệ. Vui lòng thử gửi lại tin nhắn." };
+    if (hasAttachedImages && rawMessages.length === 0) {
+      rawMessages = [{ role: "user", text: body.language === 'en' ? "Find OCOP products matching this image" : "Tìm sản phẩm OCOP qua hình ảnh này" }];
+    } else {
+      return { error: "Cuộc trò chuyện không hợp lệ. Vui lòng thử gửi lại tin nhắn." };
+    }
   }
 
   const catalog = validateAIProductCatalog(body.products);
@@ -575,10 +583,14 @@ function validateAIRequest(body) {
   const messages = [];
   let previousRole = null;
   let totalMessageLength = 0;
-  for (const message of rawMessages) {
+  for (let i = 0; i < rawMessages.length; i++) {
+    const message = rawMessages[i];
     if (!message) continue;
     const role = message.role === "assistant" ? "assistant" : "user";
-    const text = typeof message.text === "string" ? message.text.trim() : (typeof message.content === "string" ? message.content.trim() : "");
+    let text = typeof message.text === "string" ? message.text.trim() : (typeof message.content === "string" ? message.content.trim() : "");
+    if (!text && hasAttachedImages && i === rawMessages.length - 1) {
+      text = body.language === 'en' ? "Find OCOP products matching this image" : "Tìm sản phẩm OCOP qua hình ảnh này";
+    }
     if (!text) continue;
     if (text.length > MAX_AI_MESSAGE_LENGTH) {
       return { error: "Tin nhắn quá dài hoặc cuộc trò chuyện không hợp lệ." };
@@ -592,7 +604,11 @@ function validateAIRequest(body) {
   }
 
   if (messages.length === 0) {
-    return { error: "Tin nhắn không có nội dung. Vui lòng thử lại." };
+    if (hasAttachedImages) {
+      messages.push({ role: "user", text: body.language === 'en' ? "Find OCOP products matching this image" : "Tìm sản phẩm OCOP qua hình ảnh này" });
+    } else {
+      return { error: "Tin nhắn không có nội dung. Vui lòng thử lại." };
+    }
   }
 
   if (messages[messages.length - 1].role !== "user") {

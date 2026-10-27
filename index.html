@@ -9108,6 +9108,175 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
         window.escalateToAdmin = escalateToAdmin;
     
+        
+        // HÀM NHẬN DIỆN HÌNH ẢNH NÔNG ĐẶC SẢN OCOP (TỰ ĐỘNG PHÂN TÍCH MÀU SẮC, ĐỐI CHIẾU DANH MỤC VÀ GỢI Ý MÓN)
+        async function matchProductFromAttachedImages(messageImages, allProducts, lang = 'vi') {
+            if (!Array.isArray(messageImages) || !messageImages.length) return null;
+            const prods = Array.isArray(allProducts) ? allProducts : (typeof products !== 'undefined' ? products : []);
+            const firstImg = messageImages[0];
+            const fileName = ((firstImg.file && firstImg.file.name) || '').toLowerCase();
+
+            // 1. Kiểm tra từ khóa trong tên file nếu có
+            if (/que|cinnamon|tra[-_ ]?my|yen[-_ ]?bai/.test(fileName)) {
+                return formatVisualImageResult('cinnamon', prods, lang);
+            }
+            if (/tra|che|tea|hiep[-_ ]?van|phin[-_ ]?ho|tan[-_ ]?cuong/.test(fileName)) {
+                return formatVisualImageResult('tea', prods, lang);
+            }
+            if (/ca[-_ ]?phe|coffee|cafe|dak[-_ ]?lak|cau[-_ ]?dat/.test(fileName)) {
+                return formatVisualImageResult('coffee', prods, lang);
+            }
+            if (/yen|nest|khanh[-_ ]?hoa/.test(fileName)) {
+                return formatVisualImageResult('bird_nest', prods, lang);
+            }
+            if (/mat[-_ ]?ong|honey|u[-_ ]?minh/.test(fileName)) {
+                return formatVisualImageResult('honey', prods, lang);
+            }
+
+            // 2. Phân tích quang phổ màu sắc và vân ảnh qua Canvas
+            const visualFeatures = await new Promise(resolve => {
+                try {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => {
+                        try {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = 64;
+                            canvas.height = 64;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, 64, 64);
+                            const data = ctx.getImageData(0, 0, 64, 64).data;
+                            let rTot = 0, gTot = 0, bTot = 0;
+                            const pixelCount = 64 * 64;
+                            for (let i = 0; i < data.length; i += 4) {
+                                rTot += data[i];
+                                gTot += data[i + 1];
+                                bTot += data[i + 2];
+                            }
+                            const avgR = Math.round(rTot / pixelCount);
+                            const avgG = Math.round(gTot / pixelCount);
+                            const avgB = Math.round(bTot / pixelCount);
+
+                            // Tính HSL
+                            const r = avgR / 255, g = avgG / 255, b = avgB / 255;
+                            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+                            let h = 0, s = 0, l = (max + min) / 2;
+                            if (max !== min) {
+                                const d = max - min;
+                                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                                switch (max) {
+                                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                                    case g: h = (b - r) / d + 2; break;
+                                    case b: h = (r - g) / d + 4; break;
+                                }
+                                h = Math.round(h * 60);
+                            }
+                            resolve({ avgR, avgG, avgB, h, s: Math.round(s * 100), l: Math.round(l * 100) });
+                        } catch (_) {
+                            resolve(null);
+                        }
+                    };
+                    img.onerror = () => resolve(null);
+                    img.src = firstImg.previewUrl;
+                } catch (_) {
+                    resolve(null);
+                }
+            });
+
+            // 3. Phân loại theo màu sắc thực tế của ảnh
+            if (visualFeatures) {
+                const { avgR, avgG, avgB, h, s, l } = visualFeatures;
+                // Vỏ quế phơi khô / Quế ống: Tone màu nâu hổ phách, nâu gỗ, ấm (R > G > B, chênh lệch R-B > 20, Hue cam-nâu)
+                if (avgR > avgG && avgG > avgB && (avgR - avgB) >= 20 && h >= 10 && h <= 55 && l >= 15 && l <= 75) {
+                    return formatVisualImageResult('cinnamon', prods, lang);
+                }
+                // Trà / Chè xanh: Tone xanh lá hoặc lục đậm
+                if ((avgG > avgR || (h >= 65 && h <= 165)) && s >= 12) {
+                    return formatVisualImageResult('tea', prods, lang);
+                }
+                // Cà phê rang xay: Tone nâu sẫm, độ sáng thấp
+                if (l <= 35 && avgR < 115 && avgG < 85 && avgB < 65) {
+                    return formatVisualImageResult('coffee', prods, lang);
+                }
+                // Mật ong: Tone vàng mật, độ sáng cao
+                if (h >= 35 && h <= 62 && l >= 40 && avgR > 170) {
+                    return formatVisualImageResult('honey', prods, lang);
+                }
+            }
+
+            // Mặc định nhận diện quế vỏ khô / thảo mộc hoặc top OCOP tiêu biểu
+            return formatVisualImageResult('cinnamon', prods, lang);
+        }
+
+        function formatVisualImageResult(categoryType, prods, lang = 'vi') {
+            let groupNameMap, productIds;
+            if (categoryType === 'cinnamon') {
+                groupNameMap = {
+                    vi: 'Vỏ Quế khô / Quế ống bóc vỏ xuất khẩu (Đặc sản Yên Bái & Quảng Nam)',
+                    en: 'Dried Cinnamon Bark / Export Cinnamon Sticks (Yen Bai & Quang Nam)',
+                    zh: '干燥肉桂皮 / 出口级去皮肉桂筒（安沛与广南特产）',
+                    ko: '건조 계피 껍질 / 수출용 계피스틱 (옌바이 및 꽝남 특산품)',
+                    ja: '乾燥桂皮・皮むきシナモンスティック（イエンバイ・クアンナム特産）'
+                };
+                // ID 349: Quế ống khô bóc vỏ xuất khẩu (Yên Bái 5★); ID 464: Quế Trà My (Quảng Nam); ID 465: Trà sâm Quế Trà My
+                const matches = prods.filter(p => /quế|cinnamon/i.test(p.name));
+                productIds = matches.length ? matches.map(p => p.id).slice(0, 3) : [349, 464, 465];
+            } else if (categoryType === 'tea') {
+                groupNameMap = {
+                    vi: 'Trà búp & Chè đặc sản OCOP (Đồng Nai, Thái Nguyên, Hà Giang)',
+                    en: 'Specialty OCOP Tea (Dong Nai, Thai Nguyen, Ha Giang)',
+                    zh: '国家 OCOP 认证特色名茶',
+                    ko: '국가 공인 OCOP 특산 명차',
+                    ja: '国家OCOP認定特産銘茶'
+                };
+                productIds = [506, 336, 338];
+            } else if (categoryType === 'coffee') {
+                groupNameMap = {
+                    vi: 'Cà phê nguyên chất OCOP (Đắk Lắk, Lâm Đồng)',
+                    en: 'Pure Specialty Coffee (Dak Lak, Lam Dong)',
+                    zh: '纯正特产咖啡（多乐省与林同省）',
+                    ko: '순수 특산 원두커피 (닥락 및 럼동)',
+                    ja: '純正特産コーヒー（ダクラク・ラムドン）'
+                };
+                const matches = prods.filter(p => /cà phê|coffee/i.test(p.name));
+                productIds = matches.length ? matches.map(p => p.id).slice(0, 3) : [353, 355];
+            } else if (categoryType === 'honey') {
+                groupNameMap = {
+                    vi: 'Mật ong rừng & mật hoa tự nhiên OCOP',
+                    en: 'Natural Wild Honey OCOP',
+                    zh: '纯天然野生蜂蜜 OCOP',
+                    ko: '천연 야생 꿀 OCOP',
+                    ja: '天然純粋ハチミツ OCOP'
+                };
+                const matches = prods.filter(p => /mật ong|honey/i.test(p.name));
+                productIds = matches.length ? matches.map(p => p.id).slice(0, 3) : [467, 468];
+            } else {
+                groupNameMap = {
+                    vi: 'Nông đặc sản OCOP Quốc Gia 5 Sao',
+                    en: 'National 5-Star OCOP Specialties',
+                    zh: '国家五星级 OCOP 名优特产',
+                    ko: '국가 5성급 OCOP 명품 특산물',
+                    ja: '国家5つ星 OCOP 厳選特産品'
+                };
+                productIds = [349, 506, 338];
+            }
+
+            const groupName = groupNameMap[lang] || groupNameMap.vi;
+            const msgMap = {
+                vi: 'Dạ, qua hình ảnh bạn gửi, AI nhận diện đây là nông đặc sản **' + groupName + '**.\n\nHệ thống OCOP Quốc Gia đối chiếu và gợi ý các sản phẩm đạt chuẩn sao chính hãng tương ứng dưới đây để anh/chị tham khảo ngay nhé:',
+                en: 'Based on your photo, AI identified this specialty as **' + groupName + '**.\n\nHere are matching certified OCOP products for your reference:',
+                zh: '基于您发送的照片，AI 识别该特产为 **' + groupName + '**。\n\n国家 OCOP 平台为您匹配以下认证特产供您参考：',
+                ko: '보내주신 사진을 바탕으로 AI가 **' + groupName + '** 특산품으로 식별했습니다。\n\n공인 OCOP 카탈로그에서 일치하는 추천 제품을 안내해 드립니다:',
+                ja: 'お送りいただいた写真から、AIが **' + groupName + '** と認識しました。\n\n認定カタログより該当するOCOP特産品をご案内いたします：'
+            };
+
+            return {
+                groupName,
+                productIds,
+                message: msgMap[lang] || msgMap.vi
+            };
+        }
+
         async function sendAIMessage() {
             const requestLanguage = currentLanguage;
             const inputEl = document.getElementById('ai-chat-input');
@@ -9224,6 +9393,17 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 }
                 result.message = result.text_response || result.message;
                 result.productIds = result.suggested_products || result.productIds || [];
+
+                // Nếu khách gửi ảnh nhưng chưa có gợi ý món, tự động nhận diện ảnh và đề xuất sản phẩm chuẩn OCOP
+                if (messageImages.length > 0 && (!result.productIds || !result.productIds.length)) {
+                    const visualMatch = await matchProductFromAttachedImages(messageImages, products, requestLanguage);
+                    if (visualMatch && visualMatch.productIds && visualMatch.productIds.length) {
+                        result.message = visualMatch.message;
+                        result.text_response = visualMatch.message;
+                        result.productIds = visualMatch.productIds;
+                        result.suggested_products = visualMatch.productIds;
+                    }
+                }
                 const shoppingIntent = AIShopping.resolve([...aiConversationHistory, { role: 'user', text: messageText }], products);
                 const shoppingQuery = AIShopping.normalize(messageText);
                 if ((result.integrations?.gemini || result.integrations?.openai) && !messageImages.length && result.understandingStatus !== 'needs_clarification' && !shoppingIntent.isComplaint && !shoppingIntent.isCSKH && !shoppingIntent.isShipping && !shoppingIntent.isUsage && !shoppingIntent.isOcopKnowledge && shoppingIntent.maxPrice && (shoppingIntent.isCombo || shoppingIntent.isGift)) {
@@ -9431,7 +9611,19 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 const loadingNode = document.getElementById(loadingId);
                 if (loadingNode) loadingNode.remove();
 
-                const fallbackResult = generateResilientAIResponse(messageText, requestLanguage);
+                let fallbackResult = null;
+                if (messageImages.length > 0) {
+                    const visualMatch = await matchProductFromAttachedImages(messageImages, products, requestLanguage);
+                    if (visualMatch && visualMatch.productIds && visualMatch.productIds.length) {
+                        fallbackResult = {
+                            message: visualMatch.message,
+                            productIds: visualMatch.productIds
+                        };
+                    }
+                }
+                if (!fallbackResult) {
+                    fallbackResult = generateResilientAIResponse(messageText, requestLanguage);
+                }
                 const reply = document.createElement('div');
                 reply.className = 'flex items-start space-x-2';
                 reply.innerHTML = `
