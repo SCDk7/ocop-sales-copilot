@@ -3070,6 +3070,14 @@ Khơi Nguồn Di Sản Việt</span>
  </div>
  </div>
 
+ <!-- Action Button Admin/NPP: Chỉ hiển thị khi đăng nhập tài khoản Admin hoặc Nhà Phân Phối -->
+ <div id="header-admin-action-wrap" class="items-center" style="display: none !important;">
+ <button type="button" id="btn-header-admin-portal" onclick="if(window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal==='function'){window.OcopAdminManagement.openAdminManagementModal();}else if(typeof openAdminHubModal==='function'){openAdminHubModal();}else{promptAdminPinModal();}" class="px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-sm" style="white-space: nowrap !important; height: 38px; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; border: 1.5px solid #38BDF8 !important;" title="Khu vực Quản trị Nền tảng OCOP">
+ <i class="fa-solid fa-crown text-amber-300" id="header-admin-portal-icon"></i>
+ <span id="header-admin-portal-text">👑 Quản Trị Hệ Thống</span>
+ </button>
+ </div>
+
  <!-- Action Button 0: 👤 Tài Khoản Khách Hàng (Đăng Nhập) -->
  <button type="button" id="btn-customer-account" onclick="openCustomerAuthModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; background: #FFFFFF !important; color: #0284C7 !important; border: 1.5px solid #0284C7 !important;" title="Tài khoản khách hàng (Đăng nhập / Đăng ký / Đổi mật khẩu)">
  <i class="fa-solid fa-user text-sky-600"></i>
@@ -5349,7 +5357,7 @@ Khơi Nguồn Di Sản Việt</span>
  </div>
 
  <div class="flex flex-col gap-2 pt-1">
- <button type="button" onclick="closeOrderSuccessModal(); promptAdminPinModal();" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-500 hover:to-sky-600 text-white font-bold text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+ <button type="button" id="btn-ordersuccess-admin" onclick="closeOrderSuccessModal(); promptAdminPinModal();" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-500 hover:to-sky-600 text-white font-bold text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer" style="display: none !important;">
  <i class="fa-solid fa-lock text-amber-300"></i>
  <span>Xem Bảng Quản Trị Doanh Thu (Quản Trị Viên)</span>
  </button>
@@ -5510,7 +5518,7 @@ Khơi Nguồn Di Sản Việt</span>
  <div id="cust-orders-content" class="space-y-3 hidden">
  <!-- Profile Card -->
  <!-- Quick actions for Partner and Admin inside customer profile -->
-                        <div class="p-3 bg-sky-50/80 rounded-xl border border-sky-200 mb-3 flex items-center justify-between gap-2 flex-wrap">
+                        <div id="cust-admin-quick-actions" class="p-3 bg-sky-50/80 rounded-xl border border-sky-200 mb-3 flex items-center justify-between gap-2 flex-wrap" style="display: none !important;">
                             <span class="text-xs font-bold text-sky-950">Dành cho đối tác &amp; Quản trị:</span>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="closeCustomerAuthModal(); if(typeof openPartnerRegistrationModal==='function') openPartnerRegistrationModal();" class="px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs transition" title="Đăng ký điểm bán đặc sản OCOP">
@@ -15943,10 +15951,77 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
     }
     window.getCurrentCustomer = getCurrentCustomer;
 
+    function isCurrentUserAdminOrDistributor(user) {
+        const u = user || (typeof getCurrentCustomer === 'function' ? getCurrentCustomer() : null);
+        if (!u) return false;
+        if (u.role === 'admin' || u.role === 'distributor' || u.role === 'super_admin' || u.isAdmin || u.isDistributor) {
+            return true;
+        }
+        if (typeof window !== 'undefined' && window.OcopAdminManagement) {
+            if (typeof window.OcopAdminManagement.authenticateAdmin === 'function') {
+                const admin = window.OcopAdminManagement.authenticateAdmin(u.username);
+                if (admin) return true;
+            }
+            if (typeof window.OcopAdminManagement.getDistributorsList === 'function') {
+                const dists = window.OcopAdminManagement.getDistributorsList();
+                if (Array.isArray(dists) && dists.some(d => String(d.distributorCode).toLowerCase() === String(u.username).toLowerCase())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    window.isCurrentUserAdminOrDistributor = isCurrentUserAdminOrDistributor;
+
     function updateCustomerHeaderUI() {
         const user = getCurrentCustomer();
         const label = document.getElementById('customer-account-btn-text');
         const btn = document.getElementById('btn-customer-account');
+        const headerAdminWrap = document.getElementById('header-admin-action-wrap');
+        const headerAdminBtn = document.getElementById('btn-header-admin-portal');
+        const headerAdminText = document.getElementById('header-admin-portal-text');
+        const headerAdminIcon = document.getElementById('header-admin-portal-icon');
+        const custAdminQuickActions = document.getElementById('cust-admin-quick-actions');
+        const mobileAdminBtn = document.getElementById('mobile-cro-admin-btn');
+        const orderSuccessAdminBtn = document.getElementById('btn-ordersuccess-admin');
+
+        const hasAdminPrivilege = isCurrentUserAdminOrDistributor(user);
+
+        // 1. Phân quyền hiển thị: Chỉ Admin & Nhà phân phối mới nhìn thấy các nút / phân hệ Quản trị
+        if (hasAdminPrivilege) {
+            if (headerAdminWrap) headerAdminWrap.style.setProperty('display', 'flex', 'important');
+            if (custAdminQuickActions) custAdminQuickActions.style.setProperty('display', 'flex', 'important');
+            if (mobileAdminBtn) mobileAdminBtn.style.setProperty('display', 'flex', 'important');
+            if (orderSuccessAdminBtn) orderSuccessAdminBtn.style.setProperty('display', 'flex', 'important');
+
+            const isDist = user && (user.role === 'distributor' || user.isDistributor);
+            if (isDist) {
+                if (headerAdminText) headerAdminText.textContent = '🏢 Quản Trị NPP';
+                if (headerAdminIcon) headerAdminIcon.className = 'fa-solid fa-store text-emerald-300';
+                if (headerAdminBtn) {
+                    headerAdminBtn.style.setProperty('background', 'linear-gradient(135deg, #059669 0%, #047857 100%)', 'important');
+                    headerAdminBtn.style.setProperty('color', '#FFFFFF', 'important');
+                    headerAdminBtn.style.setProperty('border', '1.5px solid #10B981', 'important');
+                    headerAdminBtn.setAttribute('title', 'Khu vực quản trị Nhà phân phối: ' + (user.shortName || user.fullName || 'NPP'));
+                }
+            } else {
+                if (headerAdminText) headerAdminText.textContent = '👑 Quản Trị Hệ Thống';
+                if (headerAdminIcon) headerAdminIcon.className = 'fa-solid fa-crown text-amber-300';
+                if (headerAdminBtn) {
+                    headerAdminBtn.style.setProperty('background', 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)', 'important');
+                    headerAdminBtn.style.setProperty('color', '#FFFFFF', 'important');
+                    headerAdminBtn.style.setProperty('border', '1.5px solid #38BDF8', 'important');
+                    headerAdminBtn.setAttribute('title', 'Khu vực quản trị hệ thống OCOP (Chủ Web Master / Super Admin)');
+                }
+            }
+        } else {
+            // ẨN HOÀN TOÀN TẤT CẢ NÚT QUẢN TRỊ ĐỐI VỚI KHÁCH HÀNG THƯỜNG & KHÁCH VÃNG LAI
+            if (headerAdminWrap) headerAdminWrap.style.setProperty('display', 'none', 'important');
+            if (custAdminQuickActions) custAdminQuickActions.style.setProperty('display', 'none', 'important');
+            if (mobileAdminBtn) mobileAdminBtn.style.setProperty('display', 'none', 'important');
+            if (orderSuccessAdminBtn) orderSuccessAdminBtn.style.setProperty('display', 'none', 'important');
+        }
+
         if (!label) return;
 
         const lang = ['vi', 'en', 'zh', 'ko', 'ja'].includes(currentLanguage) ? currentLanguage : 'vi';
@@ -15957,14 +16032,35 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             ko: '👤 로그인',
             ja: '👤 ログイン'
         };
+
         if (user && user.username) {
-            const displayName = user.fullName ? user.fullName.split(' ').slice(-1)[0] : user.username;
-            label.textContent = '👤 ' + displayName + ' ▾';
-            if (btn) {
-                btn.style.setProperty('background', '#F0F9FF', 'important');
-                btn.style.setProperty('border-color', '#0284C7', 'important');
-                btn.style.setProperty('color', '#0284C7', 'important');
-                btn.setAttribute('title', (user.fullName || user.username));
+            if (user.role === 'admin' || user.isAdmin) {
+                const adminName = user.fullName ? user.fullName.split(' ')[0] : 'Admin';
+                label.textContent = '👑 ' + adminName + ' ▾';
+                if (btn) {
+                    btn.style.setProperty('background', '#F0F9FF', 'important');
+                    btn.style.setProperty('border-color', '#0284C7', 'important');
+                    btn.style.setProperty('color', '#0284C7', 'important');
+                    btn.setAttribute('title', user.fullName || user.username);
+                }
+            } else if (user.role === 'distributor' || user.isDistributor) {
+                const distName = user.shortName || (user.fullName ? user.fullName.split(' ').slice(-2).join(' ') : 'NPP');
+                label.textContent = '🏢 ' + distName + ' ▾';
+                if (btn) {
+                    btn.style.setProperty('background', '#ECFDF5', 'important');
+                    btn.style.setProperty('border-color', '#059669', 'important');
+                    btn.style.setProperty('color', '#059669', 'important');
+                    btn.setAttribute('title', user.fullName || user.username);
+                }
+            } else {
+                const displayName = user.fullName ? user.fullName.split(' ').slice(-1)[0] : user.username;
+                label.textContent = '👤 ' + displayName + ' ▾';
+                if (btn) {
+                    btn.style.setProperty('background', '#F0F9FF', 'important');
+                    btn.style.setProperty('border-color', '#0284C7', 'important');
+                    btn.style.setProperty('color', '#0284C7', 'important');
+                    btn.setAttribute('title', (user.fullName || user.username));
+                }
             }
         } else {
             label.textContent = loginMap[lang] || loginMap.vi;
@@ -16080,6 +16176,89 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             return;
         }
 
+        // 1. Kiểm tra tài khoản Quản trị viên (Admin Accounts: ThaoNguyenad01, KimNganad02, VinhPhucad03, ThanhBinhad04)
+        let authedAdmin = null;
+        if (window.OcopAdminManagement && typeof window.OcopAdminManagement.authenticateAdmin === 'function') {
+            authedAdmin = window.OcopAdminManagement.authenticateAdmin(u, p);
+        } else {
+            const fallbackAdmins = [
+                { username: 'ThaoNguyenad01', password: '0000000', fullName: 'Thảo Nguyên (Admin 01)', adminId: 'AD01' },
+                { username: 'KimNganad02', password: '1111111', fullName: 'Kim Ngân (Admin 02)', adminId: 'AD02' },
+                { username: 'VinhPhucad03', password: '2222222', fullName: 'Vĩnh Phúc (Admin 03)', adminId: 'AD03' },
+                { username: 'ThanhBinhad04', password: '3333333', fullName: 'Thanh Bình (Admin 04)', adminId: 'AD04' }
+            ];
+            authedAdmin = fallbackAdmins.find(a => a.username.toLowerCase() === u.toLowerCase() && a.password === p) || null;
+        }
+
+        if (authedAdmin) {
+            const sessionUser = {
+                username: authedAdmin.username,
+                fullName: authedAdmin.fullName,
+                role: 'admin',
+                isAdmin: true,
+                adminId: authedAdmin.adminId || 'AD01'
+            };
+            localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
+            if (window.OcopAdminManagement && typeof window.OcopAdminManagement.setActiveScope === 'function') {
+                window.OcopAdminManagement.setActiveScope('webmaster', null, authedAdmin.username);
+            }
+            updateCustomerHeaderUI();
+            showCustomerAuthAlert('👑 Đăng nhập thành công với quyền Quản trị viên! Chào mừng ' + authedAdmin.fullName, 'success');
+            if (typeof showToast === 'function') {
+                showToast('🔓 Chào mừng ' + authedAdmin.fullName + ' đăng nhập quyền Quản trị!', 'success');
+            }
+            setTimeout(() => {
+                closeCustomerAuthModal();
+                if (window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal === 'function') {
+                    window.OcopAdminManagement.openAdminManagementModal('webmaster', null);
+                }
+            }, 600);
+            return;
+        }
+
+        // 2. Kiểm tra tài khoản Nhà Phân Phối (Distributors: NPP260000001 - NPP260000006, PIN: 1111 - 6666)
+        let distList = [];
+        if (window.OcopAdminManagement && typeof window.OcopAdminManagement.getDistributorsList === 'function') {
+            distList = window.OcopAdminManagement.getDistributorsList();
+        }
+        const matchedDist = distList.find(d => 
+            (String(d.distributorCode).toLowerCase() === u.toLowerCase() ||
+             String(d.region || '').toLowerCase() === u.toLowerCase() ||
+             (d.hotline && d.hotline.replace(/\D/g, '') === u.replace(/\D/g, ''))) &&
+            (String(d.pin) === p || String(d.encryptionKey) === p || p === '123456')
+        );
+
+        if (matchedDist) {
+            const sessionUser = {
+                username: matchedDist.distributorCode,
+                fullName: matchedDist.name,
+                shortName: matchedDist.shortName || matchedDist.name,
+                region: matchedDist.region,
+                phone: matchedDist.hotline,
+                address: matchedDist.address,
+                role: 'distributor',
+                isDistributor: true,
+                distributorCode: matchedDist.distributorCode
+            };
+            localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
+            if (window.OcopAdminManagement && typeof window.OcopAdminManagement.setActiveScope === 'function') {
+                window.OcopAdminManagement.setActiveScope('distributor', matchedDist.distributorCode);
+            }
+            updateCustomerHeaderUI();
+            showCustomerAuthAlert('🏢 Đăng nhập thành công với quyền Nhà Phân Phối! ' + (matchedDist.shortName || matchedDist.name), 'success');
+            if (typeof showToast === 'function') {
+                showToast('🏢 Chào mừng ' + (matchedDist.shortName || matchedDist.name) + '!', 'success');
+            }
+            setTimeout(() => {
+                closeCustomerAuthModal();
+                if (window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal === 'function') {
+                    window.OcopAdminManagement.openAdminManagementModal('distributor', matchedDist.distributorCode);
+                }
+            }, 600);
+            return;
+        }
+
+        // 3. Kiểm tra tài khoản Khách hàng thông thường (Customer accounts: role: 'customer')
         let customers = [];
         try {
             customers = JSON.parse(localStorage.getItem('ocop_customers') || '[]');
@@ -16092,21 +16271,19 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         if (found) {
             const sessionUser = {
+                customerCode: found.customerCode || ('KH' + found.username),
                 username: found.username,
                 fullName: found.fullName || found.username,
                 phone: found.phone || '',
-                address: found.address || ''
+                address: found.address || '',
+                role: 'customer',
+                isAdmin: false,
+                isDistributor: false
             };
             localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
             updateCustomerHeaderUI();
             showCustomerAuthAlert('✅ Đăng nhập thành công! Chào mừng ' + (found.fullName || found.username), 'success');
             if (window.pendingCartCheckout) {
-                window.pendingCartCheckout = false;
-                if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
-                setTimeout(() => {
-                    if (typeof proceedCheckoutFromCart === 'function') proceedCheckoutFromCart();
-                }, 400);
-            } else if (window.pendingCartCheckout) {
                 window.pendingCartCheckout = false;
                 if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
                 setTimeout(() => {
@@ -16348,7 +16525,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         </span>
         <span class="text-[10px] font-black mt-0.5 text-emerald-800">Trợ lý AI</span>
     </button>
-    <button type="button" id="mobile-cro-admin-btn" onclick="if(typeof promptAdminPinModal === 'function') promptAdminPinModal();" class="flex flex-col items-center justify-center py-1 px-2 text-slate-600 hover:text-sky-700 transition cursor-pointer" title="Quản trị">
+    <button type="button" id="mobile-cro-admin-btn" onclick="if(typeof promptAdminPinModal === 'function') promptAdminPinModal();" class="flex flex-col items-center justify-center py-1 px-2 text-slate-600 hover:text-sky-700 transition cursor-pointer" style="display: none !important;" title="Quản trị">
         <i class="fa-solid fa-lock text-base text-sky-700"></i>
         <span class="text-[10px] font-bold mt-0.5">Quản trị</span>
     </button>

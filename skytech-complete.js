@@ -761,6 +761,37 @@
     };
 
     window.promptAdminPinModal = function () {
+        const currentUser = (typeof getCurrentCustomer === 'function' ? getCurrentCustomer() : null);
+        const hasPrivilege = (typeof isCurrentUserAdminOrDistributor === 'function')
+            ? isCurrentUserAdminOrDistributor(currentUser)
+            : (currentUser && (currentUser.role === 'admin' || currentUser.role === 'distributor' || currentUser.isAdmin || currentUser.isDistributor));
+
+        // Nếu là khách hàng thường: Chặn truy cập và thông báo rõ ràng
+        if (currentUser && !hasPrivilege) {
+            if (typeof showToast === 'function') {
+                showToast('⚠️ Tài khoản khách hàng không có quyền truy cập Quản trị. Vui lòng đăng nhập tài khoản Admin hoặc Nhà Phân Phối!', 'warning');
+            }
+            if (typeof openCustomerAuthModal === 'function') {
+                openCustomerAuthModal();
+            }
+            return;
+        }
+
+        // Nếu đã đăng nhập tài khoản Admin hoặc Nhà phân phối: Mở thẳng cổng Quản trị
+        if (currentUser && hasPrivilege) {
+            if (currentUser.role === 'distributor' || currentUser.isDistributor) {
+                if (window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal === 'function') {
+                    window.OcopAdminManagement.openAdminManagementModal('distributor', currentUser.distributorCode || 'NPP260000001');
+                    return;
+                }
+            } else {
+                if (window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal === 'function') {
+                    window.OcopAdminManagement.openAdminManagementModal('webmaster', null);
+                    return;
+                }
+            }
+        }
+
         // Purge any stored token so no stale auth can exist
         try {
             sessionStorage.removeItem('ocop_admin_pin_verified');
@@ -1011,6 +1042,16 @@
             window.closeAdminLoginModal();
             window.closeAdminHubModal();
 
+            const sessionUser = {
+                username: authed.username,
+                fullName: authed.fullName,
+                role: 'admin',
+                isAdmin: true,
+                adminId: authed.adminId
+            };
+            localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
+            if (typeof updateCustomerHeaderUI === 'function') updateCustomerHeaderUI();
+
             if (window.OcopAdminManagement) {
                 window.OcopAdminManagement.setActiveScope('webmaster', null, authed.username);
                 window.OcopAdminManagement.openAdminManagementModal('webmaster', null);
@@ -1183,13 +1224,42 @@
             window.openAdminLoginModal();
         } else if (type === 'distributor') {
             window.closeAdminHubModal();
+            const distCode = 'NPP260000001';
+            let distName = 'HTX Nông sản Hải Phòng';
+            if (window.OcopAdminManagement && typeof window.OcopAdminManagement.getDistributorsList === 'function') {
+                const foundD = window.OcopAdminManagement.getDistributorsList().find(x => x.distributorCode === distCode);
+                if (foundD) distName = foundD.shortName || foundD.name;
+            }
+            const sessionUser = {
+                username: distCode,
+                fullName: distName,
+                shortName: distName,
+                role: 'distributor',
+                isDistributor: true,
+                distributorCode: distCode
+            };
+            localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
+            if (typeof updateCustomerHeaderUI === 'function') updateCustomerHeaderUI();
+
             if (window.OcopAdminManagement) {
-                window.OcopAdminManagement.openAdminManagementModal('distributor', 'NPP260000001');
+                window.OcopAdminManagement.openAdminManagementModal('distributor', distCode);
             }
         }
     };
 
     window.openAdminHubModal = function () {
+        const currentUser = (typeof getCurrentCustomer === 'function' ? getCurrentCustomer() : null);
+        const hasPrivilege = (typeof isCurrentUserAdminOrDistributor === 'function')
+            ? isCurrentUserAdminOrDistributor(currentUser)
+            : (currentUser && (currentUser.role === 'admin' || currentUser.role === 'distributor' || currentUser.isAdmin || currentUser.isDistributor));
+
+        if (currentUser && !hasPrivilege) {
+            if (typeof showToast === 'function') {
+                showToast('⚠️ Bạn đang đăng nhập tài khoản Khách hàng thường. Khu vực Quản trị chỉ dành cho Admin hoặc Nhà phân phối!', 'warning');
+            }
+            return;
+        }
+
         // Tắt hẳn bảng nhập mã PIN bên ngoài
         window.closeAdminPinModal();
         const pinModal = document.getElementById('admin-pin-modal');

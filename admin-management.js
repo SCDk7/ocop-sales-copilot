@@ -501,6 +501,19 @@
     }
 
     function openAdminManagementModal(role, distCode) {
+        if (typeof window !== 'undefined' && typeof window.getCurrentCustomer === 'function') {
+            const user = window.getCurrentCustomer();
+            const hasPrivilege = (typeof window.isCurrentUserAdminOrDistributor === 'function')
+                ? window.isCurrentUserAdminOrDistributor(user)
+                : (user && (user.role === 'admin' || user.role === 'distributor' || user.isAdmin || user.isDistributor));
+            if (user && !hasPrivilege) {
+                if (typeof window.showToast === 'function') {
+                    window.showToast('⚠️ Bạn đang đăng nhập tài khoản Khách hàng thường. Không có quyền truy cập Quản trị!', 'warning');
+                }
+                return;
+            }
+        }
+
         if (role) {
             setActiveScope(role, distCode);
         }
@@ -1095,12 +1108,20 @@
 
     function logoutAdmin() {
         closeAdminManagementModal();
+        if (typeof localStorage !== 'undefined') {
+            try {
+                const user = getStorage('ocop_current_user', null);
+                if (user && (user.role === 'admin' || user.role === 'distributor' || user.isAdmin || user.isDistributor)) {
+                    localStorage.removeItem('ocop_current_user');
+                }
+            } catch (_) {}
+        }
         if (typeof window !== 'undefined') {
+            if (typeof window.updateCustomerHeaderUI === 'function') {
+                window.updateCustomerHeaderUI();
+            }
             if (typeof window.showToast === 'function') {
                 window.showToast('Đã đăng xuất khỏi tài khoản Quản trị.', 'info');
-            }
-            if (typeof window.openAdminHubModal === 'function') {
-                window.openAdminHubModal();
             }
         }
     }

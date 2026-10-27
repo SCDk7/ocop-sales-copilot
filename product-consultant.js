@@ -143,3 +143,4 @@
     if (node) module.exports = api;
     else root.OCOPProductConsultant = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
+

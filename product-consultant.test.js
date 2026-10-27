@@ -37,3 +37,4 @@ test('general province and showroom network queries stay in their designated han
     const netReply = catalogReply('Tra cứu mạng lưới showroom và điểm bán O2O chính hãng trên bản đồ số', PRODUCTS);
     assert(netReply.message.includes('Mạng lưới Showroom & Điểm bán O2O'));
 });
+
