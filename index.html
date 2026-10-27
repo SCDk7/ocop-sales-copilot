@@ -3230,7 +3230,7 @@ Khơi Nguồn Di Sản Việt</span>
 
          <!-- 3 Nút Hành Động -->
          <div class="grid grid-cols-3 gap-2 pt-1">
-             <button type="button" id="hero-feat-buy-btn" onclick="addToCart(506); toggleCart(true);" class="py-2.5 px-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-95 text-white font-extrabold text-xs shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer" title="Thêm vào giỏ hàng">
+             <button type="button" id="hero-feat-buy-btn" onclick="addToCart(506);" class="py-2.5 px-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-95 text-white font-extrabold text-xs shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer" title="Thêm vào giỏ hàng">
                  <i class="fa-solid fa-cart-shopping"></i>
                  <span>Mua Ngay</span>
              </button>
@@ -6779,7 +6779,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 <i class="fa-solid fa-bolt text-amber-200"></i>
                                 <span class="truncate">${({vi:'Mua ngay',en:'Buy Now',zh:'立即购买',ko:'바로구매',ja:'今すぐ購入'})[currentLanguage]||'Mua ngay'}</span>
                             </button>
-                            <button type="button" onclick="addToCart(${p.id}); toggleCart(true)" class="product-action-cart lofi-btn-cart flex items-center justify-center rounded-xl font-bold text-xs bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 38px !important; height: 38px !important;" title="${({vi:'Thêm sản phẩm vào giỏ hàng',en:'Add to cart',zh:'加入购物车',ko:'장바구니 담기',ja:'カートに追加'})[currentLanguage]||'Thêm sản phẩm vào giỏ hàng'}">
+                            <button type="button" onclick="addToCart(${p.id});" class="product-action-cart lofi-btn-cart flex items-center justify-center rounded-xl font-bold text-xs bg-emerald-700 hover:bg-emerald-800 text-white transition-all shadow-xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 38px !important; height: 38px !important;" title="${({vi:'Thêm sản phẩm vào giỏ hàng',en:'Add to cart',zh:'加入购物车',ko:'장바구니 담기',ja:'カートに追加'})[currentLanguage]||'Thêm sản phẩm vào giỏ hàng'}">
                                 <i class="fa-solid fa-cart-shopping text-sm"></i>
                             </button>
                             <button type="button" onclick="toggleWishlist(${p.id})" class="product-action-favorite lofi-btn-favorite flex items-center justify-center rounded-xl border ${isFav ? 'bg-rose-50 border-rose-300 text-rose-500' : 'bg-emerald-50 hover:bg-rose-50 border-emerald-200 hover:border-rose-300 text-slate-400 hover:text-rose-500'} transition-all shadow-2xs cursor-pointer" style="flex: 1 1 0% !important; min-width: 38px !important; height: 38px !important;" aria-pressed="${isFav}" title="${isFav ? ({vi:'Bỏ yêu thích',en:'Remove from wishlist',zh:'取消收藏',ko:'위시리스트에서 삭제',ja:'お気に入りから削除'})[currentLanguage]||'Bỏ yêu thích' : ({vi:'Thêm vào yêu thích',en:'Add to wishlist',zh:'加入收藏',ko:'위시리스트에 추가',ja:'お気に入りに追加'})[currentLanguage]||'Thêm vào yêu thích'}">
@@ -10066,11 +10066,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             updateCartBadge();
             renderCartItems();
             const toastMap = {
-                vi: `Đã đưa "${prod.name}" vào Bảng phân tích dòng tiền cửa hàng (AI Simulated)!`,
-                en: `Added "${getProductName(prod)}" to AI Cash Flow Simulation.`,
-                zh: `已将 "${getProductName(prod)}" 加入 AI 门店现金流模拟看板！`,
-                ko: `"${getProductName(prod)}" 특산품을 AI 현금 흐름 시뮬레이션에 추가했습니다!`,
-                ja: `「${getProductName(prod)}」を AI キャッシュフローシミュレーションに追加しました！`
+                vi: `Đã thêm "${prod.name}" vào giỏ hàng thành công!`,
+                en: `Added "${getProductName(prod)}" to cart successfully!`,
+                zh: `已将 "${getProductName(prod)}" 成功加入购物车！`,
+                ko: `"${getProductName(prod)}" 특산품을 장바구니에 담았습니다!`,
+                ja: `「${getProductName(prod)}」をカートに追加しました！`
             };
             showToast(toastMap[currentLanguage] || toastMap.vi, "success");
         }
@@ -10151,14 +10151,16 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         function updateCartBadge() {
             const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            const badge = document.getElementById('cart-count');
-            if (badge) {
-                badge.innerText = totalQty;
-                // Ẩn badge số 0 — chỉ hiện khi có sản phẩm đang điều phối
-                if (totalQty > 0) {
-                    badge.classList.remove('hidden');
-                } else {
-                    badge.classList.add('hidden');
+            for (const id of ['cart-count', 'cart-count-badge', 'intro-cart-count', 'header-cart-count']) {
+                const badge = document.getElementById(id);
+                if (badge) {
+                    badge.innerText = totalQty;
+                    badge.textContent = String(totalQty);
+                    if (totalQty > 0) {
+                        badge.classList.remove('hidden');
+                    } else if (id === 'cart-count') {
+                        badge.classList.add('hidden');
+                    }
                 }
             }
         }
@@ -10705,7 +10707,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 <span class="whitespace-nowrap font-black">${aiConsultBtnMap[currentLanguage] || aiConsultBtnMap.vi}</span>
                             </button>
                         </div>
-                        <button type="button" data-storefront-add-cart="${p.id}" onclick="closeQuickView(); addToCart(${p.id}); toggleCart(true);" class="quickview-add-cart w-full py-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer" title="Thêm vào giỏ hàng">
+                        <button type="button" data-storefront-add-cart="${p.id}" onclick="closeQuickView(); addToCart(${p.id});" class="quickview-add-cart w-full py-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer" title="Thêm vào giỏ hàng">
                             <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
                             <span>${addCartLabels[currentLanguage] || addCartLabels.vi}</span>
                         </button>
@@ -10912,7 +10914,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 <i class="fa-solid fa-wand-magic-sparkles text-slate-950"></i>
                                 <span class="whitespace-nowrap font-black">${aiConsultBtnMap[currentLanguage] || aiConsultBtnMap.vi}</span>
                             </button>
-                            <button type="button" data-storefront-add-cart="${p.id}" onclick="closeQuickView(); addToCart(${p.id}); toggleCart(true);" class="quickview-add-cart" title="Thêm vào giỏ hàng"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i><span>${addCartLabels[currentLanguage] || addCartLabels.vi}</span></button>
+                            <button type="button" data-storefront-add-cart="${p.id}" onclick="closeQuickView(); addToCart(${p.id});" class="quickview-add-cart" title="Thêm vào giỏ hàng"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i><span>${addCartLabels[currentLanguage] || addCartLabels.vi}</span></button>
                         </div>
                     </div>
                 </div>

@@ -4225,7 +4225,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         if (discount) discount.textContent = item.discount;
 
         const buyBtn = document.getElementById('hero-feat-buy-btn');
-        if (buyBtn) buyBtn.setAttribute('onclick', 'addToCart(' + item.id + '); toggleCart(true);');
+        if (buyBtn) buyBtn.setAttribute('onclick', 'addToCart(' + item.id + ');');
 
         const viewBtn = document.getElementById('hero-feat-view-btn');
         if (viewBtn) viewBtn.setAttribute('onclick', 'openQuickView(' + item.id + ');');
