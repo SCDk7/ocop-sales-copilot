@@ -7192,6 +7192,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         async function initializeProvinceMap() {
+            if (typeof window.setupInteractiveVietnamMap === 'function') {
+                window.setupInteractiveVietnamMap();
+                return;
+            }
+            if (typeof setupInteractiveVietnamMap === 'function') {
+                setupInteractiveVietnamMap();
+                return;
+            }
             const status = document.getElementById('province-selection-status');
             const mapContainer = document.getElementById('province-map');
             if (!mapContainer) return;
