@@ -785,15 +785,24 @@
     };
 
     window.promptAdminPinModal = function () {
-        // Kiểm tra xem người dùng hiện tại có quyền truy cập không
-        let currentUser = null;
-        let hasPrivilege = false;
-        try {
-            currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || 'null');
-            if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'distributor' || currentUser.isDistributor)) {
-                hasPrivilege = true;
+        const currentUser = (typeof getCurrentCustomer === 'function' ? getCurrentCustomer() : null) ||
+            (() => {
+                try { return JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || 'null'); } catch (e) { return null; }
+            })();
+        const hasPrivilege = (typeof isCurrentUserAdminOrDistributor === 'function')
+            ? isCurrentUserAdminOrDistributor(currentUser)
+            : (currentUser && (currentUser.role === 'admin' || currentUser.role === 'distributor' || currentUser.isAdmin || currentUser.isDistributor));
+
+        // Nếu là khách hàng thường: Chặn truy cập và thông báo rõ ràng
+        if (currentUser && !hasPrivilege) {
+            if (typeof showToast === 'function') {
+                showToast('⚠️ Tài khoản khách hàng không có quyền truy cập Quản trị. Vui lòng đăng nhập tài khoản Admin hoặc Nhà Phân Phối!', 'warning');
             }
-        } catch (e) {}
+            if (typeof openCustomerAuthModal === 'function') {
+                openCustomerAuthModal();
+            }
+            return;
+        }
 
         // Kiểm tra xem đã xác thực mã PIN trước đó chưa
         const isPinVerified = sessionStorage.getItem('ocop_admin_pin_verified') === 'true';
@@ -4171,15 +4180,24 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         }
 
         window.addEventListener('wheel', function(e) {
+            // Hệ số tăng tốc độ con lăn chuột: nhanh thêm ~35% (lướt nhẹ, mượt mà và không giật lag)
+            const SPEED_BOOST = 0.35;
+
             // A. Màn hình chờ Intro: Cho phép cuộn xem toàn bộ nội dung màn hình chờ (Bản đồ, quà tặng, tính năng...)
-            // TUYỆT ĐỐI KHÔNG tự động nhảy vào chợ OCOP khi lăn chuột xuống.
             const overlay = document.getElementById('ocop-intro-overlay');
             if (overlay && !overlay.classList.contains('hidden') && overlay.style.display !== 'none') {
                 const isMapInIntro = e.target && e.target.closest && e.target.closest('#province-map, .leaflet-container');
                 if (isMapInIntro) {
                     overlay.scrollBy({
-                        top: e.deltaY,
-                        left: e.deltaX || 0,
+                        top: e.deltaY * 1.35,
+                        left: (e.deltaX || 0) * 1.35,
+                        behavior: 'auto'
+                    });
+                    if (e.cancelable) e.preventDefault();
+                } else if (e.deltaY !== 0) {
+                    overlay.scrollBy({
+                        top: e.deltaY * SPEED_BOOST,
+                        left: 0,
                         behavior: 'auto'
                     });
                 }
@@ -4201,7 +4219,18 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             );
 
             if (openModal) {
-                // Người dùng đang tương tác trong modal, giữ nguyên cuộn tự nhiên của modal
+                // Người dùng đang tương tác trong modal, tăng nhẹ tốc độ cuộn bên trong modal
+                const scrollable = getScrollableContainer(e.target);
+                if (scrollable && e.deltaY !== 0) {
+                    const canScrollDown = e.deltaY > 0 && scrollable.scrollTop + scrollable.clientHeight < scrollable.scrollHeight - 1;
+                    const canScrollUp = e.deltaY < 0 && scrollable.scrollTop > 1;
+                    if (canScrollDown || canScrollUp) {
+                        scrollable.scrollBy({
+                            top: e.deltaY * SPEED_BOOST,
+                            behavior: 'auto'
+                        });
+                    }
+                }
                 return;
             }
 
@@ -4215,14 +4244,15 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
             // D. BẢN ĐỒ VỆ TINH LEAFLET (#province-map):
             // Leaflet mặc định nuốt sự kiện wheel khiến trang bị khựng khi để chuột trên bản đồ.
-            // Bắt sự kiện ở Capture phase và trực tiếp cuộn trang mượt mà!
+            // Bắt sự kiện ở Capture phase và trực tiếp cuộn trang nhanh mượt mà!
             const isMap = e.target && e.target.closest && e.target.closest('#province-map, .leaflet-container');
             if (isMap) {
                 window.scrollBy({
-                    top: e.deltaY,
-                    left: e.deltaX || 0,
+                    top: e.deltaY * 1.35,
+                    left: (e.deltaX || 0) * 1.35,
                     behavior: 'auto'
                 });
+                if (e.cancelable) e.preventDefault();
                 return;
             }
 
@@ -4232,14 +4262,26 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                 const canScrollDown = e.deltaY > 0 && scrollable.scrollTop + scrollable.clientHeight < scrollable.scrollHeight - 1;
                 const canScrollUp = e.deltaY < 0 && scrollable.scrollTop > 1;
                 if (canScrollDown || canScrollUp) {
-                    // Để phần tử nội bộ cuộn bình thường
+                    if (e.deltaY !== 0) {
+                        scrollable.scrollBy({
+                            top: e.deltaY * SPEED_BOOST,
+                            behavior: 'auto'
+                        });
+                    }
                     return;
                 }
             }
 
             // F. Mọi vị trí khác trên trang (Hero, Header, Sidebar, Cards, Footer, v.v.):
-            // Trình duyệt cuộn tự nhiên hoặc hỗ trợ nếu phần tử con chặn bubbling
-        }, { capture: true, passive: true });
+            // Trình duyệt cuộn tự nhiên 100%, cộng thêm 35% cuộn bổ trợ giúp cuộn trang nhanh nhạy và lướt mượt hơn!
+            if (e.deltaY !== 0) {
+                window.scrollBy({
+                    top: e.deltaY * SPEED_BOOST,
+                    left: 0,
+                    behavior: 'auto'
+                });
+            }
+        }, { capture: true, passive: false });
     })();
 
 
