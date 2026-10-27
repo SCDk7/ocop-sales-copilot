@@ -3796,60 +3796,89 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
 
 
-    // SMOOTH MOUSE WHEEL SCROLL ASSURANCE FOR EXTERNAL MOUSE & TOUCHPAD
-    window.addEventListener('wheel', function(e) {
-        // Nếu đang ở màn hình chờ Intro, lăn chuột xuống sẽ tự động lướt mượt vào Chợ OCOP
-        const overlay = document.getElementById('ocop-intro-overlay');
-        if (overlay && !overlay.classList.contains('hidden') && overlay.style.display !== 'none') {
-            if (e.deltaY > 15) {
-                if (typeof enterOcopMarket === 'function') {
-                    enterOcopMarket('all');
+    // SMOOTH MOUSE WHEEL SCROLL ASSURANCE FOR EXTERNAL MOUSE & TOUCHPAD (BẤT KỲ ĐÂU TRÊN MÀN HÌNH)
+    (function initUniversalMouseWheelScroll() {
+        function getScrollableContainer(el) {
+            let cur = el;
+            while (cur && cur !== document.body && cur !== document.documentElement) {
+                // Leaflet Map không coi là container cuộn nội bộ -> chuyển thành cuộn toàn trang
+                if (cur.id === 'province-map' || cur.classList?.contains('leaflet-container')) {
+                    return null;
                 }
+                const style = window.getComputedStyle(cur);
+                const overflowY = style.overflowY;
+                if ((overflowY === 'auto' || overflowY === 'scroll') && cur.scrollHeight > cur.clientHeight + 4) {
+                    return cur;
+                }
+                cur = cur.parentElement;
             }
-            return;
+            return null;
         }
 
-        // Danh sách các modal thực sự đang mở (chặn cuộn body khi modal mở)
-        const hasOpenModal = document.querySelector(
-            '#auth-modal:not(.hidden):not([style*="display: none"]), ' +
-            '#quickview-modal:not(.hidden):not([style*="display: none"]), ' +
-            '#ocop-store-modal:not(.hidden):not([style*="display: none"]), ' +
-            '#ocop-all-stores-modal:not(.hidden):not([style*="display: none"]), ' +
-            '#ai-financial-modal:not(.hidden):not([style*="display: none"]), ' +
-            '#online-order-modal:not(.hidden):not([style*="display: none"]), ' +
-            '#order-success-modal:not(.hidden):not([style*="display: none"]), ' +
-            '#customer-auth-modal:not(.hidden):not([style*="display: none"]), ' +
-            '#partner-registration-modal:not(.hidden):not([style*="display: none"])'
-        );
+        window.addEventListener('wheel', function(e) {
+            // A. Màn hình chờ Intro: Lăn chuột xuống tự động lướt mượt vào Chợ OCOP
+            const overlay = document.getElementById('ocop-intro-overlay');
+            if (overlay && !overlay.classList.contains('hidden') && overlay.style.display !== 'none') {
+                if (e.deltaY > 8) {
+                    if (typeof enterOcopMarket === 'function') {
+                        enterOcopMarket('all');
+                    }
+                }
+                return;
+            }
 
-        if (!hasOpenModal) {
+            // B. Kiểm tra modal đang mở thực sự (cho phép cuộn bên trong modal)
+            const openModal = document.querySelector(
+                '#auth-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#quickview-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#ocop-store-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#ocop-all-stores-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#ai-financial-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#online-order-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#order-success-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#customer-auth-modal:not(.hidden):not([style*="display: none"]), ' +
+                '#partner-registration-modal:not(.hidden):not([style*="display: none"]), ' +
+                '.account-center:not([hidden])'
+            );
+
+            if (openModal) {
+                // Người dùng đang tương tác trong modal, giữ nguyên cuộn tự nhiên của modal
+                return;
+            }
+
+            // C. Khôi phục quyền cuộn toàn trang nếu không có modal nào mở (chống bị kẹt overflow: hidden)
             if (document.body.style.overflow === 'hidden') {
                 document.body.style.overflow = '';
             }
             if (document.documentElement.style.overflow === 'hidden') {
                 document.documentElement.style.overflow = '';
             }
-        }
-    }, { passive: true });
 
-    // Hỗ trợ lăn chuột ở Màn chờ (Intro) để tự động trượt mượt mà vào Chợ OCOP
-    (function setupIntroMouseWheel() {
-        function attachWheel() {
-            const overlay = document.getElementById('ocop-intro-overlay');
-            if (!overlay || overlay.dataset.wheelHooked) return;
-            overlay.dataset.wheelHooked = 'true';
-            overlay.addEventListener('wheel', function(e) {
-                if (overlay.classList.contains('hidden') || overlay.style.display === 'none') return;
-                if (e.deltaY > 15) {
-                    if (typeof enterOcopMarket === 'function') {
-                        enterOcopMarket('all');
-                    }
+            // D. BẢN ĐỒ VỆ TINH LEAFLET (#province-map):
+            // Leaflet mặc định nuốt sự kiện wheel khiến trang bị khựng khi để chuột trên bản đồ.
+            // Bắt sự kiện ở Capture phase và trực tiếp cuộn trang mượt mà!
+            const isMap = e.target && e.target.closest && e.target.closest('#province-map, .leaflet-container');
+            if (isMap) {
+                window.scrollBy({
+                    top: e.deltaY,
+                    left: e.deltaX || 0,
+                    behavior: 'auto'
+                });
+                return;
+            }
+
+            // E. Kiểm tra nếu phần tử dưới chuột có thanh cuộn riêng (ví dụ textarea, danh sách chat)
+            const scrollable = getScrollableContainer(e.target);
+            if (scrollable) {
+                const canScrollDown = e.deltaY > 0 && scrollable.scrollTop + scrollable.clientHeight < scrollable.scrollHeight - 1;
+                const canScrollUp = e.deltaY < 0 && scrollable.scrollTop > 1;
+                if (canScrollDown || canScrollUp) {
+                    // Để phần tử nội bộ cuộn bình thường
+                    return;
                 }
-            }, { passive: true });
-        }
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', attachWheel);
-        } else {
-            attachWheel();
-        }
+            }
+
+            // F. Mọi vị trí khác trên trang (Hero, Header, Sidebar, Cards, Footer, v.v.):
+            // Trình duyệt cuộn tự nhiên hoặc hỗ trợ nếu phần tử con chặn bubbling
+        }, { capture: true, passive: true });
     })();

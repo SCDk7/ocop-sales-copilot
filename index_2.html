@@ -7172,6 +7172,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     zoomControl: true
                 });
                 window.provinceMap = provinceMap;
+                if (mapContainer) {
+                    mapContainer.addEventListener('wheel', function(e) {
+                        window.scrollBy({ top: e.deltaY, left: e.deltaX || 0, behavior: 'auto' });
+                    }, { capture: true, passive: true });
+                }
 
                 if (status) {
                     status.textContent = 'Bản đồ số OCOP 63 tỉnh thành sẵn sàng • Nhấp chọn tỉnh để xem showroom';
