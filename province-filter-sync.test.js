@@ -14,13 +14,15 @@ function loadFilterHelpers() {
     assert(html.includes('prov-chip-btn'), 'prov-chip-btn quick chips must exist');
 
     function normalizeProvinceName(value) {
-        return String(value || '')
+        const norm = String(value || '')
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .replace(/[đĐ]/g, 'd')
             .toLowerCase()
-            .replace(/^(tinh|thanh pho|tp\.?)\s+/i, '')
+            .replace(/^(tinh|thanh pho|tp\.?)\s*/i, '')
             .replace(/[^a-z0-9]/g, '');
+        if (norm === 'hcm' || norm === 'tphcm' || norm === 'hochiminh') return 'hochiminh';
+        return norm;
     }
 
     const MACRO_REGIONS = {
@@ -41,6 +43,8 @@ test('normalizeProvinceName maps all 63 real provinces correctly', () => {
     assert.equal(normalizeProvinceName('Đồng Nai'), normalizeProvinceName('dong nai'));
     assert.equal(normalizeProvinceName('Tỉnh Đồng Nai'), normalizeProvinceName('Dong Nai'));
     assert.equal(normalizeProvinceName('TP. Hồ Chí Minh'), normalizeProvinceName('Hồ Chí Minh'));
+    assert.equal(normalizeProvinceName('TP.HCM'), normalizeProvinceName('Thành phố Hồ Chí Minh'));
+    assert.equal(normalizeProvinceName('TP.HCM'), 'hochiminh');
     assert.equal(normalizeProvinceName('Hà Nội'), normalizeProvinceName('Thành phố Hà Nội'));
 });
 
@@ -622,4 +626,38 @@ test('Shopee-style Sort & Star Rating Filter Bar validation: Phổ biến, Bán 
     assert(html.includes('#EE4D2D'), 'Shopee iconic signature orange (#EE4D2D) used for active tabs');
     assert(html.includes('★★★★★'), '5-star gold glyphs displayed');
     assert(html.includes('★★★★☆'), '4-star gold glyphs displayed');
+});
+
+test('VN_63_COORDINATES and province dropdown deduplication: exactly 63 unique provinces without duplicate entries', () => {
+    const sky = fs.readFileSync('skytech-complete.js', 'utf8');
+    const html = fs.readFileSync('index.html', 'utf8');
+
+    // 1. Check VN_63_COORDINATES definition
+    assert(sky.includes('const VN_63_COORDINATES = {'), 'VN_63_COORDINATES must be defined');
+
+    // Extract VN_63_COORDINATES object via isolated evaluation
+    const vm = require('node:vm');
+    const sandbox = { window: {}, document: { getElementById: () => null } };
+    const match = sky.match(/const VN_63_COORDINATES = \{([\s\S]*?)\n    \};/);
+    assert(match, 'VN_63_COORDINATES match must exist');
+
+    const evalCode = 'const VN_63_COORDINATES = {' + match[1] + '\n}; VN_63_COORDINATES;';
+    const coords = vm.runInNewContext(evalCode, sandbox);
+    const keys = Object.keys(coords);
+
+    // Exactly 63 unique keys
+    assert.equal(keys.length, 63, 'VN_63_COORDINATES must have exactly 63 enumerable keys (1 per province)');
+
+    // Ensure VN-SG is present and only once in keys
+    const hcmKeys = keys.filter(k => k.toLowerCase().includes('hồ chí minh') || k.toLowerCase().includes('hcm'));
+    assert.equal(hcmKeys.length, 1, 'Ho Chi Minh City must have exactly 1 entry in VN_63_COORDINATES keys');
+    assert.equal(hcmKeys[0], 'TP. Hồ Chí Minh', 'Canonical name must be TP. Hồ Chí Minh');
+
+    // Check aliases are attached non-enumerably in skytech-complete.js
+    assert(sky.includes("['Thành phố Hồ Chí Minh', 'TP.HCM', 'Hồ Chí Minh'].forEach"), 'Non-enumerable aliases must be configured for Ho Chi Minh City');
+
+    // 2. Check dropdown deduplication in both skytech-complete.js and index.html
+    assert(sky.includes('const seen = new Set();'), 'Deduplication set must be used when populating options');
+    assert(sky.includes('const seenOptions = new Set();'), 'Post-append deduplication must run to eliminate duplicates');
+    assert(html.includes('const seen = new Set();'), 'GeoJSON population must deduplicate options');
 });

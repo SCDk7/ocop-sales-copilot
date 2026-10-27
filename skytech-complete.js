@@ -324,8 +324,6 @@
         'Bình Thuận': { x: 390, y: 625, id: 'VN-47' },
         'Bà Rịa - Vũng Tàu': { x: 320, y: 660, id: 'VN-48' },
         'TP. Hồ Chí Minh': { x: 285, y: 645, id: 'VN-SG' },
-        'Thành phố Hồ Chí Minh': { x: 285, y: 645, id: 'VN-SG' },
-        'TP.HCM': { x: 285, y: 645, id: 'VN-SG' },
         'Long An': { x: 260, y: 655, id: 'VN-51' },
         'Tiền Giang': { x: 275, y: 675, id: 'VN-52' },
         'Bến Tre': { x: 290, y: 690, id: 'VN-50' },
@@ -340,6 +338,16 @@
         'Bạc Liêu': { x: 245, y: 755, id: 'VN-61' },
         'Cà Mau': { x: 215, y: 770, id: 'VN-62' }
     };
+
+    // Ho Chi Minh City non-enumerable aliases so direct lookup works without duplicate dropdown options
+    ['Thành phố Hồ Chí Minh', 'TP.HCM', 'Hồ Chí Minh'].forEach(alias => {
+        Object.defineProperty(VN_63_COORDINATES, alias, {
+            value: VN_63_COORDINATES['TP. Hồ Chí Minh'],
+            enumerable: false,
+            writable: true,
+            configurable: true
+        });
+    });
 
     function setupInteractiveVietnamMap() {
         const mapContainer = document.getElementById('province-map');
@@ -370,13 +378,29 @@
             // Populate all 63 provinces if select has few options
             if (mapSelect.options.length <= 1) {
                 mapSelect.innerHTML = '<option value="">Chọn nhanh tỉnh/thành...</option>';
+                const seen = new Set();
                 Object.keys(VN_63_COORDINATES).sort((a,b) => a.localeCompare(b, 'vi')).forEach(provName => {
+                    const norm = typeof normalizeProvinceName === 'function' ? normalizeProvinceName(provName) : provName.toLowerCase();
+                    if (seen.has(norm)) return;
+                    seen.add(norm);
                     const opt = document.createElement('option');
                     opt.value = VN_63_COORDINATES[provName].id || provName;
                     opt.textContent = provName;
                     mapSelect.appendChild(opt);
                 });
             }
+
+            // Deduplicate any options if previously appended
+            const seenOptions = new Set();
+            Array.from(mapSelect.options).forEach((opt, idx) => {
+                if (idx === 0) return; // Keep placeholder
+                const norm = typeof normalizeProvinceName === 'function' ? normalizeProvinceName(opt.textContent || opt.value) : (opt.textContent || opt.value).toLowerCase().trim();
+                if (seenOptions.has(norm)) {
+                    opt.remove();
+                } else {
+                    seenOptions.add(norm);
+                }
+            });
         }
 
         // Render High-Precision Geo-Map SVG

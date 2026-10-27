@@ -7353,9 +7353,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
 
         function normalizeProvinceName(value) {
-            return normalizeSearchText(value)
+            const norm = normalizeSearchText(value)
                 .replace(/[^a-z0-9]/g, '')
-                .replace(/^(tp|thanhpho)/, '');
+                .replace(/^(tp|thanhpho|tinh)/, '');
+            if (norm === 'hcm' || norm === 'tphcm' || norm === 'hochiminh') return 'hochiminh';
+            return norm;
         }
 
         function getProvinceStyle(feature) {
@@ -8121,7 +8123,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         const provinceData = await response.json();
                         const provinceSelect = document.getElementById('province-map-select');
                         if (provinceSelect && provinceSelect.options.length <= 1) {
+                            const seen = new Set();
                             provinceData.features.forEach(feature => {
+                                const norm = typeof normalizeProvinceName === 'function' ? normalizeProvinceName(feature.properties.name) : feature.properties.name.toLowerCase();
+                                if (seen.has(norm)) return;
+                                seen.add(norm);
                                 const option = document.createElement('option');
                                 option.value = feature.properties.id;
                                 option.textContent = feature.properties.name;
