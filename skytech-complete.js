@@ -4142,6 +4142,12 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
     // KHỞI CHẠY TẤT CẢ (CHỈ CHẠY 1 LẦN KHI LOAD, ZERO-LAG)
     function initAll() {
+        try {
+            sessionStorage.removeItem('ocop_chat_history_v1');
+            if (typeof window.resetAIChatHistory === 'function') {
+                window.resetAIChatHistory();
+            }
+        } catch (_) {}
         initSkyTechCanvas();
         setupIntroHeaderIsolation();
         if (!window.provinceMap && typeof setupInteractiveVietnamMap === 'function') setupInteractiveVietnamMap();

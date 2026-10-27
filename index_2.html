@@ -8560,41 +8560,47 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         };
 
         function saveAIChatHistory() {
-            try {
-                const messagesEl = document.getElementById('ai-chat-messages');
-                if (messagesEl && Array.isArray(aiConversationHistory) && aiConversationHistory.length > 0) {
-                    sessionStorage.setItem('ocop_chat_history_v1', JSON.stringify({
-                        history: aiConversationHistory,
-                        html: messagesEl.innerHTML
-                    }));
-                }
-            } catch (_) {}
+            // Không lưu chat cũ qua sessionStorage để khi load lại trang chatbox luôn được làm mới
+            try { sessionStorage.removeItem('ocop_chat_history_v1'); } catch (_) {}
         }
         window.saveAIChatHistory = saveAIChatHistory;
 
         function restoreAIChatHistory() {
-            try {
-                const raw = sessionStorage.getItem('ocop_chat_history_v1');
-                if (raw) {
-                    const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed.history) && parsed.history.length > 0) {
-                        aiConversationHistory = parsed.history;
-                    }
-                    if (parsed.html) {
-                        const messagesEl = document.getElementById('ai-chat-messages');
-                        if (messagesEl) {
-                            messagesEl.innerHTML = parsed.html;
-                            messagesEl.scrollTop = messagesEl.scrollHeight;
-                        }
-                    }
-                }
-            } catch (_) {}
+            // Khi load lại trang, chatbox cũng phải load lại (reset sạch tin nhắn và trở về trạng thái ban đầu)
+            try { sessionStorage.removeItem('ocop_chat_history_v1'); } catch (_) {}
+            if (typeof resetAIChatHistory === 'function') {
+                resetAIChatHistory();
+            }
         }
         window.restoreAIChatHistory = restoreAIChatHistory;
 
         function resetAIChatHistory() {
             aiConversationHistory = [];
             try { sessionStorage.removeItem('ocop_chat_history_v1'); } catch (_) {}
+            try { sessionStorage.removeItem('ocop-consultation-session'); } catch (_) {}
+
+            // Xóa ảnh đính kèm đang chờ gửi (nếu có)
+            if (typeof pendingAIImages !== 'undefined') {
+                pendingAIImages = [];
+            }
+            if (typeof renderAIChatImagePreviews === 'function') {
+                try { renderAIChatImagePreviews(); } catch (_) {}
+            }
+
+            // Xóa nội dung người dùng đang nhập dở
+            const inputEl = document.getElementById('ai-chat-input');
+            if (inputEl) {
+                inputEl.value = '';
+            }
+
+            // Dừng nhận diện mic & dừng giọng nói nếu đang đọc
+            if (window.chatDictation && typeof window.chatDictation.stop === 'function') {
+                try { window.chatDictation.stop(true); } catch (_) {}
+            }
+            if (window.speechSynthesis && typeof window.speechSynthesis.cancel === 'function') {
+                try { window.speechSynthesis.cancel(); } catch (_) {}
+            }
+
             const messagesEl = document.getElementById('ai-chat-messages');
             if (messagesEl) {
                 const greetingMap = {
@@ -8620,6 +8626,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         </div>
                     </div>
                 `;
+                messagesEl.scrollTop = 0;
             }
         }
         window.resetAIChatHistory = resetAIChatHistory;
