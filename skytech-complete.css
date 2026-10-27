@@ -950,6 +950,10 @@ header h1 {
     text-align: center !important;
     white-space: pre-line !important;
     margin-inline: auto !important;
+    font-size: clamp(2rem, 3.2vw, 3.2rem) !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+    color: #0C4A6E !important;
 }
 
 #ocop-intro-overlay #i18n-intro-title2 {
@@ -957,27 +961,40 @@ header h1 {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    margin-top: 18px !important;
+    font-size: clamp(1.05rem, 1.6vw, 1.45rem) !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px !important;
+    gap: 6px !important;
+    margin-top: 14px !important;
+    margin-bottom: 14px !important;
     text-align: center !important;
     white-space: normal !important;
     line-height: 1.45 !important;
+    color: #0284C7 !important;
+    -webkit-text-fill-color: #0284C7 !important;
 }
 #ocop-intro-overlay #i18n-intro-title2 > span {
     display: block !important;
     padding-left: 0 !important;
-    white-space: normal !important;
+    white-space: nowrap !important;
+    font-weight: 900 !important;
 }
 #ocop-intro-overlay #i18n-intro-title2 > span + span {
-    margin-top: 5px !important;
+    margin-top: 4px !important;
 }
 #ocop-intro-overlay #i18n-intro-title2 > span:nth-child(2) {
     padding-left: 0 !important;
     text-align: center !important;
 }
 
-#i18n-intro-desc {
+#i18n-intro-desc,
+#ocop-intro-overlay #i18n-intro-desc {
     color: #1E293B !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
+    font-size: clamp(1rem, 1.3vw, 1.2rem) !important;
+    line-height: 1.65 !important;
+    max-width: 44rem !important;
+    margin-inline: auto !important;
 }
 
 #intro-award-badge,
@@ -986,6 +1003,9 @@ header h1 {
     border: 1px solid #7DD3FC !important;
     color: #0369A1 !important;
     box-shadow: 0 4px 14px rgba(2, 132, 199, 0.1) !important;
+    font-size: clamp(0.85rem, 1.1vw, 1rem) !important;
+    font-weight: 800 !important;
+    padding: 6px 18px !important;
 }
 
 /* Readable quick links and footer on the pale intro background. */
@@ -1862,7 +1882,7 @@ select#province-map-select {
 }
 @media (max-width: 480px) {
     #ocop-intro-overlay #i18n-intro-title2 {
-        font-size: clamp(10px, 3vw, 13px) !important;
+        font-size: clamp(0.95rem, 3.8vw, 1.15rem) !important;
     }
 }
 
