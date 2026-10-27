@@ -107,6 +107,7 @@
   }
   function analyze(text, products) {
     const q = normalize(text);
+    const isVoucher = /\b(ma giam gia|ma uu dai|ma khuyen mai|vouchers?|coupons?|promo codes?|discounts?)\b|\b(?:co|xin|cho|hoi|tim)\b.*\b(?:giam gia|khuyen mai|uu dai)\b|\b(?:giam gia|khuyen mai|uu dai)\b.*\b(?:khong|ko|gi|j|nao|chua)\b/i.test(q);
     const isOrderGuide = /\b(huong dan|cach|lam sao|quy trinh|chi|hoi)\b.*\b(dat hang|mua hang|len don|order)\b|\b(dat hang|mua hang|order)\b.*\b(nhu the nao|the nao|huong dan|chi voi|chi giup)\b|\b(muon|can|huong dan)\s+(?:toi\s+)?(dat hang|mua hang)\b/i.test(q);
     const isGarlic = /\btỏi\b/i.test(text) || /\b(toi den|toi ly son|toi co don|cu toi|tep toi|garlic)\b/.test(q);
     const productQuery = q
@@ -134,7 +135,7 @@
       isAllProvinces,
       exactRegions,
       exactRegion,
-      isOrderGuide,
+      isVoucher, isOrderGuide,
       categoryOrKeyword: isOrderGuide ? null : (categories.find(([, pattern]) => pattern.test(productQuery))?.[0] || null),
       regionKeyword: Object.keys(regions).find(region => q.includes(normalize(region))) || null,
       minStars: /5\s*sao|5\s*star/.test(q) ? 5 : /4\s*sao|4\s*star/.test(q) ? 4 : null };
@@ -144,6 +145,7 @@
     let current = {};
     for (const message of messages.filter(m => m.role === 'user')) {
       current = { ...extract(normalizeComboSpelling(message.text), products), ...budget(message.text) };
+      if (current.isVoucher) { saved = {}; return { ...current, exactRegion: null, regionKeyword: null, categoryOrKeyword: null }; }
       current.isCombo ||= analyze(message.text, products).isCombo;
       current.regionKeyword ||= analyze(message.text, products).regionKeyword;
       // A per-item amount must never overwrite the total shopping budget.
