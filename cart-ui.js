@@ -81,16 +81,6 @@
             if (typeof root.showToast === 'function') root.showToast('Mỗi yêu cầu tối đa 20 sản phẩm.', 'info');
             return;
         }
-        if (typeof root.getCurrentCustomer === 'function') {
-            const user = root.getCurrentCustomer();
-            if (!user || !user.username) {
-                root.pendingCartCheckout = true;
-                if (typeof root.showToast === 'function') root.showToast('Vui lòng đăng nhập tài khoản để tiếp tục mua hàng (như Shopee)!', 'info');
-                else if (typeof alert === 'function') alert('Vui lòng đăng nhập tài khoản để tiếp tục mua hàng (như Shopee)!');
-                if (typeof root.openCustomerAuthModal === 'function') root.openCustomerAuthModal();
-                return;
-            }
-        }
         manager?.save?.();
         const dest = new URL(checkoutURL(rows), document.baseURI).href;
         try {
