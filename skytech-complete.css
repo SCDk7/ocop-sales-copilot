@@ -1891,6 +1891,26 @@ select#province-map-select {
     padding: 10px 12px !important;
     box-sizing: border-box;
     border-radius: 14px;
+    max-height: min(36vh, 16rem) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 175, 55, 0.55) rgba(4, 22, 16, 0.5);
+    -webkit-overflow-scrolling: touch;
+}
+#ocop-intro-overlay #province-products-panel::-webkit-scrollbar {
+    width: 6px;
+}
+#ocop-intro-overlay #province-products-panel::-webkit-scrollbar-track {
+    background: rgba(4, 22, 16, 0.5);
+    border-radius: 10px;
+}
+#ocop-intro-overlay #province-products-panel::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.55);
+    border-radius: 10px;
+}
+#ocop-intro-overlay #province-products-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.85);
 }
 #ocop-intro-overlay #province-products-panel > div:first-child {
     display: grid !important;

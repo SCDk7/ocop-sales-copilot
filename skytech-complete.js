@@ -4187,6 +4187,30 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             // Hệ số tăng tốc độ con lăn chuột: nhanh thêm ~35% (lướt nhẹ, mượt mà và không giật lag)
             const SPEED_BOOST = 0.35;
 
+            // A0. BẢNG SẢN PHẨM / ĐIỂM BÁN TỈNH THÀNH TRÊN BẢN ĐỒ:
+            // Cho phép cuộn con lăn chuột mượt mà ở bất kỳ vị trí nào bên trong bảng sản phẩm đặc sản tỉnh
+            const provPanel = e.target && e.target.closest && e.target.closest('#province-products-panel, #province-stores-panel');
+            if (provPanel && !provPanel.classList.contains('hidden') && provPanel.style.display !== 'none') {
+                const grid = provPanel.querySelector('#province-products-grid, .province-products-grid, #province-stores-list');
+                const scrollTarget = (provPanel.scrollHeight > provPanel.clientHeight + 2) ? provPanel :
+                                     (grid && grid.scrollHeight > grid.clientHeight + 2 ? grid : provPanel);
+                if (e.deltaY !== 0) {
+                    const before = scrollTarget.scrollTop;
+                    scrollTarget.scrollBy({
+                        top: e.deltaY * 1.35,
+                        behavior: 'auto'
+                    });
+                    if (scrollTarget.scrollTop === before && grid && scrollTarget !== grid) {
+                        grid.scrollBy({
+                            top: e.deltaY * 1.35,
+                            behavior: 'auto'
+                        });
+                    }
+                }
+                if (e.cancelable) e.preventDefault();
+                return;
+            }
+
             // A. Màn hình chờ Intro: Cho phép cuộn xem toàn bộ nội dung màn hình chờ (Bản đồ, quà tặng, tính năng...)
             const overlay = document.getElementById('ocop-intro-overlay');
             if (overlay && !overlay.classList.contains('hidden') && overlay.style.display !== 'none') {
