@@ -3594,9 +3594,32 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
 
 
-    // SMOOTH MOUSE WHEEL SCROLL ASSURANCE & INTRO TRANSITION
+    // SMOOTH MOUSE WHEEL SCROLL ASSURANCE FOR EXTERNAL MOUSE & TOUCHPAD
     window.addEventListener('wheel', function(e) {
-        const hasOpenModal = document.querySelector('.modal:not(.hidden):not([style*="display: none"]), [id$="-modal"]:not(.hidden):not([style*="display: none"]):not(#ocop-intro-overlay)');
+        // Nếu đang ở màn hình chờ Intro, lăn chuột xuống sẽ tự động lướt mượt vào Chợ OCOP
+        const overlay = document.getElementById('ocop-intro-overlay');
+        if (overlay && !overlay.classList.contains('hidden') && overlay.style.display !== 'none') {
+            if (e.deltaY > 15) {
+                if (typeof enterOcopMarket === 'function') {
+                    enterOcopMarket('all');
+                }
+            }
+            return;
+        }
+
+        // Danh sách các modal thực sự đang mở (chặn cuộn body khi modal mở)
+        const hasOpenModal = document.querySelector(
+            '#auth-modal:not(.hidden):not([style*="display: none"]), ' +
+            '#quickview-modal:not(.hidden):not([style*="display: none"]), ' +
+            '#ocop-store-modal:not(.hidden):not([style*="display: none"]), ' +
+            '#ocop-all-stores-modal:not(.hidden):not([style*="display: none"]), ' +
+            '#ai-financial-modal:not(.hidden):not([style*="display: none"]), ' +
+            '#online-order-modal:not(.hidden):not([style*="display: none"]), ' +
+            '#order-success-modal:not(.hidden):not([style*="display: none"]), ' +
+            '#customer-auth-modal:not(.hidden):not([style*="display: none"]), ' +
+            '#partner-registration-modal:not(.hidden):not([style*="display: none"])'
+        );
+
         if (!hasOpenModal) {
             if (document.body.style.overflow === 'hidden') {
                 document.body.style.overflow = '';
@@ -3613,23 +3636,12 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             const overlay = document.getElementById('ocop-intro-overlay');
             if (!overlay || overlay.dataset.wheelHooked) return;
             overlay.dataset.wheelHooked = 'true';
-            let wheelDelta = 0;
-            let wheelTimer = null;
             overlay.addEventListener('wheel', function(e) {
-                if (overlay.classList.contains('hidden')) return;
-                const isBottom = (overlay.scrollHeight - overlay.scrollTop - overlay.clientHeight) <= 20;
-                if (e.deltaY > 0) {
-                    wheelDelta += e.deltaY;
-                    clearTimeout(wheelTimer);
-                    wheelTimer = setTimeout(() => { wheelDelta = 0; }, 320);
-                    if (wheelDelta > 100 || isBottom) {
-                        wheelDelta = 0;
-                        if (typeof enterOcopMarket === 'function') {
-                            enterOcopMarket('all');
-                        }
+                if (overlay.classList.contains('hidden') || overlay.style.display === 'none') return;
+                if (e.deltaY > 15) {
+                    if (typeof enterOcopMarket === 'function') {
+                        enterOcopMarket('all');
                     }
-                } else {
-                    wheelDelta = 0;
                 }
             }, { passive: true });
         }
