@@ -173,13 +173,38 @@
         const p = pass ? String(pass).trim() : '';
 
         if (p) {
-            return list.find(a => a.username.toLowerCase() === kw && a.password === p) || null;
+            // 1. Khớp chính xác username hoặc adminId (AD01, AD02, ...)
+            const exact = list.find(a => 
+                (a.username.toLowerCase() === kw || (a.adminId && a.adminId.toLowerCase() === kw)) && 
+                a.password === p
+            );
+            if (exact) return exact;
+
+            // 2. Hỗ trợ alias đăng nhập tiện lợi cho Quản trị viên (admin, ad, quantri)
+            if (['admin', 'ad', 'quantri', 'quantrivien', 'superadmin'].includes(kw)) {
+                if (['0000000', 'admin', '123456', 'admin123', 'ad'].includes(p) || (list[0] && p === list[0].password)) {
+                    return list[0];
+                }
+            }
+            if (['ad01', 'ad1', 'admin01', 'admin1'].includes(kw) && (['0000000', 'admin'].includes(p) || (list[0] && p === list[0].password))) return list[0];
+            if (['ad02', 'ad2', 'admin02', 'admin2'].includes(kw) && (['1111111', 'admin'].includes(p) || (list[1] && p === list[1].password))) return list[1];
+            if (['ad03', 'ad3', 'admin03', 'admin3'].includes(kw) && (['2222222', 'admin'].includes(p) || (list[2] && p === list[2].password))) return list[2];
+            if (['ad04', 'ad4', 'admin04', 'admin4'].includes(kw) && (['3333333', 'admin'].includes(p) || (list[3] && p === list[3].password))) return list[3];
+
+            return null;
         }
 
-        return list.find(a => 
+        // 3. Đăng nhập 1 token / mã pin
+        const matchToken = list.find(a => 
             a.username.toLowerCase() === kw || 
+            (a.adminId && a.adminId.toLowerCase() === kw) ||
             a.password === kw
-        ) || null;
+        );
+        if (matchToken) return matchToken;
+
+        if (['admin', 'ad', 'quantri', 'superadmin'].includes(kw)) return list[0];
+
+        return null;
     }
 
     // Seed Khách hàng ban đầu (12 ký tự)

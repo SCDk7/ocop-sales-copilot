@@ -145,16 +145,35 @@
     let current = {};
     for (const message of messages.filter(m => m.role === 'user')) {
       current = { ...extract(normalizeComboSpelling(message.text), products), ...budget(message.text) };
-      if (current.isVoucher) { saved = {}; return { ...current, exactRegion: null, regionKeyword: null, categoryOrKeyword: null }; }
-      current.isCombo ||= analyze(message.text, products).isCombo;
-      current.regionKeyword ||= analyze(message.text, products).regionKeyword;
-      // A per-item amount must never overwrite the total shopping budget.
-      if (!Object.keys(budget(message.text)).length && preferences(message.text).perItemMax) { current.minPrice = null; current.maxPrice = null; }
-      current.categoryOrKeyword ||= analyze(message.text, products).categoryOrKeyword;
       const q = normalize(message.text);
-      const followup = /^(?:\d|toi co|minh co|ngan sach|tai chinh|budget|duoi|tam|khoang|doi|con|chi|them|combo|bo qua|gio qua|set qua|gift set|bundle|moi mon|tung mon|gia tri|cao cap|khong chon|dung chon|sao|s |tai sao|sao ko|sao khong|s ko|chua |chua du|khong du|ko du|uu tien|dua )/.test(q) || (!current.categoryOrKeyword && !current.exactRegion && !(current.exactRegions && current.exactRegions.length) && !current.isAllProvinces && q.length < 90) || Object.keys(budget(message.text)).length > 0 || Object.keys(itemCount(message.text)).length > 0 || Object.keys(preferences(message.text)).length > 0;
+      const isGeneralShowroom = (/(?:mang luoi|he thong|danh sach|tra cuu)\s+(?:cac\s+)?(?:showroom|diem ban|cua hang)\b|(?:showroom|diem ban|store|store location)\s*(?:network|o2o|he thong|mang luoi)\b|(?:network|list of)\s+(?:showrooms?|stores?)|(?:showroom|diem ban)\s+o2o|o2o\s+(?:showroom|diem ban|store)|(?:ban do so|digital map).*(?:showroom|diem ban|store)|(?:showroom|diem ban|store).*(?:ban do so|digital map)/i.test(q) || (/diem ban|showroom/i.test(q) && /toan quoc|tat ca|he thong|chinh hang|ban do|nationwide|all stores/i.test(q))) && !/(?:san pham nay|mon nay|hang nay|this product|this item)/i.test(q);
+      if (current.isVoucher) {
+        saved = {};
+        current.exactRegion = null;
+        current.regionKeyword = null;
+        current.categoryOrKeyword = null;
+      } else if (isGeneralShowroom) {
+        saved = {};
+        current.isStoreLookup = true;
+        current.categoryOrKeyword = null;
+        current.isCombo = false;
+        current.isGift = false;
+        current.maxPrice = null;
+        current.minPrice = null;
+        if (!current.exactRegion) {
+          current.exactRegions = [];
+          current.regionKeyword = null;
+        }
+      } else {
+        current.isCombo ||= analyze(message.text, products).isCombo;
+        current.regionKeyword ||= analyze(message.text, products).regionKeyword;
+        // A per-item amount must never overwrite the total shopping budget.
+        if (!Object.keys(budget(message.text)).length && preferences(message.text).perItemMax) { current.minPrice = null; current.maxPrice = null; }
+        current.categoryOrKeyword ||= analyze(message.text, products).categoryOrKeyword;
+      }
+      const followup = !isGeneralShowroom && (/^(?:\d|toi co|minh co|ngan sach|tai chinh|budget|duoi|tam|khoang|doi|con|chi|them|combo|bo qua|gio qua|set qua|gift set|bundle|moi mon|tung mon|gia tri|cao cap|khong chon|dung chon|sao|s |tai sao|sao ko|sao khong|s ko|chua |chua du|khong du|ko du|uu tien|dua )/.test(q) || (!current.categoryOrKeyword && !current.exactRegion && !(current.exactRegions && current.exactRegions.length) && !current.isAllProvinces && q.length < 90) || Object.keys(budget(message.text)).length > 0 || Object.keys(itemCount(message.text)).length > 0 || Object.keys(preferences(message.text)).length > 0);
       const newRecommendation=/^(?:goi y|recommend|suggest)\s+(?:dac san|san pham|products|specialties)\b/.test(q);
-      if ((!followup && !excludedTerms(message.text).length) || newRecommendation || /bat dau lai|yeu cau moi|start over/.test(q)) saved = {};
+      if ((!followup && !excludedTerms(message.text).length) || newRecommendation || isGeneralShowroom || /bat dau lai|yeu cau moi|start over/.test(q)) saved = {};
       if (current.isAllProvinces) {
         saved.isAllProvinces = true;
         delete saved.exactRegion;
@@ -177,7 +196,7 @@
         if (current.regionKeyword) saved.regionKeyword = current.regionKeyword;
       }
       for (const key of ['categoryOrKeyword', 'minStars']) {
-        if (current[key]) {
+        if (!isGeneralShowroom && current[key]) {
           saved[key] = current[key];
         }
       }

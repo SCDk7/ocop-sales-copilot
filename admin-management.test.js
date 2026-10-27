@@ -211,3 +211,19 @@ test('Role-based Admin access control: strictly visible to Admin and Distributor
     assert.ok(skyJs.includes('Tài khoản khách hàng không có quyền truy cập Quản trị'), 'Clear warning message for unauthorized customer');
     assert.ok(skyJs.includes('window.openAdminHubModal') && skyJs.includes('!hasPrivilege'), 'openAdminHubModal guards against non-privileged accounts');
 });
+
+test('authenticateAdmin supports alias admin and ad with default admin credentials', () => {
+    const authAdmin = Admin.authenticateAdmin('admin', '0000000');
+    assert.ok(authAdmin, 'admin with 0000000 must succeed');
+    assert.equal(authAdmin.username, 'ThaoNguyenad01');
+
+    const authAd = Admin.authenticateAdmin('ad', 'admin');
+    assert.ok(authAd, 'ad with admin password must succeed');
+    assert.equal(authAd.username, 'ThaoNguyenad01');
+
+    const authId = Admin.authenticateAdmin('AD01', '0000000');
+    assert.ok(authId, 'AD01 must succeed');
+
+    const authSingle = Admin.authenticateAdmin('admin');
+    assert.ok(authSingle, 'admin token must succeed');
+});

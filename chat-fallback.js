@@ -15,7 +15,21 @@
         if(consultReply) return {...consultReply,localFallback:true,aiProvider:'product_consultant'};
         const shopping=typeof module==='object'&&module.exports?require('./ai-shopping'):root.AIShopping;
         const locations=typeof module==='object'&&module.exports?require('./product-locations'):root.OCOPProductLocations;
+        const normQ = (query || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd');
+        const isGeneralShowroom = (/(?:mang luoi|he thong|danh sach|tra cuu)\s+(?:cac\s+)?(?:showroom|diem ban|cua hang)\b|(?:showroom|diem ban|store|store location)\s*(?:network|o2o|he thong|mang luoi)\b|(?:network|list of)\s+(?:showrooms?|stores?)|(?:showroom|diem ban)\s+o2o|o2o\s+(?:showroom|diem ban|store)|(?:ban do so|digital map).*(?:showroom|diem ban|store)|(?:showroom|diem ban|store).*(?:ban do so|digital map)/i.test(normQ) || (/diem ban|showroom/i.test(normQ) && /toan quoc|tat ca|he thong|chinh hang|ban do|nationwide|all stores/i.test(normQ))) && !/(?:san pham nay|mon nay|hang nay|this product|this item)/i.test(normQ);
         const intent=shopping.resolve([...history,{role:'user',text:query}],products);
+        if (isGeneralShowroom) {
+            intent.isStoreLookup = true;
+            intent.categoryOrKeyword = null;
+            intent.isCombo = false;
+            intent.isGift = false;
+            intent.maxPrice = null;
+            intent.minPrice = null;
+            if (!intent.exactRegion) {
+                intent.exactRegions = [];
+                intent.regionKeyword = null;
+            }
+        }
         intent.knowledgeQuery=query;
         const en=language==='en';let message,ids=[],combos=[];
         if(intent.isComplaint||intent.isCSKH)message=en?'Please describe your request and provide your order number if available so staff can help.':'Anh/chị mô tả yêu cầu và cung cấp mã đơn nếu có để nhân viên hỗ trợ nhé.';
