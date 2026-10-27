@@ -2581,3 +2581,34 @@ body.catalog-browsing { padding-top: var(--storefront-nav-height, 60px) !importa
 p#chat-voice-status {
     display: none !important;
 }
+
+/* Đảm bảo độ tương phản màu và chữ luôn rõ ràng khi ấn/hover/focus vào nút & input */
+.bg-sky-600 { background-color: #0284c7 !important; }
+.hover\:bg-sky-700:hover { background-color: #0369a1 !important; }
+.border-sky-600 { border-color: #0284c7 !important; }
+.bg-sky-50 { background-color: #f0f9ff !important; }
+.bg-sky-100 { background-color: #e0f2fe !important; }
+.text-sky-800 { color: #075985 !important; }
+.text-sky-700 { color: #0369a1 !important; }
+.text-sky-600 { color: #0284c7 !important; }
+.border-sky-200 { border-color: #bae6fd !important; }
+.border-sky-300 { border-color: #7dd3fc !important; }
+.border-sky-400 { border-color: #38bdf8 !important; }
+.bg-emerald-600 { background-color: #059669 !important; }
+.hover\:bg-emerald-700:hover { background-color: #047857 !important; }
+
+/* Ngăn mất chữ khi ấn/focus vào nút Voucher hoặc Tab Hero */
+.voucher-save-btn,
+button[onclick*="copyHeroVoucher"] {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+button[onclick*="copyHeroVoucher"]:active,
+button[onclick*="copyHeroVoucher"]:focus {
+    color: #ffffff !important;
+    opacity: 0.95;
+}
+#featured-product-card button:focus,
+#featured-product-card button:active {
+    outline: none;
+}

@@ -4284,9 +4284,11 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             const btn = document.getElementById('hero-tab-btn-' + i);
             if (btn) {
                 if (i === index) {
-                    btn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-black bg-sky-600 text-white shadow-xs cursor-pointer border border-sky-600 transition';
+                    btn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-black shadow-xs cursor-pointer transition';
+                    btn.style.cssText = 'background: #0284C7 !important; color: #FFFFFF !important; border: 1px solid #0284C7 !important;';
                 } else {
-                    btn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-sky-50 text-sky-800 hover:bg-sky-100 cursor-pointer border border-sky-200 transition';
+                    btn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold cursor-pointer transition';
+                    btn.style.cssText = 'background: #F0F9FF !important; color: #075985 !important; border: 1px solid #BAE6FD !important;';
                 }
             }
         }
@@ -4328,12 +4330,26 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         if (aiBtn) aiBtn.setAttribute('onclick', 'consultProductWithAI(' + item.id + ');');
     };
 
-    window.copyHeroVoucher = function (code, desc) {
+    window.copyHeroVoucher = function (code, desc, btnEl) {
         try {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(code).catch(() => {});
             }
         } catch (_) {}
+        const btn = btnEl || (typeof window !== 'undefined' && window.event && (window.event.currentTarget || window.event.target));
+        if (btn && btn.querySelector) {
+            const span = btn.querySelector('span');
+            const icon = btn.querySelector('i');
+            if (span) {
+                const oldText = span.textContent;
+                span.textContent = 'Đã lưu mã!';
+                if (icon) icon.className = 'fa-solid fa-check';
+                setTimeout(() => {
+                    span.textContent = oldText;
+                    if (icon) icon.className = 'fa-regular fa-copy';
+                }, 1800);
+            }
+        }
         if (typeof showToast === 'function') {
             showToast('🎟️ Đã lưu mã [' + code + ']: ' + desc + '! Áp dụng khi đặt hàng.', 'success');
         }

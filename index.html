@@ -3250,7 +3250,7 @@ Khơi Nguồn Di Sản Việt</span>
                  <div class="text-[11px] font-extrabold text-slate-900 leading-tight">Giảm ngay 50K</div>
                  <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-sky-700">OCOP50K</strong></div>
              </div>
-             <button type="button" onclick="copyHeroVoucher('OCOP50K', 'Giảm 50K cho đơn từ 399K')" class="mt-2 w-full py-1 px-2 rounded-lg bg-sky-600 hover:bg-sky-700 active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
+             <button type="button" onclick="copyHeroVoucher('OCOP50K', 'Giảm 50K cho đơn từ 399K', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" style="background: #0284C7 !important; color: #FFFFFF !important;">
                  <i class="fa-regular fa-copy"></i>
                  <span>Lưu Mã</span>
              </button>
@@ -3266,7 +3266,7 @@ Khơi Nguồn Di Sản Việt</span>
                  <div class="text-[11px] font-extrabold text-slate-900 leading-tight">Giảm 100K + Quà</div>
                  <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-amber-700">COMBOVIP</strong></div>
              </div>
-             <button type="button" onclick="copyHeroVoucher('COMBOVIP', 'Giảm 100K + Tặng Hộp Quà OCOP cho đơn từ 899K')" class="mt-2 w-full py-1 px-2 rounded-lg bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
+             <button type="button" onclick="copyHeroVoucher('COMBOVIP', 'Giảm 100K + Tặng Hộp Quà OCOP cho đơn từ 899K', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" style="background: #D97706 !important; color: #FFFFFF !important;">
                  <i class="fa-regular fa-copy"></i>
                  <span>Lưu Mã</span>
              </button>
@@ -3282,7 +3282,7 @@ Khơi Nguồn Di Sản Việt</span>
                  <div class="text-[11px] font-extrabold text-slate-900 leading-tight">Miễn phí ship</div>
                  <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-emerald-700">FREESHIP</strong></div>
              </div>
-             <button type="button" onclick="copyHeroVoucher('FREESHIP', 'Miễn phí vận chuyển toàn quốc cho đơn từ 499K')" class="mt-2 w-full py-1 px-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
+             <button type="button" onclick="copyHeroVoucher('FREESHIP', 'Miễn phí vận chuyển toàn quốc cho đơn từ 499K', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" style="background: #059669 !important; color: #FFFFFF !important;">
                  <i class="fa-regular fa-copy"></i>
                  <span>Lưu Mã</span>
              </button>
@@ -9478,6 +9478,9 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const fileName = ((firstImg.file && firstImg.file.name) || '').toLowerCase();
 
             // 1. Kiểm tra từ khóa trong tên file nếu có
+            if (/mien|dong|bun|pho|vermicelli|noodle|soi|banh[-_ ]?da/i.test(fileName)) {
+                return formatVisualImageResult('vermicelli', prods, lang);
+            }
             if (/que|cinnamon|tra[-_ ]?my|yen[-_ ]?bai|vo[-_ ]?cay/.test(fileName)) {
                 return formatVisualImageResult('cinnamon', prods, lang);
             }
@@ -9529,7 +9532,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             ctx.drawImage(img, 0, 0, 64, 64);
                             const data = ctx.getImageData(0, 0, 64, 64).data;
                             let rTot = 0, gTot = 0, bTot = 0;
-                            let timberBark = 0, greenLeaf = 0, darkRoast = 0, honeyGold = 0, oceanCoral = 0, pureWhite = 0;
+                            let timberBark = 0, greenLeaf = 0, darkRoast = 0, honeyGold = 0, oceanCoral = 0, pureWhite = 0, strawVermicelli = 0;
                             const pixelCount = 64 * 64;
                             for (let i = 0; i < data.length; i += 4) {
                                 const rP = data[i], gP = data[i + 1], bP = data[i + 2];
@@ -9553,7 +9556,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                 const sPct = Math.round(sP * 100);
                                 const lPct = Math.round(lP * 100);
 
-                                if ((rP > bP && (rP - bP) >= 12 && hP >= 8 && hP <= 55 && lPct >= 15 && lPct <= 75) || (rP > 110 && gP > 60 && bP < 90)) {
+                                const isStraw = ((lPct >= 45 && lPct <= 88 && sPct <= 45 && Math.abs(rP - gP) <= 30 && rP >= 120 && gP >= 115) ||
+                                                 (rP >= 145 && gP >= 135 && bP >= 95 && Math.abs(rP - gP) <= 25 && (rP - bP) <= 85));
+                                if (isStraw) {
+                                    strawVermicelli++;
+                                } else if ((rP > bP && (rP - bP) >= 12 && hP >= 8 && hP <= 55 && lPct >= 15 && lPct <= 75) || (rP > 110 && gP > 60 && bP < 90)) {
                                     timberBark++;
                                 } else if ((gP > rP && gP > bP) || (hP >= 65 && hP <= 165 && sPct >= 10)) {
                                     greenLeaf++;
@@ -9561,7 +9568,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                                     darkRoast++;
                                 } else if (hP >= 35 && hP <= 62 && lPct >= 40 && rP > 160) {
                                     honeyGold++;
-                                } else if (rP > 150 && gP < 120 && bP < 120) {
+                                } else if (rP > 160 && (rP - gP) >= 40 && (rP - bP) >= 45 && sPct >= 35) {
                                     oceanCoral++;
                                 } else if (lPct >= 72 && sPct <= 25) {
                                     pureWhite++;
@@ -9570,7 +9577,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             const avgR = Math.round(rTot / pixelCount);
                             const avgG = Math.round(gTot / pixelCount);
                             const avgB = Math.round(bTot / pixelCount);
-                            resolve({ avgR, avgG, avgB, timberBark, greenLeaf, darkRoast, honeyGold, oceanCoral, pureWhite });
+                            resolve({ avgR, avgG, avgB, timberBark, greenLeaf, darkRoast, honeyGold, oceanCoral, pureWhite, strawVermicelli });
                         } catch (_) {
                             resolve(null);
                         }
@@ -9584,7 +9591,10 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
             // 3. Phân loại theo màu sắc thực tế và vân ảnh
             if (visualFeatures) {
-                const { timberBark, greenLeaf, darkRoast, honeyGold, oceanCoral, pureWhite } = visualFeatures;
+                const { timberBark, greenLeaf, darkRoast, honeyGold, oceanCoral, pureWhite, strawVermicelli } = visualFeatures;
+                if (strawVermicelli >= 180 || (strawVermicelli >= 80 && greenLeaf >= 50)) {
+                    return formatVisualImageResult('vermicelli', prods, lang);
+                }
                 if (timberBark >= 100 || (timberBark >= 60 && greenLeaf >= 80)) {
                     return formatVisualImageResult('cinnamon', prods, lang);
                 }
@@ -9594,7 +9604,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 if (honeyGold >= 350) {
                     return formatVisualImageResult('honey', prods, lang);
                 }
-                if (oceanCoral >= 250) {
+                if (oceanCoral >= 450) {
                     return formatVisualImageResult('dried_shrimp', prods, lang);
                 }
                 if (pureWhite >= 400) {
@@ -9692,6 +9702,16 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     ja: 'カマウ産特選乾燥エビ'
                 };
                 productIds = [584, 585];
+            } else if (categoryType === 'vermicelli') {
+                groupNameMap = {
+                    vi: 'Miến dong truyền thống & Nông sản sợi OCOP (Cao Bằng, Bắc Kạn, Yên Bái, Hà Nội)',
+                    en: 'Traditional Arrowroot Vermicelli & OCOP Artisan Noodles',
+                    zh: '传统芭蕉芋粉丝与国家 OCOP 认证粮油粉条',
+                    ko: '전통 당면 및 OCOP 특산 국수 (까오방, 박깐, 옌바이, 하노이)',
+                    ja: '伝統春雨・OCOP認証特産乾麺（カオバン・バッカン・イエンバイ・ハノイ）'
+                };
+                const matches = prods.filter(p => /miến|bún|phở|bánh đa/i.test(p.name));
+                productIds = matches.length ? matches.map(p => p.id).slice(0, 4) : [425, 380, 338, 351, 388];
             } else {
                 groupNameMap = {
                     vi: 'Vỏ Quế khô & Nông đặc sản OCOP Quốc Gia 5 Sao',

@@ -67,7 +67,8 @@ function matchImageEvidence(products, evidence = {}) {
     ['duong thot not', 'thot not', 'palm sugar'],
     ['nuoc mam', 'fish sauce'],
     ['sam', 'nhan sam', 'ginseng', 'sam ngoc linh'],
-    ['dong trung ha thao', 'cordyceps']
+    ['dong trung ha thao', 'cordyceps'],
+    ['mien', 'mien dong', 'mien dao', 'bun', 'pho', 'vermicelli', 'noodles', 'noodle', 'banh da', 'soi']
   ];
   const phrase = (text, term) => (` ${text} `).includes(` ${term} `);
   const terms = aliases.find(group => group.some(term => phrase(type, term))) || [type];

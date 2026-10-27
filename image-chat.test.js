@@ -70,4 +70,6 @@ test('image matching respects visible region and never guesses from a caption or
  assert.deepEqual(matchImageEvidence(catalog,{label:'Cà phê Điện Biên',productType:'unknown'}),[]);
  assert.deepEqual(matchImageEvidence(products,{label:'Cà phê Hà Nội',productType:'Cà phê'}),[]);
  assert.deepEqual(matchImageEvidence(products,{label:'',productType:'Đồ chơi'}),[]);
+ const mienMatches=matchImageEvidence(catalog,{label:'Miến dong Trà Lĩnh',productType:'Miến dong'});
+ assert.equal(mienMatches.includes(425),true);
 });
