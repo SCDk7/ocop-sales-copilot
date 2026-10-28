@@ -61,9 +61,7 @@
         #ocop-intro-overlay::after,
         #ocop-intro-overlay #intro-bg-parallax-layer,
         #ocop-intro-overlay .intro-ambient-orb,
-        #ocop-intro-overlay .intro-waterlight {
-            display: none !important;
-        }
+        #ocop-intro-overlay .intro-waterlight { display: none !important; }
     </style>
  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -92,7 +90,8 @@
  <!-- Font Awesome Icons & Google Fonts -->
  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=a78371028241">
  <!-- Project Stylesheets -->
- <link rel="stylesheet" href="style.css?v=6d2cfbb5784f">
+ <link rel="stylesheet" href="style.css?v=8aec987c157e">
+    <link rel="stylesheet" href="skytech-complete.css?v=73ab9d6b3cfe">
  <!-- <link rel="stylesheet" href="styledangcap.css"> -->
  <!-- <link rel="stylesheet" href="SuaLoiKoClick.css"> -->
  <style>
@@ -191,17 +190,11 @@
             color: #6ee7b7 !important;
         }
         .header-support-chip a { color: #34d399 !important; }
-        /* 7. HERO SECTION — DARK GRADIENT SYNC */
-        #shop-hero h2, #shop-hero .text-gray-900 { color: #f1f5f9 !important; }
-        #shop-hero p.text-gray-700, #shop-hero .text-gray-700 { color: #94a3b8 !important; }
-        #shop-hero .bg-emerald-50\/80, #shop-hero .bg-amber-50\/80 {
-            background: rgba(17, 24, 39, 0.8) !important;
-            border-color: rgba(212, 175, 55, 0.25) !important;
-        }
-        #shop-hero .text-ocopGreen { color: #34d399 !important; }
-        #shop-hero .text-amber-800 { color: #fbbf24 !important; }
-        #shop-hero .text-gray-700 { color: #94a3b8 !important; }
-        #shop-hero .border-amber-200\/80 { border-color: rgba(212,175,55,0.25) !important; }
+        /* 7. HERO SECTION — CLEAN SKY TECH THEME */
+        #shop-hero h2 { color: #0F172A !important; }
+        #shop-hero p { color: #334155 !important; }
+        #shop-hero .text-ocopGreen { color: #0284C7 !important; }
+        #shop-hero .text-amber-800 { color: #0369A1 !important; }
         /* 8. HERO FEAT CARDS — PREMIUM GLOW */
         #shop-hero .grid .rounded-xl {
             transition: all 0.25s ease !important;
@@ -212,8 +205,9 @@
         }
         /* 9. ANNOUNCEMENT BAR — DARK */
         .top-announcement-bar {
-            background: linear-gradient(90deg, #05100b 0%, #08120e 50%, #05100b 100%) !important;
-            border-bottom: 1px solid rgba(212,175,55,0.2) !important;
+            background: linear-gradient(90deg, #0369A1 0%, #0284C7 50%, #0369A1 100%) !important;
+            border-bottom: 1px solid #7DD3FC !important;
+            color: #FFFFFF !important;
         }
         /* 10. CSS PERFORMANCE CONTAINMENT (Sub 1s rendering) */
         #products-section { contain: layout !important; }
@@ -459,18 +453,18 @@
         select,
         select option,
         select optgroup {
-            background-color: #0d1b15 !important;
-            color: #fef08a !important;
+            background-color: #FFFFFF !important;
+            color: #0F172A !important;
         }
         #product-sort-select,
         #sidebar-province-select,
         #province-map-select {
-            background-color: #0d1b15 !important;
-            color: #fef08a !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important;
+            background-color: #FFFFFF !important;
+            color: #0F172A !important;
+            border: 1.5px solid #BAE6FD !important;
             border-radius: 0.75rem !important;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15) !important;
-            font-weight: 800 !important;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08) !important;
+            font-weight: 700 !important;
             transition: all 0.25s ease !important;
             cursor: pointer !important;
             outline: none !important;
@@ -484,14 +478,15 @@
             border-color: rgba(234, 179, 8, 0.8) !important;
             box-shadow: 0 0 20px rgba(234, 179, 8, 0.35) !important;
         }
+        #product-sort-select option { background-color: #0d1b15; }
         #product-sort-select option,
         #sidebar-province-select option,
         #sidebar-province-select optgroup,
         #province-map-select option {
-            background-color: #0d1b15 !important;
-            color: #fef08a !important;
+            background-color: #FFFFFF !important;
+            color: #0F172A !important;
             padding: 10px 14px !important;
-            font-weight: 700 !important;
+            font-weight: 600 !important;
             border: none !important;
         }
         #product-sort-select option:hover,
@@ -511,11 +506,10 @@
         /* TOAST THÔNG BÁO AI ENGINE: GRADIENT XANH RÊU + VIỀN NEON     */
         /* ============================================================= */
         .ai-toast-box {
-            background: linear-gradient(135deg, #0f2b1d 0%, #0a0f0d 100%) !important;
-            border: 1px solid rgba(16, 185, 129, 0.6) !important;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.35), 0 10px 30px rgba(0, 0, 0, 0.85) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
+            background: #FFFFFF !important;
+            border: 1px solid #7DD3FC !important;
+            box-shadow: 0 10px 30px rgba(2, 132, 199, 0.15) !important;
+            color: #0F172A !important;
         }
         .ai-toast-icon-pulse {
             animation: toastIconPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -721,16 +715,14 @@
             text-align: left !important;
         }
         .lang-dropdown-item:hover {
-            background: #0f2b1d !important;
-            border-color: rgba(16, 185, 129, 0.5) !important;
-            color: #d4af37 !important;
-            text-shadow: 0 0 8px rgba(212, 175, 55, 0.5) !important;
+            background: #E0F2FE !important;
+            border-color: #7DD3FC !important;
+            color: #0284C7 !important;
         }
         .lang-dropdown-item.active {
-            background: rgba(16, 185, 129, 0.2) !important;
-            border-color: rgba(16, 185, 129, 0.6) !important;
-            color: #fbbf24 !important;
-            text-shadow: 0 0 8px rgba(212, 175, 55, 0.6) !important;
+            background: #BAE6FD !important;
+            border-color: #0284C7 !important;
+            color: #0369A1 !important;
         }
         .lang-dropdown-item .item-code {
             font-weight: 900 !important;
@@ -751,15 +743,14 @@
             animation: none !important;
         }
         body > header {
-            background: rgba(13, 27, 21, 0.95) !important;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.25) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
+            background: #FFFFFF !important;
+            border-bottom: 1px solid #BAE6FD !important;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.06) !important;
         }
         .top-announcement-bar {
-            background: #08120e !important;
-            color: #fef08a !important;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+            background: linear-gradient(90deg, #0369A1 0%, #0284C7 50%, #0369A1 100%) !important;
+            border-bottom: 1px solid #7DD3FC !important;
+            color: #FFFFFF !important;
         }
         #scroll-progress-bar {
             width: 100%;
@@ -1683,19 +1674,8 @@
             }
         }
         /* ==============================================================
-           THEME HOÀNG KIM & NGỌC BÍCH - OCOP LUXURY HERITAGE DESIGN
+           CLEAN SKY-TECH INTRO OVERLAY BASE RULES
            ============================================================== */
-        @keyframes livingEmeraldMesh {
-            0% {
-                background-position: 0% 10%, 100% 90%, 50% 50%, 0% 0%;
-            }
-            50% {
-                background-position: 100% 60%, 0% 40%, 65% 35%, 100% 100%;
-            }
-            100% {
-                background-position: 0% 10%, 100% 90%, 50% 50%, 0% 0%;
-            }
-        }
         #ocop-intro-overlay {
             color: #0F172A !important;
             background: #E0F2FE !important;
@@ -1706,372 +1686,49 @@
             position: fixed;
             inset: 0;
             z-index: 100;
+            color-scheme: light !important;
+            overscroll-behavior: contain;
         }
         #ocop-intro-overlay::before,
-        #ocop-intro-overlay::after {
-            content: "";
-            position: fixed;
-            z-index: 0;
-            width: min(55vw, 45rem);
-            aspect-ratio: 1;
-            border-radius: 50%;
-            pointer-events: none;
-            filter: blur(85px);
-            opacity: 0.55;
-            animation: introAuroraFloat 16s ease-in-out infinite alternate;
+        #ocop-intro-overlay::after,
+        #ocop-intro-overlay #intro-bg-parallax-layer,
+        #ocop-intro-overlay .intro-ambient-orb,
+        #ocop-intro-overlay .intro-waterlight {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
         }
-        #ocop-intro-overlay::before {
-            top: -15%;
-            left: -10%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.42), transparent 70%);
+        #ocop-intro-overlay .curtain-closing { animation: curtainExit 0.42s ease forwards; }
+        #ocop-intro-overlay .intro-stage {
+            width: min(100%, 74rem);
+            max-width: 74rem;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            grid-template-areas:
+                "ticker"
+                "award"
+                "copy"
+                "pillars"
+                "regions"
+                "lucky"
+                "actions";
+            align-items: stretch;
+            gap: clamp(0.75rem, 1.5vw, 1.15rem);
+            padding-block: 1rem;
+            margin-block: auto;
+            text-align: left;
         }
-        #ocop-intro-overlay::after {
-            right: -10%;
-            bottom: -20%;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.38), transparent 70%);
-            animation-delay: -8s;
-        }
-        @keyframes introAuroraFloat {
-            0% {
-                transform: scale(0.92) translate3d(-40px, -30px, 0) rotate(0deg);
-                opacity: 0.35;
-            }
-            50% {
-                transform: scale(1.28) translate3d(60px, 50px, 0) rotate(25deg);
-                opacity: 0.65;
-            }
-            100% {
-                transform: scale(0.92) translate3d(-40px, -30px, 0) rotate(0deg);
-                opacity: 0.35;
-            }
-        }
-        #ocop-intro-overlay > .fixed {
-            opacity: 1;
-        }
-        #ocop-intro-overlay > .fixed > div:not(canvas):not(.intro-ambient-orb) {
-            display: block;
-        }
-        #ocop-intro-overlay > .fixed > .intro-ambient-orb {
-            display: block;
-            opacity: 0.65;
-            filter: blur(95px);
-        }
-        #ocop-intro-overlay > .fixed > .intro-ambient-orb--blue {
-            background-color: rgba(16, 185, 129, 0.35);
-            animation: introOrbFloatBlue 13s ease-in-out infinite alternate !important;
-        }
-        #ocop-intro-overlay > .fixed > .intro-ambient-orb--cyan {
-            background-color: rgba(6, 182, 212, 0.28);
-            animation: introOrbFloatCyan 15s ease-in-out infinite alternate !important;
-            animation-delay: -5s;
-        }
-        #ocop-intro-overlay > .fixed > .intro-ambient-orb--gold {
-            background-color: rgba(212, 175, 55, 0.32);
-            animation: introOrbFloatGold 17s ease-in-out infinite alternate !important;
-            animation-delay: -9s;
-        }
-        @keyframes introOrbFloatBlue {
-            0% { transform: translate3d(-60px, -40px, 0) scale(0.9); }
-            50% { transform: translate3d(80px, 70px, 0) scale(1.22); }
-            100% { transform: translate3d(-60px, -40px, 0) scale(0.9); }
-        }
-        @keyframes introOrbFloatCyan {
-            0% { transform: translate3d(-50%, -50%, 0) scale(0.95); }
-            50% { transform: translate3d(calc(-50% + 70px), calc(-50% - 50px), 0) scale(1.25); }
-            100% { transform: translate3d(-50%, -50%, 0) scale(0.95); }
-        }
-        @keyframes introOrbFloatGold {
-            0% { transform: translate3d(40px, 60px, 0) scale(1.15); }
-            50% { transform: translate3d(-90px, -70px, 0) scale(0.85); }
-            100% { transform: translate3d(40px, 60px, 0) scale(1.15); }
-        }
-        .intro-waterlight {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(ellipse at 35% 25%, rgba(253, 230, 138, 0.16) 0%, transparent 45%),
-                radial-gradient(ellipse at 65% 75%, rgba(52, 211, 153, 0.2) 0%, transparent 45%);
-            background-size: 180% 180%;
-            animation: waterlightWave 11s ease-in-out infinite;
-            mix-blend-mode: screen;
-        }
-        @keyframes waterlightWave {
-            0% { background-position: 0% 0%; opacity: 0.18; }
-            50% { background-position: 100% 100%; opacity: 0.35; }
-            100% { background-position: 0% 0%; opacity: 0.18; }
-        }
-        /* HEADER THANH LỊCH GLASSMORPHISM */
-        #ocop-intro-overlay .intro-header {
-            background: rgba(6, 24, 18, 0.75);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(212, 175, 55, 0.35);
-            border-radius: 9999px;
-            padding: 0.65rem 1.25rem;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-        #ocop-intro-overlay #intro-sound-btn,
-        #ocop-intro-overlay #intro-language-btn {
-            color: #fce8ad;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            backdrop-filter: blur(10px);
-            transition: all 0.25s ease;
-        }
-        #ocop-intro-overlay #intro-sound-btn:hover,
-        #ocop-intro-overlay #intro-language-btn:hover {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: rgba(212, 175, 55, 0.7);
-            transform: scale(1.05);
-        }
-        #ocop-intro-overlay #intro-skip-button {
-            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 50%, #B8860B 100%) !important;
-            color: #051a12 !important;
-            font-weight: 800 !important;
-            border: 1px solid #FFF3C4 !important;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.5) !important;
-            transition: all 0.3s ease;
-        }
-        #ocop-intro-overlay #intro-skip-button:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.8) !important;
-        }
-        /* LIVE TICKER BAR */
-        #ocop-intro-overlay .intro-live-ticker {
-            background: rgba(3, 16, 12, 0.65) !important;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(212, 175, 55, 0.3) !important;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        }
-        #ocop-intro-overlay .intro-live-ticker .ticker-content {
-            color: #f7e6b5 !important;
-            font-weight: 600;
-        }
-        #ocop-intro-overlay .intro-live-ticker .intro-live-label {
-            color: #34d399 !important;
-        }
-        /* NATIONAL SEAL BADGE */
-        #ocop-intro-overlay #intro-award-badge {
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.16) 0%, rgba(16, 185, 129, 0.16) 100%) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
-            color: #FFF3C4 !important;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25) !important;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-        }
-        #ocop-intro-overlay #intro-award-badge i {
-            color: #FFDF00 !important;
-            filter: drop-shadow(0 0 8px rgba(255, 223, 0, 0.8));
-        }
-        /* HERO TITLE & TEXT */
-        #ocop-intro-overlay .intro-hero-title {
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-        }
-        #ocop-intro-overlay #i18n-intro-title1 {
-            color: #ffffff !important;
-            font-weight: 800;
-            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.25), 0 4px 15px rgba(0, 0, 0, 0.8);
-        }
-        #ocop-intro-overlay .intro-gold-gradient,
-        #ocop-intro-overlay #i18n-intro-title2 {
-            background: linear-gradient(135deg, #FFFDE8 0%, #FDE082 25%, #D4AF37 55%, #A87B1D 85%, #FFE99E 100%) !important;
-            background-size: 200% auto !important;
-            background-clip: text !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            animation: goldShine 7s linear infinite !important;
-            filter: drop-shadow(0 2px 14px rgba(212, 175, 55, 0.5)) !important;
-        }
-        #ocop-intro-overlay #i18n-intro-desc {
-            color: #d1e7dd !important;
-            font-size: clamp(0.85rem, 1.35vw, 0.95rem);
-            line-height: 1.65;
-            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
-        }
-        /* 4 TRỤ CỘT HOLOGRAM GLASS CARDS (THAY THẾ THẺ BEIGE CŨ) */
-        #ocop-intro-overlay .intro-pillars > div {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(212, 175, 55, 0.3) !important;
-            border-radius: 20px !important;
-            box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        }
-        #ocop-intro-overlay .intro-pillars > div:hover {
-            transform: translateY(-5px) scale(1.025) !important;
-            border-color: rgba(212, 175, 55, 0.8) !important;
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.4) !important;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
-        }
-        #ocop-intro-overlay .intro-pillars span[id^="i18n-intro-pillar"]:not([id$="-sub"]) {
-            color: #ffffff !important;
-            font-weight: 800 !important;
-            font-size: 0.8rem !important;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-        }
-        #ocop-intro-overlay .intro-pillars span[id$="-sub"] {
-            color: #fde68a !important;
-            font-weight: 500 !important;
-            font-size: 0.68rem !important;
-            opacity: 0.95;
-        }
-        /* HÒM LỘC VÀNG AI CAPSUlE */
-        #ocop-intro-overlay #intro-lucky-card {
-            background: linear-gradient(135deg, rgba(26, 18, 5, 0.82) 0%, rgba(42, 28, 7, 0.88) 100%) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
-            box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(212, 175, 55, 0.12) !important;
-            border-radius: 24px !important;
-        }
-        #ocop-intro-overlay #intro-lucky-card .text-amber-300 {
-            color: #FDE047 !important;
-        }
-        #ocop-intro-overlay #intro-lucky-card .text-amber-100\/90 {
-            color: #FEF08A !important;
-        }
-        #ocop-intro-overlay #btn-draw-gift {
-            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 50%, #B8860B 100%) !important;
-            color: #061B13 !important;
-            font-weight: 800 !important;
-            border: 1px solid #FFF8DB !important;
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5) !important;
-        }
-        #ocop-intro-overlay #btn-draw-gift:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.8) !important;
-        }
-        /* BẢN ĐỒ VIỆT NAM (KHUNG CHỈ HUY KHÔNG GIAN SANG TRỌNG) */
-        #ocop-intro-overlay .intro-regions {
-            background: linear-gradient(160deg, rgba(8, 28, 22, 0.88) 0%, rgba(3, 15, 11, 0.94) 100%) !important;
-            backdrop-filter: blur(24px) !important;
-            -webkit-backdrop-filter: blur(24px) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.42) !important;
-            border-radius: 28px !important;
-            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.85), inset 0 0 35px rgba(212, 175, 55, 0.1) !important;
-            padding: clamp(1rem, 2vw, 1.5rem) !important;
-        }
-        #ocop-intro-overlay .intro-region-kicker {
-            color: #FFE69A !important;
-            font-weight: 800 !important;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-            letter-spacing: 0.05em;
-        }
-        #ocop-intro-overlay .intro-region-caption {
-            color: #A3C9BD !important;
-            font-size: 0.82rem !important;
-            font-weight: 500;
-        }
-        #ocop-intro-overlay .province-map-select {
-            background: rgba(4, 20, 15, 0.92) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
-            color: #FFF8DB !important;
-            border-radius: 14px !important;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.6);
-            font-weight: 700 !important;
-        }
-        #ocop-intro-overlay .province-map-select option {
-            background: #072118;
-            color: #FFF8DB;
-        }
-        #ocop-intro-overlay .province-map {
-            border: 1.5px solid rgba(212, 175, 55, 0.35) !important;
-            border-radius: 18px !important;
-            overflow: hidden !important;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.6), inset 0 0 25px rgba(0,0,0,0.5) !important;
-        }
-        #ocop-intro-overlay .province-map-status {
-            color: #6EE7B7 !important;
-            font-weight: 700;
-        }
-        #ocop-intro-overlay .province-map-clear {
-            background: rgba(212, 175, 55, 0.18) !important;
-            border: 1px solid rgba(212, 175, 55, 0.5) !important;
-            color: #FFF3C4 !important;
-            border-radius: 10px !important;
-            font-weight: 800 !important;
-            transition: all 0.2s ease;
-        }
-        #ocop-intro-overlay .province-map-clear:hover:not(:disabled) {
-            background: rgba(212, 175, 55, 0.4) !important;
-            color: #ffffff !important;
-            border-color: #FFDF00 !important;
-        }
-        #ocop-intro-overlay .intro-actions #intro-enter-market {
-            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 50%, #B8860B 100%) !important;
-            color: #061B13 !important;
-            font-weight: 900 !important;
-            border: 2px solid #FFF8DB !important;
-            box-shadow: 0 10px 35px rgba(212, 175, 55, 0.6) !important;
-            border-radius: 20px !important;
-            transition: all 0.35s ease;
-        }
-        #ocop-intro-overlay .intro-actions #intro-enter-market:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 15px 45px rgba(212, 175, 55, 0.85) !important;
-        }
-        #ocop-intro-overlay .intro-pill-btn {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border: 1px solid rgba(212, 175, 55, 0.3) !important;
-            color: #FDE68A !important;
-            backdrop-filter: blur(12px) !important;
-            transition: all 0.25s ease !important;
-        }
-        #ocop-intro-overlay .intro-pill-btn:hover {
-            background: rgba(212, 175, 55, 0.25) !important;
-            border-color: #FFDF00 !important;
-            color: #ffffff !important;
-            transform: translateY(-2px) scale(1.04);
-        }
-        #ocop-intro-overlay #province-products-panel:not(.hidden) {
-            background: rgba(4, 20, 15, 0.95) !important;
-            border: 1.5px solid rgba(212, 175, 55, 0.45) !important;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.8), inset 0 0 25px rgba(212, 175, 55, 0.1) !important;
-            color: #ffffff !important;
-        }
-        #ocop-intro-overlay #province-products-title {
-            color: #FDE68A !important;
-        }
-        #ocop-intro-overlay .province-product-card {
-            background: rgba(8, 32, 24, 0.85) !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
-        }
-        #ocop-intro-overlay .province-product-card:hover {
-            background: rgba(14, 48, 36, 0.95) !important;
-            border-color: rgba(212, 175, 55, 0.75) !important;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.3) !important;
-        }
-        #ocop-intro-overlay .province-product-card .province-product-name {
-            color: #FFF8DB !important;
-            font-weight: 800 !important;
-        }
-        #ocop-intro-overlay .province-product-card p {
-            color: #6EE7B7 !important;
-        }
-        #ocop-intro-overlay .province-product-card .province-product-add-button {
-            background: linear-gradient(135deg, #FFE79A 0%, #D4AF37 100%) !important;
-            color: #061B13 !important;
-            font-weight: 800 !important;
-            border: 1px solid #FFF8DB !important;
-            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4) !important;
-        }
-        #ocop-intro-overlay .province-product-card .province-product-add-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.7) !important;
-        }
-        @media (max-width: 640px) {
-            #ocop-intro-overlay > .relative.z-20.max-w-4xl {
-                padding-top: 1rem;
-                padding-bottom: 1.5rem;
-                gap: 1rem;
-            }
-            #ocop-intro-overlay h2 {
-                font-size: clamp(1.65rem, 8vw, 2.4rem);
-                line-height: 1.12;
-            }
+        #ocop-intro-overlay .intro-stage > * { margin: 0 !important; }
+        #ocop-intro-overlay .intro-live-ticker { grid-area: ticker; max-width: none; }
+        #ocop-intro-overlay #intro-award-badge { grid-area: award; justify-self: start; }
+        #ocop-intro-overlay .intro-hero-copy { grid-area: copy; text-align: left; }
+        #ocop-intro-overlay .intro-pillars { grid-area: pillars; max-width: none; }
+        #ocop-intro-overlay #intro-lucky-card { grid-area: lucky; max-width: none; text-align: left; }
+        #ocop-intro-overlay .intro-regions { grid-area: regions; width: 100%; max-width: none; }
+        #ocop-intro-overlay .intro-actions { grid-area: actions; width: 100%; max-width: none; text-align: left; }
+        #ocop-intro-overlay > .relative.z-20.max-w-5xl {
+            padding-top: 0.75rem;
+            padding-bottom: 0.5rem;
         }
         .site-search-input {
             color: #263b53;
@@ -2090,7 +1747,7 @@
             min-height: 2rem;
         }
         #ocop-intro-overlay {
-            color-scheme: dark;
+            color-scheme: light;
             overscroll-behavior: contain;
         }
         #ocop-intro-overlay .curtain-closing { animation: curtainExit 0.42s ease forwards; }
@@ -2163,26 +1820,23 @@
             padding-top: clamp(1.5rem, 4vw, 3.5rem);
             padding-bottom: clamp(1.5rem, 4vw, 3.5rem);
         }
-        #shop-hero > div {
+        #shop-hero,
+        #shop-hero > div,
+        #shop-hero .hero-columns {
             position: relative;
-            isolation: isolate;
-            overflow: hidden;
-            padding: clamp(1.25rem, 3vw, 2.75rem);
-            border: 2px solid rgba(251, 191, 36, 0.55) !important;
-            border-radius: 2rem;
-            background:
-                radial-gradient(circle at 85% 15%, rgba(251, 191, 36, 0.32), transparent 32rem),
-                radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.28), transparent 32rem),
-                linear-gradient(135deg, rgba(10, 52, 38, 0.95), rgba(6, 34, 24, 0.97)) !important;
-            box-shadow: 0 0 45px rgba(251, 191, 36, 0.25), 0 25px 60px rgba(0, 0, 0, 0.75) !important;
+            border: none !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
         }
         #shop-hero > div > div:first-child { position: relative; z-index: 1; }
         #shop-hero > div > div:last-child { position: relative; z-index: 1; }
         #shop-hero .glass-panel {
             border-width: 1px;
-            background: rgba(10, 26, 20, 0.85);
-            border-color: rgba(212, 175, 55, 0.35);
-            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+            background: #FFFFFF !important;
+            border-color: #BAE6FD !important;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.08) !important;
         }
         #products-section { scroll-margin-top: 6rem; }
         #products-section .glass-panel { backdrop-filter: none; -webkit-backdrop-filter: none; }
@@ -2201,8 +1855,9 @@
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18), 0 5px 16px rgba(0, 0, 0, 0.4);
         }
         #contact-footer {
-            background: linear-gradient(180deg, #07120e 0%, #040d0a 100%) !important;
-            border-top: 1px solid rgba(212, 175, 55, 0.35) !important;
+            background: linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 100%) !important;
+            border-top: 2px solid #BAE6FD !important;
+            color: #0F172A !important;
         }
         #products-section .product-card {
             border-color: #BAE6FD !important;
@@ -2451,7 +2106,7 @@
         }
         #ocop-intro-overlay { animation: none; overscroll-behavior-y: contain; }
         #ocop-intro-overlay::before, #ocop-intro-overlay::after,
-        #ocop-intro-overlay .intro-ambient-orb, #ocop-intro-overlay .intro-waterlight { animation: none !important; }
+        #ocop-intro-overlay .intro-ambient-orb, #ocop-intro-overlay .intro-waterlight { display: none !important; }
         #ocop-intro-overlay .intro-card-glass,
         #ocop-intro-overlay #intro-lucky-card,
         #ocop-intro-overlay .intro-live-ticker {
@@ -3120,7 +2775,7 @@
  <main class="flex-1" style="display: flex !important; flex-direction: column !important; gap: 20px !important; min-height: auto !important; height: auto !important; position: relative !important; z-index: 20 !important;">
  <!-- 3. HERO BANNER SECTION (CLEAN SKY-TECH UNBOXED HERO) -->
  <section id="shop-hero" class="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 relative" style="max-width: 1400px !important; width: 94% !important; background: transparent !important; border: none !important; box-shadow: none !important;">
- <div class="hero-columns grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+ <div class="hero-columns grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" style="background: transparent !important; border: none !important; box-shadow: none !important;">
  <div class="hero-intro-column lg:col-span-7 space-y-5">
  <h2 class="text-2xl sm:text-4xl lg:text-[2.65rem] font-black tracking-tight leading-[1.15]" style="color: #0F172A !important;">
  <span id="i18n-hero-title1">OCOP Việt Nam</span>
@@ -4060,11 +3715,11 @@
  <button type="button" id="image-search-button" style="display:none!important;"></button>
  <label for="product-sort-select">Sắp xếp sản phẩm</label>
  <select id="product-sort-select" onchange="changeProductSort(this.value)" class="bg-[#0d1b15] text-amber-200 font-extrabold text-xs">
- <option value="default" id="i18n-sort-default" class="bg-[#0d1b15] text-amber-200 font-bold">Sắp xếp: Mặc định</option>
- <option value="stars-desc" id="i18n-sort-stars" class="bg-[#0d1b15] text-amber-200 font-bold">Phân hạng: Ưu tiên OCOP 5 Sao</option>
- <option value="rating-desc" id="i18n-sort-volume" class="bg-[#0d1b15] text-amber-200 font-bold">Sản lượng số hóa: Cao nhất</option>
- <option value="price-asc" id="i18n-sort-margin-asc" class="bg-[#0d1b15] text-amber-200 font-bold">Biên lợi nhuận: Tăng dần</option>
- <option value="price-desc" id="i18n-sort-margin-desc" class="bg-[#0d1b15] text-amber-200 font-bold">Biên lợi nhuận: Giảm dần</option>
+ <option value="default" id="i18n-sort-default" class="bg-white text-slate-800 font-bold">Sắp xếp: Mặc định</option>
+ <option value="stars-desc" id="i18n-sort-stars" class="bg-white text-slate-800 font-bold">Phân hạng: Ưu tiên OCOP 5 Sao</option>
+ <option value="rating-desc" id="i18n-sort-volume" class="bg-white text-slate-800 font-bold">Sản lượng số hóa: Cao nhất</option>
+ <option value="price-asc" id="i18n-sort-margin-asc" class="bg-white text-slate-800 font-bold">Biên lợi nhuận: Tăng dần</option>
+ <option value="price-desc" id="i18n-sort-margin-desc" class="bg-white text-slate-800 font-bold">Biên lợi nhuận: Giảm dần</option>
  </select>
  <input type="file" id="image-search-file" accept="image/*" class="hidden" onchange="searchProductsByImage(this.files[0])">
  <span id="i18n-toolbar-btn-reset">Đặt lại</span>
@@ -8482,7 +8137,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const userMessage = document.createElement('div');
             userMessage.className = 'chat-quick-prompt-message flex items-start justify-end';
             const userBubble = document.createElement('div');
-            userBubble.className = 'max-w-[80%] bg-[#0F382C] text-white px-4 py-3 rounded-[22px_22px_8px_22px] text-sm leading-relaxed shadow-sm';
+            userBubble.className = 'max-w-[80%] bg-[#0284C7] text-white px-4 py-3 rounded-[22px_22px_8px_22px] text-sm leading-relaxed shadow-sm';
             userBubble.textContent = normalizedPrompt || 'Tôi nhận hàng bị lỗi';
             userMessage.appendChild(userBubble);
             const assistantWrap = document.createElement('div');
@@ -16773,7 +16428,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
     }
 </script>
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->
-<link rel="stylesheet" href="skytech-complete.css?v=e624f4dac921">
 <link rel="stylesheet" href="store-directory-light.css?v=cb405b0da1a4">
 <link rel="stylesheet" href="cart-ui.css?v=80dd2dc99bc9">
 <link rel="stylesheet" href="account-center.css?v=cf9634a1cf0b">
