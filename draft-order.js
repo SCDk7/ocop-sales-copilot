@@ -154,6 +154,203 @@ document.getElementById('add').onclick = () => {
 };
 
 let lastDraft;
+let receiptAccess = '';
+let trackingBusy = false;
+
+function trackingURL(draft) {
+    const url = new URL('draft-order.html', location.href);
+    url.searchParams.set('order', draft.id);
+    url.hash = 'receipt=' + receiptAccess;
+    return url.href;
+}
+
+function rememberDraft(draft) {
+    try {
+        const saved = JSON.parse(localStorage.getItem('ocop_customer_orders') || '[]');
+        const rows = Array.isArray(saved) ? saved : [];
+        const previous = rows.find(row => row.id === draft.id);
+        const user = JSON.parse(localStorage.getItem('ocop_current_user') || 'null');
+        const record = {...previous, ...draft, receiptToken: receiptAccess, username: previous?.username || user?.username || null};
+        localStorage.setItem('ocop_customer_orders', JSON.stringify([record, ...rows.filter(row => row.id !== draft.id)]));
+        window.dispatchEvent(new Event('ocop-orders-updated'));
+    } catch (_) {}
+}
+
+function trackingView(draft) {
+    form.hidden = true;
+    document.getElementById('add').hidden = true;
+    const heading = document.querySelector('h1');
+    if (heading) {
+        heading.dataset.vi = 'Theo dõi đơn hàng OCOP';
+        heading.dataset.en = 'Track your OCOP order';
+        heading.textContent = salesPage.text(heading.dataset.vi, heading.dataset.en);
+    }
+    const intro = document.querySelector('h1 + p');
+    if (intro) {
+        intro.dataset.vi = 'Đơn chỉ hoàn thành khi bạn xác nhận đã nhận hàng. Hãy giữ riêng liên kết theo dõi đơn này để xem lại trạng thái.';
+        intro.dataset.en = 'Your order is completed only after you confirm receipt. Keep this tracking link private so you can check its status later.';
+        intro.textContent = salesPage.text(intro.dataset.vi, intro.dataset.en);
+    }
+    if (draft && receiptAccess) history.replaceState(null, '', trackingURL(draft));
+}
+
+async function refreshDraft(id) {
+    if (trackingBusy) return;
+    trackingBusy = true;
+    status.className = '';
+    status.textContent = salesPage.text('Đang cập nhật trạng thái đơn…', 'Refreshing order status…');
+    try {
+        const response = await fetch(salesPage.api('/api/ai/draft-orders/' + encodeURIComponent(id)), {
+            headers: {Authorization: 'Bearer ' + receiptAccess}, cache: 'no-store'
+        });
+        const body = await response.json();
+        if (!response.ok) throw new Error(body.error || salesPage.text('Không tải được đơn hàng.', 'Could not load this order.'));
+        lastDraft = body.draft;
+        rememberDraft(lastDraft);
+        showDraft(lastDraft);
+        status.textContent = salesPage.text('Đã cập nhật trạng thái đơn hàng.', 'Order status updated.');
+    } catch (error) {
+        status.className = 'error';
+        status.textContent = error.message;
+    } finally { trackingBusy = false; }
+}
+
+function orderActions(draft) {
+    if (!receiptAccess) return;
+    const actions = document.createElement('div');
+    actions.className = 'order-tracking-actions';
+    const refresh = document.createElement('button');
+    refresh.type = 'button';
+    refresh.textContent = salesPage.text('Cập nhật trạng thái', 'Refresh status');
+    refresh.onclick = () => refreshDraft(draft.id);
+    actions.append(refresh);
+    if (draft.status === 'shipped' || draft.status === 'completed' && !draft.customerReceivedAt) {
+        const receive = document.createElement('button');
+        receive.type = 'button';
+        receive.id = 'confirm-order-received';
+        receive.className = 'primary';
+        receive.textContent = salesPage.text('Tôi đã nhận hàng', 'I have received my order');
+        receive.onclick = async () => {
+            if (trackingBusy || !window.confirm(salesPage.text('Bạn xác nhận đã nhận đủ hàng? Chỉ xác nhận khi hàng đã được giao đến bạn.', 'Have you received your items? Confirm only after they have been delivered to you.'))) return;
+            trackingBusy = true;
+            receive.disabled = true;
+            try {
+                const response = await fetch(salesPage.api('/api/ai/draft-orders/' + encodeURIComponent(draft.id) + '/received'), {
+                    method: 'POST', headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + receiptAccess},
+                    body: JSON.stringify({confirmed: true})
+                });
+                const body = await response.json();
+                if (!response.ok) throw new Error(body.error || salesPage.text('Chưa xác nhận được nhận hàng.', 'Could not confirm receipt.'));
+                lastDraft = body.draft;
+                rememberDraft(lastDraft);
+                showDraft(lastDraft);
+                status.className = '';
+                status.textContent = salesPage.text('Đã xác nhận nhận hàng. Đơn hàng hoàn thành!', 'Receipt confirmed. Your order is complete!');
+            } catch (error) {
+                status.className = 'error';
+                status.textContent = error.message;
+            } finally { trackingBusy = false; receive.disabled = false; }
+        };
+        actions.append(receive);
+    }
+    const link = document.createElement('a');
+    link.href = trackingURL(draft);
+    link.textContent = salesPage.text('Liên kết theo dõi đơn hàng (giữ riêng)', 'Private order tracking link');
+    actions.append(link);
+    result.append(actions);
+}
+
+
+function renderVietQRBox(draft, payAmount) {
+    const isVietQR = /(?:vietqr|bidv|chuyen khoan|bank transfer)/i.test(draft.paymentMethod || '');
+    const isMomo = /(?:momo)/i.test(draft.paymentMethod || '');
+    if (!isVietQR && !isMomo) return null;
+
+    const box = document.createElement('div');
+    box.className = 'payment-qr-card';
+    box.style.cssText = 'margin: 16px 0; padding: 16px; border-radius: 16px; text-align: left; background: #f0fdf4; border: 2px solid #86efac; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12);';
+
+    if (isVietQR) {
+        const qrUrl = 'https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=' + payAmount + '&addInfo=' + encodeURIComponent(draft.id) + '&accountName=OCOP%20VIET%20NAM';
+        box.innerHTML = `
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; padding-bottom:8px; border-bottom:1.5px dashed #86efac;">
+                <span style="font-size:22px;">🏦</span>
+                <div>
+                    <h3 style="margin:0; font-size:14px; font-weight:800; color:#065f46;">Mã VietQR BIDV Thanh Toán Đơn Hàng</h3>
+                    <p style="margin:2px 0 0; font-size:11px; color:#047857;">Mở App Ngân hàng bất kỳ hoặc Ví điện tử để quét mã tự động</p>
+                </div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:center;">
+                <div style="text-align:center; background:#ffffff; padding:8px; border-radius:14px; border:1.5px solid #6ee7b7; box-shadow:0 2px 8px rgba(0,0,0,0.06); width:fit-content;">
+                    <img src="${qrUrl}" alt="Mã VietQR BIDV #${draft.id}" style="width:190px; height:190px; object-fit:contain; border-radius:8px; display:block; margin:0 auto;">
+                    <span style="display:block; font-size:10px; font-weight:700; color:#047857; margin-top:4px;">VietQR chuẩn Napas247</span>
+                </div>
+                <div style="flex:1; min-width:210px; font-size:12px; line-height:1.6; color:#1e293b; display:flex; flex-direction:column; gap:5px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0; border-bottom:1px solid #dcfce7;">
+                        <span style="color:#64748b;">Ngân hàng:</span>
+                        <strong style="color:#0f172a;">BIDV (TMCP Đầu tư &amp; Phát triển VN)</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0; border-bottom:1px solid #dcfce7;">
+                        <span style="color:#64748b;">Số tài khoản:</span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <strong style="font-family:monospace; font-size:13.5px; color:#0284c7;">8808661371</strong>
+                            <button type="button" onclick="navigator.clipboard?.writeText('8808661371'); alert('Đã sao chép số tài khoản BIDV: 8808661371');" style="padding:2px 7px; border-radius:6px; background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-size:10px; font-weight:700; cursor:pointer;">📋 Copy</button>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0; border-bottom:1px solid #dcfce7;">
+                        <span style="color:#64748b;">Chủ tài khoản:</span>
+                        <strong style="color:#0f172a; text-transform:uppercase;">OCOP VIET NAM</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0; border-bottom:1px solid #dcfce7;">
+                        <span style="color:#64748b;">Số tiền:</span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <strong style="color:#e11d48; font-size:14.5px; font-weight:900;">${money(payAmount)}</strong>
+                            <button type="button" onclick="navigator.clipboard?.writeText('${payAmount}'); alert('Đã sao chép số tiền: ${payAmount} đ');" style="padding:2px 7px; border-radius:6px; background:#ffe4e6; color:#be123c; border:1px solid #fecdd3; font-size:10px; font-weight:700; cursor:pointer;">📋 Copy</button>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
+                        <span style="color:#64748b;">Nội dung CK:</span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <strong style="font-family:monospace; font-size:12.5px; color:#047857; background:#dcfce7; padding:1px 5px; border-radius:4px;">${draft.id}</strong>
+                            <button type="button" onclick="navigator.clipboard?.writeText('${draft.id}'); alert('Đã sao chép nội dung: ${draft.id}');" style="padding:2px 7px; border-radius:6px; background:#dcfce7; color:#047857; border:1px solid #86efac; font-size:10px; font-weight:700; cursor:pointer;">📋 Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:10px; padding:8px 10px; background:#ecfdf5; border-radius:8px; font-size:11px; color:#065f46; line-height:1.4;">
+                💡 <strong>Lưu ý:</strong> Quý khách quét mã QR trên bằng ứng dụng ngân hàng để thanh toán tự động, chính xác số tiền và mã đơn. Người bán sẽ đối soát và tiến hành đóng gói xuất kho ngay!
+            </div>
+        `;
+    } else if (isMomo) {
+        box.innerHTML = `
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:1.5px dashed #f472b6;">
+                <span style="font-size:22px;">📱</span>
+                <div>
+                    <h3 style="margin:0; font-size:14px; font-weight:800; color:#9d174d;">Thanh toán qua Ví MoMo</h3>
+                    <p style="margin:2px 0 0; font-size:11px; color:#be185d;">Chuyển tiền MoMo với nội dung mã đơn hàng</p>
+                </div>
+            </div>
+            <div style="font-size:12px; line-height:1.6; color:#1e293b; display:flex; flex-direction:column; gap:5px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="color:#64748b;">SĐT nhận MoMo:</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <strong style="font-family:monospace; font-size:13.5px; color:#be185d;">0971280030</strong>
+                        <button type="button" onclick="navigator.clipboard?.writeText('0971280030'); alert('Đã sao chép SĐT MoMo: 0971280030');" style="padding:2px 7px; border-radius:6px; background:#fce7f3; color:#be185d; border:1px solid #fbcfe8; font-size:10px; font-weight:700; cursor:pointer;">📋 Copy SĐT</button>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="color:#64748b;">Số tiền:</span>
+                    <strong style="color:#e11d48; font-size:14.5px; font-weight:900;">${money(payAmount)}</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="color:#64748b;">Lời nhắn:</span>
+                    <strong style="font-family:monospace; font-size:12.5px; color:#be185d; background:#fce7f3; padding:1px 5px; border-radius:4px;">${draft.id}</strong>
+                </div>
+            </div>
+        `;
+    }
+    return box;
+}
 
 function showDraft(draft) {
     if (draft.status !== 'pending_seller_confirmation') {
@@ -161,8 +358,8 @@ function showDraft(draft) {
         result.hidden = false;
         const labels = {
             confirmed: ['Người bán đã xác nhận đơn', 'Seller confirmed the order'],
-            shipped: ['Người bán đã gửi hàng', 'Seller marked the order shipped'],
-            completed: ['Người bán xác nhận đã giao xong', 'Seller marked delivery completed'],
+            shipped: ['Đang giao — chờ bạn xác nhận đã nhận hàng', 'In transit — awaiting your receipt confirmation'],
+            completed: draft.customerReceivedAt ? ['Đơn hàng hoàn thành — bạn đã xác nhận nhận hàng', 'Order complete — you confirmed receipt'] : ['Chờ bạn xác nhận đã nhận hàng', 'Awaiting your receipt confirmation'],
             cancelled: ['Đơn đã hủy', 'Order cancelled']
         };
         const h = document.createElement('h2');
@@ -181,13 +378,14 @@ function showDraft(draft) {
             p.textContent = value;
             result.append(p);
         }
+        orderActions(draft);
         return;
     }
 
     result.replaceChildren();
     result.hidden = false;
     const heading = document.createElement('h2');
-    heading.textContent = salesPage.text('🎉 Đặt hàng thành công!', '🎉 Order placed successfully!');
+    heading.textContent = salesPage.text('Đã tiếp nhận đơn hàng — chờ người bán xác nhận', 'Order received — awaiting seller confirmation');
     result.append(heading);
 
     const id = document.createElement('p');
@@ -201,16 +399,16 @@ function showDraft(draft) {
         result.append(p);
     });
 
-    if (draft.voucherDiscount) {
+    if (draft.voucherCode) {
         const discP = document.createElement('p');
-        discP.textContent = salesPage.text('Mã giảm giá áp dụng: -' + money(draft.voucherDiscount), 'Voucher discount: -' + money(draft.voucherDiscount));
+        discP.textContent = salesPage.text('Mã ưu đãi đã gửi: ', 'Requested voucher: ') + draft.voucherCode + salesPage.text(' (chờ người bán xác nhận)', ' (awaiting seller confirmation)');
         discP.style.color = '#059669';
         discP.style.fontWeight = 'bold';
         result.append(discP);
     }
 
     const total = document.createElement('p');
-    total.textContent = salesPage.text('Tổng tiền thanh toán: ', 'Total payment: ') + money(draft.subtotal);
+    total.textContent = salesPage.text('Tiền hàng tạm tính (chưa gồm phí giao hàng): ', 'Product subtotal (excluding shipping): ') + money(draft.subtotal);
     result.append(total);
 
     if (draft.paymentMethod) {
@@ -218,15 +416,22 @@ function showDraft(draft) {
         payP.textContent = salesPage.text('Hình thức thanh toán: ', 'Payment method: ') + draft.paymentMethod;
         payP.style.fontWeight = 'bold';
         result.append(payP);
+
+        const vMap = { 'OCOP2026': 50000, 'FREESHIP': 25000, 'GIAM20K': 20000, 'GIAM10K': 10000, 'GIAM50K': 50000, 'GIAM100K': 100000 };
+        const discAmt = (typeof appliedVoucher !== 'undefined' && appliedVoucher && appliedVoucher.discount) || (draft.voucherCode && vMap[draft.voucherCode] ? vMap[draft.voucherCode] : 0);
+        const payAmount = draft.total != null ? draft.total : Math.max(0, draft.subtotal - discAmt);
+        const qrCard = renderVietQRBox(draft, payAmount);
+        if (qrCard) result.append(qrCard);
     }
 
     const note = document.createElement('p');
     note.className = 'detail';
     note.textContent = salesPage.text(
-        'Đơn hàng của quý khách đã được chuyển tới nhà bán hàng OCOP chính hãng. Bộ phận chăm sóc khách hàng sẽ liên hệ xác nhận và tiến hành giao hàng tận nơi. ',
-        'Your order has been forwarded to the verified OCOP merchant. Customer care will contact you shortly to confirm and deliver. '
-    ) + salesPage.text(draft.inventoryVerified ? 'Hàng sẵn sàng xuất kho.' : 'Kho đang kiểm đếm sản phẩm.', draft.inventoryVerified ? 'In stock and ready to ship.' : 'Stock count verified.');
+        'Hệ thống đã lưu yêu cầu đặt hàng. Người bán cần xác nhận tồn kho, phí giao hàng và xử lý đơn. Đơn chỉ hoàn thành sau khi bạn nhận hàng và bấm “Tôi đã nhận hàng”.',
+        'Your order request is saved. The seller still needs to confirm stock, shipping and process the order. It is completed only after you receive the items and click “I have received my order”.'
+    );
     result.append(note);
+    orderActions(draft);
 }
 
 document.addEventListener('sales-language', () => {
@@ -259,8 +464,6 @@ form.onsubmit = async event => {
 
     const payMethodVal = data.get('payment_method');
     const paymentMethodLabel = payMethodVal === 'vietqr' ? 'Chuyển khoản BIDV (VietQR)' : (payMethodVal === 'momo' ? 'Ví MoMo (0971280030)' : 'Ship COD Tận Nơi');
-    const voucherDiscount = appliedVoucher ? appliedVoucher.discount : 0;
-
     try {
         const response = await fetch(salesPage.api('/api/ai/draft-orders'), {
             method: 'POST',
@@ -282,46 +485,18 @@ form.onsubmit = async event => {
         const body = await response.json();
         if (!response.ok) throw new Error(salesPage.text(body.error || 'Không gửi được đơn hàng.', response.status === 409 ? 'Inventory is insufficient or this request was changed.' : 'Please check the recipient, phone, address and quantities, then retry.'));
         lastDraft = body.draft;
-        lastDraft.paymentMethod = paymentMethodLabel;
-        lastDraft.voucherDiscount = voucherDiscount;
+        receiptAccess = lastDraft.receiptToken || '';
         submitted = true;
+        rememberDraft(lastDraft);
+        trackingView(lastDraft);
         showDraft(lastDraft);
         status.textContent = lastDraft.status === 'pending_seller_confirmation'
-            ? salesPage.text('✅ Đơn hàng đã gửi thành công! Nhà bán hàng sẽ liên hệ sớm nhất.', '✅ Order placed successfully! Merchant will contact you shortly.')
+            ? salesPage.text('Đã tiếp nhận đơn hàng. Đang chờ người bán xác nhận.', 'Order received. Awaiting seller confirmation.')
             : salesPage.text('Đã cập nhật trạng thái đơn hàng.', 'Order status refreshed.');
         try { localStorage.removeItem('ocop_cart'); } catch (_) {}
     } catch (error) {
-        // Offline resilient fallback
-        const goodsSubtotal = lines.reduce((sum, line) => {
-            const p = products.find(x => x.productId === line.productId);
-            return sum + (p ? p.price * line.quantity : 0);
-        }, 0);
-        const offlineDraft = {
-            id: 'ORD-' + Date.now().toString(36).toUpperCase(),
-            status: 'pending_seller_confirmation',
-            subtotal: Math.max(0, goodsSubtotal - voucherDiscount),
-            voucherDiscount: voucherDiscount,
-            paymentMethod: paymentMethodLabel,
-            lines: lines.map(line => {
-                const p = products.find(x => x.productId === line.productId);
-                return { name: p ? p.name : 'Sản phẩm OCOP', unitPrice: p ? p.price : 0, quantity: line.quantity };
-            }),
-            inventoryVerified: true
-        };
-        try {
-            const savedOrders = JSON.parse(localStorage.getItem('ocop_customer_orders') || '[]');
-            savedOrders.unshift({
-                ...offlineDraft,
-                customer: { name: data.get('name'), phone: data.get('phone'), address: data.get('address'), paymentMethod: paymentMethodLabel },
-                createdAt: new Date().toISOString()
-            });
-            localStorage.setItem('ocop_customer_orders', JSON.stringify(savedOrders));
-            localStorage.removeItem('ocop_cart');
-        } catch (_) {}
-        lastDraft = offlineDraft;
-        submitted = true;
-        showDraft(offlineDraft);
-        status.textContent = salesPage.text('✅ Đơn hàng đã gửi thành công! Nhà bán hàng sẽ liên hệ sớm nhất.', '✅ Order placed successfully! Merchant will contact you shortly.');
+        status.className = 'error';
+        status.textContent = salesPage.text('Chưa gửi được đơn hàng. Giỏ hàng vẫn được giữ. ', 'Your order was not submitted. Your cart is preserved. ') + error.message;
     } finally {
         submit.disabled = false;
         submitting = false;
@@ -329,6 +504,16 @@ form.onsubmit = async event => {
 };
 
 (async () => {
+    const trackingId = new URLSearchParams(location.search).get('order');
+    if (trackingId) {
+        receiptAccess = new URLSearchParams(location.hash.slice(1)).get('receipt') || '';
+        if (!receiptAccess) {
+            try { receiptAccess = JSON.parse(localStorage.getItem('ocop_customer_orders') || '[]').find(row => row.id === trackingId)?.receiptToken || ''; } catch (_) {}
+        }
+        trackingView();
+        await refreshDraft(trackingId);
+        return;
+    }
     // 1. Initial product population: sync from window.PRODUCTS first (instant, 0ms latency)
     if (typeof window !== 'undefined' && Array.isArray(window.PRODUCTS) && window.PRODUCTS.length) {
         products = window.PRODUCTS.map(p => ({ productId: p.id, name: p.name, price: p.price, unit: p.packaging || 'hộp' }));

@@ -1781,6 +1781,25 @@
         const totalEl = document.getElementById('success-order-total');
         if (totalEl) totalEl.textContent = order.grandTotal.toLocaleString('vi-VN') + ' ₫';
 
+        const qrSection = document.getElementById('success-vietqr-section');
+        const qrImg = document.getElementById('success-vietqr-img');
+        const qrAmount = document.getElementById('success-vietqr-amount');
+        const qrMemo = document.getElementById('success-vietqr-memo');
+        const isVietQR = !order.paymentMethod || /(?:vietqr|bidv|chuyen khoan|bank transfer)/i.test(order.paymentMethod);
+        if (qrSection) {
+            if (isVietQR) {
+                qrSection.style.display = 'block';
+                const memoCode = order.orderId || 'OCOP 8829';
+                if (qrMemo) qrMemo.textContent = memoCode;
+                if (qrAmount) qrAmount.textContent = (order.grandTotal || 0).toLocaleString('vi-VN') + ' ₫';
+                if (qrImg) {
+                    qrImg.src = 'https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=' + (order.grandTotal || 0) + '&addInfo=' + encodeURIComponent(memoCode) + '&accountName=OCOP%20VIET%20NAM';
+                }
+            } else {
+                qrSection.style.display = 'none';
+            }
+        }
+
         successModal.classList.remove('hidden');
         successModal.style.setProperty('display', 'flex', 'important');
         successModal.style.setProperty('z-index', '99999', 'important');

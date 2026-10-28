@@ -5504,6 +5504,46 @@ Khơi Nguồn Di Sản Việt</span>
  (Đã bao gồm 10.000đ phí dịch vụ nền tảng & đảm bảo OCOP)
  </div>
  </div>
+ <div id="success-vietqr-section" class="p-3 rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-sky-50 border-2 border-emerald-300 text-left text-xs space-y-2 mt-2">
+ <div class="flex items-center gap-2 pb-1.5 border-b border-emerald-200">
+ <span class="text-lg">🏦</span>
+ <div>
+ <strong class="text-emerald-950 font-black block text-[12px]">Quét mã VietQR BIDV để thanh toán</strong>
+ <span class="text-[10px] text-emerald-700">Mở App Ngân hàng bất kỳ hoặc Ví điện tử để quét mã thanh toán 24/7</span>
+ </div>
+ </div>
+ <div class="flex items-center gap-3">
+ <img id="success-vietqr-img" src="https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=120000&addInfo=OCOP%208829&accountName=OCOP%20VIET%20NAM" alt="Mã VietQR" class="w-28 h-28 rounded-xl border border-emerald-400 p-1 bg-white shadow-xs shrink-0 object-contain">
+ <div class="space-y-1 text-[11px] flex-1 min-w-0">
+ <div class="flex items-center justify-between">
+ <span class="text-slate-500">Ngân hàng:</span>
+ <strong class="text-slate-900 font-bold">BIDV</strong>
+ </div>
+ <div class="flex items-center justify-between">
+ <span class="text-slate-500">Số tài khoản:</span>
+ <div class="flex items-center gap-1">
+ <strong class="font-mono text-xs text-sky-900 font-black">8808661371</strong>
+ <button type="button" onclick="navigator.clipboard?.writeText('8808661371'); alert('Đã sao chép STK BIDV: 8808661371');" class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 text-[9.5px] font-bold cursor-pointer">Copy</button>
+ </div>
+ </div>
+ <div class="flex items-center justify-between">
+ <span class="text-slate-500">Chủ TK:</span>
+ <strong class="text-slate-900 font-black text-[10px]">OCOP VIET NAM</strong>
+ </div>
+ <div class="flex items-center justify-between">
+ <span class="text-slate-500">Số tiền:</span>
+ <strong id="success-vietqr-amount" class="text-rose-600 font-black text-xs">0 ₫</strong>
+ </div>
+ <div class="flex items-center justify-between pt-1 border-t border-emerald-100">
+ <span class="text-slate-500">Nội dung CK:</span>
+ <div class="flex items-center gap-1">
+ <strong id="success-vietqr-memo" class="font-mono text-[10.5px] text-emerald-800 font-black bg-emerald-100/70 px-1 rounded">#OCOP-8829</strong>
+ <button type="button" onclick="navigator.clipboard?.writeText(document.getElementById('success-vietqr-memo').textContent); alert('Đã sao chép nội dung CK!');" class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9.5px] font-bold cursor-pointer">Copy</button>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
 
  <div class="flex flex-col gap-2 pt-1">
  <button type="button" id="btn-ordersuccess-admin" onclick="closeOrderSuccessModal(); promptAdminPinModal();" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-500 hover:to-sky-600 text-white font-bold text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer" style="display: none !important;">
