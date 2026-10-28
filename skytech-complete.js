@@ -978,10 +978,13 @@
                 }
             }
 
-            window.openAdminHubModal();
+            openRealFinancialDashboard();
+            if (typeof window.renderAdminOnlineOrdersTable === 'function') {
+                window.renderAdminOnlineOrdersTable();
+            }
             if (typeof showToast === 'function') {
                 const title = authedAdmin ? authedAdmin.fullName : (isDistributor ? 'Nhà Phân Phối' : 'Chủ Web Master');
-                showToast('🔓 Xin chào ' + title + '! Mở khóa Quản Trị thành công.', 'success');
+                showToast('🔓 Xin chào ' + title + '! Đã mở Bảng Quản Trị Doanh Thu.', 'success');
             }
         } else {
             if (err) err.style.display = 'block';
@@ -1322,139 +1325,26 @@
     };
 
     window.openAdminHubModal = function () {
-        const currentUser = (typeof getCurrentCustomer === 'function' ? getCurrentCustomer() : null);
+        const currentUser = (typeof getCurrentCustomer === 'function' ? getCurrentCustomer() : null) ||
+            (() => {
+                try { return JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || 'null'); } catch (e) { return null; }
+            })();
         const hasPrivilege = (typeof isCurrentUserAdminOrDistributor === 'function')
             ? isCurrentUserAdminOrDistributor(currentUser)
             : (currentUser && (currentUser.role === 'admin' || currentUser.role === 'distributor' || currentUser.isAdmin || currentUser.isDistributor));
 
         if (currentUser && !hasPrivilege) {
-            if (typeof showToast === 'function') {
-                showToast('⚠️ Bạn đang đăng nhập tài khoản Khách hàng thường. Khu vực Quản trị chỉ dành cho Admin hoặc Nhà phân phối!', 'warning');
-            }
-            return;
+            const message = '⚠️ Tài khoản khách hàng không có quyền truy cập Quản trị. Vui lòng đăng nhập tài khoản Admin hoặc Nhà Phân Phối!';
+            if (window.showAccountNotice?.(message)) return false;
+            if (typeof showToast === 'function') showToast(message, 'warning');
+            return false;
         }
 
-        // Tắt hẳn bảng nhập mã PIN bên ngoài
         window.closeAdminPinModal();
-        const pinModal = document.getElementById('admin-pin-modal');
-        if (pinModal) {
-            pinModal.classList.add('hidden');
-            pinModal.style.setProperty('display', 'none', 'important');
-            pinModal.style.setProperty('z-index', '-1', 'important');
+        openRealFinancialDashboard();
+        if (typeof window.renderAdminOnlineOrdersTable === 'function') {
+            window.renderAdminOnlineOrdersTable();
         }
-
-        let modal = document.getElementById('admin-hub-modal');
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = 'admin-hub-modal';
-            modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.75) !important; backdrop-filter: blur(6px) !important; overflow-y: auto !important;';
-            document.body.appendChild(modal);
-
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    window.closeAdminHubModal();
-                }
-            });
-        }
-
-        modal.innerHTML = `
-            <div id="admin-hub-card" style="position: relative !important; width: 100% !important; max-width: 860px !important; max-height: 92vh !important; overflow-y: auto !important; background: #FFFFFF !important; border: 2.5px solid #38BDF8 !important; border-radius: 28px !important; padding: 28px 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.3) !important; color: #0F172A !important; font-family: inherit !important;">
-
-                <button type="button" onclick="closeAdminHubModal()" style="position: absolute !important; top: 18px !important; right: 18px !important; width: 36px !important; height: 36px !important; border-radius: 999px !important; background: #F1F5F9 !important; border: none !important; color: #64748B !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; transition: all 0.2s !important;" title="Đóng Admin Hub">
-                    <i class="fa-solid fa-xmark" style="font-size: 16px !important;"></i>
-                </button>
-
-                <!-- Header -->
-                <div style="text-align: center !important; margin-bottom: 22px !important;">
-                    <div style="display: inline-flex !important; align-items: center !important; gap: 8px !important; padding: 4px 14px !important; border-radius: 999px !important; background: #E0F2FE !important; color: #0284C7 !important; font-size: 11px !important; font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: 0.05em !important; margin-bottom: 8px !important; border: 1px solid #BAE6FD !important;">
-                        <i class="fa-solid fa-shield-halved text-sky-500"></i>
-                        <span>CỔNG QUẢN TRỊ TRUNG TÂM • ADMIN HUB 2026</span>
-                    </div>
-                    <h2 style="margin: 0 0 6px !important; color: #0C4A6E !important; font-size: 1.45rem !important; font-weight: 900 !important; letter-spacing: -0.02em !important;">
-                        🏛️ TRUNG TÂM ĐIỀU HÀNH CHỦ WEB
-                    </h2>
-                    <p style="margin: 0 !important; color: #475569 !important; font-size: 13.5px !important; font-weight: 500 !important; line-height: 1.5 !important;">
-                        Chào mừng Webmaster! Vui lòng chọn phân hệ bạn muốn truy cập:
-                    </p>
-                </div>
-
-                <!-- 2 Large Interactive Cards: Admin Management & Distributor Management -->
-                <div style="display: grid !important; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; gap: 16px !important; margin-bottom: 20px !important;">
-
-                    <!-- CARD 1: QUẢN TRỊ CỦA ADMIN -->
-                    <div class="admin-hub-card" onclick="openAdminHubCardAction('admin')"
-                         style="position: relative !important; background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%) !important; border: 2px solid #0284C7 !important; border-radius: 20px !important; padding: 22px 20px !important; cursor: pointer !important; transition: all 0.25s ease !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; text-align: left !important; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.12) !important;">
-
-                        <div>
-                            <div style="display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 12px !important;">
-                                <div style="width: 44px !important; height: 44px !important; border-radius: 12px !important; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 20px !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3) !important;">
-                                    <i class="fa-solid fa-crown"></i>
-                                </div>
-                                <span style="font-size: 9.5px !important; font-weight: 800 !important; text-transform: uppercase !important; padding: 3px 8px !important; border-radius: 6px !important; background: #0284C7 !important; color: #FFFFFF !important;">
-                                    4 TÀI KHOẢN ADMIN
-                                </span>
-                            </div>
-                            <h3 style="margin: 0 0 6px !important; font-size: 1.1rem !important; font-weight: 900 !important; color: #0C4A6E !important;">
-                                👑 Quản Trị Hệ Thống (Admin)
-                            </h3>
-                            <p style="margin: 0 0 10px !important; font-size: 12.5px !important; color: #334155 !important; line-height: 1.45 !important; font-weight: 500 !important;">
-                                Quản lý khách hàng (mã 12 ký tự), tồn kho 252 sản phẩm OCOP &amp; theo dõi số lượng đã bán toàn quốc.
-                            </p>
-                            <div style="background: rgba(255,255,255,0.7) !important; border-radius: 8px !important; padding: 8px 10px !important; font-size: 11.5px !important; color: #0369A1 !important; font-weight: 700 !important; margin-bottom: 14px !important; border: 1px dashed #7DD3FC !important; display: flex !important; flex-wrap: wrap !important; gap: 4px 8px !important; align-items: center !important;">
-                                <span style="font-weight: 800 !important;"><i class="fa-solid fa-users-gear mr-1"></i> 4 Admin:</span>
-                                <span onclick="event.stopPropagation(); openAdminLoginModal('ThaoNguyenad01');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản ThaoNguyenad01">ThaoNguyenad01</span> •
-                                <span onclick="event.stopPropagation(); openAdminLoginModal('KimNganad02');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản KimNganad02">KimNganad02</span> •
-                                <span onclick="event.stopPropagation(); openAdminLoginModal('VinhPhucad03');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản VinhPhucad03">VinhPhucad03</span> •
-                                <span onclick="event.stopPropagation(); openAdminLoginModal('ThanhBinhad04');" style="cursor: pointer !important; text-decoration: underline !important; font-weight: 800 !important;" title="Đăng nhập tài khoản ThanhBinhad04">ThanhBinhad04</span>
-                            </div>
-                        </div>
-
-                        <button type="button" onclick="event.stopPropagation(); openAdminLoginModal()" style="width: 100% !important; padding: 12px 14px !important; border-radius: 12px !important; background: #0284C7 !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(2, 132, 199, 0.3) !important; cursor: pointer !important;">
-                            <i class="fa-solid fa-lock" style="font-size: 13px !important;"></i>
-                            <span>👉 Mở Cổng Quản Trị Admin (Mật Khẩu Riêng)</span>
-                        </button>
-                    </div>
-
-                    <!-- CARD 2: QUẢN TRỊ NHÀ PHÂN PHỐI -->
-                    <div class="admin-hub-card" onclick="openAdminHubCardAction('distributor')"
-                         style="position: relative !important; background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%) !important; border: 2px solid #16A34A !important; border-radius: 20px !important; padding: 22px 20px !important; cursor: pointer !important; transition: all 0.25s ease !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; text-align: left !important; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.12) !important;">
-
-                        <div>
-                            <div style="display: flex !important; align-items: center !important; justify-content: space-between !important; margin-bottom: 12px !important;">
-                                <div style="width: 44px !important; height: 44px !important; border-radius: 12px !important; background: linear-gradient(135deg, #16A34A 0%, #15803D 100%) !important; color: #FFFFFF !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 20px !important; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3) !important;">
-                                    <i class="fa-solid fa-store"></i>
-                                </div>
-                                <span style="font-size: 9.5px !important; font-weight: 800 !important; text-transform: uppercase !important; padding: 3px 8px !important; border-radius: 6px !important; background: #16A34A !important; color: #FFFFFF !important;">
-                                    6 NHÀ PHÂN PHỐI OCOP
-                                </span>
-                            </div>
-                            <h3 style="margin: 0 0 6px !important; font-size: 1.1rem !important; font-weight: 900 !important; color: #14532D !important;">
-                                🏬 Quản Trị Nhà Phân Phối
-                            </h3>
-                            <p style="margin: 0 0 10px !important; font-size: 12.5px !important; color: #334155 !important; line-height: 1.45 !important; font-weight: 500 !important;">
-                                Phân vùng dữ liệu cô lập cho từng HTX. Quản lý kho hàng vùng miền, cập nhật số lượng tồn &amp; đơn hàng riêng.
-                            </p>
-                            <div style="background: rgba(255,255,255,0.7) !important; border-radius: 8px !important; padding: 6px 10px !important; font-size: 11px !important; color: #15803D !important; font-weight: 700 !important; margin-bottom: 14px !important; border: 1px dashed #86EFAC !important;">
-                                📍 Hải Phòng • Hà Nội • Đồng Nai • Hòa Bình • Cà Mau...
-                            </div>
-                        </div>
-
-                        <button type="button" onclick="event.stopPropagation(); openAdminHubCardAction('distributor')" style="width: 100% !important; padding: 12px 14px !important; border-radius: 12px !important; background: #16A34A !important; color: #FFFFFF !important; font-weight: 800 !important; font-size: 13px !important; border: none !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; box-shadow: 0 3px 10px rgba(22, 163, 74, 0.3) !important; cursor: pointer !important;">
-                            <span>👉 Mở Cổng Nhà Phân Phối</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Footer Note -->
-                <div style="background: #F1F5F9 !important; border-radius: 12px !important; padding: 10px 16px !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 12px !important; color: #475569 !important; text-align: center !important;">
-                    <span style="font-weight: 600 !important;"><i class="fa-solid fa-arrows-rotate text-sky-500 mr-1.5"></i> Có thể chuyển đổi qua lại nhanh giữa các phân hệ quản trị mà không cần nhập lại mật khẩu.</span>
-                </div>
-            </div>
-        `;
-
-        modal.classList.remove('hidden');
-        modal.style.setProperty('display', 'flex', 'important');
-        modal.style.setProperty('z-index', '2147483647', 'important');
     };
 
     window.closeAdminHubModal = function () {
@@ -1765,6 +1655,30 @@
                 const saved = JSON.parse(localStorage.getItem('ocop_customer_orders') || '[]');
                 const user = window.getCurrentCustomer?.();
                 localStorage.setItem('ocop_customer_orders', JSON.stringify([{...draft, username: user?.username || null, customerName, customerPhone, shippingAddress: customerAddress}, ...saved.filter(row => row.id !== draft.id)]));
+                
+                // Lưu vào danh sách đơn hàng online toàn sàn kèm phí +10.000đ
+                const onlineOrders = JSON.parse(localStorage.getItem('ocop_online_orders') || '[]');
+                const newOnlineOrder = {
+                    orderId: draft.id || ('#OCOP-' + Math.floor(1000 + Math.random() * 9000)),
+                    productName: currentOrderProduct.name,
+                    storeName: document.getElementById('order-store-name')?.textContent || 'Showroom OCOP',
+                    customerName: customerName,
+                    customerPhone: customerPhone,
+                    shippingAddress: customerAddress,
+                    qty: currentOrderQty,
+                    goodsTotal: (currentOrderProduct.price || 0) * currentOrderQty,
+                    webFee: 10000,
+                    grandTotal: ((currentOrderProduct.price || 0) * currentOrderQty) + 25000 + 10000 - (window.orderAppliedVoucher ? window.orderAppliedVoucher.discount : 0),
+                    paymentMethod: paymentMethod,
+                    status: 'Đang xử lý',
+                    createdAt: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+                };
+                onlineOrders.unshift(newOnlineOrder);
+                localStorage.setItem('ocop_online_orders', JSON.stringify(onlineOrders));
+
+                if (typeof window.renderAdminOnlineOrdersTable === 'function') {
+                    window.renderAdminOnlineOrdersTable();
+                }
             } catch (_) {}
             const url = new URL('draft-order.html', document.baseURI);
             url.searchParams.set('order', draft.id);url.hash = 'receipt=' + draft.receiptToken;
@@ -2058,16 +1972,13 @@
             localStorage.removeItem('admin_pin_verified');
         } catch (e) {}
 
-        const modal = document.getElementById('ai-financial-modal');
+        const modal = document.getElementById('ai-financial-modal') || document.getElementById('adminRevenueModal');
         if (modal) {
             modal.classList.add('hidden');
             modal.style.setProperty('display', 'none', 'important');
         }
         document.body.style.overflow = 'auto';
         document.documentElement.style.overflow = 'auto';
-        if (typeof prevCloseFin === 'function') {
-            try { prevCloseFin(); } catch (err) {}
-        }
     };
 
     // CAPTURE-PHASE CLICK INTERCEPTOR (CHẶN ĐỨNG TRƯỚC MỌI ONCLICK)
@@ -3701,446 +3612,16 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
     // STANDALONE TIKTOK STUDIO MODAL (DIRECT FROM HEADER OR CATALOG)
     // =========================================================================
     window.openTikTokStudioModal = function (productId) {
-        let modal = document.getElementById('tiktok-studio-modal');
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = 'tiktok-studio-modal';
-            modal.className = 'fixed inset-0 flex items-center justify-center p-3 sm:p-4 bg-slate-900/75 backdrop-blur-sm';
-            modal.style.cssText = 'position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 12px !important; background: rgba(15, 23, 42, 0.75) !important; backdrop-filter: blur(4px) !important;';
-            modal.innerHTML = `
-                <div class="relative bg-white rounded-3xl max-w-5xl w-full shadow-2xl z-10 border-2 border-sky-400 animate-pop-in flex flex-col" style="max-height: calc(100dvh - 2rem); overflow-y: auto; overscroll-behavior: contain; background: #FFFFFF !important; border: 2px solid #7DD3FC !important; border-radius: 24px !important; box-shadow: 0 25px 60px rgba(2, 132, 199, 0.25) !important;">
-                    <!-- Header Modal -->
-                    <div class="p-4 sm:p-5 text-white rounded-t-3xl flex items-center justify-between relative" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;">
-                        <div class="flex items-center space-x-3">
-                            <span class="w-10 h-10 rounded-2xl bg-white/20 text-white flex items-center justify-center font-black shadow-md text-lg">
-                                <i class="fa-brands fa-tiktok text-rose-300"></i>
-                            </span>
-                            <div>
-                                <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-sky-200 bg-black/20 px-2.5 py-0.5 rounded-full mb-0.5">
-                                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                                    <span>✨ AI VIDEO & CONTENT STUDIO • QUẢNG BÁ ĐẶC SẢN OCOP</span>
-                                </div>
-                                <h3 class="font-black text-base sm:text-lg text-white tracking-wide">
-                                    🎬 STUDIO AI: TẠO NỘI DUNG & VIDEO TIKTOK QUẢNG BÁ SẢN PHẨM OCOP
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button type="button" onclick="quickSwitchToFinancialDashboard()" class="px-3.5 py-1.5 rounded-xl text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-sm hover:opacity-95" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important; border: 1px solid #FCD34D !important;" title="Chuyển sang Bảng Quản Trị Doanh Thu">
-                                <i class="fa-solid fa-chart-line text-amber-100"></i>
-                                <span>📊 Bảng Quản Trị Doanh Thu</span>
-                            </button>
-                            <button type="button" onclick="closeTikTokStudioModal()" style="background: #EF4444 !important; color: #FFFFFF !important; padding: 8px 18px !important; border-radius: 999px !important; cursor: pointer; font-weight: 700 !important; border: none !important; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;" title="Đóng Studio TikTok">
-                                <span>✖ Đóng</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Body Modal -->
-                    <div class="p-4 sm:p-6 bg-gradient-to-br from-slate-50 via-white to-sky-50/40 space-y-6">
-                        <div id="tiktok-studio-inner-container">
-                            <!-- Inner 2-column studio layout -->
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-
-            // Backdrop click listener to close modal and stop all audio
-            modal.addEventListener('click', function (e) {
-                if (e.target === modal) {
-                    window.closeTikTokStudioModal();
-                }
-            });
-        }
-
-        // Mount the 2-column studio layout inside modal
-        const innerContainer = document.getElementById('tiktok-studio-inner-container');
-        if (innerContainer) {
-            innerContainer.innerHTML = `
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                    <!-- BƯỚC 1: Chọn Sản Phẩm OCOP & AI Viết Bài Đăng TikTok -->
-                    <div class="lg:col-span-7 space-y-4">
-                        <div class="bg-white p-5 rounded-2xl border border-sky-200 shadow-sm space-y-4" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important;">
-                            <div class="border-b border-sky-100 pb-2">
-                                <span class="text-xs font-black text-sky-700 uppercase tracking-wider bg-sky-50 px-2.5 py-1 rounded-md">
-                                    Bước 1: Chọn Sản Phẩm & Sinh Nội Dung Tự Động
-                                </span>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-black text-sky-900 mb-1.5 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-box-open text-sky-600"></i> Chọn Sản Phẩm OCOP Cần Quảng Bá:
-                                </label>
-                                <select id="tiktok-product-select-modal" class="tiktok-select" onchange="onTikTokModalProductChange()">
-                                    <!-- Populated dynamically -->
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-black text-sky-900 mb-1.5 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-film text-sky-600"></i> Chọn Phong Cách Video TikTok:
-                                </label>
-                                <select id="tiktok-style-select-modal" class="tiktok-select" onchange="onTikTokModalStyleChange()">
-                                    <option value="viral">🔥 Xu hướng Review Đặc Sản (Viral TikTok Hook & Taste)</option>
-                                    <option value="origin">🏡 Câu chuyện Nông sản & Nguồn gốc OCOP (Storytelling di sản)</option>
-                                    <option value="gift">🎁 Gợi ý Quà tặng & Kêu gọi truy cập Web (Quà biếu thượng hạng)</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-black text-sky-900 mb-1.5 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-microphone-lines text-sky-600"></i> Chọn Giọng Đọc Thuyết Minh AI:
-                                </label>
-                                <select id="tiktok-voice-select-modal" class="tiktok-select" onchange="onTikTokVoiceChange(this.value)">
-                                    <option value="female_natural">🎙️ Giọng Nữ AI Tự Nhiên (Truyền cảm)</option>
-                                    <option value="male_warm">🎙️ Giọng Nam AI (Ấm áp)</option>
-                                    <option value="music_only">🔇 Chỉ phát Nhạc nền nhẹ (Không lời thoại)</option>
-                                </select>
-                            </div>
-
-                            <button type="button" onclick="generateAiTikTokPackageModal()" class="w-full py-3 px-4 rounded-xl text-white font-black text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer hover:opacity-95" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important;">
-                                <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-                                <span>✨ AI Tạo Nội Dung & Dựng Video TikTok</span>
-                            </button>
-                        </div>
-
-                        <!-- Kết Quả Bài Viết TikTok -->
-                        <div class="bg-white p-5 rounded-2xl border border-sky-200 shadow-sm space-y-4" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important;">
-                            <div class="flex items-center justify-between gap-2 border-b border-sky-100 pb-2">
-                                <h5 class="font-black text-xs uppercase text-sky-900 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-clipboard-list text-sky-600"></i>
-                                    <span>Nội Dung & Kịch Bản TikTok Chuẩn SEO</span>
-                                </h5>
-                                <button type="button" onclick="copyTikTokModalContent()" class="px-3 py-1.5 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-800 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
-                                    <i class="fa-solid fa-copy"></i>
-                                    <span>📋 Copy Nội Dung</span>
-                                </button>
-                            </div>
-
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-700 mb-1">
-                                    📌 Bài Viết (Caption) Đăng TikTok + Bộ Hashtags (#OCOPVietNam #DacSan63Tinh):
-                                </label>
-                                <textarea id="tiktok-caption-modal" rows="4" class="tiktok-textarea font-sans" readonly placeholder="AI đang chuẩn bị nội dung..."></textarea>
-                            </div>
-
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-700 mb-1">
-                                    🎙️ Kịch Bản Lời Thoại (Voiceover Script) + Kêu gọi xem Bio mở Bản Đồ:
-                                </label>
-                                <textarea id="tiktok-script-modal" rows="6" class="tiktok-textarea font-sans" readonly placeholder="Kịch bản lời thoại AI..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- BƯỚC 2: Khung Xem Trước & Tải Video TikTok Dọc 9:16 -->
-                    <div class="lg:col-span-5 flex flex-col items-center space-y-4">
-                        <div class="text-center">
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-sky-100 text-sky-800 border border-sky-200 mb-2">
-                                <i class="fa-solid fa-mobile-screen"></i> Bước 2: Dựng Video TikTok Dọc 9:16
-                            </span>
-                        </div>
-
-                        <!-- Phone Frame -->
-                        <div class="tiktok-phone-mockup" style="width: 300px; height: 533px; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.25); border: 1.5px solid #38BDF8; background: #0F172A; position: relative; margin: 0 auto;">
-                            <canvas id="tiktok-canvas-modal" width="540" height="960" style="width: 100%; height: 100%; display: block; object-fit: cover;"></canvas>
-                        </div>
-
-                        <!-- 3 Nút Hành Động Thực Tế -->
-                        <div class="w-full max-w-[280px] space-y-2.5">
-                            <button type="button" id="btn-modal-play" onclick="toggleTikTokModalPlayback()" class="w-full py-2.5 px-4 rounded-xl font-black text-xs flex items-center justify-center gap-2 cursor-pointer shadow-xs transition" style="background: #E0F2FE; color: #0284C7; border: 1.5px solid #BAE6FD;">
-                                <i class="fa-solid fa-play"></i>
-                                <span id="txt-modal-play">▶️ Xem Thử Video</span>
-                            </button>
-
-                            <button type="button" id="btn-modal-download" onclick="downloadTikTokModalVideo()" class="w-full py-2.5 px-4 rounded-xl font-black text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition hover:opacity-95" style="background: linear-gradient(135deg, #059669 0%, #10B981 100%); color: #FFFFFF; border: none;">
-                                <i class="fa-solid fa-download"></i>
-                                <span id="txt-modal-download">📥 Tải Video Về Máy (.WebM / .MP4)</span>
-                            </button>
-
-                            <button type="button" onclick="openTikTokUploadCenterModal()" class="w-full py-2.5 px-4 rounded-xl font-black text-xs flex items-center justify-center gap-2 cursor-pointer shadow-xs transition hover:bg-slate-800" style="background: #0F172A; color: #FFFFFF; border: 1px solid #334155;">
-                                <i class="fa-brands fa-tiktok text-rose-400"></i>
-                                <span>🎵 Mở TikTok Để Đăng Bài</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Show modal FIRST so DOM is visible
-        modal.classList.remove('hidden');
-        modal.style.setProperty('display', 'flex', 'important');
-        modal.style.setProperty('z-index', '2147483647', 'important');
-
-        // Populate dropdown
-        const select = document.getElementById('tiktok-product-select-modal');
-        const all = getAllAvailableProducts();
-        if (select) {
-            select.innerHTML = '';
-            const grpDongNai = document.createElement('optgroup');
-            grpDongNai.label = '🌟 ĐẶC SẢN NỔI BẬT ĐỒNG NAI (DIGITALFEST 2026)';
-            const grpOther = document.createElement('optgroup');
-            grpOther.label = '🌾 252+ ĐẶC SẢN OCOP 63 TỈNH THÀNH';
-            grpOther.label = '🌾 520+ ĐẶC SẢN OCOP 63 TỈNH THÀNH';
-
-            all.forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p.id;
-                opt.textContent = `${p.name} (${p.region}) - OCOP ${p.stars} Sao`;
-                if ((p.region && p.region.includes('Đồng Nai')) || String(p.id).startsWith('dn-')) {
-                    grpDongNai.appendChild(opt);
-                } else {
-                    grpOther.appendChild(opt);
-                }
-            });
-            select.appendChild(grpDongNai);
-            select.appendChild(grpOther);
-        }
-
-        // Set target product
-        if (productId) {
-            tiktokCurrentProduct = all.find(p => String(p.id) === String(productId)) || all[0];
-        } else if (!tiktokCurrentProduct) {
-            tiktokCurrentProduct = all[0];
-        }
-
-        if (select && tiktokCurrentProduct) {
-            select.value = tiktokCurrentProduct.id;
-        }
-
-        const styleSelect = document.getElementById('tiktok-style-select-modal');
-        if (styleSelect) {
-            styleSelect.value = tiktokCurrentStyle || 'viral';
-        }
-
-        // Ensure canvas width & height
-        const canvas = document.getElementById('tiktok-canvas-modal');
-        if (canvas) {
-            canvas.width = 540;
-            canvas.height = 960;
-        }
-
-        // Generate content and immediately populate textareas
-        generateAiTikTokPackageModal();
-
-        // Draw initial frame (never black!)
-        drawTikTokCanvasModalFrame();
-
-        // Load image and redraw on load/error
-        if (tiktokCurrentProduct && tiktokCurrentProduct.img) {
-            loadProductImage(tiktokCurrentProduct.img);
+        if (typeof showToast === 'function') {
+            showToast('Chức năng Studio TikTok đã được lược giản để tập trung Quản Trị Doanh Thu.', 'info');
         }
     };
-
     window.closeTikTokStudioModal = function () {
         const modal = document.getElementById('tiktok-studio-modal');
         if (modal) {
             modal.classList.add('hidden');
             modal.style.setProperty('display', 'none', 'important');
         }
-        window.stopAllTikTokVideoAndVoice();
-    };
-
-    window.onTikTokModalProductChange = function () {
-        window.stopAllTikTokVideoAndVoice();
-        const select = document.getElementById('tiktok-product-select-modal');
-        const val = select ? select.value : '';
-        const all = getAllAvailableProducts();
-        tiktokCurrentProduct = all.find(p => String(p.id) === String(val)) || all[0];
-        loadProductImage(tiktokCurrentProduct.img);
-        generateAiTikTokPackageModal();
-    };
-
-    window.onTikTokModalStyleChange = function () {
-        const select = document.getElementById('tiktok-style-select-modal');
-        tiktokCurrentStyle = select ? select.value : 'viral';
-        generateAiTikTokPackageModal();
-    };
-
-    window.generateAiTikTokPackageModal = function () {
-        window.stopAllTikTokVideoAndVoice();
-        if (!tiktokCurrentProduct) {
-            const all = getAllAvailableProducts();
-            tiktokCurrentProduct = all[0];
-        }
-
-        const p = tiktokCurrentProduct;
-        const style = tiktokCurrentStyle || 'viral';
-        const pName = p.name;
-        const pRegion = p.region || 'Đồng Nai';
-        const pStars = p.stars || 5;
-        const pPrice = p.price ? p.price.toLocaleString('vi-VN') + ' đ' : 'Giá ưu đãi';
-        const starStr = '⭐'.repeat(pStars);
-        const regionTag = pRegion.replace(/\s+/g, '');
-
-        let caption = '';
-        let script = '';
-
-        if (style === 'viral') {
-            caption = `🔥 REVIEW CỰC PHẨM: ${pName} (${pRegion}) đạt chuẩn OCOP ${pStars} Sao ${starStr}!
-
-😱 Không ngờ hương vị lại xuất sắc đến thế này! Tuyển chọn thủ công 100%, giữ trọn vẹn tinh hoa đất trời ${pRegion}. Hàng ngàn thực khách đã trải nghiệm và mê mẩn, giá chỉ từ ${pPrice}.
-
-👉 Xem ngay điểm bán chính hãng và bản đồ showroom tại LINK BIO!
-
-#OCOPVietNam #DacSan63Tinh #OCOP${regionTag} #DigitalFest2026 #ReviewDacSan #TikTokMadeMeBuyIt #AmThucViet`;
-
-            script = `[00:00 - 00:04] Nếu bạn chưa từng thử qua ${pName} của vùng đất ${pRegion}...
-[00:04 - 00:08] Thì chắc chắn bạn đã bỏ lỡ một kiệt tác ẩm thực đạt chuẩn OCOP ${pStars} Sao!
-[00:08 - 00:13] 100% nguyên liệu tự nhiên tinh khiết, chuẩn an toàn vệ sinh thực phẩm quốc gia.
-[00:13 - 00:20] 👉 Nhấp ngay vào đường link Bio ở đầu kênh để mở Bản Đồ Số OCOP AI Hub tìm điểm bán chính hãng gần bạn nhất nhé!`;
-
-            tiktokAutoCaptions = [
-                "🔥 REVIEW ĐẶC SẢN OCOP",
-                `${pName.toUpperCase()}`,
-                `⭐ ĐẠT CHUẨN OCOP ${pStars} SAO QUỐC GIA`,
-                "🌿 100% NGUYÊN LIỆU TỰ NHIÊN",
-                "👉 NHẤP VÀO BIO ĐỂ MỞ BẢN ĐỒ!"
-            ];
-        } else if (style === 'origin') {
-            caption = `🏡 HÀNH TRÌNH DI SẢN: Câu chuyện đằng sau ${pName} (${pRegion}) 🌿
-
-Từ đôi bàn tay cần lao của bà con nông dân và Hợp tác xã tại ${pRegion}, mỗi hộp ${pName} là sự kết tinh của tình yêu quê hương và quy trình OCOP ${pStars} Sao nghiêm ngặt.
-
-❤️ Hãy chung tay cùng OCOP AI Hub tôn vinh nông sản Việt!
-👉 Mở Bản Đồ Số OCOP trên link Bio để tìm showroom gần nhất ủng hộ bà con nhé!
-
-#OCOPVietNam #DacSan63Tinh #CauChuyenOCOP #OCOP${regionTag} #DigitalFest2026 #NongSanViet #TuHaoHangViet`;
-
-            script = `[00:00 - 00:05] Đằng sau mỗi hộp ${pName} là giọt mồ hôi và tâm huyết của bà con nông dân ${pRegion}.
-[00:05 - 00:10] Trải qua bao quy trình khắt khe để đạt chứng nhận OCOP ${pStars} Sao danh giá.
-[00:10 - 00:15] Vừa thơm ngon, vừa đậm đà bản sắc văn hóa cội nguồn.
-[00:15 - 00:20] 👉 Mở ngay Bản Đồ OCOP AI Hub tại link Bio để tìm showroom chính hãng gần bạn nhất!`;
-
-            tiktokAutoCaptions = [
-                "🏡 HÀNH TRÌNH DI SẢN OCOP",
-                `🌿 TINH HOA ${pRegion.toUpperCase()}`,
-                `${pName.toUpperCase()}`,
-                `⭐ CHỨNG NHẬN OCOP ${pStars} SAO`,
-                "👉 MUA CHÍNH HÃNG TẠI LINK BIO!"
-            ];
-        } else {
-            caption = `🎁 GỢI Ý QUÀ BIẾU THƯỢNG HẠNG: ${pName} (${pRegion}) 🌟
-
-Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắc? ${pName} OCOP ${pStars} Sao ${starStr} chính là câu trả lời hoàn hảo! Đóng gói tinh tế, tem truy xuất nguồn gốc QR code OCOP minh bạch.
-
-👉 Bấm ngay vào link Bio để mở Bản Đồ Số OCOP AI Hub đặt hàng và nhận ưu đãi kết nối O2O ngay hôm nay!
-
-#OCOPVietNam #DacSan63Tinh #QuaTangOCOP #OCOP${regionTag} #DigitalFest2026 #QuaBieuDoanhNghiep #OCOP`;
-
-            script = `[00:00 - 00:04] Cần tìm một món quà biếu sức khỏe vừa sang trọng, vừa ý nghĩa?
-[00:04 - 00:09] Đừng bỏ qua ${pName} — Đặc sản nức tiếng vùng đất ${pRegion}!
-[00:09 - 00:14] Chuẩn OCOP ${pStars} Sao, có tem truy xuất QR code minh bạch và bao bì cao cấp.
-[00:14 - 00:20] 👉 Truy cập ngay link Bio ở trang chủ để mở Bản Đồ OCOP tìm điểm bán gần bạn nhất!`;
-
-            tiktokAutoCaptions = [
-                "🎁 QUÀ BIẾU OCOP THƯỢNG HẠNG",
-                `${pName.toUpperCase()}`,
-                `📍 ĐẶC SẢN ${pRegion.toUpperCase()}`,
-                `⭐ OCOP ${pStars} SAO • TEM QR CHỐNG GIẢ`,
-                "👉 TRUY CẬP BIO MUA NGAY HÔM NAY!"
-            ];
-        }
-
-        const capEl = document.getElementById('tiktok-caption-modal');
-        if (capEl) capEl.value = caption;
-
-        const scrEl = document.getElementById('tiktok-script-modal');
-        if (scrEl) scrEl.value = script;
-
-        drawTikTokCanvasModalFrame();
-    };
-
-    window.copyTikTokModalContent = function () {
-        const cap = document.getElementById('tiktok-caption-modal')?.value || '';
-        const scr = document.getElementById('tiktok-script-modal')?.value || '';
-        const full = `=== BÀI VIẾT TIKTOK ===\n${cap}\n\n=== KỊCH BẢN THUYẾT MINH ===\n${scr}`;
-
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(full).then(() => {
-                if (typeof showToast === 'function') {
-                    showToast('📋 Đã copy bài viết & kịch bản TikTok vào bộ nhớ tạm!', 'success');
-                } else {
-                    alert('📋 Đã copy bài viết & kịch bản TikTok vào bộ nhớ tạm!');
-                }
-            });
-        }
-    };
-
-    // Canvas rendering for modal
-
-    function drawTikTokCanvasModalFrame() {
-        const canvas = document.getElementById('tiktok-canvas-modal');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        const p = tiktokCurrentProduct || featuredSpecialties[0];
-        renderCommercialStudioVideo(ctx, canvas, p, modalCurrentFrame, tiktokTotalFrames, tiktokProductImage, tiktokCurrentStyle, tiktokAutoCaptions);
-    }
-
-    function runTikTokModalLoop() {
-        if (!isModalPlaying) return;
-        modalCurrentFrame = (modalCurrentFrame + 1) % tiktokTotalFrames;
-        drawTikTokCanvasModalFrame();
-
-        const time = (modalCurrentFrame % tiktokTotalFrames) / 30;
-        let sIdx = 0;
-        if (time < 3.5) sIdx = 0;
-        else if (time < 7.5) sIdx = 1;
-        else if (time < 11.5) sIdx = 2;
-        else sIdx = 3;
-
-        if (sIdx !== tiktokLastSpokenScene) {
-            tiktokLastSpokenScene = sIdx;
-            const scr = document.getElementById('tiktok-script-modal')?.value || '';
-            const sents = getScriptSceneSentences(scr);
-            if (sents[sIdx]) speakTikTokSentence(sents[sIdx]);
-        }
-
-        modalAnimId = requestAnimationFrame(runTikTokModalLoop);
-    }
-
-    function playTikTokModalVideo() {
-        if (isModalPlaying) return;
-        isModalPlaying = true;
-        const btn = document.getElementById('txt-modal-play');
-        if (btn) btn.textContent = '⏸ Tạm Dừng Video & Giọng Đọc';
-
-        initTikTokAudioEngine();
-        startTikTokBackgroundMusic();
-        tiktokLastSpokenScene = -1;
-
-        modalAnimId = requestAnimationFrame(runTikTokModalLoop);
-    }
-
-    function pauseTikTokModalVideo() {
-        window.stopAllTikTokVideoAndVoice();
-    }
-
-    window.toggleTikTokModalPlayback = function () {
-        if (isModalPlaying) {
-            pauseTikTokModalVideo();
-        } else {
-            playTikTokModalVideo();
-        }
-    };
-
-    window.downloadTikTokModalVideo = function () {
-        const canvas = document.getElementById('tiktok-canvas-modal');
-        downloadTikTokVideoEngine(canvas, true);
-    };
-
-    window.openTikTokUploadCenterModal = function () {
-        const cap = document.getElementById('tiktok-caption-modal')?.value || '';
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(cap);
-        }
-        if (typeof showToast === 'function') {
-            showToast('📋 Đã tự động copy bài viết! Đang mở TikTok Creator Center...', 'success');
-        }
-        window.open('https://www.tiktok.com/creator-center/upload', '_blank');
     };
 
     window.askAiAboutStore = function (productId) {
