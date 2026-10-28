@@ -1,41 +1,41 @@
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="ocop-api-base" content=""><title>OCOP · Đặt hàng trực tuyến</title><link rel="stylesheet" href="sales-pages.css?v=19c4ec91c303"></head><body><main>
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="ocop-api-base" content=""><title>OCOP · Đặt hàng trực tuyến</title><link rel="stylesheet" href="sales-pages.css?v=f860315207d3"></head><body class="checkout-page"><main>
 <header><a href="index.html" data-vi="← Quay lại cửa hàng" data-en="← Back to shop"></a><button id="lang" title="Bấm để chuyển sang English">🌐 Tiếng Việt</button></header>
 <h1 data-vi="🚚 Đặt Hàng Trực Tuyến OCOP" data-en="🚚 Place Your OCOP Order"></h1>
 <p data-vi="Kiểm tra thông tin sản phẩm và điền địa chỉ nhận hàng bên dưới. Nhà bán hàng chính hãng OCOP sẽ liên hệ xác nhận và giao hàng tận nơi cho quý khách." data-en="Review your products and enter your delivery details below. The official OCOP merchant will confirm and deliver to your doorstep."></p>
 <form id="draftForm"><section id="items"></section><button type="button" id="add" data-vi="+ Thêm sản phẩm" data-en="+ Add product"></button>
 
 <!-- Khung Mã Voucher Giảm Giá (Shopee Style) -->
-<div style="margin: 16px 0; padding: 14px 18px; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 16px;">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
-<span style="font-weight: 800; color: #92400e; font-size: 13px;" data-vi="🎟️ Mã Voucher Giảm Giá:" data-en="🎟️ Voucher Code:">🎟️ Mã Voucher Giảm Giá:</span>
-<span style="font-size: 11px; font-weight: 700; color: #b45309; background: #fef3c7; padding: 2px 8px; border-radius: 6px;">Voucher OCOP Shopee</span>
+<div style="margin: 16px 0; padding: 14px 18px; background: #e0f2fe; border: 1.5px solid #7dd3fc; border-radius: 16px;">
+<div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+<span style="font-weight: 800; color: #0c4a6e; font-size: 13px;" data-vi="🎟️ Mã Voucher Giảm Giá:" data-en="🎟️ Voucher Code:">🎟️ Mã Voucher Giảm Giá:</span>
+<span style="font-size: 11px; font-weight: 700; color: #075985; background: #bae6fd; padding: 2px 8px; border-radius: 6px;">Voucher OCOP Shopee</span>
 </div>
 <div style="display: flex; gap: 8px;">
-<input type="text" id="draft-voucher-input" placeholder="Mã: OCOP2026, FREESHIP, GIAM20K..." style="flex: 1; padding: 10px 14px; border: 1.5px solid #fde68a; border-radius: 12px; font-weight: 700; text-transform: uppercase;">
-<button type="button" onclick="applyDraftVoucher()" style="padding: 10px 18px; background: #d97706; color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer;">Áp Dụng</button>
+<input type="text" id="draft-voucher-input" placeholder="Mã: OCOP2026, FREESHIP, GIAM20K..." style="flex: 1; padding: 10px 14px; border: 1.5px solid #7dd3fc; border-radius: 12px; font-weight: 700; text-transform: uppercase;">
+<button type="button" onclick="applyDraftVoucher()" style="padding: 10px 18px; background: #0369a1; color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer;">Áp Dụng</button>
 </div>
 <div id="draft-voucher-status" style="margin-top: 6px; font-size: 12px; font-weight: 700; display: none;"></div>
 <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; font-size: 11px;">
-<span style="color: #78350f;">Gợi ý:</span>
-<a href="#" onclick="event.preventDefault(); document.getElementById('draft-voucher-input').value='OCOP2026'; applyDraftVoucher();" style="color: #b45309; font-weight: bold; background: #fff; padding: 2px 8px; border-radius: 6px; border: 1px solid #fde68a;">OCOP2026 (-50k)</a>
-<a href="#" onclick="event.preventDefault(); document.getElementById('draft-voucher-input').value='FREESHIP'; applyDraftVoucher();" style="color: #b45309; font-weight: bold; background: #fff; padding: 2px 8px; border-radius: 6px; border: 1px solid #fde68a;">FREESHIP (-25k)</a>
-<a href="#" onclick="event.preventDefault(); document.getElementById('draft-voucher-input').value='GIAM20K'; applyDraftVoucher();" style="color: #b45309; font-weight: bold; background: #fff; padding: 2px 8px; border-radius: 6px; border: 1px solid #fde68a;">GIAM20K (-20k)</a>
+<span style="color: #0c4a6e;">Gợi ý:</span>
+<a href="#" onclick="event.preventDefault(); document.getElementById('draft-voucher-input').value='OCOP2026'; applyDraftVoucher();" style="color: #075985; font-weight: bold; background: #fff; padding: 2px 8px; border-radius: 6px; border: 1px solid #7dd3fc;">OCOP2026 (-50k)</a>
+<a href="#" onclick="event.preventDefault(); document.getElementById('draft-voucher-input').value='FREESHIP'; applyDraftVoucher();" style="color: #075985; font-weight: bold; background: #fff; padding: 2px 8px; border-radius: 6px; border: 1px solid #7dd3fc;">FREESHIP (-25k)</a>
+<a href="#" onclick="event.preventDefault(); document.getElementById('draft-voucher-input').value='GIAM20K'; applyDraftVoucher();" style="color: #075985; font-weight: bold; background: #fff; padding: 2px 8px; border-radius: 6px; border: 1px solid #7dd3fc;">GIAM20K (-20k)</a>
 </div>
 </div>
 
 <!-- Tổng Tiền & Giảm Giá -->
-<div id="order-summary-box" style="margin: 16px 0; padding: 14px 18px; background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 16px; display: flex; flex-direction: column; gap: 8px;">
+<div id="order-summary-box" style="margin: 16px 0; padding: 14px 18px; background: #e0f2fe; border: 1.5px solid #7dd3fc; border-radius: 16px; display: flex; flex-direction: column; gap: 8px;">
 <div style="display:flex; justify-content:space-between; align-items:center;">
-<span style="font-weight: 700; color: #065f46; font-size: 14px;" data-vi="Tiền hàng tạm tính:" data-en="Product subtotal:">Tiền hàng tạm tính:</span>
+<span style="font-weight: 700; color: #0c4a6e; font-size: 14px;" data-vi="Tiền hàng tạm tính:" data-en="Product subtotal:">Tiền hàng tạm tính:</span>
 <span id="order-goods-amount" style="font-weight: 800; color: #0f172a; font-size: 15px;">0 ₫</span>
 </div>
-<div id="draft-voucher-row" style="display:none; justify-content:space-between; align-items:center; color: #047857; font-weight: 700;">
+<div id="draft-voucher-row" style="display:none; justify-content:space-between; align-items:center; color: #075985; font-weight: 700;">
 <span>Giảm giá voucher (<span id="draft-applied-code"></span>):</span>
 <span id="draft-voucher-discount-amount" style="font-weight: 800;">-0 ₫</span>
 </div>
-<div style="display:flex; justify-content:space-between; align-items:center; padding-top: 8px; border-top: 1px solid #a7f3d0;">
-<span style="font-weight: 900; color: #065f46; font-size: 15px;" data-vi="TỔNG THANH TOÁN:" data-en="TOTAL PAYMENT:">TỔNG THANH TOÁN:</span>
-<span id="order-total-amount" style="font-weight: 900; color: #047857; font-size: 20px;">0 ₫</span>
+<div style="display:flex; justify-content:space-between; align-items:center; padding-top: 8px; border-top: 1px solid #7dd3fc;">
+<span style="font-weight: 900; color: #0c4a6e; font-size: 15px;" data-vi="TỔNG THANH TOÁN:" data-en="TOTAL PAYMENT:">TỔNG THANH TOÁN:</span>
+<span id="order-total-amount" style="font-weight: 900; color: #075985; font-size: 20px;">0 ₫</span>
 </div>
 </div>
 
@@ -46,18 +46,18 @@
 
 <!-- Hình Thức Thanh Toán -->
 <div style="margin: 18px 0;">
-<label style="display:block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #065f46;" data-vi="Hình thức thanh toán:" data-en="Payment Method:">Hình thức thanh toán:</label>
+<label style="display:block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #0c4a6e;" data-vi="Hình thức thanh toán:" data-en="Payment Method:">Hình thức thanh toán:</label>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
-<label style="display:flex; align-items:center; gap: 8px; padding: 12px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px;">
-<input type="radio" name="payment_method" value="vietqr" checked style="width:18px; height:18px; accent-color: #047857;">
+<label style="display:flex; align-items:center; gap: 8px; padding: 12px; background: #f0f9ff; border: 1.5px solid #7dd3fc; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px;">
+<input type="radio" name="payment_method" value="vietqr" checked style="width:18px; height:18px; accent-color: #075985;">
 <span>🏦 CK BIDV (VietQR)</span>
 </label>
-<label style="display:flex; align-items:center; gap: 8px; padding: 12px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px;">
-<input type="radio" name="payment_method" value="momo" style="width:18px; height:18px; accent-color: #d82d8b;">
+<label style="display:flex; align-items:center; gap: 8px; padding: 12px; background: #f0f9ff; border: 1.5px solid #7dd3fc; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px;">
+<input type="radio" name="payment_method" value="momo" style="width:18px; height:18px; accent-color: #0284c7;">
 <span>📱 Ví MoMo (0971280030)</span>
 </label>
-<label style="display:flex; align-items:center; gap: 8px; padding: 12px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px;">
-<input type="radio" name="payment_method" value="cod" style="width:18px; height:18px; accent-color: #047857;">
+<label style="display:flex; align-items:center; gap: 8px; padding: 12px; background: #f0f9ff; border: 1.5px solid #7dd3fc; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px;">
+<input type="radio" name="payment_method" value="cod" style="width:18px; height:18px; accent-color: #075985;">
 <span>🚚 Ship COD Tận Nơi</span>
 </label>
 </div>
@@ -66,5 +66,5 @@
 <label class="check"><input name="confirmed" type="checkbox" required><span data-vi="Tôi xác nhận thông tin nhận hàng chính xác và đồng ý đặt đơn hàng này." data-en="I confirm these delivery details and agree to place this order."></span></label>
 <button type="submit" id="submit" class="primary" disabled data-vi="🚚 Xác nhận đặt hàng ngay" data-en="🚚 Confirm order now"></button></form>
 <p id="status" role="status"></p><section id="result" hidden class="card"></section>
-</main><script src="data.js?v=8c9ab2ce36af"></script><script src="sales-pages.js?v=4cb84a5737c9"></script><script src="voucher-pool.js?v=ab7512585146"></script><script src="draft-order.js?v=f8f8235efe88"></script><script src="ui-branding.js?v=66dc84bfc24e"></script>
+</main><script src="data.js?v=8c9ab2ce36af"></script><script src="sales-pages.js?v=ca2e49e67ca6"></script><script src="voucher-pool.js?v=ab7512585146"></script><script src="draft-order.js?v=6688e3313d16"></script><script src="ui-branding.js?v=66dc84bfc24e"></script>
 </body></html>

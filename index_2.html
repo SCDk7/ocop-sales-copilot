@@ -9,22 +9,22 @@
             document.querySelector('base').href = new URL('.', location.href).href;
         }
     </script>
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
  <meta http-equiv="Pragma" content="no-cache">
  <meta http-equiv="Expires" content="0">
  <meta name="ocop-api-base" content="">
  <title>OCOP Sales - Đặc Sản Tuyển Chọn 63 Tỉnh Thành Việt Nam</title>
  <script src="voice-engine.js?v=fb7c587f8eb7"></script>
- <script src="ai-shopping.js?v=63d92806c70e"></script>
+ <script src="ai-shopping.js?v=013db6c43e56"></script>
 <script src="data/tea-knowledge.js?v=8757f3258ad7"></script>
 <script src="product-training.js?v=34006b79e783"></script>
 <script src="catalog-facts.js?v=b2710876dbfd"></script>
-<script src="product-consultant.js?v=68220bb323fd"></script>
+<script src="product-consultant.js?v=e93f4668469d"></script>
 <script src="ai-scenarios.js?v=be954e8b5324"></script>
 <script src="product-locations.js?v=24739bc83737"></script>
-<script src="ai-request-analysis.js?v=efe9692d46df"></script>
-<script src="chat-fallback.js?v=23433c5f0515"></script>
+<script src="ai-request-analysis.js?v=889e43dd7dc1"></script>
+<script src="chat-fallback.js?v=e49ebc0f1a89"></script>
  <script src="chat-language.js?v=6239eb709716"></script>
     <script>
         try {
@@ -71,13 +71,10 @@
  <!-- Font Awesome Icons & Google Fonts -->
  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=5a4d854df191">
     <link rel="stylesheet" href="assets/vendor/fonts/jakarta.css?v=c9e3631b1193">
-    <link rel="stylesheet" href="assets/tailwind.css?v=af966ad1ac06">
  <!-- Font Awesome Icons & Google Fonts -->
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
- <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=a78371028241">
  <!-- Project Stylesheets -->
- <link rel="stylesheet" href="style.css?v=cdaca76aa9d3">
+ <link rel="stylesheet" href="style.css?v=6d2cfbb5784f">
  <!-- <link rel="stylesheet" href="styledangcap.css"> -->
  <!-- <link rel="stylesheet" href="SuaLoiKoClick.css"> -->
  <style>
@@ -938,32 +935,6 @@
         /* ------------------------------------------------------------- */
         /* DRAGGABLE & RESIZABLE CHATBOT AI ENGINE (2026 DIGITAL CHALLENGE) */
         /* ------------------------------------------------------------- */
-        #ai-chat-window {
-            position: fixed !important;
-            bottom: 5.5rem !important;
-            right: 1.5rem !important;
-            left: auto !important;
-            top: auto !important;
-            width: 420px !important;
-            height: 540px !important;
-            min-width: 380px !important;
-            min-height: 520px !important;
-            max-width: 85vw !important;
-            max-height: 85vh !important;
-            display: flex !important;
-            flex-direction: column !important;
-            resize: both !important;
-            overflow: hidden !important;
-            z-index: 999999 !important;
-            background: rgba(17, 24, 39, 0.85) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15), 0 24px 64px rgba(0, 0, 0, 0.6) !important;
-            transform: none !important;
-            will-change: top, left;
-            touch-action: none;
-        }
         #ai-chat-window.hidden,
         #ai-chat-window[style*="display: none"],
         #ai-chat-window[hidden] {
@@ -2882,7 +2853,7 @@
  <!-- HEADER ĐẢO NỔI GLASSMORPHISM -->
  <div class="intro-header relative z-50 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-sky-300/40" style="position: relative !important; z-index: 999999 !important; background: transparent !important; border-radius: 0 !important; box-shadow: none !important;">
  <div class="flex items-center space-x-3">
- <div class="intro-brand-mark relative w-10 h-10 rounded-2xl bg-sky-600 flex items-center justify-center text-white text-lg shadow-md group">
+ <div class="ocop-brand-mark intro-brand-mark relative w-10 h-10 rounded-2xl bg-sky-600 flex items-center justify-center text-white text-lg shadow-md group">
  <i class="fa-solid fa-leaf text-amber-300"></i>
  </div>
  <div>
@@ -2941,8 +2912,7 @@
  <!-- Hero Typography -->
  <div class="intro-hero-copy space-y-2">
  <h2 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight intro-hero-title">
- <span class="text-white" id="i18n-intro-title1" style="display: block !important; width: 100%; text-align: center !important; white-space: pre-line !important; color: #0C4A6E !important; font-weight: 900 !important;">Bản Đồ Số OCOP
-Khơi Nguồn Di Sản Việt</span>
+ <span class="text-white" id="i18n-intro-title1" style="display: block !important; width: 100%; text-align: center !important; white-space: pre-line !important; color: #0C4A6E !important; font-weight: 900 !important;">ĐẶC SẢN OCOP VIỆT NAM</span>
  <span class="intro-gold-gradient" id="i18n-intro-title2" style="display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center !important; width: 100% !important; font-size: clamp(0.85rem, 1.5vw, 1.25rem); color: #0284C7 !important; background: none !important; -webkit-text-fill-color: #0284C7 !important; font-weight: 800 !important; gap: 4px !important;"><span style="display:block!important;white-space:nowrap!important;padding-left:0!important;text-align:center!important;width:100%!important">TRỢ LÝ AI TƯ VẤN</span><span style="display:block!important;white-space:nowrap!important;padding-left:0!important;text-align:center!important;width:100%!important">KHÁM PHÁ ĐẶC SẢN VÙNG MIỀN</span><span style="display:block!important;white-space:nowrap!important;padding-left:0!important;text-align:center!important;width:100%!important">TRA CỨU CỬA HÀNG CHÍNH HÃNG</span></span>
  </h2>
  <p class="text-xs sm:text-sm text-slate-700 max-w-2xl mx-auto leading-relaxed font-medium" id="i18n-intro-desc" style="color: #1E293B !important; font-size: 0.875rem !important; line-height: 1.5 !important; font-weight: 500 !important;">
@@ -2950,7 +2920,7 @@ Khơi Nguồn Di Sản Việt</span>
  </p>
  </div>
  <!-- 4 Trụ Cột Hologram Cards (Hiệu ứng 3D Floating) -->
- <div class="intro-pillars intro-feature-grid"><button type="button" class="compact-feature-card" onclick="enterOcopMarket('all', () => openAllStoresModal())"><i class="fa-solid fa-map-location-dot" style="background:#e0f2fe;color:#0284c7;" aria-hidden="true"></i><span id="i18n-intro-pillar1" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Bản Đồ Số 63 Tỉnh Thành</span></button><button type="button" class="compact-feature-card" onclick="enterOcopMarket('all', () => scrollToProducts())"><i class="fa-solid fa-seedling" style="background:#dcfce7;color:#16a34a;" aria-hidden="true"></i><span id="i18n-intro-pillar2" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Đặc Sản Vùng Miền Việt Nam</span></button><button type="button" class="compact-feature-card" onclick="enterOcopMarket('all', () => toggleAIChat(true))"><i class="fa-solid fa-robot" style="background:#e0e7ff;color:#4f46e5;" aria-hidden="true"></i><span id="i18n-intro-pillar3" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">24/7 AI Dispatch Copilot</span></button><button type="button" class="compact-feature-card" onclick="enterOcopMarket('all', () => openFinancialDashboardModal())"><i class="fa-solid fa-video" style="background:#f3e8ff;color:#9333ea;" aria-hidden="true"></i><span id="i18n-intro-pillar4" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">AI Financial Engine</span></button></div>
+ <div class="intro-pillars intro-feature-grid"><button type="button" class="compact-feature-card" onclick="enterOcopMarket('all', () => openAllStoresModal())"><i class="fa-solid fa-map-location-dot" style="background:#e0f2fe;color:#0284c7;" aria-hidden="true"></i><span id="i18n-intro-pillar1" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Bản Đồ Số 63 Tỉnh Thành</span></button><button type="button" class="compact-feature-card" onclick="enterOcopMarket('all', () => scrollToProducts())"><i class="fa-solid fa-seedling" style="background:#dcfce7;color:#16a34a;" aria-hidden="true"></i><span id="i18n-intro-pillar2" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Đặc Sản Vùng Miền Việt Nam</span></button><button type="button" class="compact-feature-card" onclick="enterOcopMarket('all', () => toggleAIChat(true))"><i class="fa-solid fa-robot" style="background:#e0e7ff;color:#4f46e5;" aria-hidden="true"></i><span id="i18n-intro-pillar3" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Trợ lý AI 24/7</span></button></div>
  <!-- BANNER TỐI ƯU VẬN HÀNH & KÍCH HOẠT LIGHTWEIGHT MVP -->
  
  <!-- BẢN ĐỒ TƯƠNG TÁC TỈNH THÀNH VIỆT NAM -->
@@ -3048,11 +3018,11 @@ Khơi Nguồn Di Sản Việt</span>
  
  <!-- 2. HEADER: SINGLE STICKY OCOP AI HUB (FULL-WIDTH MODERN SKY-TECH NAVBAR) -->
  <header id="storefront-main-header" class="storefront-header hidden sticky top-0 z-40 bg-white border-b border-sky-200 transition-all duration-300 w-full" style="display: none !important; width: 100% !important; max-width: 100% !important; border-radius: 0 !important; background: #FFFFFF !important; border-bottom: 1px solid #BAE6FD !important; box-shadow: 0 2px 10px rgba(2, 132, 199, 0.05) !important;">
- <div class="w-full px-4 sm:px-6 flex items-center justify-between" style="max-width: 100% !important; width: 100% !important; height: 56px !important;">
+ <div class="w-full px-4 sm:px-6 flex items-center justify-between" style="max-width: 100% !important; width: 100% !important;">
  <!-- Logo + Brand -->
  <a href="#" class="flex items-center space-x-2 group flex-shrink-0" style="text-decoration: none;">
- <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white text-base shadow-sm shrink-0" style="background: #0284C7;">
- <i class="fa-solid fa-brain"></i>
+ <div class="ocop-brand-mark w-9 h-9 rounded-xl flex items-center justify-center text-white text-base shadow-sm shrink-0" style="background: #0284C7;">
+ <i class="fa-solid fa-leaf"></i>
  </div>
  <div class="flex flex-col">
  <div class="flex items-center gap-1.5">
@@ -3061,7 +3031,7 @@ Khơi Nguồn Di Sản Việt</span>
  </div>
  </a>
  <!-- 2 Central Navigation Items in .header-primary-nav -->
- <nav class="header-primary-nav hidden md:inline-flex items-center" style="display: inline-flex !important; gap: 10px !important; flex-wrap: nowrap !important;" aria-label="Thanh điều hướng trung tâm">
+ <nav class="header-primary-nav hidden md:inline-flex items-center" style="gap: 10px;" aria-label="Thanh điều hướng trung tâm">
  <button type="button" onclick="scrollToProducts()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" style="white-space: nowrap !important; height: 38px; color: #0369A1 !important; background: #F0F9FF !important; border: 1px solid #7DD3FC !important;">
  <span id="header-nav-products-label">🌟 Đặc Sản 63 Tỉnh Thành</span>
  </button>
@@ -3125,7 +3095,7 @@ Khơi Nguồn Di Sản Việt</span>
  <span id="customer-account-btn-text">👤 Đăng Nhập</span>
  </button>
  <!-- Hidden compatibility markers for system tests -->
- <button type="button" onclick="toggleAuthModal()" id="user-btn" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; background: #F0F9FF !important; color: #0284C7 !important; border: 1.5px solid #38BDF8 !important;" title="Tài khoản khách hàng (Đăng nhập / Đăng ký / Đổi mật khẩu)">
+ <button type="button" onclick="toggleAuthModal()" id="user-btn" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="display:none!important;white-space: nowrap !important; height: 38px; background: #F0F9FF !important; color: #0284C7 !important; border: 1.5px solid #38BDF8 !important;" title="Tài khoản khách hàng (Đăng nhập / Đăng ký / Đổi mật khẩu)">
 <i class="fa-solid fa-user text-sky-600"></i>
 <span id="user-btn-label">👤 Đăng Nhập / Đăng Ký</span>
 </button>
@@ -3147,17 +3117,16 @@ Khơi Nguồn Di Sản Việt</span>
  <main class="flex-1" style="display: flex !important; flex-direction: column !important; gap: 20px !important; min-height: auto !important; height: auto !important; position: relative !important; z-index: 20 !important;">
  <!-- 3. HERO BANNER SECTION (CLEAN SKY-TECH UNBOXED HERO) -->
  <section id="shop-hero" class="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 relative" style="max-width: 1400px !important; width: 94% !important; background: transparent !important; border: none !important; box-shadow: none !important;">
- <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
- <div class="lg:col-span-7 space-y-5">
- <h2 class="text-2xl sm:text-4xl lg:text-[2.65rem] font-black tracking-tight leading-[1.15]" data-title="Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt" style="color: #0F172A !important;">
- <span id="i18n-hero-title1" data-legacy="Bản Đồ Số OCOP," class="whitespace-nowrap" style="color: #0F172A !important; padding-left: 4px !important; overflow: visible !important; display: inline-block !important;">Tinh Hoa Đặc Sản OCOP Việt</span> <br>
- <span id="i18n-hero-title2" data-legacy="Khơi Nguồn Di Sản Việt" style="color: #0284C7 !important;">Chuyển Đổi Số & Bứt Phá Doanh Thu Cùng AI</span>
+ <div class="hero-columns grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+ <div class="hero-intro-column lg:col-span-7 space-y-5">
+ <h2 class="text-2xl sm:text-4xl lg:text-[2.65rem] font-black tracking-tight leading-[1.15]" style="color: #0F172A !important;">
+ <span id="i18n-hero-title1">ĐẶC SẢN OCOP VIỆT NAM</span>
  </h2>
  <p class="text-slate-600 text-sm sm:text-base max-w-xl leading-relaxed font-medium" id="i18n-hero-desc" style="color: #334155 !important;">
  Nền tảng AI kết nối 2 chiều: Giúp du khách & doanh nghiệp tìm mua 520+ đặc sản OCOP 3-5 Sao chính hãng tại 63 tỉnh thành, và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.
  </p>
  <!-- 4 FEATURE CARDS (CLEAN WHITE CARDS) -->
- <div class="hero-feature-grid"><button type="button" class="compact-feature-card" onclick="openAllStoresModal()"><i class="fa-solid fa-map-location-dot" style="background:#e0f2fe;color:#0284c7;" aria-hidden="true"></i><span id="i18n-hero-feat1-title" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Bản Đồ Số 63 Tỉnh Thành</span></button><button type="button" class="compact-feature-card" onclick="scrollToProducts()"><i class="fa-solid fa-seedling" style="background:#dcfce7;color:#16a34a;" aria-hidden="true"></i><span id="i18n-hero-feat2-title" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Đặc Sản Vùng Miền Việt Nam</span></button><button type="button" class="compact-feature-card" onclick="toggleAIChat(true)"><i class="fa-solid fa-robot" style="background:#e0e7ff;color:#4f46e5;" aria-hidden="true"></i><span id="i18n-hero-feat3-title" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">24/7 AI Dispatch Copilot</span></button><button type="button" class="compact-feature-card" onclick="openFinancialDashboardModal()"><i class="fa-solid fa-video" style="background:#f3e8ff;color:#9333ea;" aria-hidden="true"></i><span id="i18n-hero-feat4-title" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">AI Financial Engine</span></button></div>
+ <div class="hero-feature-grid"><button type="button" class="compact-feature-card" onclick="openAllStoresModal()"><i class="fa-solid fa-map-location-dot" style="background:#e0f2fe;color:#0284c7;" aria-hidden="true"></i><span id="i18n-hero-feat1-title" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Bản Đồ Số 63 Tỉnh Thành</span></button><button type="button" class="compact-feature-card" onclick="scrollToProducts()"><i class="fa-solid fa-seedling" style="background:#dcfce7;color:#16a34a;" aria-hidden="true"></i><span id="i18n-hero-feat2-title" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Đặc Sản Vùng Miền Việt Nam</span></button><button type="button" class="compact-feature-card" onclick="toggleAIChat(true)"><i class="fa-solid fa-robot" style="background:#e0e7ff;color:#4f46e5;" aria-hidden="true"></i><span id="i18n-hero-feat3-title" class="font-bold text-slate-900" style="color:#0F172A !important;font-weight:800 !important;">Trợ lý AI 24/7</span></button></div>
  <!-- 2 CLEAN ACTION BUTTONS -->
  <div class="flex flex-wrap items-center justify-start gap-3 pt-2">
  <button type="button" onclick="openAllStoresModal()" class="font-black px-5 py-3 rounded-2xl shadow-sm transition text-xs sm:text-sm flex items-center space-x-2 cursor-pointer hover:scale-105" style="background: #0284C7 !important; color: #FFFFFF !important; border: 1px solid #0369A1 !important;">
@@ -3245,7 +3214,7 @@ Khơi Nguồn Di Sản Việt</span>
      </div>
  </div>
  </div>
- <div class="lg:col-span-5 space-y-4">
+ <div class="hero-featured-column lg:col-span-5 space-y-4">
  <!-- KHỐI 2: TRƯNG BÀY SẢN PHẨM NỔI BẬT NHẤT (CARD TƯƠNG TÁC CAO CẤP) -->
  <div id="featured-product-card" role="button" tabindex="0" aria-label="Xem sản phẩm" onclick="openFeaturedProduct()" onkeydown="if(event.target === this &amp;&amp; (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openFeaturedProduct(); }" class="border border-sky-200 p-4 rounded-3xl shadow-lg relative overflow-hidden bg-white" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.08) !important;">
      
@@ -4127,7 +4096,6 @@ Khơi Nguồn Di Sản Việt</span>
  <h4 class="font-extrabold text-xs tracking-wide text-amber-100 flex items-center">
  <span id="chat-title" data-legacy="❖ THÔNG TIN SẢN PHẨM & NGUỒN THAM KHẢO">AI HỖ TRỢ • TƯ VẤN & ĐẶT HÀNG</span>
  </h4>
- <span class="text-[10px] text-emerald-200 font-semibold" id="chat-subtitle">Hệ thống RAG 63 Tỉnh Thành &amp; Phân tích biên lợi nhuận Real-time</span>
  </div>
  </div>
  <div class="flex items-center space-x-1.5 pointer-events-auto">
@@ -5769,7 +5737,7 @@ Khơi Nguồn Di Sản Việt</span>
  <!-- ============================================================== -->
  <script src="data.js?v=8c9ab2ce36af"></script>
  <script src="ocop-stores.js?v=e967d59dd2fa"></script>
- <script src="ai-business-knowledge.js?v=1a8ddae50121"></script>
+ <script src="ai-business-knowledge.js?v=08196d7c741a"></script>
  <script src="assets/vendor/leaflet/leaflet.js?v=3104b526504d"></script>
  <script>
         // -------------------------------------------------------------
@@ -8317,13 +8285,32 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         // ==============================================================
         // DRAGGABLE & RESIZABLE CHATBOX ENGINE (2026 DIGITAL CHALLENGE)
         // ==============================================================
+        function keepChatInViewport() {
+            const win = document.getElementById('ai-chat-window');
+            if (!win) return;
+            const viewport = window.visualViewport;
+            const height = viewport?.height || window.innerHeight;
+            win.style.setProperty('--chat-viewport-height', height + 'px');
+            if (win.classList.contains('hidden') || window.innerWidth <= 640) return;
+            const rect = win.getBoundingClientRect();
+            const width = document.documentElement.clientWidth;
+            const left = Math.max(8, Math.min(rect.left, width - rect.width - 8));
+            const top = Math.max(8, Math.min(rect.top, height - rect.height - 8));
+            if (Math.abs(left - rect.left) > 1 || Math.abs(top - rect.top) > 1) {
+                win.style.left = left + 'px'; win.style.top = top + 'px';
+                win.style.right = 'auto'; win.style.bottom = 'auto';
+            }
+        }
         function initDraggableResizableChatbox() {
+            keepChatInViewport();
             const chatWindow = document.getElementById('ai-chat-window');
             const chatHeader = document.getElementById('ai-chat-header') || chatWindow?.querySelector('.chatbox-drag-handle') || chatWindow?.querySelector('.bg-gradient-to-r');
             const resizeHandle = document.getElementById('ai-chat-resize-handle');
             if (!chatWindow || !chatHeader) return;
             if (chatHeader.dataset.dragInitialized === 'true') return;
             chatHeader.dataset.dragInitialized = 'true';
+            window.addEventListener('resize', keepChatInViewport, { passive: true });
+            window.visualViewport?.addEventListener('resize', keepChatInViewport, { passive: true });
             let isDragging = false;
             let startX = 0;
             let startY = 0;
@@ -8436,8 +8423,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 }
                 function moveResize(clientX, clientY) {
                     if (!isResizing) return;
-                    const minW = 380;
-                    const minH = 520;
+                    const minW = Math.min(330, window.innerWidth - 16);
+                    const minH = Math.min(320, window.innerHeight - 104);
                     const maxW = window.innerWidth * 0.85;
                     const maxH = window.innerHeight * 0.85;
                     const newWidth = Math.max(minW, Math.min(maxW, rStartWidth + (clientX - rStartX)));
@@ -13337,7 +13324,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         const englishUiText = {
             'i18n-intro-badge': '',
             'i18n-intro-skip': 'Management Dashboard ->',
-            'i18n-intro-title1': 'Digital OCOP Map, Inspiring Vietnamese Heritage',
+            'i18n-intro-title1': 'VIETNAMESE OCOP SPECIALTIES',
             'i18n-intro-title2': '63 PROVINCES • BRAND PROMOTION • AI BUSINESS SUPPORT',
             'i18n-intro-desc': 'Explore regional specialties, compare financial metrics and gross revenue, and coordinate O2O showroom points of sale with AI Copilot.',
             'i18n-intro-award': '✨ NATIONAL OCOP DIGITAL COORDINATION & BRANDING PLATFORM ✨',
@@ -13385,8 +13372,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             'i18n-nav-intro-text': 'Explore OCOP',
             'i18n-support-label': 'Financial Copilot',
             'i18n-hero-badge': 'Explore Vietnam’s OCOP specialty catalog',
-            'i18n-hero-title1': 'Discover the Best of',
-            'i18n-hero-title2': 'Vietnamese Specialties',
+            'i18n-hero-title1': 'VIETNAMESE OCOP SPECIALTIES',
             'i18n-hero-desc': 'Explore curated Vietnamese specialties across all 63 provinces by region, with interactive map, product descriptions, listed prices, and customer ratings in one place.',
             'i18n-stat1': 'Selected specialties',
             'i18n-stat2': 'Regional products',
@@ -13674,20 +13660,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ko: '🌟 AI 디지털 비즈니스 챌린지 2026 • 기업 지원 및 OCOP 특산물 홍보 AI 플랫폼',
                 ja: '🌟 AIデジタルビジネスチャレンジ2026 • 企業支援＆OCOP特産品推進AIプラットフォーム'
             },
-            'i18n-hero-title1': {
-                vi: 'Tinh Hoa Đặc Sản OCOP Việt,',
-                en: 'Essence of Vietnamese OCOP Specialties,',
-                zh: '越南 OCOP 标志特产精萃，',
-                ko: '베트남 OCOP 특산물의 정수,',
-                ja: 'ベトナムOCOP特産品の精髄、'
-            },
-            'i18n-hero-title2': {
-                vi: 'Đột Phá Kinh Doanh Số Cùng Trợ Lý AI',
-                en: 'Breakthrough Digital Business with AI Copilot',
-                zh: '携手 AI 助手实现数字商业新突破',
-                ko: 'AI 코파일럿과 함께하는 디지털 비즈니스 혁신',
-                ja: 'AIアシスタントと切り拓くデジタルビジネス革新'
-            },
+            'i18n-hero-title1': { vi: 'ĐẶC SẢN OCOP VIỆT NAM', en: 'VIETNAMESE OCOP SPECIALTIES', zh: '越南 OCOP 特产', ko: '베트남 OCOP 특산물', ja: 'ベトナムのOCOP特産品' },
             'i18n-hero-desc': {
                 vi: 'Nền tảng AI toàn diện giúp Hợp tác xã & Doanh nghiệp địa phương quảng bá 520+ đặc sản OCOP 3-5 Sao, kết nối mạng lưới Showroom O2O 63 tỉnh thành và hỗ trợ kết nối tiêu thụ, truy xuất nguồn gốc chứng nhận OCOP chính hãng trên toàn quốc.',
                 en: 'Comprehensive AI platform empowering local cooperatives & enterprises to promote 520+ 3-5 Star OCOP specialties, connect 63-province O2O showrooms, and automate real-time B2B2C revenue, COGS, and commission governance.',
@@ -15498,13 +15471,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ko: '✨ 전국 OCOP 디지털 조율 및 브랜드 포지셔닝 플랫폼 ✨',
                 ja: '✨ 全国OCOPデジタル調整＆ブランド構築プラットフォーム ✨'
             });
-            setText('i18n-intro-title1', {
-                vi: 'Bản Đồ Số OCOP\nKhơi Nguồn Di Sản Việt',
-                en: 'Digital OCOP Map, Inspiring Vietnamese Heritage',
-                zh: '数字 OCOP 地图，唤醒越南文化遗产',
-                ko: '디지털 OCOP 지도, 베트남 문화유산을 깨우다',
-                ja: 'デジタルOCOPマップ、ベトナムの文化遺産を呼び起こす'
-            });
+            setText('i18n-intro-title1', I18N_DATA['i18n-hero-title1']);
             setText('i18n-intro-title2', {
                 vi: 'TRỢ LÝ AI TƯ VẤN\nKHÁM PHÁ ĐẶC SẢN VÙNG MIỀN\nTRA CỨU CỬA HÀNG CHÍNH HÃNG',
                 en: '63 PROVINCES • BRAND PROMOTION • AI BUSINESS SUPPORT',
@@ -15580,8 +15547,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ko: 'AI 디지털 비즈니스 챌린지 2026 • OCOP 4.0 디지털 생태계 프로젝트',
                 ja: 'AIデジタルビジネスチャレンジ2026 • OCOP 4.0 デジタルエコシステム計画'
             });
-            setText('i18n-hero-title1', { vi: 'Bản Đồ Số OCOP,', en: 'Digital OCOP Map,', zh: '数字 OCOP 地图，', ko: '디지털 OCOP 지도,', ja: 'デジタルOCOPマップ、' });
-            setText('i18n-hero-title2', { vi: 'Khơi Nguồn Di Sản Việt', en: 'Awakening Vietnamese Heritage', zh: '唤醒越南文化遗产', ko: '베트남 문화유산을 깨우다', ja: '베트남의文化遺産を呼び起こす' });
+            setText('i18n-hero-title1', I18N_DATA['i18n-hero-title1']);
             setText('i18n-hero-desc', {
                 vi: 'Hệ sinh thái kết nối Online-to-Offline (O2O) tiên phong. Hỗ trợ các cửa hàng đặc sản địa phương tự động hóa vận hành, quản trị doanh thu, tiền lời, chiết khấu real-time.',
                 en: 'Pioneering Online-to-Offline (O2O) ecosystem supporting local specialty stores to automate operations, govern revenue, net profit, and commissions in real-time via smart AI Copilot.',
@@ -15981,8 +15947,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <script src="script.js?v=caf9a772fea8"></script>
 <script src="product-reviews-ui.js?v=5021788e4110"></script>
 <script src="admin-management.js?v=c6a6c5033a57"></script>
-<script src="account-client.js?v=fb81b49b3770"></script>
-<script src="chat-dictation.js?v=76b80ddcba58"></script>
+<script src="account-client.js?v=9f77018f320c"></script>
+<script src="chat-dictation.js?v=592ac0140259"></script>
 <script>
     window.chatDictation = ChatDictation.mount({
         input: document.getElementById('ai-chat-input'),
@@ -16037,7 +16003,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         window.searchDictations.push(controller);
     });
 </script>
-<script src="shop-prices.js?v=e8a0aac06d13"></script>
+<script src="shop-prices.js?v=e97e3e80787b"></script>
  
 <script>
     // -------------------------------------------------------------
@@ -16796,14 +16762,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
     }
 </script>
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->
-<link rel="stylesheet" href="skytech-complete.css?v=f58a5585d06b">
+<link rel="stylesheet" href="skytech-complete.css?v=7636d2a07e78">
 <link rel="stylesheet" href="store-directory-light.css?v=cb405b0da1a4">
-<link rel="stylesheet" href="cart-ui.css?v=9cfa1ba99309">
+<link rel="stylesheet" href="cart-ui.css?v=0a3faaa17530">
 <link rel="stylesheet" href="account-center.css?v=cf9634a1cf0b">
+<link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=ab7512585146"></script>
 <script src="skytech-complete.js?v=9b51300b95ab"></script>
 <script src="cart-ui.js?v=92da91b0a573"></script>
-<script src="account-center.js?v=b0b0becd415c"></script>
+<script src="account-center.js?v=3349fb0122df"></script>
 <script src="storefront-ui.js?v=1287160ea074"></script>
 <script src="ui-branding.js?v=66dc84bfc24e"></script>
 <script src="storefront-navigation.js?v=9c153796330a"></script>

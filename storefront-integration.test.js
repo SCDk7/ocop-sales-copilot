@@ -7,6 +7,27 @@ const os = require('node:os');
 const path = require('node:path');
 const {syncClientAssets} = require('./scripts/sync-client-assets.cjs');
 
+for (const page of ['index.html', 'index_2.html']) {
+    test(page + ' keeps a dragged chat accessible after a viewport resize', () => {
+        const html = fs.readFileSync(page, 'utf8');
+        const source = html.slice(html.indexOf('        function keepChatInViewport()'), html.indexOf('        function initDraggableResizableChatbox()'));
+        let rect = {left: 1200, top: 650, width: 440, height: 500};
+        const style = {setProperty(key, value) {this[key] = value;}};
+        const chat = {style, classList: {contains: () => false}, getBoundingClientRect: () => rect};
+        const context = {document: {getElementById: () => chat, documentElement: {clientWidth: 1018}}, window: {innerWidth: 1024, innerHeight: 768, visualViewport: {height: 600}}};
+        vm.createContext(context);
+        vm.runInContext(source + '\nkeepChatInViewport();', context);
+        assert.equal(style.left, '570px');
+        assert.equal(style.top, '92px');
+        assert.equal(style['--chat-viewport-height'], '600px');
+        // A chat already inside the viewport retains the user's position.
+        rect = {left: 100, top: 40, width: 440, height: 500};
+        style.left = '100px'; style.top = '40px';
+        vm.runInContext('keepChatInViewport();', context);
+        assert.equal(style.left, '100px'); assert.equal(style.top, '40px');
+    });
+}
+
 test('changed AI files automatically get a new URL in both pages without repeated churn', () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ocop-assets-'));
     try {
@@ -38,7 +59,7 @@ for (const page of ['index.html', 'index_2.html']) {
         for (const file of ['giohang.js', 'admin-management.js', 'ai-request-analysis.js', 'skytech-complete.js', 'cart-ui.js', 'account-center.js', 'storefront-ui.js', 'ui-branding.js', 'storefront-navigation.js', 'storefront-router.js']) {
             assert.equal(scripts.filter(src => src === file).length, 1, file + ' is loaded once');
         }
-        for (const file of ['skytech-complete.css', 'cart-ui.css', 'account-center.css', 'store-directory-light.css', 'assets/vendor/fonts/jakarta.css', 'assets/vendor/fontawesome/css/all.min.css']) {
+        for (const file of ['assets/tailwind.css', 'skytech-complete.css', 'cart-ui.css', 'account-center.css', 'admin-management.css', 'store-directory-light.css', 'assets/vendor/fonts/jakarta.css', 'assets/vendor/fontawesome/css/all.min.css']) {
             assert.equal(styles.filter(src => src === file).length, 1, file + ' is loaded once');
         }
         for (const src of [...scripts, ...styles].filter(src => !/^https?:/.test(src))) assert.ok(fs.existsSync(src), src);

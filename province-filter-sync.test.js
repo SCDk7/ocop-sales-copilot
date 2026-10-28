@@ -472,15 +472,15 @@ test('catalog fallback prices follow the current catalogue rather than fixed dem
 
 test('Draggable & Resizable AI Chatbox Engine validation', () => {
     const html = fs.readFileSync('index.html', 'utf8');
+    const css = fs.readFileSync('skytech-complete.css', 'utf8');
 
-    // 1. Draggable & Resizable CSS Constraints
-    assert(html.includes('resize: both !important;'), 'resize: both !important');
-    assert(html.includes('overflow: hidden !important;'), 'overflow: hidden !important');
-    assert(html.includes('min-width: 380px !important;'), 'min-width: 380px !important');
-    assert(html.includes('min-height: 520px !important;'), 'min-height: 520px !important');
-    assert(html.includes('max-width: 85vw !important;'), 'max-width: 85vw !important');
-    assert(html.includes('max-height: 85vh !important;'), 'max-height: 85vh !important');
-    assert(html.includes('will-change: top, left;'), 'will-change: top, left');
+    // Geometry lives in the shared stylesheet; minima must fit small viewports.
+    assert(css.includes('resize: both;'), 'Desktop chat remains resizable');
+    assert(css.includes('overflow: hidden;'), 'Chat content stays inside its frame');
+    assert(css.includes('min-width: min(330px, calc(100vw - 16px))'), 'Width minimum fits a phone');
+    assert(css.includes('min-height: min(320px, calc(var(--chat-viewport-height, 100dvh) - 104px))'), 'Height minimum fits a short viewport');
+    assert(css.includes('max-width: calc(100vw - 16px)'), 'Width is bounded by the viewport');
+    assert(html.includes('keepChatInViewport'), 'Saved positions are clamped after resizing');
 
     // 2. Cursors for Drag & Resize Handles
     assert(html.includes('cursor: move !important;'), 'Header cursor move');

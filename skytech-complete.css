@@ -3023,16 +3023,8 @@ body {
     box-sizing: border-box !important;
 }
 
-img, video, canvas, svg {
-    max-width: 100% !important;
-    height: auto !important;
-}
-
-table {
-    max-width: 100% !important;
-    overflow-x: auto !important;
-    display: block !important;
-}
+/* Media dimensions and table scrolling are defined by their own components.
+   A global height:auto breaks product images and Leaflet's positioned tiles. */
 
 /* 2. Typography Co Giãn Tự Động Theo Màn Hình */
 .hero-title, h1.hero-heading {
@@ -3092,128 +3084,38 @@ table {
     }
 }
 
-/* 5. Lưới Sản Phẩm Co Giãn Thông Minh (Responsive Product Grid) */
-#products-grid, .product-grid, [id*="product-grid"] {
-    display: grid !important;
-    width: 100% !important;
-}
+/* Catalog columns follow the available content width. */
+#product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+@media (max-width: 1199px) { #product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+@media (max-width: 419px) { #product-grid { grid-template-columns: minmax(0, 1fr) !important; } }
 
-@media (max-width: 480px) {
-    #products-grid, .product-grid, [id*="product-grid"] {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 0.5rem !important;
-    }
-    .product-card, .card-product {
-        padding: 0.5rem !important;
-        border-radius: 12px !important;
-    }
-    .product-card img, .card-product img {
-        height: 120px !important;
-        border-radius: 8px !important;
-    }
-    .product-card h3, .card-product h3 {
-        font-size: 0.75rem !important;
-        line-height: 1.3 !important;
-    }
-    .product-card .price-tag, .card-product .price-tag {
-        font-size: 0.8rem !important;
-    }
-    .product-card .btn-action-wrap {
-        flex-direction: column !important;
-        gap: 0.25rem !important;
-    }
-    .product-card button {
-        padding: 0.35rem 0.5rem !important;
-        font-size: 0.7rem !important;
-    }
+/* The chat must fit short landscape screens as well as narrow phones. */
+#ai-chat-window {
+    position: fixed;
+    bottom: 5.5rem; right: 1.5rem; left: auto; top: auto;
+    margin: 0 !important;
+    display: flex !important; flex-direction: column;
+    resize: both; overflow: hidden; z-index: 999999 !important;
+    transform: none !important; touch-action: manipulation;
+    width: 440px;
+    height: 570px;
+    min-width: min(330px, calc(100vw - 16px)) !important;
+    min-height: min(320px, calc(var(--chat-viewport-height, 100dvh) - 104px)) !important;
+    max-width: calc(100vw - 16px) !important;
+    max-height: calc(var(--chat-viewport-height, 100dvh) - 104px) !important;
 }
-
-@media (min-width: 481px) and (max-width: 768px) {
-    #products-grid, .product-grid, [id*="product-grid"] {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
-        gap: 0.75rem !important;
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    #products-grid, .product-grid, [id*="product-grid"] {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
-        gap: 1rem !important;
-    }
-}
-
-@media (min-width: 1025px) and (max-width: 1440px) {
-    #products-grid, .product-grid, [id*="product-grid"] {
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-        gap: 1.25rem !important;
-    }
-}
-
-@media (min-width: 1441px) and (max-width: 1920px) {
-    #products-grid, .product-grid, [id*="product-grid"] {
-        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-        gap: 1.5rem !important;
-    }
-}
-
-@media (min-width: 1921px) {
-    #products-grid, .product-grid, [id*="product-grid"] {
-        grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-        gap: 1.75rem !important;
-    }
-}
-
-/* 6. Hộp Trợ Lý AI Chatbot Cho Mọi Kích Cỡ Màn Hình */
 @media (max-width: 640px) {
     #ai-chat-window {
-        position: fixed !important;
-        left: 8px !important;
-        right: 8px !important;
-        bottom: 74px !important;
-        top: auto !important;
-        width: calc(100vw - 16px) !important;
-        min-width: 0 !important;
-        max-width: calc(100vw - 16px) !important;
-        height: min(520px, calc(100dvh - 84px)) !important;
-        min-height: 0 !important;
-        max-height: calc(100dvh - 84px) !important;
-        border-radius: 18px !important;
-        resize: none !important;
-        margin: 0 auto !important;
-        z-index: 999999 !important;
+        left: 8px !important; right: 8px !important;
+        bottom: 74px !important; top: auto !important;
+        width: calc(100% - 16px) !important;
+        height: min(520px, calc(var(--chat-viewport-height, 100dvh) - 84px)) !important;
+        max-height: calc(var(--chat-viewport-height, 100dvh) - 84px) !important;
+        min-height: 0 !important; min-width: 0 !important;
+        resize: none !important; margin: 0 !important;
     }
-    #ai-chat-window #ai-chat-composer input {
-        font-size: 13px !important;
-        padding-left: 0.65rem !important;
-        padding-right: 0.65rem !important;
-    }
-    #ai-chat-window .quick-reply-pill {
-        font-size: 11px !important;
-        padding: 3px 8px !important;
-    }
-}
-
-@media (min-width: 641px) and (max-width: 1024px) {
-    #ai-chat-window {
-        width: 390px !important;
-        min-width: 330px !important;
-        height: 530px !important;
-        max-width: 90vw !important;
-        max-height: 80vh !important;
-        bottom: 5rem !important;
-        right: 1rem !important;
-    }
-}
-
-@media (min-width: 1025px) {
-    #ai-chat-window {
-        width: 440px !important;
-        height: 570px !important;
-        max-width: 34vw !important;
-        max-height: 85vh !important;
-        bottom: 5.5rem !important;
-        right: 1.5rem !important;
-    }
+    #ai-chat-window #ai-chat-composer input { font-size: 16px !important; min-width: 0; }
+    #ai-chat-resize-handle { display: none; }
 }
 
 /* 7. Modal Đăng Nhập & Hồ Sơ Khách Hàng Thích Ứng */
@@ -3328,10 +3230,11 @@ table {
 /* 11. Màn Hình Nằm Ngang (Mobile Landscape Mode) */
 @media (max-height: 520px) and (orientation: landscape) {
     #ai-chat-window {
-        height: calc(100dvh - 20px) !important;
-        bottom: 10px !important;
+        height: calc(var(--chat-viewport-height, 100dvh) - 20px) !important;
+        min-height: 0 !important;
+        bottom: 10px !important; top: auto !important;
         right: 10px !important;
-        max-height: calc(100dvh - 20px) !important;
+        max-height: calc(var(--chat-viewport-height, 100dvh) - 20px) !important;
     }
     .customer-auth-panel, .account-center-box {
         max-height: calc(100dvh - 12px) !important;
@@ -3352,3 +3255,34 @@ body.catalog-browsing #ocop-intro-overlay {
     opacity: 0 !important;
     pointer-events: none !important;
 }
+
+/* Header height is measured by storefront-navigation.js after wrapping. */
+body.catalog-browsing { padding-top: var(--storefront-nav-height, 60px) !important; }
+#storefront-main-header > div { height: auto !important; min-height: 56px; flex-wrap: wrap; gap: 8px; padding-block: 8px; }
+#storefront-main-header .header-primary-nav { gap: 6px; flex-wrap: wrap; min-width: 0; }
+#storefront-main-header .header-right-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px !important; min-width: 0; max-width: 100%; margin-left: auto; flex-shrink: 1; }
+#storefront-main-header .header-right-actions > * { margin-left: 0 !important; }
+#storefront-main-header #user-btn { display: none !important; }
+#storefront-main-header :is(.header-nav-btn,.header-right-actions button) { min-height: 34px; height: auto; }
+@media(max-width:767px) {
+    #storefront-main-header > div { padding-inline: 10px; }
+    #storefront-main-header .header-primary-nav { display: flex !important; flex-basis: 100%; order: 3; justify-content: center; }
+    #storefront-main-header .header-nav-btn { padding: 6px 8px; font-size: 10px; white-space: normal !important; }
+    #storefront-main-header .header-right-actions button { padding: 6px; font-size: 10px; }
+    #storefront-main-header .header-right-actions { gap: 4px !important; }
+    #storefront-main-header .lang-dropdown-container { margin-left: 0 !important; }
+}
+@media(max-width:359px) {
+    #storefront-main-header .header-right-actions { flex-basis: 100%; justify-content: center; }
+}
+#shop-hero .hero-columns, #shop-hero .hero-columns > div { min-width: 0; }
+#shop-hero h2 { font-size: clamp(24px, 3.3vw, 42px); line-height: 1.2; overflow-wrap: anywhere; }
+#shop-hero #i18n-hero-title1 { white-space: normal !important; }
+@media(max-width:640px) { #shop-hero > div:first-child { width: 100% !important; margin: 0 !important; } }
+body :is(#ocop-intro-overlay,#storefront-main-header) .ocop-brand-mark {
+    display: inline-flex !important; align-items: center; justify-content: center;
+    width: 40px; height: 40px; flex: 0 0 40px; border-radius: 16px;
+    background: #3b82bd !important; border: 1px solid #3576ad !important;
+    color: white !important; box-shadow: 0 3px 8px #0c4a6e20;
+}
+body :is(#ocop-intro-overlay,#storefront-main-header) .ocop-brand-mark i { color: white !important; -webkit-text-fill-color: white !important; font-size: 20px; }
