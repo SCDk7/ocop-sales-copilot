@@ -3,7 +3,25 @@
     const analyzer=typeof module==='object'&&module.exports?require('./ai-request-analysis'):root.OCOPRequestAnalysis;
     const profile=typeof module==='object'&&module.exports?require('./ocop-assistant-profile'):root.OCOPAssistantProfile;
     const webResearch=typeof module==='object'&&module.exports?require('./ai-web-research'):root.OCOPWebResearch;
-    function imageUnavailableReply(language='vi',query='',products=[],history=[]) {
+    function imageUnavailableReply(language='vi',query='',products=[],history=[],imageEvidence=null) {
+        const type = imageEvidence?.productType || null;
+        if (type) {
+            const normType = (type || '').toLowerCase();
+            const matches = (products || []).filter(p => (p.name || '').toLowerCase().includes(normType)).slice(0, 3);
+            if (matches.length > 0) {
+                const en = language === 'en';
+                const ids = matches.map(m => m.id);
+                const list = matches.map(m => `• **${en ? m.nameEn || m.name : m.name}** — OCOP ${m.stars || 4} sao — ${m.region} — ${(m.price || 0).toLocaleString('vi-VN')} ₫/${m.packaging || 'đơn vị'}`).join('\n');
+                const message = en
+                    ? `From your image, I identified product category: **${type}**.\n\nHere are similar certified OCOP products from our catalogue:\n\n${list}\n\nWould you like to check details or order any of these specialties?`
+                    : `Qua ảnh, em nhận diện loại sản phẩm: **${type}**.\n\nDưới đây là các sản phẩm tương tự trong danh mục OCOP chính hãng:\n\n${list}\n\nAnh/chị muốn tìm hiểu thêm thông tin hay đặt mua sản phẩm nào ạ?`;
+                return {
+                    message, text_response: message, productIds: ids, suggested_products: ids, combos: [],
+                    dynamic_chips: en ? ['View details', 'Add to cart'] : ['Xem chi tiết', 'Thêm vào giỏ'],
+                    imageMatchStatus: 'similar', understandingStatus: 'understood', handoffAdmin: false, localFallback: true, aiProvider: 'local_catalog'
+                };
+            }
+        }
         const analysis=analyzer.analyzeCustomerRequest([...history,{role:'user',text:query}],products,{language,hasImages:true});
         const message = language === 'en'
             ? 'Image recognition is currently unavailable. Please provide the product name or visible label text so I can help with product information or your complaint.'

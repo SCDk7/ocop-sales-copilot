@@ -72,7 +72,7 @@
  <script src="customer-session.js?v=3f6c651f884f"></script>
  <script src="voice-engine.js?v=fb7c587f8eb7"></script>
  <script src="ai-shopping.js?v=013db6c43e56"></script>
-<script src="ai-web-research.js?v=e97a2ea7122b"></script>
+<script src="ai-web-research.js?v=ff164d790e99"></script>
 <script src="ocop-assistant-profile.js?v=15a912b31d61"></script>
 <script src="data/tea-knowledge.js?v=8757f3258ad7"></script>
 <script src="product-training.js?v=34006b79e783"></script>
@@ -81,7 +81,7 @@
 <script src="ai-scenarios.js?v=83e3a901896e"></script>
 <script src="product-locations.js?v=24739bc83737"></script>
 <script src="ai-request-analysis.js?v=889e43dd7dc1"></script>
-<script src="chat-fallback.js?v=133c6a2b573c"></script>
+<script src="chat-fallback.js?v=4a8e59200282"></script>
  <script src="chat-language.js?v=6239eb709716"></script>
  <link rel="stylesheet" href="assets/tailwind.css?v=a277d89efe4f">
  <!-- Font Awesome Icons & Google Fonts -->
@@ -8267,6 +8267,52 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 previews.append(wrapper);
             });
         }
+        function analyzeClientImage(file) {
+            return new Promise(resolve => {
+                if (!file || !file.type.startsWith('image/')) return resolve(null);
+                const nameKeywords = String(file.name || '').toLowerCase()
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
+                let kwType = null;
+                if (/m[aậ]t ong|honey/.test(nameKeywords)) kwType = 'Mật ong';
+                else if (/tr[aà]|ch[eè]|tea/.test(nameKeywords)) kwType = 'Trà';
+                else if (/c[aà] ph[eê]|coffee/.test(nameKeywords)) kwType = 'Cà phê';
+                else if (/g[aạ]o|rice/.test(nameKeywords)) kwType = 'Gạo';
+                else if (/mi[eế]n|b[uú]n/.test(nameKeywords)) kwType = 'Miến dong';
+                else if (/th[iị]t|tr[aâ]u|l[oợ]n/.test(nameKeywords)) kwType = 'Thịt gác bếp';
+                else if (/y[eế]n|nest/.test(nameKeywords)) kwType = 'Yến sào';
+
+                const img = new Image();
+                img.onload = () => {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 64; canvas.height = 64;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, 64, 64);
+                        const d = ctx.getImageData(0, 0, 64, 64).data;
+                        let amber = 0, green = 0, dark = 0, total = 0;
+                        for (let i = 0; i < d.length; i += 4) {
+                            const r = d[i], g = d[i+1], b = d[i+2], a = d[i+3];
+                            if (a < 128) continue;
+                            total++;
+                            if (r > 155 && g > 105 && b < 135 && (r - b) > 35) amber++;
+                            else if (g > r + 15 && g > b + 15 && g > 60) green++;
+                            else if (r < 85 && g < 65 && b < 50 && Math.max(r,g,b) < 95) dark++;
+                        }
+                        let visualType = kwType;
+                        if (!visualType && total > 0) {
+                            if (amber / total > 0.06) visualType = 'Mật ong';
+                            else if (green / total > 0.12) visualType = 'Trà';
+                            else if (dark / total > 0.12) visualType = 'Cà phê';
+                        }
+                        resolve(visualType ? { productType: visualType, label: visualType } : null);
+                    } catch (_) {
+                        resolve(kwType ? { productType: kwType, label: kwType } : null);
+                    }
+                };
+                img.onerror = () => resolve(kwType ? { productType: kwType, label: kwType } : null);
+                img.src = URL.createObjectURL(file);
+            });
+        }
         async function addAIChatImages(fileList) {
             const imageFiles = [...fileList].filter(file => file.type.startsWith('image/'));
             if (!imageFiles.length) return;
@@ -8307,8 +8353,12 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 const previews = imageFiles.map(file => ({
                     file,
                     previewUrl: URL.createObjectURL(file),
-                    id: null
+                    id: null,
+                    visualEvidence: null
                 }));
+                for (const p of previews) {
+                    analyzeClientImage(p.file).then(ev => { p.visualEvidence = ev; });
+                }
                 pendingAIImages.push(...previews);
                 renderAIChatImagePreviews();
             } catch (error) {
@@ -9749,9 +9799,9 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 ? 'Search by product, province, category, OCOP star rating, or budget. For example: “gift under 500k”, “5-star tea”, or “Ca Mau specialty”.'
                 : 'Mình có thể giúp tìm theo tên sản phẩm, tỉnh thành, nhóm hàng, hạng sao hoặc ngân sách. Ví dụ: “quà biếu dưới 500k”, “trà 5 sao” hoặc “đặc sản Cà Mau”.';
         }
-        function generateResilientAIResponse(query, lang = 'vi', apiResult = null, hasImages = false) {
+        function generateResilientAIResponse(query, lang = 'vi', apiResult = null, hasImages = false, imageEvidence = null) {
             if (apiResult && (apiResult.text_response || apiResult.message)) return apiResult;
-            if (hasImages) return window.OCOPChatFallback.imageUnavailableReply(lang, query, products, aiConversationHistory);
+            if (hasImages) return window.OCOPChatFallback.imageUnavailableReply(lang, query, products, aiConversationHistory, imageEvidence);
             return window.OCOPChatFallback.catalogReply(query, products, lang, aiConversationHistory);
         }
 
@@ -9931,7 +9981,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     const response = await fetch(getAIEndpoint('/api/ai/chat'), {
                         method:'POST',headers:{'Content-Type':'application/json'},
                         signal: AbortSignal.timeout(35000),
-                        body:JSON.stringify({sessionId:(window.ocopMetricsSessionId ||= (()=>{try{let id=sessionStorage.getItem("ocop-consultation-session");if(!id){id=crypto.randomUUID();sessionStorage.setItem("ocop-consultation-session",id);}return id;}catch{return crypto.randomUUID();}})()),language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id)})
+                        body:JSON.stringify({sessionId:(window.ocopMetricsSessionId ||= (()=>{try{let id=sessionStorage.getItem("ocop-consultation-session");if(!id){id=crypto.randomUUID();sessionStorage.setItem("ocop-consultation-session",id);}return id;}catch{return crypto.randomUUID();}})()),language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id),imageEvidence:messageImages.map(img=>img.visualEvidence).find(Boolean)||null})
                     });
                     if (response.ok) {
                         result = await response.json().catch(()=>null);
@@ -9940,7 +9990,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     console.warn('API /api/ai/chat network timeout or unavailable, switching to resilient AI Dispatch:', netErr);
                 }
                 if (!result || (!result.message && !result.text_response)) {
-                    result = generateResilientAIResponse(messageText, requestLanguage, result);
+                    result = generateResilientAIResponse(messageText, requestLanguage, result, messageImages.length > 0, messageImages.map(img=>img.visualEvidence).find(Boolean));
                 }
                 result.message = result.text_response || result.message;
                 result.productIds = result.suggested_products || result.productIds || [];
@@ -10145,7 +10195,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 console.warn('sendAIMessage outer error, using resilient AI dispatch:', error);
                 const loadingNode = document.getElementById(loadingId);
                 if (loadingNode) loadingNode.remove();
-                const fallbackResult = generateResilientAIResponse(messageText, requestLanguage, null, messageImages.length > 0);
+                const fallbackResult = generateResilientAIResponse(messageText, requestLanguage, null, messageImages.length > 0, messageImages.map(img=>img.visualEvidence).find(Boolean));
                 const reply = document.createElement('div');
                 reply.className = 'flex items-start space-x-2';
                 reply.innerHTML = `

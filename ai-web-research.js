@@ -24,6 +24,8 @@
         const ids=reply?.productIds || reply?.suggested_products || [];
         const selected=ids.map(id=>products.find(product=>product.id===id)).filter(Boolean).slice(0,3);
         const imageType=String(reply?.imageEvidence?.productType||'').trim();
+        const isImageReply=reply?.imageMatchStatus==='similar'||reply?.imageMatchStatus==='exact'||String(reply?.responseMode||'').includes('image');
+        if(hasImages && isImageReply && !/google|xac minh|tra cuu web|web search/i.test(q))return {required:false,reason:'image_matched'};
         if(hasImages && !selected.length && (!imageType || /^(unknown|unidentified|product|san pham|khong ro)$/.test(norm(imageType))))return {required:false,deferred:!reply,reason:'image_not_identified'};
         const named=selected.length?selected:products.filter(product=>{
             const name=norm(product.name.split(/[(/]/)[0]).trim();
@@ -59,8 +61,9 @@
             const keep=plan.mode==='shopping'||reply.understandingStatus==='needs_clarification'||reply.imageMatchStatus==='similar'||reply.imageMatchStatus==='exact';
             message=[keep?original.text:basic,researched.text,(en?'**Sources consulted:**\n':'**Nguồn tham khảo:**\n')+links,original.question||researched.question||defaultQuestion].filter(Boolean).join('\n\n');
         }else{
-            const note=en?'Detailed information could not be verified on the web right now. Here is the basic catalogue information available.':'Hiện tại thông tin chi tiết về sản phẩm này chưa được cập nhật đầy đủ từ nguồn web xác minh; em xin gửi anh/chị thông tin cơ bản hiện có.';
-            const keep=plan.mode==='shopping'||reply.localFallback||reply.understandingStatus==='needs_clarification'||reply.imageMatchStatus==='similar'||reply.imageMatchStatus==='exact';
+            const isImageMatch=reply.imageMatchStatus==='similar'||reply.imageMatchStatus==='exact'||String(reply.responseMode||'').includes('image');
+            const note=isImageMatch?'':(en?'Detailed information could not be verified on the web right now. Here is the basic catalogue information available.':'Hiện tại thông tin chi tiết về sản phẩm này chưa được cập nhật đầy đủ từ nguồn web xác minh; em xin gửi anh/chị thông tin cơ bản hiện có.');
+            const keep=plan.mode==='shopping'||reply.localFallback||reply.understandingStatus==='needs_clarification'||isImageMatch;
             message=[note,keep?original.text:basic || (en?'No matching product profile is available.':'Em chưa có hồ sơ sản phẩm phù hợp để đối chiếu.'),original.question||defaultQuestion].filter(Boolean).join('\n\n');
         }
         return {...reply,message,text_response:message,googleSources:success?sources:[],googleSearchSuggestions:success?research.suggestions||'':'',webResearch:metadata,integrations:{...reply.integrations,googleSearch:success}};

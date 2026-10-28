@@ -24,7 +24,7 @@ const {createCommerceShopping} = require('./commerce-shopping');
 const {createKnowledge}=require('./product-knowledge');
 const {createSalesStore}=require('./sales-store');
 const {generateWithSalesTools}=require('./sales-tools');
-const {matchImageEvidence, createCatalogImageMatcher, createReferenceImageMatcher, getProductImageKnowledge, searchProductByImageKnowledge} = require('./ai-image-match.js');
+const {matchImageEvidence, createCatalogImageMatcher, createReferenceImageMatcher, getProductImageKnowledge, searchProductByImageKnowledge, detectVisualCategory} = require('./ai-image-match.js');
 const {formatVisualReply,visualSearchInstruction} = require('./ai-visual-reply.js');
 const matchCatalogImages = createCatalogImageMatcher(__dirname);
 const matchReferenceImages = createReferenceImageMatcher(__dirname);
@@ -1247,6 +1247,7 @@ async function handleAIChatRequest(req, res) {
     language:validation.language,hasImages:Array.isArray(requestBody.imageIds)&&requestBody.imageIds.length>0,extract:extractSearchIntents
   });
   const localIntent = analysis.intent;
+  if (requestBody.imageEvidence) localIntent.imageEvidence = requestBody.imageEvidence;
   const commerceMetadata=commerceShopping.describe(validation.messages[validation.messages.length-1].text);
   const replyJSON=res.json.bind(res);
   res.json=body=>replyJSON({...body,commerceAgent:commerceMetadata,requestAnalysis:{...analysis.summary,needsClarification:Boolean(analysis.summary.needsClarification||body.understandingStatus==='needs_clarification')}});
@@ -1613,6 +1614,37 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       return {status:200,body:{message,text_response:message,productIds,suggested_products:productIds,imageMatchStatus:'similar',
         understandingStatus:'understood',responseMode:'reference_image_match',handoffAdmin:false,dynamic_chips:[],wikipediaSources:[],
         integrations:{gemini:false,openai:false,claude:false,wikipedia:false,googleSearch:false}}};
+    }
+    const visualDetector = typeof detectVisualCategory === "function" ? detectVisualCategory : () => null;
+    const detectedVisualType = buffers.map(visualDetector).find(Boolean) || (userIntent?.imageEvidence?.productType || null);
+    if (detectedVisualType) {
+      const evidence = { label: detectedVisualType, productType: detectedVisualType };
+      const evidenceIds = new Set(matchImageEvidence(validation.products, evidence));
+      const kbMatcher = typeof searchProductByImageKnowledge === "function" ? searchProductByImageKnowledge : () => [];
+      const kbMatches = kbMatcher(evidence).filter(product => evidenceIds.size === 0 || evidenceIds.has(product.id));
+      const chosen = kbMatches.length ? kbMatches : validation.products.filter(p => evidenceIds.has(p.id));
+      if (chosen.length > 0) {
+        const topMatches = chosen.slice(0, 3);
+        const productIds = topMatches.map(p => p.id);
+        const message = formatVisualReply(topMatches, { status: "similar", productType: detectedVisualType, language: validation.language });
+        return {
+          status: 200,
+          body: {
+            message,
+            text_response: message,
+            productIds,
+            suggested_products: productIds,
+            imageMatchStatus: "similar",
+            imageEvidence: { label: detectedVisualType, productType: detectedVisualType, features: ["Màu sắc nhận diện trực quan", detectedVisualType] },
+            understandingStatus: "understood",
+            responseMode: "catalog_image_knowledge_match",
+            handoffAdmin: false,
+            dynamic_chips: validation.language === "en" ? ["View details", "Add to cart"] : ["Xem chi tiết", "Thêm vào giỏ"],
+            wikipediaSources: [],
+            integrations: { gemini: false, openai: false, claude: false, wikipedia: false, googleSearch: false }
+          }
+        };
+      }
     }
   }
   const unavailable = () => {

@@ -187,7 +187,77 @@ function searchProductByImageKnowledge({ text = '', label = '', productType = ''
     .map(r => r.item);
 }
 
+function detectVisualCategory(buf) {
+  if (!Buffer.isBuffer(buf) || buf.length < 32) return null;
+  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) {
+    try {
+      const zlib = require('node:zlib');
+      let pos = 8;
+      const idatChunks = [];
+      let width = 0, height = 0;
+      while (pos < buf.length) {
+        const len = buf.readUInt32BE(pos);
+        const type = buf.slice(pos + 4, pos + 8).toString('ascii');
+        if (type === 'IHDR') {
+          width = buf.readUInt32BE(pos + 8);
+          height = buf.readUInt32BE(pos + 12);
+        } else if (type === 'IDAT') {
+          idatChunks.push(buf.slice(pos + 8, pos + 8 + len));
+        }
+        pos += 12 + len;
+      }
+      if (!width || !height || !idatChunks.length) return null;
+      const decompressed = zlib.inflateSync(Buffer.concat(idatChunks));
+      const stride = 1 + width * 4;
+      let amber = 0, green = 0, dark = 0, total = 0;
+      const prevRow = Buffer.alloc(width * 4);
+      const curRow = Buffer.alloc(width * 4);
+      const stepY = Math.max(1, Math.floor(height / 80));
+      const stepX = Math.max(1, Math.floor(width / 80));
+      for (let y = 0; y < height; y++) {
+        const rowOffset = y * stride;
+        const filter = decompressed[rowOffset];
+        for (let x = 0; x < width * 4; x++) {
+          const raw = decompressed[rowOffset + 1 + x];
+          const a = x >= 4 ? curRow[x - 4] : 0;
+          const b = prevRow[x];
+          const c = x >= 4 ? prevRow[x - 4] : 0;
+          let val = raw;
+          if (filter === 1) val = (raw + a) & 0xff;
+          else if (filter === 2) val = (raw + b) & 0xff;
+          else if (filter === 3) val = (raw + Math.floor((a + b) / 2)) & 0xff;
+          else if (filter === 4) {
+            const p = a + b - c;
+            const pa = Math.abs(p - a), pb = Math.abs(p - b), pc = Math.abs(p - c);
+            const pr = (pa <= pb && pa <= pc) ? a : (pb <= pc ? b : c);
+            val = (raw + pr) & 0xff;
+          }
+          curRow[x] = val;
+        }
+        prevRow.set(curRow);
+        if (y % stepY === 0) {
+          for (let x = 0; x < width; x += stepX) {
+            const px = x * 4;
+            const r = curRow[px], g = curRow[px+1], b = curRow[px+2];
+            total++;
+            if (r > 155 && g > 105 && b < 135 && (r - b) > 35) amber++;
+            else if (g > r + 15 && g > b + 15 && g > 60) green++;
+            else if (r < 85 && g < 65 && b < 50 && Math.max(r,g,b) < 95) dark++;
+          }
+        }
+      }
+      if (total > 0) {
+        if (amber / total > 0.06) return 'Mật ong';
+        if (green / total > 0.12) return 'Trà';
+        if (dark / total > 0.12) return 'Cà phê';
+      }
+    } catch (_) {}
+  }
+  return null;
+}
+
 module.exports = {
+  detectVisualCategory,
   matchImageEvidence,
   createCatalogImageMatcher,
   createReferenceImageMatcher,
