@@ -50,6 +50,9 @@ test('cart UI adds, opens, updates, removes, restores and checks out the same pe
  const panel=document.getElementById('cart-ui-panel');assert.equal(panel.attributes['aria-hidden'],'false');assert.equal(document.body.style.overflow,'hidden');
  root.changeCartUIQty(1,2);assert.equal(root.getCartTotal(),450000);
  root.proceedCheckoutFromCart();const url=new URL(destination);assert.equal(url.searchParams.get('quantities'),'3,1');
+ root.openOnlineOrderModal(2);assert.equal(new URL(destination).pathname,'/draft-order.html');assert.equal(new URL(destination).searchParams.get('products'),'2');
+ root.handleBuyNow(1);assert.equal(new URL(destination).searchParams.get('products'),'1');assert.equal(root.OCOPCartUI.lines().length,2);
+ root.checkout();assert.equal(new URL(destination).searchParams.get('quantities'),'3,1');
  root.removeFromCartUI(2);assert.equal(root.OCOPCartUI.lines().length,1);assert.equal(new CartManager(local).getItemCount(),3);
  root.toggleCart(false);assert.equal(panel.attributes['aria-hidden'],'true');
  root.removeFromCartUI(1);assert.equal(document.getElementById('cart-ui-empty').hidden,false);

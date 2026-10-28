@@ -285,6 +285,13 @@
         sync();
     }
     function init() {
+        root.triggerAIComboPrompt = prompt => {
+            const input=document.getElementById('ai-chat-input');
+            if(!input)return;
+            root.openAIChat?.();input.value=prompt;
+            input.dispatchEvent(new Event('input',{bubbles:true}));
+            root.sendAIMessage?.();
+        };
         // Disable only the retired analysis entrypoints. Keep map and ordering APIs intact.
         for (const name of ['openFinancialDashboardModal', 'toggleAiFinancialModal', 'quickSwitchToFinancialDashboard', 'updateFinancialSimulator', 'exportFinancialReport', 'filterFinancialChannel', 'playVoiceFinancialBriefing', 'triggerHeroVoiceDemo']) root[name] = () => {};
         if (root.OcopSyncEngine) root.OcopSyncEngine.syncFinancial = async () => ({disabled: true});

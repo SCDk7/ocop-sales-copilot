@@ -386,7 +386,20 @@ function renderVietQRBox(draft, payAmount) {
     return box;
 }
 
+function syncOrderSummary(draft) {
+    try {
+        const orders=JSON.parse(localStorage.getItem('ocop_online_orders')||'[]');
+        if(!Array.isArray(orders)||!draft?.id)return;
+        const index=orders.findIndex(order=>order.id===draft.id),previous=index<0?{}:orders[index];
+        const customer=draft.customer||{};
+        const row={...previous,id:draft.id,status:draft.status,lines:draft.lines||previous.lines||[],customerReceivedAt:draft.customerReceivedAt||previous.customerReceivedAt,
+            customerName:customer.name||previous.customerName,customerPhone:customer.phone||previous.customerPhone,customerCode:customer.customerCode||previous.customerCode};
+        if(index<0)orders.push(row);else orders[index]=row;
+        localStorage.setItem('ocop_online_orders',JSON.stringify(orders));
+    }catch(_){}
+}
 function showDraft(draft) {
+    syncOrderSummary(draft);
     if (draft.status !== 'pending_seller_confirmation') {
         result.replaceChildren();
         result.hidden = false;

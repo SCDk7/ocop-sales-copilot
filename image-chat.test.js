@@ -63,8 +63,28 @@ test('an attached photo bypasses text-only intent and reaches vision with its ca
  await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:'tea.jpg'}],imageIds:[image.id]}},res);
  assert.equal(status,503);assert.equal(body.productIds.length,0);
 });
+test('resized JPEG catalogue photos match by pixels and plain colour images do not identify products',async()=>{
+ const sharp=require('sharp'),path=require('node:path');
+ const {createVisualFingerprintMatcher}=require('./ai-visual-fingerprint');
+ const catalogue=require('./data').PRODUCTS.filter(p=>[336,337,338].includes(p.id));
+ const product=catalogue.find(p=>p.id===336);
+ const bytes=await sharp(path.join(__dirname,product.img)).resize({width:240}).jpeg({quality:75}).toBuffer();
+ const matcher=createVisualFingerprintMatcher(__dirname);
+ const results=await matcher(catalogue,[bytes]);
+ assert.ok(results[0].includes(product.id));
+ const plain=await sharp({create:{width:100,height:100,channels:3,background:'#22aa55'}}).png().toBuffer();
+ assert.deepEqual(await matcher(catalogue,[plain]),[[]]);
+});
+
+test('ordinary Vietnamese words do not accidentally classify a product photo as damaged goods',()=>{
+ const context={};vm.createContext(context);vm.runInContext(source.slice(source.indexOf('function isImageProductLookupRequest('),source.indexOf('function buildAISystemInstruction(')),context);
+ assert.equal(context.isImageProductLookupRequest('Kiếm combo với món trong ảnh, không quá 1 triệu'),true);
+ assert.equal(context.isImageProductLookupRequest('Ảnh bếp có món này'),true);
+ assert.equal(context.isImageProductLookupRequest('Hàng bị hỏng, tôi muốn đổi trả'),false);
+});
+
 function visionContext(provider){
- const context={console,Date,Buffer,AbortController,AbortSignal,setTimeout,clearTimeout,matchCatalogImages:async()=>[],matchReferenceImages:async()=>[],MAX_AI_MESSAGE_LENGTH:1200,GEMINI_INLINE_IMAGE_LIMIT_BYTES:70000000,
+ const context={console,Date,Buffer,AbortController,AbortSignal,setTimeout,clearTimeout,matchCatalogImages:async()=>[],matchVisualFingerprints:async()=>[],imageBudgetReply:require('./ai-data-reply').imageBudgetReply,matchReferenceImages:async()=>[],MAX_AI_MESSAGE_LENGTH:1200,GEMINI_INLINE_IMAGE_LIMIT_BYTES:70000000,
   getAIModelConfiguration:()=>({apiKey:'test',model:'test'}),buildAIServiceUnavailable:()=>({status:503,body:{message:'Unavailable',productIds:[],suggested_products:[],retryable:true,integrations:{gemini:false}}}),
   buildAISystemInstruction:()=> 'Inspect the supplied image',generatePreferredContent:provider,isImageProductLookupRequest:()=>true,normalizeCatalogTerm:shopping.normalize,matchImageEvidence,formatVisualReply};
  vm.createContext(context);vm.runInContext(source.slice(source.indexOf('async function generateAIResponse('),source.indexOf("app.post('/api/ai/transcribe'")),context);return context;

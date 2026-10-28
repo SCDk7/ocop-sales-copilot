@@ -217,6 +217,25 @@ test('Scoping Engine isolates data between Webmaster and Distributor', () => {
     assert.ok(distData.products.every(p => p.region === 'Hải Phòng'), 'All scoped products must be from Hải Phòng');
 });
 
+test('NPP records exclude other sellers, unconfirmed sales and customers who only share an address',()=>{
+ const saved={...storage},oldProducts=window.PRODUCTS,oldGet=window.getCurrentCustomer;
+ try{
+  window.PRODUCTS=oldProducts.map(p=>p.id===102?{...p,distributorCode:'NPP260000002'}:p);
+  storage.ocop_customers=JSON.stringify([{customerCode:'OWN',fullName:'Khách mua',phone:'0901000000'},{customerCode:'OTHER',fullName:'Khách khác',phone:'0902000000',address:'Hải Phòng'}]);
+  storage.ocop_online_orders=JSON.stringify([
+   {productId:101,qty:2,unitPrice:100000,customerCode:'OWN',customerPhone:'0901000000',status:'completed',customerReceivedAt:'2026-10-29T00:00:00Z',distributorCode:'NPP260000001'},
+   {productId:101,qty:90,customerCode:'OTHER',status:'completed',distributorCode:'NPP260000002'},
+   {productId:101,qty:30,customerCode:'OTHER',status:'pending'}
+  ]);
+  window.getCurrentCustomer=()=>({role:'distributor',distributorCode:'NPP260000001',username:'npp-test'});
+  Admin.setActiveScope('webmaster',null,'ThaoNguyenad01');
+  const data=Admin.getScopedDatasets();
+  assert.equal(data.scope.role,'distributor');assert.deepEqual(data.products.map(p=>p.id),[101]);
+  assert.equal(data.products[0].sold,2);assert.deepEqual(data.customers.map(c=>c.phone),['0901000000']);assert.equal(data.customers[0].totalSpend,200000);
+  window.getCurrentCustomer=()=>({role:'distributor',distributorCode:'UNKNOWN'});assert.equal(Admin.getScopedDatasets().products.length,0);
+ }finally{localStorage.clear();Object.assign(storage,saved);window.PRODUCTS=oldProducts;window.getCurrentCustomer=oldGet;}
+});
+
 test('Admin separate username and password authentication verification', () => {
     const fs = require('node:fs');
     const skyJs = fs.readFileSync('skytech-complete.js', 'utf8');

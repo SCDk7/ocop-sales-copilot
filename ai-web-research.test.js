@@ -38,7 +38,7 @@ test('a source URL without actual search execution never becomes a verified web 
  const plan=planWebResearch(message('Trà sen Nhơn Trạch mấy sao?'),products);
  for(const research of [{...evidence,searched:false},{status:'http_401',attempted:true,searched:false},{status:'not_configured',attempted:false,searched:false}]){
   const reply=applyWebResearch({message:'Invented confirmed facts.',productIds:[1]},research,plan,products);
-  assert.equal(reply.integrations.googleSearch,false);assert.equal(reply.googleSources.length,0);assert(!reply.message.includes('Invented'));assert(reply.message.includes('chưa được cập nhật đầy đủ'));
+  assert.equal(reply.integrations.googleSearch,false);assert.equal(reply.googleSources.length,0);assert(!reply.message.includes('Invented'));assert(reply.message.includes('chưa xác minh được chi tiết'));
  }
 });
 

@@ -62,7 +62,9 @@
             message=[keep?original.text:basic,researched.text,(en?'**Sources consulted:**\n':'**Nguồn tham khảo:**\n')+links,original.question||researched.question||defaultQuestion].filter(Boolean).join('\n\n');
         }else{
             const isImageMatch=reply.imageMatchStatus==='similar'||reply.imageMatchStatus==='exact'||String(reply.responseMode||'').includes('image');
-            const note=isImageMatch?'':(en?'Detailed information could not be verified on the web right now. Here is the basic catalogue information available.':'Hiện tại thông tin chi tiết về sản phẩm này chưa được cập nhật đầy đủ từ nguồn web xác minh; em xin gửi anh/chị thông tin cơ bản hiện có.');
+            const note=isImageMatch?'':plan.mode==='shopping'
+                ? (en?'The suggestions and shop prices below come from the current catalogue.':'Các gợi ý và giá bán dưới đây được đối chiếu từ danh mục hiện tại của cửa hàng.')
+                : (en?'I could not verify the additional detail you asked about from web sources. Here is what the shop catalogue records.':'Em chưa xác minh được chi tiết anh/chị vừa hỏi từ nguồn web. Dưới đây là thông tin đối chiếu được trong danh mục cửa hàng.');
             const keep=plan.mode==='shopping'||reply.localFallback||reply.understandingStatus==='needs_clarification'||isImageMatch;
             message=[note,keep?original.text:basic || (en?'No matching product profile is available.':'Em chưa có hồ sơ sản phẩm phù hợp để đối chiếu.'),original.question||defaultQuestion].filter(Boolean).join('\n\n');
         }

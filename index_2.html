@@ -75,7 +75,7 @@
  <script src="customer-session.js?v=3f6c651f884f"></script>
  <script src="voice-engine.js?v=fb7c587f8eb7"></script>
  <script src="ai-shopping.js?v=013db6c43e56"></script>
-<script src="ai-web-research.js?v=ff164d790e99"></script>
+<script src="ai-web-research.js?v=10bca253ad2a"></script>
 <script src="ocop-assistant-profile.js?v=15a912b31d61"></script>
 <script src="data/tea-knowledge.js?v=8757f3258ad7"></script>
 <script src="product-training.js?v=34006b79e783"></script>
@@ -84,7 +84,7 @@
 <script src="ai-scenarios.js?v=83e3a901896e"></script>
 <script src="product-locations.js?v=24739bc83737"></script>
 <script src="ai-request-analysis.js?v=889e43dd7dc1"></script>
-<script src="chat-fallback.js?v=4a8e59200282"></script>
+<script src="chat-fallback.js?v=f99b4eb6c48c"></script>
  <script src="chat-language.js?v=6239eb709716"></script>
  <link rel="stylesheet" href="assets/tailwind.css?v=a277d89efe4f">
  <!-- Font Awesome Icons & Google Fonts -->
@@ -94,7 +94,7 @@
  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=a78371028241">
  <!-- Project Stylesheets -->
  <link rel="stylesheet" href="style.css?v=8aec987c157e">
-    <link rel="stylesheet" href="skytech-complete.css?v=3c879cbe11c5">
+    <link rel="stylesheet" href="skytech-complete.css?v=5eb08f47e914">
  <!-- <link rel="stylesheet" href="styledangcap.css"> -->
  <!-- <link rel="stylesheet" href="SuaLoiKoClick.css"> -->
  <style>
@@ -3356,7 +3356,7 @@
 </section>
 <section id="products-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
  <!-- THANH DANH MỤC TRƯỢT NGANG TIỆN LỢI CHO ĐIỆN THOẠI & TABLET -->
- <div class="block lg:hidden mb-5 overflow-x-auto no-scrollbar py-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+ <div id="catalog-category-scroll" class="block lg:hidden mb-5 overflow-x-auto py-1 -mx-4 px-4 sm:mx-0 sm:px-0" tabindex="0" aria-label="Danh m?c s?n ph?m, cu?n ngang ?? xem th?m">
  <div class="flex items-center space-x-2 min-w-max pb-1" id="mobile-categories-bar">
  <button onclick="setCategoryFilter('all', this)" class="mob-cat-btn active px-3.5 py-2 rounded-xl bg-ocopGreen text-white font-extrabold text-xs flex items-center space-x-1.5 shadow-sm border border-ocopGold cursor-pointer">
  <i class="fa-solid fa-wheat-awn text-ocopGold text-xs"></i>
@@ -8271,52 +8271,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 previews.append(wrapper);
             });
         }
-        function analyzeClientImage(file) {
-            return new Promise(resolve => {
-                if (!file || !file.type.startsWith('image/')) return resolve(null);
-                const nameKeywords = String(file.name || '').toLowerCase()
-                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
-                let kwType = null;
-                if (/m[aậ]t ong|honey/.test(nameKeywords)) kwType = 'Mật ong';
-                else if (/tr[aà]|ch[eè]|tea/.test(nameKeywords)) kwType = 'Trà';
-                else if (/c[aà] ph[eê]|coffee/.test(nameKeywords)) kwType = 'Cà phê';
-                else if (/g[aạ]o|rice/.test(nameKeywords)) kwType = 'Gạo';
-                else if (/mi[eế]n|b[uú]n/.test(nameKeywords)) kwType = 'Miến dong';
-                else if (/th[iị]t|tr[aâ]u|l[oợ]n/.test(nameKeywords)) kwType = 'Thịt gác bếp';
-                else if (/y[eế]n|nest/.test(nameKeywords)) kwType = 'Yến sào';
-
-                const img = new Image();
-                img.onload = () => {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = 64; canvas.height = 64;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, 64, 64);
-                        const d = ctx.getImageData(0, 0, 64, 64).data;
-                        let amber = 0, green = 0, dark = 0, total = 0;
-                        for (let i = 0; i < d.length; i += 4) {
-                            const r = d[i], g = d[i+1], b = d[i+2], a = d[i+3];
-                            if (a < 128) continue;
-                            total++;
-                            if (r > 155 && g > 105 && b < 135 && (r - b) > 35) amber++;
-                            else if (g > r + 15 && g > b + 15 && g > 60) green++;
-                            else if (r < 85 && g < 65 && b < 50 && Math.max(r,g,b) < 95) dark++;
-                        }
-                        let visualType = kwType;
-                        if (!visualType && total > 0) {
-                            if (amber / total > 0.06) visualType = 'Mật ong';
-                            else if (green / total > 0.12) visualType = 'Trà';
-                            else if (dark / total > 0.12) visualType = 'Cà phê';
-                        }
-                        resolve(visualType ? { productType: visualType, label: visualType } : null);
-                    } catch (_) {
-                        resolve(kwType ? { productType: kwType, label: kwType } : null);
-                    }
-                };
-                img.onerror = () => resolve(kwType ? { productType: kwType, label: kwType } : null);
-                img.src = URL.createObjectURL(file);
-            });
-        }
         async function addAIChatImages(fileList) {
             const imageFiles = [...fileList].filter(file => file.type.startsWith('image/'));
             if (!imageFiles.length) return;
@@ -8357,12 +8311,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 const previews = imageFiles.map(file => ({
                     file,
                     previewUrl: URL.createObjectURL(file),
-                    id: null,
-                    visualEvidence: null
+                    id: null
                 }));
-                for (const p of previews) {
-                    analyzeClientImage(p.file).then(ev => { p.visualEvidence = ev; });
-                }
                 pendingAIImages.push(...previews);
                 renderAIChatImagePreviews();
             } catch (error) {
@@ -9987,7 +9937,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     const response = await fetch(getAIEndpoint('/api/ai/chat'), {
                         method:'POST',headers:{'Content-Type':'application/json'},
                         signal: AbortSignal.timeout(5000),
-                        body:JSON.stringify({sessionId:(window.ocopMetricsSessionId ||= (()=>{try{let id=sessionStorage.getItem("ocop-consultation-session");if(!id){id=crypto.randomUUID();sessionStorage.setItem("ocop-consultation-session",id);}return id;}catch{return crypto.randomUUID();}})()),language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id),imageEvidence:messageImages.map(img=>img.visualEvidence).find(Boolean)||null})
+                        body:JSON.stringify({sessionId:(window.ocopMetricsSessionId ||= (()=>{try{let id=sessionStorage.getItem("ocop-consultation-session");if(!id){id=crypto.randomUUID();sessionStorage.setItem("ocop-consultation-session",id);}return id;}catch{return crypto.randomUUID();}})()),language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id)})
                     });
                     if (response.ok) {
                         result = await response.json().catch(()=>null);
@@ -9996,7 +9946,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     console.warn('API /api/ai/chat network timeout or unavailable, switching to resilient AI Dispatch:', netErr);
                 }
                 if (!result || (!result.message && !result.text_response)) {
-                    result = generateResilientAIResponse(messageText, requestLanguage, result, messageImages.length > 0, messageImages.map(img=>img.visualEvidence).find(Boolean));
+                    result = generateResilientAIResponse(messageText, requestLanguage, result, messageImages.length > 0);
                 }
                 result.message = result.text_response || result.message;
                 result.productIds = result.suggested_products || result.productIds || [];
@@ -10201,7 +10151,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 console.warn('sendAIMessage outer error, using resilient AI dispatch:', error);
                 const loadingNode = document.getElementById(loadingId);
                 if (loadingNode) loadingNode.remove();
-                const fallbackResult = generateResilientAIResponse(messageText, requestLanguage, null, messageImages.length > 0, messageImages.map(img=>img.visualEvidence).find(Boolean));
+                const fallbackResult = generateResilientAIResponse(messageText, requestLanguage, null, messageImages.length > 0);
                 const reply = document.createElement('div');
                 reply.className = 'flex items-start space-x-2';
                 reply.innerHTML = `
@@ -15698,7 +15648,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <!-- <script src="toiuu.js"></script> -->
 <script src="script.js?v=caf9a772fea8"></script>
 <script src="product-reviews-ui.js?v=5021788e4110"></script>
-<script src="admin-management.js?v=c6a6c5033a57"></script>
+<script src="admin-management.js?v=ca17c4aa2441"></script>
 <script src="account-client.js?v=9f77018f320c"></script>
 <script src="chat-dictation.js?v=592ac0140259"></script>
 <script>
@@ -16521,9 +16471,9 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=ab7512585146"></script>
 <script src="skytech-complete.js?v=b4d26ddf38f1"></script>
-<script src="cart-ui.js?v=5e5306a1b645"></script>
+<script src="cart-ui.js?v=5cd216c94e9c"></script>
 <script src="account-center.js?v=3349fb0122df"></script>
-<script src="storefront-ui.js?v=60cf325c6a40"></script>
+<script src="storefront-ui.js?v=98d12982da4a"></script>
 <script src="ui-branding.js?v=66dc84bfc24e"></script>
 <script src="storefront-navigation.js?v=aaa5e336b621"></script>
 <script src="storefront-router.js?v=a1b02371d840"></script>

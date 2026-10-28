@@ -420,10 +420,22 @@
             name: 'Quản Trị Viên Hệ Thống (Toàn Quyền)',
             token: 'ENC_MASTER_KEY_2007'
         };
-        return getStorage('ocop_admin_scope', defaultScope);
+        const saved=getStorage('ocop_admin_scope', defaultScope);
+        const user=(typeof window!=='undefined' && typeof window.getCurrentCustomer==='function' ? window.getCurrentCustomer() : null) || getStorage('ocop_current_user',null);
+        if(user && (user.role==='distributor'||user.isDistributor)) {
+            const distributor=getDistributorsList().find(d=>(user.distributorCode && d.distributorCode===user.distributorCode) || (user.username && d.username===user.username));
+            return {role:'distributor',distributorCode:distributor?.distributorCode||user.distributorCode||null,name:distributor?.name||user.fullName||user.username,region:distributor?.region};
+        }
+        return saved;
     }
 
     function setActiveScope(role, distributorCode, adminUsername) {
+        const signedIn=(typeof window!=='undefined' && typeof window.getCurrentCustomer==='function' ? window.getCurrentCustomer() : null) || getStorage('ocop_current_user',null);
+        if(signedIn && (signedIn.role==='distributor'||signedIn.isDistributor)){
+            const own=getDistributorsList().find(d=>(signedIn.distributorCode && d.distributorCode===signedIn.distributorCode)||(signedIn.username && d.username===signedIn.username));
+            if(!own)return getActiveScope();
+            role='distributor';distributorCode=own.distributorCode;
+        }
         let scope;
         if (role === 'distributor' && distributorCode) {
             const list = getDistributorsList();
@@ -507,29 +519,34 @@
             };
         } else {
             // Nhà phân phối: Mã hóa và cô lập riêng cho nhà phân phối
-            const currentDist = allDistributors.find(d => d.distributorCode === scope.distributorCode) || allDistributors[0];
+            const currentDist = allDistributors.find(d => d.distributorCode === scope.distributorCode);
+            if(!currentDist)return {scope,distributors:[],customers:[],products:[],isScoped:true};
             
             // Lọc sản phẩm của NPP
-            const scopedProducts = allProducts.filter(p => p.region === currentDist.region).map(p => {
+            const ownedProducts=allProducts.filter(p=>p.distributorCode ? p.distributorCode===currentDist.distributorCode
+                : Array.isArray(currentDist.productIds) ? currentDist.productIds.some(id=>String(id)===String(p.id))
+                : allDistributors.find(d=>d.region===p.region)?.distributorCode===currentDist.distributorCode);
+            const ownedIds=new Set(ownedProducts.map(p=>String(p.id)));
+            const completed=order=>!['cancelled','refunded'].includes(order.status) && Boolean(order.customerReceivedAt || order.receivedAt || order.customerConfirmedReceived===true || order.status==='received');
+            const scopedOrders=allOrders.filter(order=>completed(order) && (!order.distributorCode||order.distributorCode===currentDist.distributorCode)
+                && (ownedIds.has(String(order.productId)) || (order.lines||order.items||[]).some(item=>ownedIds.has(String(item.productId??item.id)) && (!item.distributorCode||item.distributorCode===currentDist.distributorCode))));
+            const ownLines=order=>(Array.isArray(order.lines)?order.lines:Array.isArray(order.items)?order.items:[{productId:order.productId,qty:order.qty,price:order.unitPrice}]).filter(item=>ownedIds.has(String(item.productId??item.id)) && (!item.distributorCode||item.distributorCode===currentDist.distributorCode));
+            const lineTotal=order=>ownLines(order).reduce((sum,item)=>sum+(Number(item.unitPrice??item.price)||Number(ownedProducts.find(p=>String(p.id)===String(item.productId??item.id))?.price)||0)*(Number(item.quantity??item.qty)||1),0);
+            const scopedProducts = ownedProducts.map(p => {
                 const sid = String(p.id);
                 const stock = stockMap[sid] !== undefined ? stockMap[sid] : 50;
-                const sold = salesMap[sid] !== undefined ? salesMap[sid] : 20;
+                const sold = scopedOrders.reduce((sum,order)=>sum+ownLines(order).filter(item=>String(item.productId??item.id)===sid).reduce((count,item)=>count+(Number(item.quantity??item.qty)||1),0),0);
                 return {
                     ...p,
                     stock: stock,
                     sold: sold,
                     distributorName: currentDist.name,
                     distributorCode: currentDist.distributorCode,
-                    revenue: sold * (Number(p.price) || 0)
+                    revenue: scopedOrders.reduce((sum,order)=>sum+ownLines(order).filter(item=>String(item.productId??item.id)===sid).reduce((amount,item)=>amount+(Number(item.unitPrice??item.price)||Number(p.price)||0)*(Number(item.quantity??item.qty)||1),0),0)
                 };
             });
 
             // Lọc đơn hàng liên quan đến NPP này
-            const scopedOrders = allOrders.filter(o => 
-                (o.region === currentDist.region) ||
-                (o.producerName && o.producerName.includes(currentDist.shortName)) ||
-                scopedProducts.some(sp => String(sp.id) === String(o.productId))
-            );
 
             // Lọc khách hàng có liên quan tới NPP này
             const scopedCustomerCodes = new Set(scopedOrders.map(o => o.customerCode).filter(Boolean));
@@ -537,25 +554,25 @@
 
             let scopedCustomers = allCustomers.filter(c => 
                 scopedCustomerCodes.has(c.customerCode) ||
-                scopedCustomerPhones.has(String(c.phone || '').replace(/\s/g,'')) ||
-                (c.address && c.address.includes(currentDist.region))
+                scopedCustomerPhones.has(String(c.phone || '').replace(/\s/g,''))
             );
-
-            if (scopedCustomers.length === 0 && allCustomers.length > 0) {
-                // Đảm bảo luôn hiển thị khách hàng mẫu thuộc vùng của NPP
-                scopedCustomers = allCustomers.slice(0, 2);
+            for(const order of scopedOrders){
+                const phone=String(order.customerPhone||'').replace(/\s/g,'');
+                if(!phone||scopedCustomers.some(c=>String(c.phone||'').replace(/\s/g,'')===phone))continue;
+                scopedCustomers.push({customerCode:/^[A-Z0-9]{12}$/.test(order.customerCode||'')?order.customerCode:'KH'+phone.replace(/\D/g,'').slice(-10).padStart(10,'0'),fullName:order.customerName||'Khách mua hàng',phone,address:'',status:'active'});
             }
+
 
             const enrichedCustomers = scopedCustomers.map(c => {
                 const myOrders = scopedOrders.filter(o => 
                     (o.customerCode && o.customerCode === c.customerCode) ||
                     (o.customerPhone && c.phone && String(o.customerPhone).replace(/\s/g,'') === String(c.phone).replace(/\s/g,''))
                 );
-                const totalSpend = myOrders.reduce((sum, o) => sum + (Number(o.grandTotal) || Number(o.goodsTotal) || 0), 0);
+                const totalSpend = myOrders.reduce((sum, o) => sum + lineTotal(o), 0);
                 return {
                     ...c,
-                    ordersCount: myOrders.length || 1,
-                    totalSpend: totalSpend || 500000
+                    ordersCount: myOrders.length,
+                    totalSpend
                 };
             });
 
@@ -580,6 +597,7 @@
     function formatVND(n) {
         return Number(n || 0).toLocaleString('vi-VN') + ' ₫';
     }
+    function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
 
     function openAdminManagementModal(role, distCode) {
         if (typeof window !== 'undefined' && typeof window.getCurrentCustomer === 'function') {
@@ -698,11 +716,11 @@
         // Role Switcher Select (4 Admin accounts + Distributors)
         let selectOptions = '';
         const adminAccounts = getAdminAccounts();
-        adminAccounts.forEach(adm => {
+        (isMaster?adminAccounts:[]).forEach(adm => {
             const isSel = isMaster && scope.adminUsername === adm.username;
             selectOptions += '<option value="admin:' + adm.username + '"' + (isSel ? ' selected' : '') + '>👑 ' + adm.fullName + ' (@' + adm.username + ')</option>';
         });
-        allDistributors.forEach(d => {
+        (isMaster?allDistributors:allDistributors.filter(d=>d.distributorCode===scope.distributorCode)).forEach(d => {
             const selected = (!isMaster && scope.distributorCode === d.distributorCode) ? ' selected' : '';
             selectOptions += '<option value="' + d.distributorCode + '"' + selected + '>🏬 ' + d.shortName + ' (' + d.distributorCode + ')</option>';
         });
@@ -844,7 +862,7 @@
                         </div>
                     </td>
                     <td class="p-3.5">
-                        <div class="font-bold text-slate-900 text-sm">${c.fullName || c.username}</div>
+                        <div class="font-bold text-slate-900 text-sm">${escapeHtml(c.fullName || c.username)}</div>
                         <div class="text-xs text-slate-400">@${c.username}</div>
                     </td>
                     <td class="p-3.5 font-bold text-slate-700 text-xs">${c.phone || 'Chưa cung cấp'}</td>

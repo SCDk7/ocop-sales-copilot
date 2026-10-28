@@ -1,5 +1,12 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const source=fs.readFileSync('draft-order.js','utf8');
+test('order summaries preserve buyer identity on receipt updates without leaking receipt tokens',()=>{
+ const values=new Map();const context={localStorage:{getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value)}};
+ vm.createContext(context);vm.runInContext(source.slice(source.indexOf('function syncOrderSummary('),source.indexOf('function showDraft(')),context);
+ context.syncOrderSummary({id:'TEST',status:'pending_seller_confirmation',customer:{name:'Khách mua',phone:'0901000000'},lines:[{productId:101,quantity:2,unitPrice:100000}],receiptToken:'secret'});
+ context.syncOrderSummary({id:'TEST',status:'completed',customerReceivedAt:'2026-10-29T00:00:00Z'});
+ const rows=JSON.parse(values.get('ocop_online_orders'));assert.equal(rows.length,1);assert.equal(rows[0].customerPhone,'0901000000');assert.equal(rows[0].lines[0].quantity,2);assert.equal(rows[0].status,'completed');assert.equal(rows[0].receiptToken,undefined);
+});
 function fixture(fetch){
  class Element{
   constructor(tag='div'){this.tag=tag;this.children=[];this.style={};this.dataset={};this.hidden=false;this.textContent='';}

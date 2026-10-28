@@ -13,8 +13,9 @@ const AIIntent = require('./ai-intent.js');
 const {analyzeCustomerRequest} = require('./ai-request-analysis');
 const {generatePreferredContent} = require('./ai-provider.js');
 const {waitForSignal} = require('./ai-deadline.js');
+const matchVisualFingerprints=require('./ai-visual-fingerprint').createVisualFingerprintMatcher(__dirname);
 const {planWikipedia} = require('./ai-wikipedia.js');
-const {composeDataReply,fastBudgetReply} = require('./ai-data-reply.js');
+const {composeDataReply,fastBudgetReply,imageBudgetReply} = require('./ai-data-reply.js');
 const {scenarioInstruction,scenarioReply} = require('./ai-scenarios.js');
 const {assistantInstruction,completeReply} = require('./ocop-assistant-profile.js');
 const {webResearchInstruction,createResearchMiddleware} = require('./ai-web-research.js');
@@ -24,7 +25,7 @@ const {createCommerceShopping} = require('./commerce-shopping');
 const {createKnowledge}=require('./product-knowledge');
 const {createSalesStore}=require('./sales-store');
 const {generateWithSalesTools}=require('./sales-tools');
-const {matchImageEvidence, createCatalogImageMatcher, createReferenceImageMatcher, getProductImageKnowledge, searchProductByImageKnowledge, detectVisualCategory} = require('./ai-image-match.js');
+const {matchImageEvidence, createCatalogImageMatcher, createReferenceImageMatcher, getProductImageKnowledge, searchProductByImageKnowledge} = require('./ai-image-match.js');
 const {formatVisualReply,visualSearchInstruction} = require('./ai-visual-reply.js');
 const matchCatalogImages = createCatalogImageMatcher(__dirname);
 const matchReferenceImages = createReferenceImageMatcher(__dirname);
@@ -761,7 +762,7 @@ function isImageProductLookupRequest(message) {
     'doi tra', 'tra hang', 'hoan tien', 'don hang', 'damaged', 'broken', 'defect',
     'expired', 'return', 'refund', 'missing', 'wrong'
   ];
-  return !supportTerms.some(term => normalizedMessage.includes(term));
+  return !supportTerms.some(term => new RegExp('(?:^|[^a-z0-9])'+term.replace(/ /g,'\\s+')+'(?:$|[^a-z0-9])').test(normalizedMessage));
 }
 
 function buildAISystemInstruction({ products, filteredProducts = [], language }, { includeTranscription = false, combinedReply = false, wikiSources = [], googleContext = null, hasImages = false, customerIntent = {} } = {}) {
@@ -1248,7 +1249,6 @@ async function handleAIChatRequest(req, res) {
     language:validation.language,hasImages:Array.isArray(requestBody.imageIds)&&requestBody.imageIds.length>0,extract:extractSearchIntents
   });
   const localIntent = analysis.intent;
-  if (requestBody.imageEvidence) localIntent.imageEvidence = requestBody.imageEvidence;
   const commerceMetadata=commerceShopping.describe(validation.messages[validation.messages.length-1].text);
   const replyJSON=res.json.bind(res);
   res.json=body=>replyJSON({...body,commerceAgent:commerceMetadata,requestAnalysis:{...analysis.summary,needsClarification:Boolean(analysis.summary.needsClarification||body.understandingStatus==='needs_clarification')}});
@@ -1456,6 +1456,10 @@ async function handleAIChatRequest(req, res) {
       }
     }
   }
+  if(attachedImages.length && !userIntent.isComplaint && !userIntent.isCSKH && ['exact','similar'].includes(result.body.imageMatchStatus) && result.body.productIds?.length===1 && !result.body.combos?.length){
+    const combo=imageBudgetReply(validation.products,userIntent,result.body.productIds[0],validation.language);
+    if(combo)result.body={...result.body,...combo,message:result.body.message+'\n\n'+combo.message,text_response:result.body.message+'\n\n'+combo.message,responseMode:'image_budget_combos'};
+  }
   if (result.body.responseMode !== 'semantic_catalog_wikipedia' && (result.body.integrations?.gemini || result.body.integrations?.openai || result.body.integrations?.claude) && userIntent.hasVerifiedCombo && !attachedImages.length) {
     const verified = AIShopping.replyOptions(userIntent.comboPlans, userIntent, validation.language);
     const intro = (result.body.integrations?.gemini || result.body.integrations?.openai || result.body.integrations?.claude) && typeof result.body.comboIntroduction==='string' && result.body.comboIntroduction.length<=800 && !/\d|₫|\bVND\b/i.test(result.body.comboIntroduction) ? result.body.comboIntroduction.trim() : '';
@@ -1598,12 +1602,16 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     const buffers = await Promise.all(attachedImages.map(image => fs.promises.readFile(path.join(CHAT_IMAGES_DIR,image.fileName))));
     if (imageData) buffers.push(Buffer.from(imageData.data,'base64'));
     const matches = await matchCatalogImages(validation.products,buffers);
+    const resizedMatches=matches.some(ids=>!ids.length) ? await matchVisualFingerprints(validation.products,buffers) : [];
+    matches.forEach((ids,index)=>{if(!ids.length && resizedMatches[index]?.length)matches[index]=resizedMatches[index];});
     if (matches.length && matches.every(ids => ids.length > 0)) {
       const productIds = [...new Set(matches.flat())].slice(0,3);
-      const unique = matches.every(ids => ids.length === 1);
+      const unique = !resizedMatches.length && matches.every(ids => ids.length === 1);
       const selected=productIds.map(id=>validation.products.find(product=>product.id===id)).filter(Boolean);
-      const message=formatVisualReply(selected,{status:unique?'exact':'similar',language:validation.language});
-      return {status:200,body:{message,text_response:message,productIds,suggested_products:productIds,imageMatchStatus:unique?'exact':'similar',
+      const visualMessage=formatVisualReply(selected,{status:unique?'exact':'similar',language:validation.language});
+      const combo=productIds.length===1?imageBudgetReply(validation.products,userIntent,productIds[0],validation.language):null;
+      const message=combo?visualMessage+'\n\n'+combo.message:visualMessage;
+      return {status:200,body:{...combo,message,text_response:message,productIds:combo?.productIds||productIds,suggested_products:combo?.productIds||productIds,imageMatchStatus:unique?'exact':'similar',
         understandingStatus:'understood',responseMode:'catalog_image_match',handoffAdmin:false,dynamic_chips:[],wikipediaSources:[],
         integrations:{gemini:false,openai:false,wikipedia:false,googleSearch:false}}};
     }
@@ -1615,37 +1623,6 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       return {status:200,body:{message,text_response:message,productIds,suggested_products:productIds,imageMatchStatus:'similar',
         understandingStatus:'understood',responseMode:'reference_image_match',handoffAdmin:false,dynamic_chips:[],wikipediaSources:[],
         integrations:{gemini:false,openai:false,claude:false,wikipedia:false,googleSearch:false}}};
-    }
-    const visualDetector = typeof detectVisualCategory === "function" ? detectVisualCategory : () => null;
-    const detectedVisualType = buffers.map(visualDetector).find(Boolean) || (userIntent?.imageEvidence?.productType || null);
-    if (detectedVisualType) {
-      const evidence = { label: detectedVisualType, productType: detectedVisualType };
-      const evidenceIds = new Set(matchImageEvidence(validation.products, evidence));
-      const kbMatcher = typeof searchProductByImageKnowledge === "function" ? searchProductByImageKnowledge : () => [];
-      const kbMatches = kbMatcher(evidence).filter(product => evidenceIds.size === 0 || evidenceIds.has(product.id));
-      const chosen = kbMatches.length ? kbMatches : validation.products.filter(p => evidenceIds.has(p.id));
-      if (chosen.length > 0) {
-        const topMatches = chosen.slice(0, 3);
-        const productIds = topMatches.map(p => p.id);
-        const message = formatVisualReply(topMatches, { status: "similar", productType: detectedVisualType, language: validation.language });
-        return {
-          status: 200,
-          body: {
-            message,
-            text_response: message,
-            productIds,
-            suggested_products: productIds,
-            imageMatchStatus: "similar",
-            imageEvidence: { label: detectedVisualType, productType: detectedVisualType, features: ["Màu sắc nhận diện trực quan", detectedVisualType] },
-            understandingStatus: "understood",
-            responseMode: "catalog_image_knowledge_match",
-            handoffAdmin: false,
-            dynamic_chips: validation.language === "en" ? ["View details", "Add to cart"] : ["Xem chi tiết", "Thêm vào giỏ"],
-            wikipediaSources: [],
-            integrations: { gemini: false, openai: false, claude: false, wikipedia: false, googleSearch: false }
-          }
-        };
-      }
     }
   }
   const unavailable = () => {

@@ -165,6 +165,8 @@
             render();
         });
         Object.assign(root,{openCartUI:open,closeCartUI:close,renderCartUIItems:render,changeCartUIQty:quantity,removeFromCartUI:remove,proceedCheckoutFromCart:checkout,
+            checkout,openOnlineOrderModal:id=>{const product=catalogue().find(p=>p.id===Number(id));if(!product)return;const dest=new URL(checkoutURL([{...product,quantity:1}]),document.baseURI).href;root.location.assign(dest);},
+            handleBuyNow:id=>root.openOnlineOrderModal(id),
             addToCart:add,addProductToCart:addProduct,activateProductReconciliation:add,removeFromCart:remove,updateCartQty:quantity,renderCartItems:render,updateCartBadge:render,
             getCartTotal:()=>lines().reduce((s,p)=>s+p.price*p.quantity,0),toggleCart:force=>{if(force===false||(force===undefined&&opened))close();else open();},
             addProductsToCart:ids=>{for(const id of new Set(ids))add(id);open();},isCartUIOpen:()=>opened});

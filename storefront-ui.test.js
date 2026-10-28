@@ -2,6 +2,15 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {isCashflowText, stripFinancialLines, cleanReply} = require('./storefront-ui');
+
+test('combo preset buttons open the chat and submit their selected prompt',()=>{
+ const fs=require('node:fs'),vm=require('node:vm');const source=fs.readFileSync('storefront-ui.js','utf8');
+ const start=source.indexOf('        root.triggerAIComboPrompt =');const end=source.indexOf('        // Disable only',start);
+ const input={value:'',dispatchEvent(){}};let opened=0,sent='';
+ const root={openAIChat:()=>opened++,sendAIMessage:()=>{sent=input.value;}};
+ vm.runInNewContext(source.slice(start,end),{root,document:{getElementById:()=>input},Event:class{}});
+ root.triggerAIComboPrompt('gợi ý combo quà tặng 500k');assert.equal(opened,1);assert.equal(sent,'gợi ý combo quà tặng 500k');
+});
 test('retired analysis labels are identified without hiding product prices or map labels', () => {
     for (const label of ['Phân tích dòng tiền', 'AI Financial Engine', 'COGS 62%', 'CHM commission', 'Analyze cash flow']) assert.equal(isCashflowText(label),true);
     for (const label of ['Bản đồ Việt Nam', 'Xem sản phẩm', '600.000 VNĐ/hộp', 'Phí giao hàng 30.000đ', 'Tổng thanh toán']) assert.equal(isCashflowText(label),false);

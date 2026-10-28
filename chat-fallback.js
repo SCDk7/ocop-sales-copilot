@@ -4,28 +4,12 @@
     const profile=typeof module==='object'&&module.exports?require('./ocop-assistant-profile'):root.OCOPAssistantProfile;
     const webResearch=typeof module==='object'&&module.exports?require('./ai-web-research'):root.OCOPWebResearch;
     function imageUnavailableReply(language='vi',query='',products=[],history=[],imageEvidence=null) {
-        const type = imageEvidence?.productType || null;
-        if (type) {
-            const normType = (type || '').toLowerCase();
-            const matches = (products || []).filter(p => (p.name || '').toLowerCase().includes(normType)).slice(0, 3);
-            if (matches.length > 0) {
-                const en = language === 'en';
-                const ids = matches.map(m => m.id);
-                const list = matches.map(m => `• **${en ? m.nameEn || m.name : m.name}** — OCOP ${m.stars || 4} sao — ${m.region} — ${(m.price || 0).toLocaleString('vi-VN')} ₫/${m.packaging || 'đơn vị'}`).join('\n');
-                const message = en
-                    ? `From your image, I identified product category: **${type}**.\n\nHere are similar certified OCOP products from our catalogue:\n\n${list}\n\nWould you like to check details or order any of these specialties?`
-                    : `Qua ảnh, em nhận diện loại sản phẩm: **${type}**.\n\nDưới đây là các sản phẩm tương tự trong danh mục OCOP chính hãng:\n\n${list}\n\nAnh/chị muốn tìm hiểu thêm thông tin hay đặt mua sản phẩm nào ạ?`;
-                return {
-                    message, text_response: message, productIds: ids, suggested_products: ids, combos: [],
-                    dynamic_chips: en ? ['View details', 'Add to cart'] : ['Xem chi tiết', 'Thêm vào giỏ'],
-                    imageMatchStatus: 'similar', understandingStatus: 'understood', handoffAdmin: false, localFallback: true, aiProvider: 'local_catalog'
-                };
-            }
-        }
         const analysis=analyzer.analyzeCustomerRequest([...history,{role:'user',text:query}],products,{language,hasImages:true});
         const message = language === 'en'
             ? 'Image recognition is currently unavailable. Please provide the product name or visible label text so I can help with product information or your complaint.'
-            : 'Hiện em chưa nhận diện được ảnh. Anh/chị cho em tên sản phẩm hoặc nội dung trên nhãn để em tư vấn, hỗ trợ hoặc tiếp nhận khiếu nại nhé.';
+            : analysis.intent.isCombo || analysis.intent.maxPrice
+                ? 'Em chưa xác định chắc món trong ảnh. Anh/chị cho em tên món hoặc gửi ảnh nhãn rõ hơn để em chọn combo đúng ngân sách và có món đó nhé.'
+                : 'Em chưa xác định chắc sản phẩm trong ảnh. Anh/chị gửi ảnh nhãn rõ hơn hoặc cho em tên sản phẩm để em đối chiếu đúng yêu cầu nhé.';
         return {message,text_response:message,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],imageMatchStatus:'unknown',understandingStatus:'needs_clarification',handoffAdmin:Boolean(analysis.intent.isComplaint||analysis.intent.isCSKH),localFallback:true,aiProvider:'local_catalog',requestAnalysis:{...analysis.summary,needsClarification:true},integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
     }
     function catalogReply(query,products,language='vi',history=[]){

@@ -78,4 +78,14 @@ function fastBudgetReply(products,intent,language='vi') {
   verified.comboPlans=shopping.variants(products.filter(product=>shopping.allowed(product,verified)),verified);
   return {...composeDataReply(products,verified,language),responseMode:'verified_catalog_combos',understandingSource:'catalog_rules'};
 }
-module.exports={composeDataReply,fastBudgetReply};
+function imageBudgetReply(products,intent,productId,language='vi') {
+  if(!intent.maxPrice || !(intent.isCombo||intent.isGift||intent.minItems>1||intent.maxItems>1))return null;
+  const anchor=products.find(p=>p.id===productId);
+  if(!anchor||!shopping.allowed(anchor,intent))return null;
+  const remaining=intent.maxPrice-anchor.price;
+  const restIntent={...intent,isCombo:true,isGift:false,maxPrice:remaining,minPrice:Math.max(0,(intent.minPrice||0)-anchor.price),minItems:Math.max(1,(intent.minItems||2)-1),maxItems:Math.max(0,(intent.maxItems||7)-1)};
+  const plans=remaining>0&&restIntent.maxItems>0 ? shopping.variants(products.filter(p=>p.id!==anchor.id),restIntent) : [];
+  const comboPlans=plans.map(plan=>({...plan,items:[anchor,...plan.items],total:anchor.price+plan.total,budget:intent.maxPrice,remaining:intent.maxPrice-anchor.price-plan.total,averagePrice:Math.round((anchor.price+plan.total)/(plan.items.length+1))}));
+  return {...composeDataReply(products,{...intent,isCombo:true,hasVerifiedCombo:true,comboPlans},language),responseMode:'image_budget_combos'};
+}
+module.exports={composeDataReply,fastBudgetReply,imageBudgetReply};

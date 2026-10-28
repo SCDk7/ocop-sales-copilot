@@ -1,5 +1,12 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const {composeDataReply,fastBudgetReply}=require('./ai-data-reply');
+test('a photo combo includes the matched item and stays within the requested budget',()=>{
+ const {imageBudgetReply}=require('./ai-data-reply');
+ const rows=[{id:1,name:'Bánh chưng',region:'Hà Nội',price:100000},{id:2,name:'Trà',region:'Hà Nội',price:200000},{id:3,name:'Mật ong',region:'Hà Nội',price:300000}];
+ const reply=imageBudgetReply(rows,{isCombo:true,maxPrice:1000000,minItems:3,maxItems:3},1);
+ assert.ok(reply.combos.length);
+ for(const combo of reply.combos){assert.ok(combo.items.some(p=>p.id===1));assert.equal(combo.items.length,3);assert.ok(combo.total<=1000000);}
+});
 const AIShopping=require('./ai-shopping');
 const products=[{id:1,name:'Trà Hà Giang',region:'Hà Giang',price:100000,packaging:'hộp'},{id:2,name:'Sâm',region:'Kon Tum',price:900000,packaging:'kg'}];
 const sources=[{title:'Trà',url:'https://vi.wikipedia.org/wiki/Tr%C3%A0',extract:'Trà là thức uống từ lá cây chè.'}];
