@@ -58,19 +58,53 @@ window.applyDraftVoucher = function() {
         statusEl.textContent = salesPage.text('Vui lòng nhập mã voucher!', 'Please enter voucher code!');
         return;
     }
+
+    const subtotal = Array.from(items.children).reduce((sum, row) => {
+        const select = row.querySelector('select');
+        const qty = row.querySelector('input');
+        const p = products.find(x => x.productId === Number(select?.value));
+        return sum + (p ? p.price * Math.max(1, Number(qty?.value) || 1) : 0);
+    }, 0);
+
+    // Ưu tiên kiểm tra qua Kho 99 Triệu Voucher OCOP
+    if (typeof VoucherPool !== 'undefined' && typeof VoucherPool.validateVoucher === 'function') {
+        const check = VoucherPool.validateVoucher(code, subtotal);
+        if (check.valid) {
+            appliedVoucher = { code: check.code, discount: check.discount };
+            statusEl.style.display = 'block';
+            statusEl.style.color = '#059669';
+            statusEl.textContent = salesPage.text('✅ Đã áp dụng mã ' + check.code + ': ' + check.label, '✅ Applied code ' + check.code);
+            updateSummary();
+            return;
+        } else if (check.error && check.error.includes('chỉ áp dụng')) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = '#d97706';
+            statusEl.textContent = check.error;
+            return;
+        }
+    }
+
     const vouchers = {
         'OCOP2026': { discount: 50000, label: 'Giảm 50.000 ₫ (Tri ân OCOP 2026)' },
         'FREESHIP': { discount: 25000, label: 'Miễn phí vận chuyển (-25.000 ₫)' },
         'GIAM20K': { discount: 20000, label: 'Giảm 20.000 ₫' },
         'GIAM10K': { discount: 10000, label: 'Giảm 10.000 ₫' },
         'GIAM50K': { discount: 50000, label: 'Giảm 50.000 ₫' },
-        'GIAM100K': { discount: 100000, minOrder: 500000, label: 'Giảm 100.000 ₫' }
+        'GIAM100K': { discount: 100000, minOrder: 500000, label: 'Giảm 100.000 ₫' },
+        'OCOP50K': { discount: 50000, minOrder: 399000, label: 'Giảm 50.000 ₫' },
+        'COMBOVIP': { discount: 100000, minOrder: 899000, label: 'Giảm 100.000 ₫ + Quà' }
     };
     const v = vouchers[code];
     if (!v) {
         statusEl.style.display = 'block';
         statusEl.style.color = '#dc2626';
-        statusEl.textContent = salesPage.text('Mã voucher không hợp lệ!', 'Invalid voucher code!');
+        statusEl.textContent = salesPage.text('Mã voucher không hợp lệ hoặc đã hết lượt!', 'Invalid voucher code!');
+        return;
+    }
+    if (v.minOrder && subtotal < v.minOrder) {
+        statusEl.style.display = 'block';
+        statusEl.style.color = '#d97706';
+        statusEl.textContent = salesPage.text('Mã ' + code + ' chỉ áp dụng cho đơn từ ' + v.minOrder.toLocaleString('vi-VN') + ' ₫!', 'Order must be at least ' + v.minOrder);
         return;
     }
     appliedVoucher = { code: code, discount: v.discount };
