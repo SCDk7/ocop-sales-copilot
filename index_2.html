@@ -21,7 +21,7 @@
 <script src="product-training.js?v=34006b79e783"></script>
 <script src="catalog-facts.js?v=b2710876dbfd"></script>
 <script src="product-consultant.js?v=e93f4668469d"></script>
-<script src="ai-scenarios.js?v=19e0770f10e3"></script>
+<script src="ai-scenarios.js?v=be954e8b5324"></script>
 <script src="product-locations.js?v=24739bc83737"></script>
 <script src="ai-request-analysis.js?v=889e43dd7dc1"></script>
 <script src="chat-fallback.js?v=e49ebc0f1a89"></script>
@@ -12083,7 +12083,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const modal = document.getElementById('ocop-all-stores-modal');
             const body = document.getElementById('ocop-all-stores-body');
             if (!modal || !body) return;
-            const majorCenters = window.OcopStores ? window.OcopStores.MAJOR_OCOP_CENTERS : [];
+            const majorCenters = (window.OcopStores && Array.isArray(window.OcopStores.MAJOR_OCOP_CENTERS)) ? window.OcopStores.MAJOR_OCOP_CENTERS : [];
             const provinces = [...new Set(products.map(p => p.region))];
             body.innerHTML = `
                 <div class="space-y-5 text-slate-800">
@@ -12229,12 +12229,26 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 </div>
             `;
             modal.classList.remove('hidden');
+            modal.hidden = false;
+            modal.inert = false;
+            modal.setAttribute('aria-hidden', 'false');
+            modal.style.setProperty('display', 'flex', 'important');
+            body.scrollTop = 0;
+            document.getElementById('header-stores-toggle')?.setAttribute('aria-expanded', 'true');
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
+            modal.querySelector('button[onclick="closeAllStoresModal()"]')?.focus({preventScroll: true});
         }
         function closeAllStoresModal() {
             const modal = document.getElementById('ocop-all-stores-modal');
-            if (modal) modal.classList.add('hidden');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.hidden = true;
+                modal.inert = true;
+                modal.setAttribute('aria-hidden', 'true');
+                modal.style.setProperty('display', 'none', 'important');
+            }
+            document.getElementById('header-stores-toggle')?.setAttribute('aria-expanded', 'false');
             restorePageScrollState();
         }
         function filterStoresInModal(query) {
@@ -15927,7 +15941,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <!-- <script src="toiuu.js"></script> -->
 <script src="script.js?v=caf9a772fea8"></script>
 <script src="product-reviews-ui.js?v=5021788e4110"></script>
-<script src="admin-management.js?v=366f761a87c1"></script>
+<script src="admin-management.js?v=c6a6c5033a57"></script>
 <script src="account-client.js?v=9f77018f320c"></script>
 <script src="chat-dictation.js?v=592ac0140259"></script>
 <script>
@@ -16743,15 +16757,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 </script>
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->
 <link rel="stylesheet" href="skytech-complete.css?v=f58a5585d06b">
-<link rel="stylesheet" href="store-directory-light.css?v=200941f274e3">
+<link rel="stylesheet" href="store-directory-light.css?v=cb405b0da1a4">
 <link rel="stylesheet" href="cart-ui.css?v=0a3faaa17530">
-<link rel="stylesheet" href="account-center.css?v=60b4a74cdbf2">
-<link rel="stylesheet" href="admin-management.css?v=5ca46f2073d2">
+<link rel="stylesheet" href="account-center.css?v=cf9634a1cf0b">
+<link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=ab7512585146"></script>
-<script src="skytech-complete.js?v=c85876fa6b12"></script>
+<script src="skytech-complete.js?v=815e72e92b20"></script>
 <script src="cart-ui.js?v=92da91b0a573"></script>
 <script src="account-center.js?v=3349fb0122df"></script>
-<script src="storefront-ui.js?v=c21eef4041d6"></script>
+<script src="storefront-ui.js?v=1287160ea074"></script>
 <script src="ui-branding.js?v=66dc84bfc24e"></script>
 <script src="storefront-navigation.js?v=9c153796330a"></script>
 <script src="storefront-router.js?v=a1b02371d840"></script>
