@@ -9,6 +9,28 @@ function createSalesStore(file,products) {
  for(const [id,row] of Object.entries(db.prices))applyPrice(id,row.price);
  const fail=(message,status=400)=>{throw Object.assign(new Error(message),{status});};
  function save(next){fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file+'.tmp',JSON.stringify(next,null,2),{mode:0o600});fs.renameSync(file+'.tmp',file);db=next;}
+ function receiptToken(draft){return crypto.createHmac('sha256',db.receiptSecret).update(draft.id+'\n'+draft.idempotencyKey).digest('hex');}
+ function issueReceiptAccess(draft){
+  if(!db.receiptSecret){const next=structuredClone(db);next.receiptSecret=crypto.randomBytes(32).toString('hex');save(next);}
+  return {...draft,receiptToken:receiptToken(draft)};
+ }
+ function customerOrder(id,token){
+  const draft=db.drafts.find(row=>row.id===id);
+  if(!draft||!db.receiptSecret||typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)||!crypto.timingSafeEqual(Buffer.from(token,'hex'),Buffer.from(receiptToken(draft),'hex')))fail('Không tìm thấy đơn hoặc liên kết theo dõi không hợp lệ.',404);
+  const {status,lines,subtotal,total,shippingFee,paymentStatus,paymentMethod,voucherCode,inventoryVerified,reserved,trackingNumber,createdAt,customerReceivedAt,completedAt}=draft;
+  return structuredClone({id,status,lines,subtotal,total,shippingFee,paymentStatus,paymentMethod,voucherCode,inventoryVerified,reserved,trackingNumber,createdAt,customerReceivedAt,completedAt});
+ }
+ function confirmReceipt(id,token,{confirmed}={}){
+  customerOrder(id,token);
+  if(confirmed!==true)fail('Cần xác nhận bạn đã nhận được hàng.');
+  const next=structuredClone(db),draft=next.drafts.find(row=>row.id===id);
+  if(draft.status==='completed'&&draft.customerReceivedAt)return {...customerOrder(id,token),reused:true};
+  if(!['shipped','completed'].includes(draft.status))fail('Chỉ xác nhận đã nhận hàng khi đơn đang giao.',409);
+  const at=new Date().toISOString();
+  Object.assign(draft,{status:'completed',customerReceivedAt:at,completedAt:at});
+  draft.history??=[];draft.history.push({action:'received',at,actor:'customer'});
+  save(next);return {...customerOrder(id,token),reused:false};
+ }
  function inventory(productId,quantity=1){
   const p=catalogue.get(productId);if(!p)fail('Không tìm thấy sản phẩm.',404);
   if(!Number.isSafeInteger(quantity)||quantity<1||quantity>999)fail('Số lượng không hợp lệ.');
@@ -46,16 +68,20 @@ function createSalesStore(file,products) {
   const normalized={items:lines.map(({productId,quantity})=>({productId,quantity})).sort((a,b)=>a.productId-b.productId),customer:{name:customer.name.trim(),phone:customer.phone.replace(/[ ()-]/g,''),address:customer.address.trim()}};
   const fingerprint=crypto.createHash('sha256').update(JSON.stringify(normalized)).digest('hex');
   const existing=db.drafts.find(d=>d.idempotencyKey===body.idempotencyKey);
-  if(existing){if(existing.fingerprint!==fingerprint)fail('Mã tạo đơn đã được dùng cho nội dung khác.',409);return {...existing,reused:true};}
+  if(existing){if(existing.fingerprint!==fingerprint)fail('Mã tạo đơn đã được dùng cho nội dung khác.',409);return {...issueReceiptAccess(existing),reused:true};}
   if(shortage)fail(shortage,409);
   const sessionHash=typeof body.sessionId==='string'&&/^[a-zA-Z0-9-]{16,64}$/.test(body.sessionId)?crypto.createHash('sha256').update(body.sessionId).digest('hex'):null;
   const draft={id:'OCOP-DRAFT-'+crypto.randomUUID(),createdAt:new Date().toISOString(),status:'pending_seller_confirmation',lines,customer:normalized.customer,subtotal:lines.reduce((sum,l)=>sum+l.unitPrice*l.quantity,0),shippingFee:null,total:null,inventoryVerified:lines.every(l=>l.stockChecked),reserved:false,sessionHash,source:consultationVerified&&sessionHash?'chatbot':'storefront',paymentStatus:'unpaid',history:[],idempotencyKey:body.idempotencyKey,fingerprint};
-  const next=structuredClone(db);next.drafts.push(draft);save(next);return {...draft,reused:false};
+  draft.paymentMethod=typeof customer.paymentMethod==='string'?customer.paymentMethod.trim().slice(0,120):null;
+  draft.voucherCode=typeof customer.voucherCode==='string'?customer.voucherCode.trim().slice(0,40):null;
+  if(typeof customer.note==='string')draft.customer.note=customer.note.trim().slice(0,500);
+  const next=structuredClone(db);next.receiptSecret??=crypto.randomBytes(32).toString('hex');next.drafts.push(draft);save(next);return {...issueReceiptAccess(draft),reused:false};
  }
  function transition(id,{action,shippingFee,paymentReference,trackingNumber,customerAgreed}={}){
   const next=structuredClone(db),draft=next.drafts.find(d=>d.id===id);if(!draft)fail('Không tìm thấy đơn.',404);
   const at=new Date().toISOString();draft.history??=[];
   const target={confirm:'confirmed',ship:'shipped',complete:'completed',cancel:'cancelled'}[action];
+  if(action==='complete'&&!draft.customerReceivedAt)fail('Chỉ hoàn thành đơn khi khách hàng xác nhận đã nhận hàng.',409);
   if(action==='paid'){
    if(!['confirmed','shipped','completed'].includes(draft.status))fail('Cần xác nhận đơn trước khi ghi nhận thanh toán.',409);
    if(draft.paymentStatus==='paid')return {...draft,reused:true};
@@ -88,9 +114,9 @@ function createSalesStore(file,products) {
  }
  function businessStats(start,end){
   const inRange=at=>at&&Date.parse(at)>=Date.parse(start)&&Date.parse(at)<=Date.parse(end);
-  const paid=db.drafts.filter(d=>d.paymentStatus==='paid'&&inRange(d.paidAt)),confirmed=db.drafts.filter(d=>inRange(d.confirmedAt)),completed=db.drafts.filter(d=>inRange(d.completedAt));
+  const paid=db.drafts.filter(d=>d.paymentStatus==='paid'&&inRange(d.paidAt)),confirmed=db.drafts.filter(d=>inRange(d.confirmedAt)),completed=db.drafts.filter(d=>d.customerReceivedAt&&inRange(d.completedAt));
   return {confirmedOrders:confirmed.length,completedOrders:completed.length,paidOrders:paid.length,paidRevenue:paid.reduce((sum,d)=>sum+d.total,0),chatbotPaidRevenue:paid.filter(d=>d.source==='chatbot'&&d.sessionHash).reduce((sum,d)=>sum+d.total,0)};
  }
- return {inventory,setInventory,updateProduct,createDraft,transition,businessStats,list:()=>structuredClone(db.drafts),stats:()=>({draftOrders:db.drafts.length,inventoryProducts:Object.keys(db.inventory).length})};
+ return {inventory,setInventory,updateProduct,createDraft,transition,customerOrder,confirmReceipt,businessStats,list:()=>structuredClone(db.drafts),stats:()=>({draftOrders:db.drafts.length,inventoryProducts:Object.keys(db.inventory).length})};
 }
 module.exports={createSalesStore};

@@ -62,6 +62,61 @@ for (const page of ['index.html', 'index_2.html']) {
     });
 }
 
+test('account access warnings stay inside the account panel and authorized access still opens management', () => {
+    let current = {username: 'customer', role: 'customer'};
+    const document = {activeElement: null};
+    class Element {
+        constructor(tag) { this.tag = tag; this.children = []; this.dataset = {}; this.style = {}; this.attributes = {}; }
+        append(...nodes) { this.children.push(...nodes); }
+        replaceChildren(...nodes) { this.children = nodes; }
+        setAttribute(key, value) { this.attributes[key] = value; }
+        addEventListener() {}
+        focus() { document.activeElement = this; }
+        querySelectorAll(selector) {
+            return this.children.flatMap(child => [child, ...child.querySelectorAll('*')]).filter(child =>
+                selector === '*' || selector === 'button' && child.tag === 'button' || selector === '[data-section]' && child.dataset.section);
+        }
+        querySelector(selector) { return this.querySelectorAll(selector)[0]; }
+    }
+    document.createElement = tag => new Element(tag);
+    document.body = new Element('body');
+    const values = new Map();
+    const localStorage = {getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value)};
+    const events = [];
+    const context = {document, localStorage, sessionStorage: {getItem: () => null},
+        getCurrentCustomer: () => current,
+        isCurrentUserAdminOrDistributor: person => ['admin', 'distributor'].includes(person.role),
+        showToast: () => events.push('toast'), openCustomerAuthModal: () => events.push('auth'),
+        OcopAdminManagement: {openAdminManagementModal: role => events.push(role)}};
+    context.window = context;
+    vm.createContext(context);
+    const skytech = fs.readFileSync('skytech-complete.js', 'utf8');
+    vm.runInContext(skytech.slice(skytech.indexOf('    window.promptAdminPinModal = function'), skytech.indexOf('    window.toggleAdminPinVisibility = function')), context);
+    vm.runInContext(fs.readFileSync('account-center.js', 'utf8'), context);
+    context.openAccountCenter();
+    const panel = document.body.children[0];
+    const notice = panel.querySelectorAll('*').find(node => node.className === 'account-center-notice');
+    const controls = panel.querySelectorAll('button').filter(node => node.textContent === '🔒 Quản trị');
+    assert.equal(controls.length, 2);
+    for (const control of controls) {
+        control.onclick();
+        assert.equal(panel.hidden, false);
+        assert.equal(notice.hidden, false);
+        assert.match(notice.textContent, /không có quyền truy cập/);
+        assert.equal(document.activeElement, notice);
+        assert.equal(document.body.style.overflow, 'hidden');
+        assert.deepEqual(events, []);
+    }
+    for (const role of ['admin', 'distributor']) {
+        current = {username: role, role};
+        context.openAccountCenter();
+        panel.querySelectorAll('button').find(node => node.textContent === '🔒 Quản trị').onclick();
+        assert.equal(panel.hidden, true);
+        assert.equal(notice.hidden, true);
+        assert.equal(events.at(-1), role === 'admin' ? 'webmaster' : 'distributor');
+    }
+});
+
 test('offline account adapter preserves the current customer on reload', () => {
     const values = new Map([['ocop_current_user', JSON.stringify({username: 'customer'})], ['ocop_users_db', '[]']]);
     const root = {localStorage: {removeItem: key => values.delete(key)}};
@@ -70,6 +125,54 @@ test('offline account adapter preserves the current customer on reload', () => {
     assert.equal(JSON.parse(values.get('ocop_current_user')).username, 'customer');
     assert.equal(values.get('ocop_users_db'), '[]');
 });
+
+for (const page of ['index.html', 'index_2.html']) {
+    test(page + ' reopens the store directory after a previous hidden state', () => {
+        const html = fs.readFileSync(page, 'utf8');
+        const start = html.indexOf('        function openAllStoresModal()');
+        const end = html.indexOf('        function filterStoresInModal(', start);
+        const classes = new Set(['hidden']);
+        const attributes = new Map();
+        const styles = new Map([['display', 'none']]);
+        const trigger = {setAttribute: (key, value) => attributes.set('trigger-' + key, value)};
+        let focused = false;
+        const modal = {
+            hidden: true, inert: true,
+            classList: {add: key => classes.add(key), remove: key => classes.delete(key)},
+            setAttribute: (key, value) => attributes.set(key, value),
+            style: {setProperty: (key, value) => styles.set(key, value)},
+            querySelector: () => ({focus: () => { focused = true; }})
+        };
+        const body = {innerHTML: '', scrollTop: 100};
+        const document = {
+            getElementById: id => ({'ocop-all-stores-modal': modal, 'ocop-all-stores-body': body, 'header-stores-toggle': trigger})[id],
+            body: {style: {}}, documentElement: {style: {}}
+        };
+        const context = {document, window: {OcopStores: {}}, products: require('./data').PRODUCTS,
+            restorePageScrollState: () => {document.body.style.overflow = ''; document.documentElement.style.overflow = '';}};
+        vm.createContext(context);
+        vm.runInContext(html.slice(start, end), context);
+        for (let attempt = 0; attempt < 2; attempt++) {
+            context.openAllStoresModal();
+            assert.equal(modal.hidden, false);
+            assert.equal(modal.inert, false);
+            assert.equal(classes.has('hidden'), false);
+            assert.equal(styles.get('display'), 'flex');
+            assert.equal(attributes.get('aria-hidden'), 'false');
+            assert.equal(attributes.get('trigger-aria-expanded'), 'true');
+            assert.equal(document.body.style.overflow, 'hidden');
+            assert.equal(body.scrollTop, 0);
+            assert.ok(body.innerHTML.includes('store-provinces-list'));
+            assert.ok(focused);
+            context.closeAllStoresModal();
+            assert.equal(modal.hidden, true);
+            assert.equal(modal.inert, true);
+            assert.equal(styles.get('display'), 'none');
+            assert.equal(attributes.get('trigger-aria-expanded'), 'false');
+            assert.equal(document.body.style.overflow, '');
+        }
+    });
+}
 
 for (const page of ['index.html', 'index_2.html']) {
     test(page + ' sends IDE preview API calls to the backend while preserving deployed and configured endpoints', () => {

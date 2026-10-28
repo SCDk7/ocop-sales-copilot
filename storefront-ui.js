@@ -103,7 +103,6 @@
             'i18n-intro-pillar4': 'AI Financial Engine',
             'i18n-sidebar-realtime': 'Điểm bán & hợp tác xã OCOP',
             'chat-title': language() === 'en' ? 'AI • ADVICE, SUPPORT & COMPLAINTS' : 'AI • TƯ VẤN, HỖ TRỢ & KHIẾU NẠI',
-            'chat-subtitle': language() === 'en' ? 'Product advice • Order support • Customer care' : 'Tư vấn sản phẩm • Hỗ trợ đơn hàng • Chăm sóc khách hàng',
             'chat-greeting': greetings[language()] || greetings.vi,
             'chat-guidance': language() === 'en' ? 'Tell me what you need or describe the issue with your order.' : 'Anh/chị cần tư vấn, hỗ trợ đơn hàng hay phản ánh vấn đề gì? Em sẽ hướng dẫn từng bước.'
         };
@@ -114,8 +113,8 @@
         const chatInput = document.getElementById('ai-chat-input');
         if (chatInput) chatInput.placeholder = language() === 'en' ? 'Ask for advice, support or make a complaint...' : 'Nhập yêu cầu tư vấn, hỗ trợ hoặc khiếu nại...';
         const supportActions = language() === 'en'
-            ? [['Product advice','Please help me choose an OCOP product.'],['Order support','I need help placing or checking an order.'],['Complaints / returns','I need help with a complaint about my order.']]
-            : [['Tư vấn sản phẩm','Tôi cần tư vấn chọn đặc sản OCOP.'],['Hỗ trợ đơn hàng','Tôi cần hỗ trợ đặt hàng hoặc kiểm tra đơn hàng.'],['Khiếu nại / đổi trả','Tôi cần hỗ trợ khiếu nại về đơn hàng.']];
+            ? [['Product advice','Please help me choose an OCOP product.'],['Place an order','How do I place an order?'],['Check an order','Please check my order status.'],['Complaints / returns','I need help with a complaint about my order.']]
+            : [['Tư vấn sản phẩm','Tôi cần tư vấn chọn đặc sản OCOP.'],['Hỗ trợ đặt hàng','Hướng dẫn tôi đặt hàng.'],['Kiểm tra đơn hàng','Tôi cần kiểm tra đơn hàng của mình.'],['Khiếu nại / đổi trả','Tôi cần hỗ trợ khiếu nại về đơn hàng.']];
         const sendSupportPrompt = prompt => {
             const input = document.getElementById('ai-chat-input');
             if (input) { input.value = prompt; root.sendAIMessage?.(); }
@@ -257,6 +256,34 @@
         root.updateCartBadge = render;
         render();
     }
+    function protectChatFromPreviewReload() {
+        const chat = document.getElementById('ai-chat-window');
+        const widget = document.getElementById('ai-chat-widget');
+        const send = document.getElementById('chat-send-button');
+        if (!chat || !document.body || typeof root.MutationObserver !== 'function') return;
+        let ownsLock = false;
+        const attribute = 'data-server-no-reload';
+        const sync = () => {
+            const chatOpen = !chat.hidden && !chat.classList.contains('hidden') && chat.style.display !== 'none'
+                && (!widget || !widget.hidden && !widget.classList.contains('hidden') && widget.style.display !== 'none');
+            const requestPending = send?.getAttribute('aria-busy') === 'true';
+            if (chatOpen || requestPending) {
+                if (!document.body.hasAttribute(attribute)) {
+                    // VS Code Live Preview checks this attribute before reloading on file changes.
+                    document.body.setAttribute(attribute, 'ai-chat');
+                    ownsLock = true;
+                }
+            } else if (ownsLock) {
+                if (document.body.getAttribute(attribute) === 'ai-chat') document.body.removeAttribute(attribute);
+                ownsLock = false;
+            }
+        };
+        const observer = new root.MutationObserver(sync);
+        observer.observe(chat, {attributes: true, attributeFilter: ['class', 'style', 'hidden']});
+        if (widget) observer.observe(widget, {attributes: true, attributeFilter: ['class', 'style', 'hidden']});
+        if (send) observer.observe(send, {attributes: true, attributeFilter: ['aria-busy']});
+        sync();
+    }
     function init() {
         // Disable only the retired analysis entrypoints. Keep map and ordering APIs intact.
         for (const name of ['openFinancialDashboardModal', 'toggleAiFinancialModal', 'quickSwitchToFinancialDashboard', 'updateFinancialSimulator', 'exportFinancialReport', 'filterFinancialChannel', 'playVoiceFinancialBriefing', 'triggerHeroVoiceDemo']) root[name] = () => {};
@@ -289,6 +316,7 @@
             return showToast.call(this, text, ...args);
         };
         installShoppingCart();
+        protectChatFromPreviewReload();
         cleanUI();
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});

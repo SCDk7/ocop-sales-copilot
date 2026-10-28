@@ -49,9 +49,100 @@ test('Seed distributors have exactly 12 characters codes and required credential
         assert.ok(d.distributorCode.startsWith('NPP'), 'Must start with NPP');
         assert.ok(d.name, 'Must have name');
         assert.ok(d.region, 'Must have region');
-        assert.ok(d.hotline, 'Must have hotline');
+        assert.ok(d.isDemo || d.hotline, 'Real distributors must have a hotline');
         assert.ok(d.encryptionKey, 'Must have encryption token');
     });
+});
+
+test('the demo distributor is added once to existing storage without replacing distributor data', () => {
+    const previous = storage.ocop_distributors;
+    try {
+        const existing = Admin.getDistributorsList().filter(row => !row.isDemo);
+        existing[0] = {...existing[0], name: 'Tên nhà phân phối đã chỉnh sửa', pin: 'custom-pin'};
+        localStorage.setItem('ocop_distributors', JSON.stringify(existing));
+        const first = Admin.getDistributorsList();
+        const demo = first.find(row => row.username === 'nppdemo');
+        assert.equal(demo.distributorCode, 'NPP26DEMO001');
+        assert.equal(demo.password, 'NppDemo@2026');
+        assert.equal(demo.isDemo, true);
+        assert.deepEqual(first.slice(0, existing.length), existing);
+        assert.equal(Admin.getDistributorsList().filter(row => row.distributorCode === demo.distributorCode).length, 1);
+        const edited = first.map(row => row.isDemo ? {...row, password: 'Changed-demo-password'} : row);
+        localStorage.setItem('ocop_distributors', JSON.stringify(edited));
+        assert.equal(Admin.getDistributorsList().find(row => row.isDemo).password, 'Changed-demo-password');
+    } finally { storage.ocop_distributors = previous; }
+});
+
+for (const page of ['index.html', 'index_2.html']) {
+    test(page + ' signs in the demo distributor by username or code and rejects incorrect passwords', () => {
+        const fs = require('node:fs'), vm = require('node:vm');
+        const html = fs.readFileSync(page, 'utf8');
+        const start = html.indexOf('    function handleCustomerLoginSubmit()');
+        const end = html.indexOf('    function handleCustomerRegisterSubmit()', start);
+        for (const username of ['nppdemo', 'NPPDEMO', 'NPP26DEMO001']) {
+            for (const password of ['NppDemo@2026', 'incorrect', '123456']) {
+                const values = new Map(), alerts = [], opened = [];
+                const context = {
+                    document: {getElementById: id => ({value: id === 'cust-login-user' ? username : password})},
+                    localStorage: {getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value)},
+                    OcopAdminManagement: {...Admin, setActiveScope() {}, openAdminManagementModal: (...args) => opened.push(args)},
+                    updateCustomerHeaderUI() {}, closeCustomerAuthModal() {},
+                    showCustomerAuthAlert: (message, type) => alerts.push({message, type}),
+                    setTimeout: callback => callback()
+                };
+                context.window = context;
+                vm.createContext(context);vm.runInContext(html.slice(start, end), context);
+                context.handleCustomerLoginSubmit();
+                if (password === 'NppDemo@2026') {
+                    const session = JSON.parse(values.get('ocop_current_user'));
+                    assert.equal(session.role, 'distributor');
+                    assert.equal(session.fullName, 'Nhà phân phối Demo OCOP');
+                    assert.equal(session.distributorCode, 'NPP26DEMO001');
+                    assert.deepEqual(opened, [['distributor', 'NPP26DEMO001']]);
+                    assert.equal(alerts.at(-1).type, 'success');
+                } else {
+                    assert.equal(values.has('ocop_current_user'), false);
+                    assert.equal(opened.length, 0);
+                    assert.equal(alerts.at(-1).type, 'error');
+                }
+            }
+        }
+    });
+}
+
+test('the management login picker shows NPP Demo, fills its credentials and opens only the distributor scope', () => {
+    const fs = require('node:fs'), vm = require('node:vm');
+    const source = fs.readFileSync('skytech-complete.js', 'utf8');
+    const values = new Map(), opened = [], attributes = {};
+    const element = () => ({value: '', style: {setProperty() {}}, classList: {add() {}, remove() {}},
+        focus() {}, setAttribute: (key, value) => { attributes[key] = value; }});
+    const modal = element(), username = element(), password = element(), error = element();
+    const nodes = {'admin-login-modal': modal, 'admin-login-username': username, 'admin-login-password': password, 'admin-login-error': error,
+        'admin-login-card': element(), ...Object.fromEntries([...Admin.getAdminAccounts().map(row => row.username), 'nppdemo'].map(name => ['pill-admin-' + name, element()]))};
+    let adminCallback = false;
+    const context = {document: {getElementById: id => nodes[id] || null},
+        localStorage: {setItem: (key, value) => values.set(key, value)},
+        OcopAdminManagement: {...Admin, setActiveScope() {}, openAdminManagementModal: (...args) => opened.push(args)},
+        closeAdminHubModal() {}, closeAdminLoginModal() {}, updateCustomerHeaderUI() {}, setTimeout: callback => callback()};
+    context.window = context;vm.createContext(context);
+    vm.runInContext(source.slice(source.indexOf('    function getManagementLoginChoices()'), source.indexOf('    window.openAdminHubCardAction = function')), context);
+    context.openAdminLoginModal('ThaoNguyenad01', () => { adminCallback = true; });
+    assert.ok(modal.innerHTML.includes('id="pill-admin-nppdemo"'));
+    assert.ok(modal.innerHTML.includes('<span>NPP Demo</span>'));
+    assert.ok(modal.innerHTML.includes("selectAdminLoginAccount('nppdemo')"));
+    context.selectAdminLoginAccount('nppdemo');
+    assert.equal(username.value, 'nppdemo');assert.equal(password.value, 'NppDemo@2026');
+    password.value = 'wrong';context.submitAdminLogin();
+    assert.equal(values.has('ocop_current_user'), false);assert.equal(opened.length, 0);
+    context.selectAdminLoginAccount('nppdemo');context.submitAdminLogin();
+    assert.equal(JSON.parse(values.get('ocop_current_user')).role, 'distributor');
+    assert.deepEqual(opened, [['distributor', 'NPP26DEMO001']]);
+    assert.equal(adminCallback, false);
+    context.selectAdminLoginAccount('KimNganad02');
+    assert.equal(password.value, '', 'real administrator passwords are not filled by the demo picker');
+    password.value = '1111111';context.submitAdminLogin();
+    assert.equal(JSON.parse(values.get('ocop_current_user')).role, 'admin');
+    assert.deepEqual(opened.at(-1), ['webmaster', null]);
 });
 
 test('Seed customers have 12 characters customer codes', () => {
@@ -110,7 +201,7 @@ test('Scoping Engine isolates data between Webmaster and Distributor', () => {
     assert.equal(masterData.scope.adminUsername, 'ThaoNguyenad01');
     assert.equal(masterData.isScoped, false);
     assert.equal(masterData.products.length, 4, 'Webmaster sees all 4 products');
-    assert.equal(masterData.distributors.length, 6, 'Webmaster sees all distributors');
+    assert.equal(masterData.distributors.length, 7, 'Webmaster sees six distributors and the demo account');
 
     // 2. Distributor scope for Hải Phòng (NPP260000001)
     Admin.setActiveScope('distributor', 'NPP260000001');
@@ -171,6 +262,65 @@ test('Admin separate username and password authentication verification', () => {
     assert.ok(skyJs.includes('window.selectAdminLoginAccount'), 'selectAdminLoginAccount is defined in skytech-complete.js');
     assert.ok(skyJs.includes('admin-login-modal'), 'admin-login-modal exists in skytech-complete.js');
     assert.ok(skyJs.includes('openAdminLoginModal()'), 'Card 1 button invokes openAdminLoginModal');
+});
+
+test('management header follows each signed-in admin when opening and reopening instead of resetting to the first account', () => {
+    const originalWindow = global.window;
+    const originalDocument = global.document;
+    const originalScope = storage.ocop_admin_scope;
+    const originalUser = storage.ocop_current_user;
+    const modal = {innerHTML: '', classList: {add() {}, remove() {}}, style: {setProperty() {}}};
+    let current;
+    try {
+        global.window = {...originalWindow, getCurrentCustomer: () => current, addEventListener() {}};
+        global.document = {getElementById: id => id === 'admin-management-modal' ? modal : null, body: {style: {}}};
+        for (const admin of Admin.getAdminAccounts()) {
+            current = {...admin, role: 'admin', isAdmin: true};
+            localStorage.setItem('ocop_current_user', JSON.stringify(current));
+            Admin.setActiveScope('webmaster', null, 'ThaoNguyenad01');
+            Admin.openAdminManagementModal('webmaster', null);
+            assert.equal(Admin.getActiveScope().adminUsername, admin.username);
+            assert.equal(Admin.getActiveScope().name, admin.fullName);
+            const selected = modal.innerHTML.match(/<option value="admin:([^"]+)" selected>([^<]+)<\/option>/);
+            assert.equal(selected?.[1], admin.username);
+            assert.ok(selected[2].includes(admin.fullName));
+            Admin.closeAdminManagementModal();
+            Admin.openAdminManagementModal();
+            assert.equal(Admin.getActiveScope().adminUsername, admin.username);
+        }
+        current = null;
+        localStorage.removeItem('ocop_current_user');
+        Admin.setActiveScope('webmaster', null, 'KimNganad02');
+        Admin.openAdminManagementModal('webmaster', null);
+        assert.equal(Admin.getActiveScope().adminUsername, 'KimNganad02', 'legacy login scope survives opening the panel');
+    } finally {
+        global.window = originalWindow;
+        if (originalDocument === undefined) delete global.document; else global.document = originalDocument;
+        if (originalScope === undefined) localStorage.removeItem('ocop_admin_scope'); else storage.ocop_admin_scope = originalScope;
+        if (originalUser === undefined) localStorage.removeItem('ocop_current_user'); else storage.ocop_current_user = originalUser;
+    }
+});
+
+test('switching to another authenticated admin preserves the identity returned by login', () => {
+    const originalWindow = global.window;
+    const originalDocument = global.document;
+    const originalScope = storage.ocop_admin_scope;
+    try {
+        const authenticated = Admin.getAdminAccounts()[2];
+        global.window = {...originalWindow, openAdminLoginModal: (username, done) => {
+            assert.equal(username, authenticated.username);
+            done(authenticated);
+        }};
+        global.document = {getElementById: () => null};
+        Admin.setActiveScope('webmaster', null, 'ThaoNguyenad01');
+        Admin.onRoleSelectChange('admin:' + authenticated.username);
+        assert.equal(Admin.getActiveScope().adminUsername, authenticated.username);
+        assert.equal(Admin.getActiveScope().name, authenticated.fullName);
+    } finally {
+        global.window = originalWindow;
+        if (originalDocument === undefined) delete global.document; else global.document = originalDocument;
+        if (originalScope === undefined) localStorage.removeItem('ocop_admin_scope'); else storage.ocop_admin_scope = originalScope;
+    }
 });
 
 test('Role-based Admin access control: strictly visible to Admin and Distributor, hidden for regular customers and guests', () => {

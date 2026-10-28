@@ -37,6 +37,26 @@ test('sales lifecycle guides reviews and orders without inventing completed acti
  assert.match(order.message,/đăng nhập/);
  assert.match(order.message,/chưa xác minh/);
 });
+test('placing an order and checking an existing order receive separate guidance',()=>{
+ const {catalogReply}=require('./chat-fallback');
+ for(const [language,place,check] of [
+  ['vi','Hướng dẫn tôi đặt hàng.','Tôi cần kiểm tra đơn hàng của mình.'],
+  ['en','How do I place an order?','Please check my order status.']
+ ]){
+  const ordering=catalogReply(place,[],language);
+  const status=catalogReply(check,[],language);
+  assert.equal(ordering.agent,'ordering');
+  assert.equal(ordering.handoffAdmin,false);
+  assert.match(ordering.message,language==='vi'?/Giỏ hàng/:/cart/);
+  assert.doesNotMatch(ordering.message,/đăng nhập|sign in/i);
+  assert.equal(status.agent,'orders');
+  assert.equal(status.handoffAdmin,true);
+  assert.match(status.message,language==='vi'?/đăng nhập/:/sign in/);
+  assert.deepEqual(ordering.productIds,[]);
+  assert.deepEqual(status.productIds,[]);
+ }
+});
+
 test('automatic reminders and CRM requests disclose connection and consent requirements',()=>{
  const reminder=scenarioReply('Nhắc tôi mua lại mật ong');
  assert.equal(reminder.agent,'repurchase');

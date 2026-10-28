@@ -40,3 +40,39 @@ test('storefront cleanup disables analysis without changing map controls or cart
     assert.equal(mapControl.textContent,'Bản đồ Việt Nam');assert.equal(context.setupInteractiveVietnamMap,map);assert.equal(context.toggleCart,cart);
     assert.equal(context.openFinancialDashboardModal(),undefined);
 });
+
+function previewFixture(initialAttribute) {
+    const vm=require('node:vm'),fs=require('node:fs');
+    const values=new Map(initialAttribute===undefined?[]:[['data-server-no-reload',initialAttribute]]);
+    const attributes=new Map();
+    const body={hasAttribute:key=>values.has(key),getAttribute:key=>values.get(key),setAttribute:(key,value)=>values.set(key,value),removeAttribute:key=>values.delete(key)};
+    const chat={hidden:false,style:{display:'none'},classList:{contains:()=>false}};
+    const widget={hidden:false,style:{},classList:{contains:()=>false}};
+    const send={getAttribute:key=>attributes.get(key)};
+    let update;
+    const root={MutationObserver:class{constructor(callback){update=callback}observe(){}}};
+    const document={body,getElementById:id=>({'ai-chat-window':chat,'ai-chat-widget':widget,'chat-send-button':send})[id]};
+    const source=fs.readFileSync('storefront-ui.js','utf8');
+    vm.runInNewContext(source.slice(source.indexOf('    function protectChatFromPreviewReload()'),source.indexOf('    function init()'))+'protectChatFromPreviewReload();',{document,root});
+    return {values,chat,widget,attributes,update:()=>update()};
+}
+
+test('preview file-change reloads are blocked during chat and while an image request is still running',()=>{
+    const {values,chat,attributes,update}=previewFixture();
+    assert.equal(values.has('data-server-no-reload'),false);
+    chat.style.display='flex';update();
+    assert.equal(values.get('data-server-no-reload'),'ai-chat');
+    attributes.set('aria-busy','true');chat.style.display='none';update();
+    assert.equal(values.has('data-server-no-reload'),true,'closing the chat cannot interrupt an in-flight upload');
+    attributes.delete('aria-busy');update();
+    assert.equal(values.has('data-server-no-reload'),false,'automatic preview updates resume after the conversation closes');
+    chat.style.display='flex';update();attributes.set('aria-busy','true');update();
+    attributes.delete('aria-busy');update();
+    assert.equal(values.has('data-server-no-reload'),true,'success and error cleanup keep an open conversation protected');
+});
+
+test('chat protection preserves reload locks owned by other page features',()=>{
+    const {values,chat,update}=previewFixture('another-feature');
+    chat.style.display='flex';update();chat.style.display='none';update();
+    assert.equal(values.get('data-server-no-reload'),'another-feature');
+});

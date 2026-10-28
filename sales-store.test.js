@@ -53,7 +53,9 @@ test('shipping, completion and payment are independent and revenue requires sell
  assert.throws(()=>store.transition(draft.id,{action:'paid',paymentReference:'receipt'}),{status:409});
  store.transition(draft.id,{action:'confirm',shippingFee:10000,customerAgreed:true});
  assert.throws(()=>store.transition(draft.id,{action:'complete'}),{status:409});
- store.transition(draft.id,{action:'ship',trackingNumber:'TRACK-001'});store.transition(draft.id,{action:'complete'});
+ store.transition(draft.id,{action:'ship',trackingNumber:'TRACK-001'});
+ assert.throws(()=>store.transition(draft.id,{action:'complete'}),{status:409});
+ store.confirmReceipt(draft.id,draft.receiptToken,{confirmed:true});
  const range=['2020-01-01T00:00:00Z','2099-01-01T00:00:00Z'];assert.equal(store.businessStats(...range).paidRevenue,0);assert.equal(store.businessStats(...range).completedOrders,1);
  assert.throws(()=>store.transition(draft.id,{action:'paid',paymentReference:''}));
  store.transition(draft.id,{action:'paid',paymentReference:'Receipt checked'});store.transition(draft.id,{action:'paid',paymentReference:'Receipt checked'});
@@ -66,4 +68,45 @@ test('a fabricated session cannot attribute storefront revenue to the chatbot',t
  const {store}=fixture(t);store.setInventory(1,5);const draft=store.createDraft({...body(),sessionId:'fabricated-session-12345',source:'chatbot',consultationVerified:true});
  store.transition(draft.id,{action:'confirm',shippingFee:0,customerAgreed:true});store.transition(draft.id,{action:'paid',paymentReference:'Cash received'});
  const stats=store.businessStats('2020-01-01T00:00:00Z','2099-01-01T00:00:00Z');assert.equal(stats.paidRevenue,200000);assert.equal(stats.chatbotPaidRevenue,0);assert.equal(draft.source,'storefront');
+});
+
+test('completion requires explicit customer receipt with access to the correct shipped order',t=>{
+ const {file,store}=fixture(t);store.setInventory(1,8);
+ const draft=store.createDraft(body()),other=store.createDraft({...body(),idempotencyKey:'another-order-123456789'});
+ assert.match(draft.receiptToken,/^[a-f0-9]{64}$/);
+ assert.equal(store.createDraft(body()).receiptToken,draft.receiptToken);
+ for(const token of ['',other.receiptToken,'f'.repeat(64)]){
+  assert.throws(()=>store.customerOrder(draft.id,token),{status:404});
+  assert.throws(()=>store.confirmReceipt(draft.id,token,{confirmed:true}),{status:404});
+ }
+ assert.throws(()=>store.confirmReceipt(draft.id,draft.receiptToken,{confirmed:true}),{status:409});
+ store.transition(draft.id,{action:'confirm',shippingFee:0,customerAgreed:true});
+ assert.throws(()=>store.confirmReceipt(draft.id,draft.receiptToken,{confirmed:true}),{status:409});
+ store.transition(draft.id,{action:'ship',trackingNumber:'TRACK-RECEIPT'});
+ assert.throws(()=>store.transition(draft.id,{action:'complete',customerReceivedAt:new Date().toISOString()}),{status:409});
+ assert.throws(()=>store.confirmReceipt(draft.id,draft.receiptToken,{}),{status:400});
+ assert.throws(()=>store.confirmReceipt(draft.id,draft.receiptToken,{confirmed:false}),{status:400});
+ assert.equal(store.customerOrder(draft.id,draft.receiptToken).status,'shipped');
+ const result=store.confirmReceipt(draft.id,draft.receiptToken,{confirmed:true});
+ assert.equal(result.status,'completed');assert.ok(result.customerReceivedAt);assert.equal(result.completedAt,result.customerReceivedAt);
+ const repeat=store.confirmReceipt(draft.id,draft.receiptToken,{confirmed:true});
+ assert.equal(repeat.reused,true);assert.equal(repeat.completedAt,result.completedAt);
+ assert.equal(store.list().find(row=>row.id===draft.id).history.filter(row=>row.action==='received').length,1);
+ assert.equal(store.transition(draft.id,{action:'complete'}).reused,true);
+ const restarted=createSalesStore(file,structuredClone(products));
+ assert.equal(restarted.customerOrder(draft.id,draft.receiptToken).status,'completed');
+ assert.equal(restarted.createDraft(body()).receiptToken,draft.receiptToken);
+ assert.equal(Object.hasOwn(result,'customer'),false);
+ assert.equal(Object.hasOwn(result,'receiptToken'),false);
+});
+
+test('cancelled orders cannot confirm receipt and old completion records do not count as customer-confirmed orders',t=>{
+ const {file,store}=fixture(t);const draft=store.createDraft(body());
+ store.transition(draft.id,{action:'cancel'});
+ assert.throws(()=>store.confirmReceipt(draft.id,draft.receiptToken,{confirmed:true}),{status:409});
+ const data=JSON.parse(fs.readFileSync(file,'utf8'));
+ data.drafts[0].status='completed';data.drafts[0].completedAt=new Date().toISOString();fs.writeFileSync(file,JSON.stringify(data));
+ const restarted=createSalesStore(file,structuredClone(products));
+ assert.equal(restarted.businessStats('2020-01-01T00:00:00Z','2099-01-01T00:00:00Z').completedOrders,0);
+ assert.throws(()=>restarted.transition(draft.id,{action:'complete'}),{status:409});
 });

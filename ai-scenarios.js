@@ -38,6 +38,9 @@ function lifecycleReply(text, language='vi') {
  if (/don (?:hang )?(?:cua toi|cua minh|dang o dau)|kiem tra.*don|theo doi.*don|tinh trang.*don|track.*order|order status/.test(q)) return reply('orders',
   'Anh/chị đăng nhập và mở mục đơn hàng trong tài khoản để xem thông tin của mình nhé. Nếu cần kiểm tra thêm, anh/chị gửi mã đơn qua kênh CSKH; em chưa xác minh được trạng thái giao hàng từ tin nhắn này.',
   'Please sign in and open your account orders. For further help, share the order reference with customer support; I cannot verify delivery status from this message.',true);
+ if (/huong dan.*dat hang|ho tro dat hang|how (?:do|can) i (?:place|make) an order|help (?:me )?(?:place|placing) an order/.test(q)) return reply('ordering',
+  'Dạ, anh/chị chọn sản phẩm rồi bấm “Mua ngay” hoặc thêm vào giỏ hàng. Sau đó mở Giỏ hàng, kiểm tra số lượng và điền thông tin nhận hàng để tiếp tục đặt hàng. Anh/chị muốn đặt sản phẩm nào ạ?',
+  'Choose a product and click “Buy now” or add it to your cart. Then open the cart, check the quantities and enter the delivery details to continue ordering. Which product would you like to order?');
  return null;
 }
 

@@ -1,4 +1,21 @@
 /* Pale blue directory theme; keep the backdrop and map layers intact. */
+#ocop-all-stores-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483500 !important;
+    pointer-events: auto !important;
+}
+#ocop-all-stores-modal.hidden,
+#ocop-all-stores-modal[hidden] { display: none !important; }
+#ocop-all-stores-modal > .store-directory-panel {
+    min-height: 0;
+    max-height: min(88dvh, 780px) !important;
+}
+#ocop-all-stores-body {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
 #ocop-all-stores-modal > .store-directory-panel.relative.bg-white {
     background: #e0f2fe !important;
     border-color: #7dd3fc !important;

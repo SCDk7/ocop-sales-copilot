@@ -315,10 +315,28 @@
         return list;
     }
 
+    const DEMO_DISTRIBUTOR = {
+        distributorCode: 'NPP26DEMO001',
+        username: 'nppdemo',
+        password: 'NppDemo@2026',
+        name: 'Nhà phân phối Demo OCOP',
+        shortName: 'NPP Demo',
+        region: 'Đồng Nai',
+        hotline: '',
+        address: 'Tài khoản minh họa tại Đồng Nai',
+        certDecision: 'Tài khoản demo — chưa có chứng nhận',
+        encryptionKey: 'DEMO_ONLY_NPP26DEMO001',
+        status: 'Hoạt động',
+        isDemo: true
+    };
+
     function getDistributorsList() {
         let list = getStorage('ocop_distributors', []);
         if (!Array.isArray(list) || list.length === 0) {
-            list = SEED_DISTRIBUTORS.slice();
+            list = [...SEED_DISTRIBUTORS, {...DEMO_DISTRIBUTOR}];
+            setStorage('ocop_distributors', list);
+        } else if (!list.some(distributor => distributor.distributorCode === DEMO_DISTRIBUTOR.distributorCode)) {
+            list = [...list, {...DEMO_DISTRIBUTOR}];
             setStorage('ocop_distributors', list);
         }
         return list;
@@ -329,6 +347,16 @@
             return window.PRODUCTS;
         }
         return [];
+    }
+
+    function authenticateDistributor(username, password) {
+        const login = String(username || '').trim().toLowerCase();
+        const secret = String(password || '').trim();
+        if (!login || !secret) return null;
+        return getDistributorsList().find(distributor =>
+            [distributor.username, distributor.distributorCode].some(value => value && String(value).toLowerCase() === login)
+            && (distributor.password ? distributor.password === secret : [distributor.pin, distributor.encryptionKey, '123456'].includes(secret))
+        ) || null;
     }
 
     // Lấy tồn kho (kèm khởi tạo giá trị thực tế theo sản phẩm)
@@ -409,7 +437,13 @@
             };
         } else {
             const adminList = getAdminAccounts();
-            const admin = adminList.find(a => a.username === adminUsername) || (adminUsername ? { fullName: adminUsername, username: adminUsername } : adminList[0]);
+            const currentUser = (typeof window !== 'undefined' && typeof window.getCurrentCustomer === 'function'
+                ? window.getCurrentCustomer() : null) || getStorage('ocop_current_user', null);
+            const signedInAdmin = currentUser && adminList.find(a => a.username.toLowerCase() === String(currentUser.username || '').toLowerCase());
+            const signedInUsername = signedInAdmin?.username || (currentUser && (currentUser.isAdmin || ['admin', 'super_admin'].includes(currentUser.role)) ? currentUser.username : null);
+            const selectedUsername = adminUsername || signedInUsername || getActiveScope().adminUsername;
+            const admin = adminList.find(a => a.username.toLowerCase() === String(selectedUsername || '').toLowerCase())
+                || (selectedUsername ? {fullName: currentUser?.username === selectedUsername ? currentUser.fullName || selectedUsername : selectedUsername, username: selectedUsername} : adminList[0]);
             const adminName = admin ? admin.fullName : 'Quản Trị Viên Hệ Thống (Toàn Quyền)';
             const adminUser = admin ? admin.username : 'ThaoNguyenad01';
             scope = {
@@ -554,10 +588,16 @@
                 ? window.isCurrentUserAdminOrDistributor(user)
                 : (user && (user.role === 'admin' || user.role === 'distributor' || user.isAdmin || user.isDistributor));
             if (user && !hasPrivilege) {
+                const message = '⚠️ Tài khoản khách hàng không có quyền truy cập Quản trị. Vui lòng đăng nhập tài khoản Admin hoặc Nhà Phân Phối!';
+                if (window.showAccountNotice?.(message)) return;
                 if (typeof window.showToast === 'function') {
-                    window.showToast('⚠️ Bạn đang đăng nhập tài khoản Khách hàng thường. Không có quyền truy cập Quản trị!', 'warning');
+                    window.showToast(message, 'warning');
                 }
                 return;
+            }
+            if (!role && user && hasPrivilege) {
+                role = user.role === 'distributor' || user.isDistributor ? 'distributor' : 'webmaster';
+                if (role === 'distributor') distCode = user.distributorCode;
             }
         }
 
@@ -575,6 +615,9 @@
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'admin-management-modal';
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('aria-labelledby', 'admin-mgmt-title');
             modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 12px !important; background: rgba(15, 23, 42, 0.85) !important; backdrop-filter: blur(8px) !important; overflow-y: auto !important;';
             document.body.appendChild(modal);
 
@@ -622,8 +665,8 @@
         renderAdminManagementUI();
     }
 
-    function switchAdminRole(role, distCode) {
-        setActiveScope(role, distCode);
+    function switchAdminRole(role, distCode, adminUsername) {
+        setActiveScope(role, distCode, adminUsername);
         if (typeof window !== 'undefined' && typeof window.showToast === 'function') {
             const scope = getActiveScope();
             window.showToast('Đã chuyển vai trò: ' + scope.name, 'success');
@@ -649,14 +692,14 @@
         // Header HTML
         const isMaster = scope.role === 'webmaster';
         const roleBadge = isMaster
-            ? '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-amber-500/10 text-amber-900 border border-amber-300 shadow-2xs"><i class="fa-solid fa-crown text-amber-600"></i> QUẢN TRỊ VIÊN TOÀN QUYỀN (Webmaster) · Khóa Master SHA-256</span>'
-            : '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/10 text-emerald-900 border border-emerald-300 shadow-2xs"><i class="fa-solid fa-shield-halved text-emerald-600"></i> CỔNG NPP: ' + (scope.name || '') + ' · Mã: ' + scope.distributorCode + ' (Mã hóa cô lập)</span>';
+            ? '<span class="admin-mgmt-scope-badge"><i class="fa-solid fa-crown" aria-hidden="true"></i> Toàn bộ hệ thống</span>'
+            : '<span class="admin-mgmt-scope-badge"><i class="fa-solid fa-store" aria-hidden="true"></i> ' + (scope.name || '') + ' · ' + scope.distributorCode + '</span>';
 
         // Role Switcher Select (4 Admin accounts + Distributors)
         let selectOptions = '';
         const adminAccounts = getAdminAccounts();
         adminAccounts.forEach(adm => {
-            const isSel = (isMaster && (scope.adminUsername === adm.username || (!scope.adminUsername && adm.username === 'ThaoNguyenad01')));
+            const isSel = isMaster && scope.adminUsername === adm.username;
             selectOptions += '<option value="admin:' + adm.username + '"' + (isSel ? ' selected' : '') + '>👑 ' + adm.fullName + ' (@' + adm.username + ')</option>';
         });
         allDistributors.forEach(d => {
@@ -666,10 +709,10 @@
 
         // Tabs Config
         const tabs = [
-            { id: 'customers', label: '👥 Quản Lý Khách Hàng', count: totalCustomers },
-            { id: 'distributors', label: '🏬 Quản Lý Nhà Phân Phối', count: isMaster ? allDistributors.length : 1 },
-            { id: 'inventory', label: '📦 Quản Lý Hàng Tồn Kho', count: totalProducts },
-            { id: 'sales', label: '📈 Quản Lý Số Lượng Đã Bán', count: totalSold }
+            { id: 'customers', label: '👥 Khách hàng', count: totalCustomers },
+            { id: 'distributors', label: '🏬 Nhà phân phối', count: isMaster ? allDistributors.length : 1 },
+            { id: 'inventory', label: '📦 Tồn kho', count: totalProducts },
+            { id: 'sales', label: '📈 Đã bán', count: totalSold }
         ];
 
         let tabButtonsHtml = tabs.map(t => {
@@ -677,7 +720,7 @@
             const btnCls = isActive
                 ? 'py-3 px-4 font-black text-sm text-sky-700 border-b-2 border-sky-600 bg-sky-50/60 transition cursor-pointer flex items-center gap-2'
                 : 'py-3 px-4 font-bold text-sm text-slate-500 hover:text-slate-800 border-b-2 border-transparent transition cursor-pointer flex items-center gap-2';
-            return '<button type="button" onclick="OcopAdminManagement.switchAdminTab(\'' + t.id + '\')" class="' + btnCls + '">' +
+            return '<button type="button" aria-pressed="' + isActive + '" onclick="OcopAdminManagement.switchAdminTab(\'' + t.id + '\')" class="' + btnCls + '">' +
                 '<span>' + t.label + '</span>' +
                 '<span class="px-2 py-0.5 rounded-full text-[11px] font-bold ' + (isActive ? 'bg-sky-200 text-sky-800' : 'bg-slate-100 text-slate-600') + '">' + t.count + '</span>' +
             '</button>';
@@ -696,63 +739,54 @@
         }
 
         modal.innerHTML = `
-            <!-- NÚT THOÁT NỔI LUÔN CỐ ĐỊNH Ở GÓC TRÊN CÙNG BÊN PHẢI -->
-            <button type="button" onclick="OcopAdminManagement.closeAdminManagementModal()" class="fixed top-3 right-3 sm:top-5 sm:right-5 z-[2147483647] flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-black text-xs sm:text-sm shadow-[0_10px_25px_rgba(225,29,72,0.55)] border-2 border-white cursor-pointer transition select-none" title="Thoát Bảng Quản Trị (Nhấn phím Esc)">
-                <i class="fa-solid fa-xmark text-base"></i>
-                <span>Thoát Quản Trị (Esc)</span>
-            </button>
-
             <div id="admin-mgmt-container" class="relative w-full max-w-6xl max-h-[92vh] bg-white rounded-3xl border-2 border-sky-300 shadow-[0_25px_60px_rgba(2,132,199,0.35)] flex flex-col overflow-hidden text-slate-800" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;">
                 
                 <!-- TOP HEADER CỐ ĐỊNH -->
-                <div class="sticky top-0 z-50 p-4 md:px-7 bg-slate-900 text-white shrink-0 flex flex-wrap items-center justify-between gap-3 border-b border-sky-700/50 shadow-md">
+                <div class="admin-mgmt-header">
                     <div>
                         <div class="flex items-center gap-2.5 mb-1">
                             <span class="w-8 h-8 rounded-lg bg-sky-500/30 border border-sky-400/40 flex items-center justify-center text-sky-300 text-base">
                                 <i class="fa-solid fa-layer-group"></i>
                             </span>
-                            <h2 class="text-lg md:text-xl font-black tracking-tight text-white m-0">
-                                HỆ THỐNG QUẢN TRỊ ĐA PHÂN QUYỀN
+                            <h2 id="admin-mgmt-title">
+                                Quản trị OCOP
                             </h2>
                         </div>
-                        <div class="text-xs text-sky-200 font-medium">
-                            Khách Hàng • Nhà Phân Phối • Tồn Kho • Doanh Số Đã Bán (Mã hóa phân vùng độc lập)
+                        <div class="admin-mgmt-subtitle">
+                            Khách hàng · Nhà phân phối · Tồn kho · Doanh số
                         </div>
                     </div>
 
                     <!-- ROLE CHANGER & CLOSE BUTTON -->
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center gap-2 bg-slate-800 border border-sky-400/30 rounded-xl px-3 py-1.5">
-                            <i class="fa-solid fa-user-gear text-sky-400 text-xs"></i>
-                            <select id="admin-role-selector" onchange="OcopAdminManagement.onRoleSelectChange(this.value)" class="bg-transparent text-white text-xs font-bold outline-none cursor-pointer pr-2">
+                    <div class="admin-mgmt-actions">
+                        <label class="admin-mgmt-account" for="admin-role-selector">
+                            <span>Tài khoản quản lý</span>
+                            <select id="admin-role-selector" onchange="OcopAdminManagement.onRoleSelectChange(this.value)">
                                 ${selectOptions}
                             </select>
-                        </div>
+                        </label>
                         <button type="button" onclick="OcopAdminManagement.logoutAdmin()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-900/60 hover:bg-rose-800 text-rose-200 border border-rose-500/50 text-xs font-bold transition cursor-pointer" title="Đăng xuất khỏi phiên quản trị">
                             <i class="fa-solid fa-right-from-bracket"></i>
                             <span>Đăng xuất</span>
                         </button>
-                        <button type="button" onclick="OcopAdminManagement.closeAdminManagementModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-sm cursor-pointer transition" title="Đóng cửa sổ quản trị (Esc)">
+                        <button type="button" id="admin-mgmt-close" onclick="OcopAdminManagement.closeAdminManagementModal()" title="Đóng cửa sổ quản trị (Esc)">
                             <i class="fa-solid fa-xmark text-sm"></i>
-                            <span>Đóng</span>
+                            <span>Đóng (Esc)</span>
                         </button>
                     </div>
                 </div>
 
+                <div class="admin-mgmt-scroll overflow-y-auto">
                 <!-- SUB-HEADER ROLE & STATUS NOTIFICATION -->
-                <div class="px-6 py-2.5 bg-slate-50 border-b border-slate-200 shrink-0 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div class="admin-mgmt-scope">
                     <div class="flex items-center gap-2">
                         <span class="text-slate-500 font-bold">Phạm vi dữ liệu:</span>
                         ${roleBadge}
                     </div>
-                    <div class="text-slate-500 text-[11px] font-medium flex items-center gap-1.5">
-                        <i class="fa-solid fa-lock text-sky-600"></i>
-                        <span>Phiên làm việc bảo mật: <strong class="font-mono text-slate-800">${scope.token}</strong></span>
-                    </div>
                 </div>
 
                 <!-- 4 KPI SUMMARY CARDS -->
-                <div class="px-6 py-4 bg-sky-50/40 border-b border-sky-100 shrink-0 grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="admin-mgmt-stats">
                     <div class="p-3 bg-white rounded-2xl border border-sky-200 shadow-2xs">
                         <div class="text-[11px] font-bold text-slate-500 uppercase">Khách Hàng</div>
                         <div class="text-xl font-black text-sky-900 mt-0.5">${totalCustomers} <span class="text-xs font-normal text-slate-500">tài khoản</span></div>
@@ -767,30 +801,27 @@
                     </div>
                     <div class="p-3 bg-white rounded-2xl border border-sky-200 shadow-2xs">
                         <div class="text-[11px] font-bold text-slate-500 uppercase">Đã Bán / Doanh Thu</div>
-                        <div class="text-xl font-black text-rose-600 mt-0.5">${totalSold.toLocaleString('vi-VN')} <span class="text-xs font-bold text-slate-600">(${formatVND(totalRevenue)})</span></div>
+                        <div class="text-xl font-black text-rose-600 mt-0.5">${totalSold.toLocaleString('vi-VN')} <span class="text-xs font-normal text-slate-500">sản phẩm</span></div>
+                        <div class="admin-mgmt-revenue">${formatVND(totalRevenue)}</div>
                     </div>
                 </div>
 
                 <!-- NAVIGATION TABS -->
-                <div class="px-6 bg-white border-b border-slate-200 shrink-0 flex gap-2 overflow-x-auto">
+                <div class="admin-mgmt-tabs" role="group" aria-label="Danh mục quản lý">
                     ${tabButtonsHtml}
                 </div>
 
                 <!-- MAIN SCROLLABLE TAB BODY -->
-                <div class="p-6 flex-1 overflow-y-auto bg-slate-50/60">
+                <div class="admin-mgmt-content">
                     ${contentHtml}
+                </div>
                 </div>
 
                 <!-- FOOTER BAR -->
-                <div class="px-6 py-3 bg-white border-t border-slate-200 shrink-0 flex flex-wrap items-center justify-between text-xs text-slate-500">
+                <div class="admin-mgmt-footer">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>Đồng bộ thời gian thực với CSDL OCOP 63 Tỉnh Thành</span>
-                    </div>
-                    <div>
-                        <button type="button" onclick="OcopAdminManagement.closeAdminManagementModal()" class="px-4 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition cursor-pointer">
-                            Đóng Bảng Quản Trị
-                        </button>
+                        <span>Dữ liệu quản lý theo phạm vi tài khoản</span>
                     </div>
                 </div>
             </div>
@@ -1187,7 +1218,7 @@
                 switchAdminRole('webmaster', null, u);
             }
         } else if (val === 'webmaster') {
-            switchAdminRole('webmaster', null, 'ThaoNguyenad01');
+            switchAdminRole('webmaster', null);
         } else {
             switchAdminRole('distributor', val);
         }
@@ -1206,6 +1237,7 @@
         generateAdminCode: generateAdminCode,
         getAdminAccounts: getAdminAccounts,
         authenticateAdmin: authenticateAdmin,
+        authenticateDistributor: authenticateDistributor,
         generateDistributorCode: generateDistributorCode,
         getCustomersList: getCustomersList,
         getDistributorsList: getDistributorsList,

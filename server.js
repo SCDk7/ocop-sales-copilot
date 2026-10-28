@@ -22,8 +22,9 @@ const {createCommerceShopping} = require('./commerce-shopping');
 const {createKnowledge}=require('./product-knowledge');
 const {createSalesStore}=require('./sales-store');
 const {generateWithSalesTools}=require('./sales-tools');
-const {matchImageEvidence, createCatalogImageMatcher, getProductImageKnowledge, searchProductByImageKnowledge} = require('./ai-image-match.js');
+const {matchImageEvidence, createCatalogImageMatcher, createReferenceImageMatcher, getProductImageKnowledge, searchProductByImageKnowledge} = require('./ai-image-match.js');
 const matchCatalogImages = createCatalogImageMatcher(__dirname);
+const matchReferenceImages = createReferenceImageMatcher(__dirname);
 const {transcribeAudio}=require('./audio-transcription');
 const { createAccountStore } = require('./account-store.js');
 const OcopStores = require('./ocop-stores.js');
@@ -198,8 +199,17 @@ app.post('/api/ai/draft-orders',(req,res,next)=>{
       sessionId: req.body?.sessionId,
       products: draft.lines || []
     }).catch(err => console.warn('KPI draft sync notice:', err.message));
-    res.status(draft.reused?200:201).json({draft:{id:draft.id,status:draft.status,lines:draft.lines,subtotal:draft.subtotal,shippingFee:draft.shippingFee,total:draft.total,inventoryVerified:draft.inventoryVerified,reserved:Boolean(draft.reserved),paymentStatus:draft.paymentStatus||"unpaid",trackingNumber:draft.trackingNumber||null,reused:draft.reused}});
+    res.status(draft.reused?200:201).json({draft:{id:draft.id,status:draft.status,lines:draft.lines,subtotal:draft.subtotal,shippingFee:draft.shippingFee,total:draft.total,inventoryVerified:draft.inventoryVerified,reserved:Boolean(draft.reserved),paymentStatus:draft.paymentStatus||"unpaid",paymentMethod:draft.paymentMethod,voucherCode:draft.voucherCode,trackingNumber:draft.trackingNumber||null,createdAt:draft.createdAt,customerReceivedAt:draft.customerReceivedAt||null,completedAt:draft.completedAt||null,receiptToken:draft.receiptToken,reused:draft.reused}});
   }catch(error){next(error);}
+});
+
+app.get('/api/ai/draft-orders/:id',(req,res,next)=>{
+  res.setHeader('Cache-Control','no-store');
+  try{res.json({draft:salesStore.customerOrder(req.params.id,String(req.headers.authorization||'').replace(/^Bearer /,''))});}catch(error){next(error);}
+});
+app.post('/api/ai/draft-orders/:id/received',(req,res,next)=>{
+  res.setHeader('Cache-Control','no-store');
+  try{res.json({draft:salesStore.confirmReceipt(req.params.id,String(req.headers.authorization||'').replace(/^Bearer /,''),req.body||{})});}catch(error){next(error);}
 });
 
 // AI DIGITAL BUSINESS CHALLENGE 2026: CLOUD KPI DATA PIPELINE API ROUTES
@@ -1454,7 +1464,7 @@ async function handleAIChatRequest(req, res) {
   result.body=appendProductLocations(result.body,filteredProducts,userIntent,OcopStores,validation.language);
   const usedWikiPlan = semanticIntent?.reply ? prefetchPlan : wikiPlan;
   result.body.wikipediaLookup={attempted:Boolean(usedWikiPlan.query),status:usedWikiPlan.skipReason || (wikiSources.length?'found':'no_relevant_sources')};
-  return res.status(result.status || 200).json({ ...result.body, geminiUnderstanding:{attempted:result.body.responseMode!=='catalog_image_match',status:result.body.responseMode==='catalog_image_match' ? 'not_required' : semanticIntent || result.body.integrations?.gemini ? 'understood' : 'unavailable'}, integrations:{gemini:false,openai:false,wikipedia:false,googleSearch:false,...result.body.integrations,intentGemini:Boolean(semanticIntent?.providersUsed?.includes('gemini')),intentOpenAI:Boolean(semanticIntent?.providersUsed?.includes('openai')),intentClaude:Boolean(semanticIntent?.providersUsed?.includes('claude'))}, resolvedRequirements:{maxPrice:userIntent.maxPrice,minPrice:userIntent.minPrice,minItems:userIntent.minItems,maxItems:userIntent.maxItems,province:userIntent.exactRegion,region:userIntent.regionKeyword,category:userIntent.categoryOrKeyword,minStars:userIntent.minStars}, imageIds });
+  return res.status(result.status || 200).json({ ...result.body, geminiUnderstanding:{attempted:!['catalog_image_match','reference_image_match'].includes(result.body.responseMode),status:['catalog_image_match','reference_image_match'].includes(result.body.responseMode) ? 'not_required' : semanticIntent || result.body.integrations?.gemini ? 'understood' : 'unavailable'}, integrations:{gemini:false,openai:false,wikipedia:false,googleSearch:false,...result.body.integrations,intentGemini:Boolean(semanticIntent?.providersUsed?.includes('gemini')),intentOpenAI:Boolean(semanticIntent?.providersUsed?.includes('openai')),intentClaude:Boolean(semanticIntent?.providersUsed?.includes('claude'))}, resolvedRequirements:{maxPrice:userIntent.maxPrice,minPrice:userIntent.minPrice,minItems:userIntent.minItems,maxItems:userIntent.maxItems,province:userIntent.exactRegion,region:userIntent.regionKeyword,category:userIntent.categoryOrKeyword,minStars:userIntent.minStars}, imageIds });
 }
 
 app.post('/api/ai/chat', handleAIChatRequest);
@@ -1585,6 +1595,17 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       return {status:200,body:{message,text_response:message,productIds,suggested_products:productIds,imageMatchStatus:unique?'exact':'similar',
         understandingStatus:'understood',responseMode:'catalog_image_match',handoffAdmin:false,dynamic_chips:[],wikipediaSources:[],
         integrations:{gemini:false,openai:false,wikipedia:false,googleSearch:false}}};
+    }
+    const referenceMatches = !userIntent.isComplaint && !userIntent.isCSKH ? await matchReferenceImages(validation.products,buffers) : [];
+    if (referenceMatches.length && referenceMatches.every(ids => ids.length > 0)) {
+      const productIds=[...new Set(referenceMatches.flat())].slice(0,3);
+      const names=productIds.map(id=>validation.products.find(product=>product.id===id)).map(product=>validation.language==='en'?product.nameEn||product.name:product.name);
+      const message=validation.language==='en'
+        ? `Your image matches a saved reference photo for products similar to: ${names.join('; ')}. A reference photo alone does not confirm the exact brand or origin. Which product details would you like to check?`
+        : `Ảnh anh/chị gửi trùng với ảnh tham chiếu của các sản phẩm tương tự: ${names.join('; ')}. Ảnh tham chiếu chưa xác nhận đúng thương hiệu hoặc xuất xứ của món trong ảnh. Anh/chị muốn kiểm tra thêm thông tin nào ạ?`;
+      return {status:200,body:{message,text_response:message,productIds,suggested_products:productIds,imageMatchStatus:'similar',
+        understandingStatus:'understood',responseMode:'reference_image_match',handoffAdmin:false,dynamic_chips:[],wikipediaSources:[],
+        integrations:{gemini:false,openai:false,claude:false,wikipedia:false,googleSearch:false}}};
     }
   }
   const unavailable = () => {

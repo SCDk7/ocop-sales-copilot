@@ -16513,9 +16513,10 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
         const matchedDist = distList.find(d => 
             (String(d.distributorCode).toLowerCase() === u.toLowerCase() ||
+             (d.username && String(d.username).toLowerCase() === u.toLowerCase()) ||
              String(d.region || '').toLowerCase() === u.toLowerCase() ||
              (d.hotline && d.hotline.replace(/\D/g, '') === u.replace(/\D/g, ''))) &&
-            (String(d.pin) === p || String(d.encryptionKey) === p || p === '123456')
+            ((d.password && String(d.password) === p) || (d.pin && String(d.pin) === p) || (d.encryptionKey && String(d.encryptionKey) === p))
         );
         if (matchedDist) {
             const sessionUser = {

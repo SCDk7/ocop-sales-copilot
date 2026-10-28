@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const shopping=require('./ai-shopping'),{waitForSignal}=require('./ai-deadline');
-const {matchImageEvidence,createCatalogImageMatcher}=require('./ai-image-match');
+const {matchImageEvidence,createCatalogImageMatcher,createReferenceImageMatcher,getProductImageKnowledge}=require('./ai-image-match');
 const source=fs.readFileSync('server.js','utf8');
 const products=[{id:1,name:'Trà',region:'Hà Nội',price:100000},{id:2,name:'Cà phê',region:'Đắk Lắk',price:200000},{id:3,name:'Cacao',region:'Đắk Lắk',price:300000}];
 
@@ -63,7 +63,7 @@ test('an attached photo bypasses text-only intent and reaches vision with its ca
  assert.equal(status,503);assert.equal(body.productIds.length,0);
 });
 function visionContext(provider){
- const context={console,Date,Buffer,AbortController,AbortSignal,setTimeout,clearTimeout,matchCatalogImages:async()=>[],MAX_AI_MESSAGE_LENGTH:1200,GEMINI_INLINE_IMAGE_LIMIT_BYTES:70000000,
+ const context={console,Date,Buffer,AbortController,AbortSignal,setTimeout,clearTimeout,matchCatalogImages:async()=>[],matchReferenceImages:async()=>[],MAX_AI_MESSAGE_LENGTH:1200,GEMINI_INLINE_IMAGE_LIMIT_BYTES:70000000,
   getAIModelConfiguration:()=>({apiKey:'test',model:'test'}),buildAIServiceUnavailable:()=>({status:503,body:{message:'Unavailable',productIds:[],suggested_products:[],retryable:true,integrations:{gemini:false}}}),
   buildAISystemInstruction:()=> 'Inspect the supplied image',generatePreferredContent:provider,isImageProductLookupRequest:()=>true,normalizeCatalogTerm:shopping.normalize,matchImageEvidence};
  vm.createContext(context);vm.runInContext(source.slice(source.indexOf('async function generateAIResponse('),source.indexOf("app.post('/api/ai/transcribe'")),context);return context;
@@ -95,6 +95,28 @@ test('catalogue image identity detects shared photos and lets unknown or mixed p
  const bytes=fs.readFileSync(product.img);
  assert.deepEqual(await match([product,{...product,id:999}],[bytes]),[[336,999]]);
  assert.deepEqual(await match([product],[bytes,Buffer.from('unrelated picture')]),[[336],[]]);
+});
+
+test('a downloaded reference photo returns a similar product without claiming exact brand or calling an AI service',async()=>{
+ const catalogue=require('./data').PRODUCTS;
+ let chosen;
+ for(const row of getProductImageKnowledge()){
+  const product=catalogue.find(product=>product.id===row.id);
+  const cardHash=require('node:crypto').createHash('sha256').update(fs.readFileSync(product.img)).digest('hex');
+  const image=row.googleImages.find(image=>image.downloadStatus==='ready'&&image.sha256!==cardHash&&['image/jpeg','image/png','image/webp'].includes(image.mimeType));
+  if(image){chosen={product,image};break;}
+ }
+ assert.ok(chosen);
+ const context=visionContext(()=>{throw Error('A cached reference must not call an external AI service');});
+ context.matchCatalogImages=createCatalogImageMatcher(__dirname);
+ context.matchReferenceImages=createReferenceImageMatcher(__dirname);
+ context.getAIModelConfiguration=()=>{throw Error('No API key');};
+ const bytes=fs.readFileSync(chosen.image.localPath);
+ const result=await context.generateAIResponse({language:'vi',products:[chosen.product],messages:[{role:'user',text:'Ảnh này là món gì?'}]},{imageData:{mimeType:chosen.image.mimeType,data:bytes.toString('base64')}});
+ assert.equal(result.status,200);assert.equal(result.body.responseMode,'reference_image_match');
+ assert.equal(result.body.imageMatchStatus,'similar');assert.equal(result.body.integrations.gemini,false);
+ assert.deepEqual(Array.from(result.body.productIds),[chosen.product.id]);
+ assert.match(result.body.message,/chưa xác nhận đúng thương hiệu/);
 });
 test('vision provider failure keeps retry available and asks for label text without inventing recognition',async()=>{
  const context=visionContext(async()=>({response:{ok:false,status:503},data:{error:{message:'Unavailable'}}}));
