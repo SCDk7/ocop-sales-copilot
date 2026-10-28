@@ -1640,9 +1640,9 @@
         if (!user || !user.username) {
             window.pendingBuyNowProductId = productId;
             if (typeof showToast === 'function') {
-                showToast('Vui lòng đăng nhập để tiếp tục mua ngay (như Shopee)!', 'info');
+                showToast('Vui lòng đăng nhập để tiếp tục mua ngay!', 'info');
             } else {
-                alert('Vui lòng đăng nhập để tiếp tục mua ngay (như Shopee)!');
+                alert('Vui lòng đăng nhập để tiếp tục mua ngay!');
             }
             if (typeof openCustomerAuthModal === 'function') {
                 openCustomerAuthModal();
