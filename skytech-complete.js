@@ -1641,6 +1641,26 @@
             statusEl.textContent = 'Vui lòng nhập mã voucher giảm giá!';
             return;
         }
+
+        const unitPrice = currentOrderProduct ? currentOrderProduct.price || 0 : 0;
+        const goodsTotal = unitPrice * currentOrderQty;
+
+        // Ưu tiên xác thực qua Kho 99 Triệu Voucher OCOP
+        if (typeof VoucherPool !== 'undefined' && typeof VoucherPool.validateVoucher === 'function') {
+            const check = VoucherPool.validateVoucher(code, goodsTotal);
+            if (check.valid) {
+                window.orderAppliedVoucher = { code: check.code, discount: check.discount };
+                statusEl.className = 'text-[11px] font-bold text-emerald-700 block';
+                statusEl.textContent = '✅ Áp dụng thành công mã ' + check.code + ': ' + check.label;
+                window.updateOrderCalculations();
+                return;
+            } else if (check.error && check.error.includes('chỉ áp dụng')) {
+                statusEl.className = 'text-[11px] font-bold text-amber-700 block';
+                statusEl.textContent = check.error;
+                return;
+            }
+        }
+
         const vouchers = {
             'OCOP2026': { discount: 50000, label: 'Giảm 50.000 ₫ (Mã tri ân OCOP 2026)' },
             'FREESHIP': { discount: 25000, label: 'Miễn phí vận chuyển toàn quốc (-25.000 ₫)' },
@@ -1655,8 +1675,6 @@
             statusEl.textContent = 'Mã voucher không hợp lệ hoặc đã hết lượt!';
             return;
         }
-        const unitPrice = currentOrderProduct ? currentOrderProduct.price || 0 : 0;
-        const goodsTotal = unitPrice * currentOrderQty;
         if (v.minOrder && goodsTotal < v.minOrder) {
             statusEl.className = 'text-[11px] font-bold text-amber-700 block';
             statusEl.textContent = 'Mã ' + code + ' chỉ áp dụng cho đơn từ ' + v.minOrder.toLocaleString('vi-VN') + ' ₫!';
@@ -4463,7 +4481,24 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         }
     };
 
+    window.refreshHeroVouchers = function (notify = true) {
+        if (typeof VoucherPool === 'undefined') return;
+        const container = document.getElementById('hero-voucher-cards-container');
+        if (!container) return;
+        const newVouchers = VoucherPool.getRandomVouchers(3);
+        VoucherPool.renderVoucherCardsToContainer(container, newVouchers);
+        if (notify && typeof showToast === 'function') {
+            showToast('🎲 Đã cập nhật 3 voucher mới từ kho 99 triệu mã OCOP!', 'info');
+        }
+    };
+
     window.initHeroPromoCountdown = function () {
+        const container = document.getElementById('hero-voucher-cards-container');
+        if (container && typeof VoucherPool !== 'undefined') {
+            const active = VoucherPool.getActiveVouchers();
+            VoucherPool.renderVoucherCardsToContainer(container, active);
+        }
+
         function tick() {
             const now = new Date();
             const end = new Date();
@@ -4479,6 +4514,15 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             if (elH) elH.textContent = hours;
             if (elM) elM.textContent = minutes;
             if (elS) elS.textContent = seconds;
+
+            // Khi hết thời gian flash sale (còn 0s), tự động random thêm voucher mới từ kho 99 triệu!
+            if (diff <= 1000 && !window._heroVoucherRotated) {
+                window._heroVoucherRotated = true;
+                if (typeof window.refreshHeroVouchers === 'function') {
+                    window.refreshHeroVouchers(false);
+                }
+                setTimeout(() => { window._heroVoucherRotated = false; }, 3000);
+            }
         }
         tick();
         setInterval(tick, 1000);

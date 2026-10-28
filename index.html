@@ -3236,18 +3236,24 @@ Khơi Nguồn Di Sản Việt</span>
              </span>
              <span class="text-xs font-black text-slate-900 tracking-tight">SIÊU KHUYẾN MÃI OCOP</span>
          </div>
-         <!-- Countdown Timer -->
-         <div class="flex items-center gap-1 text-[11px] font-extrabold text-rose-700 bg-white/90 border border-rose-200 px-2.5 py-1 rounded-xl shadow-2xs">
-             <i class="fa-regular fa-clock text-rose-600 text-xs"></i>
-             <span class="hidden sm:inline">Còn:</span>
-             <span id="hero-countdown-h" class="bg-rose-600 text-white px-1.5 py-0.5 rounded font-black text-[10.5px]">08</span>:
-             <span id="hero-countdown-m" class="bg-rose-600 text-white px-1.5 py-0.5 rounded font-black text-[10.5px]">45</span>:
-             <span id="hero-countdown-s" class="bg-rose-600 text-white px-1.5 py-0.5 rounded font-black text-[10.5px]">20</span>
-         </div>
-     </div>
+         <!-- Countdown Timer & Săn Mã 99TR -->
+        <div class="flex items-center gap-1.5 flex-wrap justify-end">
+            <button type="button" onclick="refreshHeroVouchers()" title="Săn thêm voucher mới từ kho 99 triệu mã (Tự động lặp lại khi hết 99tr)" class="px-2.5 py-1 rounded-xl bg-white/95 border border-sky-300 hover:bg-sky-100/80 text-sky-900 text-[10.5px] font-black flex items-center gap-1 cursor-pointer transition shadow-2xs active:scale-95">
+                <i class="fa-solid fa-arrows-rotate text-sky-600"></i>
+                <span>Săn Mã 99TR</span>
+            </button>
+            <div class="flex items-center gap-1 text-[11px] font-extrabold text-rose-700 bg-white/90 border border-rose-200 px-2 py-1 rounded-xl shadow-2xs">
+                <i class="fa-regular fa-clock text-rose-600 text-xs"></i>
+                <span class="hidden sm:inline">Còn:</span>
+                <span id="hero-countdown-h" class="bg-rose-600 text-white px-1.5 py-0.5 rounded font-black text-[10.5px]">08</span>:
+                <span id="hero-countdown-m" class="bg-rose-600 text-white px-1.5 py-0.5 rounded font-black text-[10.5px]">45</span>:
+                <span id="hero-countdown-s" class="bg-rose-600 text-white px-1.5 py-0.5 rounded font-black text-[10.5px]">20</span>
+            </div>
+        </div>
+    </div>
 
-     <!-- 3 Thẻ Voucher Siêu Lời Cho Chủ Shop -->
-     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+    <!-- 3 Thẻ Voucher Siêu Lời Cho Chủ Shop (Kho 99 Triệu Mã OCOP) -->
+    <div id="hero-voucher-cards-container" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
          <!-- Voucher 1 -->
          <div class="bg-white rounded-2xl p-2.5 border border-sky-200 shadow-2xs flex flex-col justify-between text-left hover:border-sky-400 transition">
              <div>
@@ -17817,7 +17823,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <link rel="stylesheet" href="cart-ui.css?v=0a3faaa17530">
 <link rel="stylesheet" href="account-center.css?v=cf9634a1cf0b">
 <link rel="stylesheet" href="admin-management.css?v=5ca46f2073d2">
-<script src="skytech-complete.js?v=4c45bf67a9de"></script>
+<script src="voucher-pool.js?v=d551bfcd9820"></script>
+<script src="skytech-complete.js?v=8d7b86c55b94"></script>
 <script src="cart-ui.js?v=92da91b0a573"></script>
 <script src="account-center.js?v=3349fb0122df"></script>
 <script src="storefront-ui.js?v=1287160ea074"></script>
