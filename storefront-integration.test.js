@@ -7,6 +7,34 @@ const os = require('node:os');
 const path = require('node:path');
 const {syncClientAssets} = require('./scripts/sync-client-assets.cjs');
 
+test('GitHub project Pages loads local assets from the repository directory while Render keeps root routes', () => {
+    for (const file of ['index.html', 'index_2.html']) {
+        const html=fs.readFileSync(file,'utf8');
+        const script=html.match(/<base href="\/">\s*<script>([\s\S]*?)<\/script>/)[1];
+        for(const [href,expected] of [
+            ['https://scdk7.github.io/ocop-sales-copilot/','https://scdk7.github.io/ocop-sales-copilot/'],
+            ['https://scdk7.github.io/ocop-sales-copilot/index_2.html','https://scdk7.github.io/ocop-sales-copilot/'],
+            ['https://ocop-sales-copilot.onrender.com/products/1','https://ocop-sales-copilot.onrender.com/'],
+            ['file:///D:/ocop-sales-copilot-main/index.html','file:///D:/ocop-sales-copilot-main/']
+        ]) {
+            const location=new URL(href),base={href:'/'};
+            vm.runInNewContext(script,{location,URL,document:{querySelector:()=>base}});
+            const resolved=new URL(base.href,location).href;
+            assert.equal(resolved,expected);
+            if(location.hostname.endsWith('.github.io')){
+                for(const match of html.matchAll(/<(?:script|link)\b[^>]*(?:src|href)="([^"?#]+\.(?:css|js))/g)){
+                    if(/^[a-z]+:|^\/\//i.test(match[1]))continue;
+                    assert.ok(new URL(match[1],resolved).pathname.startsWith('/ocop-sales-copilot/'));
+                }
+            }
+        }
+        const start=html.indexOf('        function getAIEndpoint('),end=html.indexOf('        const maxAIChatImages',start);
+        const context={URL,document:{querySelector:()=>({content:''})},window:{location:new URL('https://scdk7.github.io/ocop-sales-copilot/')}};
+        vm.createContext(context);vm.runInContext(html.slice(start,end),context);
+        assert.equal(context.getAIEndpoint('/api/ai/chat'),'https://ocop-sales-copilot.onrender.com/api/ai/chat');
+    }
+});
+
 for (const page of ['index.html', 'index_2.html']) {
     test(page + ' intro and product navigation never change a cart or dialog header', () => {
         const html=fs.readFileSync(page,'utf8');

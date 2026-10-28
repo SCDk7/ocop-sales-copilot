@@ -5,9 +5,12 @@
  <link rel="icon" type="image/svg+xml" href="assets/ocop-logo.svg">
  <base href="/">
  <script>
-        // Local file preview needs this folder; HTTP routes use the server root.
+        // GitHub project Pages serves assets inside /repository/, unlike Render.
         if (location.protocol === 'file:') {
             document.querySelector('base').href = new URL('.', location.href).href;
+        } else if (location.hostname.endsWith('.github.io')) {
+            const repository = location.pathname.split('/').filter(Boolean)[0];
+            document.querySelector('base').href = repository ? '/' + repository + '/' : '/';
         }
     </script>
     <script>
@@ -8215,6 +8218,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const configuredApiBase = document.querySelector('meta[name="ocop-api-base"]')?.content.trim();
             if (configuredApiBase) return new URL(path, `${configuredApiBase.replace(/\/+$/, '')}/`).toString();
             const location = window.location;
+            if (location.hostname.endsWith('.github.io')) return `https://ocop-sales-copilot.onrender.com${path}`;
             const localPreview = ['localhost','127.0.0.1','[::1]'].includes(location.hostname)
                 && (Number(location.port) >= 5500 && Number(location.port) <= 5599 || ['3001','5173','8080'].includes(location.port));
             if (location.protocol === 'file:' || localPreview) return `http://localhost:3000${path}`;
