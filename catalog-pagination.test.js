@@ -45,7 +45,7 @@ test('filtered results keep pagination visible and can return to the full catalo
         }
         const filtered = render(4);
         assert.match(filtered, /aria-label="Phân trang danh mục đặc sản OCOP"/);
-        assert.match(filtered, /phù hợp bộ lọc/);
+        assert.doesNotMatch(filtered, /Hiển thị <strong>|Trang <strong/);
         assert.match(filtered, /onclick="resetFilters\(\); scrollToProducts\(\);"/);
         assert.match(filtered, /Xem tất cả 252 sản phẩm/);
         assert.match(filtered, /disabled.*aria-label="Trang sau"/);

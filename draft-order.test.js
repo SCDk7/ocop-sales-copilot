@@ -32,6 +32,28 @@ function fixture(fetch){
 }
 const draft=status=>({id:'OCOP-DRAFT-test',status,lines:[{name:'Trà',quantity:1,unitPrice:100000}],subtotal:100000,total:null,receiptToken:'a'.repeat(64),inventoryVerified:false});
 
+test('demo payment preview changes QR with method and amount, while COD has no QR',()=>{
+ let calls=0,method='vietqr';
+ const {context,nodes,values,all}=fixture(()=>{calls++;});
+ const before=JSON.stringify([...values]);
+ nodes['checkout-payment-preview']=context.document.createElement('section');
+ nodes.draftForm.querySelector=()=>({value:method});
+ context.OCOPDemoPayment=require('./checkout-payment');
+ const preview=()=>nodes['checkout-payment-preview'].children[0];
+ const qr=()=>all(preview()).find(node=>node.tag==='img');
+ context.updatePaymentPreview(100000);
+ assert.equal(preview().dataset.method,'vietqr');
+ const first=qr().src;assert.match(first,/^data:image\/gif;base64,/);
+ method='momo';context.updatePaymentPreview(100000);
+ assert.equal(preview().dataset.method,'momo');assert.notEqual(qr().src,first);
+ const momo=qr().src;context.updatePaymentPreview(200000);assert.notEqual(qr().src,momo);
+ method='cod';context.updatePaymentPreview(200000);assert.equal(qr(),undefined);
+ method='vietqr';context.updatePaymentPreview(200000);assert.ok(qr());
+ assert.equal(calls,0);assert.equal(JSON.stringify([...values]),before);
+ const payload=JSON.parse(context.OCOPDemoPayment.demoPayload('momo',200000));
+ assert.deepEqual(payload,{kind:'OCOP_DEMO',method:'momo',amount:200000,currency:'VND',orderId:'PREVIEW'});
+});
+
 test('a rejected checkout preserves the cart and never fabricates a successful order',async()=>{
  for(const failure of [async()=>{throw new TypeError('Failed to fetch')},async()=>({ok:false,status:409,json:async()=>({error:'Hết hàng'})})]){
   const {nodes,values}=fixture(failure);

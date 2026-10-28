@@ -1,4 +1,4 @@
-<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="ocop-api-base" content=""><title>OCOP · Đặt hàng trực tuyến</title><link rel="stylesheet" href="sales-pages.css?v=f860315207d3"><link rel="icon" type="image/svg+xml" href="assets/ocop-logo.svg"></head><body class="checkout-page"><main>
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="ocop-api-base" content=""><title>OCOP · Đặt hàng trực tuyến</title><link rel="stylesheet" href="sales-pages.css?v=25eb4bb6504e"><link rel="icon" type="image/svg+xml" href="assets/ocop-logo.svg"></head><body class="checkout-page"><main>
 <header><a href="index.html?view=shop" data-vi="← Quay lại cửa hàng" data-en="← Back to shop"></a><button id="lang" title="Bấm để chuyển sang English">🌐 Tiếng Việt</button></header>
 <h1 data-vi="🚚 Đặt Hàng Trực Tuyến OCOP" data-en="🚚 Place Your OCOP Order"></h1>
 <p data-vi="Kiểm tra thông tin sản phẩm và điền địa chỉ nhận hàng bên dưới. Nhà bán hàng chính hãng OCOP sẽ liên hệ xác nhận và giao hàng tận nơi cho quý khách." data-en="Review your products and enter your delivery details below. The official OCOP merchant will confirm and deliver to your doorstep."></p>
@@ -50,26 +50,27 @@
 <label><span data-vi="Địa chỉ nhận hàng chi tiết *" data-en="Delivery address *"></span><textarea name="address" autocomplete="street-address" minlength="8" maxlength="500" placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành..." required></textarea></label>
 
 <!-- Hình Thức Thanh Toán -->
-<div style="margin: 18px 0;">
-<label style="display:block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: #0c4a6e;" data-vi="Hình thức thanh toán:" data-en="Payment Method:">Hình thức thanh toán:</label>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
-<label style="display:flex; align-items:center; gap: 8px; padding: 12px; background: #f0f9ff; border: 1.5px solid #7dd3fc; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px;">
-<input type="radio" name="payment_method" value="vietqr" checked style="width:18px; height:18px; accent-color: #075985;">
-<span>🏦 CK BIDV (VietQR)</span>
+<fieldset id="checkout-payment-methods">
+<legend data-vi="Hình thức thanh toán (mô phỏng dự án)" data-en="Payment method (project demo)"></legend>
+<div class="checkout-payment-options">
+<label>
+<input type="radio" name="payment_method" value="vietqr" checked>
+<span data-vi="🏦 BIDV / VietQR" data-en="🏦 BIDV / VietQR"></span>
 </label>
-<label style="display:flex; align-items:center; gap: 8px; padding: 12px; background: #f0f9ff; border: 1.5px solid #7dd3fc; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px;">
-<input type="radio" name="payment_method" value="momo" style="width:18px; height:18px; accent-color: #0284c7;">
-<span>📱 Ví MoMo (0971280030)</span>
+<label>
+<input type="radio" name="payment_method" value="momo">
+<span data-vi="📱 Ví MoMo" data-en="📱 MoMo wallet"></span>
 </label>
-<label style="display:flex; align-items:center; gap: 8px; padding: 12px; background: #f0f9ff; border: 1.5px solid #7dd3fc; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px;">
-<input type="radio" name="payment_method" value="cod" style="width:18px; height:18px; accent-color: #075985;">
-<span>🚚 Ship COD Tận Nơi</span>
+<label>
+<input type="radio" name="payment_method" value="cod">
+<span data-vi="🚚 Thanh toán khi nhận hàng" data-en="🚚 Cash on delivery"></span>
 </label>
 </div>
-</div>
+<section id="checkout-payment-preview" aria-live="polite" aria-label="Thông tin phương thức thanh toán"></section>
+</fieldset>
 
 <label class="check"><input name="confirmed" type="checkbox" required><span data-vi="Tôi xác nhận thông tin nhận hàng chính xác và đồng ý đặt đơn hàng này." data-en="I confirm these delivery details and agree to place this order."></span></label>
 <button type="submit" id="submit" class="primary" disabled data-vi="🚚 Xác nhận đặt hàng ngay" data-en="🚚 Confirm order now"></button></form>
 <p id="status" role="status"></p><section id="result" hidden class="card"></section>
-</main><script src="customer-session.js?v=3f6c651f884f" data-preserve-guest></script><script src="data.js?v=8c9ab2ce36af"></script><script src="sales-pages.js?v=76adec2aaecf"></script><script src="voucher-pool.js?v=ab7512585146"></script><script src="draft-order.js?v=e22acc51d372"></script><script src="ui-branding.js?v=66dc84bfc24e"></script>
+</main><script src="customer-session.js?v=3f6c651f884f" data-preserve-guest></script><script src="data.js?v=8c9ab2ce36af"></script><script src="sales-pages.js?v=76adec2aaecf"></script><script src="voucher-pool.js?v=ab7512585146"></script><script src="assets/vendor/qrcode/qrcode.js?v=79ec86f82856"></script><script src="checkout-payment.js?v=f3618673049b"></script><script src="draft-order.js?v=9d024f9c079c"></script><script src="ui-branding.js?v=66dc84bfc24e"></script>
 </body></html>

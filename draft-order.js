@@ -45,6 +45,7 @@ function updateSummary() {
     const finalTotal = Math.max(0, subtotal - discount);
     const totalEl = document.getElementById('order-total-amount');
     if (totalEl) totalEl.textContent = money(finalTotal);
+    updatePaymentPreview(finalTotal);
 }
 
 window.applyDraftVoucher = function() {
@@ -296,94 +297,18 @@ function orderActions(draft) {
 
 
 function renderVietQRBox(draft, payAmount) {
-    const isVietQR = /(?:vietqr|bidv|chuyen khoan|bank transfer)/i.test(draft.paymentMethod || '');
-    const isMomo = /(?:momo)/i.test(draft.paymentMethod || '');
-    if (!isVietQR && !isMomo) return null;
-
-    const box = document.createElement('div');
-    box.className = 'payment-qr-card';
-    box.style.cssText = 'margin: 16px 0; padding: 16px; border-radius: 16px; text-align: left; background: #f0fdf4; border: 2px solid #86efac; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12);';
-
-    if (isVietQR) {
-        const qrUrl = 'https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=' + payAmount + '&addInfo=' + encodeURIComponent(draft.id) + '&accountName=OCOP%20VIET%20NAM';
-        box.innerHTML = `
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; padding-bottom:8px; border-bottom:1.5px dashed #86efac;">
-                <span style="font-size:22px;">🏦</span>
-                <div>
-                    <h3 style="margin:0; font-size:14px; font-weight:800; color:#065f46;">Mã VietQR BIDV Thanh Toán Đơn Hàng</h3>
-                    <p style="margin:2px 0 0; font-size:11px; color:#047857;">Mở App Ngân hàng bất kỳ hoặc Ví điện tử để quét mã tự động</p>
-                </div>
-            </div>
-            <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:center;">
-                <div style="text-align:center; background:#ffffff; padding:8px; border-radius:14px; border:1.5px solid #6ee7b7; box-shadow:0 2px 8px rgba(0,0,0,0.06); width:fit-content;">
-                    <img src="${qrUrl}" alt="Mã VietQR BIDV #${draft.id}" style="width:190px; height:190px; object-fit:contain; border-radius:8px; display:block; margin:0 auto;">
-                    <span style="display:block; font-size:10px; font-weight:700; color:#047857; margin-top:4px;">VietQR chuẩn Napas247</span>
-                </div>
-                <div style="flex:1; min-width:210px; font-size:12px; line-height:1.6; color:#1e293b; display:flex; flex-direction:column; gap:5px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0; border-bottom:1px solid #dcfce7;">
-                        <span style="color:#64748b;">Ngân hàng:</span>
-                        <strong style="color:#0f172a;">BIDV (TMCP Đầu tư &amp; Phát triển VN)</strong>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0; border-bottom:1px solid #dcfce7;">
-                        <span style="color:#64748b;">Số tài khoản:</span>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <strong style="font-family:monospace; font-size:13.5px; color:#0284c7;">8808661371</strong>
-                            <button type="button" onclick="navigator.clipboard?.writeText('8808661371'); alert('Đã sao chép số tài khoản BIDV: 8808661371');" style="padding:2px 7px; border-radius:6px; background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; font-size:10px; font-weight:700; cursor:pointer;">📋 Copy</button>
-                        </div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0; border-bottom:1px solid #dcfce7;">
-                        <span style="color:#64748b;">Chủ tài khoản:</span>
-                        <strong style="color:#0f172a; text-transform:uppercase;">OCOP VIET NAM</strong>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0; border-bottom:1px solid #dcfce7;">
-                        <span style="color:#64748b;">Số tiền:</span>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <strong style="color:#e11d48; font-size:14.5px; font-weight:900;">${money(payAmount)}</strong>
-                            <button type="button" onclick="navigator.clipboard?.writeText('${payAmount}'); alert('Đã sao chép số tiền: ${payAmount} đ');" style="padding:2px 7px; border-radius:6px; background:#ffe4e6; color:#be123c; border:1px solid #fecdd3; font-size:10px; font-weight:700; cursor:pointer;">📋 Copy</button>
-                        </div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
-                        <span style="color:#64748b;">Nội dung CK:</span>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <strong style="font-family:monospace; font-size:12.5px; color:#047857; background:#dcfce7; padding:1px 5px; border-radius:4px;">${draft.id}</strong>
-                            <button type="button" onclick="navigator.clipboard?.writeText('${draft.id}'); alert('Đã sao chép nội dung: ${draft.id}');" style="padding:2px 7px; border-radius:6px; background:#dcfce7; color:#047857; border:1px solid #86efac; font-size:10px; font-weight:700; cursor:pointer;">📋 Copy</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="margin-top:10px; padding:8px 10px; background:#ecfdf5; border-radius:8px; font-size:11px; color:#065f46; line-height:1.4;">
-                💡 <strong>Lưu ý:</strong> Quý khách quét mã QR trên bằng ứng dụng ngân hàng để thanh toán tự động, chính xác số tiền và mã đơn. Người bán sẽ đối soát và tiến hành đóng gói xuất kho ngay!
-            </div>
-        `;
-    } else if (isMomo) {
-        box.innerHTML = `
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:1.5px dashed #f472b6;">
-                <span style="font-size:22px;">📱</span>
-                <div>
-                    <h3 style="margin:0; font-size:14px; font-weight:800; color:#9d174d;">Thanh toán qua Ví MoMo</h3>
-                    <p style="margin:2px 0 0; font-size:11px; color:#be185d;">Chuyển tiền MoMo với nội dung mã đơn hàng</p>
-                </div>
-            </div>
-            <div style="font-size:12px; line-height:1.6; color:#1e293b; display:flex; flex-direction:column; gap:5px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="color:#64748b;">SĐT nhận MoMo:</span>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <strong style="font-family:monospace; font-size:13.5px; color:#be185d;">0971280030</strong>
-                        <button type="button" onclick="navigator.clipboard?.writeText('0971280030'); alert('Đã sao chép SĐT MoMo: 0971280030');" style="padding:2px 7px; border-radius:6px; background:#fce7f3; color:#be185d; border:1px solid #fbcfe8; font-size:10px; font-weight:700; cursor:pointer;">📋 Copy SĐT</button>
-                    </div>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="color:#64748b;">Số tiền:</span>
-                    <strong style="color:#e11d48; font-size:14.5px; font-weight:900;">${money(payAmount)}</strong>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="color:#64748b;">Lời nhắn:</span>
-                    <strong style="font-family:monospace; font-size:12.5px; color:#be185d; background:#fce7f3; padding:1px 5px; border-radius:4px;">${draft.id}</strong>
-                </div>
-            </div>
-        `;
-    }
-    return box;
+    return window.OCOPDemoPayment?.render({document,method:draft.paymentMethod,amount:payAmount,orderId:draft.id,language:salesPage.language}) || null;
+}
+let paymentPreviewSignature='';
+function updatePaymentPreview(amount) {
+    const host=document.getElementById('checkout-payment-preview');
+    if(!host || !window.OCOPDemoPayment)return;
+    const method=form.querySelector('input[name="payment_method"]:checked')?.value || 'vietqr';
+    const signature=[method,amount,salesPage.language].join(':');
+    if(signature===paymentPreviewSignature)return;
+    paymentPreviewSignature=signature;
+    const card=window.OCOPDemoPayment.render({document,method,amount,language:salesPage.language});
+    host.replaceChildren(...(card?[card]:[]));
 }
 
 function syncOrderSummary(draft) {
@@ -536,7 +461,7 @@ form.onsubmit = async event => {
     }
 
     const payMethodVal = data.get('payment_method');
-    const paymentMethodLabel = payMethodVal === 'vietqr' ? 'Chuyển khoản BIDV (VietQR)' : (payMethodVal === 'momo' ? 'Ví MoMo (0971280030)' : 'Ship COD Tận Nơi');
+    const paymentMethodLabel = payMethodVal === 'vietqr' ? 'BIDV / VietQR (mô phỏng)' : (payMethodVal === 'momo' ? 'Ví MoMo (mô phỏng)' : 'Ship COD Tận Nơi');
     try {
         const response = await fetch(salesPage.api('/api/ai/draft-orders'), {
             method: 'POST',

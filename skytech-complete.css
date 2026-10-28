@@ -3345,6 +3345,16 @@ body.catalog-browsing { padding-top: calc(var(--storefront-nav-height, 60px) + 2
 #catalog-category-scroll::-webkit-scrollbar { display:block !important; height:9px !important; }
 #catalog-category-scroll::-webkit-scrollbar-thumb { background:#4a91c5; border-radius:8px; }
 #catalog-category-scroll::-webkit-scrollbar-track { background:#e0f2fe; }
+/* One sidebar surface; stick the whole column instead of offsetting its first section. */
+body #catalog-sidebar { background:#fff !important; border:1px solid #bae6fd !important; border-radius:16px !important; padding:0 14px; align-self:start !important; overflow-y:auto !important; scrollbar-width:thin; scrollbar-color:#5a98c4 #e0f2fe; }
+body #catalog-sidebar > div { position:static !important; max-height:none !important; overflow:visible !important; padding:0 !important; }
+body #catalog-sidebar > div > div { background:transparent !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:14px 0 !important; }
+body #catalog-sidebar > div > div + div { border-top:1px solid #dceaf3 !important; }
+body #catalog-sidebar .glass-panel { background:transparent !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; }
+@media(min-width:1024px) {
+    body #products-section, body #catalog-layout-wrapper { overflow:visible !important; }
+    body #catalog-sidebar { position:sticky !important; top:calc(var(--storefront-nav-height,60px) + 12px) !important; max-height:calc(100dvh - var(--storefront-nav-height,60px) - 24px); }
+}
 @media(max-width:767px) { #catalog-category-scroll { max-width:calc(100vw - 24px); scrollbar-width:none !important; } #catalog-category-scroll::-webkit-scrollbar { display:none !important; height:0 !important; } }
 #shop-hero h2 { font-size: clamp(24px, 3.3vw, 42px); line-height: 1.2; overflow-wrap: anywhere; }
 #shop-hero #i18n-hero-title1 { white-space: normal !important; }
