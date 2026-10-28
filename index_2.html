@@ -8367,7 +8367,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
         async function uploadPendingAIChatImages(images) {
             const newImages = images.filter(image => !image.id);
-            for (const image of newImages) {
+            if (!newImages.length) return;
+            await Promise.all(newImages.map(async image => {
                 const response = await fetch(getAIEndpoint('/api/ai/images'), {
                     method: 'POST',
                     headers: { 'Content-Type': image.file.type },
@@ -8395,7 +8396,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     throw new Error(respErrMap[currentLanguage] || respErrMap.vi);
                 }
                 image.id = result.image.id;
-            }
+            }));
         }
         const aiChatWindow = document.getElementById('ai-chat-window');
         const aiChatImageInput = document.getElementById('ai-chat-image-input');
@@ -9971,16 +9972,17 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             try {
                 await uploadPendingAIChatImages(messageImages);
                 if(!sameCustomer())return;
-                // Persist a small preview; blob URLs stop working after a reload.
-                for(const image of messageImages){
-                    try {image.sentPreviewElement.src=await createSearchImageDataUrl(image.file,320);}catch(_){}
-                    if(!sameCustomer())return;
-                }
+                // Persist a small preview in background without delaying request
+                messageImages.forEach(image => {
+                    createSearchImageDataUrl(image.file, 320).then(url => {
+                        if (image.sentPreviewElement) image.sentPreviewElement.src = url;
+                    }).catch(() => {});
+                });
                 let result = null;
                 try {
                     const response = await fetch(getAIEndpoint('/api/ai/chat'), {
                         method:'POST',headers:{'Content-Type':'application/json'},
-                        signal: AbortSignal.timeout(35000),
+                        signal: AbortSignal.timeout(5000),
                         body:JSON.stringify({sessionId:(window.ocopMetricsSessionId ||= (()=>{try{let id=sessionStorage.getItem("ocop-consultation-session");if(!id){id=crypto.randomUUID();sessionStorage.setItem("ocop-consultation-session",id);}return id;}catch{return crypto.randomUUID();}})()),language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id),imageEvidence:messageImages.map(img=>img.visualEvidence).find(Boolean)||null})
                     });
                     if (response.ok) {

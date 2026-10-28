@@ -190,7 +190,8 @@ let aiWebsiteCatalog = { products: defaultProducts, updatedAt: new Date().toISOS
 app.use(['/api/ai/chat','/api/chat','/chat','/api/ai/search-image','/api/ai/audio-chat'],createResearchMiddleware({
   lookup:lookupGoogle,
   getConfiguration:()=>{const config=getAIModelConfiguration();return {...config,model:process.env.GEMINI_SEARCH_MODEL||config.model};},
-  getProducts:()=>defaultProducts
+  getProducts:()=>defaultProducts,
+  timeoutMs: 1500
 }));
 app.get('/api/ai/metrics', (req,res)=>{
   res.setHeader('Cache-Control','no-store');
@@ -1301,9 +1302,9 @@ async function handleAIChatRequest(req, res) {
   };
   let semanticIntent = null;
   const salesToolRequest = /ton kho|con hang|con bao nhieu|het hang|kiem tra kho|stock|inventory|availability|in stock|tao don nhap|create.*draft/i.test(AIShopping.normalize(lastMessage.text));
-  const replyBudgetMs=Math.max(5000,Math.min(30000,Number(process.env.AI_CHAT_TIMEOUT_MS)||18000));
-  const replyDeadline = attachedImages.length ? null : Date.now() + replyBudgetMs;
-  const replySignal = replyDeadline ? AbortSignal.timeout(replyBudgetMs) : undefined;
+  const replyBudgetMs=Math.max(1500,Math.min(8000,Number(process.env.AI_CHAT_TIMEOUT_MS)||3500));
+  const replyDeadline = attachedImages.length ? Date.now() + 4500 : Date.now() + replyBudgetMs;
+  const replySignal = replyDeadline ? AbortSignal.timeout(attachedImages.length ? 4500 : replyBudgetMs) : undefined;
   const directCatalogRequest = !attachedImages.length && !localIntent.isOrderGuide && !localIntent.isComplaint && !localIntent.isCSKH && !localIntent.isShipping && !localIntent.isUsage && !localIntent.isOcopKnowledge && !(localIntent.isStoreLookup && !localIntent.exactRegion && !localIntent.categoryOrKeyword)
     && Boolean(localIntent.isCombo || localIntent.isGift || localIntent.pricePreference || localIntent.categoryOrKeyword || localIntent.exactRegion || localIntent.regionKeyword || localIntent.maxPrice || localIntent.minStars);
   if(directCatalogRequest && !salesToolRequest) {
@@ -1330,7 +1331,7 @@ async function handleAIChatRequest(req, res) {
         promptIntent.hasVerifiedCombo=true;
       }
       if(!promptIntent.hasVerifiedCombo || promptIntent.comboPlans.length){
-        replyWikiSources=await waitForSignal(wikiPrefetch,AbortSignal.any([replySignal,AbortSignal.timeout(1200)])).catch(()=>[]);
+        replyWikiSources=await waitForSignal(wikiPrefetch,AbortSignal.any([replySignal,AbortSignal.timeout(600)])).catch(()=>[]);
         replyWikiSources=replyWikiSources.filter(source=>prefetchPlan.topics.some(topic=>relevantWikiSource(source,topic)) && !/chien dich|bieu tinh|battle|war|vu an|dai an|vtv|truyen hinh/.test(normalizeCatalogTerm(source.title)));
       }
       const remaining=Math.max(1,replyDeadline-Date.now());
