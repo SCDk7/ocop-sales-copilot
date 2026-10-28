@@ -905,6 +905,7 @@
             </div>
         `;
 
+        window.switchOrderPaymentMethod?.('bidv');
         modal.classList.remove('hidden');
         modal.style.setProperty('display', 'flex', 'important');
         modal.style.setProperty('z-index', '2147483647', 'important');
@@ -1525,6 +1526,46 @@
         if (qrImg) {
             qrImg.src = 'https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=' + grandTotal + '&addInfo=OCOP%208829';
         }
+        const momoQr = document.getElementById('order-momo-qr');
+        if (momoQr) {
+            momoQr.src = 'https://api.vietqr.io/image/970422-0971280030-compact2.png?amount=' + grandTotal + '&addInfo=OCOP%208829';
+        }
+    };
+
+    window.switchOrderPaymentMethod = function (method) {
+        const validMethods = ['bidv', 'momo', 'cod'];
+        const active = validMethods.includes(method) ? method : 'bidv';
+
+        const radio = document.querySelector('input[name="order-payment"][value="' + active + '"]');
+        if (radio) radio.checked = true;
+
+        const labelBidv = document.getElementById('payment-label-bidv');
+        const labelMomo = document.getElementById('payment-label-momo');
+        const labelCod = document.getElementById('payment-label-cod');
+
+        if (labelBidv) {
+            labelBidv.className = active === 'bidv'
+                ? 'flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/80 cursor-pointer font-black text-slate-900 shadow-sm transition'
+                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-sky-400 transition';
+        }
+        if (labelMomo) {
+            labelMomo.className = active === 'momo'
+                ? 'flex items-center gap-2 p-2.5 rounded-xl border-2 border-pink-500 bg-pink-50/80 cursor-pointer font-black text-slate-900 shadow-sm transition'
+                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-pink-400 transition';
+        }
+        if (labelCod) {
+            labelCod.className = active === 'cod'
+                ? 'flex items-center gap-2 p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50/80 cursor-pointer font-black text-slate-900 shadow-sm transition'
+                : 'flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-emerald-400 transition';
+        }
+
+        const panelBidv = document.getElementById('panel-payment-bidv');
+        const panelMomo = document.getElementById('panel-payment-momo');
+        const panelCod = document.getElementById('panel-payment-cod');
+
+        if (panelBidv) panelBidv.classList.toggle('hidden', active !== 'bidv');
+        if (panelMomo) panelMomo.classList.toggle('hidden', active !== 'momo');
+        if (panelCod) panelCod.classList.toggle('hidden', active !== 'cod');
     };
 
     window.applyOrderVoucher = function() {
@@ -1644,7 +1685,10 @@
         }
 
         const paymentInput = document.querySelector('input[name="order-payment"]:checked');
-        const paymentMethod = paymentInput ? (paymentInput.value === 'vietqr' ? 'Chuyển khoản QR ngân hàng' : 'Thanh toán khi nhận hàng (COD)') : 'COD';
+        const payVal = paymentInput ? paymentInput.value : 'bidv';
+        const paymentMethod = payVal === 'bidv'
+            ? 'Chuyển khoản BIDV (VietQR)'
+            : (payVal === 'momo' ? 'Ví MoMo (0971280030)' : 'Thanh toán khi nhận hàng (Ship COD)');
 
         const request = {confirmed: true, items: [{productId: currentOrderProduct.id, quantity: currentOrderQty}],
             customer: {name: customerName, phone: customerPhone, address: customerAddress, note: customerNote, paymentMethod}};

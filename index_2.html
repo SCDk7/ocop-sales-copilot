@@ -4085,7 +4085,7 @@
  </main>
  <!-- 5. WIDGET CHATBOT AI ANTIGRAVITY (BÊN PHẢI, DƯỚI ADMIN) -->
  <div id="ai-chat-widget" hidden style="display: none;" class="hidden fixed bottom-3 sm:bottom-6 right-3 sm:right-6 left-auto z-[99999] flex flex-col items-end pointer-events-auto">
- <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-[420px] h-[540px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-emerald-100 flex flex-col overflow-hidden mb-3 animate-pop-in relative">
+ <div id="ai-chat-window" class="hidden w-[calc(100vw-1.5rem)] sm:w-[365px] h-[480px] bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-emerald-100 flex flex-col overflow-hidden mb-3 animate-pop-in relative">
  <div id="ai-chat-header" class="chatbox-drag-handle bg-gradient-to-r from-ocopGreen via-ocopGreenLight to-ocopGreenDark text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-ocopGold/40 shadow-md select-none">
  <div class="flex items-center space-x-3 pointer-events-none">
  <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
@@ -5195,15 +5195,15 @@
  <div class="space-y-2.5 pt-1">
  <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">Chọn hình thức thanh toán:</label>
  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
- <label id="payment-label-bidv" class="flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition">
+ <label id="payment-label-bidv" onclick="switchOrderPaymentMethod('bidv')" class="flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition">
  <input type="radio" name="order-payment" value="bidv" checked onchange="switchOrderPaymentMethod('bidv')" class="accent-sky-600">
  <span class="truncate">🏦 CK BIDV (VietQR)</span>
  </label>
- <label id="payment-label-momo" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-pink-400 transition">
+ <label id="payment-label-momo" onclick="switchOrderPaymentMethod('momo')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-pink-400 transition">
  <input type="radio" name="order-payment" value="momo" onchange="switchOrderPaymentMethod('momo')" class="accent-pink-600">
  <span class="truncate">📱 Ví MoMo (0971280030)</span>
  </label>
- <label id="payment-label-cod" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-sky-400 transition">
+ <label id="payment-label-cod" onclick="switchOrderPaymentMethod('cod')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-emerald-400 transition">
  <input type="radio" name="order-payment" value="cod" onchange="switchOrderPaymentMethod('cod')" class="accent-sky-600">
  <span class="truncate">🚚 Ship COD Tận Nơi</span>
  </label>
@@ -8397,8 +8397,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 chatWindow.style.top = '';
                 chatWindow.style.right = '1.5rem';
                 chatWindow.style.bottom = '5.5rem';
-                chatWindow.style.width = '420px';
-                chatWindow.style.height = '540px';
+                chatWindow.style.width = '365px';
+                chatWindow.style.height = '480px';
                 savedChatPosition = null;
             });
             // Gắn sự kiện trực tiếp cho nút đóng "X"
@@ -16779,7 +16779,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <link rel="stylesheet" href="account-center.css?v=cf9634a1cf0b">
 <link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=ab7512585146"></script>
-<script src="skytech-complete.js?v=93f19a27cf68"></script>
+<script src="skytech-complete.js?v=7cc297f3bb9b"></script>
 <script src="cart-ui.js?v=7abd7cd57658"></script>
 <script src="account-center.js?v=3349fb0122df"></script>
 <script src="storefront-ui.js?v=60cf325c6a40"></script>
