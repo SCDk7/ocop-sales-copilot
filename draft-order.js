@@ -433,17 +433,46 @@ function showDraft(draft) {
         result.append(p);
     });
 
+    const vMap = { 'OCOP2026': 50000, 'FREESHIP': 25000, 'GIAM20K': 20000, 'GIAM10K': 10000, 'GIAM50K': 50000, 'GIAM100K': 100000, 'OCOP50K': 50000, 'COMBOVIP': 100000 };
+    let discAmt = 0;
+    if (typeof appliedVoucher !== 'undefined' && appliedVoucher && appliedVoucher.discount) {
+        discAmt = appliedVoucher.discount;
+    } else if (typeof VoucherPool !== 'undefined' && typeof VoucherPool.validateVoucher === 'function' && draft.voucherCode) {
+        const check = VoucherPool.validateVoucher(draft.voucherCode, draft.subtotal);
+        if (check && check.valid) discAmt = check.discount;
+    }
+    if (!discAmt && draft.voucherCode && vMap[draft.voucherCode]) {
+        discAmt = vMap[draft.voucherCode];
+    }
+
     if (draft.voucherCode) {
         const discP = document.createElement('p');
-        discP.textContent = salesPage.text('Mã ưu đãi đã gửi: ', 'Requested voucher: ') + draft.voucherCode + salesPage.text(' (chờ người bán xác nhận)', ' (awaiting seller confirmation)');
+        const discText = discAmt > 0 ? ' (-' + money(discAmt) + ')' : '';
+        discP.textContent = salesPage.text('Mã ưu đãi áp dụng: ', 'Applied voucher: ') + draft.voucherCode + discText + salesPage.text(' (Đã áp dụng trực tiếp)', ' (Applied directly)');
         discP.style.color = '#059669';
         discP.style.fontWeight = 'bold';
         result.append(discP);
     }
 
+    const payAmount = draft.total != null ? draft.total : Math.max(0, draft.subtotal - discAmt);
     const total = document.createElement('p');
-    total.textContent = salesPage.text('Tiền hàng tạm tính (chưa gồm phí giao hàng): ', 'Product subtotal (excluding shipping): ') + money(draft.subtotal);
+    total.textContent = salesPage.text('Tiền hàng tạm tính: ', 'Product subtotal: ') + money(draft.subtotal);
     result.append(total);
+
+    if (discAmt > 0) {
+        const discRow = document.createElement('p');
+        discRow.textContent = salesPage.text('Giảm giá ưu đãi: -', 'Voucher discount: -') + money(discAmt);
+        discRow.style.color = '#059669';
+        discRow.style.fontWeight = 'bold';
+        result.append(discRow);
+
+        const finalTotal = document.createElement('p');
+        finalTotal.textContent = salesPage.text('Tổng thanh toán: ', 'Total payment: ') + money(payAmount);
+        finalTotal.style.color = '#047857';
+        finalTotal.style.fontWeight = '900';
+        finalTotal.style.fontSize = '16px';
+        result.append(finalTotal);
+    }
 
     if (draft.paymentMethod) {
         const payP = document.createElement('p');
@@ -451,9 +480,6 @@ function showDraft(draft) {
         payP.style.fontWeight = 'bold';
         result.append(payP);
 
-        const vMap = { 'OCOP2026': 50000, 'FREESHIP': 25000, 'GIAM20K': 20000, 'GIAM10K': 10000, 'GIAM50K': 50000, 'GIAM100K': 100000 };
-        const discAmt = (typeof appliedVoucher !== 'undefined' && appliedVoucher && appliedVoucher.discount) || (draft.voucherCode && vMap[draft.voucherCode] ? vMap[draft.voucherCode] : 0);
-        const payAmount = draft.total != null ? draft.total : Math.max(0, draft.subtotal - discAmt);
         const qrCard = renderVietQRBox(draft, payAmount);
         if (qrCard) result.append(qrCard);
     }
