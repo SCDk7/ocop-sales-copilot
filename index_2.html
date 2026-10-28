@@ -19,13 +19,14 @@
     </script>
     <style>
         /* CHỐNG CHỚP LỖI GIAO DIỆN (FOUC) KHI TẢI LẠI TRANG & ĐỒNG BỘ NỀN XANH DƯƠNG NHẠT */
-        html.catalog-browsing #ocop-intro-overlay,
-        body.catalog-browsing #ocop-intro-overlay,
-        .catalog-browsing #ocop-intro-overlay {
+        :is(html.catalog-browsing, body.catalog-browsing, .catalog-browsing) #ocop-intro-overlay,
+        #ocop-intro-overlay.hidden,
+        #ocop-intro-overlay[hidden] {
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
             pointer-events: none !important;
+            z-index: -9999 !important;
         }
         html.catalog-browsing #storefront-main-header,
         html.catalog-browsing .storefront-header,
@@ -43,9 +44,8 @@
             opacity: 1 !important;
         }
         /* Khi màn hình chờ (Intro) đang mở, ẩn phần main để không đè chữ */
-        body:not(.catalog-browsing):not(:has(#ocop-intro-overlay.hidden)) main,
-        #ocop-intro-overlay:not(.hidden) ~ main,
-        body:has(#ocop-intro-overlay:not(.hidden)) main {
+        html:not(.catalog-browsing) body:not(.catalog-browsing):not(:has(#ocop-intro-overlay.hidden)) main,
+        html:not(.catalog-browsing) body:not(.catalog-browsing):has(#ocop-intro-overlay:not(.hidden)) main {
             display: none !important;
         }
         #ocop-intro-overlay,
@@ -91,7 +91,7 @@
  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=a78371028241">
  <!-- Project Stylesheets -->
  <link rel="stylesheet" href="style.css?v=8aec987c157e">
-    <link rel="stylesheet" href="skytech-complete.css?v=73ab9d6b3cfe">
+    <link rel="stylesheet" href="skytech-complete.css?v=754d3aaecf72">
  <!-- <link rel="stylesheet" href="styledangcap.css"> -->
  <!-- <link rel="stylesheet" href="SuaLoiKoClick.css"> -->
  <style>
@@ -2085,7 +2085,7 @@
                 scroll-behavior: auto !important;
             }
         }
-        body:has(#ocop-intro-overlay:not(.hidden)) #ai-chat-widget,
+        html:not(.catalog-browsing) body:not(.catalog-browsing):has(#ocop-intro-overlay:not(.hidden)) #ai-chat-widget,
         #ai-chat-widget[hidden], #intro-voucher-description { display: none !important; }
         @media (max-width: 767px) {
             input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
@@ -5602,10 +5602,44 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
         // KHỞI TẠO TRANG
         window.addEventListener('DOMContentLoaded', () => {
-            fetchProducts();
             const intro = document.getElementById('ocop-intro-overlay');
-            const syncVisibility = () => setAIChatWidgetVisibility(intro.classList.contains('hidden'));
-            new MutationObserver(syncVisibility).observe(intro, { attributes: true, attributeFilter: ['class'] });
+            let hasEntered = false;
+            try {
+                hasEntered = sessionStorage.getItem('ocop_entered_market') === '1' ||
+                             document.documentElement.classList.contains('catalog-browsing') ||
+                             (document.body && document.body.classList.contains('catalog-browsing'));
+            } catch (_) {}
+
+            if (hasEntered) {
+                document.documentElement.classList.add('catalog-browsing');
+                if (document.body) document.body.classList.add('catalog-browsing');
+                if (intro) {
+                    intro.classList.add('hidden');
+                    intro.hidden = true;
+                    intro.style.setProperty('display', 'none', 'important');
+                    intro.style.setProperty('visibility', 'hidden', 'important');
+                    intro.style.setProperty('pointer-events', 'none', 'important');
+                    intro.setAttribute('hidden', '');
+                }
+                const headers = document.querySelectorAll('body > .storefront-header, #storefront-main-header');
+                headers.forEach(h => {
+                    h.classList.remove('hidden');
+                    h.style.removeProperty('display');
+                    h.style.removeProperty('visibility');
+                    h.style.removeProperty('opacity');
+                    h.style.removeProperty('pointer-events');
+                    h.style.setProperty('display', 'block', 'important');
+                });
+                setAIChatWidgetVisibility(true);
+                restorePageScrollState();
+            }
+
+            fetchProducts();
+            const syncVisibility = () => {
+                const isHidden = !intro || intro.classList.contains('hidden') || intro.hasAttribute('hidden') || document.documentElement.classList.contains('catalog-browsing') || (document.body && document.body.classList.contains('catalog-browsing'));
+                setAIChatWidgetVisibility(isHidden);
+            };
+            if (intro) new MutationObserver(syncVisibility).observe(intro, { attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
             syncVisibility();
             if (typeof restoreAIChatHistory === 'function') restoreAIChatHistory();
             restorePageScrollState();
@@ -7765,14 +7799,17 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         window.scrollAICarousel = scrollAICarousel;
         function setAIChatWidgetVisibility(visible) {
             const widget = document.getElementById('ai-chat-widget');
+            if (!widget) return;
             const intro = document.getElementById('ocop-intro-overlay');
-            visible = Boolean(visible) && intro.classList.contains('hidden');
+            const isIntroHidden = !intro || intro.classList.contains('hidden') || intro.hasAttribute('hidden') || document.documentElement.classList.contains('catalog-browsing') || (document.body && document.body.classList.contains('catalog-browsing'));
+            visible = Boolean(visible) && isIntroHidden;
             widget.hidden = !visible;
-            widget.style.display = visible ? '' : 'none';
+            widget.style.display = visible ? 'flex' : 'none';
             widget.classList.toggle('hidden', !visible);
             if (!visible) {
                 window.chatDictation?.stop(true);
-                document.getElementById('ai-chat-window').classList.add('hidden');
+                const win = document.getElementById('ai-chat-window');
+                if (win) win.classList.add('hidden');
             }
         }
         let savedChatPosition = null;

@@ -64,8 +64,8 @@ header > div {
 
 /* 3. MÀN HÌNH MỞ ĐẦU (INTRO SCREEN) - TÁCH BIỆT HOÀN TOÀN VỚI HEADER BÊN TRONG */
 /* Ẩn hoàn toàn thanh Header bên trong khi Intro Screen đang mở */
-body:has(#ocop-intro-overlay:not(.hidden)) > .storefront-header,
-body:not(:has(#ocop-intro-overlay.hidden)) > .storefront-header {
+html:not(.catalog-browsing) body:not(.catalog-browsing):has(#ocop-intro-overlay:not(.hidden)) > .storefront-header,
+html:not(.catalog-browsing) body:not(.catalog-browsing):not(:has(#ocop-intro-overlay.hidden)) > .storefront-header {
     display: none !important;
 }
 
@@ -2801,9 +2801,9 @@ header.storefront-header,
 }
 
 /* Chỉ hiển thị header khi đã vào Chợ OCOP (khi body có .catalog-browsing) */
-body.catalog-browsing header.storefront-header,
-body.catalog-browsing .storefront-header,
-body.catalog-browsing #storefront-main-header {
+:is(html.catalog-browsing, body.catalog-browsing, body:has(#ocop-intro-overlay.hidden)) header.storefront-header,
+:is(html.catalog-browsing, body.catalog-browsing, body:has(#ocop-intro-overlay.hidden)) .storefront-header,
+:is(html.catalog-browsing, body.catalog-browsing, body:has(#ocop-intro-overlay.hidden)) #storefront-main-header {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -2818,12 +2818,10 @@ body.catalog-browsing #storefront-main-header {
 }
 
 /* Bảo hiểm đa tầng: Nếu chưa vào duyệt hoặc màn hình chờ đang mở thì triệt để ẩn */
-body:not(.catalog-browsing) #storefront-main-header,
-body:not(.catalog-browsing) .storefront-header,
-#ocop-intro-overlay:not(.hidden) ~ #storefront-main-header,
-#ocop-intro-overlay:not(.hidden) ~ .storefront-header,
-body:has(#ocop-intro-overlay:not(.hidden)) #storefront-main-header,
-body:has(#ocop-intro-overlay:not(.hidden)) .storefront-header {
+html:not(.catalog-browsing) body:not(.catalog-browsing) #storefront-main-header,
+html:not(.catalog-browsing) body:not(.catalog-browsing) .storefront-header,
+html:not(.catalog-browsing) body:not(.catalog-browsing):has(#ocop-intro-overlay:not(.hidden)) #storefront-main-header,
+html:not(.catalog-browsing) body:not(.catalog-browsing):has(#ocop-intro-overlay:not(.hidden)) .storefront-header {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -2831,8 +2829,8 @@ body:has(#ocop-intro-overlay:not(.hidden)) .storefront-header {
 }
 
 /* Màn hình chờ (Intro Overlay) phủ kín và có tầng hiển thị cao nhất */
-#ocop-intro-overlay:not(.hidden),
-body #ocop-intro-overlay:not(.hidden) {
+html:not(.catalog-browsing) #ocop-intro-overlay:not(.hidden),
+html:not(.catalog-browsing) body:not(.catalog-browsing) #ocop-intro-overlay:not(.hidden) {
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
@@ -2845,8 +2843,8 @@ body #ocop-intro-overlay:not(.hidden) {
     overscroll-behavior: contain !important;
 }
 @media (min-width: 1024px) {
-    #ocop-intro-overlay:not(.hidden),
-    body #ocop-intro-overlay:not(.hidden) {
+    html:not(.catalog-browsing) #ocop-intro-overlay:not(.hidden),
+    html:not(.catalog-browsing) body:not(.catalog-browsing) #ocop-intro-overlay:not(.hidden) {
         overflow-y: auto !important;
         height: 100vh !important;
         max-height: 100vh !important;
@@ -3242,12 +3240,14 @@ body:has(#ocop-intro-overlay:not(.hidden)) main {
     display: none !important;
 }
 
-html.catalog-browsing #ocop-intro-overlay,
-body.catalog-browsing #ocop-intro-overlay {
+:is(html.catalog-browsing, body.catalog-browsing, .catalog-browsing) #ocop-intro-overlay,
+#ocop-intro-overlay.hidden,
+#ocop-intro-overlay[hidden] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    z-index: -9999 !important;
 }
 
 /* Header height is measured by storefront-navigation.js after wrapping. */
@@ -3346,3 +3346,11 @@ body #ocop-intro-overlay h2.intro-hero-title { margin: 0; line-height: 1.2 !impo
 body #ocop-intro-overlay h2.intro-hero-title #i18n-intro-title1 { font-size: clamp(32px, 4vw, 54px) !important; white-space: normal !important; letter-spacing: -0.035em !important; }
 body #ocop-intro-overlay h2.intro-hero-title #i18n-intro-title2 { display: block !important; max-width: 34em !important; margin: 14px auto 0 !important; font-size: clamp(17px, 1.65vw, 23px) !important; font-weight: 650 !important; line-height: 1.5 !important; letter-spacing: normal !important; white-space: normal !important; color: #27658d !important; -webkit-text-fill-color: #27658d !important; text-wrap: pretty; }
 @media(max-width:640px) { #shop-hero > div:first-child { width: 100% !important; margin: 0 !important; } }
+
+/* Ensure AI widget & back-to-top are visible and interactive in catalog mode */
+:is(html.catalog-browsing, body.catalog-browsing, body:has(#ocop-intro-overlay.hidden)) #ai-chat-widget {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
