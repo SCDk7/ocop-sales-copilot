@@ -1,10 +1,17 @@
 const fs = require('fs');
 
-fs.readdirSync('.').forEach(f => {
-  if (f.endsWith('.js') || f.endsWith('.html') || f.endsWith('.json')) {
-    const content = fs.readFileSync(f, 'utf8');
-    if (content.includes('520+') || content.includes('520 sản phẩm') || content.includes('525')) {
-      console.log(f, 'mentions 520 or 525');
-    }
+const indexHtml = fs.readFileSync('index.html', 'utf8');
+const lines = indexHtml.split('\n');
+lines.forEach((l, i) => {
+  if (l.includes('520+')) {
+    console.log('index.html line', i + 1, l.trim());
+  }
+});
+
+const skytech = fs.readFileSync('skytech-complete.js', 'utf8');
+const skyLines = skytech.split('\n');
+skyLines.forEach((l, i) => {
+  if (l.includes('520+')) {
+    console.log('skytech-complete.js line', i + 1, l.trim());
   }
 });
