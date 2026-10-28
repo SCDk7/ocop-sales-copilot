@@ -12,13 +12,36 @@
     const selected=new Set();let knownIds=new Set();
     const catalogue=()=>root.PRODUCTS||[];
     const money=n=>n.toLocaleString('vi-VN')+' ₫';
-    const text=(vi,en)=>document.documentElement.lang==='en'?en:vi;
+    const translations={
+      'Your cart':['购物车','장바구니','カート'], 'Close cart':['关闭购物车','장바구니 닫기','カートを閉じる'],
+      'Your cart is empty. Add your favourite OCOP products.':['购物车为空，请添加喜欢的 OCOP 商品。','장바구니가 비어 있습니다. OCOP 상품을 추가해 주세요.','カートは空です。OCOP商品を追加してください。'],
+      'Select all':['全选','전체 선택','すべて選択'],'Remove selected':['删除所选','선택 삭제','選択を削除'],
+      'Product':['商品','상품','商品'],'Unit price':['单价','단가','単価'],'Quantity':['数量','수량','数量'],
+      'Subtotal':['小计','소계','小計'],'Action':['操作','작업','操作'],'Product total':['商品总额','상품 합계','商品合計'],
+      'Continue to order':['前往下单','주문하기','注文へ進む'],'Continue shopping':['继续购物','계속 쇼핑','買い物を続ける'],
+      'items':['件商品','개 상품','点'],'selected items':['件已选商品','개 선택 상품','点を選択中'],
+      'Select ':['选择 ','선택 ','選択 '],'Decrease quantity':['减少数量','수량 줄이기','数量を減らす'],
+      'Increase quantity':['增加数量','수량 늘리기','数量を増やす'],'Quantity ':['数量 ','수량 ','数量 '],
+      'Remove':['删除','삭제','削除'],'Added to your cart.':['已加入购物车。','장바구니에 추가했습니다.','カートに追加しました。'],
+      'Each request supports up to 20 different products. Please split your basket.':['每单最多20种商品，请分单。','한 주문에 최대 20종의 상품을 담을 수 있습니다.','1回の注文は20種類までです。分けて注文してください。'],
+      'Estimated delivery: 1–2 business days within the dispatch city centre, 2–5 business days in outlying areas, starting at carrier handover. Interprovincial, remote-area and holiday deliveries may take longer. The seller confirms timing for your address, shipping fees, inventory and final pricing before confirming your order.':[
+        '预计配送：交给承运商后，发货地市区1–2个工作日，郊区2–5个工作日。跨省、偏远地区或节假日可能更久。卖家会确认收货地址对应的时效、运费、库存及最终价格。',
+        '예상 배송: 배송업체 인계 후 발송지 도심 1–2영업일, 외곽 2–5영업일입니다. 타 지역, 도서 산간 및 공휴일에는 더 걸릴 수 있습니다. 판매자가 주소별 배송일, 배송비, 재고와 최종 가격을 확인합니다.',
+        '配送目安：配送業者への引き渡し後、発送地の市街地は1～2営業日、郊外は2～5営業日です。他省・遠隔地・祝日はさらに日数がかかる場合があります。販売者がお届け先に応じた日数、送料、在庫、最終価格を確認します。'
+      ]
+    };
+    const text=(vi,en)=>{const lang=document.documentElement.lang.split('-')[0];return lang==='vi'?vi:translations[en]?.[['zh','ko','ja'].indexOf(lang)]||en;};
+    const labels=[];
+    function bind(node,vi,en){labels.push(()=>{node.textContent=text(vi,en);});return node;}
     function el(tag,cls,content){const node=document.createElement(tag);node.className=cls||'';if(content!==undefined)node.textContent=content;return node;}
     function btn(label,action,id){const node=el('button','cart-ui-button',label);node.type='button';node.dataset.action=action;if(id!==undefined)node.dataset.productId=String(id);return node;}
     function lines(){return manager?manager.hydrate(catalogue()):[];}
     function selectedLines(){return lines().filter(product=>selected.has(product.id));}
     function render(){
         if(!panel)return;
+        labels.forEach(update=>update());
+        const closeButton=panel.querySelector('#cart-ui-close-btn');
+        closeButton.setAttribute('aria-label',text('Đóng giỏ hàng','Close cart'));closeButton.setAttribute('title',text('Đóng giỏ hàng','Close cart'));
         const rows=lines(),count=rows.reduce((s,p)=>s+p.quantity,0);
         const ids=new Set(rows.map(product=>product.id));
         for(const product of rows)if(!knownIds.has(product.id))selected.add(product.id);
@@ -98,7 +121,7 @@
         overlay=el('div','cart-ui-overlay');overlay.id='cart-ui-overlay';overlay.hidden=true;overlay.addEventListener('click',close);
         panel=el('div','cart-ui-panel');panel.id='cart-ui-panel';panel.inert=true;
         for(const [key,value]of Object.entries({role:'dialog','aria-modal':'true','aria-hidden':'true','aria-labelledby':'cart-ui-title'}))panel.setAttribute(key,value);
-        const header=el('header','cart-ui-header'),heading=el('div'),title=el('h2','',text('Giỏ hàng của bạn','Your cart')),count=el('p');
+        const header=el('header','cart-ui-header'),heading=el('div'),title=bind(el('h2'),'Giỏ hàng của bạn','Your cart'),count=el('p');
         title.id='cart-ui-title';count.id='cart-ui-item-count';heading.append(title,count);
         const closeButton=btn('','close');closeButton.id='cart-ui-close-btn';
         const closeIcon=el('span','cart-ui-close-icon','×');closeIcon.setAttribute('aria-hidden','true');
@@ -106,21 +129,21 @@
         closeButton.setAttribute('aria-label',text('Đóng giỏ hàng','Close cart'));
         closeButton.setAttribute('title',text('Đóng giỏ hàng','Close cart'));
         header.append(heading,closeButton);
-        const content=el('div','cart-ui-items'),empty=el('div','cart-ui-empty',text('Giỏ hàng đang trống. Hãy thêm đặc sản OCOP bạn yêu thích.','Your cart is empty. Add your favourite OCOP products.')),list=el('div');
+        const content=el('div','cart-ui-items'),empty=bind(el('div','cart-ui-empty'),'Giỏ hàng đang trống. Hãy thêm đặc sản OCOP bạn yêu thích.','Your cart is empty. Add your favourite OCOP products.'),list=el('div');
         content.id='cart-ui-items';empty.id='cart-ui-empty';list.id='cart-ui-product-list';
         const selection=el('div','cart-ui-selection');selection.id='cart-ui-selection';
-        const allLabel=el('label','cart-ui-select-all-label'),all=el('input','cart-ui-checkbox');all.id='cart-ui-select-all';all.type='checkbox';all.dataset.action='select-all';allLabel.append(all,el('span','',text('Chọn tất cả','Select all')));
-        const removeSelected=btn(text('Xóa đã chọn','Remove selected'),'remove-selected');removeSelected.id='cart-ui-remove-selected';selection.append(allLabel,removeSelected);
+        const allLabel=el('label','cart-ui-select-all-label'),all=el('input','cart-ui-checkbox');all.id='cart-ui-select-all';all.type='checkbox';all.dataset.action='select-all';allLabel.append(all,bind(el('span'),'Chọn tất cả','Select all'));
+        const removeSelected=bind(btn('','remove-selected'),'Xóa đã chọn','Remove selected');removeSelected.id='cart-ui-remove-selected';selection.append(allLabel,removeSelected);
         const columns=el('div','cart-ui-columns');columns.id='cart-ui-columns';columns.setAttribute('aria-hidden','true');
-        for(const label of ['',text('Sản phẩm','Product'),text('Đơn giá','Unit price'),text('Số lượng','Quantity'),text('Thành tiền','Subtotal'),text('Thao tác','Action')])columns.append(el('span','',label));
+        for(const [vi,en] of [['',''],['Sản phẩm','Product'],['Đơn giá','Unit price'],['Số lượng','Quantity'],['Thành tiền','Subtotal'],['Thao tác','Action']])columns.append(bind(el('span'),vi,en));
         content.append(selection,columns,empty,list);
         const totals=el('footer','cart-ui-totals');totals.id='cart-ui-totals';
-        const sub=el('p','cart-ui-total-row',text('Tạm tính','Subtotal')),subAmount=el('strong');subAmount.id='cart-ui-subtotal';sub.append(subAmount);
-        const total=el('p','cart-ui-total-row cart-ui-total',text('Tổng tiền hàng','Product total')),amount=el('strong');amount.id='cart-ui-total';total.append(amount);
+        const sub=el('p','cart-ui-total-row'),subAmount=el('strong');subAmount.id='cart-ui-subtotal';sub.append(bind(el('span'),'Tạm tính','Subtotal'),subAmount);
+        const total=el('p','cart-ui-total-row cart-ui-total'),amount=el('strong');amount.id='cart-ui-total';total.append(bind(el('span'),'Tổng tiền hàng','Product total'),amount);
         const selectedCount=el('p','cart-ui-selected-count');selectedCount.id='cart-ui-selected-count';
         const note=el('p','cart-ui-note');note.id='cart-ui-checkout-note';
-        const actions=el('div','cart-ui-actions'),order=btn(text('Mua hàng','Continue to order'),'checkout');order.id='cart-ui-checkout-btn';order.classList.add('cart-ui-primary');order.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();}checkout();};
-        const summary=el('div','cart-ui-summary');summary.append(sub,total,selectedCount,note);actions.append(order,btn(text('Tiếp tục mua sắm','Continue shopping'),'close'));totals.append(summary,actions);panel.append(header,content,totals);document.body.append(overlay,panel);
+        const actions=el('div','cart-ui-actions'),order=bind(btn('','checkout'),'Mua hàng','Continue to order');order.id='cart-ui-checkout-btn';order.classList.add('cart-ui-primary');order.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();}checkout();};
+        const summary=el('div','cart-ui-summary');summary.append(sub,total,selectedCount,note);actions.append(order,bind(btn('','close'),'Tiếp tục mua sắm','Continue shopping'));totals.append(summary,actions);panel.append(header,content,totals);document.body.append(overlay,panel);
         function handleCartWheel(event){
             if(event.defaultPrevented||event._cartScrolled)return;
             const scrollTarget=content||panel.querySelector('.cart-ui-items, #cart-ui-items');
@@ -146,6 +169,7 @@
             getCartTotal:()=>lines().reduce((s,p)=>s+p.price*p.quantity,0),toggleCart:force=>{if(force===false||(force===undefined&&opened))close();else open();},
             addProductsToCart:ids=>{for(const id of new Set(ids))add(id);open();},isCartUIOpen:()=>opened});
         root.OCOPCartUI.ready=true;root.OCOPCartUI.lines=lines;root.OCOPCartUI.selectedLines=selectedLines;render();
+        if(typeof root.MutationObserver==='function')new root.MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
     }
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })(typeof window!=='undefined'?window:globalThis);

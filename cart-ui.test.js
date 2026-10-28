@@ -55,6 +55,22 @@ test('cart UI adds, opens, updates, removes, restores and checks out the same pe
  root.removeFromCartUI(1);assert.equal(document.getElementById('cart-ui-empty').hidden,false);
 });
 
+test('cart language follows storefront language changes without changing basket contents',()=>{
+ const local=storage(),document=fakeDOM();let refresh;
+ const root={document,PRODUCTS:products,CartManager:class extends CartManager{constructor(){super(local);}},addEventListener(){},location:{assign(){}},showToast(){},MutationObserver:class{constructor(callback){refresh=callback;}observe(){}}};
+ root.window=root;root.URL=URL;root.URLSearchParams=URLSearchParams;
+ vm.runInNewContext(fs.readFileSync('cart-ui.js','utf8'),root);
+ root.addToCart(1);root.openCartUI();
+ const original=JSON.stringify(root.OCOPCartUI.lines());
+ for(const [lang,title,action] of [['en','Your cart','Continue to order'],['zh','购物车','前往下单'],['ko','장바구니','주문하기'],['ja','カート','注文へ進む'],['vi','Giỏ hàng của bạn','Mua hàng']]){
+  document.documentElement.lang=lang;refresh();
+  assert.equal(document.getElementById('cart-ui-title').textContent,title);
+  assert.equal(document.getElementById('cart-ui-checkout-btn').textContent,action);
+  assert.equal(document.getElementById('cart-ui-close-btn').children[0].textContent,'×');
+  assert.equal(JSON.stringify(root.OCOPCartUI.lines()),original);
+ }
+});
+
 test('selected rows control checkout, manual quantities and bulk removal',()=>{
  const local=storage(),document=fakeDOM();let destination;
  const root={document,PRODUCTS:products,CartManager:class extends CartManager{constructor(){super(local);}},addEventListener(){},location:{assign:url=>{destination=url;}},showToast(){}};

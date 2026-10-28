@@ -2853,7 +2853,6 @@ html:not(.catalog-browsing) body:not(.catalog-browsing) #ocop-intro-overlay:not(
 }
 
 html:has(.storefront-header) { scroll-padding-top: calc(var(--storefront-nav-height, 60px) + 12px); }
-body.catalog-browsing { padding-top: var(--storefront-nav-height, 60px) !important; }
 #products-section,#shop-hero { scroll-margin-top: calc(var(--storefront-nav-height, 60px) + 12px); }
 
 
@@ -3252,7 +3251,7 @@ body:has(#ocop-intro-overlay:not(.hidden)) main {
 }
 
 /* Header height is measured by storefront-navigation.js after wrapping. */
-body.catalog-browsing { padding-top: var(--storefront-nav-height, 60px) !important; }
+body.catalog-browsing { padding-top: calc(var(--storefront-nav-height, 60px) + 20px) !important; }
 #storefront-main-header > div { height: auto !important; min-height: 56px; flex-wrap: wrap; gap: 8px; padding-block: 8px; }
 #storefront-main-header .header-primary-nav { gap: 6px; flex-wrap: wrap; min-width: 0; }
 #storefront-main-header .header-right-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px !important; min-width: 0; max-width: 100%; margin-left: auto; flex-shrink: 1; }
