@@ -786,8 +786,10 @@ p#chat-voice-status {
 }
 
 /* Ẩn triệt để thanh bottom bar khi ở màn hình intro chờ */
-body:not(.catalog-browsing) #mobile-cro-bottom-bar,
-#ocop-intro-overlay:not(.hidden) ~ #mobile-cro-bottom-bar {
+body:not(.catalog-browsing):not(:has(#ocop-intro-overlay.hidden)) #mobile-cro-bottom-bar,
+body:not(.catalog-browsing):not(:has(#ocop-intro-overlay.hidden)) #mobile-storefront-nav,
+#ocop-intro-overlay:not(.hidden) ~ #mobile-cro-bottom-bar,
+#ocop-intro-overlay:not(.hidden) ~ #mobile-storefront-nav {
     display: none !important;
 }
 
