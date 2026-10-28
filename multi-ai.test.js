@@ -48,6 +48,25 @@ test('the reported Dong Nai query stays in Dong Nai and has useful map links',()
  assert(!reply.message.includes('Suối Giàng'));
  assert(!/COGS|CHM|dòng tiền|Smart Contract/.test(reply.message));
  assert(reply.productLocations.every(location=>location.mapUrl.startsWith('https://www.google.com/maps/search/')));
+ assert(reply.message.includes('giá tham khảo'));
+ assert(reply.message.includes('chưa xác nhận điểm bán chính hãng'));
+ assert(reply.message.includes('khu vực nào của Đồng Nai'));
+ assert(reply.message.indexOf('chưa xác nhận điểm bán chính hãng')<reply.message.indexOf('https://www.google.com/maps/search/'));
+});
+
+test('regional advice is consistent for backend fallback and map enrichment is not duplicated',()=>{
+ const {composeDataReply}=require('./ai-data-reply');
+ const {appendProductLocations}=require('./product-locations');
+ const shopping=require('./ai-shopping');
+ const query='Tư vấn đặc sản OCOP tiêu biểu tỉnh Đồng Nai và chỉ đường đến showroom chính hãng';
+ const intent=shopping.resolve([{role:'user',text:query}],PRODUCTS);
+ intent.knowledgeQuery=query;
+ const products=PRODUCTS.filter(product=>product.region==='Đồng Nai');
+ const reply=composeDataReply(products,intent,'vi');
+ assert(reply.message.includes('giá tham khảo'));
+ const enriched=appendProductLocations(reply,products,intent,{},'vi');
+ assert(enriched.message.includes('khu vực nào của Đồng Nai'));
+ assert.equal(appendProductLocations(enriched,products,intent,{},'vi'),enriched);
 });
 test('a reused catalogue ID cannot inherit another products showroom address',()=>{
  const product={id:1,name:'Cacao Đồng Nai',region:'Đồng Nai'};

@@ -227,3 +227,27 @@ test('authenticateAdmin supports alias admin and ad with default admin credentia
     const authSingle = Admin.authenticateAdmin('admin');
     assert.ok(authSingle, 'admin token must succeed');
 });
+
+
+test('Admin Code generator and admin accounts strictly use 12-character code starting with AD', () => {
+    for (let i = 0; i < 10; i++) {
+        const code = Admin.generateAdminCode();
+        assert.equal(code.length, 12, 'Admin code length must be 12');
+        assert.ok(code.startsWith('AD'), 'Admin code must start with AD');
+        assert.match(code, /^AD[0-9A-Z]{10}$/, 'Must be alphanumeric uppercase');
+    }
+
+    const admins = Admin.getAdminAccounts();
+    admins.forEach(a => {
+        const code = a.adminCode || a.customerCode;
+        assert.ok(code, 'Admin account must have a code');
+        assert.equal(code.length, 12, 'Admin code must have 12 characters: ' + code);
+        assert.ok(code.startsWith('AD'), 'Admin code must start with AD: ' + code);
+    });
+
+    const authed = Admin.authenticateAdmin('admin');
+    assert.ok(authed);
+    const authCode = authed.adminCode || authed.customerCode;
+    assert.equal(authCode.length, 12);
+    assert.ok(authCode.startsWith('AD'));
+});

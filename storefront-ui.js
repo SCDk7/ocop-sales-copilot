@@ -68,8 +68,8 @@
         const supportLabel = document.getElementById('i18n-intro-quick-ai');
         if (supportLabel) supportLabel.textContent = language() === 'en' ? 'AI Support' : 'AI hỗ trợ';
         const featureLabels=language()==='en'
-            ? ['63 Provinces Digital Map','Supply Chain Digitization','AI Assistant Consultant','AI Product Promotion']
-            : ['Bản Đồ Số 63 Tỉnh Thành','Số Hóa Chuỗi Cung Ứng','Trợ lý AI tư vấn','AI quảng bá sản phẩm'];
+            ? ['63 Provinces Digital Map','Specialties from Vietnam','24/7 AI Assistant']
+            : ['Bản Đồ Số 63 Tỉnh Thành','Đặc Sản Vùng Miền Việt Nam','Trợ lý AI 24/7'];
         featureLabels.forEach((label,index)=>{
             for(const id of [`i18n-intro-pillar${index+1}`,`i18n-hero-feat${index+1}-title`]){
                 const node=document.getElementById(id);
@@ -99,28 +99,53 @@
         const titleMap = {
             'i18n-intro-pillar1': 'Bản Đồ Số 63 Tỉnh Thành',
             'i18n-intro-pillar2': 'Đặc Sản Vùng Miền Việt Nam',
-            'i18n-intro-pillar3': '24/7 AI Dispatch Copilot',
+            'i18n-intro-pillar3': 'Trợ lý AI 24/7',
             'i18n-intro-pillar4': 'AI Financial Engine',
             'i18n-sidebar-realtime': 'Điểm bán & hợp tác xã OCOP',
-            'chat-title': 'AI HỖ TRỢ • TƯ VẤN & ĐẶT HÀNG',
+            'chat-title': language() === 'en' ? 'AI • ADVICE, SUPPORT & COMPLAINTS' : 'AI • TƯ VẤN, HỖ TRỢ & KHIẾU NẠI',
+            'chat-subtitle': language() === 'en' ? 'Product advice • Order support • Customer care' : 'Tư vấn sản phẩm • Hỗ trợ đơn hàng • Chăm sóc khách hàng',
             'chat-greeting': greetings[language()] || greetings.vi,
-            'chat-guidance': language() === 'en' ? 'Product advice, ordering and complaints.' : 'Tư vấn sản phẩm • Hỗ trợ đặt hàng • Khiếu nại & đổi trả'
+            'chat-guidance': language() === 'en' ? 'Tell me what you need or describe the issue with your order.' : 'Anh/chị cần tư vấn, hỗ trợ đơn hàng hay phản ánh vấn đề gì? Em sẽ hướng dẫn từng bước.'
         };
         for (const [id, label] of Object.entries(titleMap)) {
             const el = document.getElementById(id);
             if (el && (id.startsWith('chat-') || isCashflowText(el.textContent))) el.textContent = label;
         }
         const chatInput = document.getElementById('ai-chat-input');
-        if (chatInput) chatInput.placeholder = language() === 'en' ? 'Ask about products, orders or a problem...' : 'Nhập nhu cầu mua hàng hoặc vấn đề cần hỗ trợ...';
+        if (chatInput) chatInput.placeholder = language() === 'en' ? 'Ask for advice, support or make a complaint...' : 'Nhập yêu cầu tư vấn, hỗ trợ hoặc khiếu nại...';
+        const supportActions = language() === 'en'
+            ? [['Product advice','Please help me choose an OCOP product.'],['Order support','I need help placing or checking an order.'],['Complaints / returns','I need help with a complaint about my order.']]
+            : [['Tư vấn sản phẩm','Tôi cần tư vấn chọn đặc sản OCOP.'],['Hỗ trợ đơn hàng','Tôi cần hỗ trợ đặt hàng hoặc kiểm tra đơn hàng.'],['Khiếu nại / đổi trả','Tôi cần hỗ trợ khiếu nại về đơn hàng.']];
+        const sendSupportPrompt = prompt => {
+            const input = document.getElementById('ai-chat-input');
+            if (input) { input.value = prompt; root.sendAIMessage?.(); }
+        };
+        const quickReplies = document.getElementById('ai-chat-quick-replies');
+        const actionLabels = supportActions.map(([label]) => label);
+        const currentPrompts = quickReplies ? [...quickReplies.querySelectorAll('.chat-prompt')] : [];
+        if (quickReplies && (currentPrompts.length !== actionLabels.length || currentPrompts.some((button, index) => button.textContent !== actionLabels[index]))) {
+            quickReplies.querySelectorAll('.chat-prompt').forEach(button => button.remove());
+            for (const [label, prompt] of supportActions) {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'chat-prompt quick-reply-pill flex items-center gap-1.5 cursor-pointer';
+                button.textContent = label;
+                button.onclick = () => sendSupportPrompt(prompt);
+                quickReplies.append(button);
+            }
+        }
         const greeting = document.getElementById('chat-greeting');
+        const previousActions = document.getElementById('chat-sales-actions');
+        if (previousActions && previousActions.dataset.language !== language()) previousActions.remove();
         if (greeting && !document.getElementById('chat-sales-actions')) {
             const actions = document.createElement('div');
             actions.id = 'chat-sales-actions';
+            actions.dataset.language = language();
             actions.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:12px';
-            for (const [label,prompt] of [['Tư vấn sản phẩm','Tôi cần tư vấn chọn đặc sản OCOP.'],['Hỗ trợ đặt hàng','Tôi muốn đặt hàng, hãy hướng dẫn tôi.'],['Khiếu nại / đổi trả','Tôi cần hỗ trợ khiếu nại về đơn hàng.']]) {
+            for (const [label,prompt] of supportActions) {
                 const button=document.createElement('button');button.type='button';button.textContent=label;
                 button.style.cssText='padding:8px 10px;border:1px solid #7dd3fc;border-radius:10px;background:#e0f2fe;color:#0c4a6e;font-size:12px;font-weight:700';
-                button.onclick=()=>{const input=document.getElementById('ai-chat-input');if(input){input.value=prompt;root.sendAIMessage?.();}};
+                button.onclick=()=>sendSupportPrompt(prompt);
                 actions.append(button);
             }
             greeting.after(actions);
@@ -240,7 +265,7 @@
             const original = root.selectAdminHubPortal;
             root.selectAdminHubPortal = portal => { if (portal === 'tiktok' || portal === 'management' || portal === 'distributor') original(portal); };
         }
-        for (const name of ['renderProducts', 'openQuickView', 'renderWishlistItems', 'applyLanguage', 'enforceChallenge2026Translations', 'syncChatLanguage', 'openAdminHubModal']) wrap(name, result => { cleanUI(); return result; });
+        for (const name of ['renderProducts', 'openQuickView', 'renderWishlistItems', 'applyLanguage', 'enforceChallenge2026Translations', 'syncChatLanguage', 'resetAIChatHistory', 'openAdminHubModal']) wrap(name, result => { cleanUI(); return result; });
         for (const name of ['renderAIProductRecommendations', 'renderAIComboRecommendations']) wrap(name, result => {
             if (typeof result !== 'string') return result;
             const template = document.createElement('template'); template.innerHTML = result;

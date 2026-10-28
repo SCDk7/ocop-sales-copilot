@@ -69,10 +69,13 @@ test('selected rows control checkout, manual quantities and bulk removal',()=>{
  change('quantity',{value:'4'});assert.equal(root.OCOPCartUI.lines()[1].quantity,4);
  change('quantity',{value:'0'});assert.equal(root.OCOPCartUI.lines()[1].quantity,4);
  change('select-all',{checked:false});assert.equal(document.getElementById('cart-ui-checkout-btn').disabled,true);
+ const previousDestination=destination;root.proceedCheckoutFromCart();assert.equal(destination,previousDestination);
  change('select',{checked:true});
  root.proceedCheckoutFromCart();assert.equal(new URL(destination).searchParams.get('quantities'),'4');
  panel.events.click({target:{closest:()=>({dataset:{action:'remove-selected'}})}});
  assert.deepEqual(Array.from(root.OCOPCartUI.lines(),p=>p.id),[1]);
  const external=new CartManager(local);external.addToCart(products[1],2);
  root.closeCartUI();root.openCartUI();assert.equal(root.OCOPCartUI.lines().length,2);
+ root.addProductToCart(products[0].name);assert.equal(root.OCOPCartUI.lines().find(p=>p.id===1).quantity,2);
+ assert.equal(root.addProductToCart(''),null);assert.equal(root.OCOPCartUI.lines().find(p=>p.id===1).quantity,2);
 });

@@ -66,12 +66,12 @@
     }
     function close(){if(!opened||!panel)return;opened=false;panel.classList.remove('cart-ui-panel-open');panel.inert=true;panel.setAttribute('aria-hidden','true');overlay.hidden=true;document.body.style.overflow=previousOverflow;if(previousFocus?.isConnected)previousFocus.focus();}
     function open(){if(!panel)return;if(!opened){previousFocus=document.activeElement;previousOverflow=document.body.style.overflow;}try{const raw=manager.storage?.getItem('ocop_cart');if(raw){const saved=JSON.parse(raw);if(Array.isArray(saved))manager.cart=saved;}}catch(_){}opened=true;render();panel.inert=false;panel.setAttribute('aria-hidden','false');overlay.hidden=false;panel.classList.add('cart-ui-panel-open');document.body.style.overflow='hidden';panel.querySelector('[data-action="close"]').focus();}
-    function add(id){const p=catalogue().find(p=>p.id===Number(id));if(!p)return;lines();manager.addToCart(p,1);selected.add(p.id);render();root.showToast?.(text('Đã thêm vào giỏ hàng.','Added to your cart.'),'success');}
+    function add(id){const p=catalogue().find(p=>p.id===Number(id));if(!p)return;lines();manager.addToCart(p,1);selected.add(p.id);render();root.showToast?.(text('Đã thêm vào giỏ hàng.','Added to your cart.'),'success');return p;}
+    function addProduct(idOrName){if(!String(idOrName??'').trim())return null;const product=typeof idOrName==='number'?catalogue().find(p=>p.id===idOrName):catalogue().find(p=>p.name.toLowerCase().includes(String(idOrName).trim().toLowerCase()));return product?add(product.id):null;}
     function quantity(id,delta){const p=lines().find(p=>p.id===Number(id));if(!p||!Number.isInteger(delta))return;p.quantity=Math.max(1,Math.min(99,p.quantity+delta));manager.save();render();}
     function remove(id){manager.removeFromCart(Number(id));render();}
     function checkout(){
         let rows = selectedLines();
-        if (!rows || !rows.length) rows = lines();
         if (!rows || !rows.length) {
             if (typeof root.showToast === 'function') root.showToast('Vui lòng chọn ít nhất 1 sản phẩm để mua hàng!', 'info');
             else if (typeof alert === 'function') alert('Vui lòng chọn ít nhất 1 sản phẩm để mua hàng!');
@@ -101,7 +101,7 @@
         const header=el('header','cart-ui-header'),heading=el('div'),title=el('h2','',text('Giỏ hàng của bạn','Your cart')),count=el('p');
         title.id='cart-ui-title';count.id='cart-ui-item-count';heading.append(title,count);header.append(heading,btn(text('Đóng','Close'),'close'));
         const content=el('div','cart-ui-items'),empty=el('div','cart-ui-empty',text('Giỏ hàng đang trống. Hãy thêm đặc sản OCOP bạn yêu thích.','Your cart is empty. Add your favourite OCOP products.')),list=el('div');
-        empty.id='cart-ui-empty';list.id='cart-ui-product-list';
+        content.id='cart-ui-items';empty.id='cart-ui-empty';list.id='cart-ui-product-list';
         const selection=el('div','cart-ui-selection');selection.id='cart-ui-selection';
         const allLabel=el('label','cart-ui-select-all-label'),all=el('input','cart-ui-checkbox');all.id='cart-ui-select-all';all.type='checkbox';all.dataset.action='select-all';allLabel.append(all,el('span','',text('Chọn tất cả','Select all')));
         const removeSelected=btn(text('Xóa đã chọn','Remove selected'),'remove-selected');removeSelected.id='cart-ui-remove-selected';selection.append(allLabel,removeSelected);
@@ -115,14 +115,25 @@
         const note=el('p','cart-ui-note');note.id='cart-ui-checkout-note';
         const actions=el('div','cart-ui-actions'),order=btn(text('Mua hàng','Continue to order'),'checkout');order.id='cart-ui-checkout-btn';order.classList.add('cart-ui-primary');order.onclick=function(e){if(e){e.preventDefault();e.stopPropagation();}checkout();};
         const summary=el('div','cart-ui-summary');summary.append(sub,total,selectedCount,note);actions.append(order,btn(text('Tiếp tục mua sắm','Continue shopping'),'close'));totals.append(summary,actions);panel.append(header,content,totals);document.body.append(overlay,panel);
+        function handleCartWheel(event){
+            if(event.defaultPrevented||event._cartScrolled)return;
+            const scrollTarget=content||panel.querySelector('.cart-ui-items, #cart-ui-items');
+            if(scrollTarget&&event.deltaY!==0){
+                scrollTarget.scrollBy({top:event.deltaY*1.35,behavior:'auto'});
+                if(event.cancelable)event.preventDefault();
+                event._cartScrolled=true;
+            }
+        }
+        panel.addEventListener('wheel',handleCartWheel,{passive:false});
+        overlay.addEventListener('wheel',handleCartWheel,{passive:false});
         panel.addEventListener('click',event=>{const button=event.target.closest('button[data-action]');if(!button)return;const id=Number(button.dataset.productId);switch(button.dataset.action){case'close':close();break;case'plus':quantity(id,1);break;case'minus':quantity(id,-1);break;case'remove':remove(id);break;case'remove-selected':manager.cart=lines().filter(product=>!selected.has(product.id));manager.save();render();break;case'checkout':checkout();break;case'view':close();root.openQuickView?.(id);break;}});
         panel.addEventListener('change',event=>{const input=event.target,id=Number(input.dataset.productId);if(input.dataset.action==='select'){if(input.checked)selected.add(id);else selected.delete(id);render();}else if(input.dataset.action==='select-all'){selected.clear();if(input.checked)for(const product of lines())selected.add(product.id);render();}else if(input.dataset.action==='quantity'){const product=lines().find(product=>product.id===id),value=Number(input.value);if(product&&Number.isInteger(value)&&value>=1&&value<=99){product.quantity=value;manager.save();}render();}});
         document.addEventListener('keydown',event=>{if(!opened)return;if(event.key==='Escape'){event.preventDefault();close();}if(event.key==='Tab'){const nodes=[...panel.querySelectorAll('button:not(:disabled),input:not(:disabled)')].filter(n=>n.getClientRects().length),first=nodes[0],last=nodes[nodes.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}});
         root.addEventListener('storage',event=>{if(event.key==='ocop_cart'){manager=new root.CartManager();render();}});
         Object.assign(root,{openCartUI:open,closeCartUI:close,renderCartUIItems:render,changeCartUIQty:quantity,removeFromCartUI:remove,proceedCheckoutFromCart:checkout,
-            addToCart:add,activateProductReconciliation:add,removeFromCart:remove,updateCartQty:quantity,renderCartItems:render,updateCartBadge:render,
+            addToCart:add,addProductToCart:addProduct,activateProductReconciliation:add,removeFromCart:remove,updateCartQty:quantity,renderCartItems:render,updateCartBadge:render,
             getCartTotal:()=>lines().reduce((s,p)=>s+p.price*p.quantity,0),toggleCart:force=>{if(force===false||(force===undefined&&opened))close();else open();},
-            addProductsToCart:ids=>{for(const id of new Set(ids))add(id);open();}});
+            addProductsToCart:ids=>{for(const id of new Set(ids))add(id);open();},isCartUIOpen:()=>opened});
         root.OCOPCartUI.ready=true;root.OCOPCartUI.lines=lines;root.OCOPCartUI.selectedLines=selectedLines;render();
     }
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();

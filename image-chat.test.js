@@ -3,9 +3,48 @@ const shopping=require('./ai-shopping'),{waitForSignal}=require('./ai-deadline')
 const {matchImageEvidence,createCatalogImageMatcher}=require('./ai-image-match');
 const source=fs.readFileSync('server.js','utf8');
 const products=[{id:1,name:'Trà',region:'Hà Nội',price:100000},{id:2,name:'Cà phê',region:'Đắk Lắk',price:200000},{id:3,name:'Cacao',region:'Đắk Lắk',price:300000}];
+
+test('the reported text query reaches the API fallback without an uninitialized intent error',async()=>{
+ const catalogue=require('./data').PRODUCTS;
+ const query='Tư vấn đặc sản OCOP tiêu biểu tỉnh Đồng Nai và chỉ đường đến showroom chính hãng';
+ const context={console,Date,AbortSignal,Promise,Set,fetch,process:{env:{}},analyzeCustomerRequest:require('./ai-request-analysis').analyzeCustomerRequest,
+  commerceShopping:require('./commerce-shopping').createCommerceShopping(),
+  appendProductLocations:require('./product-locations').appendProductLocations,OcopStores:require('./ocop-stores'),
+  AIShopping:shopping,AIIntent:{understand:async()=>{throw Error('No model configured');},merge:local=>local},
+  isAIRateLimited:()=>false,validateAIRequest:body=>({...body,products:catalogue}),getRestrictedTopicReply:()=>null,
+  MAX_CHAT_IMAGES_PER_MESSAGE:10,chatImages:[],aiWebsiteCatalog:{products:catalogue},
+  answerTrainingQuery:()=>null,CatalogFacts:{answer:()=>null},ProductConsultant:{resolveProductConsultation:()=>null},scenarioReply:()=>null,
+  extractSearchIntents:shopping.analyze,planWikipedia:()=>({query:'',topics:[],skipReason:'not_needed'}),
+  getAIModelConfiguration:()=>({}),buildAISystemInstruction:()=>'',getGeneralComplaintClarification:()=>null,
+  filterProductsByIntent:(items,intent)=>items.filter(p=>shopping.allowed(p,intent)),reviewStore:{list:()=>({items:[]})},
+  normalizeCatalogTerm:shopping.normalize,waitForSignal,composeDataReply:require('./ai-data-reply').composeDataReply,
+  generateAIResponse:async()=>({status:503,body:{}})};
+ vm.createContext(context);vm.runInContext(source.slice(source.indexOf('async function handleAIChatRequest('),source.indexOf("app.post('/api/ai/chat'")),context);
+ let body,status=200;const res={status(code){status=code;return this},json(value){body=value;return value}};
+ await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:query}]}},res);
+ assert.equal(status,200);assert(body.productIds.length>0);
+ assert(body.productIds.every(id=>catalogue.find(p=>p.id===id).region==='Đồng Nai'));
+ assert(body.productLocations.length>0);assert(body.message.includes('khu vực nào của Đồng Nai'));
+ assert.equal(body.requestAnalysis.status,'completed');
+ let analyses=0;
+ const analyze=context.analyzeCustomerRequest;
+ context.analyzeCustomerRequest=(...args)=>{analyses++;return analyze(...args);};
+ const routes=[
+  ()=>{context.commerceShopping.localReply=()=>({message:'Stock answer',productIds:[]});},
+  ()=>{context.commerceShopping.localReply=()=>null;context.answerTrainingQuery=()=>({message:'FAQ answer',productIds:[]});},
+  ()=>{context.answerTrainingQuery=()=>null;context.CatalogFacts.answer=()=>({message:'Catalogue answer',productIds:[]});},
+  ()=>{context.CatalogFacts.answer=()=>null;context.ProductConsultant.resolveProductConsultation=()=>({message:'Consultation answer',productIds:[]});}
+ ];
+ for(const [index,configure]of routes.entries()){
+  configure();
+  await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:query}]}},res);
+  assert.equal(analyses,index+1,'request analysis runs before each shortcut reply');
+  assert.equal(body.requestAnalysis.status,'completed');
+ }
+});
 test('an attached photo bypasses text-only intent and reaches vision with its caption',async()=>{
  const image={id:'00000000-0000-0000-0000-000000000001',mimeType:'image/png',bytes:20,fileName:'test.png'};let visionCalls=0;
- const context={console,Date,AbortSignal,Promise,Set,process:{env:{}},commerceShopping:require('./commerce-shopping').createCommerceShopping(),appendProductLocations:require('./product-locations').appendProductLocations,OcopStores:{},AIShopping:shopping,AIIntent:{understand:()=>{throw Error('Text-only intent must not run')},merge:local=>local},
+ const context={console,Date,AbortSignal,Promise,Set,process:{env:{}},analyzeCustomerRequest:require('./ai-request-analysis').analyzeCustomerRequest,commerceShopping:require('./commerce-shopping').createCommerceShopping(),appendProductLocations:require('./product-locations').appendProductLocations,OcopStores:{},AIShopping:shopping,AIIntent:{understand:()=>{throw Error('Text-only intent must not run')},merge:local=>local},
   isAIRateLimited:()=>false,validateAIRequest:body=>({...body,products}),getRestrictedTopicReply:()=>null,MAX_CHAT_IMAGES_PER_MESSAGE:10,chatImages:[image],saveChatImages:()=>{},aiWebsiteCatalog:{products},
   extractSearchIntents:shopping.analyze,planWikipedia:()=>({query:'',topics:[],skipReason:'private_or_image_context'}),getAIModelConfiguration:()=>({model:'test',apiKey:'test'}),
   getGeneralComplaintClarification:()=>null,filterProductsByIntent:()=>products,reviewStore:{list:()=>({items:[]})},normalizeCatalogTerm:shopping.normalize,waitForSignal,
@@ -15,6 +54,13 @@ test('an attached photo bypasses text-only intent and reaches vision with its ca
  await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:'Ảnh này là món gì?'}],imageIds:[image.id]}},res);
  assert.equal(visionCalls,1);assert.equal(status,200);assert.equal(body.productIds[0],2);
  assert.equal(body.geminiUnderstanding.status,'understood');
+ context.searchProductByImageKnowledge=()=>{throw Error('A caption or filename cannot substitute for image recognition');};
+ context.generateAIResponse=async()=>({status:200,body:{message:'Please send a clearer label',productIds:[],imageMatchStatus:'unknown'}});
+ await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:'tea.jpg'}],imageIds:[image.id]}},res);
+ assert.equal(body.imageMatchStatus,'unknown');assert.equal(body.productIds.length,0);
+ context.generateAIResponse=async()=>({status:503,body:{message:'Image service unavailable',productIds:[],imageMatchStatus:'unknown'}});
+ await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:'tea.jpg'}],imageIds:[image.id]}},res);
+ assert.equal(status,503);assert.equal(body.productIds.length,0);
 });
 function visionContext(provider){
  const context={console,Date,Buffer,AbortController,AbortSignal,setTimeout,clearTimeout,matchCatalogImages:async()=>[],MAX_AI_MESSAGE_LENGTH:1200,GEMINI_INLINE_IMAGE_LIMIT_BYTES:70000000,

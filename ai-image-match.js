@@ -4,17 +4,56 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 
 let productImageKnowledge = null;
+let knowledgeStamp = null;
 function getProductImageKnowledge() {
-  if (!productImageKnowledge) {
     try {
       const kbPath = path.join(__dirname, 'data', 'product-image-knowledge.json');
+      const stat = require('node:fs').statSync(kbPath);
+      const stamp = stat.mtimeMs + ':' + stat.size;
+      if (productImageKnowledge && knowledgeStamp === stamp) return productImageKnowledge;
       const raw = require('node:fs').readFileSync(kbPath, 'utf8');
-      productImageKnowledge = JSON.parse(raw);
+      const parsed = JSON.parse(raw);
+      productImageKnowledge = Array.isArray(parsed) ? parsed : [];
+      knowledgeStamp = stamp;
     } catch (_) {
       productImageKnowledge = [];
+      knowledgeStamp = null;
     }
-  }
   return productImageKnowledge;
+}
+
+function createReferenceImageMatcher(root, loadKnowledge = getProductImageKnowledge) {
+  let key, pending;
+  const digest = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+  return async (products, buffers) => {
+    if (!buffers.length) return [];
+    const knowledge = loadKnowledge();
+    const valid = knowledge.filter(row => products.some(product => product.id === row.id && product.name === row.name && product.region === row.region));
+    const references = valid.flatMap(row => (row.googleImages || []).filter(image => image.downloadStatus === 'ready' && image.relationship === 'similar_reference')
+      .map(image => ({id: row.id, path: image.localPath, sha256: image.sha256})));
+    const currentKey = JSON.stringify(references);
+    if (currentKey !== key) {
+      key = currentKey;
+      pending = (async () => {
+        const index = new Map();
+        const directory = path.resolve(root, 'data/image-references') + path.sep;
+        for (const reference of references) {
+          if (typeof reference.path !== 'string' || !reference.path.startsWith('data/image-references/') || !/^[a-f0-9]{64}$/.test(reference.sha256 || '')) continue;
+          const file = path.resolve(root, reference.path);
+          if (!file.startsWith(directory)) continue;
+          try {
+            const bytes = await fs.readFile(file);
+            if (bytes.length > 3 * 1024 * 1024 || digest(bytes) !== reference.sha256) continue;
+            if (!index.has(reference.sha256)) index.set(reference.sha256, []);
+            if (!index.get(reference.sha256).includes(reference.id)) index.get(reference.sha256).push(reference.id);
+          } catch { /* Unavailable references continue through the existing vision flow. */ }
+        }
+        return index;
+      })();
+    }
+    const index = await pending;
+    return buffers.map(bytes => index.get(digest(bytes)) || []);
+  };
 }
 
 function createCatalogImageMatcher(root) {
@@ -77,21 +116,27 @@ function matchImageEvidence(products, evidence = {}) {
   const visibleRegions = [...new Set(products.map(product => normalize(product.region || '')).filter(region => region && phrase(label, region)))];
   if (visibleRegions.length) candidates = candidates.filter(product => visibleRegions.includes(normalize(product.region || '')));
   const labelWords = [...new Set(label.split(/[^a-z0-9]+/).filter(word => word.length >= 3))];
+  const knowledge = new Map(getProductImageKnowledge().map(row => [row.id, row]));
   return candidates.map(product => {
     const name = normalize(product.name || '');
-    return {id:product.id, score:labelWords.filter(word => phrase(name, word)).length};
+    const reference = knowledge.get(product.id);
+    const titles = reference?.name === product.name && reference?.region === product.region
+      ? (reference.googleImages || []).map(image => normalize(image.title || '')) : [];
+    const referenceScore = titles.length ? Math.max(...titles.map(title => labelWords.filter(word => phrase(title, word)).length)) : 0;
+    return {id:product.id, score:labelWords.filter(word => phrase(name, word)).length * 4 + referenceScore};
   }).sort((a,b) => b.score-a.score || a.id-b.id).slice(0,2).map(product => product.id);
 }
 
 /**
- * Searches the 252-product Google Image Knowledge Base for matching OCOP products
- * based on image metadata, OCR label, visual keywords, filename, or candidate URLs.
+ * Ranks reference records using observed labels/types or a known source image URL.
+ * Captions, filenames and guessed colours alone are not visual evidence.
  */
 function searchProductByImageKnowledge({ text = '', label = '', productType = '', fileName = '', imageUrl = '', color = '' } = {}) {
   const kb = getProductImageKnowledge();
   if (!kb || !kb.length) return [];
 
-  const rawQuery = [text, label, productType, fileName].filter(Boolean).join(' ');
+  if (!label.trim() && !productType.trim() && !imageUrl) return [];
+  const rawQuery = [label, productType].filter(Boolean).join(' ');
   const normQuery = normalize(rawQuery);
   const queryTokens = [...new Set(normQuery.split(/[^a-z0-9]+/).filter(w => w.length >= 2))];
 
@@ -102,7 +147,7 @@ function searchProductByImageKnowledge({ text = '', label = '', productType = ''
     const keywords = (item.visualFeatures && item.visualFeatures.keywords) || [];
 
     // 1. Direct name or region match in query
-    if (normQuery.includes(nameNorm)) score += 50;
+    if (nameNorm && normQuery.includes(nameNorm)) score += 50;
     if (regionNorm && normQuery.includes(regionNorm)) score += 15;
 
     // 2. Keyword overlap
@@ -113,7 +158,7 @@ function searchProductByImageKnowledge({ text = '', label = '', productType = ''
 
     // 3. Google images match (candidate URL or candidate title match)
     if (imageUrl) {
-      const matchedImg = item.googleImages?.some(g => g.imageUrl === imageUrl || (g.page && imageUrl.includes(g.page)));
+      const matchedImg = item.googleImages?.some(g => g.imageUrl === imageUrl);
       if (matchedImg) score += 80;
     }
     if (item.googleImages && queryTokens.length) {
@@ -123,11 +168,6 @@ function searchProductByImageKnowledge({ text = '', label = '', productType = ''
           if (token.length >= 4 && titleNorm.includes(token)) score += 2;
         });
       });
-    }
-
-    // 4. Color / visual match
-    if (color && item.visualFeatures?.dominantColor === color) {
-      score += 5;
     }
 
     return { item, score };
@@ -143,6 +183,7 @@ function searchProductByImageKnowledge({ text = '', label = '', productType = ''
 module.exports = {
   matchImageEvidence,
   createCatalogImageMatcher,
+  createReferenceImageMatcher,
   getProductImageKnowledge,
   searchProductByImageKnowledge
 };
