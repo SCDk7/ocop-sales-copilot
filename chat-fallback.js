@@ -68,6 +68,13 @@
         else if(intent.isCombo&&intent.maxPrice){
             const reply=shopping.replyOptions(shopping.variants(products,intent),intent,language);
             message=reply.message;ids=reply.productIds||[];combos=reply.combos||[];
+        }
+        else if(/(?:b2b|doanh nghiep|set qua|qua tang doanh nghiep|qua bieu doanh nghiep|hop qua doanh nghiep|hop qua b2b|combo qua doanh nghiep)/i.test(normQ)){
+            const b2bItems = products.filter(p => p.stars === 5 || [525, 526, 342, 336, 360, 506, 349].includes(p.id)).slice(0, 4);
+            ids = b2bItems.map(p => p.id);
+            message = en
+                ? '🎁 OCOP Vietnam Corporate & B2B Gift Solutions (63 Provinces):\n\n• Attractive discounts (10% - 25%) for corporate bulk orders, conferences, and holiday gifting.\n• Customized premium gift box design with branded company logo engraving.\n• 100% official 4-5 Star National OCOP specialties with official VAT invoices and food safety certificates.\n\nRecommended prestigious specialties for corporate gift sets:'
+                : '🎁 Dạ, OCOP Việt Nam hân hạnh tư vấn giải pháp **Set Quà Tặng Doanh Nghiệp (B2B)** cao cấp từ đặc sản 63 tỉnh thành:\n\n✨ **Chính sách ưu đãi doanh nghiệp:**\n• Chiết khấu hấp dẫn từ **10% - 25%** cho đơn hàng số lượng lớn (sự kiện, hội nghị, tri ân đối tác, quà Tết).\n• Thiết kế hộp quà sang trọng & in khắc logo doanh nghiệp theo nhận diện riêng.\n• Sản phẩm đạt chuẩn **OCOP 4-5 sao Quốc Gia**, đầy đủ hóa đơn VAT và giấy chứng nhận VSATTP.\n\nDưới đây là các dòng đặc sản thượng hạng tiêu biểu được nhiều cơ quan & doanh nghiệp lựa chọn:';
         }else{
             const scoped=Boolean(intent.exactRegion||intent.regionKeyword||intent.categoryOrKeyword||intent.maxPrice||intent.minStars||intent.pricePreference);
             const selected=scoped?shopping.recommendations(products.filter(p=>shopping.allowed(p,intent)),intent).slice(0,3):[];

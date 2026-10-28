@@ -22,7 +22,7 @@
 <script src="catalog-facts.js?v=b2710876dbfd"></script>
 <script src="product-consultant.js?v=e93f4668469d"></script>
 
-<script src="ai-scenarios.js?v=0f112691c816"></script>
+<script src="ai-scenarios.js?v=fa4021b6389b"></script>
 <script src="product-locations.js?v=24739bc83737"></script>
 <script src="ai-request-analysis.js?v=889e43dd7dc1"></script>
 <script src="chat-fallback.js?v=c80c41f24967"></script>
@@ -2919,8 +2919,8 @@
  <!-- HEADER ĐẢO NỔI GLASSMORPHISM -->
  <div class="intro-header relative z-50 pointer-events-auto max-w-5xl mx-auto w-full flex items-center justify-between pb-3.5 border-b border-sky-300/40" style="position: relative !important; z-index: 999999 !important; background: transparent !important; border-radius: 0 !important; box-shadow: none !important;">
  <div class="flex items-center space-x-3">
- <div class="intro-brand-mark relative w-10 h-10 rounded-2xl bg-sky-600 flex items-center justify-center text-white text-lg shadow-md group">
- <i class="fa-solid fa-leaf text-amber-300"></i>
+ <div class="ocop-brand-mark intro-brand-mark relative w-10 h-10 rounded-2xl flex items-center justify-center text-white text-lg shadow-md group" aria-hidden="true">
+ <i class="fa-solid fa-leaf"></i>
  </div>
  <div>
  <div class="flex items-center space-x-2">
@@ -3100,8 +3100,8 @@ Khơi Nguồn Di Sản Việt</span>
  <div class="w-full px-4 sm:px-6 flex items-center justify-between" style="max-width: 100% !important; width: 100% !important; height: 56px !important;">
  <!-- Logo + Brand -->
  <a href="#" class="flex items-center space-x-2 group flex-shrink-0" style="text-decoration: none;">
- <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white text-base shadow-sm shrink-0" style="background: #0284C7;">
- <i class="fa-solid fa-brain"></i>
+ <div class="ocop-brand-mark w-10 h-10 rounded-2xl flex items-center justify-center text-white text-lg shrink-0" aria-hidden="true">
+ <i class="fa-solid fa-leaf"></i>
  </div>
  <div class="flex flex-col">
  <div class="flex items-center gap-1.5">
@@ -3115,7 +3115,7 @@ Khơi Nguồn Di Sản Việt</span>
  <button type="button" onclick="scrollToProducts()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" style="white-space: nowrap !important; height: 38px; color: #0369A1 !important; background: #F0F9FF !important; border: 1px solid #7DD3FC !important;">
  <span id="header-nav-products-label">🌟 Đặc Sản 63 Tỉnh Thành</span>
  </button>
- <button type="button" onclick="openAllStoresModal()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" style="white-space: nowrap !important; height: 38px; color: #0369A1 !important; background: #F0F9FF !important; border: 1px solid #7DD3FC !important;">
+ <button type="button" id="header-stores-toggle" aria-haspopup="dialog" aria-controls="ocop-all-stores-modal" aria-expanded="false" onclick="openAllStoresModal()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" style="white-space: nowrap !important; height: 38px; color: #0369A1 !important; background: #F0F9FF !important; border: 1px solid #7DD3FC !important;">
  <span id="header-nav-stores-label">🗺️ Điểm Bán OCOP</span>
  </button>
  </nav>
@@ -3201,8 +3201,8 @@ Khơi Nguồn Di Sản Việt</span>
  <main class="flex-1" style="display: flex !important; flex-direction: column !important; gap: 20px !important; min-height: auto !important; height: auto !important; position: relative !important; z-index: 20 !important;">
  <!-- 3. HERO BANNER SECTION (CLEAN SKY-TECH UNBOXED HERO) -->
  <section id="shop-hero" class="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 relative" style="max-width: 1400px !important; width: 94% !important; background: transparent !important; border: none !important; box-shadow: none !important;">
- <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
- <div class="lg:col-span-7 space-y-5">
+ <div class="hero-columns grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+ <div class="hero-intro-column lg:col-span-7 space-y-5">
  <h2 class="text-2xl sm:text-4xl lg:text-[2.65rem] font-black tracking-tight leading-[1.15]" data-title="Bản Đồ Số OCOP, Khơi Nguồn Di Sản Việt" style="color: #0F172A !important;">
  <span id="i18n-hero-title1" data-legacy="Bản Đồ Số OCOP," class="whitespace-nowrap" style="color: #0F172A !important; padding-left: 4px !important; overflow: visible !important; display: inline-block !important;">Tinh Hoa Đặc Sản OCOP Việt</span> <br>
  <span id="i18n-hero-title2" data-legacy="Khơi Nguồn Di Sản Việt" style="color: #0284C7 !important;">Chuyển Đổi Số & Bứt Phá Doanh Thu Cùng AI</span>
@@ -3300,7 +3300,7 @@ Khơi Nguồn Di Sản Việt</span>
 
  </div>
 
- <div class="lg:col-span-5 space-y-4">
+ <div class="hero-featured-column lg:col-span-5 space-y-4">
  <!-- KHỐI 2: TRƯNG BÀY SẢN PHẨM NỔI BẬT NHẤT (CARD TƯƠNG TÁC CAO CẤP) -->
  <div id="featured-product-card" role="button" tabindex="0" aria-label="Xem sản phẩm" onclick="openFeaturedProduct()" onkeydown="if(event.target === this &amp;&amp; (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openFeaturedProduct(); }" class="border border-sky-200 p-4 rounded-3xl shadow-lg relative overflow-hidden bg-white" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.08) !important;">
      
@@ -3874,7 +3874,7 @@ Khơi Nguồn Di Sản Việt</span>
  <div id="catalog-layout-wrapper" class="w-full">
  <!-- SIDEBAR DANH MỤC & TIỆN ÍCH DESKTOP (STICKY SUỐT CHIỀU DÀI CUỘN TRANG) -->
  <aside id="catalog-sidebar" class="hidden lg:block w-[320px] max-w-[320px] shrink-0">
- <div id="catalog-sidebar-scroll" class="sticky top-24 space-y-3.5 overflow-y-auto pb-6" tabindex="0" role="region" aria-label="Bộ lọc và danh mục sản phẩm">
+ <div id="catalog-sidebar-scroll" class="space-y-3.5 overflow-y-auto pb-6" tabindex="0" role="region" aria-label="Bộ lọc và danh mục sản phẩm">
  <!-- 1. LIVE SHOPPERS TICKER (BÁO KHÁCH TRỰC TIẾP) -->
  <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-950 text-emerald-100 p-3 rounded-2xl border border-emerald-500/40 shadow-sm text-xs flex items-center justify-between">
  <span class="flex items-center gap-2 font-bold">
@@ -4218,7 +4218,6 @@ Khơi Nguồn Di Sản Việt</span>
  <h4 class="font-extrabold text-xs tracking-wide text-amber-100 flex items-center">
  <span id="chat-title">AI • TƯ VẤN, HỖ TRỢ & KHIẾU NẠI</span>
  </h4>
- <span class="text-[10px] text-emerald-200 font-semibold" id="chat-subtitle">Tư vấn sản phẩm • Hỗ trợ đơn hàng • Chăm sóc khách hàng</span>
  </div>
  </div>
  <div class="flex items-center space-x-1.5 pointer-events-auto">
@@ -4269,7 +4268,7 @@ Khơi Nguồn Di Sản Việt</span>
  <button type="button" id="chat-add-image-button" onclick="document.getElementById('ai-chat-image-input').click()" aria-label="Thêm ảnh" title="Thêm ảnh (dán Ctrl+V hoặc kéo thả)" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-image text-sm"></i></button>
  <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter'){event.preventDefault();sendAIMessage()}" placeholder="Nhập tên sản phẩm hoặc tỉnh thành cần tìm..." class="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
  <button type="button" id="chat-voice-button" aria-label="Nhập bằng giọng nói" title="Nhập bằng giọng nói" aria-pressed="false" aria-controls="ai-chat-input" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-microphone text-sm" aria-hidden="true"></i></button>
- <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 flex-shrink-0 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+ <button type="button" onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 flex-shrink-0 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait"><i class="fa-solid fa-paper-plane text-xs"></i></button>
  </div>
  <p id="chat-voice-status" class="text-[10px] text-gray-500 leading-relaxed hidden sr-only" style="display:none!important;" role="status" aria-live="polite" hidden></p>
  </div>
@@ -4499,7 +4498,7 @@ Khơi Nguồn Di Sản Việt</span>
     </div>
 
     <!-- 8.2 MODAL BẢN ĐỒ & DANH BẠ ĐIỂM BÁN OCOP TOÀN QUỐC -->
-    <div id="ocop-all-stores-modal" class="fixed inset-0 z-[10000000] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md">
+    <div id="ocop-all-stores-modal" role="dialog" aria-modal="true" aria-label="Điểm bán OCOP" aria-hidden="true" class="fixed inset-0 z-[10000000] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md">
         <div class="absolute inset-0" onclick="closeAllStoresModal()"></div>
         <div class="store-directory-panel relative bg-white rounded-3xl max-w-4xl w-full shadow-2xl z-10 border-2 border-emerald-400/60 animate-pop-in flex flex-col overflow-hidden my-auto" style="max-height: min(88vh, 780px);">
             <!-- Header Modal -->
@@ -5480,7 +5479,7 @@ Khơi Nguồn Di Sản Việt</span>
  </div>
  
  <div class="space-y-1">
- <h3 class="text-xl font-black text-slate-900">🎉 ĐẶT HÀNG THÀNH CÔNG!</h3>
+ <h3 class="text-xl font-black text-slate-900">ĐÃ TIẾP NHẬN YÊU CẦU ĐẶT HÀNG</h3>
  <p class="text-xs text-slate-500">Mã vận đơn O2O: <strong id="success-order-id" class="text-sky-700 font-mono text-sm">#OCOP-8829</strong></p>
  </div>
 
@@ -5567,11 +5566,11 @@ Khơi Nguồn Di Sản Việt</span>
  <div id="cust-pane-login" class="space-y-3.5">
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Tài khoản (Tên đăng nhập hoặc Số điện thoại) <span class="text-rose-600">*</span></label>
- <input type="text" id="cust-login-user" placeholder="Nhập tên đăng nhập hoặc số điện thoại..." class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <input type="text" id="cust-login-user" placeholder="Nhập tên đăng nhập hoặc số điện thoại..." onkeydown="if(event.key==='Enter') handleCustomerLoginSubmit()" class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
  </div>
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu <span class="text-rose-600">*</span></label>
- <input type="password" id="cust-login-pass" placeholder="Nhập mật khẩu..." class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <input type="password" id="cust-login-pass" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') handleCustomerLoginSubmit()" class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
  </div>
  <button type="button" onclick="handleCustomerLoginSubmit()" id="btn-cust-login-submit" class="w-full py-3.5 px-4 rounded-xl text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-95" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; background-color: #0284C7 !important; color: #FFFFFF !important; min-height: 46px !important; border: 1.5px solid #38BDF8 !important;">
  <i class="fa-solid fa-right-to-bracket text-white" style="color: #FFFFFF !important; font-size: 14px !important;"></i>
@@ -5607,11 +5606,11 @@ Khơi Nguồn Di Sản Việt</span>
  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu <span class="text-rose-600">*</span></label>
- <input type="password" id="cust-reg-pass" placeholder="Tối thiểu 4 ký tự..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <input type="password" id="cust-reg-pass" placeholder="Tối thiểu 4 ký tự..." onkeydown="if(event.key==='Enter') handleCustomerRegisterSubmit()" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
  </div>
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Nhập lại mật khẩu <span class="text-rose-600">*</span></label>
- <input type="password" id="cust-reg-pass2" placeholder="Nhập lại mật khẩu..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <input type="password" id="cust-reg-pass2" placeholder="Nhập lại mật khẩu..." onkeydown="if(event.key==='Enter') handleCustomerRegisterSubmit()" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
  </div>
  </div>
  <button type="button" onclick="handleCustomerRegisterSubmit()" id="btn-cust-reg-submit" class="w-full py-3.5 px-4 rounded-xl text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-95" style="background: linear-gradient(135deg, #059669 0%, #047857 100%) !important; background-color: #059669 !important; color: #FFFFFF !important; min-height: 46px !important; border: 1.5px solid #34D399 !important;">
@@ -5677,7 +5676,8 @@ Khơi Nguồn Di Sản Việt</span>
                                 </button>
                             </div>
                         </div>
-                        <div class="p-3.5 bg-gradient-to-r from-sky-50 to-blue-50 rounded-2xl border border-sky-200 flex flex-wrap items-center justify-between gap-2">
+                        <div class="mb-2"><button type="button" onclick="closeCustomerAuthModal(); if(typeof openAccountCenter==='function') openAccountCenter('profile');" class="w-full py-2.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-xs transition"><i class="fa-solid fa-id-card"></i> <span>👤 Xem Chi Tiết Hồ Sơ & Quản Lý Tài Khoản</span></button></div>
+<div class="p-3.5 bg-gradient-to-r from-sky-50 to-blue-50 rounded-2xl border border-sky-200 flex flex-wrap items-center justify-between gap-2">
  <div class="space-y-0.5">
  <div class="font-black text-slate-900 text-sm flex items-center gap-1.5">
  <i class="fa-solid fa-circle-user text-sky-600"></i>
@@ -11401,7 +11401,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     </div>
 
                     <!-- HIỂN THỊ GIÁ RÕ RÀNG TRONG CHATBOX -->
-                    <div class="my-2 py-1.5 px-3 rounded-xl flex items-center justify-between text-xs border border-emerald-300 shadow-2xs" style="background: #e8f5e9 !important; border-color: #81c784 !important;">
+                    <div class="my-2 py-1.5 px-3 rounded-xl flex items-center justify-between text-xs border border-sky-300 shadow-2xs" style="background: #e0f2fe !important; border-color: #7dd3fc !important;">
                         <span class="font-bold text-[11px] flex items-center gap-1" style="color: #1b5e20 !important;">
                             <i class="fa-solid fa-tag text-[10px]" style="color: #2e7d32 !important;"></i>
                             <span>${priceLabelText[currentLanguage] || priceLabelText.vi}</span>
@@ -12767,7 +12767,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const body = document.getElementById('ocop-all-stores-body');
             if (!modal || !body) return;
 
-            const majorCenters = window.OcopStores ? window.OcopStores.MAJOR_OCOP_CENTERS : [];
+            const majorCenters = Array.isArray(window.OcopStores?.MAJOR_OCOP_CENTERS) ? window.OcopStores.MAJOR_OCOP_CENTERS : [];
             const provinces = [...new Set(products.map(p => p.region))];
 
             body.innerHTML = `
@@ -12921,14 +12921,28 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 </div>
             `;
 
+            modal.hidden = false;
+            modal.inert = false;
             modal.classList.remove('hidden');
+            modal.setAttribute('aria-hidden', 'false');
+            modal.style.setProperty('display', 'flex', 'important');
+            body.scrollTop = 0;
+            document.getElementById('header-stores-toggle')?.setAttribute('aria-expanded', 'true');
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
+            modal.querySelector('button[onclick="closeAllStoresModal()"]')?.focus({preventScroll: true});
         }
 
         function closeAllStoresModal() {
             const modal = document.getElementById('ocop-all-stores-modal');
-            if (modal) modal.classList.add('hidden');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.hidden = true;
+                modal.inert = true;
+                modal.setAttribute('aria-hidden', 'true');
+                modal.style.setProperty('display', 'none', 'important');
+            }
+            document.getElementById('header-stores-toggle')?.setAttribute('aria-expanded', 'false');
             restorePageScrollState();
         }
 
@@ -16856,7 +16870,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <!-- <script src="toiuu.js"></script> -->
 <script src="script.js?v=caf9a772fea8"></script>
 <script src="product-reviews-ui.js?v=5021788e4110"></script>
-<script src="admin-management.js?v=2c77a17f254d"></script>
+<script src="admin-management.js?v=bd9120ad41ad"></script>
 <script src="account-client.js?v=9f77018f320c"></script>
 <script src="chat-dictation.js?v=592ac0140259"></script>
 <script>
@@ -17481,9 +17495,10 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
         const matchedDist = distList.find(d => 
             (String(d.distributorCode).toLowerCase() === u.toLowerCase() ||
+             (d.username && String(d.username).toLowerCase() === u.toLowerCase()) ||
              String(d.region || '').toLowerCase() === u.toLowerCase() ||
              (d.hotline && d.hotline.replace(/\D/g, '') === u.replace(/\D/g, ''))) &&
-            (String(d.pin) === p || String(d.encryptionKey) === p || p === '123456')
+            (d.password ? String(d.password) === p : (String(d.pin) === p || String(d.encryptionKey) === p || p === '123456'))
         );
 
         if (matchedDist) {
@@ -17529,7 +17544,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 
         if (found) {
             const sessionUser = {
-                customerCode: found.customerCode || ('KH' + found.username),
+                customerCode: (found.customerCode && found.customerCode.startsWith('KH') && found.customerCode.length === 12) ? found.customerCode : ('KH26' + String(found.id || found.username || '1').replace(/\D/g, '').padStart(8, '0')),
                 username: found.username,
                 fullName: found.fullName || found.username,
                 phone: found.phone || '',
@@ -17558,8 +17573,13 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 }, 400);
             } else {
                 setTimeout(() => {
-                    switchCustomerAuthTab('orders');
-                }, 500);
+                    closeCustomerAuthModal();
+                    if (typeof window.openAccountCenter === 'function') {
+                        window.openAccountCenter('profile');
+                    } else {
+                        switchCustomerAuthTab('orders');
+                    }
+                }, 400);
             }
         } else {
             showCustomerAuthAlert('❌ Sai tài khoản (Username/SĐT) hoặc mật khẩu!', 'error');
@@ -17752,14 +17772,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
     }
 </script>
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->
-<link rel="stylesheet" href="skytech-complete.css?v=1421728a6299">
-<link rel="stylesheet" href="store-directory-light.css?v=200941f274e3">
+<link rel="stylesheet" href="skytech-complete.css?v=803199500e68">
+<link rel="stylesheet" href="store-directory-light.css?v=cb405b0da1a4">
 <link rel="stylesheet" href="cart-ui.css?v=0a3faaa17530">
-<link rel="stylesheet" href="account-center.css?v=60b4a74cdbf2">
-<script src="skytech-complete.js?v=233dc4b6d979"></script>
+<link rel="stylesheet" href="account-center.css?v=cf9634a1cf0b">
+<link rel="stylesheet" href="admin-management.css?v=5ca46f2073d2">
+<script src="skytech-complete.js?v=0d871caacf3d"></script>
 <script src="cart-ui.js?v=92da91b0a573"></script>
-<script src="account-center.js?v=74dd2a67d892"></script>
-<script src="storefront-ui.js?v=c21eef4041d6"></script>
+<script src="account-center.js?v=25b3a6fd5f9d"></script>
+<script src="storefront-ui.js?v=1287160ea074"></script>
 <script src="ui-branding.js?v=66dc84bfc24e"></script>
 <script src="storefront-navigation.js?v=9c153796330a"></script>
 <script src="storefront-router.js?v=a1b02371d840"></script>

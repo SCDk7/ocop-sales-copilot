@@ -787,7 +787,7 @@
         return false;
     };
 
-    window.promptAdminPinModal = function () {
+    window.promptAdminPinModal = function (beforeOpen) {
         const currentUser = (typeof getCurrentCustomer === 'function' ? getCurrentCustomer() : null) ||
             (() => {
                 try { return JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || 'null'); } catch (e) { return null; }
@@ -798,14 +798,18 @@
 
         // Nếu là khách hàng thường: Chặn truy cập và thông báo rõ ràng
         if (currentUser && !hasPrivilege) {
+            const message = '⚠️ Tài khoản khách hàng không có quyền truy cập Quản trị. Vui lòng đăng nhập tài khoản Admin hoặc Nhà Phân Phối!';
+            if (window.showAccountNotice?.(message)) return false;
             if (typeof showToast === 'function') {
-                showToast('⚠️ Tài khoản khách hàng không có quyền truy cập Quản trị. Vui lòng đăng nhập tài khoản Admin hoặc Nhà Phân Phối!', 'warning');
+                showToast(message, 'warning');
             }
             if (typeof openCustomerAuthModal === 'function') {
                 openCustomerAuthModal();
             }
-            return;
+            return false;
         }
+
+        if (typeof beforeOpen === 'function') beforeOpen();
 
         // Kiểm tra xem đã xác thực mã PIN trước đó chưa
         const isPinVerified = sessionStorage.getItem('ocop_admin_pin_verified') === 'true';
@@ -1009,13 +1013,21 @@
         }
     };
 
+    function getManagementLoginChoices() {
+        const manager = window.OcopAdminManagement;
+        const admins = manager?.getAdminAccounts?.() || [
+            {username: 'ThaoNguyenad01'}, {username: 'KimNganad02'},
+            {username: 'VinhPhucad03'}, {username: 'ThanhBinhad04'}
+        ];
+        const demos = (manager?.getDistributorsList?.() || []).filter(account => account.isDemo && account.username);
+        return [...admins, ...demos];
+    }
+
     window.selectAdminLoginAccount = function (username) {
         const uInput = document.getElementById('admin-login-username');
         if (uInput) uInput.value = username;
 
-        const adminAccounts = (window.OcopAdminManagement && typeof window.OcopAdminManagement.getAdminAccounts === 'function')
-            ? window.OcopAdminManagement.getAdminAccounts()
-            : [];
+        const adminAccounts = getManagementLoginChoices();
 
         adminAccounts.forEach(a => {
             const pill = document.getElementById('pill-admin-' + a.username);
@@ -1025,6 +1037,7 @@
                 pill.style.background = isSel ? '#E0F2FE' : '#FFFFFF';
                 pill.style.color = isSel ? '#0369A1' : '#334155';
                 pill.style.fontWeight = isSel ? '800' : '600';
+                pill.setAttribute('aria-pressed', String(isSel));
             }
         });
 
@@ -1032,7 +1045,8 @@
         const err = document.getElementById('admin-login-error');
         if (err) err.style.display = 'none';
         if (passInput) {
-            passInput.value = '';
+            const demo = adminAccounts.find(account => account.isDemo && account.username.toLowerCase() === username.toLowerCase());
+            passInput.value = demo?.password || '';
             passInput.style.borderColor = '#BAE6FD';
             passInput.style.background = '#F8FAFC';
             passInput.focus();
@@ -1073,6 +1087,30 @@
         let authed = null;
         if (window.OcopAdminManagement && typeof window.OcopAdminManagement.authenticateAdmin === 'function') {
             authed = window.OcopAdminManagement.authenticateAdmin(username, password);
+        }
+
+        const distributor = !authed && window.OcopAdminManagement?.authenticateDistributor?.(username, password);
+        if (distributor) {
+            if (err) err.style.display = 'none';
+            window.closeAdminLoginModal();
+            window.closeAdminHubModal();
+            window._adminLoginSuccessCallback = null;
+            localStorage.setItem('ocop_current_user', JSON.stringify({
+                username: distributor.distributorCode,
+                fullName: distributor.name,
+                shortName: distributor.shortName || distributor.name,
+                region: distributor.region,
+                phone: distributor.hotline,
+                address: distributor.address,
+                role: 'distributor',
+                isDistributor: true,
+                distributorCode: distributor.distributorCode
+            }));
+            if (typeof updateCustomerHeaderUI === 'function') updateCustomerHeaderUI();
+            window.OcopAdminManagement.setActiveScope('distributor', distributor.distributorCode);
+            window.OcopAdminManagement.openAdminManagementModal('distributor', distributor.distributorCode);
+            window.showToast?.('Đã đăng nhập ' + (distributor.shortName || distributor.name) + ' với quyền Nhà phân phối.', 'success');
+            return;
         }
 
         if (authed) {
@@ -1145,14 +1183,7 @@
 
         modal.style.cssText = 'display: flex !important; position: fixed !important; inset: 0 !important; z-index: 2147483647 !important; align-items: center !important; justify-content: center !important; padding: 16px !important; background: rgba(15, 23, 42, 0.8) !important; backdrop-filter: blur(8px) !important;';
 
-        const adminAccounts = (window.OcopAdminManagement && typeof window.OcopAdminManagement.getAdminAccounts === 'function')
-            ? window.OcopAdminManagement.getAdminAccounts()
-            : [
-                { username: 'ThaoNguyenad01', fullName: 'Thảo Nguyên (Admin 01)' },
-                { username: 'KimNganad02', fullName: 'Kim Ngân (Admin 02)' },
-                { username: 'VinhPhucad03', fullName: 'Vĩnh Phúc (Admin 03)' },
-                { username: 'ThanhBinhad04', fullName: 'Thanh Bình (Admin 04)' }
-            ];
+        const adminAccounts = getManagementLoginChoices();
 
         const currentSelected = defaultUsername || 'ThaoNguyenad01';
 
@@ -1162,10 +1193,10 @@
             const pillBg = isSel ? '#E0F2FE' : '#FFFFFF';
             const pillColor = isSel ? '#0369A1' : '#334155';
             const pillWeight = isSel ? '800' : '600';
-            return '<button type="button" onclick="selectAdminLoginAccount(\'' + a.username + '\')" id="pill-admin-' + a.username + '"' +
+            return '<button type="button" aria-pressed="' + isSel + '" onclick="selectAdminLoginAccount(\'' + a.username + '\')" id="pill-admin-' + a.username + '"' +
                 ' style="padding: 6px 12px !important; border-radius: 999px !important; font-size: 11.5px !important; font-weight: ' + pillWeight + ' !important; border: ' + pillBorder + ' !important; background: ' + pillBg + ' !important; color: ' + pillColor + ' !important; cursor: pointer !important; transition: all 0.2s !important; display: flex !important; align-items: center !important; gap: 5px !important; text-align: left !important;">' +
-                '<i class="fa-solid fa-user-shield" style="font-size: 11px !important; color: #0284C7 !important;"></i>' +
-                '<span>' + a.username + '</span>' +
+                '<i class="fa-solid ' + (a.isDemo ? 'fa-store' : 'fa-user-shield') + '" style="font-size: 11px !important; color: #0284C7 !important;"></i>' +
+                '<span>' + (a.isDemo ? a.shortName || a.username : a.username) + '</span>' +
                 '</button>';
         }).join('');
 
@@ -1182,17 +1213,17 @@
                     </div>
                     <div>
                         <h3 style="margin: 0 0 4px !important; color: #0C4A6E !important; font-size: 1.25rem !important; font-weight: 900 !important; letter-spacing: -0.01em !important;">
-                            Đăng Nhập Quản Trị Viên (Admin)
+                            Đăng nhập Admin / Nhà phân phối
                         </h3>
                         <p style="margin: 0 !important; color: #64748B !important; font-size: 12px !important; font-weight: 500 !important;">
-                            Mỗi Admin có Tên đăng nhập và Mật khẩu riêng
+                            Chọn tài khoản và nhập mật khẩu để đăng nhập
                         </p>
                     </div>
                 </div>
 
                 <div style="margin-bottom: 16px !important;">
                     <label style="display: block !important; font-size: 11.5px !important; font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: 0.04em !important; color: #0369A1 !important; margin-bottom: 8px !important;">
-                        Chọn tài khoản Quản trị viên:
+                        Chọn tài khoản Admin / Nhà phân phối:
                     </label>
                     <div style="display: flex !important; flex-wrap: wrap !important; gap: 6px !important;">
                         ${pillsHtml}
@@ -1205,7 +1236,7 @@
                             Tên đăng nhập (Username):
                         </label>
                         <div style="position: relative !important;">
-                            <input type="text" id="admin-login-username" value="${currentSelected}" placeholder="Nhập tên đăng nhập Admin..." required autocomplete="username"
+                            <input type="text" id="admin-login-username" value="${currentSelected}" placeholder="Nhập tên đăng nhập Admin hoặc NPP..." required autocomplete="username"
                                    style="width: 100% !important; box-sizing: border-box !important; padding: 11px 14px 11px 38px !important; font-size: 14px !important; font-weight: 700 !important; border-radius: 12px !important; background: #F8FAFC !important; border: 2px solid #BAE6FD !important; color: #0F172A !important; outline: none !important; transition: all 0.2s !important;">
                             <i class="fa-solid fa-id-badge" style="position: absolute !important; left: 14px !important; top: 50% !important; transform: translateY(-50%) !important; color: #0284C7 !important; font-size: 14px !important;"></i>
                         </div>
@@ -1214,7 +1245,7 @@
                     <div style="margin-bottom: 16px !important;">
                         <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 6px !important;">
                             <label for="admin-login-password" style="font-size: 12px !important; font-weight: 700 !important; color: #1E293B !important;">
-                                Mật khẩu riêng của Admin:
+                                Mật khẩu tài khoản:
                             </label>
                             <span id="admin-pass-hint" style="font-size: 11px !important; color: #0284C7 !important; font-weight: 600 !important;">
                                 Mật khẩu riêng từng tài khoản
@@ -1253,6 +1284,7 @@
         modal.style.setProperty('z-index', '2147483647', 'important');
 
         window._adminLoginSuccessCallback = onLoginSuccess;
+        if (adminAccounts.some(account => account.isDemo && account.username === currentSelected)) window.selectAdminLoginAccount(currentSelected);
 
         setTimeout(() => {
             const passInput = document.getElementById('admin-login-password');
@@ -1463,6 +1495,8 @@
     // =========================================================================
     let currentOrderProduct = null;
     let currentOrderQty = 1;
+    let onlineOrderSubmitting = false;
+    let onlineOrderRequest;
 
     window.openOnlineOrderModal = function (productId) {
         const prodList = window.products || (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
@@ -1665,8 +1699,8 @@
         }
     };
 
-    window.submitOnlineOrder = function () {
-        if (!currentOrderProduct) return;
+    window.submitOnlineOrder = async function () {
+        if (!currentOrderProduct || onlineOrderSubmitting) return;
 
         const nameInput = document.getElementById('order-cust-name');
         const phoneInput = document.getElementById('order-cust-phone');
@@ -1698,72 +1732,36 @@
         const paymentInput = document.querySelector('input[name="order-payment"]:checked');
         const paymentMethod = paymentInput ? (paymentInput.value === 'vietqr' ? 'Chuyển khoản QR ngân hàng' : 'Thanh toán khi nhận hàng (COD)') : 'COD';
 
-        const p = currentOrderProduct;
-        const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(p.id) : null;
-        const storeName = storeInfo ? storeInfo.primaryStore.name : ('Showroom OCOP ' + p.region);
-
-        const unitPrice = p.price || 0;
-        const goodsTotal = unitPrice * currentOrderQty;
-        const shippingFee = 25000;
-        const platformFee = 10000;
-        const webmasterCommission = Math.round(goodsTotal * 0.08);
-        const webmasterProfit = platformFee + webmasterCommission;
-        const grandTotal = goodsTotal + shippingFee + platformFee;
-
-        const orderId = '#OCOP-' + (8800 + Math.floor(Math.random() * 1100));
-
-        const orderData = {
-            orderId: orderId,
-            customerName: customerName,
-            customerPhone: customerPhone,
-            shippingAddress: customerAddress,
-            customerNote: customerNote,
-            paymentMethod: paymentMethod,
-            productId: p.id,
-            productName: p.name,
-            productImg: p.img,
-            storeName: storeName,
-            qty: currentOrderQty,
-            unitPrice: unitPrice,
-            goodsTotal: goodsTotal,
-            shippingFee: shippingFee,
-            platformFee: platformFee,
-            webmasterCommission: webmasterCommission,
-            webmasterProfit: webmasterProfit,
-            grandTotal: grandTotal,
-            createdAt: new Date().toISOString(),
-            timeDisplay: 'Vừa xong'
-        };
-
-        // Lưu vào localStorage
+        const request = {confirmed: true, items: [{productId: currentOrderProduct.id, quantity: currentOrderQty}],
+            customer: {name: customerName, phone: customerPhone, address: customerAddress, note: customerNote, paymentMethod}};
+        const signature = JSON.stringify(request);
+        if (onlineOrderRequest?.signature !== signature) onlineOrderRequest = {signature, key: crypto.randomUUID()};
+        onlineOrderSubmitting = true;
         try {
-            let existingOrders = [];
-            const raw = localStorage.getItem('ocop_online_orders');
-            if (raw) existingOrders = JSON.parse(raw);
-            if (!Array.isArray(existingOrders)) existingOrders = [];
-            existingOrders.unshift(orderData);
-            localStorage.setItem('ocop_online_orders', JSON.stringify(existingOrders));
-        } catch (e) {
-            console.warn('Could not save order to localStorage:', e);
-        }
-
-        // Đóng order modal
-        window.closeOnlineOrderModal();
-
-        // Mở success modal
-        window.showOrderSuccessModal(orderData);
-
-        // Kích hoạt cập nhật dữ liệu tài chính của Chủ Web
-        if (typeof window.enrichWebmasterRevenueData === 'function') {
-            window.enrichWebmasterRevenueData();
-        }
+            const endpoint = typeof window.getAIEndpoint === 'function' ? window.getAIEndpoint('/api/ai/draft-orders') : '/api/ai/draft-orders';
+            const response = await fetch(endpoint, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({...request, idempotencyKey: onlineOrderRequest.key})});
+            const body = await response.json();
+            if (!response.ok) throw new Error(body.error || 'Chưa gửi được đơn hàng. Vui lòng thử lại.');
+            const draft = body.draft;
+            try {
+                const saved = JSON.parse(localStorage.getItem('ocop_customer_orders') || '[]');
+                const user = window.getCurrentCustomer?.();
+                localStorage.setItem('ocop_customer_orders', JSON.stringify([{...draft, username: user?.username || null, customerName, customerPhone, shippingAddress: customerAddress}, ...saved.filter(row => row.id !== draft.id)]));
+            } catch (_) {}
+            const url = new URL('draft-order.html', document.baseURI);
+            url.searchParams.set('order', draft.id);url.hash = 'receipt=' + draft.receiptToken;
+            window.location.assign(url.href);
+        } catch (error) {
+            if (typeof showToast === 'function') showToast('Chưa gửi được đơn hàng: ' + error.message, 'error');
+            else alert('Chưa gửi được đơn hàng. Vui lòng thử lại.');
+        } finally { onlineOrderSubmitting = false; }
     };
 
     window.showOrderSuccessModal = function (order) {
         const successModal = document.getElementById('order-success-modal');
         if (!successModal) {
             if (typeof showToast === 'function') {
-                showToast('🎉 Đặt hàng online thành công! Mã đơn: ' + order.orderId, 'success');
+                showToast('Đã lưu yêu cầu đặt hàng. Chờ người bán xác nhận. Mã đơn: ' + order.orderId, 'info');
             }
             return;
         }
