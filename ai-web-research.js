@@ -20,6 +20,7 @@
         if(privateText(query))return {required:false,reason:'private_details'};
         if(/khieu nai|doi tra|hoan tien|complaint|refund|kiem tra.*don|tinh trang.*don|theo doi.*don|order status|track.*order|giao hang|shipping|phi ship|huong dan.*dat hang|ho tro dat hang|how.*place.*order|ton kho|con hang|con bao nhieu|het hang|stock|inventory|cho.*gap.*(?:admin|nhan vien)|nguoi that|human support/.test(q) || reply?.handoffAdmin)return {required:false,reason:'private_or_operational'};
         if(/^(xin chao|chao|hello|hi|cam on|thanks|thank you|ok|oke|duoc|vang|da)[!.\s]*$/.test(q))return {required:false,reason:'greeting'};
+        if(/(?:can |muon |xin )?tu van (?:giup |cho )?(?:toi |minh |em )?(?:chon |tim )?(?:dac san|san pham|qua bieu|combo)|tu van san pham|tu van dac san|goi y dac san|co dac san gi/i.test(q) && !/dong nai|ha noi|da nang|tp hcm|quang binh|lam dong|can tho|tinh |gia bao nhieu|duoi |trieu|nghin|k\b/i.test(q))return {required:false,reason:'general_consultation'};
         const ids=reply?.productIds || reply?.suggested_products || [];
         const selected=ids.map(id=>products.find(product=>product.id===id)).filter(Boolean).slice(0,3);
         const imageType=String(reply?.imageEvidence?.productType||'').trim();
