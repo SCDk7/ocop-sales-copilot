@@ -7,6 +7,21 @@ const os = require('node:os');
 const path = require('node:path');
 const {syncClientAssets} = require('./scripts/sync-client-assets.cjs');
 
+test('fresh visits show the intro despite a stale tab flag; reloads preserve an entered shop',()=>{
+    for(const file of ['index.html','index_2.html']){
+        const html=fs.readFileSync(file,'utf8');
+        const script=[...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match=>match[1]).find(code=>code.includes('window.OCOPResumeMarket = false'));
+        for(const [type,stored,suffix,expected] of [['navigate','1','',false],['navigate',null,'',false],['reload','1','',true],['reload',null,'',false],['back_forward','1','',true],['navigate','1','?view=shop',true]]){
+            const values=new Map(stored?[['ocop_entered_market',stored]]:[]),classes=new Set();
+            const context={window:{},URL,location:new URL('https://scdk7.github.io/ocop-sales-copilot/'+suffix),performance:{getEntriesByType:()=>[{type}]},sessionStorage:{getItem:key=>values.get(key),removeItem:key=>values.delete(key)},document:{documentElement:{classList:{add:name=>classes.add(name),remove:name=>classes.delete(name)}}}};
+            vm.runInNewContext(script,context);
+            assert.equal(context.window.OCOPResumeMarket,expected);
+            assert.equal(classes.has('catalog-browsing'),expected);
+            if(!expected)assert.equal(values.has('ocop_entered_market'),false);
+        }
+    }
+});
+
 test('GitHub project Pages loads local assets from the repository directory while Render keeps root routes', () => {
     for (const file of ['index.html', 'index_2.html']) {
         const html=fs.readFileSync(file,'utf8');
@@ -41,7 +56,7 @@ for (const page of ['index.html', 'index_2.html']) {
         function node(initial=[]) {
             const classes=new Set(initial),style={};
             style.setProperty=(key,value)=>style[key]=value;style.removeProperty=key=>delete style[key];
-            return {style,classList:{add:(...names)=>names.forEach(name=>classes.add(name)),remove:(...names)=>names.forEach(name=>classes.delete(name)),contains:name=>classes.has(name)}};
+            return {style,removeAttribute(){},classList:{add:(...names)=>names.forEach(name=>classes.add(name)),remove:(...names)=>names.forEach(name=>classes.delete(name)),contains:name=>classes.has(name)}};
         }
         const header=node(),dialogHeader=node(),overlay=node();
         dialogHeader.style.display='grid';dialogHeader.style.position='relative';
@@ -51,7 +66,9 @@ for (const page of ['index.html', 'index_2.html']) {
         vm.createContext(context);
         const sections=[['function openIntroModal()', 'function enterOcopMarket('],['function enterOcopMarket(', 'function openLuckyGift('],['function openProvinceProductDetails(', 'let currentSortMode']];
         for(const [from,to]of sections){const start=html.indexOf(from);vm.runInContext(html.slice(start,html.indexOf(to,start)),context);}
-        context.openIntroModal();context.enterOcopMarket('all');context.openProvinceProductDetails(1);
+        overlay.hidden=true;overlay.style.visibility='hidden';
+        context.openIntroModal();assert.equal(overlay.hidden,false);assert.equal(overlay.style.visibility,undefined);
+        context.enterOcopMarket('all');context.openProvinceProductDetails(1);
         assert.equal(header.style.display,'block');
         assert.equal(dialogHeader.style.display,'grid');assert.equal(dialogHeader.style.position,'relative');
         assert.equal(dialogHeader.classList.contains('hidden'),false);

@@ -14,9 +14,17 @@
         }
     </script>
     <script>
+        window.OCOPResumeMarket = false;
         try {
-            if (sessionStorage.getItem('ocop_entered_market') === '1') {
+            const navigationType = typeof performance !== 'undefined' ? performance.getEntriesByType('navigation')[0]?.type : 'navigate';
+            const returnToShop = new URL(location.href).searchParams.get('view') === 'shop';
+            window.OCOPResumeMarket = sessionStorage.getItem('ocop_entered_market') === '1'
+                && (navigationType === 'reload' || navigationType === 'back_forward' || returnToShop);
+            if (window.OCOPResumeMarket) {
                 document.documentElement.classList.add('catalog-browsing');
+            } else {
+                sessionStorage.removeItem('ocop_entered_market');
+                document.documentElement.classList.remove('catalog-browsing');
             }
         } catch (_) {}
     </script>
@@ -5606,9 +5614,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             const intro = document.getElementById('ocop-intro-overlay');
             let hasEntered = false;
             try {
-                hasEntered = sessionStorage.getItem('ocop_entered_market') === '1' ||
-                             document.documentElement.classList.contains('catalog-browsing') ||
-                             (document.body && document.body.classList.contains('catalog-browsing'));
+                hasEntered = window.OCOPResumeMarket === true;
             } catch (_) {}
 
             if (hasEntered) {
@@ -5633,6 +5639,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 });
                 setAIChatWidgetVisibility(true);
                 restorePageScrollState();
+            } else {
+                openIntroModal();
             }
 
             fetchProducts();
@@ -5984,8 +5992,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             document.body.classList.remove('catalog-browsing');
             const overlay = document.getElementById('ocop-intro-overlay');
             if (overlay) {
+                overlay.hidden = false;
+                overlay.removeAttribute('hidden');
                 overlay.classList.remove('hidden', 'curtain-closing');
                 overlay.style.removeProperty('display');
+                overlay.style.removeProperty('visibility');
+                overlay.style.removeProperty('opacity');
+                overlay.style.removeProperty('pointer-events');
+                overlay.scrollTop = 0;
             }
             const headers = document.querySelectorAll('body > .storefront-header, #storefront-main-header');
             headers.forEach(h => {
