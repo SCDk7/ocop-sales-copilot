@@ -71,4 +71,11 @@ function composeDataReply(products, intent, language, wikiSources = [], intentPr
   const productIds=reply.productIds || [];
   return {...reply,message:reply.message,text_response:reply.message,productIds,suggested_products:productIds,understandingStatus:reply.understandingStatus || 'understood',understandingSource:intentProvider || 'catalog_rules',imageMatchStatus:'not_applicable',handoffAdmin:Boolean(reply.handoffAdmin),dynamic_chips:reply.dynamic_chips || [],wikipediaSources:sources.map(({title,url})=>({title,url})),aiProvider:'catalog_wikipedia',responseMode:'semantic_catalog_wikipedia',integrations:{gemini:intentProvider==='gemini',openai:false,wikipedia:sources.length>0,googleSearch:false}};
 }
-module.exports={composeDataReply};
+function fastBudgetReply(products,intent,language='vi') {
+  if(!intent.maxPrice || !(intent.isCombo || intent.isGift || (intent.minItems && intent.minItems > 1) || (intent.maxItems && intent.maxItems > 1)) || intent.requiredClarification ||
+    ['isComplaint','isCSKH','isShipping','isUsage','isOcopKnowledge','isOrderGuide','isStoreLookup'].some(key=>intent[key]))return null;
+  const verified={...intent,isCombo:true,hasVerifiedCombo:true};
+  verified.comboPlans=shopping.variants(products.filter(product=>shopping.allowed(product,verified)),verified);
+  return {...composeDataReply(products,verified,language),responseMode:'verified_catalog_combos',understandingSource:'catalog_rules'};
+}
+module.exports={composeDataReply,fastBudgetReply};

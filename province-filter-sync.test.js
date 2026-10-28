@@ -592,7 +592,7 @@ test('AI Tu Van quickview button opens chat, preserves and continues chat histor
     // 4. Chat history persistence and new chat reset
     assert(html.includes('function saveAIChatHistory()'), 'saveAIChatHistory is defined');
     assert(html.includes('function restoreAIChatHistory()'), 'restoreAIChatHistory is defined');
-    assert(html.includes('function resetAIChatHistory()'), 'resetAIChatHistory is defined');
+    assert(/function resetAIChatHistory\(/.test(html), 'resetAIChatHistory is defined');
     assert(html.includes('id="ai-chat-reset-btn"'), 'ai-chat-reset-btn exists in AI chat header');
     assert(html.includes('restoreAIChatHistory()'), 'restoreAIChatHistory called on page init');
 });

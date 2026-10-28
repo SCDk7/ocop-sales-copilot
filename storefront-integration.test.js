@@ -8,6 +8,27 @@ const path = require('node:path');
 const {syncClientAssets} = require('./scripts/sync-client-assets.cjs');
 
 for (const page of ['index.html', 'index_2.html']) {
+    test(page + ' intro and product navigation never change a cart or dialog header', () => {
+        const html=fs.readFileSync(page,'utf8');
+        function node(initial=[]) {
+            const classes=new Set(initial),style={};
+            style.setProperty=(key,value)=>style[key]=value;style.removeProperty=key=>delete style[key];
+            return {style,classList:{add:(...names)=>names.forEach(name=>classes.add(name)),remove:(...names)=>names.forEach(name=>classes.delete(name)),contains:name=>classes.has(name)}};
+        }
+        const header=node(),dialogHeader=node(),overlay=node();
+        dialogHeader.style.display='grid';dialogHeader.style.position='relative';
+        const context={document:{body:node(),getElementById:()=>overlay,querySelectorAll:selector=>/(^|,)\s*header\s*(,|$)/.test(selector)?[header,dialogHeader]:[header]},
+            products:[{id:1}],window:{openQuickView(){}},setAIChatWidgetVisibility(){},restorePageScrollState(){},playChimeSound(){},fetchProducts(){},
+            playWhooshSound(){},stopIntroMusic(){},scrollToProducts(){},setTimeout:callback=>callback()};
+        vm.createContext(context);
+        const sections=[['function openIntroModal()', 'function enterOcopMarket('],['function enterOcopMarket(', 'function openLuckyGift('],['function openProvinceProductDetails(', 'let currentSortMode']];
+        for(const [from,to]of sections){const start=html.indexOf(from);vm.runInContext(html.slice(start,html.indexOf(to,start)),context);}
+        context.openIntroModal();context.enterOcopMarket('all');context.openProvinceProductDetails(1);
+        assert.equal(header.style.display,'block');
+        assert.equal(dialogHeader.style.display,'grid');assert.equal(dialogHeader.style.position,'relative');
+        assert.equal(dialogHeader.classList.contains('hidden'),false);
+    });
+
     test(page + ' keeps a dragged chat accessible after a viewport resize', () => {
         const html = fs.readFileSync(page, 'utf8');
         const source = html.slice(html.indexOf('        function keepChatInViewport()'), html.indexOf('        function initDraggableResizableChatbox()'));
@@ -56,7 +77,7 @@ for (const page of ['index.html', 'index_2.html']) {
         const html = fs.readFileSync(page, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
         const scripts = [...html.matchAll(/<script\b[^>]*src="([^"]+)"/g)].map(match => match[1].split('?')[0]);
         const styles = [...html.matchAll(/<link\b[^>]*href="([^"]+\.css(?:\?[^"]*)?)"/g)].map(match => match[1].split('?')[0]);
-        for (const file of ['giohang.js', 'admin-management.js', 'ai-request-analysis.js', 'skytech-complete.js', 'cart-ui.js', 'account-center.js', 'storefront-ui.js', 'ui-branding.js', 'storefront-navigation.js', 'storefront-router.js']) {
+        for (const file of ['customer-session.js', 'giohang.js', 'admin-management.js', 'ai-request-analysis.js', 'ai-web-research.js', 'ocop-assistant-profile.js', 'skytech-complete.js', 'cart-ui.js', 'account-center.js', 'storefront-ui.js', 'ui-branding.js', 'storefront-navigation.js', 'storefront-router.js']) {
             assert.equal(scripts.filter(src => src === file).length, 1, file + ' is loaded once');
         }
         for (const file of ['assets/tailwind.css', 'skytech-complete.css', 'cart-ui.css', 'account-center.css', 'admin-management.css', 'store-directory-light.css', 'assets/vendor/fonts/jakarta.css', 'assets/vendor/fontawesome/css/all.min.css']) {
@@ -72,6 +93,7 @@ for (const page of ['index.html', 'index_2.html']) {
             assert.ok(scripts.indexOf(before) < scripts.indexOf(after), before + ' precedes ' + after);
         }
         assert.ok(scripts.indexOf('ai-request-analysis.js') < scripts.indexOf('chat-fallback.js'));
+        assert.ok(scripts.indexOf('ocop-assistant-profile.js') < scripts.indexOf('chat-fallback.js'));
         const sendStart=html.indexOf('        async function sendAIMessage()');
         const sendEnd=html.indexOf('        function isAIComboRequest(',sendStart);
         assert.ok(!html.slice(sendStart,sendEnd).includes('escalateToAdmin();'), 'support questions use the analyzed request flow');
@@ -79,7 +101,7 @@ for (const page of ['index.html', 'index_2.html']) {
             if (/\bsrc=|application\/(?:ld\+)?json/.test(match[1])) continue;
             new vm.Script(match[2], {filename: page});
         }
-        assert.ok(!html.includes("localStorage.removeItem('ocop_cart')"), 'guest carts survive reload');
+        assert.ok(scripts.indexOf('customer-session.js') < scripts.indexOf('giohang.js'), 'guest reset and signed-in restore happen before reading the basket');
     });
 }
 

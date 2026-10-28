@@ -6,7 +6,7 @@
         return String(value || '').split(/\r?\n|\\n/).filter(line => !isCashflowText(line)).join('\n').trim();
     }
     const greetings = {
-        vi: 'Chào anh/chị! Em hỗ trợ chọn đặc sản OCOP, kiểm tra giá và thông tin trong danh mục, hướng dẫn đặt hàng và tiếp nhận khiếu nại. Anh/chị muốn tư vấn sản phẩm, đặt mua hay cần hỗ trợ đơn hàng ạ?',
+        vi: 'Dạ, em là Trợ lý AI OCOP Việt Nam. Em hỗ trợ tìm đặc sản, chọn quà, tra cứu thông tin sản phẩm, đặt hàng và khiếu nại. Anh/chị muốn tìm đặc sản vùng nào hoặc cần em hỗ trợ gì ạ?',
         en: 'I can help you find OCOP products, product information, prices, gifts and store locations.',
         zh: '我可以帮助您查找 OCOP 产品、产品信息、价格、礼品和门店。',
         ko: 'OCOP 상품, 상품 정보, 가격, 선물 및 매장을 안내합니다.',
@@ -102,7 +102,7 @@
             'i18n-intro-pillar3': 'Trợ lý AI 24/7',
             'i18n-intro-pillar4': 'AI Financial Engine',
             'i18n-sidebar-realtime': 'Điểm bán & hợp tác xã OCOP',
-            'chat-title': language() === 'en' ? 'AI • ADVICE, SUPPORT & COMPLAINTS' : 'AI • TƯ VẤN, HỖ TRỢ & KHIẾU NẠI',
+            'chat-title': language() === 'en' ? 'OCOP VIETNAM AI ASSISTANT' : 'TRỢ LÝ AI OCOP VIỆT NAM',
             'chat-greeting': greetings[language()] || greetings.vi,
             'chat-guidance': language() === 'en' ? 'Tell me what you need or describe the issue with your order.' : 'Anh/chị cần tư vấn, hỗ trợ đơn hàng hay phản ánh vấn đề gì? Em sẽ hướng dẫn từng bước.'
         };
@@ -308,7 +308,8 @@
         for (const name of ['generateAIResponse', 'getGeminiWikiResponse']) wrap(name, result => typeof result === 'string' ? stripFinancialLines(result) || greetings[language()] || greetings.vi : result);
         const formatMessage = root.formatAIMessageText;
         if (typeof formatMessage === 'function') root.formatAIMessageText = function (text, ...args) {
-            return formatMessage.call(this, stripFinancialLines(text) || greetings[language()] || greetings.vi, ...args);
+            const message=stripFinancialLines(text) || greetings[language()] || greetings.vi;
+            return formatMessage.call(this, root.OCOPAssistantProfile?.completeMessage(message,language()) || message, ...args);
         };
         const showToast = root.showToast;
         if (typeof showToast === 'function') root.showToast = function (text, ...args) {

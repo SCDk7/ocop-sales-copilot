@@ -106,16 +106,23 @@ function matchImageEvidence(products, evidence = {}) {
     ['duong thot not', 'thot not', 'palm sugar'],
     ['nuoc mam', 'fish sauce'],
     ['sam', 'nhan sam', 'ginseng', 'sam ngoc linh'],
-    ['dong trung ha thao', 'cordyceps'],
+    ['dong trung ha thao', 'nam dong trung ha thao', 'cordyceps'],
+    ['gom', 'gom su', 'ceramic', 'ceramics', 'pottery'],
+    ['may tre', 'may tre dan', 'bamboo', 'rattan'],
+    ['tho cam', 'textile', 'textiles', 'weaving'],
     ['mien', 'mien dong', 'mien dao', 'bun', 'pho', 'vermicelli', 'noodles', 'noodle', 'banh da', 'soi']
   ];
   const phrase = (text, term) => (` ${text} `).includes(` ${term} `);
-  const terms = aliases.find(group => group.some(term => phrase(type, term))) || [type];
+  const family=aliases.map(terms=>({terms,prefix:Math.max(0,...terms.filter(term=>type===term||type.startsWith(term+' ')).map(term=>term.length)),length:Math.max(0,...terms.filter(term=>phrase(type,term)).map(term=>term.length))}))
+    .filter(group=>group.length).sort((a,b)=>b.prefix-a.prefix || b.length-a.length)[0];
+  const terms = family?.terms || [type];
   let candidates = products.filter(product => terms.some(term => phrase(normalize(product.name || ''), term)));
+  if(terms.includes('pottery')) candidates=candidates.filter(product=>!phrase(normalize(product.name||''),'ruou'));
   // A visible catalogue region narrows candidates; never replace it with another province.
   const visibleRegions = [...new Set(products.map(product => normalize(product.region || '')).filter(region => region && phrase(label, region)))];
   if (visibleRegions.length) candidates = candidates.filter(product => visibleRegions.includes(normalize(product.region || '')));
   const labelWords = [...new Set(label.split(/[^a-z0-9]+/).filter(word => word.length >= 3))];
+  const typeWords = [...new Set(type.split(/[^a-z0-9]+/).filter(word => word.length >= 2))];
   const knowledge = new Map(getProductImageKnowledge().map(row => [row.id, row]));
   return candidates.map(product => {
     const name = normalize(product.name || '');
@@ -123,8 +130,8 @@ function matchImageEvidence(products, evidence = {}) {
     const titles = reference?.name === product.name && reference?.region === product.region
       ? (reference.googleImages || []).map(image => normalize(image.title || '')) : [];
     const referenceScore = titles.length ? Math.max(...titles.map(title => labelWords.filter(word => phrase(title, word)).length)) : 0;
-    return {id:product.id, score:labelWords.filter(word => phrase(name, word)).length * 4 + referenceScore};
-  }).sort((a,b) => b.score-a.score || a.id-b.id).slice(0,2).map(product => product.id);
+    return {id:product.id, score:(phrase(name,type)?30:0)+typeWords.filter(word=>phrase(name,word)).length*3+labelWords.filter(word => phrase(name, word)).length * 4 + referenceScore};
+  }).sort((a,b) => b.score-a.score || a.id-b.id).slice(0,3).map(product => product.id);
 }
 
 /**

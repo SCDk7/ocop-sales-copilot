@@ -182,7 +182,9 @@
         if (typeof window.enterOcopMarket === 'function' && !window._enterOcopMarketHooked) {
             const origEnter = window.enterOcopMarket;
             window.enterOcopMarket = function (mode, onEntered) {
-                document.body.classList.add('catalog-browsing');
+                if (typeof sessionStorage !== 'undefined') { try { sessionStorage.setItem('ocop_entered_market', '1'); } catch (_) {} }
+                if (document.documentElement) { document.documentElement.classList.add('catalog-browsing'); }
+                if (document.body) { document.body.classList.add('catalog-browsing'); }
                 const res = origEnter.apply(this, arguments);
                 setTimeout(syncHeaderVisibility, 50);
                 setTimeout(syncHeaderVisibility, 480);
@@ -194,7 +196,9 @@
         if (typeof window.openIntroModal === 'function' && !window._openIntroModalHooked) {
             const origOpen = window.openIntroModal;
             window.openIntroModal = function () {
-                document.body.classList.remove('catalog-browsing');
+                if (typeof sessionStorage !== 'undefined') { try { sessionStorage.removeItem('ocop_entered_market'); } catch (_) {} }
+                if (document.documentElement) { document.documentElement.classList.remove('catalog-browsing'); }
+                if (document.body) { document.body.classList.remove('catalog-browsing'); }
                 const res = origOpen.apply(this, arguments);
                 syncHeaderVisibility();
                 return res;
@@ -205,7 +209,9 @@
         if (typeof window.openProvinceProductDetails === 'function' && !window._openProvinceProductDetailsHooked) {
             const origOpenDetails = window.openProvinceProductDetails;
             window.openProvinceProductDetails = function () {
-                document.body.classList.add('catalog-browsing');
+                if (typeof sessionStorage !== 'undefined') { try { sessionStorage.setItem('ocop_entered_market', '1'); } catch (_) {} }
+                if (document.documentElement) { document.documentElement.classList.add('catalog-browsing'); }
+                if (document.body) { document.body.classList.add('catalog-browsing'); }
                 const res = origOpenDetails.apply(this, arguments);
                 syncHeaderVisibility();
                 return res;
@@ -3974,20 +3980,45 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
     };
 
     window.initHeroPromoCountdown = function () {
+        if (window._heroPromoCountdownTick) {
+            window._heroPromoCountdownTick();
+            return;
+        }
         const container = document.getElementById('hero-voucher-cards-container');
         if (container && typeof VoucherPool !== 'undefined') {
             const active = VoucherPool.getActiveVouchers();
             VoucherPool.renderVoucherCardsToContainer(container, active);
         }
 
+        const deadlineKey = 'ocop_hero_voucher_deadline';
+        const nextDeadline = now => {
+            const end = new Date(now);
+            end.setHours(24, 0, 0, 0);
+            return end.getTime();
+        };
+        let deadline = nextDeadline(Date.now());
+        try {
+            const saved = Number(sessionStorage.getItem(deadlineKey));
+            if (Number.isFinite(saved) && saved > 0) deadline = saved;
+        } catch (_) {}
+        const saveDeadline = () => {
+            try { sessionStorage.setItem(deadlineKey, String(deadline)); } catch (_) {}
+        };
+        saveDeadline();
+
         function tick() {
-            const now = new Date();
-            const end = new Date();
-            end.setHours(23, 59, 59, 999);
-            const diff = Math.max(0, end - now);
-            const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
-            const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-            const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+            const now = Date.now();
+            // Compare with the previous deadline so throttled/background tabs
+            // still rotate once when they resume after midnight.
+            if (now >= deadline) {
+                window.refreshHeroVouchers(false);
+                deadline = nextDeadline(now);
+                saveDeadline();
+            }
+            const remaining = Math.max(0, Math.ceil((deadline - now) / 1000));
+            const hours = String(Math.floor(remaining / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((remaining % 3600) / 60)).padStart(2, '0');
+            const seconds = String(remaining % 60).padStart(2, '0');
 
             const elH = document.getElementById('hero-countdown-h');
             const elM = document.getElementById('hero-countdown-m');
@@ -3996,17 +4027,13 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             if (elM) elM.textContent = minutes;
             if (elS) elS.textContent = seconds;
 
-            // Khi hết thời gian flash sale (còn 0s), tự động random thêm voucher mới từ kho 99 triệu!
-            if (diff <= 1000 && !window._heroVoucherRotated) {
-                window._heroVoucherRotated = true;
-                if (typeof window.refreshHeroVouchers === 'function') {
-                    window.refreshHeroVouchers(false);
-                }
-                setTimeout(() => { window._heroVoucherRotated = false; }, 3000);
-            }
         }
+        window._heroPromoCountdownTick = tick;
         tick();
         setInterval(tick, 1000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) tick();
+        });
     };
 
     if (document.readyState === 'loading') {

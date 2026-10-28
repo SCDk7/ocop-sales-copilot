@@ -553,7 +553,7 @@ form.onsubmit = async event => {
         status.textContent = lastDraft.status === 'pending_seller_confirmation'
             ? salesPage.text('Đã tiếp nhận đơn hàng. Đang chờ người bán xác nhận.', 'Order received. Awaiting seller confirmation.')
             : salesPage.text('Đã cập nhật trạng thái đơn hàng.', 'Order status refreshed.');
-        try { localStorage.removeItem('ocop_cart'); } catch (_) {}
+        try { localStorage.removeItem('ocop_cart');window.OCOPCustomerSession?.clearCart(); } catch (_) {}
     } catch (error) {
         status.className = 'error';
         status.textContent = salesPage.text('Chưa gửi được đơn hàng. Giỏ hàng vẫn được giữ. ', 'Your order was not submitted. Your cart is preserved. ') + error.message;

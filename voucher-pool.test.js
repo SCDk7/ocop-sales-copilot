@@ -1,6 +1,58 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const VoucherPool = require('./voucher-pool.js');
+const fs = require('node:fs');
+const vm = require('node:vm');
+
+function countdownFixture(now, savedDeadline) {
+    const source = fs.readFileSync('skytech-complete.js', 'utf8');
+    const start = source.indexOf('    window.refreshHeroVouchers = function');
+    const end = source.indexOf("    if (document.readyState === 'loading')", start);
+    let current = now, rotations = 0;
+    const nodes = Object.fromEntries(['hero-voucher-cards-container','hero-countdown-h','hero-countdown-m','hero-countdown-s'].map(id => [id, {}]));
+    const storage = new Map(savedDeadline ? [['ocop_hero_voucher_deadline', String(savedDeadline)]] : []);
+    const intervals = [], events = {};
+    class Clock extends Date {
+        constructor(...args) { super(...(args.length ? args : [current])); }
+        static now() { return current; }
+    }
+    const document = {hidden: false, getElementById: id => nodes[id], addEventListener: (event, callback) => events[event] = callback};
+    const context = {Date: Clock, document, sessionStorage: {getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value)},
+        setInterval: callback => intervals.push(callback),
+        showToast() { throw Error('Automatic voucher rotation must be silent'); },
+        VoucherPool: {getActiveVouchers: () => VoucherPool.getActiveVouchers(), getRandomVouchers(count) { rotations++; return VoucherPool.getRandomVouchers(count); }, renderVoucherCardsToContainer(container, vouchers) { container.vouchers = vouchers; }}};
+    context.window = context;
+    vm.runInNewContext(source.slice(start, end), context);
+    context.initHeroPromoCountdown();
+    return {context, nodes, storage, intervals, events, get rotations() { return rotations; }, advance(time) { current = time; intervals[0](); }};
+}
+
+test('countdown automatically changes vouchers once at expiry even when midnight ticks were skipped', () => {
+    const midnight = new Date(2026, 9, 29).getTime();
+    const fixture = countdownFixture(midnight - 2000);
+    const initial = fixture.nodes['hero-voucher-cards-container'].vouchers.map(v => v.code).join();
+    assert.equal(fixture.nodes['hero-countdown-s'].textContent, '02');
+    fixture.advance(midnight - 1);
+    assert.equal(fixture.rotations, 0, 'Do not replace vouchers before the deadline');
+    fixture.advance(midnight + 60000);
+    assert.equal(fixture.rotations, 1);
+    assert.notEqual(fixture.nodes['hero-voucher-cards-container'].vouchers.map(v => v.code).join(), initial);
+    fixture.events.visibilitychange();
+    fixture.context.initHeroPromoCountdown();
+    assert.equal(fixture.rotations, 1, 'No repeated replacement within the new countdown');
+    assert.equal(fixture.intervals.length, 1, 'Initialization does not add duplicate timers');
+    fixture.advance(new Date(2026, 9, 30).getTime());
+    assert.equal(fixture.rotations, 2, 'The next expiry also replaces vouchers');
+});
+
+test('reloading after a saved deadline replaces the expired vouchers immediately', () => {
+    const midnight = new Date(2026, 9, 29).getTime();
+    const fixture = countdownFixture(midnight + 60000, midnight);
+    assert.equal(fixture.rotations, 1);
+    assert.equal(Number(fixture.storage.get('ocop_hero_voucher_deadline')), new Date(2026, 9, 30).getTime());
+    fixture.advance(midnight + 61000);
+    assert.equal(fixture.rotations, 1);
+});
 
 test('VoucherPool configuration has exactly 99 million vouchers', () => {
     assert.equal(VoucherPool.TOTAL_VOUCHERS, 99000000, 'Total vouchers must be 99 million');

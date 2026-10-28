@@ -59,7 +59,7 @@ test('price and FAQ replies also carry completed request analysis',()=>{
 test('browser fallback loads the same analysis stage as the server',()=>{
  const browser={AIShopping:require('./ai-shopping')};browser.window=browser;
  vm.createContext(browser);
- for(const file of ['ai-scenarios.js','ai-request-analysis.js','chat-fallback.js'])vm.runInContext(fs.readFileSync(file,'utf8'),browser);
+ for(const file of ['ocop-assistant-profile.js','ai-scenarios.js','ai-request-analysis.js','chat-fallback.js'])vm.runInContext(fs.readFileSync(file,'utf8'),browser);
  const reply=browser.OCOPChatFallback.catalogReply('Tôi muốn khiếu nại đơn hàng',PRODUCTS);
  assert.equal(reply.requestAnalysis.task,'complaint');assert.equal(reply.productIds.length,0);
 });

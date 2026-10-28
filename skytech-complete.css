@@ -64,8 +64,8 @@ header > div {
 
 /* 3. MÀN HÌNH MỞ ĐẦU (INTRO SCREEN) - TÁCH BIỆT HOÀN TOÀN VỚI HEADER BÊN TRONG */
 /* Ẩn hoàn toàn thanh Header bên trong khi Intro Screen đang mở */
-body:has(#ocop-intro-overlay:not(.hidden)) header,
-body:not(:has(#ocop-intro-overlay.hidden)) header {
+body:has(#ocop-intro-overlay:not(.hidden)) > .storefront-header,
+body:not(:has(#ocop-intro-overlay.hidden)) > .storefront-header {
     display: none !important;
 }
 
@@ -1070,26 +1070,16 @@ body #ocop-intro-overlay .intro-header > div:first-child span {
     text-shadow: none !important;
 }
 body :is(#ocop-intro-overlay, #storefront-main-header) .ocop-brand-mark {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    display: block !important;
     box-sizing: border-box !important;
     width: 40px !important;
     height: 40px !important;
     flex: 0 0 40px !important;
     border-radius: 16px !important;
-    background: #3B82BD !important;
-    border: 1px solid #3576AD !important;
-    color: #FFFFFF !important;
-    font-size: 20px !important;
-    line-height: 1 !important;
+    object-fit: contain !important;
+    background: transparent !important;
+    border: 0 !important;
     box-shadow: 0 2px 6px rgba(12, 74, 110, 0.18) !important;
-}
-body :is(#ocop-intro-overlay, #storefront-main-header) .ocop-brand-mark i {
-    color: #FFFFFF !important;
-    -webkit-text-fill-color: #FFFFFF !important;
-    filter: none !important;
-    text-shadow: none !important;
 }
 body #ocop-intro-overlay #intro-award-badge {
     background: #F0F9FF !important;
@@ -1738,7 +1728,7 @@ body #ocop-intro-overlay .intro-footer {
 
 #i18n-hero-title1 {
     overflow: visible !important;
-    padding-left: 12px !important;
+    padding-left: 0 !important;
     margin-left: 0 !important;
     text-indent: 0 !important;
     display: inline-block !important;
@@ -2657,6 +2647,7 @@ body #quickview-modal #quickview-content .quickview-add-cart :is(span,i) {
     visibility: visible !important;
     opacity: 1 !important;
     min-width: 0;
+    padding: 12px !important;
 }
 #featured-product-card .featured-section-title {
     display: block;
@@ -2667,7 +2658,7 @@ body #quickview-modal #quickview-content .quickview-add-cart :is(span,i) {
 }
 #featured-product-card .featured-image-frame {
     display: block !important;
-    height: 288px !important;
+    height: 248px !important;
     position: relative;
     background: #E0F2FE;
     overflow: hidden;
@@ -2685,7 +2676,7 @@ body #quickview-modal #quickview-content .quickview-add-cart :is(span,i) {
     #shop-hero .hero-intro-column {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: 20px;
         min-width: 0;
     }
@@ -2694,18 +2685,19 @@ body #quickview-modal #quickview-content .quickview-add-cart :is(span,i) {
     #shop-hero #featured-product-card {
         display: flex !important;
         flex-direction: column;
-        flex: 1;
+        flex: 0 1 auto;
+        align-self: flex-start;
         width: 100%;
     }
     #shop-hero #featured-product-card > * { flex-shrink: 0; }
     #shop-hero #featured-product-card .featured-image-frame {
-        height: auto !important;
-        min-height: 288px;
-        flex: 1 0 288px;
+        height: 248px !important;
+        min-height: 0;
+        flex: 0 0 248px;
     }
 }
 @media(max-width:480px) {
-    #featured-product-card .featured-image-frame { height: 240px !important; }
+    #featured-product-card .featured-image-frame { height: 208px !important; }
 }
 
 /* Compact catalogue cards, preserving purchase and store controls. */
@@ -2796,7 +2788,6 @@ body #quickview-modal #quickview-content .quickview-add-cart :is(span,i) {
 
 /* Mặc định luôn ẩn hoàn toàn thanh header khi chưa vào chợ OCOP */
 header.storefront-header,
-header,
 .storefront-header,
 #storefront-main-header {
     display: none !important;
@@ -2807,7 +2798,6 @@ header,
 
 /* Chỉ hiển thị header khi đã vào Chợ OCOP (khi body có .catalog-browsing) */
 body.catalog-browsing header.storefront-header,
-body.catalog-browsing header,
 body.catalog-browsing .storefront-header,
 body.catalog-browsing #storefront-main-header {
     display: block !important;
@@ -3264,25 +3254,81 @@ body.catalog-browsing { padding-top: var(--storefront-nav-height, 60px) !importa
 #storefront-main-header .header-right-actions > * { margin-left: 0 !important; }
 #storefront-main-header #user-btn { display: none !important; }
 #storefront-main-header :is(.header-nav-btn,.header-right-actions button) { min-height: 34px; height: auto; }
+[data-mobile-nav-icon], #mobile-storefront-nav { display: none !important; }
+#storefront-main-header #btn-customer-account { border: 1.5px solid #0284c7; color: #0284c7; background: #fff; }
 @media(max-width:767px) {
-    #storefront-main-header > div { padding-inline: 10px; }
-    #storefront-main-header .header-primary-nav { display: flex !important; flex-basis: 100%; order: 3; justify-content: center; }
-    #storefront-main-header .header-nav-btn { padding: 6px 8px; font-size: 10px; white-space: normal !important; }
-    #storefront-main-header .header-right-actions button { padding: 6px; font-size: 10px; }
-    #storefront-main-header .header-right-actions { gap: 4px !important; }
-    #storefront-main-header .lang-dropdown-container { margin-left: 0 !important; }
-}
-@media(max-width:359px) {
-    #storefront-main-header .header-right-actions { flex-basis: 100%; justify-content: center; }
+    body { --mobile-nav-height: calc(64px + env(safe-area-inset-bottom, 0px)); }
+    body.catalog-browsing { padding-bottom: calc(var(--mobile-nav-height) + 16px) !important; }
+    #storefront-main-header > div { padding-inline: 14px; }
+    #storefront-main-header :is(.header-primary-nav,.header-right-actions) { display: none !important; }
+    body.catalog-browsing #mobile-storefront-nav:not([hidden]) {
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        align-items: center;
+        position: fixed;
+        inset: auto 0 0;
+        height: var(--mobile-nav-height);
+        padding: 5px max(8px, env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left)) !important;
+        z-index: 9990;
+        background: #fff;
+        border-top: 1px solid #bae6fd;
+        box-shadow: 0 -4px 20px #0c4a6e12;
+        overflow: visible;
+    }
+    #mobile-storefront-nav > * { min-width: 0; width: 100%; margin: 0 !important; }
+    #mobile-storefront-nav button[data-mobile-action] {
+        position: relative;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100%; min-width: 0;
+        height: 52px !important; min-height: 44px;
+        padding: 0 !important; margin: 0 !important; gap: 0 !important;
+        border: 0 !important; border-radius: 12px !important;
+        background: transparent !important;
+        color: #0284c7 !important;
+        box-shadow: none !important;
+        cursor: pointer; touch-action: manipulation;
+    }
+    #mobile-storefront-nav button[data-mobile-action] > * { display: none !important; }
+    #mobile-storefront-nav button[data-mobile-action] > [data-mobile-nav-icon] {
+        display: block !important;
+        font-size: 23px !important;
+        color: #0284c7 !important;
+        pointer-events: none;
+    }
+    #mobile-storefront-nav button[data-mobile-action]:active { background: #e0f2fe !important; }
+    #mobile-storefront-nav button:focus-visible { outline: 2px solid #0284c7; outline-offset: -3px; }
+    #mobile-storefront-nav #header-cart-count {
+        display: inline-flex !important;
+        position: absolute; top: 1px; left: calc(50% + 5px);
+        align-items: center; justify-content: center;
+        min-width: 18px; height: 18px; padding: 0 4px;
+        border-radius: 999px; background: #e11d48 !important; color: white !important;
+        font: 800 10px/1 system-ui; border: 2px solid white;
+    }
+    #mobile-storefront-nav .lang-dropdown-menu {
+        top: auto !important; bottom: calc(100% + 12px) !important;
+        left: auto !important; right: 0 !important;
+        min-width: 170px; max-height: calc(100dvh - var(--mobile-nav-height) - 24px);
+        overflow-y: auto !important;
+    }
+    body.catalog-browsing :is(#ai-chat-widget,#back-to-top-btn) {
+        bottom: calc(var(--mobile-nav-height) + 14px) !important;
+    }
+    body.catalog-browsing #ai-chat-window {
+        bottom: calc(var(--mobile-nav-height) + 10px) !important;
+        height: min(520px, calc(var(--chat-viewport-height, 100dvh) - var(--mobile-nav-height) - 20px)) !important;
+        max-height: calc(var(--chat-viewport-height, 100dvh) - var(--mobile-nav-height) - 20px) !important;
+    }
 }
 #shop-hero .hero-columns, #shop-hero .hero-columns > div { min-width: 0; }
 #shop-hero h2 { font-size: clamp(24px, 3.3vw, 42px); line-height: 1.2; overflow-wrap: anywhere; }
 #shop-hero #i18n-hero-title1 { white-space: normal !important; }
+#shop-hero .hero-intro-column > h2 { margin: 0 !important; line-height: 1.15 !important; }
+#shop-hero #i18n-hero-title1 { display: block !important; font-size: clamp(32px, 4.2vw, 56px); letter-spacing: -0.035em; padding: 0 !important; }
+#shop-hero #i18n-hero-tagline { display: block; max-width: 34em; margin-top: 14px; font-size: clamp(17px, 1.8vw, 25px); font-weight: 650; line-height: 1.5; letter-spacing: normal; color: #27658d; text-wrap: pretty; }
+body #ocop-intro-overlay h2.intro-hero-title { margin: 0; line-height: 1.2 !important; }
+body #ocop-intro-overlay h2.intro-hero-title #i18n-intro-title1 { font-size: clamp(32px, 4vw, 54px) !important; white-space: normal !important; letter-spacing: -0.035em !important; }
+body #ocop-intro-overlay h2.intro-hero-title #i18n-intro-title2 { display: block !important; max-width: 34em !important; margin: 14px auto 0 !important; font-size: clamp(17px, 1.65vw, 23px) !important; font-weight: 650 !important; line-height: 1.5 !important; letter-spacing: normal !important; white-space: normal !important; color: #27658d !important; -webkit-text-fill-color: #27658d !important; text-wrap: pretty; }
 @media(max-width:640px) { #shop-hero > div:first-child { width: 100% !important; margin: 0 !important; } }
-body :is(#ocop-intro-overlay,#storefront-main-header) .ocop-brand-mark {
-    display: inline-flex !important; align-items: center; justify-content: center;
-    width: 40px; height: 40px; flex: 0 0 40px; border-radius: 16px;
-    background: #3b82bd !important; border: 1px solid #3576ad !important;
-    color: white !important; box-shadow: 0 3px 8px #0c4a6e20;
-}
-body :is(#ocop-intro-overlay,#storefront-main-header) .ocop-brand-mark i { color: white !important; -webkit-text-fill-color: white !important; font-size: 20px; }

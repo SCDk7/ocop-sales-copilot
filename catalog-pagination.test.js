@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 test('Catalog pagination toolbar replaces load more button with page numbers', () => {
     const html = fs.readFileSync(path.resolve('index.html'), 'utf-8');
@@ -27,5 +28,32 @@ test('Catalog pagination toolbar replaces load more button with page numbers', (
     const html2 = fs.readFileSync(path.resolve('index_2.html'), 'utf-8');
     assert.match(html2, /function\s+goToCatalogPage\s*\(/);
     assert.match(html2, /aria-label="Phân trang danh mục đặc sản OCOP"/);
+});
+
+test('filtered results keep pagination visible and can return to the full catalogue', () => {
+    for (const file of ['index.html', 'index_2.html']) {
+        const html = fs.readFileSync(file, 'utf8');
+        const marker = html.indexOf('const pageNumbers = [];');
+        const start = html.lastIndexOf('            if (items.length > 0) {', marker);
+        const end = html.indexOf('            grid.innerHTML = cardsHtml;', marker);
+        assert.ok(start >= 0 && end > start);
+        const source = html.slice(start, end);
+        function render(count, page = 1) {
+            const context = {items: Array(count).fill({}), products: Array(252).fill({}), totalPages: Math.max(1, Math.ceil(count / 36)), currentCatalogPage: page, startIndex: (page - 1) * 36, endIndex: Math.min(page * 36, count), cardsHtml: ''};
+            vm.runInNewContext(source, context);
+            return context.cardsHtml;
+        }
+        const filtered = render(4);
+        assert.match(filtered, /aria-label="Phân trang danh mục đặc sản OCOP"/);
+        assert.match(filtered, /phù hợp bộ lọc/);
+        assert.match(filtered, /onclick="resetFilters\(\); scrollToProducts\(\);"/);
+        assert.match(filtered, /Xem tất cả 252 sản phẩm/);
+        assert.match(filtered, /disabled.*aria-label="Trang sau"/);
+        const full = render(252, 2);
+        assert.match(full, /goToCatalogPage\(3\)/);
+        assert.match(full, /goToCatalogPage\(7\)/);
+        assert.doesNotMatch(full, /catalog-show-all-btn/);
+        assert.equal(render(0), '');
+    }
 });
 

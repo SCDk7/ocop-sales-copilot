@@ -1,9 +1,21 @@
 const test=require('node:test'),assert=require('node:assert/strict');
-const {composeDataReply}=require('./ai-data-reply');
+const {composeDataReply,fastBudgetReply}=require('./ai-data-reply');
 const AIShopping=require('./ai-shopping');
 const products=[{id:1,name:'Trà Hà Giang',region:'Hà Giang',price:100000,packaging:'hộp'},{id:2,name:'Sâm',region:'Kon Tum',price:900000,packaging:'kg'}];
 const sources=[{title:'Trà',url:'https://vi.wikipedia.org/wiki/Tr%C3%A0',extract:'Trà là thức uống từ lá cây chè.'}];
 const tea={id:340,name:'Trà xanh cổ thụ Phìn Hồ hộp 100g',region:'Hà Giang',price:600000,stars:5,packaging:'hộp'};
+
+test('clear combo budgets are answered locally with verified totals and item counts',()=>{
+ const catalogue=require('./data').PRODUCTS;
+ const {analyzeCustomerRequest}=require('./ai-request-analysis');
+ const analysis=analyzeCustomerRequest([{role:'user',text:'1 triệu 3 món thôi'}],catalogue);
+ const reply=fastBudgetReply(catalogue,analysis.intent);
+ assert.ok(reply);assert.equal(reply.responseMode,'verified_catalog_combos');assert.ok(reply.combos.length);
+ for(const combo of reply.combos){assert.equal(combo.items.length,3);assert.ok(combo.total<=1000000);}
+ assert.equal(fastBudgetReply(catalogue,{...analysis.intent,isComplaint:true}),null);
+ assert.equal(fastBudgetReply(catalogue,{...analysis.intent,isOcopKnowledge:true}),null);
+ assert.equal(fastBudgetReply(catalogue,{...analysis.intent,maxPrice:null}),null);
+});
 
 test('tea FAQ answers price, stars and origin without a model service',()=>{
  const reply=composeDataReply([tea],{categoryOrKeyword:'trà xanh cổ thụ Phìn Hồ',knowledgeQuery:'Trà xanh cổ thụ Phìn Hồ mấy sao giá bao nhiêu'},'vi');

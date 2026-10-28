@@ -27,6 +27,7 @@ class CartManager {
             this.storage?.setItem('ocop_cart', JSON.stringify(this.cart));
             this.storage?.setItem('ocop_wishlist', JSON.stringify(this.wishlist));
         } catch (_) { /* Shopping remains usable when storage is unavailable. */ }
+        if (typeof window !== 'undefined') window.OCOPCustomerSession?.saveCart(this.cart);
     }
 
     addToCart(product, quantity = 1) {

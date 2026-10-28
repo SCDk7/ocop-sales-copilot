@@ -1,6 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const shopping=require('./ai-shopping'),{waitForSignal}=require('./ai-deadline');
 const {matchImageEvidence,createCatalogImageMatcher,createReferenceImageMatcher,getProductImageKnowledge}=require('./ai-image-match');
+const {formatVisualReply}=require('./ai-visual-reply');
 const source=fs.readFileSync('server.js','utf8');
 const products=[{id:1,name:'Trà',region:'Hà Nội',price:100000},{id:2,name:'Cà phê',region:'Đắk Lắk',price:200000},{id:3,name:'Cacao',region:'Đắk Lắk',price:300000}];
 
@@ -17,7 +18,7 @@ test('the reported text query reaches the API fallback without an uninitialized 
   extractSearchIntents:shopping.analyze,planWikipedia:()=>({query:'',topics:[],skipReason:'not_needed'}),
   getAIModelConfiguration:()=>({}),buildAISystemInstruction:()=>'',getGeneralComplaintClarification:()=>null,
   filterProductsByIntent:(items,intent)=>items.filter(p=>shopping.allowed(p,intent)),reviewStore:{list:()=>({items:[]})},
-  normalizeCatalogTerm:shopping.normalize,waitForSignal,composeDataReply:require('./ai-data-reply').composeDataReply,
+  normalizeCatalogTerm:shopping.normalize,waitForSignal,composeDataReply:require('./ai-data-reply').composeDataReply,fastBudgetReply:require('./ai-data-reply').fastBudgetReply,
   generateAIResponse:async()=>({status:503,body:{}})};
  vm.createContext(context);vm.runInContext(source.slice(source.indexOf('async function handleAIChatRequest('),source.indexOf("app.post('/api/ai/chat'")),context);
  let body,status=200;const res={status(code){status=code;return this},json(value){body=value;return value}};
@@ -65,14 +66,14 @@ test('an attached photo bypasses text-only intent and reaches vision with its ca
 function visionContext(provider){
  const context={console,Date,Buffer,AbortController,AbortSignal,setTimeout,clearTimeout,matchCatalogImages:async()=>[],matchReferenceImages:async()=>[],MAX_AI_MESSAGE_LENGTH:1200,GEMINI_INLINE_IMAGE_LIMIT_BYTES:70000000,
   getAIModelConfiguration:()=>({apiKey:'test',model:'test'}),buildAIServiceUnavailable:()=>({status:503,body:{message:'Unavailable',productIds:[],suggested_products:[],retryable:true,integrations:{gemini:false}}}),
-  buildAISystemInstruction:()=> 'Inspect the supplied image',generatePreferredContent:provider,isImageProductLookupRequest:()=>true,normalizeCatalogTerm:shopping.normalize,matchImageEvidence};
+  buildAISystemInstruction:()=> 'Inspect the supplied image',generatePreferredContent:provider,isImageProductLookupRequest:()=>true,normalizeCatalogTerm:shopping.normalize,matchImageEvidence,formatVisualReply};
  vm.createContext(context);vm.runInContext(source.slice(source.indexOf('async function generateAIResponse('),source.indexOf("app.post('/api/ai/transcribe'")),context);return context;
 }
 test('vision sends image bytes and caption together, uses one request, and validates matching catalogue IDs',async()=>{
  let calls=0;
  const context=visionContext(async(_config,payload,options)=>{
   calls++;assert.equal(options.maxAttempts,1);assert.equal(payload.contents.at(-1).parts[0].text,'Tìm món trong ảnh');assert.equal(payload.contents.at(-1).parts[1].inline_data.data,'test-image');
-  return {response:{ok:true},data:{candidates:[{content:{parts:[{text:JSON.stringify({message:'Cà phê',understandingStatus:'understood',productIds:[2,999],imageMatchStatus:'exact',handoffAdmin:false,dynamic_chips:[]})}]}}]},provider:'gemini',model:'test'};
+  return {response:{ok:true},data:{candidates:[{content:{parts:[{text:JSON.stringify({message:'Cà phê',understandingStatus:'understood',productIds:[2,999],imageMatchStatus:'exact',visibleLabel:'Cà phê Đắk Lắk',recognizedProductType:'Cà phê',observedFeatures:['Túi màu nâu'],handoffAdmin:false,dynamic_chips:[]})}]}}]},provider:'gemini',model:'test'};
  });
  const result=await context.generateAIResponse({language:'vi',products,messages:[{role:'user',text:'Tìm món trong ảnh'}]},{imageData:{mimeType:'image/png',data:'test-image'}});
  assert.equal(calls,1);assert.equal(result.status,200);assert.deepEqual(Array.from(result.body.productIds),[2]);
@@ -140,4 +141,69 @@ test('image matching respects visible region and never guesses from a caption or
  assert.deepEqual(matchImageEvidence(products,{label:'',productType:'Đồ chơi'}),[]);
  const mienMatches=matchImageEvidence(catalog,{label:'Miến dong Trà Lĩnh',productType:'Miến dong'});
  assert.equal(mienMatches.includes(425),true);
+});
+
+test('similar photo replies list three related products with canonical prices and no popularity claim',async()=>{
+ const catalogue=[
+  {id:10,name:'Trà sen Nhơn Trạch',region:'Đồng Nai',stars:4,price:160000,packaging:'hộp'},
+  {id:11,name:'Trà sen Tây Hồ',region:'Hà Nội',stars:5,price:250000,packaging:'hộp'},
+  {id:12,name:'Trà sen Huế',region:'Thừa Thiên Huế',stars:3,price:90000,packaging:'túi'},
+  {id:13,name:'Mật ong rừng',region:'Đồng Nai',stars:4,price:130000,packaging:'chai'}
+ ];
+ const context=visionContext(async()=>({response:{ok:true},data:{candidates:[{content:{parts:[{text:JSON.stringify({message:'Hàng bán chạy giá 1 đồng',understandingStatus:'understood',productIds:[13],imageMatchStatus:'similar',visibleLabel:'Trà sen',recognizedProductType:'Trà sen',observedFeatures:['Hộp màu xanh'],handoffAdmin:false,dynamic_chips:[]})}]}}]},provider:'gemini',model:'test'}));
+ const result=await context.generateAIResponse({language:'vi',products:catalogue,messages:[{role:'user',text:'Tìm món trong ảnh'}]},{imageData:{mimeType:'image/png',data:'test-image'}});
+ assert.equal(result.body.imageMatchStatus,'similar');
+ assert.deepEqual(Array.from(result.body.productIds),[10,11,12]);
+ for(const text of ['Trà sen Nhơn Trạch','160.000 ₫/hộp','OCOP 4 sao','Trà sen Tây Hồ','250.000 ₫/hộp','Trà sen Huế','Hộp màu xanh','chưa tìm thấy chính xác']) assert(result.body.message.includes(text),text);
+ assert(!/Mật ong|được ưa chuộng|bán chạy|1 đồng/.test(result.body.message));
+ assert(result.body.message.endsWith('Anh/chị muốn tìm hiểu thành phần hay cách đặt mua sản phẩm nào ạ?'));
+});
+
+test('an exact model ID needs a readable full product label, not just an asserted match',async()=>{
+ const catalogue=[{id:10,name:'Trà sen Nhơn Trạch',region:'Đồng Nai',stars:4,price:160000,packaging:'hộp',producerName:'HTX Trà Mẫu'}];
+ const answer={message:'Exact',understandingStatus:'understood',productIds:[10],imageMatchStatus:'exact',visibleLabel:'Trà sen Nhơn Trạch',recognizedProductType:'Trà sen',observedFeatures:[],handoffAdmin:false,dynamic_chips:[]};
+ const context=visionContext(async()=>({response:{ok:true},data:{candidates:[{content:{parts:[{text:JSON.stringify(answer)}]}}]},provider:'gemini',model:'test'}));
+ const validation={language:'vi',products:catalogue,messages:[{role:'user',text:'Tìm món trong ảnh'}]};
+ const options={imageData:{mimeType:'image/png',data:'test-image'}};
+ const exact=await context.generateAIResponse(validation,options);
+ assert.equal(exact.body.imageMatchStatus,'exact');assert.match(exact.body.message,/HTX Trà Mẫu/);
+ answer.visibleLabel='Túi trà không rõ thương hiệu';
+ const similar=await context.generateAIResponse(validation,options);
+ assert.equal(similar.body.imageMatchStatus,'similar');
+ answer.recognizedProductType='unknown';
+ const unknown=await context.generateAIResponse(validation,options);
+ assert.equal(unknown.body.imageMatchStatus,'unknown');assert.equal(unknown.body.productIds.length,0);
+});
+
+test('visual matching ranks the specific product line and separates sauce, mushrooms and pottery from packaging',()=>{
+ const catalogue=[{id:1,name:'Gạo trắng'},{id:2,name:'Gạo ST25 Sóc Trăng'}, {id:3,name:'Cá lóc khô'},{id:4,name:'Nước mắm cá cơm'},{id:5,name:'Đông trùng hạ thảo sấy'},{id:6,name:'Nấm hương khô'},{id:7,name:'Bộ bình Gốm sứ'},{id:8,name:'Rượu ngon bình gốm'}];
+ assert.equal(matchImageEvidence(catalogue,{productType:'Gạo ST25'})[0],2);
+ assert.deepEqual(matchImageEvidence(catalogue,{productType:'Fish sauce'}),[4]);
+ assert.deepEqual(matchImageEvidence(catalogue,{productType:'Nấm đông trùng hạ thảo'}),[5]);
+ assert.deepEqual(matchImageEvidence(catalogue,{productType:'Pottery'}),[7]);
+});
+
+test('visual reply discloses missing producer data and never fills missing matches or stock facts',()=>{
+ const product={id:1,name:'Trà sen',stars:4,price:160000,region:'Đồng Nai',packaging:'hộp'};
+ const exact=formatVisualReply([product],{status:'exact'});
+ assert.match(exact,/Chủ thể sản xuất chưa được cập nhật/);
+ const similar=formatVisualReply([product],{status:'similar',language:'en',reference:true});
+ assert.match(similar,/Trà sen/);assert(!similar.includes('Lotus Tea'));assert.equal((similar.match(/• \*\*/g)||[]).length,1);
+ const unknown=formatVisualReply([],{productType:'Trà sen',status:'unknown'});
+ assert.match(unknown,/nhãn rõ hơn/);assert(!unknown.includes('OCOP 4 sao'));
+ assert(!formatVisualReply([],{productType:'unknown',status:'unknown'}).includes('**unknown**'));
+});
+
+test('a complaint photo bypasses the exact-image shopping shortcut and keeps support guidance',async()=>{
+ const product=require('./data').PRODUCTS.find(product=>product.id===336);
+ let calls=0;
+ const context=visionContext(async()=>{
+  calls++;
+  return {response:{ok:true},data:{candidates:[{content:{parts:[{text:JSON.stringify({message:'Anh/chị gửi mã đơn để em hỗ trợ kiểm tra nhé.',understandingStatus:'understood',productIds:[],imageMatchStatus:'unknown',visibleLabel:'',recognizedProductType:'Trà',observedFeatures:[],handoffAdmin:true,dynamic_chips:[]})}]}}]},provider:'gemini',model:'test'};
+ });
+ context.matchCatalogImages=createCatalogImageMatcher(__dirname);
+ context.formatVisualReply=()=>{throw Error('Complaints must not get a shopping recommendation');};
+ const result=await context.generateAIResponse({language:'vi',products:[product],messages:[{role:'user',text:'Hộp trà bị móp, tôi muốn khiếu nại'}]},{userIntent:{isComplaint:true},imageData:{mimeType:'image/jpeg',data:fs.readFileSync(product.img).toString('base64')}});
+ assert.equal(calls,1);assert.equal(result.body.handoffAdmin,true);assert.equal(result.body.productIds.length,0);
+ assert.match(result.body.message,/mã đơn/);assert(!result.body.message.includes('đặt mua'));
 });

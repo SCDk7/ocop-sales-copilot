@@ -1,6 +1,8 @@
 (function(root){
     'use strict';
     const analyzer=typeof module==='object'&&module.exports?require('./ai-request-analysis'):root.OCOPRequestAnalysis;
+    const profile=typeof module==='object'&&module.exports?require('./ocop-assistant-profile'):root.OCOPAssistantProfile;
+    const webResearch=typeof module==='object'&&module.exports?require('./ai-web-research'):root.OCOPWebResearch;
     function imageUnavailableReply(language='vi',query='',products=[],history=[]) {
         const analysis=analyzer.analyzeCustomerRequest([...history,{role:'user',text:query}],products,{language,hasImages:true});
         const message = language === 'en'
@@ -11,7 +13,9 @@
     function catalogReply(query,products,language='vi',history=[]){
         const analysis=analyzer.analyzeCustomerRequest([...history,{role:'user',text:query}],products,{language});
         const reply=catalogReplyAfterAnalysis(query,products,language,history,analysis);
-        return {...reply,requestAnalysis:{...analysis.summary,needsClarification:Boolean(analysis.summary.needsClarification||reply.understandingStatus==='needs_clarification')}};
+        const plan=webResearch?.planWebResearch([...history,{role:'user',text:query}],products,reply);
+        const researched=plan?.required?webResearch.applyWebResearch(reply,{status:'offline',attempted:false,searched:false},plan,products,language):reply;
+        return profile.completeReply({...researched,requestAnalysis:{...analysis.summary,needsClarification:Boolean(analysis.summary.needsClarification||reply.understandingStatus==='needs_clarification')}},language);
     }
     function catalogReplyAfterAnalysis(query,products,language,history,analysis){
         const intent=analysis.intent;
