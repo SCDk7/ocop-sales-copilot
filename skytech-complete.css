@@ -3337,3 +3337,18 @@ table {
         max-height: calc(100dvh - 12px) !important;
     }
 }
+
+/* Chống triệt để việc đè chữ chéo giữa màn hình chờ và thân trang web */
+body:not(.catalog-browsing):not(:has(#ocop-intro-overlay.hidden)) main,
+#ocop-intro-overlay:not(.hidden) ~ main,
+body:has(#ocop-intro-overlay:not(.hidden)) main {
+    display: none !important;
+}
+
+html.catalog-browsing #ocop-intro-overlay,
+body.catalog-browsing #ocop-intro-overlay {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}

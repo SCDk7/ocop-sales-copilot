@@ -16,16 +16,59 @@
  <meta name="ocop-api-base" content="">
  <title>OCOP Sales - Đặc Sản Tuyển Chọn 63 Tỉnh Thành Việt Nam</title>
  <script src="voice-engine.js?v=fb7c587f8eb7"></script>
- <script src="ai-shopping.js?v=63d92806c70e"></script>
+ <script src="ai-shopping.js?v=013db6c43e56"></script>
 <script src="data/tea-knowledge.js?v=8757f3258ad7"></script>
 <script src="product-training.js?v=34006b79e783"></script>
 <script src="catalog-facts.js?v=b2710876dbfd"></script>
-<script src="product-consultant.js?v=68220bb323fd"></script>
+<script src="product-consultant.js?v=e93f4668469d"></script>
 <script src="ai-scenarios.js?v=19e0770f10e3"></script>
 <script src="product-locations.js?v=24739bc83737"></script>
-<script src="ai-request-analysis.js?v=efe9692d46df"></script>
-<script src="chat-fallback.js?v=23433c5f0515"></script>
+<script src="ai-request-analysis.js?v=889e43dd7dc1"></script>
+<script src="chat-fallback.js?v=e49ebc0f1a89"></script>
  <script src="chat-language.js?v=6239eb709716"></script>
+    <script>
+        try {
+            if (sessionStorage.getItem('ocop_entered_market') === '1') {
+                document.documentElement.classList.add('catalog-browsing');
+            }
+        } catch (_) {}
+    </script>
+    <style>
+        /* CHỐNG CHỚP LỖI GIAO DIỆN (FOUC) KHI TẢI LẠI TRANG */
+        html.catalog-browsing #ocop-intro-overlay,
+        body.catalog-browsing #ocop-intro-overlay {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        html.catalog-browsing #storefront-main-header,
+        html.catalog-browsing .storefront-header,
+        body.catalog-browsing #storefront-main-header,
+        body.catalog-browsing .storefront-header {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        html.catalog-browsing main,
+        body.catalog-browsing main {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        /* Khi màn hình chờ (Intro) đang mở, ẩn phần main để không đè chữ */
+        body:not(.catalog-browsing):not(:has(#ocop-intro-overlay.hidden)) main,
+        #ocop-intro-overlay:not(.hidden) ~ main,
+        body:has(#ocop-intro-overlay:not(.hidden)) main {
+            display: none !important;
+        }
+        #ocop-intro-overlay {
+            background-color: #E0F2FE !important;
+        }
+    </style>
+ <link rel="stylesheet" href="assets/tailwind.css?v=af966ad1ac06">
+ <!-- Font Awesome Icons & Google Fonts -->
  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=5a4d854df191">
     <link rel="stylesheet" href="assets/vendor/fonts/jakarta.css?v=c9e3631b1193">
     <link rel="stylesheet" href="assets/tailwind.css?v=af966ad1ac06">
@@ -5689,7 +5732,7 @@ Khơi Nguồn Di Sản Việt</span>
  <!-- ============================================================== -->
  <script src="data.js?v=8c9ab2ce36af"></script>
  <script src="ocop-stores.js?v=e967d59dd2fa"></script>
- <script src="ai-business-knowledge.js?v=1a8ddae50121"></script>
+ <script src="ai-business-knowledge.js?v=08196d7c741a"></script>
  <script src="assets/vendor/leaflet/leaflet.js?v=3104b526504d"></script>
  <script>
         // -------------------------------------------------------------
@@ -15885,8 +15928,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <script src="script.js?v=caf9a772fea8"></script>
 <script src="product-reviews-ui.js?v=5021788e4110"></script>
 <script src="admin-management.js?v=366f761a87c1"></script>
-<script src="account-client.js?v=fb81b49b3770"></script>
-<script src="chat-dictation.js?v=76b80ddcba58"></script>
+<script src="account-client.js?v=9f77018f320c"></script>
+<script src="chat-dictation.js?v=592ac0140259"></script>
 <script>
     window.chatDictation = ChatDictation.mount({
         input: document.getElementById('ai-chat-input'),
@@ -15941,7 +15984,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         window.searchDictations.push(controller);
     });
 </script>
-<script src="shop-prices.js?v=e8a0aac06d13"></script>
+<script src="shop-prices.js?v=e97e3e80787b"></script>
  
 <script>
     // -------------------------------------------------------------
@@ -16699,17 +16742,18 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
     }
 </script>
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->
+<link rel="stylesheet" href="skytech-complete.css?v=f58a5585d06b">
+<link rel="stylesheet" href="store-directory-light.css?v=200941f274e3">
+<link rel="stylesheet" href="cart-ui.css?v=0a3faaa17530">
+<link rel="stylesheet" href="account-center.css?v=60b4a74cdbf2">
+<link rel="stylesheet" href="admin-management.css?v=5ca46f2073d2">
 <script src="voucher-pool.js?v=ab7512585146"></script>
-<script src="skytech-complete.js?v=815e72e92b20"></script>
+<script src="skytech-complete.js?v=c85876fa6b12"></script>
 <script src="cart-ui.js?v=92da91b0a573"></script>
-<script src="account-center.js?v=b0b0becd415c"></script>
+<script src="account-center.js?v=3349fb0122df"></script>
 <script src="storefront-ui.js?v=c21eef4041d6"></script>
 <script src="ui-branding.js?v=66dc84bfc24e"></script>
 <script src="storefront-navigation.js?v=9c153796330a"></script>
 <script src="storefront-router.js?v=a1b02371d840"></script>
-<link rel="stylesheet" href="skytech-complete.css?v=006acba3f321">
-<link rel="stylesheet" href="cart-ui.css?v=9cfa1ba99309">
-<link rel="stylesheet" href="account-center.css?v=60b4a74cdbf2">
-<link rel="stylesheet" href="store-directory-light.css?v=200941f274e3">
 </body>
 </html>

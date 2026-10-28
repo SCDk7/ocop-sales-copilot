@@ -152,8 +152,8 @@
         function syncHeaderVisibility() {
             const intro = document.getElementById('ocop-intro-overlay');
             const headers = document.querySelectorAll('.storefront-header, #storefront-main-header');
-            const isIntroOpen = intro && !intro.classList.contains('hidden') && intro.style.display !== 'none';
-            const isBrowsing = document.body.classList.contains('catalog-browsing');
+            const isBrowsing = document.body.classList.contains('catalog-browsing') || document.documentElement.classList.contains('catalog-browsing') || (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('ocop_entered_market') === '1');
+            const isIntroOpen = intro && !intro.classList.contains('hidden') && intro.style.display !== 'none' && !isBrowsing;
 
             headers.forEach(header => {
                 if (isIntroOpen || !isBrowsing) {
@@ -182,6 +182,8 @@
         if (typeof window.enterOcopMarket === 'function' && !window._enterOcopMarketHooked) {
             const origEnter = window.enterOcopMarket;
             window.enterOcopMarket = function (mode, onEntered) {
+                try { sessionStorage.setItem('ocop_entered_market', '1'); } catch (_) {}
+                document.documentElement.classList.add('catalog-browsing');
                 document.body.classList.add('catalog-browsing');
                 const res = origEnter.apply(this, arguments);
                 setTimeout(syncHeaderVisibility, 50);
@@ -194,6 +196,8 @@
         if (typeof window.openIntroModal === 'function' && !window._openIntroModalHooked) {
             const origOpen = window.openIntroModal;
             window.openIntroModal = function () {
+                try { sessionStorage.removeItem('ocop_entered_market'); } catch (_) {}
+                document.documentElement.classList.remove('catalog-browsing');
                 document.body.classList.remove('catalog-browsing');
                 const res = origOpen.apply(this, arguments);
                 syncHeaderVisibility();
@@ -205,6 +209,8 @@
         if (typeof window.openProvinceProductDetails === 'function' && !window._openProvinceProductDetailsHooked) {
             const origOpenDetails = window.openProvinceProductDetails;
             window.openProvinceProductDetails = function () {
+                try { sessionStorage.setItem('ocop_entered_market', '1'); } catch (_) {}
+                document.documentElement.classList.add('catalog-browsing');
                 document.body.classList.add('catalog-browsing');
                 const res = origOpenDetails.apply(this, arguments);
                 syncHeaderVisibility();

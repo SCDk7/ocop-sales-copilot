@@ -69,3 +69,4 @@ test('validateVoucher validates both legacy codes and 99M generated codes', () =
     assert.equal(invalid.valid, false);
     assert.match(invalid.error, /không hợp lệ/);
 });
+
