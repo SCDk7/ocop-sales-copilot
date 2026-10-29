@@ -46,7 +46,7 @@
         });
 
         const colors = ['#0284C7', '#38BDF8', '#7DD3FC', '#0369A1'];
-        const starCount = 48;
+        const starCount = 20;
         const stars = [];
 
         for (let i = 0; i < starCount; i++) {
@@ -76,6 +76,10 @@
         });
 
         function animate() {
+            if (document.hidden) {
+                requestAnimationFrame(animate);
+                return;
+            }
             ctx.clearRect(0, 0, width, height);
 
             for (let i = 0; i < stars.length; i++) {
@@ -1452,14 +1456,14 @@
     // HỆ THỐNG ĐẶT MUA ONLINE SHIP TẬN NƠI & THU PHÍ NỀN TẢNG 10.000Đ CHO CHỦ WEB
     // =========================================================================
     let currentOrderProduct = null;
-    let currentOrderQty = 1;
+    let currentOrderQty = Math.max(1, parseInt(initialQty, 10) || 1);
     let onlineOrderSubmitting = false;
     let onlineOrderRequest;
 
-    window.openOnlineOrderModal = function (productId) {
+    window.openOnlineOrderModal = function (productId, initialQty = 1) {
         window.currentOrderCode = 'OCOP-' + Math.floor(100000 + Math.random() * 900000);
         const prodList = window.products || (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
-        const p = prodList.find(item => item.id === productId);
+        const p = prodList.find(item => item.id === Number(productId) || String(item.id) === String(productId));
         if (!p) {
             if (typeof showToast === 'function') showToast('Không tìm thấy thông tin sản phẩm', 'error');
             return;
@@ -1494,7 +1498,7 @@
         if (addrEl) addrEl.textContent = storeAddress;
 
         const qtyInput = document.getElementById('order-qty-input');
-        if (qtyInput) qtyInput.value = 1;
+        if (qtyInput) qtyInput.value = currentOrderQty;
 
         // Auto pre-fill customer recipient credentials if logged in
         try {
@@ -1896,6 +1900,509 @@
         }
         document.body.style.overflow = 'auto';
     };
+
+    // =========================================================================
+    // REAL-WORLD ORDER MANAGEMENT SYSTEM (OMS 5 BƯỚC CHUẨN SHOPEE / TIKTOK SHOP)
+    // =========================================================================
+    (function () {
+        const ORDER_STORAGE_KEY = 'ocop_online_orders';
+        const CUST_ORDER_KEY = 'ocop_customer_orders';
+        const HISTORY_ORDER_KEY = 'ocop_orders_history';
+
+        let syncChannel = null;
+        try {
+            if (typeof BroadcastChannel !== 'undefined') {
+                syncChannel = new BroadcastChannel('ocop_order_sync');
+                syncChannel.onmessage = function (ev) {
+                    if (ev && ev.data && ev.data.type === 'ORDER_UPDATED') {
+                        if (window.OcopOMS && typeof window.OcopOMS.refreshAllViews === 'function') {
+                            window.OcopOMS.refreshAllViews();
+                        }
+                    }
+                };
+            }
+        } catch (_) {}
+
+        window.addEventListener('storage', function (e) {
+            if (e.key === ORDER_STORAGE_KEY || e.key === 'ocop_admin_profit') {
+                if (window.OcopOMS && typeof window.OcopOMS.refreshAllViews === 'function') {
+                    window.OcopOMS.refreshAllViews();
+                }
+            }
+        });
+
+        window.OcopOMS = {
+            STATUSES: {
+                PENDING: { code: 'PENDING', label: 'Chờ xác nhận', color: '#D97706', bg: '#FEF3C7', border: '#FCD34D' },
+                CONFIRMED: { code: 'CONFIRMED', label: 'Đang đóng gói', color: '#0284C7', bg: '#E0F2FE', border: '#BAE6FD' },
+                SHIPPING: { code: 'SHIPPING', label: 'Đang vận chuyển', color: '#4F46E5', bg: '#EEF2FF', border: '#C7D2FE' },
+                COMPLETED: { code: 'COMPLETED', label: 'Hoàn thành', color: '#059669', bg: '#ECFDF5', border: '#A7F3D0' },
+                CANCELLED: { code: 'CANCELLED', label: 'Đã hủy', color: '#DC2626', bg: '#FEF2F2', border: '#FECACA' }
+            },
+
+            normalizeStatus: function (status) {
+                const s = String(status || '').toUpperCase().trim();
+                if (s === 'CONFIRMED' || s.includes('ĐÓNG GÓI') || s.includes('ĐÃ XÁC NHẬN')) return 'CONFIRMED';
+                if (s === 'SHIPPING' || s === 'SHIPPED' || s.includes('VẬN CHUYỂN') || s.includes('ĐANG GIAO')) return 'SHIPPING';
+                if (s === 'COMPLETED' || s.includes('HOÀN THÀNH') || s.includes('THÀNH CÔNG')) return 'COMPLETED';
+                if (s === 'CANCELLED' || s === 'CANCELED' || s.includes('HỦY') || s.includes('TỪ CHỐI')) return 'CANCELLED';
+                return 'PENDING';
+            },
+
+            getStatusMeta: function (status) {
+                const canonical = this.normalizeStatus(status);
+                return this.STATUSES[canonical] || this.STATUSES.PENDING;
+            },
+
+            getOrders: function () {
+                try {
+                    const raw = localStorage.getItem(ORDER_STORAGE_KEY);
+                    const orders = raw ? JSON.parse(raw) : [];
+                    return Array.isArray(orders) ? orders : [];
+                } catch (_) {
+                    return [];
+                }
+            },
+
+            saveOrders: function (orders) {
+                try {
+                    localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(orders));
+                    localStorage.setItem(CUST_ORDER_KEY, JSON.stringify(orders));
+                    localStorage.setItem(HISTORY_ORDER_KEY, JSON.stringify(orders));
+                } catch (_) {}
+
+                this.recalculateAdminProfit(orders);
+
+                try {
+                    if (syncChannel) syncChannel.postMessage({ type: 'ORDER_UPDATED' });
+                } catch (_) {}
+
+                this.refreshAllViews();
+            },
+
+            recalculateAdminProfit: function (orders) {
+                try {
+                    const list = orders || this.getOrders();
+                    // Loại bỏ hoàn toàn đơn CANCELLED khỏi lợi nhuận webmaster
+                    const activeOrders = list.filter(o => this.normalizeStatus(o.status) !== 'CANCELLED');
+                    const profit = activeOrders.reduce((sum, o) => sum + (Number(o.platformFee || o.webFee || 10000) || 10000), 0);
+                    localStorage.setItem('ocop_admin_profit', profit.toString());
+                    const finStat = document.getElementById('fin-stat-commission');
+                    if (finStat) finStat.textContent = profit.toLocaleString('vi-VN') + ' ₫';
+                } catch (_) {}
+            },
+
+            confirmOrder: function (orderId) {
+                const orders = this.getOrders();
+                const target = orders.find(o => o.orderId === orderId || o.orderCode === orderId);
+                if (!target) return false;
+
+                const timeStr = new Date().toLocaleString('vi-VN');
+                target.status = 'CONFIRMED';
+                target.statusCode = 'CONFIRMED';
+                target.statusLabel = 'Đang đóng gói';
+                target.confirmedAt = timeStr;
+                target.timeline = target.timeline || [];
+                target.timeline.push({
+                    step: 2,
+                    code: 'CONFIRMED',
+                    label: 'Đóng gói tại HTX',
+                    time: timeStr,
+                    desc: 'Admin đã duyệt đơn. Lệnh gửi xuống HTX đóng gói chống sốc & dán tem QR'
+                });
+
+                this.saveOrders(orders);
+                if (typeof showToast === 'function') {
+                    showToast('✅ Đã duyệt đơn ' + (target.orderId || '') + '! Lệnh đóng gói đã chuyển HTX.', 'success');
+                }
+                return true;
+            },
+
+            shipOrder: function (orderId) {
+                const orders = this.getOrders();
+                const target = orders.find(o => o.orderId === orderId || o.orderCode === orderId);
+                if (!target) return false;
+
+                const timeStr = new Date().toLocaleString('vi-VN');
+                const couriers = ['ViettelPost', 'VNPost', 'GHN Express'];
+                const chosenCourier = target.courier || couriers[Math.floor(Math.random() * couriers.length)];
+                const trackingNum = target.trackingCode || (chosenCourier + ': #OCOP-VN' + Math.floor(10000 + Math.random() * 90000));
+
+                target.status = 'SHIPPING';
+                target.statusCode = 'SHIPPING';
+                target.statusLabel = 'Đang vận chuyển';
+                target.shippedAt = timeStr;
+                target.courier = chosenCourier;
+                target.trackingCode = trackingNum;
+                target.timeline = target.timeline || [];
+                target.timeline.push({
+                    step: 3,
+                    code: 'SHIPPING',
+                    label: 'Bàn giao vận chuyển',
+                    time: timeStr,
+                    desc: 'Đã bàn giao cho ' + chosenCourier + '. Mã vận đơn: ' + trackingNum
+                });
+
+                this.saveOrders(orders);
+                if (typeof showToast === 'function') {
+                    showToast('🚚 Đã bàn giao cho ' + chosenCourier + ' (Mã: ' + trackingNum + ')', 'info');
+                }
+                return true;
+            },
+
+            completeOrder: function (orderId) {
+                const orders = this.getOrders();
+                const target = orders.find(o => o.orderId === orderId || o.orderCode === orderId);
+                if (!target) return false;
+
+                const timeStr = new Date().toLocaleString('vi-VN');
+                target.status = 'COMPLETED';
+                target.statusCode = 'COMPLETED';
+                target.statusLabel = 'Giao thành công';
+                target.completedAt = timeStr;
+                target.customerReceivedAt = timeStr;
+                target.timeline = target.timeline || [];
+                target.timeline.push({
+                    step: 4,
+                    code: 'COMPLETED',
+                    label: 'Giao thành công',
+                    time: timeStr,
+                    desc: 'Khách hàng đã nhận hàng & hoàn tất đối soát dòng tiền'
+                });
+
+                this.saveOrders(orders);
+                if (typeof showToast === 'function') {
+                    showToast('🎉 Chúc mừng! Đơn ' + (target.orderId || '') + ' đã giao thành công và hoàn tất đối soát!', 'success');
+                }
+                return true;
+            },
+
+            cancelOrder: function (orderId, reason) {
+                const orders = this.getOrders();
+                const target = orders.find(o => o.orderId === orderId || o.orderCode === orderId);
+                if (!target) return false;
+
+                const timeStr = new Date().toLocaleString('vi-VN');
+                const finalReason = reason || 'Khách yêu cầu hủy đơn';
+
+                target.status = 'CANCELLED';
+                target.statusCode = 'CANCELLED';
+                target.statusLabel = 'Đã hủy';
+                target.cancelledAt = timeStr;
+                target.cancelReason = finalReason;
+                target.timeline = target.timeline || [];
+                target.timeline.push({
+                    step: 0,
+                    code: 'CANCELLED',
+                    label: 'Đã hủy / Từ chối',
+                    time: timeStr,
+                    desc: 'Lý do hủy đơn: ' + finalReason
+                });
+
+                this.saveOrders(orders);
+                if (typeof showToast === 'function') {
+                    showToast('❌ Đơn ' + (target.orderId || '') + ' đã hủy. Lý do: ' + finalReason, 'warning');
+                }
+                return true;
+            },
+
+            batchConfirmPendingOrders: function () {
+                const orders = this.getOrders();
+                let count = 0;
+                const timeStr = new Date().toLocaleString('vi-VN');
+
+                orders.forEach(o => {
+                    if (this.normalizeStatus(o.status) === 'PENDING') {
+                        o.status = 'CONFIRMED';
+                        o.statusCode = 'CONFIRMED';
+                        o.statusLabel = 'Đang đóng gói';
+                        o.confirmedAt = timeStr;
+                        o.timeline = o.timeline || [];
+                        o.timeline.push({
+                            step: 2,
+                            code: 'CONFIRMED',
+                            label: 'Đóng gói tại HTX',
+                            time: timeStr,
+                            desc: 'Admin duyệt nhanh 1-click. Gửi lệnh đóng gói tới HTX'
+                        });
+                        count++;
+                    }
+                });
+
+                if (count > 0) {
+                    this.saveOrders(orders);
+                    if (typeof showToast === 'function') {
+                        showToast('⚡ Đã duyệt nhanh thành công ' + count + ' đơn hàng chờ xác nhận!', 'success');
+                    }
+                } else {
+                    if (typeof showToast === 'function') {
+                        showToast('Không có đơn hàng nào đang chờ duyệt.', 'info');
+                    }
+                }
+            },
+
+            promptCustomerCancel: function (orderId) {
+                const reasons = [
+                    'Đổi ý không mua nữa',
+                    'Muốn thay đổi địa chỉ / số điện thoại nhận hàng',
+                    'Đặt nhầm sản phẩm / số lượng',
+                    'Tìm thấy giá tốt hơn ở nơi khác',
+                    'Thời gian giao hàng không phù hợp'
+                ];
+                const choice = prompt('Vui lòng chọn hoặc nhập lý do hủy đơn:\n1. ' + reasons[0] + '\n2. ' + reasons[1] + '\n3. ' + reasons[2] + '\n4. ' + reasons[3] + '\n5. ' + reasons[4], '1');
+                if (choice === null) return;
+                const idx = parseInt(choice, 10) - 1;
+                const reason = (idx >= 0 && idx < reasons.length) ? reasons[idx] : (choice.trim() || reasons[0]);
+                this.cancelOrder(orderId, reason);
+            },
+
+            promptAdminCancel: function (orderId) {
+                const reasons = [
+                    'Không liên lạc được với khách hàng qua SĐT',
+                    'Địa chỉ nhận hàng không hợp lệ / không chính xác',
+                    'Chưa nhận được chuyển khoản sau thời hạn quy định',
+                    'Sản phẩm tạm thời hết hàng tại Hợp tác xã',
+                    'Khách hàng liên hệ yêu cầu hủy đơn'
+                ];
+                const choice = prompt('ADMIN TỪ CHỐI / HỦY ĐƠN - Chọn lý do:\n1. ' + reasons[0] + '\n2. ' + reasons[1] + '\n3. ' + reasons[2] + '\n4. ' + reasons[3] + '\n5. ' + reasons[4], '1');
+                if (choice === null) return;
+                const idx = parseInt(choice, 10) - 1;
+                const reason = (idx >= 0 && idx < reasons.length) ? reasons[idx] : (choice.trim() || reasons[0]);
+                this.cancelOrder(orderId, reason);
+            },
+
+            chatAboutOrder: function (orderId) {
+                if (typeof window.closeCustomerAuthModal === 'function') {
+                    window.closeCustomerAuthModal();
+                }
+                if (typeof window.toggleAIChat === 'function') {
+                    window.toggleAIChat(true);
+                }
+                const input = document.getElementById('ai-chat-input');
+                if (input) {
+                    input.value = 'Kiểm tra đơn hàng ' + orderId;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+                setTimeout(() => {
+                    if (typeof window.sendAIMessage === 'function') {
+                        window.sendAIMessage();
+                    }
+                }, 300);
+            },
+
+            refreshAllViews: function () {
+                if (typeof window.renderAdminOnlineOrdersTable === 'function') {
+                    window.renderAdminOnlineOrdersTable();
+                }
+                const user = typeof window.getCurrentCustomer === 'function' ? window.getCurrentCustomer() : null;
+                if (user && typeof window.renderCustomerOrdersTab === 'function') {
+                    window.renderCustomerOrdersTab(user);
+                }
+            }
+        };
+
+        // RENDER ADMIN ONLINE ORDERS TABLE IN PIN 2007 FINANCIAL DASHBOARD
+        window.renderAdminOnlineOrdersTable = function (statusFilter = 'ALL') {
+            const container = document.getElementById('admin-online-orders-table-container');
+            if (!container) return;
+
+            const orders = window.OcopOMS.getOrders();
+            const norm = window.OcopOMS.normalizeStatus;
+
+            // Counts for all 5 statuses
+            const countAll = orders.length;
+            const countPending = orders.filter(o => norm(o.status) === 'PENDING').length;
+            const countConfirmed = orders.filter(o => norm(o.status) === 'CONFIRMED').length;
+            const countShipping = orders.filter(o => norm(o.status) === 'SHIPPING').length;
+            const countCompleted = orders.filter(o => norm(o.status) === 'COMPLETED').length;
+            const countCancelled = orders.filter(o => norm(o.status) === 'CANCELLED').length;
+
+            // Accounting calculation
+            const pendingRevenue = orders.filter(o => ['PENDING', 'CONFIRMED', 'SHIPPING'].includes(norm(o.status)))
+                .reduce((sum, o) => sum + (Number(o.grandTotal) || 0), 0);
+            const activeOrders = orders.filter(o => norm(o.status) !== 'CANCELLED');
+            const realizedWebmasterProfit = activeOrders.reduce((sum, o) => sum + (Number(o.platformFee || 10000) || 10000), 0);
+
+            // Filtered list
+            const currentFilter = (statusFilter || 'ALL').toUpperCase();
+            const filtered = orders.filter(o => {
+                if (currentFilter === 'ALL') return true;
+                return norm(o.status) === currentFilter;
+            });
+
+            let html = `
+            <div class="space-y-4">
+                <!-- 1. BẢNG KẾ TOÁN DÒNG TIỀN THỰC TẾ NGOÀI ĐỜI -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div class="p-3.5 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-200 shadow-2xs">
+                        <div class="text-[11px] font-bold text-amber-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-clock-rotate-left text-amber-600"></i>
+                            <span>DOANH THU ĐANG TẠM GIỮ / ĐANG XỬ LÝ:</span>
+                        </div>
+                        <div class="text-base font-black text-amber-950 mt-1">${pendingRevenue.toLocaleString('vi-VN')} ₫</div>
+                        <div class="text-[10px] text-amber-700 mt-0.5">(Gồm các đơn Chờ duyệt, Đang đóng gói &amp; Đang giao)</div>
+                    </div>
+
+                    <div class="p-3.5 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-200 shadow-2xs">
+                        <div class="text-[11px] font-bold text-emerald-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-sack-dollar text-emerald-600"></i>
+                            <span>TIỀN LỜI CHỦ WEB THỰC NHẬN (+10.000Đ/ĐƠN):</span>
+                        </div>
+                        <div class="text-base font-black text-emerald-950 mt-1">${realizedWebmasterProfit.toLocaleString('vi-VN')} ₫</div>
+                        <div class="text-[10px] text-emerald-700 mt-0.5">(Đã trừ sạch toàn bộ các đơn Hủy / Từ chối)</div>
+                    </div>
+
+                    <div class="p-3.5 bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl border border-sky-200 shadow-2xs flex flex-col justify-between">
+                        <div class="text-[11px] font-bold text-sky-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-bolt text-sky-600"></i>
+                            <span>THAO TÁC DUYỆT HÀNG LOẠT:</span>
+                        </div>
+                        <button type="button" onclick="window.OcopOMS.batchConfirmPendingOrders()" class="mt-2 w-full py-2 px-3 rounded-xl bg-[#0284C7] hover:bg-sky-700 text-white font-black text-xs shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-check-double text-xs"></i>
+                            <span>⚡ Duyệt Nhanh Tất Cả Đơn Chờ (${countPending})</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. BỘ ĐẾM SỐ LƯỢNG 5 TRẠNG THÁI (STATUS FILTER BUTTONS) -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-bold">
+                    <button type="button" onclick="window.renderAdminOnlineOrdersTable('ALL')" class="px-3 py-1.5 rounded-xl border transition cursor-pointer ${currentFilter === 'ALL' ? 'bg-[#0284C7] text-white border-[#0284C7] font-black' : 'bg-white text-slate-700 border-slate-200 hover:bg-sky-50'}">
+                        Tất cả (${countAll})
+                    </button>
+                    <button type="button" onclick="window.renderAdminOnlineOrdersTable('PENDING')" class="px-3 py-1.5 rounded-xl border transition cursor-pointer ${currentFilter === 'PENDING' ? 'bg-amber-600 text-white border-amber-600 font-black' : 'bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-100'}">
+                        ⏳ Chờ duyệt (${countPending})
+                    </button>
+                    <button type="button" onclick="window.renderAdminOnlineOrdersTable('CONFIRMED')" class="px-3 py-1.5 rounded-xl border transition cursor-pointer ${currentFilter === 'CONFIRMED' ? 'bg-sky-600 text-white border-sky-600 font-black' : 'bg-sky-50 text-sky-900 border-sky-200 hover:bg-sky-100'}">
+                        📦 Đang đóng gói (${countConfirmed})
+                    </button>
+                    <button type="button" onclick="window.renderAdminOnlineOrdersTable('SHIPPING')" class="px-3 py-1.5 rounded-xl border transition cursor-pointer ${currentFilter === 'SHIPPING' ? 'bg-indigo-600 text-white border-indigo-600 font-black' : 'bg-indigo-50 text-indigo-900 border-indigo-200 hover:bg-indigo-100'}">
+                        🚚 Đang giao (${countShipping})
+                    </button>
+                    <button type="button" onclick="window.renderAdminOnlineOrdersTable('COMPLETED')" class="px-3 py-1.5 rounded-xl border transition cursor-pointer ${currentFilter === 'COMPLETED' ? 'bg-emerald-600 text-white border-emerald-600 font-black' : 'bg-emerald-50 text-emerald-900 border-emerald-200 hover:bg-emerald-100'}">
+                        ✅ Hoàn thành (${countCompleted})
+                    </button>
+                    <button type="button" onclick="window.renderAdminOnlineOrdersTable('CANCELLED')" class="px-3 py-1.5 rounded-xl border transition cursor-pointer ${currentFilter === 'CANCELLED' ? 'bg-rose-600 text-white border-rose-600 font-black' : 'bg-rose-50 text-rose-900 border-rose-200 hover:bg-rose-100'}">
+                        ❌ Đã hủy (${countCancelled})
+                    </button>
+                </div>
+
+                <!-- 3. DANH SÁCH BẢNG ĐƠN HÀNG CHI TIẾT -->
+                <div class="overflow-x-auto rounded-2xl border border-sky-200 bg-white shadow-2xs">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-sky-50/80 text-sky-950 border-b border-sky-200 font-black uppercase text-[10.5px]">
+                                <th class="p-3">Mã Đơn / Ngày Đặt</th>
+                                <th class="p-3">Khách Hàng</th>
+                                <th class="p-3">Sản Phẩm &amp; HTX</th>
+                                <th class="p-3 text-right">Tổng Tiền</th>
+                                <th class="p-3">Thanh Toán</th>
+                                <th class="p-3 text-center">Trạng Thái</th>
+                                <th class="p-3 text-center">Thao Tác Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700">
+            `;
+
+            if (filtered.length === 0) {
+                html += `
+                    <tr>
+                        <td colspan="7" class="p-8 text-center text-slate-400 font-medium">
+                            Không có đơn hàng nào trong danh mục này.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                filtered.forEach(o => {
+                    const st = norm(o.status);
+                    const meta = window.OcopOMS.getStatusMeta(st);
+                    const isTransfer = (o.paymentMethod || '').includes('BIDV') || (o.paymentMethod || '').includes('8808661371') || (o.paymentMethod || '').includes('MoMo') || (o.paymentMethod || '').includes('0971280030');
+                    const payBadge = isTransfer
+                        ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-50 text-sky-800 border border-sky-200">💳 Đã báo CK</span>'
+                        : '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">💵 Ship COD</span>';
+
+                    let actionHtml = '';
+                    if (st === 'PENDING') {
+                        actionHtml = `
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button type="button" onclick="window.OcopOMS.confirmOrder('${o.orderId}')" class="px-2.5 py-1 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-bold text-[11px] shadow-2xs transition cursor-pointer" title="Duyệt đơn và chuyển lệnh đóng gói cho HTX">
+                                    ✅ Duyệt &amp; Đóng gói
+                                </button>
+                                <button type="button" onclick="window.OcopOMS.promptAdminCancel('${o.orderId}')" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-[11px] transition cursor-pointer" title="Từ chối đơn / Hủy">
+                                    ❌ Từ chối
+                                </button>
+                            </div>
+                        `;
+                    } else if (st === 'CONFIRMED') {
+                        actionHtml = `
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button type="button" onclick="window.OcopOMS.shipOrder('${o.orderId}')" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] shadow-2xs transition cursor-pointer" title="Bàn giao cho đơn vị vận chuyển (ViettelPost / VNPost)">
+                                    🚚 Giao cho ĐVVC
+                                </button>
+                            </div>
+                        `;
+                    } else if (st === 'SHIPPING') {
+                        actionHtml = `
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button type="button" onclick="window.OcopOMS.completeOrder('${o.orderId}')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-2xs transition cursor-pointer" title="Xác nhận khách đã nhận hàng &amp; hoàn tất đối soát">
+                                    🎉 Xác nhận Giao
+                                </button>
+                            </div>
+                        `;
+                    } else if (st === 'COMPLETED') {
+                        actionHtml = `<span class="text-[11px] font-bold text-emerald-700">✓ Hoàn tất đối soát</span>`;
+                    } else {
+                        actionHtml = `<span class="text-[10px] text-rose-600 font-medium" title="${o.cancelReason || ''}">Đã hủy: ${(o.cancelReason || 'Không rõ').slice(0, 18)}...</span>`;
+                    }
+
+                    const trackingHtml = o.trackingCode ? `<div class="text-[9.5px] font-mono text-indigo-700 font-bold mt-0.5">${o.trackingCode}</div>` : '';
+
+                    html += `
+                        <tr class="hover:bg-sky-50/40 transition">
+                            <td class="p-3">
+                                <div class="font-mono font-black text-sky-800 text-xs">${o.orderId || ('#' + o.orderCode)}</div>
+                                <div class="text-[10px] text-slate-400 mt-0.5">${o.createdAt || ''}</div>
+                            </td>
+                            <td class="p-3">
+                                <div class="font-bold text-slate-900">${o.customerName || 'Khách vãng lai'}</div>
+                                <div class="text-[10.5px] font-medium text-slate-600 font-mono">${o.customerPhone || ''}</div>
+                                <div class="text-[10px] text-slate-400 truncate max-w-[180px]" title="${o.shippingAddress || ''}">${o.shippingAddress || ''}</div>
+                            </td>
+                            <td class="p-3">
+                                <div class="font-bold text-slate-900 line-clamp-1" title="${o.productName}">${o.productName}</div>
+                                <div class="text-[10px] text-slate-500">SL: <strong class="text-sky-700">${o.qty || 1}</strong> • ${o.storeName || ''}</div>
+                            </td>
+                            <td class="p-3 text-right">
+                                <div class="font-black text-[#0284C7] text-xs">${(Number(o.grandTotal) || 0).toLocaleString('vi-VN')} ₫</div>
+                                <div class="text-[9.5px] text-emerald-700 font-bold mt-0.5">+10.000đ lời web</div>
+                            </td>
+                            <td class="p-3">
+                                ${payBadge}
+                            </td>
+                            <td class="p-3 text-center">
+                                <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-black" style="background: ${meta.bg}; color: ${meta.color}; border: 1px solid ${meta.border};">
+                                    ${meta.label}
+                                </span>
+                                ${trackingHtml}
+                            </td>
+                            <td class="p-3 text-center">
+                                ${actionHtml}
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            `;
+
+            container.innerHTML = html;
+        };
+    })();
+
 
 
     window.enrichWebmasterRevenueData = function () {

@@ -2450,7 +2450,27 @@
             color: #0369A1 !important;
             font-weight: 800 !important;
         }
-    </style>
+    
+        /* ⚡ 60FPS Hardware Acceleration & Compositing Optimization */
+        .product-card {
+            content-visibility: auto;
+            contain-intrinsic-size: 420px;
+        }
+        .product-card,
+        .product-card *,
+        .lofi-organic-card,
+        #catalog-sidebar .cat-side-btn,
+        #mobile-categories-bar .mob-cat-btn,
+        .prov-chip-btn {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        #scroll-ambient-background .animate-spin-ultra-slow,
+        #scroll-ambient-background .animate-spin-ultra-slow-rev,
+        #scroll-ambient-background .animate-aura-breathe {
+            animation: none !important;
+        }
+</style>
 <link rel="stylesheet" href="assets/checkout-payment.css?v=016e2182cfbf"></head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
  <!-- THANH TIẾN TRÌNH CUỘN HOÀNG KIM (GOLDEN SCROLL PROGRESS BAR) -->
@@ -2460,12 +2480,12 @@
  <!-- HÌNH NỀN AMBIENT SỐNG ĐỘNG SUỐT TOÀN TRANG KHI CUỘN (FIXED SCROLL AMBIENCE) -->
  <div id="scroll-ambient-background" class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
  <!-- Quầng sáng thở êm dịu (Breathing Aura Orbs) -->
- <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl animate-aura-breathe"></div>
- <div class="absolute top-1/3 -right-40 w-[30rem] h-[30rem] rounded-full bg-amber-400/10 blur-3xl animate-aura-breathe" style="animation-delay: 2.5s;"></div>
- <div class="absolute top-2/3 -left-32 w-[28rem] h-[28rem] rounded-full bg-emerald-600/10 blur-3xl animate-aura-breathe" style="animation-delay: 4.5s;"></div>
- <div class="absolute -bottom-24 right-1/4 w-96 h-96 rounded-full bg-yellow-400/10 blur-3xl animate-aura-breathe" style="animation-delay: 1.5s;"></div>
+ <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-lg"></div>
+ <div class="absolute top-1/3 -right-40 w-[30rem] h-[30rem] rounded-full bg-amber-400/10 blur-lg" style="animation-delay: 2.5s;"></div>
+ <div class="absolute top-2/3 -left-32 w-[28rem] h-[28rem] rounded-full bg-emerald-600/10 blur-lg" style="animation-delay: 4.5s;"></div>
+ <div class="absolute -bottom-24 right-1/4 w-96 h-96 rounded-full bg-yellow-400/10 blur-lg" style="animation-delay: 1.5s;"></div>
  <!-- Họa tiết Trống Đồng Đông Sơn khổng lồ xoay chậm bên sườn trái (Cultural Watermark) -->
- <div class="absolute -left-64 top-1/4 w-[580px] h-[580px] opacity-[0.09] text-amber-400 animate-spin-ultra-slow select-none">
+ <div class="absolute -left-64 top-1/4 w-[580px] h-[580px] opacity-[0.09] text-amber-400 select-none">
  <svg viewBox="0 0 200 200" class="w-full h-full fill-current">
  <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" stroke-width="2" />
  <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3" />
@@ -2478,7 +2498,7 @@
  </svg>
  </div>
  <!-- Họa tiết Hoa Sen khổng lồ bên sườn phải (Lotus Watermark) -->
- <div class="absolute -right-52 top-1/2 w-[520px] h-[520px] opacity-[0.09] text-emerald-400 animate-spin-ultra-slow-rev select-none">
+ <div class="absolute -right-52 top-1/2 w-[520px] h-[520px] opacity-[0.09] text-emerald-400 select-none">
  <svg viewBox="0 0 200 200" class="w-full h-full fill-current">
  <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" />
  <path d="M100,30 C120,65 140,85 150,110 C140,140 110,160 100,170 C90,160 60,140 50,110 C60,85 80,65 100,30 Z" fill="none" stroke="currentColor" stroke-width="2" />
@@ -5202,7 +5222,17 @@
  </h5>
  <span id="cust-orders-count" class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">0 đơn</span>
  </div>
- <div id="cust-orders-list-body" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+ 
+                        <!-- 6 E-Commerce Order Status Filter Tabs -->
+                        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
+                            <button type="button" onclick="setCustomerOrderFilter('ALL')" id="cust-tab-all" class="cust-order-filter-btn px-2.5 py-1 rounded-lg font-bold text-xs whitespace-nowrap bg-sky-600 text-white shadow-xs transition cursor-pointer">Tất cả (<span id="cust-cnt-all">0</span>)</button>
+                            <button type="button" onclick="setCustomerOrderFilter('PENDING')" id="cust-tab-pending" class="cust-order-filter-btn px-2.5 py-1 rounded-lg font-bold text-xs whitespace-nowrap bg-sky-50 text-sky-800 border border-sky-200 hover:bg-sky-100 transition cursor-pointer">Chờ xác nhận (<span id="cust-cnt-pending">0</span>)</button>
+                            <button type="button" onclick="setCustomerOrderFilter('CONFIRMED')" id="cust-tab-confirmed" class="cust-order-filter-btn px-2.5 py-1 rounded-lg font-bold text-xs whitespace-nowrap bg-sky-50 text-sky-800 border border-sky-200 hover:bg-sky-100 transition cursor-pointer">Đang đóng gói (<span id="cust-cnt-confirmed">0</span>)</button>
+                            <button type="button" onclick="setCustomerOrderFilter('SHIPPING')" id="cust-tab-shipping" class="cust-order-filter-btn px-2.5 py-1 rounded-lg font-bold text-xs whitespace-nowrap bg-sky-50 text-sky-800 border border-sky-200 hover:bg-sky-100 transition cursor-pointer">Đang giao (<span id="cust-cnt-shipping">0</span>)</button>
+                            <button type="button" onclick="setCustomerOrderFilter('COMPLETED')" id="cust-tab-completed" class="cust-order-filter-btn px-2.5 py-1 rounded-lg font-bold text-xs whitespace-nowrap bg-sky-50 text-sky-800 border border-sky-200 hover:bg-sky-100 transition cursor-pointer">Hoàn thành (<span id="cust-cnt-completed">0</span>)</button>
+                            <button type="button" onclick="setCustomerOrderFilter('CANCELLED')" id="cust-tab-cancelled" class="cust-order-filter-btn px-2.5 py-1 rounded-lg font-bold text-xs whitespace-nowrap bg-sky-50 text-sky-800 border border-sky-200 hover:bg-sky-100 transition cursor-pointer">Đã hủy (<span id="cust-cnt-cancelled">0</span>)</button>
+                        </div>
+                        <div id="cust-orders-list-body" class="space-y-2 max-h-60 overflow-y-auto pr-1">
  <!-- Populated dynamically -->
  </div>
  </div>
@@ -5709,7 +5739,7 @@
                 { r: 245, g: 158, b: 11 }    // Solar Orange
             ];
             // Tối ưu hóa hiệu năng 60fps: Giảm 70% mật độ hạt bụi ánh sáng
-            const PARTICLE_COUNT = lightweight ? 8 : Math.min(26, Math.max(12, Math.floor(((window.innerWidth * window.innerHeight) / 14000 + 38) * 0.3)));
+            const PARTICLE_COUNT = 12;
             const particles = [];
             for (let i = 0; i < PARTICLE_COUNT; i++) {
                 const colorObj = colors[Math.floor(Math.random() * colors.length)];
@@ -5753,11 +5783,10 @@
                     if (mouse.active) {
                         const dx = p.x - mouse.x;
                         const dy = p.y - mouse.y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 130 && dist > 0) {
-                            const force = (130 - dist) / 130;
-                            p.x += (dx / dist) * force * 2.5;
-                            p.y += (dy / dist) * force * 2.5;
+                        const distSq = dx * dx + dy * dy;
+                        if (distSq < 16900 && distSq > 0) {
+                            p.x += dx * 0.02;
+                            p.y += dy * 0.02;
                         }
                     }
                     if (p.y < -15) {
@@ -5766,13 +5795,9 @@
                     }
                     if (p.x < -15) p.x = width + 15;
                     if (p.x > width + 15) p.x = -15;
-                    const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3.2);
-                    grad.addColorStop(0, `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${finalAlpha})`);
-                    grad.addColorStop(0.4, `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${finalAlpha * 0.38})`);
-                    grad.addColorStop(1, `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, 0)`);
-                    ctx.fillStyle = grad;
+                    ctx.fillStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${finalAlpha})`;
                     ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size * 3.2, 0, Math.PI * 2);
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
                     ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, finalAlpha * 1.3)})`;
                     ctx.beginPath();
@@ -6426,7 +6451,8 @@
             const visibleItems = items.slice(startIndex, endIndex);
             displayedProductCount = endIndex;
             window.displayedProductCount = displayedProductCount;
-            let cardsHtml = visibleItems.map((p, idx) => {
+
+            function buildProductCardHtml(p, idx, totalCount) {
                 const isFav = wishlist.includes(p.id);
                 const productName = getProductName(p);
                 const productDescription = getProductDescription(p);
@@ -6515,7 +6541,7 @@
                 </div>`;
 
                 // Chèn banner cảm hứng giữa dòng sản phẩm khi lướt (Mid-feed Banner sau 3 hàng)
-                if (idx === 8 && items.length >= 10) {
+                if (idx === 8 && totalCount >= 10) {
                     const bTitle = midBannerTitles[currentLanguage] || midBannerTitles.vi;
                     const bCopilot = midBannerBtnCopilot[currentLanguage] || midBannerBtnCopilot.vi;
                     cardHtml += `
@@ -6526,7 +6552,26 @@
                     `;
                 }
                 return cardHtml;
-            }).join('');;
+            }
+            window.buildProductCardHtml = buildProductCardHtml;
+
+            const initialChunkLimit = 24;
+            const initialItems = items.slice(0, initialChunkLimit);
+            window._catalogChunkItems = items;
+            window._catalogChunkOffset = initialItems.length;
+
+            let cardsHtml = initialItems.map((p, idx) => buildProductCardHtml(p, idx, items.length)).join('');
+            if (items.length > initialChunkLimit) {
+                const remaining = items.length - initialChunkLimit;
+                cardsHtml += `
+                <div id="catalog-load-more-container" class="col-span-full py-6 flex flex-col items-center justify-center">
+                    <button type="button" id="btn-load-more-chunk" onclick="renderNextProductChunk()" class="px-6 py-3 rounded-2xl bg-sky-50 hover:bg-sky-100 text-sky-800 hover:text-sky-900 border border-sky-300 font-extrabold text-xs sm:text-sm shadow-xs transition-all active:scale-95 flex items-center gap-2 cursor-pointer" title="Xem thêm đặc sản OCOP">
+                        <i class="fa-solid fa-angles-down text-sky-600"></i>
+                        <span>👇 Xem thêm đặc sản (Còn ${remaining} sản phẩm)</span>
+                    </button>
+                </div>
+                `;
+            }
             if (items.length > 0) {
                 const pageNumbers = [];
                 if (totalPages <= 7) {
@@ -6577,8 +6622,59 @@
                 `;
             }
             grid.innerHTML = cardsHtml;
+            if ('IntersectionObserver' in window) {
+                if (window._catalogLoadMoreObserver) {
+                    window._catalogLoadMoreObserver.disconnect();
+                }
+                const loadMoreBox = document.getElementById('catalog-load-more-container');
+                if (loadMoreBox) {
+                    window._catalogLoadMoreObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                renderNextProductChunk();
+                            }
+                        });
+                    }, { rootMargin: '300px' });
+                    window._catalogLoadMoreObserver.observe(loadMoreBox);
+                }
+            }
         }
-        let productSearchTimer;
+        
+        window.renderNextProductChunk = function() {
+            const allItems = window._catalogChunkItems || [];
+            const offset = window._catalogChunkOffset || 24;
+            if (offset >= allItems.length) {
+                const container = document.getElementById('catalog-load-more-container');
+                if (container) container.remove();
+                if (window._catalogLoadMoreObserver) window._catalogLoadMoreObserver.disconnect();
+                return;
+            }
+            const nextOffset = Math.min(offset + 24, allItems.length);
+            const chunk = allItems.slice(offset, nextOffset);
+            let chunkHtml = '';
+            for (let i = 0; i < chunk.length; i++) {
+                chunkHtml += window.buildProductCardHtml(chunk[i], offset + i, allItems.length);
+            }
+            const container = document.getElementById('catalog-load-more-container');
+            if (container) {
+                container.insertAdjacentHTML('beforebegin', chunkHtml);
+            } else {
+                const grid = document.getElementById('product-grid');
+                if (grid) grid.insertAdjacentHTML('beforeend', chunkHtml);
+            }
+            window._catalogChunkOffset = nextOffset;
+            const remaining = allItems.length - nextOffset;
+            if (container) {
+                if (remaining > 0) {
+                    const span = container.querySelector('button span');
+                    if (span) span.textContent = '👇 Xem thêm đặc sản (Còn ' + remaining + ' sản phẩm)';
+                } else {
+                    container.remove();
+                    if (window._catalogLoadMoreObserver) window._catalogLoadMoreObserver.disconnect();
+                }
+            }
+        };
+let productSearchTimer;
         function scheduleProductSearch(searchTerm) {
             clearTimeout(productSearchTimer);
             productSearchTimer = setTimeout(() => filterProductsGlobal(searchTerm), 140);
@@ -6658,7 +6754,12 @@
         }
         window.addEventListener('resize', updateScrollRange, {passive:true});
         window.addEventListener('load', updateScrollRange, {once:true});
-        if ('ResizeObserver' in window) new ResizeObserver(updateScrollRange).observe(document.body);
+        let scrollResizeDebounceTimer = null;
+        function debouncedUpdateScrollRange() {
+            clearTimeout(scrollResizeDebounceTimer);
+            scrollResizeDebounceTimer = setTimeout(updateScrollRange, 200);
+        }
+        window.addEventListener('resize', debouncedUpdateScrollRange, {passive:true});
         updateScrollRange();
         window.addEventListener('scroll', () => {
             if (scrollProgressFrame !== null) return;
@@ -9720,7 +9821,221 @@
         function generateResilientAIResponse(query, lang = 'vi', apiResult = null, hasImages = false, imageEvidence = null) {
             if (apiResult && (apiResult.text_response || apiResult.message)) return apiResult;
             if (hasImages) return window.OCOPChatFallback.imageUnavailableReply(lang, query, products, aiConversationHistory, imageEvidence);
-            return window.OCOPChatFallback.catalogReply(query, products, lang, aiConversationHistory);
+
+            const norm = String(query || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[đĐ]/g, 'd').trim();
+
+            // 1. Order Tracking
+            if (/\b(don hang|kiem tra don|tra cuu don|tinh trang don|duyet chua|don cua toi|ma don)\b|#?ocop-[0-9a-z]+/i.test(norm)) {
+                let allOrders = [];
+                try {
+                    if (typeof window !== 'undefined' && window.OcopOMS && typeof window.OcopOMS.getOrders === 'function') {
+                        allOrders = window.OcopOMS.getOrders();
+                    } else if (typeof localStorage !== 'undefined') {
+                        allOrders = JSON.parse(localStorage.getItem('ocop_online_orders') || '[]');
+                    }
+                } catch (_) {}
+
+                const orderMatch = (query || '').match(/#?ocop-[0-9a-z]+/i);
+                let targetOrder = null;
+                if (orderMatch) {
+                    const code = orderMatch[0].toLowerCase().replace('#', '');
+                    targetOrder = allOrders.find(o => (o.orderId && o.orderId.toLowerCase().includes(code)) || (o.orderCode && o.orderCode.toLowerCase().includes(code)));
+                }
+                if (!targetOrder) {
+                    const user = (typeof window !== 'undefined' && typeof window.getCurrentCustomer === 'function') ? window.getCurrentCustomer() : null;
+                    if (user) {
+                        targetOrder = allOrders.filter(o => 
+                            (o.username && String(o.username).toLowerCase() === String(user.username).toLowerCase()) ||
+                            (user.phone && o.customerPhone && String(o.customerPhone).replace(/\s/g,'') === String(user.phone).replace(/\s/g,'')) ||
+                            (user.fullName && o.customerName === user.fullName)
+                        )[0];
+                    }
+                }
+                if (!targetOrder && allOrders.length) {
+                    targetOrder = allOrders[allOrders.length - 1];
+                }
+
+                if (targetOrder) {
+                    const normStatus = (typeof window !== 'undefined' && window.OcopOMS ? window.OcopOMS.normalizeStatus(targetOrder.status) : (targetOrder.status || 'PENDING'));
+                    const meta = (typeof window !== 'undefined' && window.OcopOMS ? window.OcopOMS.getStatusMeta(normStatus) : { label: 'Đang xử lý' });
+                    const pBadge = targetOrder.paymentBadge || (targetOrder.paymentMethod === 'COD' ? '💵 Thanh toán khi nhận hàng (COD)' : '💳 Đã báo chuyển khoản - Chờ đối soát');
+                    const msg = `Dạ, em đã tra cứu thông tin đơn hàng #${targetOrder.orderId} trên hệ thống OCOP:\n\n` +
+                        `📦 TIẾN TRÌNH ĐƠN HÀNG #${targetOrder.orderId}:\n` +
+                        `• Trạng thái hiện tại: ${meta.label}\n` +
+                        `• Hình thức thanh toán: ${pBadge}\n` +
+                        `• Sản phẩm: ${targetOrder.productName} (Số lượng: ${targetOrder.qty || 1})\n` +
+                        `• Tổng thanh toán: ${(targetOrder.grandTotal || 0).toLocaleString('vi-VN')} ₫\n` +
+                        `• Địa chỉ giao hàng: ${targetOrder.shippingAddress || 'Theo thông tin đơn'}\n` +
+                        (targetOrder.trackingCode ? `• Đơn vị vận chuyển: ${targetOrder.trackingCode}\n` : '• Đơn vị vận chuyển: Chuẩn bị bàn giao ViettelPost / VNPost\n') +
+                        (targetOrder.cancelReason ? `• Lý do hủy đơn: ${targetOrder.cancelReason}\n` : '') +
+                        `\n👉 Quý khách có thể bấm xem chi tiết hoặc gửi yêu cầu ưu tiên duyệt đơn qua nút bấm bên dưới nhé!`;
+
+                    return {
+                        message: msg,
+                        text_response: msg,
+                        productIds: targetOrder.productId ? [targetOrder.productId] : [],
+                        isOrderTracking: true,
+                        targetOrderId: targetOrder.orderId,
+                        suggested_products: targetOrder.productId ? [targetOrder.productId] : []
+                    };
+                }
+
+                const msg = `Dạ, hiện tại em chưa tìm thấy đơn hàng nào khớp trên hệ thống OCOP Việt Nam. Quý khách vui lòng kiểm tra lại mã đơn (dạng #OCOP-XXXXXX) hoặc đăng nhập tài khoản khách hàng để xem danh sách đơn hàng đã đặt nhé!`;
+                return { message: msg, text_response: msg, productIds: [] };
+            }
+
+            // 2. Complaint & Warranty
+            if (/\b(khieu nai|doi tra|bao hanh|\bvo\b|\bbe\b|\bhu\b|\bhong\b|sai hang|sai mon|tra hang|hoan tien)\b/i.test(norm)) {
+                const msg = `Dạ, em rất tiếc và thành thật xin lỗi anh/chị về sự cố không mong muốn với sản phẩm OCOP!\n\n` +
+                    `🛡️ CHÍNH SÁCH ĐỔI TRẢ & BẢO HÀNH 100%:\n` +
+                    `• Đổi mới 1 - 1 trong vòng 7 ngày hoặc hoàn tiền 100% nếu sản phẩm bị hư hỏng, bể vỡ do vận chuyển hoặc không đạt cam kết chất lượng.\n` +
+                    `• Thủ tục đơn giản: Anh/chị chỉ cần cung cấp mã đơn #OCOP-XXXXXX hoặc hình ảnh bao bì sản phẩm.\n\n` +
+                    `Em đã kích hoạt chế độ hỗ trợ CSKH ưu tiên kết nối trực tiếp với Quản trị viên và Chủ thể Hợp tác xã qua nút liên hệ bên dưới để xử lý ngay cho anh/chị ạ!`;
+                return {
+                    message: msg,
+                    text_response: msg,
+                    handoffAdmin: true,
+                    productIds: [],
+                    suggested_products: []
+                };
+            }
+
+            // 3. Context follow-up: Cheapest item
+            if (/\b(mon nao re nhat|gia thap nhat|re nhat|gia mem nhat)\b/i.test(norm)) {
+                const lastProds = (typeof window !== 'undefined' && Array.isArray(window._aiLastMentionedProducts) && window._aiLastMentionedProducts.length)
+                    ? window._aiLastMentionedProducts
+                    : products.slice(0, 3);
+                const cheapest = [...lastProds].sort((a, b) => (a.price || 0) - (b.price || 0))[0];
+                const msg = `Dạ, trong các đặc sản vừa tư vấn, món có mức giá mềm và tiết kiệm nhất là:\n\n` +
+                    `🌟 ${cheapest.name} (${cheapest.region})\n` +
+                    `💰 Giá niêm yết: ${(cheapest.price || 0).toLocaleString('vi-VN')} ₫ · Đạt chuẩn OCOP ${cheapest.stars} sao.\n` +
+                    `Món này chất lượng tuyệt hảo, vừa vặn túi tiền để thưởng thức tại gia hoặc làm quà biếu trang trọng. Anh/chị bấm "Đặt Mua Online Ngay" bên dưới để đặt nhé!`;
+                return {
+                    message: msg,
+                    text_response: msg,
+                    productIds: [cheapest.id],
+                    suggested_products: [cheapest.id]
+                };
+            }
+
+            // 4. Context follow-up: Direct purchase
+            if (/\b(dat cho toi|mua cho toi|dat mua|mua mon|dat mon|lay cho toi)\b|\b(lay|mua)\s+\d+\s+(hop|mon|goi|chai|lon|hu)\b/i.test(norm)) {
+                const targetProd = (typeof window !== 'undefined' && Array.isArray(window._aiLastMentionedProducts) && window._aiLastMentionedProducts.length)
+                    ? window._aiLastMentionedProducts[0]
+                    : products[0];
+                const qtyMatch = query.match(/(\d+)\s*(hộp|hop|gói|goi|chai|kg|lon|hũ|hu|phần|phan|món|mon|suất|suat)?/i);
+                const qty = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
+                const unit = (qtyMatch && qtyMatch[2]) ? qtyMatch[2] : 'sản phẩm';
+                if (typeof window !== 'undefined' && typeof window.openOnlineOrderModal === 'function') {
+                    setTimeout(() => window.openOnlineOrderModal(targetProd.id, qty), 200);
+                }
+                const msg = `Dạ, em đã mở ngay biểu mẫu đặt mua online cho "${targetProd.name}" với số lượng ${qty} ${unit}!\n\n` +
+                    `📍 Xuất xứ: ${targetProd.region} · Chuẩn OCOP ${targetProd.stars} sao\n` +
+                    `💰 Đơn giá: ${(targetProd.price || 0).toLocaleString('vi-VN')} ₫\n\n` +
+                    `Quý khách chỉ cần xác nhận SĐT và địa chỉ giao hàng trong khung đặt hàng, Hợp tác xã sẽ đóng gói chuẩn OCOP và giao đến tận nơi nhanh chóng!`;
+                return {
+                    message: msg,
+                    text_response: msg,
+                    productIds: [targetProd.id],
+                    suggested_products: [targetProd.id]
+                };
+            }
+
+            // 5. Payment & Shipping
+            if (/\b(thanh toan|phi ship|tien ship|phi van chuyen|stk|so tai khoan|ngan hang|bidv|momo|cod|phi giao|thoi gian giao)\b/i.test(norm)) {
+                const msg = `Dạ, sàn OCOP Việt Nam áp dụng chính sách vận chuyển và thanh toán toàn quốc chuẩn TMĐT như sau:\n\n` +
+                    `🚚 CHÍNH SÁCH VẬN CHUYỂN:\n` +
+                    `• Phí vận chuyển: Đồng giá 25.000 ₫ toàn quốc qua ViettelPost, VNPost và GHN.\n` +
+                    `• Phí nền tảng kết nối OCOP: 10.000 ₫/đơn hàng (hỗ trợ trực tiếp cho Hợp tác xã).\n` +
+                    `• Thời gian giao hàng: Nội thành 1 - 2 ngày; Liên tỉnh 2 - 4 ngày làm việc.\n\n` +
+                    `💳 PHƯƠNG THỨC THANH TOÁN:\n` +
+                    `1. Chuyển khoản VietQR tự động qua BIDV: STK 8808661371 (CTY CP OCOP VIET NAM). Hệ thống tự động nhận diện mã đơn và xác nhận tức thì.\n` +
+                    `2. Ví điện tử MoMo: SĐT 0971280030.\n` +
+                    `3. Thanh toán khi nhận hàng (Ship COD): Khách nhận hàng, kiểm tra tem truy xuất OCOP cùng shipper rồi mới thanh toán tiền mặt.`;
+                return {
+                    message: msg,
+                    text_response: msg,
+                    productIds: [],
+                    suggested_products: []
+                };
+            }
+
+            // 6. OCOP Certification & Origin
+            if (/\b(chinh hang|chung nhan ocop|nguon goc|xuat xu|kiem dinh|tieu chuan ocop)\b/i.test(norm)) {
+                const msg = `Dạ, 100% sản phẩm trên hệ thống đều là đặc sản OCOP chính hãng được Nhà nước chứng nhận:\n\n` +
+                    `⭐ TIÊU CHUẨN OCOP QUỐC GIA:\n` +
+                    `• Đạt chuẩn từ 3 sao đến 5 sao cấp tỉnh và cấp Quốc gia theo bộ tiêu chí khắt khe của Bộ Nông nghiệp & PTNT.\n` +
+                    `• Tem chống hàng giả & Truy xuất nguồn gốc QR Code: Minh bạch nguồn gốc đến từng Hợp tác xã, vùng trồng nguyên liệu sạch và ngày đóng gói.\n` +
+                    `• Showroom & Điểm bán chính hãng: Mọi sản phẩm đều có cơ sở, showroom trưng bày định vị chuẩn xác 100% trên Google Maps.\n\n` +
+                    `Quý khách hoàn toàn an tâm thưởng thức tinh hoa nông sản sạch và chuẩn vị quê hương ạ!`;
+                return {
+                    message: msg,
+                    text_response: msg,
+                    productIds: [],
+                    suggested_products: []
+                };
+            }
+
+            // 7. Product Consultation (Health, Occasion, Region, Comparison)
+            let matched = [];
+            let consultMsg = '';
+
+            if (norm.includes('mat ngu') || norm.includes('kho ngu')) {
+                matched = products.filter(p => /sen|hoa vang|shan tuyet|tam that|tra/i.test(p.name)).slice(0, 3);
+                consultMsg = `Dạ, với tình trạng mất ngủ, khó ngủ, các loại trà thảo mộc tự nhiên giàu dưỡng chất an thần như Trà hoa vàng, Trà sen hay Trà Shan Tuyết cổ thụ là sự lựa chọn tuyệt vời giúp an giấc và thanh lọc cơ thể:`;
+            } else if (norm.includes('tieu duong') || norm.includes('duong huyet')) {
+                matched = products.filter(p => /kho qua|thia canh|buoi|yen mach|dau/i.test(p.name)).slice(0, 3);
+                consultMsg = `Dạ, đối với người cần ổn định đường huyết, các đặc sản OCOP chiết xuất từ Khổ qua rừng, Dây thìa canh hoặc Bưởi da xanh giúp hỗ trợ cân bằng đường huyết tự nhiên rất lành tính:`;
+            } else if (norm.includes('mat gan') || norm.includes('giai doc') || norm.includes('nong trong')) {
+                matched = products.filter(p => /atiso|ca gai leo|sam|tra thao/i.test(p.name)).slice(0, 3);
+                consultMsg = `Dạ, để mát gan, giải độc và thanh nhiệt cơ thể, em xin gợi ý các đặc sản từ Atiso, Cà gai leo và Trà thảo mộc chuẩn OCOP của các Hợp tác xã uy tín:`;
+            } else if (norm.includes('nguoi gia') || norm.includes('bo me') || norm.includes('ong ba')) {
+                matched = products.filter(p => /sam|yen|dong trung|sen|nghe|mat ong/i.test(p.name)).slice(0, 3);
+                consultMsg = `Dạ, để bồi bổ sức khỏe cho người lớn tuổi, ông bà, cha mẹ, các sản phẩm giàu dinh dưỡng như Đông trùng hạ thảo, Yến sào, Sâm và Tinh bột nghệ là món quà sức khỏe vô cùng ý nghĩa:`;
+            } else if (norm.includes('an chay')) {
+                matched = products.filter(p => /hat dieu|macca|ngu coc|nam|rong bien|dau/i.test(p.name)).slice(0, 3);
+                consultMsg = `Dạ, các món thuần chay thanh đạm giàu dinh dưỡng từ Hạt điều rang củi, Hạt macca, Nấm hương và Ngũ cốc dinh dưỡng OCOP rất thích hợp cho thực đơn ăn chay lành mạnh:`;
+            } else if (norm.includes('giam can') || norm.includes('giu dang')) {
+                matched = products.filter(p => /gao lut|tra xanh|buoi|can tay|hat chia/i.test(p.name)).slice(0, 3);
+                consultMsg = `Dạ, để giữ dáng và hỗ trợ giảm cân an toàn, các sản phẩm Gạo lứt sấy, Trà xanh búp non và Trái cây sấy dẻo tự nhiên không đường là sự lựa chọn số 1:`;
+            } else if (norm.includes('bieu sep') || norm.includes('qua sep') || norm.includes('duoi 500k') || norm.includes('500k')) {
+                matched = products.filter(p => p.price <= 500000 && p.stars >= 4).sort((a,b) => b.stars - a.stars || b.price - a.price).slice(0, 3);
+                consultMsg = `Dạ, để biếu sếp hoặc đối tác với ngân sách dưới 500.000 ₫ mà vẫn đảm bảo sang trọng, tinh tế và chuẩn chất lượng OCOP 4-5 sao, em trân trọng gợi ý:`;
+            } else if (norm.includes('tet') || norm.includes('ra mat')) {
+                matched = products.filter(p => p.stars === 5 || p.price >= 200000).sort((a,b) => (b.stars || 0) - (a.stars || 0)).slice(0, 3);
+                consultMsg = `Dạ, các dịp lễ Tết hay ra mắt gia đình cần những món quà vừa trang trọng vừa mang đậm giá trị văn hóa ẩm thực truyền thống, em gợi ý các đặc sản OCOP 5 sao thượng hạng:`;
+            } else if (norm.includes('dong nai')) {
+                matched = products.filter(p => p.region && p.region.includes('Đồng Nai')).slice(0, 3);
+                consultMsg = `Dạ, vùng đất Đồng Nai trù phú nức tiếng với các đặc sản OCOP hảo hạng như Bưởi Tân Triều mọng nước, Hạt điều rang củi đậm đà và Nấm mối thanh ngọt:`;
+            } else if (norm.includes('tay bac')) {
+                matched = products.filter(p => ['Hà Giang', 'Sơn La', 'Điện Biên', 'Yên Bái', 'Lào Cai', 'Lai Châu', 'Hòa Bình'].some(r => p.region && p.region.includes(r))).slice(0, 3);
+                consultMsg = `Dạ, đại ngàn Tây Bắc hùng vĩ hội tụ những tinh hoa ẩm thực trứ danh như Thịt trâu gác bếp, Trà Shan Tuyết cổ thụ, Mật ong rừng đá và Miến dong nguyên chất:`;
+            } else if (norm.includes('mien tay') || norm.includes('song cuu long')) {
+                matched = products.filter(p => ['Bến Tre', 'Cần Thơ', 'Đồng Tháp', 'An Giang', 'Cà Mau', 'Kiên Giang', 'Tiền Giang'].some(r => p.region && p.region.includes(r))).slice(0, 3);
+                consultMsg = `Dạ, Miền Tây sông nước hào sảng mang đến những đặc sản ngọt ngào nức tiếng như Kẹo dừa Bến Tre, Bánh pía sầu riêng, Mắm cá linh và Gạo ST25 trứ danh thế giới:`;
+            } else if (norm.includes('so sanh') || (norm.includes('shan tuyet') && norm.includes('tan cuong'))) {
+                matched = products.filter(p => /shan tuyet|tan cuong|tra thai/i.test(p.name)).slice(0, 2);
+                consultMsg = `Dạ, so sánh giữa Trà Shan Tuyết và Trà Tân Cương:\n` +
+                    `• Trà Shan Tuyết Cổ Thụ: Thu hoạch từ cây chè hàng trăm năm tuổi trên mây mù Tây Bắc, nước trà vàng óng ánh mật ong, vị tiền chát êm dịu, hậu ngọt sâu và thanh tao.\n` +
+                    `• Trà Tân Cương Thái Nguyên: Nổi tiếng với búp chè non móc câu, hương cốm nồng nàn đặc trưng, vị tiền chát đậm đà, hậu ngọt đọng lâu nơi cổ họng.\n` +
+                    `Cả hai đều là đệ nhất danh trà Việt Nam! Quý khách có thể trải nghiệm cả hai qua gợi ý dưới đây:`;
+            }
+
+            if (matched.length > 0) {
+                if (typeof window !== 'undefined') window._aiLastMentionedProducts = matched;
+                return {
+                    message: consultMsg,
+                    text_response: consultMsg,
+                    productIds: matched.map(p => p.id),
+                    suggested_products: matched.map(p => p.id)
+                };
+            }
+
+            const fallbackRes = window.OCOPChatFallback.catalogReply(query, products, lang, aiConversationHistory);
+            if (fallbackRes && Array.isArray(fallbackRes.productIds) && fallbackRes.productIds.length && typeof window !== 'undefined') {
+                window._aiLastMentionedProducts = fallbackRes.productIds.map(id => products.find(p => p.id === id)).filter(Boolean);
+            }
+            return fallbackRes;
         }
 
         function escalateToAdmin() {
@@ -10045,6 +10360,21 @@
                         recProdMap[currentLanguage] || recProdMap.vi,
                         recNoteMap[currentLanguage] || recNoteMap.vi
                     );
+                }
+                if (result.isOrderTracking) {
+                    const trackingActions = document.createElement('div');
+                    trackingActions.className = 'mt-3 pt-2.5 border-t border-sky-100 flex flex-wrap gap-2';
+                    trackingActions.innerHTML = `
+                        <button type="button" onclick="if(typeof openCustomerAuthModal==='function') openCustomerAuthModal('orders');" class="px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer transition">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                            <span>📋 Xem chi tiết đơn hàng</span>
+                        </button>
+                        <button type="button" onclick="if(window.OcopOMS && typeof window.OcopOMS.batchConfirmPendingOrders==='function') window.OcopOMS.batchConfirmPendingOrders(); if(typeof showToast==='function') showToast('🚀 Đã gửi yêu cầu ưu tiên duyệt đơn lên hệ thống!', 'success');" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer transition">
+                            <i class="fa-solid fa-user-tie"></i>
+                            <span>👨‍💻 Nhờ Admin duyệt nhanh đơn này</span>
+                        </button>
+                    `;
+                    reply.querySelector('div.bg-white').append(trackingActions);
                 }
                 if (result.handoffAdmin) {
                     const handoffButton = document.createElement('button');
@@ -10467,25 +10797,18 @@
         }
         function renderAIProductRecommendations(recommendations, title, note) {
             const pinBtnText = {
-                vi: 'Ghim vị trí điểm bán',
-                en: 'Pin Showroom Location',
+                vi: '📍 Xem điểm bán',
+                en: 'Pin Location',
                 zh: '固定展厅位置',
                 ko: '쇼룸 위치 고정',
                 ja: 'ショールーム位置を固定'
             };
-            const cashFlowBtnText = {
-                vi: 'Xem dòng tiền mô phỏng',
-                en: 'View Simulated Cash Flow',
-                zh: '查看模拟现金流',
-                ko: '시뮬레이션 흐름 보기',
-                ja: 'キャッシュフローシミュレーション'
-            };
-            const showroomBadgeText = {
-                vi: 'Điểm bán O2O',
-                en: 'O2O Showroom',
-                zh: 'O2O 展厅',
-                ko: 'O2O 쇼룸',
-                ja: 'O2Oショールーム'
+            const orderBtnText = {
+                vi: '🛒 Mua Online ngay',
+                en: 'Order Online',
+                zh: '在线购买',
+                ko: '온라인 주문',
+                ja: 'オンライン注文'
             };
             const starsText = {
                 vi: 'sao',
@@ -10503,41 +10826,50 @@
             };
             const cards = recommendations.map(product => {
                 const formattedPrice = (typeof getProductPriceLabel === 'function' ? getProductPriceLabel(product) : '') || ((product.price || 0).toLocaleString('vi-VN') + ' ₫');
+                const storeInfo = (typeof window !== 'undefined' && window.OcopStores && typeof window.OcopStores.getOcopStoreInfo === 'function')
+                    ? window.OcopStores.getOcopStoreInfo(product.id)
+                    : null;
+                const storeName = storeInfo?.producerName || storeInfo?.primaryStore?.name || ('HTX OCOP ' + (product.region || 'Việt Nam'));
+
                 return `
-                <article class="rounded-2xl border border-amber-300/40 bg-slate-900/90 p-3 shadow-md" data-product-id="${product.id}">
-                    <div class="flex items-start justify-between gap-2">
+                <article class="rounded-2xl border border-sky-200 bg-white p-3 shadow-sm hover:shadow-md transition text-slate-800" data-product-id="${product.id}">
+                    <div class="flex items-start gap-2.5">
+                        <img src="${product.image || 'placeholder.jpg'}" alt="${escapeAIHtml(getProductName(product))}" class="w-14 h-14 rounded-xl object-cover shrink-0 border border-sky-100 bg-sky-50 shadow-2xs" onerror="this.src='placeholder.jpg'" loading="lazy">
                         <div class="min-w-0 flex-1">
-                            <p class="font-extrabold text-amber-200 text-xs">${escapeAIHtml(getProductName(product))}</p>
-                            <p class="mt-0.5 text-[10px] text-gray-400 flex items-center gap-1">
-                                <i class="fa-solid fa-location-dot text-amber-400 text-[9px]"></i>
+                            <p class="font-extrabold text-slate-900 text-xs line-clamp-1">${escapeAIHtml(getProductName(product))}</p>
+                            <p class="text-[10px] text-slate-500 flex items-center gap-1 mt-0.5">
+                                <i class="fa-solid fa-map-pin text-sky-600"></i>
                                 <span>${escapeAIHtml(product.region)} · OCOP ${product.stars} ${starsText[currentLanguage] || starsText.vi}</span>
                             </p>
+                            <p class="text-[10px] text-sky-800 font-semibold line-clamp-1 mt-0.5">
+                                <i class="fa-solid fa-store text-sky-500 mr-0.5"></i>${escapeAIHtml(storeName)}
+                            </p>
                         </div>
-                        <span class="break-words font-black text-amber-300 text-[10px] whitespace-nowrap bg-amber-950/70 border border-amber-400/40 px-2 py-0.5 rounded-full shrink-0">
-                            ${showroomBadgeText[currentLanguage] || showroomBadgeText.vi}
-                        </span>
                     </div>
-                    <!-- HIỂN THỊ GIÁ RÕ RÀNG TRONG CHATBOX -->
-                    <div class="my-2 py-1.5 px-3 rounded-xl flex items-center justify-between text-xs border border-emerald-300 shadow-2xs" style="background: #e8f5e9 !important; border-color: #81c784 !important;">
-                        <span class="font-bold text-[11px] flex items-center gap-1" style="color: #1b5e20 !important;">
-                            <i class="fa-solid fa-tag text-[10px]" style="color: #2e7d32 !important;"></i>
+                    <!-- HIỂN THỊ GIÁ NIÊM YẾT RÕ RÀNG SKY-TECH -->
+                    <div class="my-2 py-1.5 px-3 rounded-xl flex items-center justify-between text-xs bg-sky-50 border border-sky-200">
+                        <span class="font-bold text-[11px] text-sky-900 flex items-center gap-1">
+                            <i class="fa-solid fa-tag text-sky-600 text-[10px]"></i>
                             <span>${priceLabelText[currentLanguage] || priceLabelText.vi}</span>
                         </span>
-                        <span class="chat-rec-price font-black text-sm" style="color: #15803d !important; font-weight: 900 !important; font-size: 13.5px !important;">
+                        <span class="chat-rec-price font-black text-sm text-[#0284C7]" style="color: #0284C7 !important;">
                             ${formattedPrice}
                         </span>
                     </div>
-                    <p class="mt-1.5 text-[10px] text-slate-300 leading-relaxed">${escapeAIHtml(getProductDescription(product))}</p>
+                    <p class="mt-1 text-[10px] text-slate-500 line-clamp-2 leading-relaxed">${escapeAIHtml(getProductDescription(product))}</p>
                     <div class="mt-2.5 flex gap-2">
-                        <button onclick="openStoreLocator(${product.id})" class="flex-1 rounded-xl border border-amber-400/80 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-amber-700 px-2.5 py-1.5 text-[10.5px] font-black text-slate-950 shadow flex items-center justify-center gap-1 cursor-pointer transition">
+                        <button type="button" onclick="openStoreLocator(${product.id})" class="flex-1 rounded-xl border border-sky-300 bg-sky-50 hover:bg-sky-100 px-2.5 py-1.5 text-[10.5px] font-bold text-sky-800 shadow-2xs flex items-center justify-center gap-1 cursor-pointer transition">
                             <i class="fa-solid fa-map-pin text-[10px]"></i>
                             <span>${pinBtnText[currentLanguage] || pinBtnText.vi}</span>
                         </button>
-                        <button onclick="openOnlineOrderModal(${product.id})" class="flex-1 rounded-xl border border-sky-400/60 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 px-2.5 py-1.5 text-[10.5px] font-black text-white shadow flex items-center justify-center gap-1 cursor-pointer transition" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important;"><i class="fa-solid fa-cart-shopping text-[10px]"></i><span>🛒 Đặt Mua Online Ngay</span></button>
+                        <button type="button" onclick="openOnlineOrderModal(${product.id})" class="flex-1 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 px-2.5 py-1.5 text-[10.5px] font-bold text-white shadow-xs flex items-center justify-center gap-1 cursor-pointer transition" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important;">
+                            <i class="fa-solid fa-cart-shopping text-[10px]"></i>
+                            <span>${orderBtnText[currentLanguage] || orderBtnText.vi}</span>
+                        </button>
                     </div>
                 </article>
             `}).join('');
-            return `<p class="font-bold text-ocopGreen text-xs">${escapeAIHtml(title)}</p><div class="space-y-2.5 mt-2">${cards}</div><p class="text-[10px] text-gray-500 mt-1">${escapeAIHtml(note)}</p>`;
+            return `<p class="font-bold text-sky-800 text-xs">${escapeAIHtml(title)}</p><div class="space-y-2 mt-2">${cards}</div><p class="text-[10px] text-slate-500 mt-1">${escapeAIHtml(note)}</p>`;
         }
         function renderAIComboRecommendations(combos, title, note) {
             const bundleLabels = {
@@ -15442,37 +15774,12 @@
     }
     // 2. 3D Mouse Parallax
     function initHero3DParallax() {
-        const heroWrapper = document.querySelector('section.relative') || document.querySelector('main > section');
+        // Vô hiệu hóa rAF parallax 3D để triệt tiêu hiện tượng lag/khựng chuột
         const targetCards = document.querySelectorAll('.glass-panel, [data-ag-parallax], section.relative .lg\\:col-span-5 > div');
-        if (!heroWrapper || targetCards.length === 0) return;
-        let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0, isHovering = false, rafId = null;
-        function onMouseMove(e) {
-            const rect = heroWrapper.getBoundingClientRect();
-            mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-            mouseY = ((e.clientY - rect.top) / rect.height) * 2 - 1;
-        }
-        function updateParallaxFrame() {
-            const lerpFactor = 0.085;
-            currentX += ((isHovering ? mouseX : 0) - currentX) * lerpFactor;
-            currentY += ((isHovering ? mouseY : 0) - currentY) * lerpFactor;
-            targetCards.forEach(card => {
-                const depth = parseFloat(card.dataset.agDepth || 14);
-                const tiltX = -(currentY * depth * 0.55).toFixed(2);
-                const tiltY = (currentX * depth * 0.55).toFixed(2);
-                const transX = (currentX * depth).toFixed(2);
-                const transY = (currentY * depth).toFixed(2);
-                card.style.transform = `perspective(1000px) translate3d(${transX}px, ${transY}px, 0) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-            });
-            if (isHovering || Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01) {
-                rafId = requestAnimationFrame(updateParallaxFrame);
-            } else {
-                targetCards.forEach(c => c.style.transform = '');
-                rafId = null;
-            }
-        }
-        heroWrapper.addEventListener('mouseenter', () => { isHovering = true; if (!rafId) rafId = requestAnimationFrame(updateParallaxFrame); });
-        heroWrapper.addEventListener('mousemove', (e) => { onMouseMove(e); if (!rafId) rafId = requestAnimationFrame(updateParallaxFrame); });
-        heroWrapper.addEventListener('mouseleave', () => { isHovering = false; });
+        targetCards.forEach(card => {
+            card.style.transform = '';
+        });
+        return;
     }
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => { applyStaggerDelays(); initHero3DParallax(); });
@@ -16023,48 +16330,199 @@
         showCustomerAuthAlert('Đã đăng xuất.','success');
     }
     window.handleCustomerLogout = handleCustomerLogout;
+    let currentCustomerOrderFilter = 'ALL';
+    window.setCustomerOrderFilter = function (filter) {
+        currentCustomerOrderFilter = filter;
+        document.querySelectorAll('.cust-order-filter-btn').forEach(btn => {
+            btn.className = 'cust-order-filter-btn px-2.5 py-1 rounded-lg font-bold text-xs whitespace-nowrap bg-sky-50 text-sky-800 border border-sky-200 hover:bg-sky-100 transition cursor-pointer';
+        });
+        const activeTab = document.getElementById('cust-tab-' + filter.toLowerCase());
+        if (activeTab) {
+            activeTab.className = 'cust-order-filter-btn px-2.5 py-1 rounded-lg font-bold text-xs whitespace-nowrap bg-sky-600 text-white shadow-xs transition cursor-pointer';
+        }
+        const user = typeof getCurrentCustomer === 'function' ? getCurrentCustomer() : null;
+        if (user) renderCustomerOrdersTab(user);
+    };
+
     function renderCustomerOrdersTab(user) {
+        const u = user || (typeof getCurrentCustomer === 'function' ? getCurrentCustomer() : null);
+        if (!u) return;
+
         const nameEl = document.getElementById('cust-profile-fullname');
         const userEl = document.getElementById('cust-profile-username');
         const phoneEl = document.getElementById('cust-profile-phone');
         const addrEl = document.getElementById('cust-profile-address');
         const countEl = document.getElementById('cust-orders-count');
         const listEl = document.getElementById('cust-orders-list-body');
-        if (nameEl) nameEl.textContent = user.fullName || user.username;
-        if (userEl) userEl.textContent = user.username;
-        if (phoneEl) phoneEl.textContent = user.phone || 'Chưa có SĐT';
-        if (addrEl) addrEl.textContent = user.address || 'Chưa lưu địa chỉ';
+
+        if (nameEl) nameEl.textContent = u.fullName || u.username;
+        if (userEl) userEl.textContent = u.username;
+        if (phoneEl) phoneEl.textContent = u.phone || 'Chưa có SĐT';
+        if (addrEl) addrEl.textContent = u.address || 'Chưa lưu địa chỉ';
+
         let allOrders = [];
         try {
-            allOrders = JSON.parse(localStorage.getItem('ocop_online_orders') || '[]');
+            if (typeof window !== 'undefined' && window.OcopOMS && typeof window.OcopOMS.getOrders === 'function') {
+                allOrders = window.OcopOMS.getOrders();
+            } else {
+                allOrders = JSON.parse(localStorage.getItem('ocop_online_orders') || '[]');
+            }
         } catch (_) {}
+
+        const norm = (typeof window !== 'undefined' && window.OcopOMS && typeof window.OcopOMS.normalizeStatus === 'function')
+            ? window.OcopOMS.normalizeStatus
+            : ((s) => String(s || '').toUpperCase().trim());
+
         const myOrders = allOrders.filter(o => 
-            (o.username && String(o.username).toLowerCase() === String(user.username).toLowerCase()) ||
-            (user.phone && o.customerPhone && String(o.customerPhone).replace(/\s/g,'') === String(user.phone).replace(/\s/g,'')) ||
-            (user.fullName && o.customerName === user.fullName)
+            (o.username && String(o.username).toLowerCase() === String(u.username).toLowerCase()) ||
+            (u.phone && o.customerPhone && String(o.customerPhone).replace(/\s/g,'') === String(u.phone).replace(/\s/g,'')) ||
+            (u.fullName && o.customerName === u.fullName)
         );
-        if (countEl) countEl.textContent = myOrders.length + ' đơn hàng';
+
+        // Counter Badges for All 5 Statuses
+        const cntAll = myOrders.length;
+        const cntPending = myOrders.filter(o => norm(o.status) === 'PENDING').length;
+        const cntConfirmed = myOrders.filter(o => norm(o.status) === 'CONFIRMED').length;
+        const cntShipping = myOrders.filter(o => norm(o.status) === 'SHIPPING').length;
+        const cntCompleted = myOrders.filter(o => norm(o.status) === 'COMPLETED').length;
+        const cntCancelled = myOrders.filter(o => norm(o.status) === 'CANCELLED').length;
+
+        if (countEl) countEl.textContent = cntAll + ' đơn hàng';
+        const elAll = document.getElementById('cust-cnt-all'); if (elAll) elAll.textContent = cntAll;
+        const elPending = document.getElementById('cust-cnt-pending'); if (elPending) elPending.textContent = cntPending;
+        const elConfirmed = document.getElementById('cust-cnt-confirmed'); if (elConfirmed) elConfirmed.textContent = cntConfirmed;
+        const elShipping = document.getElementById('cust-cnt-shipping'); if (elShipping) elShipping.textContent = cntShipping;
+        const elCompleted = document.getElementById('cust-cnt-completed'); if (elCompleted) elCompleted.textContent = cntCompleted;
+        const elCancelled = document.getElementById('cust-cnt-cancelled'); if (elCancelled) elCancelled.textContent = cntCancelled;
+
         if (!listEl) return;
-        if (myOrders.length === 0) {
-            listEl.innerHTML = '<div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-500 font-medium">Bạn chưa có đơn đặt mua online nào. Hãy dạo chợ OCOP và trải nghiệm đặt mua ship tận nơi nhé!</div>';
+
+        const filteredOrders = (currentCustomerOrderFilter === 'ALL')
+            ? myOrders
+            : myOrders.filter(o => norm(o.status) === currentCustomerOrderFilter);
+
+        if (filteredOrders.length === 0) {
+            listEl.innerHTML = '<div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-500 font-medium">Không có đơn hàng nào trong mục này.</div>';
             return;
         }
-        listEl.innerHTML = myOrders.map(o => {
-            return '<div class="p-3 bg-white rounded-xl border border-sky-200 shadow-2xs space-y-1.5">' +
-                '<div class="flex items-center justify-between text-xs">' +
-                    '<span class="font-mono font-black text-sky-700">' + o.orderId + '</span>' +
-                    '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">🟡 Chờ xác nhận</span>' +
-                '</div>' +
-                '<div class="font-bold text-slate-900 text-xs truncate">' + o.productName + ' (SL: ' + (o.qty || 1) + ')</div>' +
-                '<div class="text-[11px] text-slate-500 flex items-center justify-between">' +
-                    '<span>Hình thức: <strong class="text-slate-800">' + (o.paymentMethod || 'COD') + '</strong></span>' +
-                    '<span class="text-rose-600 font-black">' + (o.grandTotal ? o.grandTotal.toLocaleString('vi-VN') + ' ₫' : '') + '</span>' +
-                '</div>' +
-                '<div class="text-[10px] text-slate-400">Giao đến: ' + o.shippingAddress + '</div>' +
-            '</div>';
+
+        listEl.innerHTML = filteredOrders.map(o => {
+            const statusCode = norm(o.status);
+            const meta = (typeof window !== 'undefined' && window.OcopOMS && typeof window.OcopOMS.getStatusMeta === 'function')
+                ? window.OcopOMS.getStatusMeta(statusCode)
+                : { label: statusCode, color: '#0284C7', bg: '#E0F2FE', border: '#BAE6FD' };
+
+            const pBadge = o.paymentBadge || (o.paymentMethod === 'COD' ? '💵 Thanh toán khi nhận hàng (COD)' : '💳 Đã báo chuyển khoản - Chờ đối soát');
+            const formattedTotal = (o.grandTotal || 0).toLocaleString('vi-VN') + ' ₫';
+            const orderDate = o.createdAt || o.date || 'Hôm nay';
+
+            // 4-Step Timeline Stepper mapping
+            let activeStep = 1;
+            if (statusCode === 'CONFIRMED') activeStep = 2;
+            else if (statusCode === 'SHIPPING') activeStep = 3;
+            else if (statusCode === 'COMPLETED') activeStep = 4;
+
+            return `
+            <div class="p-3.5 bg-white rounded-2xl border border-sky-200 shadow-sm space-y-2.5 transition hover:border-sky-300">
+                <!-- Order Header -->
+                <div class="flex items-center justify-between text-xs flex-wrap gap-1">
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-mono font-black text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-200">${o.orderId}</span>
+                        <span class="text-[10px] text-slate-400">· ${orderDate}</span>
+                    </div>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black shrink-0" style="color: ${meta.color}; background: ${meta.bg}; border: 1px solid ${meta.border}">
+                        ${meta.label}
+                    </span>
+                </div>
+
+                <!-- Product Summary -->
+                <div class="space-y-1">
+                    <div class="font-bold text-slate-900 text-xs flex items-center justify-between">
+                        <span class="truncate">${o.productName}</span>
+                        <span class="font-mono text-slate-600 shrink-0 ml-2">x${o.qty || 1}</span>
+                    </div>
+                    <div class="text-[10.5px] text-slate-500">
+                        📍 ${o.storeName || 'Hợp tác xã OCOP Việt Nam'}
+                    </div>
+                    <div class="text-[11px] text-slate-600 flex items-center justify-between pt-1">
+                        <span class="text-[10.5px]">${pBadge}</span>
+                        <span class="text-rose-600 font-black text-xs">${formattedTotal}</span>
+                    </div>
+                </div>
+
+                <!-- Order Stepper / Cancelled Banner -->
+                ${statusCode === 'CANCELLED' ? `
+                    <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 space-y-1">
+                        <div class="font-bold flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-xmark text-rose-600"></i>
+                            <span>Đơn hàng đã hủy</span>
+                        </div>
+                        <div class="text-[11px] text-rose-700">
+                            Lý do: <strong>${o.cancelReason || 'Khách yêu cầu hủy đơn'}</strong> ${o.cancelledAt ? '· Lúc ' + o.cancelledAt : ''}
+                        </div>
+                    </div>
+                ` : `
+                    <div class="py-2 px-1 bg-slate-50/80 rounded-xl border border-slate-100">
+                        <div class="grid grid-cols-4 gap-1 text-center text-[10px]">
+                            <div class="${activeStep >= 1 ? 'text-sky-700 font-bold' : 'text-slate-400'}">
+                                <div class="w-5 h-5 mx-auto rounded-full flex items-center justify-center text-[10px] mb-0.5 font-black ${activeStep >= 1 ? 'bg-sky-600 text-white' : 'bg-slate-200 text-slate-500'}">1</div>
+                                <div>Chờ xác nhận</div>
+                            </div>
+                            <div class="${activeStep >= 2 ? 'text-sky-700 font-bold' : 'text-slate-400'}">
+                                <div class="w-5 h-5 mx-auto rounded-full flex items-center justify-center text-[10px] mb-0.5 font-black ${activeStep >= 2 ? 'bg-sky-600 text-white' : 'bg-slate-200 text-slate-500'}">2</div>
+                                <div>Đóng gói</div>
+                            </div>
+                            <div class="${activeStep >= 3 ? 'text-sky-700 font-bold' : 'text-slate-400'}">
+                                <div class="w-5 h-5 mx-auto rounded-full flex items-center justify-center text-[10px] mb-0.5 font-black ${activeStep >= 3 ? 'bg-sky-600 text-white' : 'bg-slate-200 text-slate-500'}">3</div>
+                                <div>Đang giao</div>
+                            </div>
+                            <div class="${activeStep >= 4 ? 'text-emerald-700 font-bold' : 'text-slate-400'}">
+                                <div class="w-5 h-5 mx-auto rounded-full flex items-center justify-center text-[10px] mb-0.5 font-black ${activeStep >= 4 ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-500'}">4</div>
+                                <div>Thành công</div>
+                            </div>
+                        </div>
+                    </div>
+                `}
+
+                <!-- Tracking Courier Info -->
+                ${(statusCode === 'SHIPPING' || statusCode === 'COMPLETED') && o.trackingCode ? `
+                    <div class="p-2 bg-indigo-50/70 border border-indigo-200 rounded-lg text-xs text-indigo-900 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-truck-fast text-indigo-600"></i>
+                            <span>Mã vận đơn: <strong class="font-mono text-indigo-800">${o.trackingCode}</strong></span>
+                        </span>
+                    </div>
+                ` : ''}
+
+                <!-- Customer Action Buttons -->
+                <div class="pt-2 border-t border-slate-100 flex items-center justify-end gap-2 flex-wrap">
+                    ${statusCode === 'PENDING' ? `
+                        <button type="button" onclick="window.OcopOMS.promptCustomerCancel('${o.orderId}')" class="px-3 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold transition cursor-pointer flex items-center gap-1">
+                            <i class="fa-solid fa-ban text-xs"></i>
+                            <span>Hủy đơn hàng</span>
+                        </button>
+                    ` : ''}
+                    ${statusCode === 'SHIPPING' ? `
+                        <button type="button" onclick="window.OcopOMS.completeOrder('${o.orderId}')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-1">
+                            <i class="fa-solid fa-check text-xs"></i>
+                            <span>Đã nhận được hàng</span>
+                        </button>
+                    ` : ''}
+                    ${(statusCode === 'COMPLETED' || statusCode === 'CANCELLED') ? `
+                        <button type="button" onclick="window.openOnlineOrderModal('${o.productId}')" class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-right text-xs"></i>
+                            <span>Mua lại đơn này</span>
+                        </button>
+                        <button type="button" onclick="window.OcopOMS.chatAboutOrder('${o.orderId}')" class="px-3 py-1.5 rounded-lg bg-white hover:bg-sky-50 text-sky-700 border border-sky-300 text-xs font-bold transition cursor-pointer flex items-center gap-1">
+                            <i class="fa-solid fa-comments text-xs"></i>
+                            <span>Chat với AI về đơn này</span>
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+            `;
         }).join('');
     }
-    // Auto-init on page load
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initCustomerAccountSystem);
     } else {
@@ -16078,7 +16536,7 @@
 <link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=6082bfd08879"></script>
 <script src="checkout-payment.js?v=65d79782c7c2"></script>
-<script src="skytech-complete.js?v=ceee7bb98460"></script>
+<script src="skytech-complete.js?v=4011fa48e640"></script>
 <script src="cart-ui.js?v=5cd216c94e9c"></script>
 <script src="password-recovery.js?v=92dfd0e3dc3a"></script>
 <script src="account-center.js?v=15b862ef8f27"></script>
