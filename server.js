@@ -10,6 +10,7 @@ const express = require('express');
 const {createAPISecurity}=require('./api-security');
 const {createAIAccessStore}=require('./ai-access-store');
 const {createSpaFallback} = require('./spa-fallback');
+const {createSiteInformation,notFound:publicNotFound}=require('./site-information');
 const { expandChatShorthand } = require('./chat-language.js');
 const AIShopping = require('./ai-shopping.js');
 const { lookupGoogle, relevantWikiSource } = require('./ai-grounding.js');
@@ -2717,6 +2718,8 @@ app.post('/api/auth/login', (req, res) => {
   return res.json({ user: publicCustomer(customer), ...accountStore.login(customer.id) });
 });
 
+app.use(createSiteInformation({root:__dirname,products:defaultProducts,getInventory:()=>salesStore.inventoryList()}));
+
 app.use((error, req, res, next) => {
   if (res.headersSent) return next(error);
   console.error('Request failed:', error.message);
@@ -2725,9 +2728,9 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.use('/kpi-site', (req,res)=>res.sendStatus(404));
+app.use('/kpi-site', publicNotFound);
 app.get(['/admin','/admin/'],(req,res)=>res.sendFile(path.join(__dirname,'admin-sales.html')));
-app.use(require('./public-assets').publicAssetGuard(__dirname));
+app.use(require('./public-assets').publicAssetGuard(__dirname,{notFound:publicNotFound}));
 app.use(express.static(__dirname, {
   dotfiles: 'deny',
   setHeaders(res, filePath) {
@@ -2743,7 +2746,8 @@ app.use(express.static(__dirname, {
 }));
 
 // Serve the app shell on direct navigation/reload, retaining the original URL.
-app.use(createSpaFallback(path.join(__dirname, 'index.html')));
+app.use(createSpaFallback(path.join(__dirname, 'index.html'),{isProduct:id=>defaultProducts.some(product=>product.id===id)}));
+app.use(publicNotFound);
 
 customers = readCustomers();
 audioRecordings = readAudioRecordings();

@@ -10,6 +10,10 @@ let submitting = false;
 let appliedVoucher = null;
 
 const money = value => Number(value || 0).toLocaleString('vi-VN') + ' ₫';
+function productOptionLabel(product){
+    const original=(window.PRODUCTS||[]).find(row=>row.id===product.productId)||product;
+    return (window.OCOPLanguage?.productName(original,salesPage.language)||product.name)+' · '+money(product.price)+(product.unit?' / '+(window.OCOPLanguage?.unit(product.unit,salesPage.language)||product.unit):'');
+}
 
 function updateSummary() {
     let subtotal = 0;
@@ -134,7 +138,7 @@ function addRow(initialId, initialQty = 1) {
     products.forEach(p => {
         const option = document.createElement('option');
         option.value = String(p.productId);
-        option.textContent = p.name + ' · ' + money(p.price) + (p.unit ? ' / ' + p.unit : '');
+        option.textContent = productOptionLabel(p);
         select.append(option);
     });
 
@@ -436,6 +440,7 @@ function showDraft(draft) {
 }
 
 document.addEventListener('sales-language', () => {
+    items.querySelectorAll?.('select').forEach(select=>{for(const option of select.options){const product=products.find(row=>row.productId===Number(option.value));if(product)option.textContent=productOptionLabel(product);}});
     if (lastDraft) showDraft(lastDraft);
     updateSummary();
 });
@@ -446,6 +451,7 @@ form.onsubmit = async event => {
     submitting = true;
     const submit = document.getElementById('submit');
     submit.disabled = true;
+    submit.dataset.processing = 'true';
     const submitLabel = submit.textContent;
     submit.textContent = salesPage.text('Đang xử lý…', 'Processing…');
     status.className = '';
@@ -460,6 +466,7 @@ form.onsubmit = async event => {
     if (!lines.length) {
         status.className = 'error';
         status.textContent = salesPage.text('Vui lòng chọn ít nhất một sản phẩm!', 'Please choose at least one product!');
+        delete submit.dataset.processing;
         submit.textContent = submitLabel;
         submit.disabled = false;
         submitting = false;
@@ -509,6 +516,7 @@ form.onsubmit = async event => {
         status.className = 'error';
         status.textContent = salesPage.text('Chưa nhận được xác nhận đơn hàng. Giỏ hàng vẫn được giữ; hãy thử lại để kiểm tra cùng yêu cầu. ', 'Order confirmation was not received. Your cart is preserved; retry to check the same request. ') + error.message;
     } finally {
+        delete submit.dataset.processing;
         submit.textContent = submitLabel;
         submit.disabled = false;
         submitting = false;

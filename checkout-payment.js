@@ -22,7 +22,7 @@
   return {bank,amount,memo,url:'https://img.vietqr.io/image/'+bank.bin+'-'+bank.account+'-qr_only.svg?'+params};
  }
  function renderBank({document,amount,orderId,language,onClose}){
-  const text=(vi,en)=>language==='en'?en:vi;
+  const text=(vi,en)=>{const locale=node?require('./site-language'):root.OCOPLanguage;if(locale){const result=locale.text(vi,language);return result!==vi||language==='vi'?result:locale.text(en,language);}return language==='en'?en:vi;};
   const el=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=value;return n;};
   const box=el('section','payment-qr-card bank-payment-card');box.dataset.method='vietqr';
   const header=el('div','bank-payment-header'),title=el('h3','',text('Thanh toán','Payment')),close=el('button','bank-payment-close','×');close.type='button';close.ariaLabel=text('Đóng khung thanh toán','Close payment panel');header.append(title,close);box.append(header);
@@ -90,7 +90,7 @@
  function render({document=root.document,method,amount=0,orderId='PREVIEW',language='vi',onClose}){
   const selected=paymentMethod(method);if(!selected)return null;
   if(selected==='vietqr')return renderBank({document,amount,orderId,language,onClose});
-  const en=language==='en',text=(vi,english)=>en?english:vi;
+  const en=language==='en',text=(vi,english)=>{const locale=node?require('./site-language'):root.OCOPLanguage;if(locale){const result=locale.text(vi,language);return result!==vi||language==='vi'?result:locale.text(english,language);}return en?english:vi;};
   const el=(tag,cls,value)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=value;return n;};
   const box=el('div','payment-qr-card');box.dataset.method=selected;
   box.append(el('h3','',selected==='cod'?text('Thanh toán khi nhận hàng','Cash on delivery'):selected==='momo'?text('QR MoMo — mô phỏng dự án','MoMo QR — project demo'):text('QR BIDV / VietQR — mô phỏng dự án','BIDV / VietQR QR — project demo')));
