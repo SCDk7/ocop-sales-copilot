@@ -29,6 +29,20 @@
         } catch (_) {}
     </script>
     <style>
+        /* MỞ KHÓA CUỘN TRANG 100% (60FPS SMOOTH SCROLL) */
+        html, body {
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            height: auto !important;
+        }
+        /* BẢO VỆ TỐI THƯỢNG CHO TRẠNG THÁI ẨN */
+        .hidden, [hidden] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
         /* CHỐNG CHỚP LỖI GIAO DIỆN (FOUC) KHI TẢI LẠI TRANG & ĐỒNG BỘ NỀN XANH DƯƠNG NHẠT */
         :is(html.catalog-browsing, body.catalog-browsing, .catalog-browsing) #ocop-intro-overlay,
         #ocop-intro-overlay.hidden,
@@ -2738,13 +2752,11 @@
  <!-- Quick Action Cluster: Cart + CTAs + Language + Login -->
  <div class="header-right-actions flex items-center space-x-2 flex-shrink-0" style="gap: 8px !important;">
  <!-- Action Button 1: 🛒 Giỏ hàng & ⚡ Đăng Ký Điểm Bán -->
- <button type="button" id="btn-header-ocr" onclick="openPartnerRegistrationModal()" class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; color: #92400E !important; background: #FFFBEB !important; border: 1.5px solid #FCD34D !important;" title="Đăng ký điểm bán OCOP">
-<i class="fa-solid fa-bolt text-amber-500"></i>
+ <button type="button" id="btn-header-ocr" onclick="openPartnerRegistrationModal()" class="hidden px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="display: none !important; white-space: nowrap !important; height: 38px; color: #92400E !important; background: #FFFBEB !important; border: 1.5px solid #FCD34D !important;" title="Đăng ký điểm bán OCOP">
 <span id="btn-header-ocr-text">⚡ Đăng Ký Điểm Bán</span>
 </button>
  <!-- Action Button 2: 🔐 Quản Trị Doanh Thu -->
- <button type="button" id="btn-header-admin-pin" onclick="promptAdminPinModal()" class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; background: #F0F9FF !important; color: #0284C7 !important; border: 1.5px solid #38BDF8 !important;" title="Khu vực Quản trị Doanh thu Nền tảng OCOP">
-<i class="fa-solid fa-chart-pie text-sky-600"></i>
+ <button type="button" id="btn-header-admin-pin" onclick="promptAdminPinModal()" class="hidden px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="display: none !important; white-space: nowrap !important; height: 38px; background: #F0F9FF !important; color: #0284C7 !important; border: 1.5px solid #38BDF8 !important;" title="Khu vực Quản trị Doanh thu Nền tảng OCOP">
 <span id="header-admin-pin-text">🔐 Quản Trị Doanh Thu</span>
 </button>
  <!-- Language Dropdown (đặt gần nút Đăng Nhập) -->
@@ -5641,12 +5653,11 @@
         let lastAIComboMarkup = null;
         let ordersHistory = [];
         function preservePageScrollState() {
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
+            // Không khóa cứng overflow: hidden để đảm bảo cuộn mượt 60FPS
         }
         function restorePageScrollState() {
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
+            document.body.style.overflow = 'auto';
+            document.documentElement.style.overflow = 'auto';
         }
         // ==========================================================================
         // AI DIGITAL BUSINESS CHALLENGE 2026: GEMINI COGNITIVE & WIKI DATA ENGINE
@@ -5731,11 +5742,21 @@
         }
         function openPartnerRegistrationModal() {
             const modal = document.getElementById('partner-registration-modal');
-            if (modal) { modal.classList.remove('hidden');modal.scrollTop=0;if(modal.firstElementChild)modal.firstElementChild.scrollTop=0; }
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.style.display = 'flex';
+                modal.scrollTop = 0;
+                if (modal.firstElementChild) modal.firstElementChild.scrollTop = 0;
+            }
         }
         function closePartnerRegistrationModal() {
             const modal = document.getElementById('partner-registration-modal');
-            if (modal) modal.classList.add('hidden');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.style.setProperty('display', 'none', 'important');
+            }
+            document.body.style.overflow = 'auto';
+            document.documentElement.style.overflow = 'auto';
         }
         function submitPartnerRegistration(e) {
             e.preventDefault();
@@ -12283,7 +12304,10 @@ let productSearchTimer;
         }
         function closeStoreLocator() {
             const modal = document.getElementById('ocop-store-modal');
-            if (modal) modal.classList.add('hidden');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.style.setProperty('display', 'none', 'important');
+            }
             restorePageScrollState();
         }
         function openAllStoresModal() {
@@ -16500,7 +16524,62 @@ let productSearchTimer;
         return false;
     }
     window.isCurrentUserAdminOrDistributor = isCurrentUserAdminOrDistributor;
-    function updateCustomerHeaderUI() {
+    
+    window.syncAdminHeaderButtonsVisibility = function () {
+        const ocrBtn = document.getElementById('btn-header-ocr');
+        const adminBtn = document.getElementById('btn-header-admin-pin');
+        if (!ocrBtn && !adminBtn) return;
+
+        let user = null;
+        try {
+            const raw = localStorage.getItem('ocop_current_user');
+            if (raw) user = JSON.parse(raw);
+        } catch (e) {}
+
+        const adminUsernames = ['admin', 'ad', 'thaonguyenad01', 'kimnganad02', 'vinhphucad03', 'thanhbinhad04', 'nppdemo'];
+        const uName = (user?.username || user?.loginId || user?.email || '').toLowerCase().trim();
+
+        let isAdmin = false;
+        if (user) {
+            if (adminUsernames.includes(uName)) {
+                isAdmin = true;
+            } else if (user.role === 'admin' || user.role === 'super_admin' || user.role === 'distributor' || user.isAdmin || user.isDistributor) {
+                isAdmin = true;
+            } else if (uName.startsWith('ad') || uName.startsWith('npp')) {
+                isAdmin = true;
+            }
+            if (uName === 'khachhang' || user.role === 'customer') {
+                isAdmin = false;
+            }
+        }
+
+        if (isAdmin) {
+            if (ocrBtn) {
+                ocrBtn.classList.remove('hidden');
+                ocrBtn.style.setProperty('display', 'inline-flex', 'important');
+            }
+            if (adminBtn) {
+                adminBtn.classList.remove('hidden');
+                adminBtn.style.setProperty('display', 'inline-flex', 'important');
+            }
+        } else {
+            if (ocrBtn) {
+                ocrBtn.classList.add('hidden');
+                ocrBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (adminBtn) {
+                adminBtn.classList.add('hidden');
+                adminBtn.style.setProperty('display', 'none', 'important');
+            }
+        }
+    };
+    if (typeof window !== 'undefined') {
+        window.addEventListener('DOMContentLoaded', window.syncAdminHeaderButtonsVisibility);
+        window.addEventListener('storage', window.syncAdminHeaderButtonsVisibility);
+    }
+
+function updateCustomerHeaderUI() {
+        window.syncAdminHeaderButtonsVisibility?.();
         window.OCOPCustomerSession?.syncIdentity();
         const user = getCurrentCustomer();
         const label = document.getElementById('customer-account-btn-text');

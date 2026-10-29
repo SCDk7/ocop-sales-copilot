@@ -1013,6 +1013,60 @@
         }
     };
 
+    
+    window.syncAdminHeaderButtonsVisibility = function () {
+        const ocrBtn = document.getElementById('btn-header-ocr');
+        const adminBtn = document.getElementById('btn-header-admin-pin');
+        if (!ocrBtn && !adminBtn) return;
+
+        let user = null;
+        try {
+            const raw = localStorage.getItem('ocop_current_user');
+            if (raw) user = JSON.parse(raw);
+        } catch (e) {}
+
+        const adminUsernames = ['admin', 'ad', 'thaonguyenad01', 'kimnganad02', 'vinhphucad03', 'thanhbinhad04', 'nppdemo'];
+        const uName = (user?.username || user?.loginId || user?.email || '').toLowerCase().trim();
+
+        let isAdmin = false;
+        if (user) {
+            if (adminUsernames.includes(uName)) {
+                isAdmin = true;
+            } else if (user.role === 'admin' || user.role === 'super_admin' || user.role === 'distributor' || user.isAdmin || user.isDistributor) {
+                isAdmin = true;
+            } else if (uName.startsWith('ad') || uName.startsWith('npp')) {
+                isAdmin = true;
+            }
+            if (uName === 'khachhang' || user.role === 'customer') {
+                isAdmin = false;
+            }
+        }
+
+        if (isAdmin) {
+            if (ocrBtn) {
+                ocrBtn.classList.remove('hidden');
+                ocrBtn.style.setProperty('display', 'inline-flex', 'important');
+            }
+            if (adminBtn) {
+                adminBtn.classList.remove('hidden');
+                adminBtn.style.setProperty('display', 'inline-flex', 'important');
+            }
+        } else {
+            if (ocrBtn) {
+                ocrBtn.classList.add('hidden');
+                ocrBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (adminBtn) {
+                adminBtn.classList.add('hidden');
+                adminBtn.style.setProperty('display', 'none', 'important');
+            }
+        }
+    };
+    if (typeof window !== 'undefined') {
+        window.addEventListener('DOMContentLoaded', window.syncAdminHeaderButtonsVisibility);
+        window.addEventListener('storage', window.syncAdminHeaderButtonsVisibility);
+    }
+
     window.closeAdminPinModal = function () {
         const modal = document.getElementById('admin-pin-modal');
         if (modal) {
@@ -2510,11 +2564,11 @@
                     if (st === 'PENDING') {
                         actionHtml = `
                             <div class="flex items-center justify-center gap-1.5">
-                                <button type="button" onclick="window.OcopOMS.confirmOrder('${o.orderId}')" class="px-2.5 py-1 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-bold text-[11px] shadow-2xs transition cursor-pointer" title="Duyệt đơn và chuyển lệnh đóng gói cho HTX">
-                                    ✅ Duyệt &amp; Đóng gói
+                                <button type="button" onclick="window.OcopOMS.confirmOrder('${o.orderId}')" class="px-2.5 py-1 rounded-lg bg-sky-600 hover:bg-sky-700 text-white font-bold text-[11px] shadow-2xs transition cursor-pointer" title="Duyệt đơn &amp; cộng doanh thu + 10.000đ phí">
+                                    ✅ Xác Nhận Đơn
                                 </button>
-                                <button type="button" onclick="window.OcopOMS.promptAdminCancel('${o.orderId}')" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-[11px] transition cursor-pointer" title="Từ chối đơn / Hủy">
-                                    ❌ Từ chối
+                                <button type="button" onclick="window.OcopOMS.promptAdminCancel('${o.orderId}')" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-[11px] transition cursor-pointer" title="Cập nhật trạng thái hủy tức thì">
+                                    ❌ Bỏ Đơn / Hủy Đơn
                                 </button>
                             </div>
                         `;
@@ -4526,6 +4580,10 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
     // SMOOTH MOUSE WHEEL SCROLL ASSURANCE FOR EXTERNAL MOUSE & TOUCHPAD (BẤT KỲ ĐÂU TRÊN MÀN HÌNH)
     (function initUniversalMouseWheelScroll() {
+        // Mở khóa cuộn trang 100%: Trong môi trường trình duyệt thực tế, không chặn wheel event để đảm bảo 60FPS
+        if (typeof navigator !== 'undefined') {
+            return;
+        }
         function getScrollableContainer(el) {
             let cur = el;
             while (cur && cur !== document.body && cur !== document.documentElement) {
@@ -4684,7 +4742,41 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
                 e.preventDefault();
             }
         }, { capture: true, passive: false });
-    })();
+    
+
+    // GLOBAL ESCAPE & UNIVERSAL MODAL CLOSER
+    window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            const modalIds = [
+                'partner-registration-modal',
+                'ai-financial-modal',
+                'auth-modal',
+                'customer-auth-modal',
+                'quickview-modal',
+                'ocop-store-modal',
+                'ocop-all-stores-modal',
+                'online-order-modal',
+                'order-success-modal',
+                'admin-pin-modal',
+                'admin-login-modal',
+                'admin-hub-modal',
+                'admin-management-modal',
+                'tiktok-studio-modal'
+            ];
+            modalIds.forEach(function (id) {
+                const m = document.getElementById(id);
+                if (m && (!m.classList.contains('hidden') || (m.style.display && m.style.display !== 'none'))) {
+                    m.classList.add('hidden');
+                    m.style.setProperty('display', 'none', 'important');
+                }
+            });
+            if (typeof window.stopQrCountdown === 'function') window.stopQrCountdown();
+            document.body.style.overflow = 'auto';
+            document.documentElement.style.overflow = 'auto';
+        }
+    });
+
+})();
 
 
     // =========================================================================
