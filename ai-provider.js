@@ -18,7 +18,9 @@ async function generatePreferredContent(configuration,payload,options={}){
     ].filter(provider=>provider.config?.apiKey);
     if(!providers.length)throw new Error('AI configuration unavailable');
     const timeout=AbortSignal.timeout(Math.max(1,options.timeoutMs||20000));
-    const signal=options.signal?AbortSignal.any([options.signal,timeout]):timeout;
+    const raceController=new AbortController();
+    const parentSignal=options.signal?AbortSignal.any([options.signal,timeout]):timeout;
+    const signal=options.fastest?AbortSignal.any([parentSignal,raceController.signal]):parentSignal;
     const attemptedProviders=[],successes=[];
     async function attempt(provider){
         attemptedProviders.push(provider.name);
@@ -35,6 +37,9 @@ async function generatePreferredContent(configuration,payload,options={}){
     }
     if(configuration.mode==='fallback'){
         for(const provider of providers){try{successes.push(await attempt(provider));break;}catch{if(signal.aborted)break;}}
+    }else if(options.fastest){
+        try{successes.push(await Promise.any(providers.map(attempt)));}catch{/* All candidates failed or reached the shared deadline. */}
+        finally{raceController.abort(new Error('A valid fast answer has been selected'));}
     }else{
         const results=await Promise.allSettled(providers.map(attempt));
         for(const result of results)if(result.status==='fulfilled')successes.push(result.value);
@@ -49,6 +54,6 @@ async function generatePreferredContent(configuration,payload,options={}){
     };
     const votes=new Map();for(const result of successes){const key=signature(result);votes.set(key,(votes.get(key)||0)+1);}
     const selected=successes.slice().sort((a,b)=>votes.get(signature(b))-votes.get(signature(a)))[0];
-    return {...selected,providersUsed:successes.map(result=>result.provider),attemptedProviders,strategy:configuration.mode==='fallback'?'fallback':'ensemble'};
+    return {...selected,providersUsed:successes.map(result=>result.provider),attemptedProviders,strategy:configuration.mode==='fallback'?'fallback':options.fastest?'fastest_valid':'ensemble'};
 }
 module.exports={generatePreferredContent,structuredAnswer};

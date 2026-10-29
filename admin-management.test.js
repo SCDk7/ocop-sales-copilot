@@ -73,41 +73,13 @@ test('the demo distributor is added once to existing storage without replacing d
     } finally { storage.ocop_distributors = previous; }
 });
 
-for (const page of ['index.html', 'index_2.html']) {
-    test(page + ' signs in the demo distributor by username or code and rejects incorrect passwords', () => {
-        const fs = require('node:fs'), vm = require('node:vm');
-        const html = fs.readFileSync(page, 'utf8');
-        const start = html.indexOf('    function handleCustomerLoginSubmit()');
-        const end = html.indexOf('    function handleCustomerRegisterSubmit()', start);
-        for (const username of ['nppdemo', 'NPPDEMO', 'NPP26DEMO001']) {
-            for (const password of ['NppDemo@2026', 'incorrect', '123456']) {
-                const values = new Map(), alerts = [], opened = [];
-                const context = {
-                    document: {getElementById: id => ({value: id === 'cust-login-user' ? username : password})},
-                    localStorage: {getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value)},
-                    OcopAdminManagement: {...Admin, setActiveScope() {}, openAdminManagementModal: (...args) => opened.push(args)},
-                    updateCustomerHeaderUI() {}, closeCustomerAuthModal() {},
-                    showCustomerAuthAlert: (message, type) => alerts.push({message, type}),
-                    setTimeout: callback => callback()
-                };
-                context.window = context;
-                vm.createContext(context);vm.runInContext(html.slice(start, end), context);
-                context.handleCustomerLoginSubmit();
-                if (password === 'NppDemo@2026') {
-                    const session = JSON.parse(values.get('ocop_current_user'));
-                    assert.equal(session.role, 'distributor');
-                    assert.equal(session.fullName, 'Nhà phân phối Demo OCOP');
-                    assert.equal(session.distributorCode, 'NPP26DEMO001');
-                    assert.deepEqual(opened, [['distributor', 'NPP26DEMO001']]);
-                    assert.equal(alerts.at(-1).type, 'success');
-                } else {
-                    assert.equal(values.has('ocop_current_user'), false);
-                    assert.equal(opened.length, 0);
-                    assert.equal(alerts.at(-1).type, 'error');
-                }
-            }
-        }
-    });
+for(const page of ['index.html','index_2.html']){
+ test(page+' delegates login to the server and cannot accept a local demo password',async()=>{
+  const html=require('fs').readFileSync(page,'utf8'),vm=require('vm');
+  const start=html.indexOf('    async function handleCustomerLoginSubmit()'),end=html.indexOf('    window.handleCustomerLoginSubmit =',start);
+  let called=0,alert;const context={document:{getElementById:id=>({value:id==='cust-login-user'?'nppdemo':'NppDemo@2026'})},OCOPAuth:{login:async(name,password)=>{called++;assert.equal(name,'nppdemo');assert.equal(password,'NppDemo@2026');throw Error('Invalid server credentials');}},updateCustomerHeaderUI(){},showCustomerAuthAlert:(text,type)=>alert={text,type}};
+  context.window=context;vm.runInNewContext(html.slice(start,end),context);await context.handleCustomerLoginSubmit();assert.equal(called,1);assert.equal(alert.type,'error');
+ });
 }
 
 test('the management login picker shows NPP Demo, fills its credentials and opens only the distributor scope', () => {
@@ -361,12 +333,9 @@ test('Role-based Admin access control: strictly visible to Admin and Distributor
     assert.ok(indexHtml.includes('id="mobile-cro-admin-btn"') && indexHtml.includes('style="display: none !important;"'), 'Mobile admin button is hidden by default');
     assert.ok(indexHtml.includes('id="btn-ordersuccess-admin"') && indexHtml.includes('style="display: none !important;"'), 'Order success admin button is hidden by default');
 
-    // 2. Login submit in index.html must authenticate Admin and Distributor directly
-    assert.ok(indexHtml.includes('authedAdmin = window.OcopAdminManagement.authenticateAdmin(u, p)'), 'Login checks Admin credentials');
-    assert.ok(indexHtml.includes('matchedDist = distList.find'), 'Login checks Distributor credentials');
-    assert.ok(indexHtml.includes("role: 'admin'"), 'Admin role is assigned upon admin login');
-    assert.ok(indexHtml.includes("role: 'distributor'"), 'Distributor role is assigned upon distributor login');
-    assert.ok(indexHtml.includes("role: 'customer'"), 'Customer role is assigned for ordinary customers');
+    // UI role hints cannot authenticate backend access.
+    assert.ok(indexHtml.includes('await window.OCOPAuth.login('));
+    assert.ok(!indexHtml.includes('authedAdmin = window.OcopAdminManagement.authenticateAdmin(u, p)'));
 
     // 3. UI logic in updateCustomerHeaderUI controls elements based on role
     assert.ok(indexHtml.includes("headerAdminWrap.style.setProperty('display', 'flex', 'important')"), 'Displays header portal for privileged roles');

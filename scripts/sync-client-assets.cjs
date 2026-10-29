@@ -26,5 +26,5 @@ function syncClientAssets(directory = root) {
     return changed;
 }
 
-if (require.main === module) console.log('Updated client asset versions in ' + syncClientAssets() + ' pages.');
+if (require.main === module) { require('./sync-product-codes.cjs').syncProductCodes(); console.log('Updated client asset versions in ' + syncClientAssets() + ' pages.'); }
 module.exports = {syncClientAssets};

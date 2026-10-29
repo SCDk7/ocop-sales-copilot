@@ -14,7 +14,8 @@ function createReviewStore(file, productIds) {
     const rows = entries.filter(r => r.productId === id);
     return { productId: id, reviews: rows.length, rating: rows.length ? rows.reduce((sum, r) => sum + r.rating, 0) / rows.length : null };
   }
-  function list(id) { checkId(id); return { ...summary(id), items: entries.filter(r => r.productId === id).slice(-50).reverse() }; }
+  const published=({ownerId,...review})=>review;
+  function list(id) { checkId(id); return { ...summary(id), items: entries.filter(r => r.productId === id).slice(-50).reverse().map(published) }; }
   function parseImages(images = []) {
     if (!Array.isArray(images) || images.length > 3) fail('Mỗi đánh giá tối đa 3 ảnh.');
     return images.map(data => {
@@ -36,7 +37,7 @@ function createReviewStore(file, productIds) {
     if (!metadata) fail('Không tìm thấy ảnh.',404);
     return { ...metadata, buffer: fs.readFileSync(path.join(file + '.images',id)) };
   }
-  function add(id, body) {
+  function add(id, body, {ownerId=null}={}) {
     checkId(id);
     if (!body || !Number.isInteger(body.rating) || body.rating < 1 || body.rating > 5 ||
         typeof body.name !== 'string' || body.name.trim().length < 2 || body.name.trim().length > 60 ||
@@ -46,12 +47,13 @@ function createReviewStore(file, productIds) {
     }
     const parsedImages = parseImages(body.images);
     const images = parsedImages.map(img=>img.metadata);
-    const existing = entries.find(r => r.requestId === body.requestId);
+    const existing = entries.find(r => r.requestId === body.requestId && (r.ownerId||null)===ownerId);
     if (existing) {
       if (existing.productId !== id || existing.rating !== body.rating || existing.name !== body.name.trim() || existing.comment !== body.comment.trim() || JSON.stringify(existing.images || []) !== JSON.stringify(images)) fail('Yêu cầu đánh giá đã được sử dụng.', 409);
-      return { review: existing, ...summary(id), duplicate: true };
+      return { review: published(existing), ...summary(id), duplicate: true };
     }
     const review = { id: crypto.randomUUID(), requestId: body.requestId, productId: id, name: body.name.trim(), rating: body.rating, comment: body.comment.trim(), images, createdAt: new Date().toISOString(), verifiedPurchase: false };
+    review.ownerId=ownerId;
     const next = [...entries, review];
     fs.mkdirSync(path.dirname(file), { recursive: true });
     if (images.length) fs.mkdirSync(file + '.images', { recursive: true });
@@ -63,7 +65,7 @@ function createReviewStore(file, productIds) {
     fs.writeFileSync(temporary, JSON.stringify(next, null, 2) + '\n', { mode: 0o600 });
     fs.renameSync(temporary, file);
     entries = next;
-    return { review, ...summary(id), duplicate: false };
+    return { review:published(review), ...summary(id), duplicate: false };
   }
   return { list, add, image, summary, summaries: () => [...allowed].map(summary), enrich: products => products.map(p => ({ ...p, ...summary(p.id) })) };
 }

@@ -2,6 +2,7 @@
 const PRODUCTS = [
   {
     "id": 336,
+    "productCode": "TD00336",
     "name": "Trà Phúc / Trà Lộc / Trà Thọ (Cồ Bắc/Hà Nội)",
     "nameEn": "Phuc Tea / Loc Tea / Tho Tea (Co Bac/Hanoi)",
     "region": "Hà Nội",
@@ -38,6 +39,7 @@ const PRODUCTS = [
   },
   {
     "id": 337,
+    "productCode": "QT00337",
     "name": "Chăn bông tơ tằm tự dệt (Mỹ Đức)",
     "nameEn": "Hand-woven silk cotton blanket (My Duc)",
     "region": "Hà Nội",
@@ -74,6 +76,7 @@ const PRODUCTS = [
   },
   {
     "id": 338,
+    "productCode": "NS00338",
     "name": "Miến dong Minh Hồng (Hoài Đức)",
     "nameEn": "Minh Hong arrowroot vermicelli (Hoai Duc)",
     "region": "Hà Nội",
@@ -110,6 +113,7 @@ const PRODUCTS = [
   },
   {
     "id": 339,
+    "productCode": "QT00339",
     "name": "Bánh chưng Tranh Khúc hút chân không",
     "nameEn": "Tranh Khuc Banh Chung vacuum-packed",
     "region": "Hà Nội",
@@ -146,6 +150,7 @@ const PRODUCTS = [
   },
   {
     "id": 340,
+    "productCode": "TD00340",
     "name": "Trà xanh cổ thụ Phìn Hồ hộp 100g",
     "nameEn": "Phin Ho ancient green tea 100g box",
     "region": "Hà Giang",
@@ -182,6 +187,7 @@ const PRODUCTS = [
   },
   {
     "id": 341,
+    "productCode": "TD00341",
     "name": "Hồng trà Phìn Hồ hộp 100g",
     "nameEn": "Phin Ho black tea 100g box",
     "region": "Hà Giang",
@@ -218,6 +224,7 @@ const PRODUCTS = [
   },
   {
     "id": 342,
+    "productCode": "NS00342",
     "name": "Mật ong bạc hà Mèo Vạc",
     "nameEn": "Meo Vac mint honey",
     "region": "Hà Giang",
@@ -254,6 +261,7 @@ const PRODUCTS = [
   },
   {
     "id": 343,
+    "productCode": "NS00343",
     "name": "Thịt trâu gác bếp hút chân không",
     "nameEn": "Kitchen-smoked buffalo meat vacuum-packed",
     "region": "Hà Giang",
@@ -290,6 +298,7 @@ const PRODUCTS = [
   },
   {
     "id": 344,
+    "productCode": "TD00344",
     "name": "Trà phun sương Actiso Sa Pa",
     "nameEn": "Sa Pa Artichoke mist-sprayed tea",
     "region": "Lào Cai",
@@ -326,6 +335,7 @@ const PRODUCTS = [
   },
   {
     "id": 345,
+    "productCode": "TD00345",
     "name": "Cao mềm Actiso Sa Pa",
     "nameEn": "Sa Pa soft Artichoke extract",
     "region": "Lào Cai",
@@ -362,6 +372,7 @@ const PRODUCTS = [
   },
   {
     "id": 346,
+    "productCode": "NS00346",
     "name": "Nấm hương rừng Sa Pa khô",
     "nameEn": "Dried Sa Pa wild shiitake mushrooms",
     "region": "Lào Cai",
@@ -398,6 +409,7 @@ const PRODUCTS = [
   },
   {
     "id": 347,
+    "productCode": "GV00347",
     "name": "Tương ớt Mường Khương",
     "nameEn": "Muong Khuong chili sauce",
     "region": "Lào Cai",
@@ -434,6 +446,7 @@ const PRODUCTS = [
   },
   {
     "id": 348,
+    "productCode": "TD00348",
     "name": "Chè Shan tuyết Suối Giàng thượng hạng",
     "nameEn": "Premium Suoi Giang Shan Tuyet tea",
     "region": "Yên Bái",
@@ -470,6 +483,7 @@ const PRODUCTS = [
   },
   {
     "id": 349,
+    "productCode": "GV00349",
     "name": "Quế ống khô bóc vỏ xuất khẩu",
     "nameEn": "Export-grade dried peeled cinnamon sticks",
     "region": "Yên Bái",
@@ -506,6 +520,7 @@ const PRODUCTS = [
   },
   {
     "id": 350,
+    "productCode": "NS00350",
     "name": "Mật ong nhãn Văn Chấn",
     "nameEn": "Van Chan longan honey",
     "region": "Yên Bái",
@@ -542,6 +557,7 @@ const PRODUCTS = [
   },
   {
     "id": 351,
+    "productCode": "NS00351",
     "name": "Miến đao Giới Phiên",
     "nameEn": "Gioi Phien arrowroot vermicelli",
     "region": "Yên Bái",
@@ -578,6 +594,7 @@ const PRODUCTS = [
   },
   {
     "id": 352,
+    "productCode": "GV00352",
     "name": "Gạo nương Điện Biên thơm đặc sản (Hút chân không tiêu chuẩn xuất khẩu)",
     "nameEn": "Dien Bien specialty fragrant upland rice (Export standard vacuum-packed)",
     "region": "Điện Biên",
@@ -614,6 +631,7 @@ const PRODUCTS = [
   },
   {
     "id": 353,
+    "productCode": "TD00353",
     "name": "Cà phê Mường Ảng hạt rang cao cấp",
     "nameEn": "Muong Ang premium roasted coffee beans",
     "region": "Điện Biên",
@@ -650,6 +668,7 @@ const PRODUCTS = [
   },
   {
     "id": 354,
+    "productCode": "NS00354",
     "name": "Thịt trâu sấy gác bếp bản địa",
     "nameEn": "Indigenous kitchen-smoked buffalo meat",
     "region": "Điện Biên",
@@ -686,6 +705,7 @@ const PRODUCTS = [
   },
   {
     "id": 355,
+    "productCode": "GV00355",
     "name": "Hạt mắc khén khô",
     "nameEn": "Dried Mac Khen seeds",
     "region": "Điện Biên",
@@ -722,6 +742,7 @@ const PRODUCTS = [
   },
   {
     "id": 356,
+    "productCode": "QT00356",
     "name": "Sâm Lai Châu củ tươi / thái lát sấy khô thượng hạng",
     "nameEn": "Premium Lai Chau ginseng fresh root / dried slices",
     "region": "Lai Châu",
@@ -758,6 +779,7 @@ const PRODUCTS = [
   },
   {
     "id": 357,
+    "productCode": "TP00357",
     "name": "Hạt mắc ca Lai Châu tách hạt sấy khô",
     "nameEn": "Lai Chau dried shelled macadamia nuts",
     "region": "Lai Châu",
@@ -794,6 +816,7 @@ const PRODUCTS = [
   },
   {
     "id": 358,
+    "productCode": "NS00358",
     "name": "Mật ong rừng nguyên chất Lai Châu",
     "nameEn": "Pure Lai Chau wild honey",
     "region": "Lai Châu",
@@ -830,6 +853,7 @@ const PRODUCTS = [
   },
   {
     "id": 359,
+    "productCode": "NS00359",
     "name": "Thịt lợn sấy gác bếp",
     "nameEn": "Kitchen-smoked pork",
     "region": "Lai Châu",
@@ -866,6 +890,7 @@ const PRODUCTS = [
   },
   {
     "id": 360,
+    "productCode": "TD00360",
     "name": "Cà phê bột nguyên chất Bích Thao",
     "nameEn": "Bich Thao pure ground coffee",
     "region": "Sơn La",
@@ -902,6 +927,7 @@ const PRODUCTS = [
   },
   {
     "id": 361,
+    "productCode": "TD00361",
     "name": "Trà Ô Long Mộc Châu cao cấp",
     "nameEn": "Moc Chau premium Oolong tea",
     "region": "Sơn La",
@@ -938,6 +964,7 @@ const PRODUCTS = [
   },
   {
     "id": 362,
+    "productCode": "TP00362",
     "name": "Xoài sấy dẻo Yên Châu",
     "nameEn": "Yen Chau dried mango",
     "region": "Sơn La",
@@ -974,6 +1001,7 @@ const PRODUCTS = [
   },
   {
     "id": 363,
+    "productCode": "NS00363",
     "name": "Thịt bò khô bản địa",
     "nameEn": "Indigenous beef jerky",
     "region": "Sơn La",
@@ -1010,6 +1038,7 @@ const PRODUCTS = [
   },
   {
     "id": 364,
+    "productCode": "NS00364",
     "name": "Măng chua thái sẵn Kim Bôi",
     "nameEn": "Kim Boi pre-sliced sour bamboo shoots",
     "region": "Hòa Bình",
@@ -1046,6 +1075,7 @@ const PRODUCTS = [
   },
   {
     "id": 365,
+    "productCode": "NS00365",
     "name": "Măng nứa khô nấu ngay",
     "nameEn": "Ready-to-cook dried bamboo shoots",
     "region": "Hòa Bình",
@@ -1082,6 +1112,7 @@ const PRODUCTS = [
   },
   {
     "id": 366,
+    "productCode": "TD00366",
     "name": "Giảo cổ lam sấy khô",
     "nameEn": "Dried Gynostemma pentaphyllum",
     "region": "Hòa Bình",
@@ -1118,6 +1149,7 @@ const PRODUCTS = [
   },
   {
     "id": 367,
+    "productCode": "NS00367",
     "name": "Mật ong rừng Hòa Bình",
     "nameEn": "Hoa Binh wild honey",
     "region": "Hòa Bình",
@@ -1154,6 +1186,7 @@ const PRODUCTS = [
   },
   {
     "id": 368,
+    "productCode": "TD00368",
     "name": "Chè Đinh cao cấp Hoài Trung",
     "nameEn": "Hoai Trung premium Dinh tea",
     "region": "Phú Thọ",
@@ -1190,6 +1223,7 @@ const PRODUCTS = [
   },
   {
     "id": 369,
+    "productCode": "NS00369",
     "name": "Mỳ gạo sạch Hùng Lô",
     "nameEn": "Hung Lo clean rice noodles",
     "region": "Phú Thọ",
@@ -1226,6 +1260,7 @@ const PRODUCTS = [
   },
   {
     "id": 370,
+    "productCode": "NS00370",
     "name": "Thịt chua Thanh Sơn (Hộp đóng kín)",
     "nameEn": "Thanh Son sour meat (sealed box)",
     "region": "Phú Thọ",
@@ -1262,6 +1297,7 @@ const PRODUCTS = [
   },
   {
     "id": 371,
+    "productCode": "TD00371",
     "name": "Chè búp tím Thanh Ba",
     "nameEn": "Thanh Ba purple bud tea",
     "region": "Phú Thọ",
@@ -1298,6 +1334,7 @@ const PRODUCTS = [
   },
   {
     "id": 372,
+    "productCode": "TD00372",
     "name": "Trà hoa vàng Tam Đảo thượng hạng (Hộp quà tặng)",
     "nameEn": "Tam Dao premium golden camellia tea (gift box)",
     "region": "Vĩnh Phúc",
@@ -1334,6 +1371,7 @@ const PRODUCTS = [
   },
   {
     "id": 373,
+    "productCode": "QT00373",
     "name": "Cao gắm Tam Đảo hỗ trợ xương khớp",
     "nameEn": "Tam Dao Cao Gam for joint support",
     "region": "Vĩnh Phúc",
@@ -1370,6 +1408,7 @@ const PRODUCTS = [
   },
   {
     "id": 374,
+    "productCode": "NS00374",
     "name": "Mật ong Tam Đảo",
     "nameEn": "Tam Dao honey",
     "region": "Vĩnh Phúc",
@@ -1406,6 +1445,7 @@ const PRODUCTS = [
   },
   {
     "id": 375,
+    "productCode": "TD00375",
     "name": "Trà đinh lăng sấy khô",
     "nameEn": "Dried Polyscias fruticosa tea",
     "region": "Vĩnh Phúc",
@@ -1442,6 +1482,7 @@ const PRODUCTS = [
   },
   {
     "id": 376,
+    "productCode": "TD00376",
     "name": "Chè tôm nõn Hảo Đạt",
     "nameEn": "Hao Dat shrimp bud tea",
     "region": "Thái Nguyên",
@@ -1478,6 +1519,7 @@ const PRODUCTS = [
   },
   {
     "id": 377,
+    "productCode": "NS00377",
     "name": "Miến Việt Cường",
     "nameEn": "Viet Cuong vermicelli",
     "region": "Thái Nguyên",
@@ -1514,6 +1556,7 @@ const PRODUCTS = [
   },
   {
     "id": 378,
+    "productCode": "TD00378",
     "name": "Cao chè vằng Thái Nguyên",
     "nameEn": "Thai Nguyen Jasminum subtriplinerve extract",
     "region": "Thái Nguyên",
@@ -1550,6 +1593,7 @@ const PRODUCTS = [
   },
   {
     "id": 379,
+    "productCode": "TP00379",
     "name": "Bánh chưng bờ Đậu hút chân không",
     "nameEn": "Bo Dau Banh Chung (vacuum sealed)",
     "region": "Thái Nguyên",
@@ -1586,6 +1630,7 @@ const PRODUCTS = [
   },
   {
     "id": 380,
+    "productCode": "NS00380",
     "name": "Miến dong Tài Hoan",
     "nameEn": "Tai Hoan arrowroot vermicelli",
     "region": "Bắc Kạn",
@@ -1622,6 +1667,7 @@ const PRODUCTS = [
   },
   {
     "id": 381,
+    "productCode": "QT00381",
     "name": "Nano Curcumin Bắc Hà (Vicumax)",
     "nameEn": "Bac Ha Nano Curcumin (Vicumax)",
     "region": "Bắc Kạn",
@@ -1658,6 +1704,7 @@ const PRODUCTS = [
   },
   {
     "id": 382,
+    "productCode": "GV00382",
     "name": "Tinh bột nghệ vàng Bắc Kạn",
     "nameEn": "Bac Kan yellow turmeric starch",
     "region": "Bắc Kạn",
@@ -1694,6 +1741,7 @@ const PRODUCTS = [
   },
   {
     "id": 383,
+    "productCode": "TD00383",
     "name": "Trà mướp đắng rừng",
     "nameEn": "Wild bitter melon tea",
     "region": "Bắc Kạn",
@@ -1730,6 +1778,7 @@ const PRODUCTS = [
   },
   {
     "id": 384,
+    "productCode": "GV00384",
     "name": "Vải thiều Lục Ngạn Hồng Xuân (Đóng gói tiêu chuẩn xuất khẩu)",
     "nameEn": "Luc Ngan Hong Xuan Lychee (Standard export packaging)",
     "region": "Bắc Giang",
@@ -1766,6 +1815,7 @@ const PRODUCTS = [
   },
   {
     "id": 385,
+    "productCode": "NS00385",
     "name": "Mỳ Chũ cao cấp Chũ Xuân Trường",
     "nameEn": "Chu Xuan Truong premium Chu noodles",
     "region": "Bắc Giang",
@@ -1802,6 +1852,7 @@ const PRODUCTS = [
   },
   {
     "id": 386,
+    "productCode": "NS00386",
     "name": "Mật ong hoa vải Lục Ngạn",
     "nameEn": "Luc Ngan lychee flower honey",
     "region": "Bắc Giang",
@@ -1838,6 +1889,7 @@ const PRODUCTS = [
   },
   {
     "id": 387,
+    "productCode": "TD00387",
     "name": "Rượu làng Vân",
     "nameEn": "Van village wine",
     "region": "Bắc Giang",
@@ -1874,6 +1926,7 @@ const PRODUCTS = [
   },
   {
     "id": 388,
+    "productCode": "NS00388",
     "name": "Miến dong Bình Liêu",
     "nameEn": "Binh Lieu dong vermicelli",
     "region": "Quảng Ninh",
@@ -1910,6 +1963,7 @@ const PRODUCTS = [
   },
   {
     "id": 389,
+    "productCode": "QT00389",
     "name": "Bộ lọ hoa men chảy Gốm sứ Quang Vinh",
     "nameEn": "Quang Vinh ceramic flowing glaze vase set",
     "region": "Quảng Ninh",
@@ -1946,6 +2000,7 @@ const PRODUCTS = [
   },
   {
     "id": 390,
+    "productCode": "NS00390",
     "name": "Chả mực Hạ Long hút chân không cấp đông",
     "nameEn": "Ha Long squid cake vacuum-packed frozen",
     "region": "Quảng Ninh",
@@ -1982,6 +2037,7 @@ const PRODUCTS = [
   },
   {
     "id": 391,
+    "productCode": "TD00391",
     "name": "Trà hoa vàng Ba Chẽ khô",
     "nameEn": "Dried Ba Che golden camellia tea",
     "region": "Quảng Ninh",
@@ -2018,6 +2074,7 @@ const PRODUCTS = [
   },
   {
     "id": 392,
+    "productCode": "GV00392",
     "name": "Nước mắm Cát Hải đặc biệt (Thùng quà tặng)",
     "nameEn": "Special Cat Hai fish sauce (Gift box)",
     "region": "Hải Phòng",
@@ -2054,6 +2111,7 @@ const PRODUCTS = [
   },
   {
     "id": 393,
+    "productCode": "NS00393",
     "name": "Hải sản khô thượng hạng Cát Bà (Tôm/Mực khô đóng hộp)",
     "nameEn": "Premium dried seafood from Cat Ba (Canned dried shrimp/squid)",
     "region": "Hải Phòng",
@@ -2090,6 +2148,7 @@ const PRODUCTS = [
   },
   {
     "id": 394,
+    "productCode": "TP00394",
     "name": "Bánh đa cua khô Hải Phòng",
     "nameEn": "Hai Phong dried crab rice paper",
     "region": "Hải Phòng",
@@ -2126,6 +2185,7 @@ const PRODUCTS = [
   },
   {
     "id": 395,
+    "productCode": "NS00395",
     "name": "Mật ong rừng Cát Bà",
     "nameEn": "Cat Ba wild honey",
     "region": "Hải Phòng",
@@ -2162,6 +2222,7 @@ const PRODUCTS = [
   },
   {
     "id": 396,
+    "productCode": "QT00396",
     "name": "Bình hút lộc / Bình giọt ngọc Gốm Chu Đậu",
     "nameEn": "Chu Dau ceramic wealth-attracting vase / teardrop vase",
     "region": "Hải Dương",
@@ -2198,6 +2259,7 @@ const PRODUCTS = [
   },
   {
     "id": 397,
+    "productCode": "TP00397",
     "name": "Bánh đậu xanh Rồng Vàng Hoàng Gia",
     "nameEn": "Hoang Gia Golden Dragon mung bean cake",
     "region": "Hải Dương",
@@ -2234,6 +2296,7 @@ const PRODUCTS = [
   },
   {
     "id": 398,
+    "productCode": "TP00398",
     "name": "Bánh gai Ninh Giang",
     "nameEn": "Ninh Giang gai cake",
     "region": "Hải Dương",
@@ -2270,6 +2333,7 @@ const PRODUCTS = [
   },
   {
     "id": 399,
+    "productCode": "NS00399",
     "name": "Tỏi đen Chí Linh",
     "nameEn": "Chi Linh black garlic",
     "region": "Hải Dương",
@@ -2306,6 +2370,7 @@ const PRODUCTS = [
   },
   {
     "id": 400,
+    "productCode": "TP00400",
     "name": "Long nhãn lồng Hưng Yên thượng hạng (Hộp biếu cao cấp)",
     "nameEn": "Premium Hung Yen longan (High-end gift box)",
     "region": "Hưng Yên",
@@ -2342,6 +2407,7 @@ const PRODUCTS = [
   },
   {
     "id": 401,
+    "productCode": "TP00401",
     "name": "Hạt sen sấy khô nguyên vị Hưng Yên",
     "nameEn": "Hung Yen plain dried lotus seeds",
     "region": "Hưng Yên",
@@ -2378,6 +2444,7 @@ const PRODUCTS = [
   },
   {
     "id": 402,
+    "productCode": "GV00402",
     "name": "Tinh bột nghệ đỏ Hưng Yên",
     "nameEn": "Hung Yen red turmeric starch",
     "region": "Hưng Yên",
@@ -2414,6 +2481,7 @@ const PRODUCTS = [
   },
   {
     "id": 403,
+    "productCode": "GV00403",
     "name": "Tương Bần Hưng Yên đóng chai",
     "nameEn": "Bottled Hung Yen Ban soy sauce",
     "region": "Hưng Yên",
@@ -2450,6 +2518,7 @@ const PRODUCTS = [
   },
   {
     "id": 404,
+    "productCode": "NS00404",
     "name": "Gạo hữu cơ chất lượng cao Thái Bình (Hút chân không)",
     "nameEn": "Thai Binh high-quality organic rice (Vacuum-packed)",
     "region": "Thái Bình",
@@ -2486,6 +2555,7 @@ const PRODUCTS = [
   },
   {
     "id": 405,
+    "productCode": "TD00405",
     "name": "Rượu nếp cái hoa vàng Kiến Xương thượng hạng",
     "nameEn": "Premium Kien Xuong yellow flower sticky rice wine",
     "region": "Thái Bình",
@@ -2522,6 +2592,7 @@ const PRODUCTS = [
   },
   {
     "id": 406,
+    "productCode": "TP00406",
     "name": "Bánh cáy làng Nguyễn",
     "nameEn": "Nguyen village cay cake",
     "region": "Thái Bình",
@@ -2558,6 +2629,7 @@ const PRODUCTS = [
   },
   {
     "id": 407,
+    "productCode": "TD00407",
     "name": "Trà hoa hòe sấy khô",
     "nameEn": "Dried sophora flower tea",
     "region": "Thái Bình",
@@ -2594,6 +2666,7 @@ const PRODUCTS = [
   },
   {
     "id": 408,
+    "productCode": "NS00408",
     "name": "Gạo sinh thái ruộng rươi Toản Xuân",
     "nameEn": "Toan Xuan ecological rice from ragworm fields",
     "region": "Nam Định",
@@ -2630,6 +2703,7 @@ const PRODUCTS = [
   },
   {
     "id": 409,
+    "productCode": "NS00409",
     "name": "Gạo sạch chất lượng cao Toản Xuân 999",
     "nameEn": "Toan Xuan 999 high-quality clean rice",
     "region": "Nam Định",
@@ -2666,6 +2740,7 @@ const PRODUCTS = [
   },
   {
     "id": 410,
+    "productCode": "TP00410",
     "name": "Bánh nhãn Hải Hậu",
     "nameEn": "Hai Hau longan cake",
     "region": "Nam Định",
@@ -2702,6 +2777,7 @@ const PRODUCTS = [
   },
   {
     "id": 411,
+    "productCode": "TP00411",
     "name": "Kẹo sìu châu Nam Định",
     "nameEn": "Nam Dinh Siu Chau candy",
     "region": "Nam Định",
@@ -2738,6 +2814,7 @@ const PRODUCTS = [
   },
   {
     "id": 412,
+    "productCode": "TP00412",
     "name": "Cơm cháy Ninh Bình cao cấp (Đóng gói xuất khẩu)",
     "nameEn": "Premium Ninh Binh scorched rice (Export packaging)",
     "region": "Ninh Bình",
@@ -2774,6 +2851,7 @@ const PRODUCTS = [
   },
   {
     "id": 413,
+    "productCode": "TD00413",
     "name": "Rượu nếp Kim Sơn hảo hạng (Bình sứ)",
     "nameEn": "Premium Kim Son sticky rice wine (Ceramic jar)",
     "region": "Ninh Bình",
@@ -2810,6 +2888,7 @@ const PRODUCTS = [
   },
   {
     "id": 414,
+    "productCode": "GV00414",
     "name": "Mắm tép Gia Viễn",
     "nameEn": "Gia Vien shrimp paste",
     "region": "Ninh Bình",
@@ -2846,6 +2925,7 @@ const PRODUCTS = [
   },
   {
     "id": 415,
+    "productCode": "TP00415",
     "name": "Hoa cúc chi sấy khô Ninh Bình",
     "nameEn": "Dried Ninh Binh chamomile flowers",
     "region": "Ninh Bình",
@@ -2882,6 +2962,7 @@ const PRODUCTS = [
   },
   {
     "id": 416,
+    "productCode": "NS00416",
     "name": "Chuối ngự Đại Hoàng đặc sản tuyển chọn (Đóng thùng an toàn)",
     "nameEn": "Selected Dai Hoang specialty royal bananas (Safe box packaging)",
     "region": "Hà Nam",
@@ -2918,6 +2999,7 @@ const PRODUCTS = [
   },
   {
     "id": 417,
+    "productCode": "GV00417",
     "name": "Bột sắn dây nguyên chất cao cấp Hà Nam",
     "nameEn": "Premium pure Ha Nam kudzu starch",
     "region": "Hà Nam",
@@ -2954,6 +3036,7 @@ const PRODUCTS = [
   },
   {
     "id": 418,
+    "productCode": "TP00418",
     "name": "Kẹo lạc Duy Tiên",
     "nameEn": "Duy Tien peanut candy",
     "region": "Hà Nam",
@@ -2990,6 +3073,7 @@ const PRODUCTS = [
   },
   {
     "id": 419,
+    "productCode": "TP00419",
     "name": "Bánh đa nem Chợ Sí",
     "nameEn": "Cho Si spring roll wrappers",
     "region": "Hà Nam",
@@ -3026,6 +3110,7 @@ const PRODUCTS = [
   },
   {
     "id": 420,
+    "productCode": "GV00420",
     "name": "Hoa hồi khô nguyên bông Lạng Sơn xuất khẩu",
     "nameEn": "Export-grade whole dried Lang Son star anise",
     "region": "Lạng Sơn",
@@ -3062,6 +3147,7 @@ const PRODUCTS = [
   },
   {
     "id": 421,
+    "productCode": "QT00421",
     "name": "Tinh dầu hồi Lạng Sơn nguyên chất",
     "nameEn": "Pure Lang Son star anise essential oil",
     "region": "Lạng Sơn",
@@ -3098,6 +3184,7 @@ const PRODUCTS = [
   },
   {
     "id": 422,
+    "productCode": "NS00422",
     "name": "Thịt quay giòn bì Lạng Sơn hút chân không",
     "nameEn": "Vacuum-packed Lang Son crispy roast pork",
     "region": "Lạng Sơn",
@@ -3134,6 +3221,7 @@ const PRODUCTS = [
   },
   {
     "id": 423,
+    "productCode": "GV00423",
     "name": "Mạch nha Lạng Sơn",
     "nameEn": "Lang Son malt syrup",
     "region": "Lạng Sơn",
@@ -3170,6 +3258,7 @@ const PRODUCTS = [
   },
   {
     "id": 424,
+    "productCode": "TP00424",
     "name": "Hạt dẻ Trùng Khánh loại 1 tuyển chọn",
     "nameEn": "Selected grade 1 Trung Khanh chestnuts",
     "region": "Cao Bằng",
@@ -3206,6 +3295,7 @@ const PRODUCTS = [
   },
   {
     "id": 425,
+    "productCode": "TD00425",
     "name": "Miến dong Trà Lĩnh thượng hạng",
     "nameEn": "Premium Tra Linh dong vermicelli",
     "region": "Cao Bằng",
@@ -3242,6 +3332,7 @@ const PRODUCTS = [
   },
   {
     "id": 426,
+    "productCode": "TP00426",
     "name": "Bánh khảo Cao Bằng",
     "nameEn": "Cao Bang Khao cake",
     "region": "Cao Bằng",
@@ -3278,6 +3369,7 @@ const PRODUCTS = [
   },
   {
     "id": 427,
+    "productCode": "NS00427",
     "name": "Thịt lợn xông khói Cao Bằng",
     "nameEn": "Cao Bang smoked pork",
     "region": "Cao Bằng",
@@ -3314,6 +3406,7 @@ const PRODUCTS = [
   },
   {
     "id": 428,
+    "productCode": "QT00428",
     "name": "Rượu làng Hòa Tiến thượng hạng (Bình gốm)",
     "nameEn": "Premium Hoa Tien village wine (Ceramic jar)",
     "region": "Bắc Ninh",
@@ -3350,6 +3443,7 @@ const PRODUCTS = [
   },
   {
     "id": 429,
+    "productCode": "QT00429",
     "name": "Tranh dân tộc Hồ cao cấp (Sản phẩm thủ công mỹ nghệ 5 sao)",
     "nameEn": "Premium ethnic Ho painting (5-star handicraft product)",
     "region": "Bắc Ninh",
@@ -3386,6 +3480,7 @@ const PRODUCTS = [
   },
   {
     "id": 430,
+    "productCode": "TP00430",
     "name": "Bánh phu thê Đình Bảng",
     "nameEn": "Dinh Bang husband and wife cake",
     "region": "Bắc Ninh",
@@ -3422,6 +3517,7 @@ const PRODUCTS = [
   },
   {
     "id": 431,
+    "productCode": "NS00431",
     "name": "Nem Bùi Từ Sơn hút chân không",
     "nameEn": "Vacuum-packed Bui Tu Son fermented pork roll",
     "region": "Bắc Ninh",
@@ -3458,6 +3554,7 @@ const PRODUCTS = [
   },
   {
     "id": 432,
+    "productCode": "TD00432",
     "name": "Chè Shan tuyết Na Hang hảo hạng",
     "nameEn": "Na Hang Shan Tuyet premium tea",
     "region": "Tuyên Quang",
@@ -3494,6 +3591,7 @@ const PRODUCTS = [
   },
   {
     "id": 433,
+    "productCode": "NS00433",
     "name": "Mật ong phong mật Na Hang nguyên chất",
     "nameEn": "Na Hang pure Phong Mat honey",
     "region": "Tuyên Quang",
@@ -3530,6 +3628,7 @@ const PRODUCTS = [
   },
   {
     "id": 434,
+    "productCode": "NS00434",
     "name": "Miến dong Minh Hương",
     "nameEn": "Minh Huong dong noodles",
     "region": "Tuyên Quang",
@@ -3566,6 +3665,7 @@ const PRODUCTS = [
   },
   {
     "id": 435,
+    "productCode": "NS00435",
     "name": "Thịt trâu khô gác bếp Chiêm Hóa",
     "nameEn": "Chiem Hoa kitchen-dried buffalo meat",
     "region": "Tuyên Quang",
@@ -3602,6 +3702,7 @@ const PRODUCTS = [
   },
   {
     "id": 436,
+    "productCode": "GV00436",
     "name": "Nước mắm Lê Gia cốt đặc biệt",
     "nameEn": "Le Gia special concentrated fish sauce",
     "region": "Thanh Hóa",
@@ -3638,6 +3739,7 @@ const PRODUCTS = [
   },
   {
     "id": 437,
+    "productCode": "GV00437",
     "name": "Mắm tôm Lê Gia cao cấp",
     "nameEn": "Le Gia premium shrimp paste",
     "region": "Thanh Hóa",
@@ -3674,6 +3776,7 @@ const PRODUCTS = [
   },
   {
     "id": 438,
+    "productCode": "NS00438",
     "name": "Nem chua Thanh Hóa hút chân không",
     "nameEn": "Thanh Hoa fermented pork roll (vacuum sealed)",
     "region": "Thanh Hóa",
@@ -3710,6 +3813,7 @@ const PRODUCTS = [
   },
   {
     "id": 439,
+    "productCode": "TP00439",
     "name": "Bánh gai Tứ Trụ",
     "nameEn": "Tu Tru gai cake",
     "region": "Thanh Hóa",
@@ -3746,6 +3850,7 @@ const PRODUCTS = [
   },
   {
     "id": 440,
+    "productCode": "QT00440",
     "name": "Bộ đèn tre Đức Phong (Thủ công mỹ nghệ)",
     "nameEn": "Duc Phong bamboo lamp set (handicraft)",
     "region": "Nghệ An",
@@ -3782,6 +3887,7 @@ const PRODUCTS = [
   },
   {
     "id": 441,
+    "productCode": "GV00441",
     "name": "Nước mắm Vạn Phần thượng hạng",
     "nameEn": "Van Phan premium fish sauce",
     "region": "Nghệ An",
@@ -3818,6 +3924,7 @@ const PRODUCTS = [
   },
   {
     "id": 442,
+    "productCode": "GV00442",
     "name": "Tương Nam Đàn đóng chai",
     "nameEn": "Nam Dan soy sauce (bottled)",
     "region": "Nghệ An",
@@ -3854,6 +3961,7 @@ const PRODUCTS = [
   },
   {
     "id": 443,
+    "productCode": "GV00443",
     "name": "Tinh bột nghệ Nghệ An",
     "nameEn": "Nghe An turmeric starch",
     "region": "Nghệ An",
@@ -3890,6 +3998,7 @@ const PRODUCTS = [
   },
   {
     "id": 444,
+    "productCode": "TP00444",
     "name": "Kẹo cu đơ Thư Sơn thượng hạng (Hộp ép kín)",
     "nameEn": "Thu Son premium cu do candy (sealed box)",
     "region": "Hà Tĩnh",
@@ -3926,6 +4035,7 @@ const PRODUCTS = [
   },
   {
     "id": 445,
+    "productCode": "NS00445",
     "name": "Mật ong rừng Vũ Quang nguyên chất",
     "nameEn": "Vu Quang pure wild honey",
     "region": "Hà Tĩnh",
@@ -3962,6 +4072,7 @@ const PRODUCTS = [
   },
   {
     "id": 446,
+    "productCode": "TP00446",
     "name": "Bánh đa dừa Độc Lập",
     "nameEn": "Doc Lap coconut rice paper",
     "region": "Hà Tĩnh",
@@ -3998,6 +4109,7 @@ const PRODUCTS = [
   },
   {
     "id": 447,
+    "productCode": "NS00447",
     "name": "Hải sản khô Kỳ Anh",
     "nameEn": "Ky Anh dried seafood",
     "region": "Hà Tĩnh",
@@ -4034,6 +4146,7 @@ const PRODUCTS = [
   },
   {
     "id": 448,
+    "productCode": "NS00448",
     "name": "Đũa gỗ Quảng Thủy xuất khẩu",
     "nameEn": "Quang Thuy export wooden chopsticks",
     "region": "Quảng Bình",
@@ -4070,6 +4183,7 @@ const PRODUCTS = [
   },
   {
     "id": 449,
+    "productCode": "NS00449",
     "name": "Mật ong rừng Lệ Thủy thượng hạng",
     "nameEn": "Le Thuy premium wild honey",
     "region": "Quảng Bình",
@@ -4106,6 +4220,7 @@ const PRODUCTS = [
   },
   {
     "id": 450,
+    "productCode": "NS00450",
     "name": "Khoai dẻo Quảng Bình",
     "nameEn": "Quang Binh chewy sweet potato",
     "region": "Quảng Bình",
@@ -4142,6 +4257,7 @@ const PRODUCTS = [
   },
   {
     "id": 451,
+    "productCode": "GV00451",
     "name": "Nước mắm Bảo Ninh",
     "nameEn": "Bao Ninh fish sauce",
     "region": "Quảng Bình",
@@ -4178,6 +4294,7 @@ const PRODUCTS = [
   },
   {
     "id": 452,
+    "productCode": "NS00452",
     "name": "Gạo hữu cơ Quảng Trị cao cấp (Hút chân không)",
     "nameEn": "Quang Tri premium organic rice (vacuum sealed)",
     "region": "Quảng Trị",
@@ -4214,6 +4331,7 @@ const PRODUCTS = [
   },
   {
     "id": 453,
+    "productCode": "GV00453",
     "name": "Tiêu đen hữu cơ Cam Lộ thượng hạng",
     "nameEn": "Cam Lo premium organic black pepper",
     "region": "Quảng Trị",
@@ -4250,6 +4368,7 @@ const PRODUCTS = [
   },
   {
     "id": 454,
+    "productCode": "QT00454",
     "name": "Tinh dầu nén Quảng Trị",
     "nameEn": "Quang Tri essential oil",
     "region": "Quảng Trị",
@@ -4286,6 +4405,7 @@ const PRODUCTS = [
   },
   {
     "id": 455,
+    "productCode": "QT00455",
     "name": "Cao gắm thảo dược",
     "nameEn": "Cao Gam herbal extract",
     "region": "Quảng Trị",
@@ -4322,6 +4442,7 @@ const PRODUCTS = [
   },
   {
     "id": 456,
+    "productCode": "TD00456",
     "name": "Trà cung đình Huế thượng hạng (Hộp quà biếu)",
     "nameEn": "Hue Royal Tea Premium (Gift box)",
     "region": "Thừa Thiên Huế",
@@ -4358,6 +4479,7 @@ const PRODUCTS = [
   },
   {
     "id": 457,
+    "productCode": "NS00457",
     "name": "Sen gật gù / Hạt sen khô Huế tuyển chọn",
     "nameEn": "Sen gat gu / Selected dried Hue lotus seeds",
     "region": "Thừa Thiên Huế",
@@ -4394,6 +4516,7 @@ const PRODUCTS = [
   },
   {
     "id": 458,
+    "productCode": "NS00458",
     "name": "Tôm chua Huế đóng hũ kín",
     "nameEn": "Hue sour shrimp in sealed jar",
     "region": "Thừa Thiên Huế",
@@ -4430,6 +4553,7 @@ const PRODUCTS = [
   },
   {
     "id": 459,
+    "productCode": "QT00459",
     "name": "Dầu tràm Huế nguyên chất",
     "nameEn": "Pure Hue cajeput oil",
     "region": "Thừa Thiên Huế",
@@ -4466,6 +4590,7 @@ const PRODUCTS = [
   },
   {
     "id": 460,
+    "productCode": "GV00460",
     "name": "Nước mắm Nam Ô nhĩ đặc biệt",
     "nameEn": "Nam O special fish sauce",
     "region": "Đà Nẵng",
@@ -4502,6 +4627,7 @@ const PRODUCTS = [
   },
   {
     "id": 461,
+    "productCode": "QT00461",
     "name": "Đồ thủ công mỹ nghệ đá non Ngũ Hành Sơn cao cấp",
     "nameEn": "High-end Ngu Hanh Son stone handicrafts",
     "region": "Đà Nẵng",
@@ -4538,6 +4664,7 @@ const PRODUCTS = [
   },
   {
     "id": 462,
+    "productCode": "NS00462",
     "name": "Chả bò Đà Nẵng hút chân không",
     "nameEn": "Da Nang beef sausage (vacuum sealed)",
     "region": "Đà Nẵng",
@@ -4574,6 +4701,7 @@ const PRODUCTS = [
   },
   {
     "id": 463,
+    "productCode": "TP00463",
     "name": "Bánh khô mè Cẩm Lệ",
     "nameEn": "Cam Le sesame dry cake",
     "region": "Đà Nẵng",
@@ -4610,6 +4738,7 @@ const PRODUCTS = [
   },
   {
     "id": 464,
+    "productCode": "GV00464",
     "name": "Quế Trà My bóc vỏ thượng hạng (Hộp quà)",
     "nameEn": "Premium peeled Tra My cinnamon (Gift box)",
     "region": "Quảng Nam",
@@ -4646,6 +4775,7 @@ const PRODUCTS = [
   },
   {
     "id": 465,
+    "productCode": "QT00465",
     "name": "Trà sâm dược liệu Quế Trà My",
     "nameEn": "Tra My cinnamon medicinal ginseng tea",
     "region": "Quảng Nam",
@@ -4682,6 +4812,7 @@ const PRODUCTS = [
   },
   {
     "id": 466,
+    "productCode": "TP00466",
     "name": "Bánh tráng Đại Lộc",
     "nameEn": "Dai Loc rice paper",
     "region": "Quảng Nam",
@@ -4718,6 +4849,7 @@ const PRODUCTS = [
   },
   {
     "id": 467,
+    "productCode": "NS00467",
     "name": "Cao lầu khô Hội An",
     "nameEn": "Dried Hoi An Cao Lau",
     "region": "Quảng Nam",
@@ -4754,6 +4886,7 @@ const PRODUCTS = [
   },
   {
     "id": 468,
+    "productCode": "NS00468",
     "name": "Tỏi Lý Sơn chính hãng (Hộp đóng gói xuất khẩu)",
     "nameEn": "Authentic Ly Son garlic (Export packaging box)",
     "region": "Quảng Ngãi",
@@ -4790,6 +4923,7 @@ const PRODUCTS = [
   },
   {
     "id": 469,
+    "productCode": "GV00469",
     "name": "Mạch nha Quảng Ngãi đường Mantoza",
     "nameEn": "Quang Ngai maltose syrup",
     "region": "Quảng Ngãi",
@@ -4826,6 +4960,7 @@ const PRODUCTS = [
   },
   {
     "id": 470,
+    "productCode": "GV00470",
     "name": "Đường phèn, đường phổi Quảng Ngãi",
     "nameEn": "Quang Ngai rock sugar, lung sugar",
     "region": "Quảng Ngãi",
@@ -4862,6 +4997,7 @@ const PRODUCTS = [
   },
   {
     "id": 471,
+    "productCode": "TD00471",
     "name": "Cá bống sông Trà rim khô",
     "nameEn": "Dried Tra river goby fish",
     "region": "Quảng Ngãi",
@@ -4898,6 +5034,7 @@ const PRODUCTS = [
   },
   {
     "id": 472,
+    "productCode": "TP00472",
     "name": "Bánh tráng gạo mè Dalop đặc biệt M4",
     "nameEn": "Dalop special sesame rice paper M4",
     "region": "Bình Định",
@@ -4934,6 +5071,7 @@ const PRODUCTS = [
   },
   {
     "id": 473,
+    "productCode": "TD00473",
     "name": "Rượu bầu đá truyền thống (Bình cao cấp)",
     "nameEn": "Traditional Bau Da wine (Premium bottle)",
     "region": "Bình Định",
@@ -4970,6 +5108,7 @@ const PRODUCTS = [
   },
   {
     "id": 474,
+    "productCode": "TP00474",
     "name": "Bánh tráng dừa Tam Quan",
     "nameEn": "Tam Quan coconut rice paper",
     "region": "Bình Định",
@@ -5006,6 +5145,7 @@ const PRODUCTS = [
   },
   {
     "id": 475,
+    "productCode": "NS00475",
     "name": "Nem chợ Huyện hút chân không",
     "nameEn": "Cho Huyen fermented pork roll (vacuum sealed)",
     "region": "Bình Định",
@@ -5042,6 +5182,7 @@ const PRODUCTS = [
   },
   {
     "id": 476,
+    "productCode": "NS00476",
     "name": "Bò một nắng hai sương Sơn Hòa thượng hạng (Hút chân không)",
     "nameEn": "Premium Son Hoa sun-dried beef (vacuum sealed)",
     "region": "Phú Yên",
@@ -5078,6 +5219,7 @@ const PRODUCTS = [
   },
   {
     "id": 477,
+    "productCode": "NS00477",
     "name": "Hạt đười ươi bay khô nguyên chất",
     "nameEn": "Pure dried flying malva nuts",
     "region": "Phú Yên",
@@ -5114,6 +5256,7 @@ const PRODUCTS = [
   },
   {
     "id": 478,
+    "productCode": "TP00478",
     "name": "Bánh tráng Hòa Đa",
     "nameEn": "Hoa Da rice paper",
     "region": "Phú Yên",
@@ -5150,6 +5293,7 @@ const PRODUCTS = [
   },
   {
     "id": 479,
+    "productCode": "TD00479",
     "name": "Cà phê rang xay nguyên chất Phú Yên",
     "nameEn": "Pure roasted ground coffee Phu Yen",
     "region": "Phú Yên",
@@ -5186,6 +5330,7 @@ const PRODUCTS = [
   },
   {
     "id": 480,
+    "productCode": "TD00480",
     "name": "Yến sào Khánh Hòa tinh chế cao cấp (Hộp quà biếu)",
     "nameEn": "Khanh Hoa refined bird's nest (Gift box)",
     "region": "Khánh Hòa",
@@ -5222,6 +5367,7 @@ const PRODUCTS = [
   },
   {
     "id": 481,
+    "productCode": "TP00481",
     "name": "Rong biển sấy khô Nha Trang giòn nguyên vị",
     "nameEn": "Nha Trang dried seaweed crispy original flavor",
     "region": "Khánh Hòa",
@@ -5258,6 +5404,7 @@ const PRODUCTS = [
   },
   {
     "id": 482,
+    "productCode": "TP00482",
     "name": "Bánh xoài Cam Ranh",
     "nameEn": "Cam Ranh mango cake",
     "region": "Khánh Hòa",
@@ -5294,6 +5441,7 @@ const PRODUCTS = [
   },
   {
     "id": 483,
+    "productCode": "GV00483",
     "name": "Muối ớt tôm Nha Trang",
     "nameEn": "Nha Trang shrimp chili salt",
     "region": "Khánh Hòa",
@@ -5330,6 +5478,7 @@ const PRODUCTS = [
   },
   {
     "id": 484,
+    "productCode": "NS00484",
     "name": "Tỏi cô đơn Ninh Thuận thượng hạng",
     "nameEn": "Premium Ninh Thuan single-clove garlic",
     "region": "Ninh Thuận",
@@ -5366,6 +5515,7 @@ const PRODUCTS = [
   },
   {
     "id": 485,
+    "productCode": "TP00485",
     "name": "Nho khô nguyên cành Ninh Thuận nhập/sấy xuất khẩu",
     "nameEn": "Ninh Thuan raisins on the vine imported/dried for export",
     "region": "Ninh Thuận",
@@ -5402,6 +5552,7 @@ const PRODUCTS = [
   },
   {
     "id": 486,
+    "productCode": "NS00486",
     "name": "Mật nho nguyên chất",
     "nameEn": "Pure grape honey",
     "region": "Ninh Thuận",
@@ -5438,6 +5589,7 @@ const PRODUCTS = [
   },
   {
     "id": 487,
+    "productCode": "NS00487",
     "name": "Thịt cừu sấy khô",
     "nameEn": "Dried lamb meat",
     "region": "Ninh Thuận",
@@ -5474,6 +5626,7 @@ const PRODUCTS = [
   },
   {
     "id": 488,
+    "productCode": "GV00488",
     "name": "Nước mắm Phan Thiết nhĩ đặc biệt (Chai đóng seal)",
     "nameEn": "Phan Thiet special fish sauce (Sealed bottle)",
     "region": "Bình Thuận",
@@ -5510,6 +5663,7 @@ const PRODUCTS = [
   },
   {
     "id": 489,
+    "productCode": "TP00489",
     "name": "Thanh long sấy dẻo công nghệ cao (Hộp xuất khẩu)",
     "nameEn": "High-tech soft dried dragon fruit (Export box)",
     "region": "Bình Thuận",
@@ -5546,6 +5700,7 @@ const PRODUCTS = [
   },
   {
     "id": 490,
+    "productCode": "NS00490",
     "name": "Mực một nắng Phan Thiết (Hút chân không cấp đông)",
     "nameEn": "Phan Thiet one-sun dried squid (Vacuum sealed frozen)",
     "region": "Bình Thuận",
@@ -5582,6 +5737,7 @@ const PRODUCTS = [
   },
   {
     "id": 491,
+    "productCode": "TP00491",
     "name": "Bánh rế Phan Thiết",
     "nameEn": "Phan Thiet rice paper cake (Banh re)",
     "region": "Bình Thuận",
@@ -5618,6 +5774,7 @@ const PRODUCTS = [
   },
   {
     "id": 492,
+    "productCode": "QT00492",
     "name": "Sâm Ngọc Linh Kon Tum ngâm mật ong rừng",
     "nameEn": "Ngoc Linh ginseng Kon Tum soaked in wild honey",
     "region": "Kon Tum",
@@ -5654,6 +5811,7 @@ const PRODUCTS = [
   },
   {
     "id": 493,
+    "productCode": "TD00493",
     "name": "Cà phê hạt rang nguyên chất Măng Đen",
     "nameEn": "Mang Den pure roasted coffee beans",
     "region": "Kon Tum",
@@ -5690,6 +5848,7 @@ const PRODUCTS = [
   },
   {
     "id": 494,
+    "productCode": "NS00494",
     "name": "Măng khô rừng Măng Đen",
     "nameEn": "Mang Den wild dried bamboo shoots",
     "region": "Kon Tum",
@@ -5726,6 +5885,7 @@ const PRODUCTS = [
   },
   {
     "id": 495,
+    "productCode": "GV00495",
     "name": "Hạt dổi rừng khô",
     "nameEn": "Dried wild doi seeds",
     "region": "Kon Tum",
@@ -5762,6 +5922,7 @@ const PRODUCTS = [
   },
   {
     "id": 496,
+    "productCode": "TD00496",
     "name": "Cà phê Fine Robusta Nam Yang",
     "nameEn": "Nam Yang Fine Robusta coffee",
     "region": "Gia Lai",
@@ -5798,6 +5959,7 @@ const PRODUCTS = [
   },
   {
     "id": 497,
+    "productCode": "GV00497",
     "name": "Hạt điều rang muối đặc sản Gia Lai",
     "nameEn": "Gia Lai specialty salted roasted cashews",
     "region": "Gia Lai",
@@ -5834,6 +5996,7 @@ const PRODUCTS = [
   },
   {
     "id": 498,
+    "productCode": "TD00498",
     "name": "Mật ong hoa cà phê nguyên chất",
     "nameEn": "Pure coffee blossom honey",
     "region": "Gia Lai",
@@ -5870,6 +6033,7 @@ const PRODUCTS = [
   },
   {
     "id": 499,
+    "productCode": "NS00499",
     "name": "Bò một nắng Chư Sê",
     "nameEn": "Chu Se one-sun dried beef",
     "region": "Gia Lai",
@@ -5906,6 +6070,7 @@ const PRODUCTS = [
   },
   {
     "id": 500,
+    "productCode": "TD00500",
     "name": "Cà phê hạt rang Buôn Ma Thuột thượng hạng",
     "nameEn": "Premium Buon Ma Thuot roasted coffee beans",
     "region": "Đắk Lắk",
@@ -5942,6 +6107,7 @@ const PRODUCTS = [
   },
   {
     "id": 501,
+    "productCode": "TD00501",
     "name": "Bột cacao nguyên chất Buôn Ma Thuột",
     "nameEn": "Pure Buon Ma Thuot cocoa powder",
     "region": "Đắk Lắk",
@@ -5978,6 +6144,7 @@ const PRODUCTS = [
   },
   {
     "id": 502,
+    "productCode": "TP00502",
     "name": "Bơ sấy dẻo",
     "nameEn": "Soft dried avocado",
     "region": "Đắk Lắk",
@@ -6014,6 +6181,7 @@ const PRODUCTS = [
   },
   {
     "id": 503,
+    "productCode": "TP00503",
     "name": "Hạt mắc ca Krông Năng",
     "nameEn": "Krong Nang macadamia nuts",
     "region": "Đắk Lắk",
@@ -6050,6 +6218,7 @@ const PRODUCTS = [
   },
   {
     "id": 504,
+    "productCode": "TP00504",
     "name": "Hạt điều rang củi Đắk Nông xuất khẩu",
     "nameEn": "Dak Nong firewood roasted cashews for export",
     "region": "Đắk Nông",
@@ -6086,6 +6255,7 @@ const PRODUCTS = [
   },
   {
     "id": 505,
+    "productCode": "TD00505",
     "name": "Cà phê hạt rang xay Đắk Nông nguyên chất",
     "nameEn": "Dak Nong pure roasted coffee beans",
     "region": "Đắk Nông",
@@ -6122,6 +6292,7 @@ const PRODUCTS = [
   },
   {
     "id": 506,
+    "productCode": "TD00506",
     "name": "Khổ qua rừng sấy khô",
     "nameEn": "Dried wild bitter melon",
     "region": "Đắk Nông",
@@ -6158,6 +6329,7 @@ const PRODUCTS = [
   },
   {
     "id": 507,
+    "productCode": "GV00507",
     "name": "Tinh bột nghệ nguyên chất Đắk Nông",
     "nameEn": "Dak Nong pure turmeric starch",
     "region": "Đắk Nông",
@@ -6194,6 +6366,7 @@ const PRODUCTS = [
   },
   {
     "id": 508,
+    "productCode": "TD00508",
     "name": "Cà phê Arabica Cầu Đất thượng hạng (Hộp thiếc)",
     "nameEn": "Premium Cau Dat Arabica coffee (Tin box)",
     "region": "Lâm Đồng",
@@ -6230,6 +6403,7 @@ const PRODUCTS = [
   },
   {
     "id": 509,
+    "productCode": "TP00509",
     "name": "Hồng treo gió Đà Lạt công nghệ cao (Hút chân không)",
     "nameEn": "Da Lat high-tech wind-hung persimmons (Vacuum sealed)",
     "region": "Lâm Đồng",
@@ -6266,6 +6440,7 @@ const PRODUCTS = [
   },
   {
     "id": 510,
+    "productCode": "TD00510",
     "name": "Trà Atiso Đà Lạt túi lọc / sấy khô",
     "nameEn": "Da Lat artichoke tea filter bag / dried",
     "region": "Lâm Đồng",
@@ -6302,6 +6477,7 @@ const PRODUCTS = [
   },
   {
     "id": 511,
+    "productCode": "NS00511",
     "name": "Nước cốt dâu tằm / chanh dây nguyên chất",
     "nameEn": "Pure mulberry / passion fruit concentrate",
     "region": "Lâm Đồng",
@@ -6338,6 +6514,7 @@ const PRODUCTS = [
   },
   {
     "id": 512,
+    "productCode": "GV00512",
     "name": "Hạt điều rang muối Bình Phước xuất khẩu (Hộp cao cấp)",
     "nameEn": "Binh Phuoc salt roasted cashews for export (Premium box)",
     "region": "Bình Phước",
@@ -6374,6 +6551,7 @@ const PRODUCTS = [
   },
   {
     "id": 513,
+    "productCode": "TD00513",
     "name": "Cà phê Phước Long hạt rang thượng hạng",
     "nameEn": "Phuoc Long premium roasted coffee beans",
     "region": "Bình Phước",
@@ -6410,6 +6588,7 @@ const PRODUCTS = [
   },
   {
     "id": 514,
+    "productCode": "NS00514",
     "name": "Mật ong hoa điều nguyên chất",
     "nameEn": "Pure cashew flower honey",
     "region": "Bình Phước",
@@ -6446,6 +6625,7 @@ const PRODUCTS = [
   },
   {
     "id": 515,
+    "productCode": "TP00515",
     "name": "Trái cây sấy thập cẩm",
     "nameEn": "Mixed dried fruits",
     "region": "Bình Phước",
@@ -6482,6 +6662,7 @@ const PRODUCTS = [
   },
   {
     "id": 516,
+    "productCode": "TP00516",
     "name": "Bánh tráng phơi sương Trảng Bàng cao cấp (Đóng gói kín)",
     "nameEn": "Premium Trang Bang dew-dried rice paper (Sealed packaging)",
     "region": "Tây Ninh",
@@ -6518,6 +6699,7 @@ const PRODUCTS = [
   },
   {
     "id": 517,
+    "productCode": "GV00517",
     "name": "Muối tôm Tây Ninh thượng hạng (Hũ niêm phong)",
     "nameEn": "Tay Ninh premium shrimp salt (Sealed jar)",
     "region": "Tây Ninh",
@@ -6554,6 +6736,7 @@ const PRODUCTS = [
   },
   {
     "id": 518,
+    "productCode": "TP00518",
     "name": "Bánh tráng me Tây Ninh",
     "nameEn": "Tay Ninh tamarind rice paper",
     "region": "Tây Ninh",
@@ -6590,6 +6773,7 @@ const PRODUCTS = [
   },
   {
     "id": 519,
+    "productCode": "TP00519",
     "name": "Mít sấy dẻo Tây Ninh",
     "nameEn": "Tay Ninh chewy dried jackfruit",
     "region": "Tây Ninh",
@@ -6626,6 +6810,7 @@ const PRODUCTS = [
   },
   {
     "id": 520,
+    "productCode": "GV00520",
     "name": "Hạt điều rang muối Bình Dương thượng hạng",
     "nameEn": "Binh Duong premium salt roasted cashews",
     "region": "Bình Dương",
@@ -6662,6 +6847,7 @@ const PRODUCTS = [
   },
   {
     "id": 521,
+    "productCode": "QT00521",
     "name": "Gốm sứ thủ công mỹ nghệ cao cấp Bình Dương",
     "nameEn": "Binh Duong premium handcrafted ceramics",
     "region": "Bình Dương",
@@ -6698,6 +6884,7 @@ const PRODUCTS = [
   },
   {
     "id": 522,
+    "productCode": "GV00522",
     "name": "Tinh bột nghệ Bình Dương",
     "nameEn": "Binh Duong turmeric starch",
     "region": "Bình Dương",
@@ -6734,6 +6921,7 @@ const PRODUCTS = [
   },
   {
     "id": 523,
+    "productCode": "NS00523",
     "name": "Mủ trôm nguyên chất",
     "nameEn": "Pure sterculia foetida gum",
     "region": "Bình Dương",
@@ -6770,6 +6958,7 @@ const PRODUCTS = [
   },
   {
     "id": 524,
+    "productCode": "GV00524",
     "name": "Hạt điều vị rang muối nguyên bản Nga Biên",
     "nameEn": "Nga Bien original salt roasted cashews",
     "region": "Đồng Nai",
@@ -6806,6 +6995,7 @@ const PRODUCTS = [
   },
   {
     "id": 525,
+    "productCode": "TD00525",
     "name": "Bột cacao nguyên chất Trọng Đức",
     "nameEn": "Trong Duc pure cocoa powder",
     "region": "Đồng Nai",
@@ -6842,6 +7032,7 @@ const PRODUCTS = [
   },
   {
     "id": 526,
+    "productCode": "TD00526",
     "name": "Trà sen Nhơn Trạch",
     "nameEn": "Nhon Trach lotus tea",
     "region": "Đồng Nai",
@@ -6878,6 +7069,7 @@ const PRODUCTS = [
   },
   {
     "id": 527,
+    "productCode": "NS00527",
     "name": "Mật ong hoa tràm / hoa cao su Đồng Nai",
     "nameEn": "Dong Nai cajeput flower / rubber flower honey",
     "region": "Đồng Nai",
@@ -6914,6 +7106,7 @@ const PRODUCTS = [
   },
   {
     "id": 528,
+    "productCode": "TD00528",
     "name": "Hạt ca cao nguyên chất Châu Đức thượng hạng",
     "nameEn": "Chau Duc premium pure cocoa beans",
     "region": "Bà Rịa - Vũng Tàu",
@@ -6950,6 +7143,7 @@ const PRODUCTS = [
   },
   {
     "id": 529,
+    "productCode": "GV00529",
     "name": "Nước mắm Trí Hải cốt đặc biệt",
     "nameEn": "Tri Hai special concentrated fish sauce",
     "region": "Bà Rịa - Vũng Tàu",
@@ -6986,6 +7180,7 @@ const PRODUCTS = [
   },
   {
     "id": 530,
+    "productCode": "NS00530",
     "name": "Hải sản khô một nắng Côn Đảo (Mực/Cá thu hút chân không)",
     "nameEn": "Con Dao one-sun dried seafood (Squid/Mackerel vacuum sealed)",
     "region": "Bà Rịa - Vũng Tàu",
@@ -7022,6 +7217,7 @@ const PRODUCTS = [
   },
   {
     "id": 531,
+    "productCode": "GV00531",
     "name": "Bánh bông lan trứng muối đóng hộp cứng",
     "nameEn": "Salted egg sponge cake in hard box",
     "region": "Bà Rịa - Vũng Tàu",
@@ -7058,6 +7254,7 @@ const PRODUCTS = [
   },
   {
     "id": 532,
+    "productCode": "TD00532",
     "name": "Cà phê hòa tan / rang xay cao cấp xuất khẩu TP.HCM",
     "nameEn": "HCMC premium instant/roasted coffee for export",
     "region": "Thành phố Hồ Chí Minh",
@@ -7094,6 +7291,7 @@ const PRODUCTS = [
   },
   {
     "id": 533,
+    "productCode": "TP00533",
     "name": "Thực phẩm sấy khô hữu cơ cao cấp TP.HCM",
     "nameEn": "HCMC premium organic dried food",
     "region": "Thành phố Hồ Chí Minh",
@@ -7130,6 +7328,7 @@ const PRODUCTS = [
   },
   {
     "id": 534,
+    "productCode": "QT00534",
     "name": "Hàng thủ công mây tre đan Sài Gòn",
     "nameEn": "Saigon rattan and bamboo handicrafts",
     "region": "Thành phố Hồ Chí Minh",
@@ -7166,6 +7365,7 @@ const PRODUCTS = [
   },
   {
     "id": 535,
+    "productCode": "GV00535",
     "name": "Bánh tráng nướng muối ớt Sài Gòn",
     "nameEn": "Saigon chili salt grilled rice paper",
     "region": "Thành phố Hồ Chí Minh",
@@ -7202,6 +7402,7 @@ const PRODUCTS = [
   },
   {
     "id": 536,
+    "productCode": "NS00536",
     "name": "Gạo Nếp nàng hoa Long An thượng hạng (Hút chân không)",
     "nameEn": "Long An premium Nang Hoa sticky rice (Vacuum sealed)",
     "region": "Long An",
@@ -7238,6 +7439,7 @@ const PRODUCTS = [
   },
   {
     "id": 537,
+    "productCode": "QT00537",
     "name": "Rượu đế Gò Đen hảo hạng (Bình gốm)",
     "nameEn": "Go Den premium rice wine (Ceramic jar)",
     "region": "Long An",
@@ -7274,6 +7476,7 @@ const PRODUCTS = [
   },
   {
     "id": 538,
+    "productCode": "TP00538",
     "name": "Thanh long sấy dẻo Châu Thành",
     "nameEn": "Chau Thanh soft dried dragon fruit",
     "region": "Long An",
@@ -7310,6 +7513,7 @@ const PRODUCTS = [
   },
   {
     "id": 539,
+    "productCode": "TP00539",
     "name": "Bánh tráng Long Trì",
     "nameEn": "Long Tri rice paper",
     "region": "Long An",
@@ -7346,6 +7550,7 @@ const PRODUCTS = [
   },
   {
     "id": 540,
+    "productCode": "TD00540",
     "name": "Bột ca cao nguyên chất Xuân Ron Chợ Gạo",
     "nameEn": "Xuan Ron Cho Gao pure cocoa powder",
     "region": "Tiền Giang",
@@ -7382,6 +7587,7 @@ const PRODUCTS = [
   },
   {
     "id": 541,
+    "productCode": "TP00541",
     "name": "Kẹo dừa sầu riêng Tiền Giang đặc biệt",
     "nameEn": "Tien Giang special durian coconut candy",
     "region": "Tiền Giang",
@@ -7418,6 +7624,7 @@ const PRODUCTS = [
   },
   {
     "id": 542,
+    "productCode": "TP00542",
     "name": "Mít sấy dẻo Cai Lậy",
     "nameEn": "Cai Lay soft dried jackfruit",
     "region": "Tiền Giang",
@@ -7454,6 +7661,7 @@ const PRODUCTS = [
   },
   {
     "id": 543,
+    "productCode": "GV00543",
     "name": "Nước mắm Gò Công",
     "nameEn": "Go Cong fish sauce",
     "region": "Tiền Giang",
@@ -7490,6 +7698,7 @@ const PRODUCTS = [
   },
   {
     "id": 544,
+    "productCode": "NS00544",
     "name": "Mật hoa dừa cô đặc Bến Tre",
     "nameEn": "Ben Tre concentrated coconut blossom nectar",
     "region": "Bến Tre",
@@ -7526,6 +7735,7 @@ const PRODUCTS = [
   },
   {
     "id": 545,
+    "productCode": "GV00545",
     "name": "Dầu dừa tinh khiết xuất khẩu Bến Tre",
     "nameEn": "Ben Tre pure coconut oil for export",
     "region": "Bến Tre",
@@ -7562,6 +7772,7 @@ const PRODUCTS = [
   },
   {
     "id": 546,
+    "productCode": "TP00546",
     "name": "Kẹo dừa Bến Tre truyền thống",
     "nameEn": "Traditional Ben Tre coconut candy",
     "region": "Bến Tre",
@@ -7598,6 +7809,7 @@ const PRODUCTS = [
   },
   {
     "id": 547,
+    "productCode": "TP00547",
     "name": "Bánh phồng sữa dừa",
     "nameEn": "Coconut milk rice cracker",
     "region": "Bến Tre",
@@ -7634,6 +7846,7 @@ const PRODUCTS = [
   },
   {
     "id": 548,
+    "productCode": "TP00548",
     "name": "Kẹo dừa sáp nguyên chất Cầu Kè",
     "nameEn": "Cau Ke pure wax coconut candy",
     "region": "Trà Vinh",
@@ -7670,6 +7883,7 @@ const PRODUCTS = [
   },
   {
     "id": 549,
+    "productCode": "TD00549",
     "name": "Kẹo dừa sáp cacao / lá dứa Cầu Kè",
     "nameEn": "Cau Ke cocoa / pandan leaf wax coconut candy",
     "region": "Trà Vinh",
@@ -7706,6 +7920,7 @@ const PRODUCTS = [
   },
   {
     "id": 550,
+    "productCode": "TD00550",
     "name": "Cốm dẹp Trà Vinh",
     "nameEn": "Tra Vinh flattened green rice (Com dep)",
     "region": "Trà Vinh",
@@ -7742,6 +7957,7 @@ const PRODUCTS = [
   },
   {
     "id": 551,
+    "productCode": "TD00551",
     "name": "Bánh tét Trà Vinh hút chân không",
     "nameEn": "Tra Vinh vacuum sealed Banh Tet",
     "region": "Trà Vinh",
@@ -7778,6 +7994,7 @@ const PRODUCTS = [
   },
   {
     "id": 552,
+    "productCode": "NS00552",
     "name": "Tàu hũ ky Bình Minh khô thượng hạng (Đóng gói xuất khẩu)",
     "nameEn": "Binh Minh premium dried bean curd skin (Export packaging)",
     "region": "Vĩnh Long",
@@ -7814,6 +8031,7 @@ const PRODUCTS = [
   },
   {
     "id": 553,
+    "productCode": "NS00553",
     "name": "Mứt bưởi da xanh cao cấp",
     "nameEn": "Premium green skin pomelo jam",
     "region": "Vĩnh Long",
@@ -7850,6 +8068,7 @@ const PRODUCTS = [
   },
   {
     "id": 554,
+    "productCode": "TP00554",
     "name": "Bánh tráng cù lao Mây",
     "nameEn": "Cu Lao May rice paper",
     "region": "Vĩnh Long",
@@ -7886,6 +8105,7 @@ const PRODUCTS = [
   },
   {
     "id": 555,
+    "productCode": "TD00555",
     "name": "Trà đinh lăng Vĩnh Long",
     "nameEn": "Vinh Long Polyscias fruticosa tea",
     "region": "Vĩnh Long",
@@ -7922,6 +8142,7 @@ const PRODUCTS = [
   },
   {
     "id": 556,
+    "productCode": "TP00556",
     "name": "Sen hồng sấy khô / Sữa hạt sen Đồng Tháp thượng hạng",
     "nameEn": "Dried pink lotus / Premium Dong Thap lotus seed milk",
     "region": "Đồng Tháp",
@@ -7958,6 +8179,7 @@ const PRODUCTS = [
   },
   {
     "id": 557,
+    "productCode": "TP00557",
     "name": "Xoài cát Cao Lãnh sấy dẻo công nghệ cao",
     "nameEn": "High-tech soft dried Cao Lanh mango",
     "region": "Đồng Tháp",
@@ -7994,6 +8216,7 @@ const PRODUCTS = [
   },
   {
     "id": 558,
+    "productCode": "NS00558",
     "name": "Nem Lai Vung hút chân không chuẩn vị",
     "nameEn": "Vacuum-sealed authentic Lai Vung fermented pork roll",
     "region": "Đồng Tháp",
@@ -8030,6 +8253,7 @@ const PRODUCTS = [
   },
   {
     "id": 559,
+    "productCode": "NS00559",
     "name": "Cá lóc khô một nắng",
     "nameEn": "One-sun dried snakehead fish",
     "region": "Đồng Tháp",
@@ -8066,6 +8290,7 @@ const PRODUCTS = [
   },
   {
     "id": 560,
+    "productCode": "NS00560",
     "name": "Đường thốt nốt nguyên chất An Giang (Dạng viên/hũ cao cấp)",
     "nameEn": "Pure An Giang palm sugar (Premium cube/jar form)",
     "region": "An Giang",
@@ -8102,6 +8327,7 @@ const PRODUCTS = [
   },
   {
     "id": 561,
+    "productCode": "NS00561",
     "name": "Gạo Nếp vú sữa Tân Châu thượng hạng (Hút chân không)",
     "nameEn": "Premium Tan Chau milk glutinous rice (Vacuum-sealed)",
     "region": "An Giang",
@@ -8138,6 +8364,7 @@ const PRODUCTS = [
   },
   {
     "id": 562,
+    "productCode": "GV00562",
     "name": "Mắm cá linh / Mắm thái Châu Đốc (Hũ nhựa kín)",
     "nameEn": "Chau Doc linh fish sauce / Thai-style fermented fish (Sealed plastic jar)",
     "region": "An Giang",
@@ -8174,6 +8401,7 @@ const PRODUCTS = [
   },
   {
     "id": 563,
+    "productCode": "NS00563",
     "name": "Khô bò dứa An Phú",
     "nameEn": "An Phu pineapple beef jerky",
     "region": "An Giang",
@@ -8210,6 +8438,7 @@ const PRODUCTS = [
   },
   {
     "id": 564,
+    "productCode": "GV00564",
     "name": "Nước mắm Phú Quốc Huỳnh Khoa 43°/45° đạm",
     "nameEn": "Phu Quoc Huynh Khoa fish sauce 43°/45° protein",
     "region": "Kiên Giang",
@@ -8246,6 +8475,7 @@ const PRODUCTS = [
   },
   {
     "id": 565,
+    "productCode": "TD00565",
     "name": "Rượu sim Phú Quốc thượng hạng",
     "nameEn": "Premium Phu Quoc myrtle wine",
     "region": "Kiên Giang",
@@ -8282,6 +8512,7 @@ const PRODUCTS = [
   },
   {
     "id": 566,
+    "productCode": "NS00566",
     "name": "Khô cá thiều Phú Quốc hút chân không",
     "nameEn": "Vacuum-sealed Phu Quoc catfish jerky",
     "region": "Kiên Giang",
@@ -8318,6 +8549,7 @@ const PRODUCTS = [
   },
   {
     "id": 567,
+    "productCode": "GV00567",
     "name": "Tiêu hạt Phú Quốc khô",
     "nameEn": "Dried Phu Quoc peppercorns",
     "region": "Kiên Giang",
@@ -8354,6 +8586,7 @@ const PRODUCTS = [
   },
   {
     "id": 568,
+    "productCode": "TD00568",
     "name": "Cacao nguyên chất Phong Điền thượng hạng (Hộp thiếc)",
     "nameEn": "Premium Phong Dien pure cocoa (Tin box)",
     "region": "Cần Thơ",
@@ -8390,6 +8623,7 @@ const PRODUCTS = [
   },
   {
     "id": 569,
+    "productCode": "TP00569",
     "name": "Bánh tráng Thuận Hưng cao cấp (Loại dày/mỏng phơi khô)",
     "nameEn": "Premium Thuan Hung rice paper (Thick/thin sun-dried types)",
     "region": "Cần Thơ",
@@ -8426,6 +8660,7 @@ const PRODUCTS = [
   },
   {
     "id": 570,
+    "productCode": "TD00570",
     "name": "Trà đinh lăng Cần Thơ",
     "nameEn": "Can Tho Polyscias fruticosa tea",
     "region": "Cần Thơ",
@@ -8462,6 +8697,7 @@ const PRODUCTS = [
   },
   {
     "id": 571,
+    "productCode": "NS00571",
     "name": "Khô nhái (\"vũ nữ chân dài\") đóng gói",
     "nameEn": "Packaged dried frog (\"long-legged dancer\")",
     "region": "Cần Thơ",
@@ -8498,6 +8734,7 @@ const PRODUCTS = [
   },
   {
     "id": 572,
+    "productCode": "NS00572",
     "name": "Khô cá thát lát Hậu Giang thượng hạng (Hút chân không cấp đông)",
     "nameEn": "Premium Hau Giang featherback fish jerky (Vacuum-sealed frozen)",
     "region": "Hậu Giang",
@@ -8534,6 +8771,7 @@ const PRODUCTS = [
   },
   {
     "id": 573,
+    "productCode": "TD00573",
     "name": "Trà mãng cầu Hậu Giang nguyên chất",
     "nameEn": "Pure Hau Giang soursop tea",
     "region": "Hậu Giang",
@@ -8570,6 +8808,7 @@ const PRODUCTS = [
   },
   {
     "id": 574,
+    "productCode": "TP00574",
     "name": "Khóm Cầu Đúc sấy dẻo",
     "nameEn": "Soft dried Cau Duc pineapple",
     "region": "Hậu Giang",
@@ -8606,6 +8845,7 @@ const PRODUCTS = [
   },
   {
     "id": 575,
+    "productCode": "NS00575",
     "name": "Mật ong hoa tràm U Minh",
     "nameEn": "U Minh cajuput flower honey",
     "region": "Hậu Giang",
@@ -8642,6 +8882,7 @@ const PRODUCTS = [
   },
   {
     "id": 576,
+    "productCode": "NS00576",
     "name": "Gạo ST25 Sóc Trăng chính hãng Hồ Quang Trí (Hút chân không)",
     "nameEn": "ST25 Soc Trang rice, authentic Ho Quang Tri brand (Vacuum sealed)",
     "region": "Sóc Trăng",
@@ -8678,6 +8919,7 @@ const PRODUCTS = [
   },
   {
     "id": 577,
+    "productCode": "TP00577",
     "name": "Bánh pía Sóc Trăng cao cấp thượng hạng (Hộp đặc biệt)",
     "nameEn": "Premium Soc Trang Pia cake (Special box)",
     "region": "Sóc Trăng",
@@ -8714,6 +8956,7 @@ const PRODUCTS = [
   },
   {
     "id": 578,
+    "productCode": "NS00578",
     "name": "Lạp xưởng tôm Sóc Trăng hút chân không",
     "nameEn": "Soc Trang shrimp sausage (Vacuum sealed)",
     "region": "Sóc Trăng",
@@ -8750,6 +8993,7 @@ const PRODUCTS = [
   },
   {
     "id": 579,
+    "productCode": "TP00579",
     "name": "Bánh phồng tôm Miệt Thứ",
     "nameEn": "Miet Thu shrimp crackers",
     "region": "Sóc Trăng",
@@ -8786,6 +9030,7 @@ const PRODUCTS = [
   },
   {
     "id": 580,
+    "productCode": "GV00580",
     "name": "Muối hạt / Muối tinh Bạc Liêu cao cấp (Hộp xuất khẩu)",
     "nameEn": "Premium Bac Lieu sea salt / refined salt (Export box)",
     "region": "Bạc Liêu",
@@ -8822,6 +9067,7 @@ const PRODUCTS = [
   },
   {
     "id": 581,
+    "productCode": "NS00581",
     "name": "Gạo Nếp thơm Bạc Liêu tuyển chọn",
     "nameEn": "Selected Bac Lieu fragrant sticky rice",
     "region": "Bạc Liêu",
@@ -8858,6 +9104,7 @@ const PRODUCTS = [
   },
   {
     "id": 582,
+    "productCode": "TP00582",
     "name": "Bánh phồng tôm Bạc Liêu",
     "nameEn": "Bac Lieu shrimp crackers",
     "region": "Bạc Liêu",
@@ -8894,6 +9141,7 @@ const PRODUCTS = [
   },
   {
     "id": 583,
+    "productCode": "NS00583",
     "name": "Khô cá lóc đồng Bạc Liêu",
     "nameEn": "Bac Lieu wild snakehead fish jerky",
     "region": "Bạc Liêu",
@@ -8930,6 +9178,7 @@ const PRODUCTS = [
   },
   {
     "id": 584,
+    "productCode": "NS00584",
     "name": "Tôm khô Cà Mau loại thượng hạng đặc biệt (Hút chân không)",
     "nameEn": "Premium special Ca Mau dried shrimp (Vacuum sealed)",
     "region": "Cà Mau",
@@ -8966,6 +9215,7 @@ const PRODUCTS = [
   },
   {
     "id": 585,
+    "productCode": "NS00585",
     "name": "Mật ong rừng U Minh Hạ nguyên chất 100%",
     "nameEn": "100% pure U Minh Ha wild honey",
     "region": "Cà Mau",
@@ -9002,6 +9252,7 @@ const PRODUCTS = [
   },
   {
     "id": 586,
+    "productCode": "NS00586",
     "name": "Khô cá bổi U Minh",
     "nameEn": "U Minh dried snakeskin gourami",
     "region": "Cà Mau",
@@ -9038,6 +9289,7 @@ const PRODUCTS = [
   },
   {
     "id": 587,
+    "productCode": "NS00587",
     "name": "Cua biển Cà Mau đóng thùng xốp vận chuyển xa",
     "nameEn": "Ca Mau sea crab packed in foam box for long-distance transport",
     "region": "Cà Mau",

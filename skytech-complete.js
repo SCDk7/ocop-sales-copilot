@@ -1522,9 +1522,13 @@
         const codAmt = document.getElementById('cod-transfer-amount');
         if (codAmt) codAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
 
-        const qrImg = document.getElementById('order-bidv-qr');
-        if (qrImg) {
-            qrImg.src = 'https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=' + grandTotal + '&addInfo=OCOP%208829';
+        const bankPanel = document.getElementById('panel-payment-bidv');
+        if (bankPanel && window.OCOPPayment) {
+            const signature=grandTotal+':'+((typeof currentLanguage!=='undefined'?currentLanguage:window.currentLanguage||'vi'));
+            if(bankPanel.dataset.qrSignature!==signature){
+                const card=window.OCOPPayment.render({document,method:'vietqr',amount:grandTotal,language:(typeof currentLanguage!=='undefined'?currentLanguage:window.currentLanguage||'vi')});
+                bankPanel.replaceChildren(card);bankPanel.dataset.qrSignature=signature;
+            }
         }
         const momoQr = document.getElementById('order-momo-qr');
         if (momoQr) {
@@ -1764,18 +1768,13 @@
         if (totalEl) totalEl.textContent = order.grandTotal.toLocaleString('vi-VN') + ' ₫';
 
         const qrSection = document.getElementById('success-vietqr-section');
-        const qrImg = document.getElementById('success-vietqr-img');
-        const qrAmount = document.getElementById('success-vietqr-amount');
-        const qrMemo = document.getElementById('success-vietqr-memo');
         const isVietQR = !order.paymentMethod || /(?:vietqr|bidv|chuyen khoan|bank transfer)/i.test(order.paymentMethod);
         if (qrSection) {
             if (isVietQR) {
                 qrSection.style.display = 'block';
-                const memoCode = order.orderId || 'OCOP 8829';
-                if (qrMemo) qrMemo.textContent = memoCode;
-                if (qrAmount) qrAmount.textContent = (order.grandTotal || 0).toLocaleString('vi-VN') + ' ₫';
-                if (qrImg) {
-                    qrImg.src = 'https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=' + (order.grandTotal || 0) + '&addInfo=' + encodeURIComponent(memoCode) + '&accountName=OCOP%20VIET%20NAM';
+                if(window.OCOPPayment){
+                    const card=window.OCOPPayment.render({document,method:'vietqr',amount:order.grandTotal||0,orderId:order.orderId||order.id||'PREVIEW',language:(typeof currentLanguage!=='undefined'?currentLanguage:window.currentLanguage||'vi'),onClose:()=>window.closeOrderSuccessModal()});
+                    qrSection.replaceChildren(card);
                 }
             } else {
                 qrSection.style.display = 'none';

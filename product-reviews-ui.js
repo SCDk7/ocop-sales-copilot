@@ -169,7 +169,7 @@
             fields.forEach(field=>field.disabled = true);
             status.textContent = text('Đang lưu…', 'Saving…');
             try {
-                const response = await fetch(getAIEndpoint('/api/products/'+productId+'/reviews'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...values, requestId: pendingSubmission.requestId }) });
+                const response = await window.OCOPAuth.fetch(getAIEndpoint('/api/products/'+productId+'/reviews'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...values, requestId: pendingSubmission.requestId }) });
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.error || text('Không lưu được đánh giá.', 'Could not save review.'));
                 applySummary({ ...result, productId });

@@ -190,13 +190,13 @@
             browser.document?.removeEventListener('visibilitychange', onHide);
         } };
     }
-    function createTranscriber(getEndpoint, fetcher = fetch) {
+    function createTranscriber(getEndpoint, fetcher = (typeof window!=='undefined'&&window.OCOPAuth?window.OCOPAuth.fetch:fetch)) {
         return async (audio, {language, signal}) => {
             const english=language==='en';
             const generic=english?'Voice transcription failed. Please try again.':'Không chuyển được giọng nói. Bạn thử lại nhé.';
             const response=await fetcher(getEndpoint()+'?language='+encodeURIComponent(language),{
                 method:'POST',headers:{'Content-Type':audio.type},body:audio,
-                signal:AbortSignal.any([signal,AbortSignal.timeout(30000)])
+                signal:AbortSignal.any([signal,AbortSignal.timeout(20000)])
             });
             let result;
             try { result=await response.json(); }

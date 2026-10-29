@@ -5,6 +5,10 @@ const {analyzeCustomerRequest}=require('./ai-request-analysis');
 const {catalogReply,imageUnavailableReply}=require('./chat-fallback');
 const {PRODUCTS}=require('./data');
 const user=text=>({role:'user',text});
+test('budget and item count are understood as one combo and unknown products get the exact missing-data answer',()=>{
+ const analysis=analyzeCustomerRequest([user('1 triệu 3 món')],PRODUCTS);assert.equal(analysis.intent.isCombo,true);assert.equal(analysis.intent.maxPrice,1000000);assert.equal(analysis.intent.maxItems,3);
+ const reply=catalogReply('Tôi muốn mua áo sơ mi',PRODUCTS);assert.equal(reply.message,'Dạ thưa, hiện tại dữ liệu hệ thống chưa ghi nhận thông tin này ạ.');assert.deepEqual(reply.productIds,[]);
+});
 
 test('analysis retains conversation constraints and applies the latest budget and province correction',()=>{
  const result=analyzeCustomerRequest([user('Tìm combo Đồng Nai 2 triệu 3 món'),{role:'assistant',text:'Anh/chị muốn thay đổi gì?'},user('Đổi sang Hà Nội, ngân sách 3 triệu')],PRODUCTS);

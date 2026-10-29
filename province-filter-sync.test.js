@@ -560,8 +560,10 @@ test('browser chat uses the backend and does not ship a configured model credent
  const html=fs.readFileSync('index.html','utf8');
  assert(html.includes("getAIEndpoint('/api/ai/chat')"));
  assert(!html.includes('isFinancialOrDispatchQuery'));
- assert(html.includes('AbortSignal.timeout(35000)'));
- assert(/const GEMINI_API_KEY\s*=\s*''/.test(html));
+ assert(html.includes('AbortSignal.timeout(30000)'));
+ assert(html.includes('uploadPendingAIChatImages(messageImages,chatSignal)'));
+ assert(html.includes('signal: chatSignal'));
+ assert(!/GEMINI_API_KEY|generativelanguage\.googleapis\.com/.test(html));
  const {getAIConfiguration}=require('./ai-configuration');assert.throws(()=>getAIConfiguration({}),/not configured/);
 });
 

@@ -3,8 +3,7 @@ const pkg = (typeof require !== 'undefined') ? require('./data.js') : (typeof wi
 const PRODUCTS = (pkg && (pkg.PRODUCTS || pkg.products)) || [];
 
 class AIEngine {
-    constructor(apiKey) {
-        this.apiKey = apiKey;
+    constructor() {
         this.history = [];
     }
 
@@ -43,17 +42,14 @@ class AIEngine {
         try {
             this.history.push({ role: 'user', parts: [{ text: query }] });
             
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.apiKey}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: this.history })
+            const request=typeof window!=='undefined'&&window.OCOPAuth?window.OCOPAuth.fetch:fetch;
+            const response=await request(typeof getAIEndpoint==='function'?getAIEndpoint('/api/ai/chat'):'/api/ai/chat',{
+                method:'POST',headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({language:'vi',messages:this.history.slice(-15).map(m=>({role:m.role==='model'?'assistant':'user',text:m.parts[0].text}))})
             });
-
-            if (!response.ok) throw new Error('API Error');
-            const data = await response.json();
-            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Dạ em là Trợ lý AI OCOP, em có thể hỗ trợ gì thêm cho Quý khách ạ?";
-            
-            this.history.push({ role: 'model', parts: [{ text: reply }] });
+            const data=await response.json();if(!response.ok)throw Error(data.error||'AI unavailable');
+            const reply=data.message||data.text_response;
+            this.history.push({role:'model',parts:[{text:reply}]});
             return reply;
         } catch (err) {
             return "Dạ hiện tại kết nối mạng hơi chập chờn, Quý khách có thể xem danh mục đặc sản bên trên hoặc thử lại sau ít phút ạ! 🌱";

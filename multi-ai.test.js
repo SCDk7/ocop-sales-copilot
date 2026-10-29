@@ -9,6 +9,15 @@ const {PRODUCTS}=require('./data');
 const payload={contents:[{role:'user',parts:[{text:'Tìm đặc sản Đồng Nai'}]}],generationConfig:{responseSchema:{type:'OBJECT',properties:{message:{type:'STRING'},productIds:{type:'ARRAY',items:{type:'INTEGER'}}},required:['message','productIds']}}};
 const configuration={apiKey:'gemini-test',model:'gemini-test-model',openai:{apiKey:'openai-test',model:'gpt-4.1-mini'},claude:{apiKey:'claude-test',model:'claude-sonnet-4-6'}};
 function response(provider,answer){const text=JSON.stringify(answer);return new Response(JSON.stringify(provider==='gemini'?{candidates:[{content:{parts:[{text}]}}]}:provider==='openai'?{status:'completed',output:[{type:'message',content:[{type:'output_text',text}]}]}:{stop_reason:'end_turn',content:[{type:'text',text}]}));}
+test('fast chat returns the first valid structured answer and cancels slower providers',async()=>{
+ const slowSignals=[];
+ const fetcher=async(url,options)=>{
+  if(String(url).includes('openai.com'))return response('openai',{message:'Dạ, trả lời nhanh.',productIds:[1]});
+  slowSignals.push(options.signal);return new Promise((resolve,reject)=>{const abort=()=>reject(options.signal.reason);if(options.signal.aborted)abort();else options.signal.addEventListener('abort',abort,{once:true});});
+ };
+ const result=await generatePreferredContent(configuration,payload,{fetcher,fastest:true,timeoutMs:1000});
+ assert.equal(result.provider,'openai');assert.equal(result.strategy,'fastest_valid');assert.deepEqual(result.providersUsed,['openai']);assert(slowSignals.length>0);assert(slowSignals.every(signal=>signal.aborted));
+});
 test('configuration has no embedded fallback credentials and supports OpenAI or Claude alone',()=>{
  assert.throws(()=>getAIConfiguration({}),/not configured/);
  assert.throws(()=>getAIConfiguration({GEMINI_API_KEY:'replace_with_your_key'}),/not configured/);

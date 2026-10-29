@@ -228,7 +228,7 @@ test('high-value screenshot ranks by catalogue price instead of matching cao or 
   const source=fs.readFileSync('server.js','utf8');
   const context={AIShopping:shopping,expandChatShorthand:text=>text,getRestrictedTopicReply:()=>null,aiWebsiteCatalog:null};
   vm.createContext(context);
-  vm.runInContext(source.slice(source.indexOf('function normalizeCatalogTerm'),source.indexOf('function isAIRateLimited')),context);
+  vm.runInContext(source.slice(source.indexOf('function normalizeCatalogTerm'),source.indexOf('function validateAIImage')),context);
   const query='mình muốn tìm kiếm một số món có giá trị cao';
   assert.equal(context.findDirectCatalogMatches(query,PRODUCTS).length,0);
   const intent=shopping.resolve([{role:'user',text:query}],PRODUCTS,context.extractSearchIntents);

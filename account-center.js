@@ -5,8 +5,26 @@ const user=()=>window.getCurrentCustomer?.();
 const money=n=>Number(n||0).toLocaleString('vi-VN')+' đ';
 let modal,content,notice,tab='profile',status='Tất cả',oldOverflow='',returnFocus;
 const labels={profile:'Hồ sơ của tôi',addresses:'Địa chỉ nhận hàng',orders:'Đơn mua',favorites:'Sản phẩm yêu thích',password:'Đổi mật khẩu'};
+const passwordPane=document.getElementById?.('cust-pane-chpass');passwordPane?.remove();
+function clearPasswordFields(){passwordPane?.querySelectorAll('input').forEach(input=>{input.value='';input.type='password';});passwordPane?.querySelectorAll('.customer-password-toggle').forEach(button=>{button.setAttribute('aria-pressed','false');button.setAttribute('aria-label','Hiện mật khẩu');button.title='Hiện mật khẩu';});}
 function node(tag,text,cls){const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n}
 function button(text,fn){const b=node('button',text);b.type='button';b.onclick=fn;return b}
+const navIcons={
+ profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/>',
+ addresses:'<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>',
+ orders:'<path d="m3 7 9-4 9 4v10l-9 4-9-4Z"/><path d="m3 7 9 4 9-4M12 11v10M7.5 5l9 4"/>',
+ favorites:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
+ password:'<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/>',
+ partner:'<path d="M3 10V4h18v6M3 4l-1 6a3 3 0 0 0 5 2 3 3 0 0 0 5 0 3 3 0 0 0 5 0 3 3 0 0 0 5-2l-1-6M4 13v8h16v-8M9 21v-6h6v6"/>',
+ admin:'<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/>',
+ cart:'<path d="M2 3h3l3 12h12l2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="19" cy="20" r="1"/>',
+ logout:'<path d="M9 4H4v16h5M10 12h12m-5-5 5 5-5 5"/>'
+};
+function navButton(id,label,action){
+ const b=button(null,action);b.title=label;b.setAttribute('aria-label',label);b.className='account-nav-icon';
+ b.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+navIcons[id]+'</svg>';
+ return b;
+}
 function key(s){return 'ocop_account_'+String(user()?.username||'').toLowerCase()+'_'+s}
 function orders(){
  const u=user(),rows=[];
@@ -38,7 +56,7 @@ function renderOrders(u){
   content.append(card);
  }
 }
-function close(){if(!modal)return;modal.hidden=true;if(notice)notice.hidden=true;document.body.style.overflow=oldOverflow;returnFocus?.focus()}
+function close(){if(!modal)return;clearPasswordFields();modal.hidden=true;if(notice)notice.hidden=true;document.body.style.overflow=oldOverflow;returnFocus?.focus()}
 function showNotice(message){
  if(!user())return false;
  if(!modal||modal.hidden)show();
@@ -50,14 +68,17 @@ function show(section='profile'){
  const box=node('div',null,'account-center-box'),head=node('header',null,'account-center-head');head.append(node('strong','Tài khoản của tôi'),button('Đóng ×',close));
  notice=node('div',null,'account-center-notice');notice.hidden=true;notice.setAttribute('role','alert');notice.tabIndex=-1;
  const layout=node('div',null,'account-center-layout'),nav=node('nav',null,'account-center-nav');nav.setAttribute('aria-label','Quản lý tài khoản');
- for(const [id,title]of Object.entries(labels)){const b=button(title,()=>show(id));b.dataset.section=id;nav.append(b)}
- nav.append(button('⚡ Đăng Ký Điểm Bán',()=>{close();window.openPartnerRegistrationModal?.()}),button('🔒 Quản trị',()=>window.promptAdminPinModal?.(close)),button('Giỏ hàng',()=>{close();window.openCartUI?.()}),button('Đăng xuất',()=>{close();window.handleCustomerLogout?.()}));content=node('section',null,'account-center-content');layout.append(nav,content);box.append(head,notice,layout);modal.append(box);document.body.append(modal);modal.onclick=e=>{if(e.target===modal)close()};modal.addEventListener('keydown',e=>{if(e.key==='Escape')close();if(e.key==='Tab'){const a=[...modal.querySelectorAll('button,input,select,textarea')].filter(n=>!n.disabled&&n.getClientRects().length);const first=a[0],last=a.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});}
+ for(const [id,title]of Object.entries(labels)){const b=navButton(id,title,()=>show(id));b.dataset.section=id;nav.append(b);if(id==='profile')nav.append(navButton('cart','Giỏ hàng',()=>{close();window.openCartUI?.()}))}
+ nav.append(navButton('partner','Đăng ký điểm bán',()=>{close();window.openPartnerRegistrationModal?.()}),navButton('admin','Quản trị',()=>window.promptAdminPinModal?.(close)),navButton('logout','Đăng xuất',()=>{close();window.handleCustomerLogout?.()}));content=node('section',null,'account-center-content');layout.append(nav,content);box.append(head,notice,layout);modal.append(box);document.body.append(modal);modal.onclick=e=>{if(e.target===modal)close()};modal.addEventListener('keydown',e=>{if(e.key==='Escape')close();if(e.key==='Tab'){const a=[...modal.querySelectorAll('button,input,select,textarea')].filter(n=>!n.disabled&&n.getClientRects().length);const first=a[0],last=a.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});}
  if(modal.hidden){returnFocus=document.activeElement;oldOverflow=document.body.style.overflow}modal.hidden=false;document.body.style.overflow='hidden';tab=section;
  modal.querySelectorAll('[data-section]').forEach(n=>n.setAttribute('aria-current',n.dataset.section===tab?'page':'false'));render();modal.querySelector('button').focus();
 }
 function field(form,label,value,name,type='text'){const l=node('label',label),i=node('input');i.name=name;i.type=type;i.value=value||'';i.maxLength=250;l.append(i);form.append(l);return i}
 function render(){const u=user();if(!u)return close();content.replaceChildren(node('h2',labels[tab]),node('p',u.fullName||u.username,'account-center-user'));
- if(tab==='password'){const p=node('p','Thay đổi mật khẩu đăng nhập của bạn.');content.append(p,button('Mở phần đổi mật khẩu',()=>{close();const auth=document.getElementById('customer-auth-modal');auth.classList.remove('hidden');auth.style.setProperty('display','flex','important');document.body.style.overflow='hidden';originalSwitch('chpass')}));return}
+ if(tab==='password'){
+  clearPasswordFields();const alert=node('p','');alert.id='account-password-alert';alert.setAttribute('role','alert');
+  if(passwordPane){passwordPane.classList.remove('hidden');passwordPane.querySelector('#cust-chpass-not-logged')?.classList.add('hidden');passwordPane.querySelector('#cust-chpass-form')?.classList.remove('hidden');const label=passwordPane.querySelector('#chpass-username-display');if(label)label.textContent=u.username;content.append(alert,passwordPane);}return;
+ }
  if(tab==='profile'){
   const f=node('form');
   const isAdmin=u.role==='admin'||u.role==='super_admin'||u.isAdmin||Boolean(u.adminId)||['admin','ad','thaonguyenad01','kimnganad02','vinhphucad03','thanhbinhad04'].includes(String(u.username||'').toLowerCase());
@@ -101,7 +122,7 @@ function render(){const u=user();if(!u)return close();content.replaceChildren(no
 }
 function saveAddresses(rows){try{localStorage.setItem(key('addresses'),JSON.stringify(rows));const u=user(),next={...u,address:rows.find(r=>r.default)?.address||''};localStorage.setItem('ocop_current_user',JSON.stringify(next));const db=read('ocop_customers',[]),entry=db.find(c=>c.username===u.username);if(entry)entry.address=next.address;localStorage.setItem('ocop_customers',JSON.stringify(db));render()}catch{window.showToast?.('Không lưu được địa chỉ.','error')}}
 const originalOpen=window.openCustomerAuthModal,originalSwitch=window.switchCustomerAuthTab;
-if(originalOpen){window.openCustomerAuthModal=function(){if(user())show('profile');else originalOpen()};window.switchCustomerAuthTab=function(section){if(section==='orders'&&user()){window.closeCustomerAuthModal?.();show('orders')}else originalSwitch(section)};}
+if(originalOpen){window.openCustomerAuthModal=function(){if(user())show('profile');else originalOpen()};window.switchCustomerAuthTab=function(section){if((section==='orders'||section==='chpass')&&user()){window.closeCustomerAuthModal?.();show(section==='chpass'?'password':'orders')}else originalSwitch(section==='chpass'?'login':section)};}
 const originalFavorite=window.toggleWishlist;
 if(originalFavorite)window.toggleWishlist=function(id){if(!user())return originalFavorite(id);const ids=read(key('favorites'),[]),index=ids.indexOf(id);if(index<0)ids.push(id);else ids.splice(index,1);localStorage.setItem(key('favorites'),JSON.stringify(ids));if(typeof wishlist!=='undefined')wishlist=ids.slice();window.updateWishlistBadge?.();window.showToast?.(index<0?'Đã lưu sản phẩm yêu thích.':'Đã bỏ yêu thích.','success')};
 window.openAccountCenter=show;

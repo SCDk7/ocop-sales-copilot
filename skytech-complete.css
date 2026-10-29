@@ -2532,7 +2532,7 @@ body footer#contact-footer a:hover {
     cursor: pointer;
 }
 #product-grid .product-shopping-actions > .product-action-buy {
-    background: #0284c7 !important;
+    background: #2e78ad !important;
     color: #fff !important;
 }
 #product-grid .product-shopping-actions > .product-action-favorite[aria-pressed="true"] {
@@ -2705,10 +2705,10 @@ body #quickview-modal #quickview-content .quickview-add-cart :is(span,i) {
     #featured-product-card .featured-image-frame { height: 208px !important; }
 }
 
-/* Compact catalogue cards, preserving purchase and store controls. */
-#product-grid .product-card {
+/* One compact layout for every catalogue page and province filter. */
+body #product-grid .product-card {
     width: 100% !important;
-    max-width: 280px;
+    max-width: 100% !important;
     justify-self: center;
     border-radius: 14px !important;
     min-height: 0 !important;
@@ -2716,51 +2716,68 @@ body #quickview-modal #quickview-content .quickview-add-cart :is(span,i) {
     background: #F0F9FF !important;
     border: 1.5px solid #BAE6FD !important;
 }
-#product-grid .product-card .product-card-image-wrap {
-    height: 140px !important;
-    min-height: 0 !important;
+body #product-grid .product-card .product-card-top {
+    flex: 0 0 auto !important;
 }
-#product-grid .product-card .product-card-image {
-    padding: 5px !important;
-    object-fit: contain !important;
+body #product-grid .product-card .product-card-image-wrap {
+    height: 150px !important;
+    min-height: 150px !important;
+    max-height: 150px !important;
+    flex: 0 0 150px !important;
 }
-#product-grid .product-card .product-card-image-wrap > div.absolute {
+body #product-grid .product-card .product-card-image {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+body #product-grid .product-card .product-card-image-wrap > div.absolute {
     top: 7px !important;
     left: 7px !important;
 }
-#product-grid .product-card .product-card-image-wrap > button {
+body #product-grid .product-card .product-card-image-wrap > button {
     bottom: 7px !important;
     right: 7px !important;
     padding: 5px 8px !important;
     font-size: 10px !important;
 }
-#product-grid .product-card > div:first-child > .px-3 {
-    padding: 7px 9px !important;
+body #product-grid .product-card .product-card-body {
+    display: grid !important;
+    grid-template-rows: 20px 32px 26px;
+    gap: 3px !important;
+    flex: 0 0 auto !important;
+    padding: 5px 9px !important;
 }
-#product-grid .product-card h3 {
-    font-size: 12px !important;
-    line-height: 1.4 !important;
-    margin: 4px 0 !important;
-    height: 36px !important;
-    min-height: 36px !important;
-    max-height: 36px !important;
-    flex: 0 0 36px !important;
+body #product-grid .product-card .product-card-body > * {
+    min-width: 0;
+    margin: 0 !important;
 }
-#product-grid .product-card [data-review-summary],
-#product-grid .product-card [data-review-summary] button {
+body #product-grid .product-card h3 {
+    font-size: 13px !important;
+    line-height: 16px !important;
+    margin: 0 !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    flex: 0 0 32px !important;
+}
+body #product-grid .product-card [data-review-summary],
+body #product-grid .product-card [data-review-summary] button {
     font-size: 10px !important;
     line-height: 1.3 !important;
 }
-#product-grid .product-card-price {
-    padding: 5px 7px !important;
-    margin: 4px 0 0 !important;
-    min-height: 30px !important;
+body #product-grid .product-card-price {
+    padding: 3px 7px !important;
+    margin: 0 !important;
+    height: 26px !important;
+    min-height: 26px !important;
     flex-shrink: 0;
     gap: 5px !important;
     border-radius: 8px !important;
 }
-#product-grid .product-card-price > span:first-child { font-size: 9px !important; }
-#product-grid .product-card-price .product-price-value { font-size: 11px !important; line-height: 1.35 !important; }
+body #product-grid .product-card-price > span:first-child { font-size: 9px !important; }
+body #product-grid .product-card-price .product-price-value { font-size: 12px !important; line-height: 1.3 !important; }
 #product-grid .product-card > div:first-child > .mx-3 {
     margin: 0 9px 7px !important;
     padding: 6px !important;
@@ -2771,15 +2788,16 @@ body #quickview-modal #quickview-content .quickview-add-cart :is(span,i) {
     font-size: 9px !important;
     line-height: 1.4 !important;
 }
-#product-grid .product-card-footer {
-    padding: 7px 9px !important;
-    gap: 5px !important;
-    margin-top: auto;
+body #product-grid .product-card-footer {
+    padding: 5px 9px !important;
+    gap: 4px !important;
+    margin-top: 0 !important;
 }
+body #product-grid .product-card-footer .product-detail-row { margin-bottom: 0 !important; }
 #product-grid .product-card-footer :is(.grid,.product-info-actions,.product-shopping-actions) { gap: 5px !important; }
-#product-grid .product-card-footer button {
+body #product-grid .product-card-footer button {
     min-height: 32px !important;
-    height: auto !important;
+    height: 32px !important;
     padding: 5px 3px !important;
     border-radius: 8px !important;
     font-size: 10px !important;
@@ -3219,6 +3237,40 @@ body {
     border-radius: 18px !important;
 }
 
+/* Keep partner registration above the fixed header and inside small viewports. */
+body #partner-registration-modal {
+    --partner-top-gap: max(12px, env(safe-area-inset-top, 0px));
+    --partner-bottom-gap: max(12px, env(safe-area-inset-bottom, 0px));
+    z-index: 10000020 !important;
+    transform: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    height: 100dvh;
+    box-sizing: border-box;
+    padding: var(--partner-top-gap) max(12px, env(safe-area-inset-right, 0px)) var(--partner-bottom-gap) max(12px, env(safe-area-inset-left, 0px)) !important;
+    overflow: hidden !important;
+}
+body #partner-registration-modal > .partner-registration-panel {
+    width: 100% !important;
+    max-width: 576px !important;
+    max-height: calc(100dvh - var(--partner-top-gap) - var(--partner-bottom-gap)) !important;
+    min-width: 0;
+    box-sizing: border-box;
+    margin: auto !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+#partner-registration-modal .partner-registration-header { align-items: flex-start; }
+#partner-registration-modal .partner-registration-copy { flex: 1; min-width: 0; }
+#partner-registration-modal .partner-registration-heading { flex-wrap: wrap; padding-right: 32px; align-items: flex-start; }
+#partner-registration-title { min-width: 0; line-height: 1.35; overflow-wrap: anywhere; }
+#partner-registration-modal .partner-registration-copy p { margin-top: 5px; line-height: 1.5; }
+#partner-registration-modal .partner-registration-close { z-index: 2; }
+@media(max-width:640px) {
+    body #partner-registration-modal > .partner-registration-panel { padding: 16px !important; }
+    #partner-registration-modal .partner-registration-header > div:first-child { width: 40px; height: 40px; }
+}
+
 /* 11. Màn Hình Nằm Ngang (Mobile Landscape Mode) */
 @media (max-height: 520px) and (orientation: landscape) {
     #ai-chat-window {
@@ -3345,16 +3397,53 @@ body.catalog-browsing { padding-top: calc(var(--storefront-nav-height, 60px) + 2
 #catalog-category-scroll::-webkit-scrollbar { display:block !important; height:9px !important; }
 #catalog-category-scroll::-webkit-scrollbar-thumb { background:#4a91c5; border-radius:8px; }
 #catalog-category-scroll::-webkit-scrollbar-track { background:#e0f2fe; }
-/* One sidebar surface; stick the whole column instead of offsetting its first section. */
-body #catalog-sidebar { background:#fff !important; border:1px solid #bae6fd !important; border-radius:16px !important; padding:0 14px; align-self:start !important; overflow-y:auto !important; scrollbar-width:thin; scrollbar-color:#5a98c4 #e0f2fe; }
+/* One sidebar surface; show every section in the normal page flow. */
+body #catalog-sidebar { background:#fff !important; border:1px solid #bae6fd !important; border-radius:16px !important; padding:0 14px; align-self:start !important; position:static !important; top:auto !important; height:auto !important; max-height:none !important; overflow:visible !important; contain:style !important; }
 body #catalog-sidebar > div { position:static !important; max-height:none !important; overflow:visible !important; padding:0 !important; }
 body #catalog-sidebar > div > div { background:transparent !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; margin:0 !important; padding:14px 0 !important; }
 body #catalog-sidebar > div > div + div { border-top:1px solid #dceaf3 !important; }
 body #catalog-sidebar .glass-panel { background:transparent !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; }
 @media(min-width:1024px) {
     body #products-section, body #catalog-layout-wrapper { overflow:visible !important; }
-    body #catalog-sidebar { position:sticky !important; top:calc(var(--storefront-nav-height,60px) + 12px) !important; max-height:calc(100dvh - var(--storefront-nav-height,60px) - 24px); }
 }
+body #catalog-sidebar #catalog-sidebar-scroll { position:static !important; max-height:none !important; overflow:visible !important; padding-right:0; }
+body #catalog-sidebar #sidebar-categories .cat-side-btn.active,
+body #catalog-sidebar #sidebar-categories .cat-side-btn:hover { background:#e2f0fc !important; color:#204f73 !important; border:1px solid #a5cdec !important; box-shadow:none !important; }
+body #catalog-sidebar #sidebar-categories .cat-side-btn.active span,
+body #catalog-sidebar #sidebar-categories .cat-side-btn.active i { color:#204f73 !important; }
+body #catalog-sidebar #sidebar-categories .cat-side-btn.active > span:last-child { background:#cde3f6 !important; }
+
+/* Pale blue search, badges and store banner share the storefront palette. */
+body #catalog-sidebar #product-search { background:#edf7ff !important; color:#214f72 !important; border:1px solid #b6d6ef !important; caret-color:#2e78ad; }
+body #catalog-sidebar #product-search::placeholder { color:#446b8b !important; opacity:1; }
+body #catalog-sidebar #product-search:focus { background:#fff !important; border-color:#6ca7d2 !important; box-shadow:0 0 0 3px #d9ecfc !important; }
+body #catalog-sidebar .relative:has(> #product-search) > i { color:#2e78ad !important; }
+body #catalog-sidebar [data-voice-search="product-search"]:not([aria-pressed="true"]) { background:#d9ecfc !important; color:#245a83 !important; }
+body #catalog-sidebar [data-voice-search="product-search"]:not([aria-pressed="true"]) i { color:inherit !important; }
+body #catalog-sidebar #sidebar-ai-badge { background:#d9ebfa !important; color:#255778 !important; border:1px solid #b6d5ed !important; }
+#ocop-stores-marquee { background:#e0effb !important; color:#235573 !important; border:1px solid #b6d6ef !important; box-shadow:0 3px 10px #1f628b0d !important; }
+#ocop-stores-marquee :is(span,i) { color:inherit !important; }
+#ocop-stores-marquee > span:first-child { background:#c5e0f7 !important; color:#214f72 !important; box-shadow:none !important; }
+#product-grid .product-action-buy { background:#2e78ad !important; color:#fff !important; border-color:#2e78ad !important; }
+#product-grid .product-action-buy :is(span,i) { color:inherit !important; }
+#product-grid .product-action-buy:hover { background:#25689a !important; }
+body #back-to-top-btn { background:#dceefc !important; color:#245a83 !important; border:1px solid #aacfee !important; box-shadow:0 4px 12px #25689a1a !important; }
+body #back-to-top-btn :is(i,span) { color:inherit !important; text-shadow:none !important; }
+body #back-to-top-btn:hover { background:#cbe4f8 !important; }
+
+/* One blue palette for every voucher, including the first paint and later draws. */
+#hero-voucher-cards-container > div { background:#f4faff !important; border-color:#b9d7ee !important; }
+#hero-voucher-cards-container > div > div > div:first-child > span:first-child { background:#dceefd !important; color:#245477 !important; }
+#hero-voucher-cards-container > div > div > div:first-child > span:last-child,
+#hero-voucher-cards-container strong { color:#245477 !important; }
+#hero-voucher-cards-container .voucher-save-btn { background:#347fb6 !important; color:#fff !important; box-shadow:none !important; text-shadow:none; }
+#hero-voucher-cards-container .voucher-save-btn:hover { background:#286b9e !important; }
+
+#featured-product-card :is(#hero-feat-buy-btn,#hero-feat-view-btn,#hero-feat-ai-btn) { min-height:42px; padding:10px 8px !important; border:1px solid #a9cee9 !important; border-radius:11px !important; background:#e7f3fd !important; color:#214f72 !important; box-shadow:none !important; font-weight:750 !important; line-height:1.25; }
+#featured-product-card #hero-feat-buy-btn { background:#347fb6 !important; color:#fff !important; border-color:#347fb6 !important; }
+#featured-product-card :is(#hero-feat-buy-btn,#hero-feat-view-btn,#hero-feat-ai-btn) :is(i,span) { color:inherit !important; }
+#featured-product-card :is(#hero-feat-buy-btn,#hero-feat-view-btn,#hero-feat-ai-btn):hover { background:#d5eafa !important; color:#17486c !important; }
+#featured-product-card :is(#hero-feat-buy-btn,#hero-feat-view-btn,#hero-feat-ai-btn):focus-visible { outline:2px solid #347fb6; outline-offset:2px; }
 @media(max-width:767px) { #catalog-category-scroll { max-width:calc(100vw - 24px); scrollbar-width:none !important; } #catalog-category-scroll::-webkit-scrollbar { display:none !important; height:0 !important; } }
 #shop-hero h2 { font-size: clamp(24px, 3.3vw, 42px); line-height: 1.2; overflow-wrap: anywhere; }
 #shop-hero #i18n-hero-title1 { white-space: normal !important; }
@@ -3373,3 +3462,6 @@ body #ocop-intro-overlay h2.intro-hero-title #i18n-intro-title2 { display: block
     opacity: 1 !important;
     pointer-events: auto !important;
 }
+#ai-chat-window #ai-chat-composer textarea#ai-chat-input{display:block;box-sizing:border-box;min-width:0;flex:1 1 0%;min-height:40px;max-height:144px;resize:none;overflow-y:auto;line-height:20px;white-space:pre-wrap;overflow-wrap:anywhere;background:#f2f9ff!important;color:#142f46!important;border:1px solid #83bff0!important;border-radius:16px;padding:9px 12px;font-family:inherit;font-size:14px}
+#ai-chat-window #ai-chat-composer textarea#ai-chat-input:focus{outline:2px solid #397fb6;outline-offset:1px}
+#ai-chat-window #ai-chat-composer textarea#ai-chat-input::placeholder{color:#526f85!important}

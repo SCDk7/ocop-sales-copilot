@@ -2,6 +2,19 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const {answer}=require('./catalog-facts');
 const {PRODUCTS}=require('./data');
+test('MSP shorthand answers the code of the named product without unrelated price or gift advice',()=>{
+ const {catalogReply}=require('./chat-fallback'),product=PRODUCTS.find(product=>product.id===336);
+ for(const question of ['msp là j','mã sp là gì','mã số sản phẩm là gì','SKU']){
+  const reply=catalogReply(product.name+' '+question,PRODUCTS);assert.equal(reply.productCode,'TD00336');assert(reply.message.startsWith('Dạ'));assert(reply.message.includes('TD00336'));assert(!/Giá|VNĐ|quà biếu/.test(reply.message));assert.equal(reply.responseMode,'verified_product_code');
+ }
+});
+test('code follow-ups use the last referenced product including an image result, while ambiguous requests ask once',()=>{
+ const {catalogReply}=require('./chat-fallback'),p=PRODUCTS[0];
+ for(const role of ['user','assistant'])assert.equal(catalogReply('msp là j',PRODUCTS,'vi',[{role,text:p.name}]).productCode,p.productCode);
+ const noContext=catalogReply('msp là j',PRODUCTS);assert.deepEqual(noContext.productIds,[]);assert.match(noContext.message,/sản phẩm nào/);
+ const ambiguous=catalogReply('msp là j',PRODUCTS,'vi',[{role:'assistant',text:PRODUCTS.slice(0,2).map(product=>product.name).join('\n')}]);assert.deepEqual(ambiguous.productIds,[]);
+ const giaLai=PRODUCTS.find(product=>product.region==='Gia Lai');assert.equal(catalogReply(giaLai.name+' msp là gì',PRODUCTS).productCode,giaLai.productCode);
+});
 
 test('product facts come from current catalogue fields without a model',()=>{
  const p=PRODUCTS.find(p=>p.id===336);

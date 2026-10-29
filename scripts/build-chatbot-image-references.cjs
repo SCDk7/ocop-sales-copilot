@@ -57,6 +57,8 @@ function buildProductImageKnowledge({products, directory = searchDirectory, outp
     .flatMap(file => JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8')));
   let previous = [];
   try { previous = JSON.parse(fs.readFileSync(output, 'utf8')); } catch {}
+  let imported={entries:[]};
+  try{imported=JSON.parse(fs.readFileSync(path.join(root,'data/product-image-search-input.json'),'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
   const knowledge = products.map(product => {
     const matches = searches.filter(search => search.id === product.id && search.name === product.name && search.region === product.region);
     const candidates = new Map();
@@ -67,8 +69,10 @@ function buildProductImageKnowledge({products, directory = searchDirectory, outp
       const row = {...candidate, imageUrl, page, relationship: 'similar_reference', reviewStatus: 'search_candidate', relevanceScore: score};
       if (!candidates.has(imageUrl) || candidates.get(imageUrl).relevanceScore < score) candidates.set(imageUrl, row);
     }
-    const googleImages = [...candidates.values()].sort((a, b) => b.relevanceScore - a.relevanceScore || a.searchRank - b.searchRank).slice(0, 12);
     const cached = previous.find(row => row.id === product.id && row.name === product.name && row.region === product.region);
+    const readyURLs=new Set((cached?.googleImages||[]).filter(image=>image.downloadStatus==='ready').map(image=>image.imageUrl));
+    const googleImages = [...candidates.values()].sort((a,b)=>Number(readyURLs.has(b.imageUrl))-Number(readyURLs.has(a.imageUrl))||b.relevanceScore-a.relevanceScore||a.searchRank-b.searchRank).slice(0,12);
+    const input=imported.entries?.find(row=>row.id===product.id&&row.name===product.name&&row.region===product.region);
     for (const image of googleImages) {
       const prior = cached?.googleImages.find(row => row.imageUrl === image.imageUrl && row.downloadStatus === 'ready');
       if (prior) for (const key of ['downloadStatus', 'downloadedAt', 'localPath', 'sha256', 'bytes', 'mimeType', 'finalUrl']) image[key] = prior[key];
@@ -82,7 +86,8 @@ function buildProductImageKnowledge({products, directory = searchDirectory, outp
       googleImages, totalGoogleImages: googleImages.length,
       sourceSearch: {status: matches.length ? 'searched' : 'not_searched', engine: 'web_image_search',
         searchedAt: matches[0]?.searchedAt || null, queries: [...new Set(matches.map(search => search.query))],
-        googleSearchUrl: matches[0]?.googleSearchUrl || ''},
+        googleSearchUrl: input?.searchUrl||matches[0]?.googleSearchUrl || '',
+        ...(input?{workbookSource:imported.source,workbookSha256:imported.sha256,inputQuery:input.query,usage:'internal_only'}:{})},
       visualFeatures: {keywords: [...new Set(normalize([product.name, product.nameEn, product.region].join(' ')).split(/[^a-z0-9]+/).filter(word => word.length >= 3))]}
     };
   });

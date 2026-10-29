@@ -9,12 +9,13 @@
 const crypto = require('node:crypto');
 
 const DEFAULT_SYNC_URL = process.env.OCOP_KPI_SYNC_URL || 'https://onrender.com';
-const SECURE_SYNC_TOKEN = process.env.OCOP_KPI_SYNC_TOKEN || 'OCOP_2026_SECURE_TOKEN_AI_CHALLENGE_SYNC_998877';
+const SECURE_SYNC_TOKEN = process.env.OCOP_KPI_SYNC_TOKEN || '';
 
 class KpiSyncService {
   constructor(options = {}) {
     this.targetUrl = (options.targetUrl || DEFAULT_SYNC_URL).replace(/\/+$/, '');
     this.token = options.token || SECURE_SYNC_TOKEN;
+    this.signingKey=this.token||crypto.randomBytes(32).toString('hex');
     this.fetchFn = options.fetch || fetch;
     this.maxLogSize = options.maxLogSize || 100;
     this.eventLogs = [];
@@ -140,7 +141,7 @@ class KpiSyncService {
 
   generateSignature(payload) {
     const stringified = typeof payload === 'string' ? payload : JSON.stringify(payload);
-    return crypto.createHmac('sha256', this.token).update(stringified).digest('hex');
+    return crypto.createHmac('sha256', this.signingKey).update(stringified).digest('hex');
   }
 
   normalizeFinancialRecord(input = {}) {
@@ -231,6 +232,7 @@ class KpiSyncService {
   }
 
   async dispatchRemote(path, data) {
+    if(!this.token)return {ok:false,skipped:true,reason:'KPI sync token is not configured'};
     const url = `${this.targetUrl}${path}`;
     const serialized = JSON.stringify(data);
     const signature = this.generateSignature(serialized);
@@ -305,7 +307,6 @@ class KpiSyncService {
     return {
       targetUrl: this.targetUrl,
       tokenConfigured: Boolean(this.token),
-      tokenPrefix: this.token ? this.token.slice(0, 8) + '...' : null,
       stats: { ...this.stats },
       queuedRetries: this.queue.length,
       recentEventsLogged: this.eventLogs.length,

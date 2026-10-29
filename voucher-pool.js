@@ -372,16 +372,16 @@
         const list = Array.isArray(vouchers) && vouchers.length > 0 ? vouchers : getActiveVouchers();
         
         containerEl.innerHTML = list.map((v, i) => `
-            <div class="bg-white rounded-2xl p-2.5 border ${v.theme.border} shadow-2xs flex flex-col justify-between text-left hover:border-sky-400 transition transform hover:-translate-y-0.5 duration-200" style="background: ${v.theme.bgGradient} !important;">
+            <div class="hero-voucher-card bg-white rounded-2xl p-2.5 border border-sky-200 shadow-2xs flex flex-col justify-between text-left hover:border-sky-400 transition transform hover:-translate-y-0.5 duration-200">
                 <div>
                     <div class="flex items-center justify-between mb-1">
-                        <span class="text-[9.5px] font-black uppercase tracking-wider ${v.theme.badgeBg} ${v.theme.badgeText} px-1.5 py-0.5 rounded">${v.badge}</span>
-                        <span class="text-[10px] font-black ${v.theme.color}">${v.highlight}</span>
+                        <span class="text-[9.5px] font-black uppercase tracking-wider bg-sky-100 text-sky-900 px-1.5 py-0.5 rounded">${v.badge}</span>
+                        <span class="text-[10px] font-black text-sky-800">${v.highlight}</span>
                     </div>
                     <div class="text-[11px] font-extrabold text-slate-900 leading-tight">${v.title}</div>
-                    <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="${v.theme.color}">${v.code}</strong></div>
+                    <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-sky-800">${v.code}</strong></div>
                 </div>
-                <button type="button" onclick="copyHeroVoucher('${v.code}', '${v.desc.replace(/'/g, "\\'")}', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" style="background: ${v.theme.btnBg} !important; color: #FFFFFF !important;">
+                <button type="button" onclick="copyHeroVoucher('${v.code}', '${v.desc.replace(/'/g, "\\'")}', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
                     <i class="fa-regular fa-copy"></i>
                     <span>Lưu Mã</span>
                 </button>

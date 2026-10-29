@@ -284,7 +284,28 @@
         if (send) observer.observe(send, {attributes: true, attributeFilter: ['aria-busy']});
         sync();
     }
+    function installChatComposer(){
+        const input=document.getElementById('ai-chat-input');
+        if(!input||input.tagName!=='TEXTAREA')return;
+        const resize=()=>{input.style.height='auto';input.style.height=Math.min(144,Math.max(40,input.scrollHeight))+'px';};
+        input.addEventListener('input',resize);
+        input.addEventListener('keydown',event=>{
+            if(event.key!=='Enter'||event.isComposing||event.keyCode===229)return;
+            event.preventDefault();
+            if(event.ctrlKey||event.metaKey){
+                const value=input.value,start=input.selectionStart??value.length,end=input.selectionEnd??start;
+                input.value=value.slice(0,start)+'\n'+value.slice(end);
+                input.setSelectionRange(start+1,start+1);
+                input.dispatchEvent(new Event('input',{bubbles:true}));
+            }else{
+                const request=root.sendAIMessage?.();
+                Promise.resolve(request).finally(resize).catch(()=>{});
+            }
+        });
+        resize();
+    }
     function init() {
+        installChatComposer();
         root.triggerAIComboPrompt = prompt => {
             const input=document.getElementById('ai-chat-input');
             if(!input)return;

@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (inputEl && !inputEl.getAttribute('onkeydown')) {
+    if (inputEl && inputEl.tagName !== 'TEXTAREA' && !inputEl.getAttribute('onkeydown')) {
         inputEl.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();

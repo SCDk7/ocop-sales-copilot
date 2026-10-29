@@ -195,7 +195,7 @@ let trackingBusy = false;
 function trackingURL(draft) {
     const url = new URL('draft-order.html', location.href);
     url.searchParams.set('order', draft.id);
-    url.hash = 'receipt=' + receiptAccess;
+    url.hash = '';
     return url.href;
 }
 
@@ -236,7 +236,7 @@ async function refreshDraft(id) {
     status.textContent = salesPage.text('Đang cập nhật trạng thái đơn…', 'Refreshing order status…');
     try {
         const response = await fetch(salesPage.api('/api/ai/draft-orders/' + encodeURIComponent(id)), {
-            headers: {Authorization: 'Bearer ' + receiptAccess}, cache: 'no-store'
+            headers: {Authorization: 'Bearer ' + (window.OCOPAuth?.token()||'')}, cache: 'no-store'
         });
         const body = await response.json();
         if (!response.ok) throw new Error(body.error || salesPage.text('Không tải được đơn hàng.', 'Could not load this order.'));
@@ -251,7 +251,7 @@ async function refreshDraft(id) {
 }
 
 function orderActions(draft) {
-    if (!receiptAccess) return;
+
     const actions = document.createElement('div');
     actions.className = 'order-tracking-actions';
     const refresh = document.createElement('button');
@@ -271,7 +271,7 @@ function orderActions(draft) {
             receive.disabled = true;
             try {
                 const response = await fetch(salesPage.api('/api/ai/draft-orders/' + encodeURIComponent(draft.id) + '/received'), {
-                    method: 'POST', headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + receiptAccess},
+                    method: 'POST', headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + (window.OCOPAuth?.token()||'')},
                     body: JSON.stringify({confirmed: true})
                 });
                 const body = await response.json();
@@ -349,6 +349,9 @@ function showDraft(draft) {
             const p = document.createElement('p');
             p.textContent = value;
             result.append(p);
+        }
+        if(draft.paymentStatus!=='paid'&&['confirmed','shipped'].includes(draft.status)&&draft.total>0){
+            const card=renderVietQRBox(draft,draft.total);if(card)result.append(card);
         }
         orderActions(draft);
         return;
@@ -461,11 +464,11 @@ form.onsubmit = async event => {
     }
 
     const payMethodVal = data.get('payment_method');
-    const paymentMethodLabel = payMethodVal === 'vietqr' ? 'BIDV / VietQR (mô phỏng)' : (payMethodVal === 'momo' ? 'Ví MoMo (mô phỏng)' : 'Ship COD Tận Nơi');
+    const paymentMethodLabel = payMethodVal === 'vietqr' ? 'BIDV / VietQR' : (payMethodVal === 'momo' ? 'Ví MoMo (mô phỏng)' : 'Ship COD Tận Nơi');
     try {
         const response = await fetch(salesPage.api('/api/ai/draft-orders'), {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Authorization:'Bearer '+(window.OCOPAuth?.token()||'') },
             body: JSON.stringify({
                 sessionId: (() => { try { return sessionStorage.getItem("ocop-consultation-session"); } catch { return null; } })(),
                 confirmed: data.get('confirmed') === 'on',
@@ -504,10 +507,7 @@ form.onsubmit = async event => {
 (async () => {
     const trackingId = new URLSearchParams(location.search).get('order');
     if (trackingId) {
-        receiptAccess = new URLSearchParams(location.hash.slice(1)).get('receipt') || '';
-        if (!receiptAccess) {
-            try { receiptAccess = JSON.parse(localStorage.getItem('ocop_customer_orders') || '[]').find(row => row.id === trackingId)?.receiptToken || ''; } catch (_) {}
-        }
+        receiptAccess = window.OCOPAuth?.token() || '';
         trackingView();
         await refreshDraft(trackingId);
         return;

@@ -83,16 +83,16 @@
  <script src="customer-session.js?v=3f6c651f884f"></script>
  <script src="voice-engine.js?v=fb7c587f8eb7"></script>
  <script src="ai-shopping.js?v=013db6c43e56"></script>
-<script src="ai-web-research.js?v=10bca253ad2a"></script>
-<script src="ocop-assistant-profile.js?v=15a912b31d61"></script>
+<script src="ai-web-research.js?v=8f844e34875d"></script>
+<script src="ocop-assistant-profile.js?v=d4bef09105d1"></script>
 <script src="data/tea-knowledge.js?v=8757f3258ad7"></script>
-<script src="product-training.js?v=34006b79e783"></script>
-<script src="catalog-facts.js?v=b2710876dbfd"></script>
+<script src="product-training.js?v=94fdfcc3129c"></script>
+<script src="catalog-facts.js?v=097ae56b7ac5"></script>
 <script src="product-consultant.js?v=e93f4668469d"></script>
-<script src="ai-scenarios.js?v=83e3a901896e"></script>
+<script src="ai-scenarios.js?v=e8111c2241ca"></script>
 <script src="product-locations.js?v=24739bc83737"></script>
-<script src="ai-request-analysis.js?v=889e43dd7dc1"></script>
-<script src="chat-fallback.js?v=f99b4eb6c48c"></script>
+<script src="ai-request-analysis.js?v=1c706a4af39d"></script>
+<script src="chat-fallback.js?v=dc9fba15d056"></script>
  <script src="chat-language.js?v=6239eb709716"></script>
  <link rel="stylesheet" href="assets/tailwind.css?v=a277d89efe4f">
  <!-- Font Awesome Icons & Google Fonts -->
@@ -102,7 +102,7 @@
  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=a78371028241">
  <!-- Project Stylesheets -->
  <link rel="stylesheet" href="style.css?v=8aec987c157e">
-    <link rel="stylesheet" href="skytech-complete.css?v=3a53483d25be">
+    <link rel="stylesheet" href="skytech-complete.css?v=65f0b8f3bf02">
  <!-- <link rel="stylesheet" href="styledangcap.css"> -->
  <!-- <link rel="stylesheet" href="SuaLoiKoClick.css"> -->
  <style>
@@ -2442,7 +2442,7 @@
             font-weight: 800 !important;
         }
     </style>
-</head>
+<link rel="stylesheet" href="assets/checkout-payment.css?v=ded8caeae4a3"></head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
  <!-- THANH TIẾN TRÌNH CUỘN HOÀNG KIM (GOLDEN SCROLL PROGRESS BAR) -->
  <div id="scroll-progress-container" class="fixed top-0 left-0 right-0 h-1 z-[99999] bg-transparent pointer-events-none" aria-hidden="true">
@@ -2840,13 +2840,13 @@
                  <div class="text-[11px] font-extrabold text-slate-900 leading-tight">Giảm ngay 50K</div>
                  <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-sky-700">OCOP50K</strong></div>
              </div>
-             <button type="button" onclick="copyHeroVoucher('OCOP50K', 'Giảm 50K cho đơn từ 399K', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" style="background: #0284C7 !important; color: #FFFFFF !important;">
+             <button type="button" onclick="copyHeroVoucher('OCOP50K', 'Giảm 50K cho đơn từ 399K', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
                  <i class="fa-regular fa-copy"></i>
                  <span>Lưu Mã</span>
              </button>
          </div>
          <!-- Voucher 2 -->
-         <div class="bg-white rounded-2xl p-2.5 border border-amber-300 shadow-2xs flex flex-col justify-between text-left hover:border-amber-400 transition" style="background: linear-gradient(180deg, #FFFFFF 0%, #FEFCE8 100%) !important;">
+         <div class="bg-white rounded-2xl p-2.5 border border-amber-300 shadow-2xs flex flex-col justify-between text-left hover:border-amber-400 transition">
              <div>
                  <div class="flex items-center justify-between mb-1">
                      <span class="text-[9.5px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded">COMBO QUÀ VIP</span>
@@ -2855,13 +2855,13 @@
                  <div class="text-[11px] font-extrabold text-slate-900 leading-tight">Giảm 100K + Quà</div>
                  <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-amber-700">COMBOVIP</strong></div>
              </div>
-             <button type="button" onclick="copyHeroVoucher('COMBOVIP', 'Giảm 100K + Tặng Hộp Quà OCOP cho đơn từ 899K', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" style="background: #D97706 !important; color: #FFFFFF !important;">
+             <button type="button" onclick="copyHeroVoucher('COMBOVIP', 'Giảm 100K + Tặng Hộp Quà OCOP cho đơn từ 899K', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
                  <i class="fa-regular fa-copy"></i>
                  <span>Lưu Mã</span>
              </button>
          </div>
          <!-- Voucher 3 -->
-         <div class="bg-white rounded-2xl p-2.5 border border-emerald-200 shadow-2xs flex flex-col justify-between text-left hover:border-emerald-400 transition" style="background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%) !important;">
+         <div class="bg-white rounded-2xl p-2.5 border border-emerald-200 shadow-2xs flex flex-col justify-between text-left hover:border-emerald-400 transition">
              <div>
                  <div class="flex items-center justify-between mb-1">
                      <span class="text-[9.5px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 px-1.5 py-0.5 rounded">FREESHIP 499K</span>
@@ -2870,7 +2870,7 @@
                  <div class="text-[11px] font-extrabold text-slate-900 leading-tight">Miễn phí ship</div>
                  <div class="text-[9.5px] text-slate-500 mt-0.5 font-medium">Mã: <strong class="text-emerald-700">FREESHIP</strong></div>
              </div>
-             <button type="button" onclick="copyHeroVoucher('FREESHIP', 'Miễn phí vận chuyển toàn quốc cho đơn từ 499K', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" style="background: #059669 !important; color: #FFFFFF !important;">
+             <button type="button" onclick="copyHeroVoucher('FREESHIP', 'Miễn phí vận chuyển toàn quốc cho đơn từ 499K', this)" class="voucher-save-btn mt-2 w-full py-1 px-2 rounded-lg active:scale-95 text-white font-extrabold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
                  <i class="fa-regular fa-copy"></i>
                  <span>Lưu Mã</span>
              </button>
@@ -3401,7 +3401,7 @@
  </div>
  </div>
  <!-- DẢI CHỮ CHẠY MARQUEE QUẢNG BÁ ĐIỂM BÁN OCOP 63 TỈNH THÀNH (TƯƠNG TÁC SỐNG ĐỘNG KHI CUỘN) -->
- <div class="mb-6 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-950 text-amber-200 py-2.5 px-4 shadow-md border border-amber-400/30 flex items-center gap-3">
+ <div id="ocop-stores-marquee" class="mb-6 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950 via-ocopGreen to-emerald-950 text-amber-200 py-2.5 px-4 shadow-md border border-amber-400/30 flex items-center gap-3">
  <span class="flex items-center gap-1.5 bg-amber-400 text-emerald-950 font-black text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0 shadow-sm animate-pulse">
  <i class="fa-solid fa-store text-red-600"></i>
  <span id="i18n-marquee-label">ĐIỂM BÁN OCOP</span>
@@ -3428,9 +3428,9 @@
  </div>
  </div>
  <div id="catalog-layout-wrapper" class="w-full">
- <!-- SIDEBAR DANH MỤC & TIỆN ÍCH DESKTOP (STICKY SUỐT CHIỀU DÀI CUỘN TRANG) -->
+ <!-- SIDEBAR DANH MỤC & TIỆN ÍCH DESKTOP: CUỘN CÙNG TRANG -->
  <aside id="catalog-sidebar" class="hidden lg:block w-[320px] max-w-[320px] shrink-0">
- <div class="sticky top-24 space-y-3.5 max-h-[calc(100vh-6.5rem)] overflow-y-auto no-scrollbar pb-6">
+ <div class="catalog-sidebar-sections">
  <!-- 1. LIVE SHOPPERS TICKER (BÁO KHÁCH TRỰC TIẾP) -->
  <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-950 text-emerald-100 p-3 rounded-2xl border border-emerald-500/40 shadow-sm text-xs flex items-center justify-between">
  <span class="flex items-center gap-2 font-bold">
@@ -3624,7 +3624,7 @@
  <span class="text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-400/40 flex items-center gap-1.5">
  <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> <span id="i18n-b2b-box-title">AI THIẾT KẾ GÓI QUÀ B2B & TỐI ƯU NGÂN SÁCH</span>
  </span>
- <span class="text-[9px] font-black text-amber-300 uppercase bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-500/30">AI </span>
+ <span id="sidebar-ai-badge" class="text-[9px] font-black text-amber-300 uppercase bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-500/30">AI </span>
  </div>
  <p class="text-[11px] text-slate-300 font-medium leading-relaxed" id="i18n-b2b-box-desc">
  Chọn mức ngân sách mục tiêu, AI tự động cấu hình danh mục đặc sản OCOP tối ưu giá trị và biên lợi nhuận!
@@ -3800,7 +3800,7 @@
  <p id="ai-chat-image-hint" class="text-[10px] text-gray-500" hidden></p>
  <div class="flex items-center space-x-2">
  <button type="button" id="chat-add-image-button" onclick="document.getElementById('ai-chat-image-input').click()" aria-label="Thêm ảnh" title="Thêm ảnh (dán Ctrl+V hoặc kéo thả)" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-image text-sm"></i></button>
- <input type="text" id="ai-chat-input" onkeydown="if(event.key==='Enter'){event.preventDefault();sendAIMessage()}" placeholder="Nhập tên sản phẩm hoặc tỉnh thành cần tìm..." class="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen">
+ <textarea id="ai-chat-input" rows="1" aria-label="Tin nhắn: Enter để gửi, Ctrl + Enter để xuống dòng" title="Enter để gửi · Ctrl + Enter để xuống dòng" placeholder="Nhập tên sản phẩm hoặc tỉnh thành cần tìm..." class="min-w-0 flex-1 bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-xs focus:outline-none focus:border-ocopGreen"></textarea>
  <button type="button" id="chat-voice-button" aria-label="Nhập bằng giọng nói" title="Nhập bằng giọng nói" aria-pressed="false" aria-controls="ai-chat-input" class="w-9 h-9 flex-shrink-0 rounded-2xl border border-gray-200 bg-gray-50 text-ocopGreen hover:bg-emerald-50 transition flex items-center justify-center cursor-pointer"><i class="fa-solid fa-microphone text-sm" aria-hidden="true"></i></button>
  <button onclick="sendAIMessage()" id="chat-send-button" aria-label="Gửi tin nhắn" class="w-9 h-9 flex-shrink-0 rounded-2xl bg-ocopGreen text-ocopGold hover:bg-ocopGreenLight transition flex items-center justify-center font-bold shadow cursor-pointer disabled:opacity-60 disabled:cursor-wait"><i class="fa-solid fa-paper-plane text-xs"></i></button>
  </div>
@@ -4868,36 +4868,7 @@
  <span class="truncate">🚚 Ship COD Tận Nơi</span>
  </label>
  </div>
-                    <!-- Panel 1: BIDV VietQR Box -->
-                    <div id="panel-payment-bidv" class="p-3.5 rounded-2xl bg-gradient-to-br from-sky-50 via-white to-blue-50 border-2 border-sky-300 space-y-2.5 shadow-2xs">
-                        <div class="flex flex-col sm:flex-row items-center gap-3">
-                            <img id="order-bidv-qr" src="https://api.vietqr.io/image/970418-8808661371-compact2.png?amount=120000&addInfo=OCOP%208829" alt="Mã VietQR BIDV" class="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border-2 border-sky-400 p-1 bg-white shadow-sm shrink-0 object-contain">
-                            <div class="space-y-1 text-[11px] text-slate-800 flex-1 min-w-0">
-                                <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-sky-600 text-white font-black text-[10px] mb-1">
-                                    <span>🏦 BIDV - TMCP Đầu tư &amp; Phát triển VN</span>
-                                </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <span class="text-slate-500">Số tài khoản:</span>
-                                    <div class="flex items-center gap-1">
-                                        <strong class="font-mono text-sm text-sky-900 font-black">8808661371</strong>
-                                        <button type="button" onclick="copyToClipboard('8808661371', 'Đã sao chép số tài khoản BIDV 8808661371!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép</button>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <span class="text-slate-500">Số tiền chuyển:</span>
-                                    <strong id="bidv-transfer-amount" class="text-rose-600 font-black text-sm">0 ₫</strong>
-                                </div>
-                                <div class="flex items-center justify-between gap-1 pt-1 border-t border-sky-200">
-                                    <span class="text-slate-500">Nội dung CK:</span>
-                                    <div class="flex items-center gap-1">
-                                        <strong id="bidv-transfer-memo" class="font-mono text-xs text-sky-800 font-black">OCOP 8829</strong>
-                                        <button type="button" onclick="copyToClipboard(document.getElementById('bidv-transfer-memo').textContent, 'Đã sao chép nội dung chuyển khoản!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép</button>
-                                    </div>
-                                </div>
-                                <p class="text-[9.5px] text-slate-500 italic pt-0.5">*(Số tiền đã gồm tiền hàng + 25k ship + 10.000đ phí dịch vụ nền tảng Chủ Web)*</p>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="panel-payment-bidv"></div>
                     <!-- Panel 2: MoMo Box -->
                     <div id="panel-payment-momo" class="hidden p-3.5 rounded-2xl bg-gradient-to-br from-pink-50 via-white to-rose-50 border-2 border-pink-300 space-y-2.5 shadow-2xs">
                         <div class="flex flex-col sm:flex-row items-center gap-3">
@@ -5056,9 +5027,6 @@
  <button type="button" id="tab-btn-cust-register" onclick="switchCustomerAuthTab('register')" class="flex-1 py-3 px-2 text-center transition border-b-2 border-transparent text-slate-500 hover:text-slate-800 cursor-pointer">
  📝 Đăng Ký
  </button>
- <button type="button" id="tab-btn-cust-chpass" onclick="switchCustomerAuthTab('chpass')" class="flex-1 py-3 px-2 text-center transition border-b-2 border-transparent text-slate-500 hover:text-slate-800 cursor-pointer">
- 🔄 Đổi Mật Khẩu
- </button>
  <button type="button" id="tab-btn-cust-orders" onclick="switchCustomerAuthTab('orders')" class="flex-1 py-3 px-2 text-center transition border-b-2 border-transparent text-slate-500 hover:text-slate-800 cursor-pointer">
  📦 Đơn Mua
  </button>
@@ -5075,8 +5043,9 @@
  </div>
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu <span class="text-rose-600">*</span></label>
- <input type="password" id="cust-login-pass" placeholder="Nhập mật khẩu..." class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <div class="customer-password-field"><input type="password" autocomplete="current-password" id="cust-login-pass" placeholder="Nhập mật khẩu..." class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white"><button type="button" class="customer-password-toggle" aria-label="Hiện mật khẩu" title="Hiện mật khẩu" aria-controls="cust-login-pass" aria-pressed="false" onclick="togglePasswordVisibility('cust-login-pass', this)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="password-eye-slash" d="m3 3 18 18"/></svg></button></div>
  </div>
+ <div class="text-right"><button type="button" id="cust-forgot-password" onclick="openPasswordRecovery()" class="text-sky-700 font-bold hover:underline py-2">Qu&#234;n m&#7853;t kh&#7849;u?</button></div>
  <button type="button" onclick="handleCustomerLoginSubmit()" id="btn-cust-login-submit" class="w-full py-3.5 px-4 rounded-xl text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-95" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; background-color: #0284C7 !important; color: #FFFFFF !important; min-height: 46px !important; border: 1.5px solid #38BDF8 !important;">
  <i class="fa-solid fa-right-to-bracket text-white" style="color: #FFFFFF !important; font-size: 14px !important;"></i>
  <span style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 13px !important; letter-spacing: 0.5px;">ĐĂNG NHẬP NGAY</span>
@@ -5097,29 +5066,26 @@
  <input type="text" id="cust-reg-user" placeholder="Ví dụ: nguyenvana" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
  </div>
  </div>
- <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+ <div class="grid grid-cols-1 gap-2.5">
  <div>
- <label class="block text-[11px] font-bold text-slate-700 mb-1">Số điện thoại nhận hàng <span class="text-rose-600">*</span></label>
+ <label class="block text-[11px] font-bold text-slate-700 mb-1">Số điện thoại <span class="text-rose-600">*</span></label>
  <input type="tel" id="cust-reg-phone" inputmode="numeric" pattern="[0-9]{10,11}" maxlength="11" autocomplete="tel" placeholder="Ví dụ: 0912345678" oninput="this.value = this.value.replace(/[^0-9]/g, '')" onkeypress="return /[0-9]/.test(event.key)" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
  </div>
- <div>
- <label class="block text-[11px] font-bold text-slate-700 mb-1">Địa chỉ nhận hàng chi tiết</label>
- <input type="text" id="cust-reg-address" placeholder="Số nhà, đường, phường/xã, tỉnh..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
- </div>
+
  </div>
  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu <span class="text-rose-600">*</span></label>
- <input type="password" id="cust-reg-pass" placeholder="Tối thiểu 4 ký tự..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <div class="customer-password-field"><input type="password" autocomplete="new-password" id="cust-reg-pass" placeholder="Tối thiểu 8 ký tự..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white"><button type="button" class="customer-password-toggle" aria-label="Hiện mật khẩu" title="Hiện mật khẩu" aria-controls="cust-reg-pass" aria-pressed="false" onclick="togglePasswordVisibility('cust-reg-pass', this)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="password-eye-slash" d="m3 3 18 18"/></svg></button></div>
  </div>
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Nhập lại mật khẩu <span class="text-rose-600">*</span></label>
- <input type="password" id="cust-reg-pass2" placeholder="Nhập lại mật khẩu..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <div class="customer-password-field"><input type="password" autocomplete="new-password" id="cust-reg-pass2" placeholder="Nhập lại mật khẩu..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white"><button type="button" class="customer-password-toggle" aria-label="Hiện mật khẩu" title="Hiện mật khẩu" aria-controls="cust-reg-pass2" aria-pressed="false" onclick="togglePasswordVisibility('cust-reg-pass2', this)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="password-eye-slash" d="m3 3 18 18"/></svg></button></div>
  </div>
  </div>
  <button type="button" onclick="handleCustomerRegisterSubmit()" id="btn-cust-reg-submit" class="w-full py-3.5 px-4 rounded-xl text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-95" style="background: linear-gradient(135deg, #059669 0%, #047857 100%) !important; background-color: #059669 !important; color: #FFFFFF !important; min-height: 46px !important; border: 1.5px solid #34D399 !important;">
  <i class="fa-solid fa-user-plus text-white" style="color: #FFFFFF !important; font-size: 14px !important;"></i>
- <span style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 13px !important; letter-spacing: 0.5px;">TẠO TÀI KHOẢN &amp; TỰ ĐỘNG ĐĂNG NHẬP</span>
+ <span style="color: #FFFFFF !important; font-weight: 900 !important; font-size: 13px !important; letter-spacing: 0.5px;">TẠO TÀI KHOẢN</span>
  </button>
  <div class="text-center text-[11px] text-slate-500 pt-1">
  Đã có tài khoản? <a href="javascript:void(0)" onclick="switchCustomerAuthTab('login')" class="text-sky-700 font-black hover:underline">Quay lại Đăng Nhập</a>
@@ -5139,15 +5105,15 @@
  </div>
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu hiện tại <span class="text-rose-600">*</span></label>
- <input type="password" id="cust-chpass-old" placeholder="Nhập mật khẩu đang dùng..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <div class="customer-password-field"><input type="password" autocomplete="current-password" id="cust-chpass-old" placeholder="Nhập mật khẩu đang dùng..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white"><button type="button" class="customer-password-toggle" aria-label="Hiện mật khẩu" title="Hiện mật khẩu" aria-controls="cust-chpass-old" aria-pressed="false" onclick="togglePasswordVisibility('cust-chpass-old', this)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="password-eye-slash" d="m3 3 18 18"/></svg></button></div>
  </div>
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Mật khẩu mới <span class="text-rose-600">*</span></label>
- <input type="password" id="cust-chpass-new" placeholder="Nhập mật khẩu mới (tối thiểu 4 ký tự)..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <div class="customer-password-field"><input type="password" autocomplete="new-password" id="cust-chpass-new" placeholder="Nhập mật khẩu mới (tối thiểu 8 ký tự)..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white"><button type="button" class="customer-password-toggle" aria-label="Hiện mật khẩu" title="Hiện mật khẩu" aria-controls="cust-chpass-new" aria-pressed="false" onclick="togglePasswordVisibility('cust-chpass-new', this)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="password-eye-slash" d="m3 3 18 18"/></svg></button></div>
  </div>
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Xác nhận mật khẩu mới <span class="text-rose-600">*</span></label>
- <input type="password" id="cust-chpass-new2" placeholder="Nhập lại mật khẩu mới..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ <div class="customer-password-field"><input type="password" autocomplete="new-password" id="cust-chpass-new2" placeholder="Nhập lại mật khẩu mới..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white"><button type="button" class="customer-password-toggle" aria-label="Hiện mật khẩu" title="Hiện mật khẩu" aria-controls="cust-chpass-new2" aria-pressed="false" onclick="togglePasswordVisibility('cust-chpass-new2', this)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path class="password-eye-slash" d="m3 3 18 18"/></svg></button></div>
  </div>
  <button type="button" onclick="handleCustomerChangePassSubmit()" id="btn-cust-chpass-submit" class="w-full py-3.5 px-4 rounded-xl text-white font-black text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer transition active:scale-95" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; background-color: #0284C7 !important; color: #FFFFFF !important; min-height: 46px !important; border: 1.5px solid #38BDF8 !important;">
  <i class="fa-solid fa-key text-white" style="color: #FFFFFF !important; font-size: 14px !important;"></i>
@@ -5213,18 +5179,18 @@
  </div>
  </div>
  <!-- 10.1 MODAL ĐĂNG KÝ ĐIỂM BÁN MỚI (LIGHTWEIGHT MVP & AI OCR) -->
- <div id="partner-registration-modal" class="fixed inset-0 z-[120] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-fade-in" onclick="if(event.target === this) closePartnerRegistrationModal()">
- <div class="bg-white border-2 border-sky-300 rounded-3xl p-5 sm:p-7 max-w-xl w-full text-slate-800 shadow-2xl space-y-4 relative" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
- <button onclick="closePartnerRegistrationModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center text-sm absolute top-4 right-4 cursor-pointer transition">
+ <div id="partner-registration-modal" role="dialog" aria-modal="true" aria-labelledby="partner-registration-title" class="fixed inset-0 z-[120] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-fade-in" onclick="if(event.target === this) closePartnerRegistrationModal()">
+ <div class="partner-registration-panel bg-white border-2 border-sky-300 rounded-3xl p-5 sm:p-7 max-w-xl w-full text-slate-800 shadow-2xl space-y-4 relative" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+ <button type="button" aria-label="Đóng đăng ký điểm bán" onclick="closePartnerRegistrationModal()" class="partner-registration-close w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center text-sm absolute top-4 right-4 cursor-pointer transition">
  <i class="fa-solid fa-xmark"></i>
  </button>
- <div class="flex items-center space-x-3 border-b border-sky-100 pb-3">
+ <div class="partner-registration-header flex items-center space-x-3 border-b border-sky-100 pb-3">
  <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-cyan-500 text-white flex items-center justify-center text-xl font-black shadow-md shrink-0">
  <i class="fa-solid fa-bolt text-amber-300"></i>
  </div>
- <div>
- <div class="flex items-center gap-1.5">
- <h3 class="text-base sm:text-lg font-black text-slate-900">Đăng Ký Điểm Bán / HTX Mới</h3>
+ <div class="partner-registration-copy">
+ <div class="partner-registration-heading flex items-center gap-1.5">
+ <h3 id="partner-registration-title" class="text-base sm:text-lg font-black text-slate-900">Đăng Ký Điểm Bán / HTX Mới</h3>
  <span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 border border-sky-200">AI OCR Powered</span>
  </div>
  <p class="text-xs text-sky-700 font-semibold">Kích hoạt Lightweight MVP • Số hóa danh mục sản phẩm trong 2-3 giờ</p>
@@ -5333,12 +5299,11 @@
  </ul>
  </div>
  <div class="md:col-span-4 space-y-3">
- <h6 class="font-black text-sky-900 text-xs uppercase tracking-wider">CẤU TRÚC HỆ SINH THÁI SỐ</h6>
- <ul class="space-y-2 text-slate-700 font-medium">
- <li><a href="#" class="hover:text-sky-700 transition flex items-center space-x-1.5"><i class="fa-solid fa-file-invoice-dollar text-sky-600 text-[10px]"></i><span>Cơ chế Đối soát Tự động CHM (Smart Commission)</span></a></li>
- <li><a href="#" class="hover:text-sky-700 transition flex items-center space-x-1.5"><i class="fa-solid fa-certificate text-emerald-600 text-[10px]"></i><span>Tiêu chuẩn Xác thực Pháp lý OCOP 3-5 Sao</span></a></li>
- <li><a href="#" class="hover:text-sky-700 transition flex items-center space-x-1.5"><i class="fa-solid fa-bolt text-amber-500 text-[10px]"></i><span>Cổng Onboarding Lightweight MVP (2-3h)</span></a></li>
- <li><a href="#" class="hover:text-sky-700 transition flex items-center space-x-1.5"><i class="fa-solid fa-map-location-dot text-cyan-600 text-[10px]"></i><span>Tài liệu API & Bản đồ số O2O</span></a></li>
+ <h6 class="font-black text-sky-900 text-sm uppercase tracking-wider">KHÁM PHÁ OCOP VIỆT NAM</h6>
+ <ul class="space-y-2 text-slate-700 text-sm font-medium">
+ <li><a href="#products-section" onclick="event.preventDefault(); scrollToProducts();" class="hover:text-sky-700 transition flex items-center gap-2 py-1"><i class="fa-solid fa-wheat-awn text-sky-600" aria-hidden="true"></i><span>Khám phá đặc sản theo tỉnh thành</span></a></li>
+ <li><a href="#ocop-all-stores-modal" onclick="event.preventDefault(); openAllStoresModal();" class="hover:text-sky-700 transition flex items-center gap-2 py-1"><i class="fa-solid fa-map-location-dot text-sky-600" aria-hidden="true"></i><span>Tra cứu điểm bán OCOP</span></a></li>
+ <li><a href="#ai-chat-window" onclick="event.preventDefault(); toggleAIChat(true);" class="hover:text-sky-700 transition flex items-center gap-2 py-1"><i class="fa-solid fa-headset text-sky-600" aria-hidden="true"></i><span>Tư vấn và hỗ trợ mua hàng</span></a></li>
  </ul>
  </div>
  <div class="md:col-span-4 space-y-3">
@@ -5360,7 +5325,9 @@
  <!-- ============================================================== -->
  <!-- JAVASCRIPT XỬ LÝ HOÀN CHỈNH TOÀN BỘ CHỨC NĂNG WEBSITE -->
  <!-- ============================================================== -->
- <script src="data.js?v=8c9ab2ce36af"></script>
+ <script src="product-codes.js?v=56b4fc46df38"></script>
+<script src="product-search.js?v=48ab84c2fb78"></script>
+<script src="data.js?v=bac3f355ae37"></script>
  <script src="ocop-stores.js?v=e967d59dd2fa"></script>
  <script src="ai-business-knowledge.js?v=08196d7c741a"></script>
  <script src="assets/vendor/leaflet/leaflet.js?v=3104b526504d"></script>
@@ -5441,55 +5408,14 @@
         // ==========================================================================
         // AI DIGITAL BUSINESS CHALLENGE 2026: GEMINI COGNITIVE & WIKI DATA ENGINE
         // ==========================================================================
-        const GEMINI_API_KEY = '';
-        const GEMINI_MODEL = "gemini-2.5-flash"; // gemini-1.5-flash upgraded to gemini-2.5-flash for Digital Fest 2026 Challenge
-        const GEMINI_ENDPOINT_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
-        const GEMINI_ENDPOINT = GEMINI_ENDPOINT_URL;
-        // Legacy fallback reference: https://googleapis.com/v1beta/models/gemini-1.5-flash:generateContent
-        const GEMINI_SYSTEM_PROMPT = `Bạn là Giám đốc Công nghệ & Trợ lý Quản trị Tài chính AI cấp cao (OCOP Sales Copilot) thuộc đề án "AI Digital Business Challenge 2026".
-Mô hình chiến lược: Nền tảng tiếp thị liên kết (Affiliate Platform), quảng bá điểm bán và điều phối số Online-to-Offline (O2O) kết nối 63 tỉnh thành Việt Nam.
-QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
-1. Tư vấn văn hóa chuyên sâu: Tự do trích xuất câu chuyện văn hóa thổ nhưỡng bản địa của 520+ đặc sản OCOP (Bưởi đường lá cam Tân Triều, Trà khổ qua rừng túi lọc Hiệp Vân, Gốm sứ Bát Tràng, Mật ong bạc hà Mèo Vạc, Cà phê Bích Thao...).
-2. BẮT BUỘC ĐÍNH KÈM LINK GOOGLE MAP ĐỜI THỰC: Luôn đính kèm một liên kết chỉ đường dẫn thẳng sang tọa độ Google Map thực tế ngoài đời của cơ sở sản xuất / showroom để du khách đến tận nơi trải nghiệm mô hình O2O.
-3. Đồng bộ dòng tiền cuối câu: Cuối mỗi câu thoại, AI bắt buộc phải tự động đính kèm mảng thông số đối soát:
-[HỆ THỐNG ĐỒNG BỘ: Biên lợi nhuận mục tiêu 22.5% • Trạng thái đối soát CHM: Đã phân bổ tự động qua Smart Contract]`;
         async function callGeminiDirectAPI(userPrompt, lang = 'vi') {
-            try {
-                const response = await fetch(GEMINI_ENDPOINT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    signal: AbortSignal.timeout(3500),
-                    body: JSON.stringify({
-                        contents: [
-                            {
-                                role: 'user',
-                                parts: [
-                                    { text: `${GEMINI_SYSTEM_PROMPT}\n\n[Ngôn ngữ: ${lang}]\n[Yêu cầu]: ${userPrompt}` }
-                                ]
-                            }
-                        ],
-                        generationConfig: {
-                            temperature: 0.6,
-                            maxOutputTokens: 1200
-                        }
-                    })
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    const textReply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                    if (textReply && textReply.trim()) {
-                        return textReply.trim();
-                    }
-                }
-            } catch (err) {
-                console.warn('[Gemini Direct API] Network or fallback notice:', err);
-            }
-            return null;
+            const response=await window.OCOPAuth.fetch(getAIEndpoint('/api/ai/chat'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:lang,messages:[{role:'user',text:userPrompt}]})});
+            const body=await response.json();if(!response.ok)throw new Error(body.error||'AI unavailable');return body.message||body.text_response||null;
         }
         // Hàm xử lý gọi bộ não Gemini AI kết hợp đối soát Cơ sở tri thức hệ thống (Wiki)
         async function getGeminiWikiResponse(userQuery) {
  try {
-  const response=await fetch(getAIEndpoint('/api/ai/chat'),{method:'POST',headers:{'Content-Type':'application/json'},signal:AbortSignal.timeout(35000),body:JSON.stringify({language:currentLanguage,messages:[{role:'user',text:userQuery}]})});
+  const response=await window.OCOPAuth.fetch(getAIEndpoint('/api/ai/chat'),{method:'POST',headers:{'Content-Type':'application/json'},signal:AbortSignal.timeout(30000),body:JSON.stringify({language:currentLanguage,messages:[{role:'user',text:userQuery}]})});
   if(response.ok){const reply=await response.json();if(reply.message||reply.text_response)return reply.text_response||reply.message;}
  }catch(_){}
  return window.OCOPChatFallback.catalogReply(userQuery,products,currentLanguage,aiConversationHistory).message;
@@ -5509,6 +5435,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             `);
             
             inputEl.value = '';
+            inputEl.dispatchEvent(new Event('input',{bubbles:true}));
             messagesEl.scrollTop = messagesEl.scrollHeight;
             const loadingId = 'gemini-loading-' + Date.now();
             messagesEl.insertAdjacentHTML('beforeend', `
@@ -5561,7 +5488,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
         function openPartnerRegistrationModal() {
             const modal = document.getElementById('partner-registration-modal');
-            if (modal) modal.classList.remove('hidden');
+            if (modal) { modal.classList.remove('hidden');modal.scrollTop=0;if(modal.firstElementChild)modal.firstElementChild.scrollTop=0; }
         }
         function closePartnerRegistrationModal() {
             const modal = document.getElementById('partner-registration-modal');
@@ -6513,7 +6440,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                             </button>
                         </div>
                         <div class="product-action-row flex items-center gap-1.5 w-full">
-                            <button type="button" onclick="handleBuyNow(${p.id})" class="product-action-buy lofi-btn-buy btn-card-buy-online flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl font-black text-xs text-white transition-all shadow-xs cursor-pointer active:scale-95" style="flex: 2 1 0% !important; min-width: 0 !important; height: 32px !important; font-size: 11px !important; border-radius: 0.5rem !important; background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%) !important; color: #FFFFFF !important;" title="${({vi:'Mua ngay sản phẩm này',en:'Buy this product now',zh:'立即购买该商品',ko:'이 상품 바로구매',ja:'この商品を今すぐ購入'})[currentLanguage]||'Mua ngay'}">
+                            <button type="button" onclick="handleBuyNow(${p.id})" class="product-action-buy lofi-btn-buy btn-card-buy-online flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl font-black text-xs text-white transition-all shadow-xs cursor-pointer active:scale-95" style="flex: 2 1 0% !important; min-width: 0 !important; height: 32px !important; font-size: 11px !important; border-radius: 0.5rem !important; color: #FFFFFF !important;" title="${({vi:'Mua ngay sản phẩm này',en:'Buy this product now',zh:'立即购买该商品',ko:'이 상품 바로구매',ja:'この商品を今すぐ購入'})[currentLanguage]||'Mua ngay'}">
                                 <i class="fa-solid fa-bolt text-amber-200"></i>
                                 <span class="truncate">${({vi:'Mua ngay',en:'Buy Now',zh:'立即购买',ko:'바로구매',ja:'今すぐ購入'})[currentLanguage]||'Mua ngay'}</span>
                             </button>
@@ -6600,7 +6527,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             grid.innerHTML = cardsHtml;
         }
         let productSearchTimer;
-        const productSearchText = new WeakMap();
         function scheduleProductSearch(searchTerm) {
             clearTimeout(productSearchTimer);
             productSearchTimer = setTimeout(() => filterProductsGlobal(searchTerm), 140);
@@ -6608,7 +6534,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         function filterProductsGlobal(searchTerm) {
             clearTimeout(productSearchTimer);
             const query = String(searchTerm ?? '').trim();
-            const terms = normalizeSearchText(query).split(/\s+/).filter(Boolean);
             document.getElementById('image-search-status')?.classList.add('hidden');
             // Đồng bộ giá trị input ở cả 3 ô tìm kiếm
             const hInput = document.getElementById('header-search-input'); if (hInput) hInput.value = query;
@@ -6635,7 +6560,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         if (currentCategory === '4star') return p.stars === 4;
                         return p.category === currentCategory;
                     });
-                    filtered = catFiltered.length > 0 ? catFiltered : provFiltered;
+                    filtered = catFiltered;
                 } else {
                     filtered = provFiltered;
                 }
@@ -6655,37 +6580,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             } else if (currentShopeeStarFilter === 4) {
                 filtered = filtered.filter(p => p.stars === 4);
             }
-            if (terms.length > 0) {
-                const buildSearchable = product => {
-                    let text = productSearchText.get(product);
-                    if (text === undefined) {
-                        text = normalizeSearchText(
-                            `${product.name} ${product.nameEn || productNamesEn[product.id - 1] || ''} ${product.region} ${product.desc} ${product.descEn || ''} ${product.tag} ${product.tagEn || ''}`
-                        );
-                        if (/\bche\b/.test(text)) text += ' tra';
-                        if (/\btra\b/.test(text)) text += ' che';
-                        if (product.region && normalizeSearchText(product.region) === 'dong nai') {
-                            text += ' buoi tan trieu buoi duong la cam';
-                        }
-                        productSearchText.set(product, text);
-                    }
-                    return text;
-                };
-                filtered = filtered.filter(product => {
-                    const searchableText = buildSearchable(product);
-                    return terms.every(term => searchableText.includes(term));
-                });
-                // Auto-recovery nếu bộ lọc tỉnh/danh mục hẹp làm kết quả rỗng
-                if (filtered.length === 0 && (selectedProvince || currentCategory !== 'all' || (typeof currentShopeeStarFilter !== 'undefined' && currentShopeeStarFilter !== 'all'))) {
-                    const fallbackMatches = products.filter(product => {
-                        const searchableText = buildSearchable(product);
-                        return terms.every(term => searchableText.includes(term));
-                    });
-                    if (fallbackMatches.length > 0) {
-                        filtered = fallbackMatches;
-                    }
-                }
-            }
+            if(query)filtered=window.OCOPProductSearch.search(filtered,query);
             // Sắp xếp danh sách sản phẩm theo lựa chọn
             let sortedFiltered = [...filtered];
             if (currentSortMode === 'price-asc') {
@@ -7512,6 +7407,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 clearSearchInput();
             } else if (event.key === 'Enter') {
                 event.preventDefault();
+                filterProductsGlobal(event.target.value);
                 scrollToProducts();
             }
         }
@@ -7632,7 +7528,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             try {
                 const imageData = await createSearchImageDataUrl(file);
                 filterProductsGlobal('');
-                const response = await fetch(getAIEndpoint('/api/ai/search-image'), {
+                const response = await window.OCOPAuth.fetch(getAIEndpoint('/api/ai/search-image'), {
+                    signal: AbortSignal.timeout(30000),
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -8198,7 +8095,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             return path;
         }
         const maxAIChatImages = 10;
-        const maxAIChatImageBytes = 100 * 1024 * 1024;
+        const maxAIChatImageBytes = 10 * 1024 * 1024;
         const supportedAIChatImageTypes = new Set([
             'image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'
         ]);
@@ -8209,11 +8106,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             previews.hidden = pendingAIImages.length === 0;
             hint.hidden = pendingAIImages.length === 0;
             const hintMap = {
-                vi: 'Dán, kéo-thả hoặc tải tối đa 10 ảnh (100 MB mỗi ảnh).',
-                en: 'Paste, drop, or upload up to 10 images (100 MB each).',
-                zh: '粘贴、拖放或上传最多 10 张图片（每张不超过 100 MB）。',
-                ko: '최대 10장의 이미지를 붙여넣거나 드래그하거나 업로드하세요 (각 100MB 이하).',
-                ja: '最大10枚の画像を貼り付け、ドラッグ＆ドロップ、またはアップロード（各100MB以下）。'
+                vi: 'Dán, kéo-thả hoặc tải tối đa 10 ảnh (10 MB mỗi ảnh).',
+                en: 'Paste, drop, or upload up to 10 images (10 MB each).',
+                zh: '粘贴、拖放或上传最多 10 张图片（每张不超过 10 MB）。',
+                ko: '최대 10장의 이미지를 붙여넣거나 드래그하거나 업로드하세요 (각 10MB 이하).',
+                ja: '最大10枚の画像を貼り付け、ドラッグ＆ドロップ、またはアップロード（各10MB以下）。'
             };
             hint.textContent = hintMap[currentLanguage] || hintMap.vi;
             pendingAIImages.forEach((image, index) => {
@@ -8260,11 +8157,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             }
             if (imageFiles.some(file => file.size === 0 || file.size > maxAIChatImageBytes)) {
                 const sizeMap = {
-                    vi: 'Mỗi ảnh phải có dung lượng không quá 100 MB.',
-                    en: 'Each image must be 100 MB or smaller.',
-                    zh: '每张图片大小不得超过 100 MB。',
-                    ko: '각 이미지 크기는 100MB 이하이어야 합니다.',
-                    ja: '各画像は100MB以下である必要があります。'
+                    vi: 'Mỗi ảnh phải có dung lượng không quá 10 MB.',
+                    en: 'Each image must be 10 MB or smaller.',
+                    zh: '每张图片大小不得超过 10 MB。',
+                    ko: '각 이미지 크기는 10MB 이하이어야 합니다.',
+                    ja: '各画像は10MB以下である必要があります。'
                 };
                 showToast(sizeMap[currentLanguage] || sizeMap.vi, 'error');
                 return;
@@ -8292,14 +8189,14 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 showToast(error.message, 'error');
             }
         }
-        async function uploadPendingAIChatImages(images) {
+        async function uploadPendingAIChatImages(images, signal) {
             const newImages = images.filter(image => !image.id);
             if (!newImages.length) return;
             await Promise.all(newImages.map(async image => {
-                const response = await fetch(getAIEndpoint('/api/ai/images'), {
+                const response = await window.OCOPAuth.fetch(getAIEndpoint('/api/ai/images'), {
                     method: 'POST',
                     headers: { 'Content-Type': image.file.type },
-                    body: image.file
+                    body: image.file, signal
                 });
                 const result = await response.json().catch(() => ({}));
                 if (!response.ok) {
@@ -8354,25 +8251,6 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 addAIChatImages(event.dataTransfer.files);
             }
         }));
-        const aiCatalogSyncIntervalMs = 10 * 60 * 1000;
-        async function syncAIWebsiteCatalog() {
-            try {
-                const response = await fetch(getAIEndpoint('/api/ai/catalog'), {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({})
-                });
-                const result = await response.json().catch(() => ({}));
-                if (!response.ok) {
-                    throw new Error(result.error || 'Không thể đồng bộ danh mục với trợ lý AI.');
-                }
-                console.info(`AI catalog synced: ${result.productCount} products.`);
-            } catch (error) {
-                console.error('Unable to sync website catalog with AI:', error);
-            }
-        }
-        window.setTimeout(syncAIWebsiteCatalog, 0);
-        window.setInterval(syncAIWebsiteCatalog, aiCatalogSyncIntervalMs);
         function getAdminContactCardsHTML() {
             return `
                 <div class="mt-2.5 space-y-2 rounded-2xl bg-blue-50/80 p-2.5 border border-blue-200 text-left">
@@ -9816,6 +9694,8 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
     
         
         async function sendAIMessage() {
+            const sendStartedAt=Date.now();
+            await window.accountReady;
             const requestIdentityVersion=window.OCOPCustomerSession?.version;
             const requestChatGeneration=aiChatGeneration;
             const sameCustomer=()=>requestIdentityVersion===window.OCOPCustomerSession?.version && requestChatGeneration===aiChatGeneration;
@@ -9844,6 +9724,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             userBubble.className = 'bg-ocopGreen text-white p-3 rounded-2xl text-xs max-w-[85%] shadow-sm leading-relaxed break-words space-y-2';
             if (text) {
                 const userText = document.createElement('p');
+                userText.className='whitespace-pre-wrap';
                 userText.textContent = text;
                 userBubble.append(userText);
             }
@@ -9864,6 +9745,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             pendingAIImages = pendingAIImages.filter(image => !messageImages.includes(image));
             renderAIChatImagePreviews();
             inputEl.value = '';
+            inputEl.dispatchEvent(new Event('input',{bubbles:true}));
             messagesEl.scrollTop = messagesEl.scrollHeight;
             
 
@@ -9896,8 +9778,10 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 </div>
             `);
             messagesEl.scrollTop = messagesEl.scrollHeight;
+            const chatSignal=AbortSignal.timeout(Math.max(1,30000-(Date.now()-sendStartedAt)));
             try {
-                await uploadPendingAIChatImages(messageImages);
+                const hasSession=Boolean(window.OCOPAuth?.token());
+                if(messageImages.length)await uploadPendingAIChatImages(messageImages,chatSignal);
                 if(!sameCustomer())return;
                 // Persist a small preview in background without delaying request
                 messageImages.forEach(image => {
@@ -9906,14 +9790,19 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     }).catch(() => {});
                 });
                 let result = null;
+                if(!hasSession&&!messageImages.length)result=generateResilientAIResponse(messageText,requestLanguage,null,false);
                 try {
-                    const response = await fetch(getAIEndpoint('/api/ai/chat'), {
+                    if(!result){
+                    const response = await window.OCOPAuth.fetch(getAIEndpoint('/api/ai/chat'), {
                         method:'POST',headers:{'Content-Type':'application/json'},
-                        signal: AbortSignal.timeout(5000),
+                        signal: chatSignal,
                         body:JSON.stringify({sessionId:(window.ocopMetricsSessionId ||= (()=>{try{let id=sessionStorage.getItem("ocop-consultation-session");if(!id){id=crypto.randomUUID();sessionStorage.setItem("ocop-consultation-session",id);}return id;}catch{return crypto.randomUUID();}})()),language:requestLanguage,messages:[...aiConversationHistory.slice(-14),{role:'user',text:messageText}],imageIds:messageImages.map(image=>image.id)})
                     });
-                    if (response.ok) {
+                    if ([401,403,429,504].includes(response.status)) {
+                        const error=await response.json();result={message:error.error,text_response:error.error,productIds:[],code:error.code};
+                    } else if (response.ok) {
                         result = await response.json().catch(()=>null);
+                    }
                     }
                 } catch (netErr) {
                     console.warn('API /api/ai/chat network timeout or unavailable, switching to resilient AI Dispatch:', netErr);
@@ -9937,6 +9826,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                         result = { ...result, ...AIShopping.replyOptions(AIShopping.variants(eligible, shoppingIntent), shoppingIntent, requestLanguage), localMarkup: '' };
                     }
                 }
+                if(window.OCOPAssistantProfile)result=window.OCOPAssistantProfile.completeReply(result,requestLanguage);
                 if (!Array.isArray(result.productIds)) {
                     result.productIds = [];
                 }
@@ -9999,7 +9889,9 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                     .map(id => products.find(product => product.id === id))
                     .filter(Boolean);
                 const recommendationsEl = reply.querySelector('.ai-product-recommendations');
-                if (result.localMarkup) {
+                if(result.responseMode==='verified_product_code'){
+                    recommendationsEl.replaceChildren();
+                } else if (result.localMarkup) {
                     recommendationsEl.innerHTML = result.localMarkup;
                 } else if (recommendedProducts.length && (result.combo || isAIComboRequest(text))) {
                     const comboIdeasMap = {
@@ -12586,7 +12478,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
         async function requestAuth(endpoint, payload) {
             try {
-                const response = await fetch(getAIEndpoint(endpoint), {
+                const response = await window.OCOPAuth.fetch(getAIEndpoint(endpoint), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -12617,178 +12509,40 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
             }
         }
         function togglePasswordVisibility(inputId, btn) {
-            const input = document.getElementById(inputId);
-            if (!input) return;
-            const isPassword = input.type === 'password';
-            input.type = isPassword ? 'text' : 'password';
-            if (btn) {
-                const icon = btn.querySelector('i');
-                if (icon) {
-                    icon.className = isPassword ? 'fa-solid fa-eye-slash text-xs' : 'fa-solid fa-eye text-xs';
-                }
-            }
+            const input=document.getElementById(inputId);if(!input)return;
+            const visible=input.type==='password';input.type=visible?'text':'password';
+            if(btn){const label=visible?'Ẩn mật khẩu':'Hiện mật khẩu';btn.setAttribute('aria-pressed',String(visible));btn.setAttribute('aria-label',label);btn.title=label;const icon=btn.querySelector('i');if(icon)icon.className=visible?'fa-solid fa-eye-slash text-xs':'fa-solid fa-eye text-xs';}
         }
-        function openGoogleChooser() {
-            const formView = document.getElementById('auth-form-view');
-            const googleView = document.getElementById('auth-google-chooser-view');
-            const profileView = document.getElementById('auth-profile-view');
-            if (formView) formView.classList.add('hidden');
-            if (profileView) profileView.classList.add('hidden');
-            if (googleView) googleView.classList.remove('hidden');
-        }
+        function openGoogleChooser(){startSocialLogin('google');}
         function closeGoogleChooser() {
             const formView = document.getElementById('auth-form-view');
             const googleView = document.getElementById('auth-google-chooser-view');
             if (googleView) googleView.classList.add('hidden');
             if (formView) formView.classList.remove('hidden');
         }
-        function loginWithGoogleAccount(name, email) {
-            const users = getStoredUsers();
-            let matched = users.find(u =>
-                (u.email && u.email.toLowerCase() === email.toLowerCase()) ||
-                (u.loginId && u.loginId.toLowerCase() === email.toLowerCase())
-            );
-            if (!matched) {
-                matched = {
-                    id: 'goog_' + Date.now(),
-                    name: name,
-                    loginId: email,
-                    email: email,
-                    phone: '0988 882 026',
-                    address: 'Google Workspace Verified Account',
-                    role: name.includes('Giám Khảo') ? 'Ban Giám Khảo & Chuyên Gia Thẩm Định' : 'Đối tác HTX & Quản trị viên O2O',
-                    provider: 'Google',
-                    verified: true,
-                    createdAt: new Date().toISOString()
-                };
-                users.push(matched);
-                saveStoredUsers(users);
-            }
-            saveCurrentUser(matched);
-            document.getElementById('auth-modal')?.classList.add('hidden');
-            showToast(`Đăng nhập Google thành công! Xin chào ${name}.`, 'success');
+        function loginWithGoogleAccount(){startSocialLogin('google');}
+        function submitCustomGoogleLogin(){startSocialLogin('google');}
+        function startSocialLogin(provider){
+            if(!['google','facebook'].includes(provider))return;
+            window.location.assign(window.OCOPAuth.endpoint('/api/auth/oauth/'+provider));
         }
-        function submitCustomGoogleLogin() {
-            const name = (document.getElementById('google-custom-name')?.value || '').trim();
-            const email = (document.getElementById('google-custom-email')?.value || '').trim();
-            if (!name || !email) {
-                showToast('Vui lòng nhập đầy đủ Họ tên và Gmail của bạn.', 'error');
-                return;
-            }
-            if (!email.includes('@')) {
-                showToast('Vui lòng nhập địa chỉ Gmail hợp lệ.', 'error');
-                return;
-            }
-            loginWithGoogleAccount(name, email);
-        }
-        function startSocialLogin(provider) {
-            if (provider === 'google') {
-                openGoogleChooser();
-                return;
-            }
-            if (provider === 'facebook') {
-                loginWithGoogleAccount('Người Dùng Facebook OCOP', 'facebook.user@ocop.vn');
-            }
-        }
-        function finishSocialLogin() {
-            const params = new URLSearchParams(window.location.hash.slice(1));
-            const code = params.get('oauth_code');
-            const error = params.get('oauth_error');
-            if (!code && !error) return;
-            window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+        async function finishSocialLogin(){
+            try{await window.accountReady;await window.OCOPAuth.finishOAuth();}catch(error){showToast(error.message,'error');}
         }
         window.addEventListener('DOMContentLoaded', finishSocialLogin);
-        function logoutUser() {
+        async function logoutUser() {
+            await window.OCOPAuth.logout();
             saveCurrentUser(null);
             document.getElementById('auth-modal')?.classList.add('hidden');
             switchAuthTab('login');
             showToast('Đã đăng xuất tài khoản thành công.', 'info');
         }
-        async function handleAuthSubmit(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('auth-submit-btn');
-            if (submitBtn) submitBtn.disabled = true;
-            try {
-                const users = getStoredUsers();
-                if (authTab === 'login') {
-                    const loginId = (document.getElementById('auth-name')?.value || '').trim().toLowerCase();
-                    const password = document.getElementById('auth-password')?.value || '';
-                    const matchedUser = users.find(u =>
-                        ((u.loginId && u.loginId.toLowerCase() === loginId) ||
-                         (u.email && u.email.toLowerCase() === loginId) ||
-                         (u.phone && u.phone === loginId) ||
-                         (u.name && u.name.toLowerCase() === loginId)) &&
-                        u.password === password
-                    );
-                    if (!matchedUser) {
-                        const status = document.getElementById('auth-social-status');
-                        if (status) {
-                            status.textContent = 'Tài khoản hoặc mật khẩu không chính xác. Quý khách vui lòng thử lại hoặc dùng nút Điền nhanh Demo!';
-                            status.className = 'mb-3 rounded-xl border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-xs leading-relaxed font-medium';
-                            status.classList.remove('hidden');
-                        }
-                        showToast('Tài khoản hoặc mật khẩu không chính xác.', 'error');
-                        return;
-                    }
-                    saveCurrentUser(matchedUser);
-                    document.getElementById('auth-modal')?.classList.add('hidden');
-                    showToast(`Xin chào ${matchedUser.name}! Bạn đã đăng nhập thành công.`, 'success');
-                } else {
-                    // Chế độ Đăng ký
-                    const name = (document.getElementById('auth-name')?.value || '').trim();
-                    const phone = (document.getElementById('auth-phone')?.value || '').trim();
-                    const email = (document.getElementById('auth-email')?.value || '').trim();
-                    const address = (document.getElementById('auth-address')?.value || '').trim();
-                    const password = document.getElementById('auth-password')?.value || '';
-                    const passwordConfirm = document.getElementById('auth-password-confirm')?.value || '';
-                    if (!name) {
-                        throw new Error('Vui lòng nhập Họ và tên hoặc Tên đơn vị HTX.');
-                    }
-                    if (password.length < 6) {
-                        throw new Error('Mật khẩu phải có tối thiểu 6 ký tự.');
-                    }
-                    if (password !== passwordConfirm) {
-                        throw new Error('Mật khẩu xác nhận không khớp.');
-                    }
-                    const isDupe = users.some(u =>
-                        (email && u.email && u.email.toLowerCase() === email.toLowerCase()) ||
-                        (phone && u.phone && u.phone === phone)
-                    );
-                    if (isDupe) {
-                        throw new Error('Email hoặc số điện thoại này đã được đăng ký.');
-                    }
-                    const newUser = {
-                        id: 'usr_' + Date.now(),
-                        name: name,
-                        loginId: email || phone || name,
-                        email: email || `${Date.now()}@ocop.vn`,
-                        phone: phone || '0900000000',
-                        address: address || 'Việt Nam',
-                        password: password,
-                        role: 'Đối tác HTX & Điểm Bán O2O',
-                        provider: 'Local',
-                        verified: true,
-                        createdAt: new Date().toISOString()
-                    };
-                    users.push(newUser);
-                    saveStoredUsers(users);
-                    saveCurrentUser(newUser);
-                    document.getElementById('auth-modal')?.classList.add('hidden');
-                    showToast(`Tạo tài khoản thành công! Chào mừng ${newUser.name} gia nhập Hệ sinh thái OCOP.`, 'success');
-                }
-            } catch (error) {
-                const status = document.getElementById('auth-social-status');
-                if (status) {
-                    status.textContent = error.message || 'Không thể xử lý yêu cầu. Vui lòng thử lại.';
-                    status.className = 'mb-3 rounded-xl border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-xs leading-relaxed font-medium';
-                    status.classList.remove('hidden');
-                }
-                showToast(error.message || 'Không thể xử lý yêu cầu. Vui lòng thử lại.', 'error');
-            } finally {
-                if (submitBtn) submitBtn.disabled = false;
-            }
-        }
-        async function resendRegistrationOtp() {
+        async function handleAuthSubmit(event){
+            event.preventDefault();
+            if(authTab!=='login'){document.getElementById('auth-modal')?.classList.add('hidden');window.openCustomerAuthModal?.();window.switchCustomerAuthTab?.('register');return;}
+            try{await window.OCOPAuth.login(document.getElementById('auth-name')?.value?.trim(),document.getElementById('auth-password')?.value);document.getElementById('auth-modal')?.classList.add('hidden');showToast('Đăng nhập thành công.','success');}
+            catch(error){showToast(error.message,'error');}
+        }        async function resendRegistrationOtp() {
             showToast('Tài khoản đã được đăng ký trực tiếp thành công.', 'info');
         }
         // -------------------------------------------------------------
@@ -14059,7 +13813,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
                 }
                 if (!batch.length) break;
                 try {
-                    const response = await fetch(getAIEndpoint('/api/ai/translate'), {
+                    const response = await window.OCOPAuth.fetch(getAIEndpoint('/api/ai/translate'), {
                         method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ language, texts: batch.map(entry => entry.text) })
                     });
@@ -15619,11 +15373,11 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <!-- External Client Scripts -->
 <script src="giohang.js?v=241b53c77920"></script>
 <!-- <script src="toiuu.js"></script> -->
-<script src="script.js?v=caf9a772fea8"></script>
-<script src="product-reviews-ui.js?v=5021788e4110"></script>
-<script src="admin-management.js?v=ca17c4aa2441"></script>
-<script src="account-client.js?v=9f77018f320c"></script>
-<script src="chat-dictation.js?v=592ac0140259"></script>
+<script src="script.js?v=bf8bacaa3ad7"></script>
+<script src="product-reviews-ui.js?v=782e5b2fd959"></script>
+<script src="admin-management.js?v=fdf4802bf20f"></script>
+<script src="account-client.js?v=db26afeddcec"></script>
+<script src="chat-dictation.js?v=7a197c4ca498"></script>
 <script>
     window.chatDictation = ChatDictation.mount({
         input: document.getElementById('ai-chat-input'),
@@ -16046,6 +15800,7 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
     function closeCustomerAuthModal() {
         const modal = document.getElementById('customer-auth-modal');
         if (modal) {
+            modal.querySelectorAll('.customer-password-toggle').forEach(button=>{const input=document.getElementById(button.getAttribute('aria-controls'));if(input)input.type='password';button.setAttribute('aria-pressed','false');button.setAttribute('aria-label','Hiện mật khẩu');button.title='Hiện mật khẩu';});
             modal.classList.add('hidden');
             modal.style.setProperty('display', 'none', 'important');
         }
@@ -16119,255 +15874,40 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
         }
     }
     window.switchCustomerAuthTab = switchCustomerAuthTab;
-    function handleCustomerLoginSubmit() {
-        const u = document.getElementById('cust-login-user')?.value?.trim();
-        const p = document.getElementById('cust-login-pass')?.value?.trim();
-        if (!u || !p) {
-            showCustomerAuthAlert('Vui lòng nhập đầy đủ tài khoản và mật khẩu!', 'error');
-            return;
-        }
-        // 1. Kiểm tra tài khoản Quản trị viên (Admin Accounts: ThaoNguyenad01, KimNganad02, VinhPhucad03, ThanhBinhad04, hoặc alias: admin, ad)
-        let authedAdmin = null;
-        if (window.OcopAdminManagement && typeof window.OcopAdminManagement.authenticateAdmin === 'function') {
-            authedAdmin = window.OcopAdminManagement.authenticateAdmin(u, p);
-        } else {
-            const fallbackAdmins = [
-                { username: 'ThaoNguyenad01', password: '0000000', fullName: 'Thảo Nguyên (Admin 01)', adminId: 'AD01' },
-                { username: 'KimNganad02', password: '1111111', fullName: 'Kim Ngân (Admin 02)', adminId: 'AD02' },
-                { username: 'VinhPhucad03', password: '2222222', fullName: 'Vĩnh Phúc (Admin 03)', adminId: 'AD03' },
-                { username: 'ThanhBinhad04', password: '3333333', fullName: 'Thanh Bình (Admin 04)', adminId: 'AD04' }
-            ];
-            const lowerU = u.toLowerCase();
-            authedAdmin = fallbackAdmins.find(a => 
-                (a.username.toLowerCase() === lowerU || a.adminId.toLowerCase() === lowerU) && 
-                a.password === p
-            ) || (['admin', 'ad', 'quantri'].includes(lowerU) && ['0000000', 'admin', '123456', 'ad'].includes(p) ? fallbackAdmins[0] : null);
-        }
-        if (authedAdmin) {
-            const sessionUser = {
-                username: authedAdmin.username,
-                fullName: authedAdmin.fullName,
-                role: 'admin',
-                isAdmin: true,
-                adminId: authedAdmin.adminId || 'AD01'
-            };
-            localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
-            if (window.OcopAdminManagement && typeof window.OcopAdminManagement.setActiveScope === 'function') {
-                window.OcopAdminManagement.setActiveScope('webmaster', null, authedAdmin.username);
-            }
-            updateCustomerHeaderUI();
-            showCustomerAuthAlert('👑 Đăng nhập thành công với quyền Quản trị viên! Chào mừng ' + authedAdmin.fullName, 'success');
-            if (typeof showToast === 'function') {
-                showToast('🔓 Chào mừng ' + authedAdmin.fullName + ' đăng nhập quyền Quản trị!', 'success');
-            }
-            setTimeout(() => {
-                closeCustomerAuthModal();
-                if (window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal === 'function') {
-                    window.OcopAdminManagement.openAdminManagementModal('webmaster', null);
-                }
-            }, 600);
-            return;
-        }
-        // 2. Kiểm tra tài khoản Nhà Phân Phối (Distributors: NPP260000001 - NPP260000006, PIN: 1111 - 6666)
-        let distList = [];
-        if (window.OcopAdminManagement && typeof window.OcopAdminManagement.getDistributorsList === 'function') {
-            distList = window.OcopAdminManagement.getDistributorsList();
-        }
-        const matchedDist = distList.find(d => 
-            (String(d.distributorCode).toLowerCase() === u.toLowerCase() ||
-             (d.username && String(d.username).toLowerCase() === u.toLowerCase()) ||
-             String(d.region || '').toLowerCase() === u.toLowerCase() ||
-             (d.hotline && d.hotline.replace(/\D/g, '') === u.replace(/\D/g, ''))) &&
-            ((d.password && String(d.password) === p) || (d.pin && String(d.pin) === p) || (d.encryptionKey && String(d.encryptionKey) === p))
-        );
-        if (matchedDist) {
-            const sessionUser = {
-                username: matchedDist.distributorCode,
-                fullName: matchedDist.name,
-                shortName: matchedDist.shortName || matchedDist.name,
-                region: matchedDist.region,
-                phone: matchedDist.hotline,
-                address: matchedDist.address,
-                role: 'distributor',
-                isDistributor: true,
-                distributorCode: matchedDist.distributorCode
-            };
-            localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
-            if (window.OcopAdminManagement && typeof window.OcopAdminManagement.setActiveScope === 'function') {
-                window.OcopAdminManagement.setActiveScope('distributor', matchedDist.distributorCode);
-            }
-            updateCustomerHeaderUI();
-            showCustomerAuthAlert('🏢 Đăng nhập thành công với quyền Nhà Phân Phối! ' + (matchedDist.shortName || matchedDist.name), 'success');
-            if (typeof showToast === 'function') {
-                showToast('🏢 Chào mừng ' + (matchedDist.shortName || matchedDist.name) + '!', 'success');
-            }
-            setTimeout(() => {
-                closeCustomerAuthModal();
-                if (window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal === 'function') {
-                    window.OcopAdminManagement.openAdminManagementModal('distributor', matchedDist.distributorCode);
-                }
-            }, 600);
-            return;
-        }
-        // 3. Kiểm tra tài khoản Khách hàng thông thường (Customer accounts: role: 'customer')
-        let customers = [];
+    async function handleCustomerLoginSubmit() {
+        const button=document.getElementById('btn-cust-login-submit');if(button?.disabled)return;
+        if(button){button.disabled=true;button.setAttribute?.('aria-busy','true');}
         try {
-            customers = JSON.parse(localStorage.getItem('ocop_customers') || '[]');
-        } catch (_) {}
-        const found = customers.find(c => 
-            (String(c.username).toLowerCase() === u.toLowerCase() || String(c.phone).trim() === u) &&
-            String(c.password) === p
-        );
-        if (found) {
-            const sessionUser = {
-                customerCode: found.customerCode || ('KH' + found.username),
-                username: found.username,
-                fullName: found.fullName || found.username,
-                phone: found.phone || '',
-                address: found.address || '',
-                role: 'customer',
-                isAdmin: false,
-                isDistributor: false
-            };
-            localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
-            updateCustomerHeaderUI();
-            showCustomerAuthAlert('✅ Đăng nhập thành công! Chào mừng ' + (found.fullName || found.username), 'success');
-            if (window.pendingCartCheckout) {
-                window.pendingCartCheckout = false;
-                if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
-                setTimeout(() => {
-                    if (typeof proceedCheckoutFromCart === 'function') proceedCheckoutFromCart();
-                }, 400);
-            } else if (window.pendingBuyNowProductId) {
-                const pid = window.pendingBuyNowProductId;
-                window.pendingBuyNowProductId = null;
-                if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
-                setTimeout(() => {
-                    if (typeof openOnlineOrderModal === 'function') {
-                        openOnlineOrderModal(pid);
-                    }
-                }, 400);
-            } else {
-                setTimeout(() => {
-                    switchCustomerAuthTab('orders');
-                }, 500);
-            }
-        } else {
-            showCustomerAuthAlert('❌ Sai tài khoản (Username/SĐT) hoặc mật khẩu!', 'error');
-        }
+            await window.OCOPAuth.login(document.getElementById('cust-login-user')?.value?.trim(),document.getElementById('cust-login-pass')?.value);
+            const input=document.getElementById('cust-login-pass');if(input){input.value='';input.type='password';}
+            updateCustomerHeaderUI();closeCustomerAuthModal();
+        } catch(error){showCustomerAuthAlert(error.message,'error');}
+        finally{if(button){button.disabled=false;button.removeAttribute?.('aria-busy');}}
     }
     window.handleCustomerLoginSubmit = handleCustomerLoginSubmit;
-    function handleCustomerRegisterSubmit() {
-        const fullName = document.getElementById('cust-reg-name')?.value?.trim();
-        const username = document.getElementById('cust-reg-user')?.value?.trim();
-        const phone = document.getElementById('cust-reg-phone')?.value?.trim();
-        const address = document.getElementById('cust-reg-address')?.value?.trim() || '';
-        const pass = document.getElementById('cust-reg-pass')?.value?.trim();
-        const pass2 = document.getElementById('cust-reg-pass2')?.value?.trim();
-        if (!fullName || !username || !phone || !pass) {
-            showCustomerAuthAlert('Vui lòng điền đầy đủ các mục bắt buộc (*)!', 'error');
-            return;
-        }
-        if (pass !== pass2) {
-            showCustomerAuthAlert('Mật khẩu xác nhận không khớp nhau!', 'error');
-            return;
-        }
-        if (pass.length < 4) {
-            showCustomerAuthAlert('Mật khẩu phải có độ dài từ 4 ký tự trở lên!', 'error');
-            return;
-        }
-        let customers = [];
+    async function handleCustomerRegisterSubmit() {
+        const value=id=>document.getElementById(id)?.value||'';
+        if(value('cust-reg-pass')!==value('cust-reg-pass2')){showCustomerAuthAlert('Mật khẩu xác nhận chưa khớp.','error');return;}
         try {
-            customers = JSON.parse(localStorage.getItem('ocop_customers') || '[]');
-        } catch (_) {}
-        if (customers.some(c => String(c.username).toLowerCase() === username.toLowerCase())) {
-            showCustomerAuthAlert('Tên tài khoản này đã tồn tại, vui lòng chọn tên khác!', 'error');
-            return;
-        }
-        const newCustomer = {
-            username: username,
-            password: pass,
-            fullName: fullName,
-            phone: phone,
-            address: address,
-            createdAt: new Date().toISOString()
-        };
-        customers.push(newCustomer);
-        localStorage.setItem('ocop_customers', JSON.stringify(customers));
-        const sessionUser = {
-            username: newCustomer.username,
-            fullName: newCustomer.fullName,
-            phone: newCustomer.phone,
-            address: newCustomer.address
-        };
-        localStorage.setItem('ocop_current_user', JSON.stringify(sessionUser));
-        updateCustomerHeaderUI();
-        showCustomerAuthAlert('✅ Đăng ký tài khoản thành công! Tự động đăng nhập.', 'success');
-        if (window.pendingBuyNowProductId) {
-            const pid = window.pendingBuyNowProductId;
-            window.pendingBuyNowProductId = null;
-            if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
-            setTimeout(() => {
-                if (typeof openOnlineOrderModal === 'function') {
-                    openOnlineOrderModal(pid);
-                }
-            }, 400);
-        } else {
-            setTimeout(() => {
-                switchCustomerAuthTab('orders');
-            }, 600);
-        }
+            await window.OCOPAuth.register({name:value('cust-reg-name').trim(),username:value('cust-reg-user').trim(),passwordConfirm:value('cust-reg-pass2'),phone:value('cust-reg-phone').trim(),password:value('cust-reg-pass')},()=>window.prompt('Nhập mã OTP 6 chữ số vừa được gửi đến điện thoại:'));
+            document.getElementById('cust-login-user').value=value('cust-reg-user').trim();
+            for(const id of ['cust-reg-pass','cust-reg-pass2'])document.getElementById(id).value='';
+            switchCustomerAuthTab('login');showCustomerAuthAlert('Tạo tài khoản thành công. Anh/chị đăng nhập để sử dụng nhé.','success');
+        }catch(error){showCustomerAuthAlert(error.message,'error');}
     }
     window.handleCustomerRegisterSubmit = handleCustomerRegisterSubmit;
-    function handleCustomerChangePassSubmit() {
-        const user = getCurrentCustomer();
-        if (!user) {
-            showCustomerAuthAlert('Vui lòng đăng nhập trước khi đổi mật khẩu!', 'error');
-            return;
-        }
-        const oldPass = document.getElementById('cust-chpass-old')?.value?.trim();
-        const newPass = document.getElementById('cust-chpass-new')?.value?.trim();
-        const newPass2 = document.getElementById('cust-chpass-new2')?.value?.trim();
-        if (!oldPass || !newPass || !newPass2) {
-            showCustomerAuthAlert('Vui lòng nhập đầy đủ mật khẩu cũ và mới!', 'error');
-            return;
-        }
-        if (newPass !== newPass2) {
-            showCustomerAuthAlert('Xác nhận mật khẩu mới không khớp!', 'error');
-            return;
-        }
-        if (newPass.length < 4) {
-            showCustomerAuthAlert('Mật khẩu mới phải có ít nhất 4 ký tự!', 'error');
-            return;
-        }
-        let customers = [];
-        try {
-            customers = JSON.parse(localStorage.getItem('ocop_customers') || '[]');
-        } catch (_) {}
-        const index = customers.findIndex(c => String(c.username).toLowerCase() === String(user.username).toLowerCase());
-        if (index === -1) {
-            showCustomerAuthAlert('Không tìm thấy tài khoản của bạn trên hệ thống!', 'error');
-            return;
-        }
-        if (String(customers[index].password) !== String(oldPass)) {
-            showCustomerAuthAlert('❌ Mật khẩu hiện tại không chính xác!', 'error');
-            return;
-        }
-        customers[index].password = newPass;
-        localStorage.setItem('ocop_customers', JSON.stringify(customers));
-        showCustomerAuthAlert('✅ Đổi mật khẩu thành công!', 'success');
-        // Clear input fields
-        if (document.getElementById('cust-chpass-old')) document.getElementById('cust-chpass-old').value = '';
-        if (document.getElementById('cust-chpass-new')) document.getElementById('cust-chpass-new').value = '';
-        if (document.getElementById('cust-chpass-new2')) document.getElementById('cust-chpass-new2').value = '';
+    async function handleCustomerChangePassSubmit() {
+        const value=id=>document.getElementById(id)?.value||'';
+        const alert=message=>{const node=document.getElementById('account-password-alert');if(node)node.textContent=message;else showCustomerAuthAlert(message,'error');};
+        if(value('cust-chpass-new')!==value('cust-chpass-new2')){alert('Mật khẩu xác nhận chưa khớp.');return;}
+        const button=document.getElementById('btn-cust-chpass-submit');if(button?.disabled)return;if(button)button.disabled=true;
+        try{await window.OCOPAuth.changePassword(value('cust-chpass-old'),value('cust-chpass-new'));updateCustomerHeaderUI();window.openAccountCenter?.('profile');openCustomerAuthModal();switchCustomerAuthTab('login');showCustomerAuthAlert('Đã đổi mật khẩu. Vui lòng đăng nhập lại.','success');}
+        catch(error){alert(error.message);}finally{if(button)button.disabled=false;}
     }
     window.handleCustomerChangePassSubmit = handleCustomerChangePassSubmit;
-    function handleCustomerLogout() {
-        localStorage.removeItem('ocop_current_user');
-        updateCustomerHeaderUI();
-        switchCustomerAuthTab('login');
-        showCustomerAuthAlert('🚪 Đã đăng xuất tài khoản an toàn.', 'success');
-        if (typeof showToast === 'function') showToast('Đã đăng xuất tài khoản', 'info');
+    async function handleCustomerLogout() {
+        await window.OCOPAuth.logout();updateCustomerHeaderUI();switchCustomerAuthTab('login');
+        showCustomerAuthAlert('Đã đăng xuất.','success');
     }
     window.handleCustomerLogout = handleCustomerLogout;
     function renderCustomerOrdersTab(user) {
@@ -16421,13 +15961,15 @@ QUY TẮC PHẢN HỒI BẮT BUỘC ĐỂ GIÀNH GIẢI NHẤT:
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->
 <link rel="stylesheet" href="store-directory-light.css?v=cb405b0da1a4">
 <link rel="stylesheet" href="cart-ui.css?v=80dd2dc99bc9">
-<link rel="stylesheet" href="account-center.css?v=cf9634a1cf0b">
+<link rel="stylesheet" href="account-center.css?v=94f51ea5f466">
 <link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
-<script src="voucher-pool.js?v=ab7512585146"></script>
-<script src="skytech-complete.js?v=b4d26ddf38f1"></script>
+<script src="voucher-pool.js?v=6082bfd08879"></script>
+<script src="checkout-payment.js?v=b0da265353f2"></script>
+<script src="skytech-complete.js?v=da65d6472f70"></script>
 <script src="cart-ui.js?v=5cd216c94e9c"></script>
-<script src="account-center.js?v=3349fb0122df"></script>
-<script src="storefront-ui.js?v=98d12982da4a"></script>
+<script src="password-recovery.js?v=04114d6e16e8"></script>
+<script src="account-center.js?v=f8f5b8415f67"></script>
+<script src="storefront-ui.js?v=db66b10d5bee"></script>
 <script src="ui-branding.js?v=66dc84bfc24e"></script>
 <script src="storefront-navigation.js?v=aaa5e336b621"></script>
 <script src="storefront-router.js?v=a1b02371d840"></script>

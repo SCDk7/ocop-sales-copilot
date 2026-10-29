@@ -6,7 +6,8 @@
  */
 
 const targetUrl = process.env.OCOP_KPI_URL || 'https://ocop-sales-copilot-kpi.onrender.com';
-const token = process.env.OCOP_KPI_SYNC_TOKEN || 'OCOP_2026_SECURE_TOKEN_AI_CHALLENGE_SYNC_998877';
+const token = process.env.OCOP_KPI_SYNC_TOKEN;
+if(!token)throw new Error('OCOP_KPI_SYNC_TOKEN must be configured before sending data.');
 
 async function dispatchSync(endpoint, payload) {
   const url = `${targetUrl}${endpoint}`;

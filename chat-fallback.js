@@ -10,17 +10,18 @@
             : analysis.intent.isCombo || analysis.intent.maxPrice
                 ? 'Em chưa xác định chắc món trong ảnh. Anh/chị cho em tên món hoặc gửi ảnh nhãn rõ hơn để em chọn combo đúng ngân sách và có món đó nhé.'
                 : 'Em chưa xác định chắc sản phẩm trong ảnh. Anh/chị gửi ảnh nhãn rõ hơn hoặc cho em tên sản phẩm để em đối chiếu đúng yêu cầu nhé.';
-        return {message,text_response:message,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],imageMatchStatus:'unknown',understandingStatus:'needs_clarification',handoffAdmin:Boolean(analysis.intent.isComplaint||analysis.intent.isCSKH),localFallback:true,aiProvider:'local_catalog',requestAnalysis:{...analysis.summary,needsClarification:true},integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
+        return profile.completeReply({message,text_response:message,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],imageMatchStatus:'unknown',understandingStatus:'needs_clarification',handoffAdmin:Boolean(analysis.intent.isComplaint||analysis.intent.isCSKH),localFallback:true,aiProvider:'local_catalog',requestAnalysis:{...analysis.summary,needsClarification:true},integrations:{gemini:false,openai:false,claude:false,wikipedia:false}},language);
     }
     function catalogReply(query,products,language='vi',history=[]){
         const analysis=analyzer.analyzeCustomerRequest([...history,{role:'user',text:query}],products,{language});
         const reply=catalogReplyAfterAnalysis(query,products,language,history,analysis);
-        const plan=webResearch?.planWebResearch([...history,{role:'user',text:query}],products,reply);
+        const plan=webResearch?.planWebResearch([...history,{role:'user',text:query}],products,reply,{websiteOnly:true});
         const researched=plan?.required?webResearch.applyWebResearch(reply,{status:'offline',attempted:false,searched:false},plan,products,language):reply;
         return profile.completeReply({...researched,requestAnalysis:{...analysis.summary,needsClarification:Boolean(analysis.summary.needsClarification||reply.understandingStatus==='needs_clarification')}},language);
     }
     function catalogReplyAfterAnalysis(query,products,language,history,analysis){
         const intent=analysis.intent;
+        if(analysis.summary.dataUnavailable)return {message:profile.missingInformation,knowledgeStatus:'not_found',productIds:[],suggested_products:[],combos:[],dynamic_chips:[],localFallback:true,aiProvider:'local_catalog'};
         const assistant=typeof module==='object'&&module.exports?require('./ai-scenarios'):root.OCOPSalesAssistant;
         if(analysis.clarification)return {message:analysis.clarification,text_response:analysis.clarification,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],understandingStatus:'needs_clarification',localFallback:true,aiProvider:'local_catalog'};
         if(intent.isComplaint||intent.isCSKH){
@@ -28,6 +29,8 @@
             const message=scenario?.message||(language==='en'?'Please describe the issue with your order. You can contact staff using the support button below.':'Anh/chị mô tả vấn đề cần hỗ trợ với đơn hàng nhé. Anh/chị có thể liên hệ nhân viên qua nút hỗ trợ bên dưới.');
             return {message,text_response:message,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],handoffAdmin:true,localFallback:true,aiProvider:'local_catalog',integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
         }
+        const codeFacts=typeof module==='object'&&module.exports?require('./catalog-facts'):root.OCOPCatalogFacts;
+        if(codeFacts?.isProductCodeQuestion(query))return {...codeFacts.answer(query,products,language,history),localFallback:true,aiProvider:'local_catalog'};
         const training=typeof module==='object'&&module.exports?require('./product-training'):root.OCOPProductTraining;
         const trainedReply=training?.answerTrainingQuery(query,products,language,history);
         if(trainedReply) return {...trainedReply,localFallback:true};
@@ -56,7 +59,7 @@
             }
         }
         intent.knowledgeQuery=query;
-        const en=language==='en';let message,ids=[],combos=[];
+        const en=language==='en';let message,ids=[],combos=[],knowledgeStatus;
         if(intent.isComplaint||intent.isCSKH)message=en?'Please describe your request and provide your order number if available so staff can help.':'Anh/chị mô tả yêu cầu và cung cấp mã đơn nếu có để nhân viên hỗ trợ nhé.';
         else if(intent.isVoucher) {
             message = en
@@ -85,12 +88,13 @@
             const scoped=Boolean(intent.exactRegion||intent.regionKeyword||intent.categoryOrKeyword||intent.maxPrice||intent.minStars||intent.pricePreference);
             const selected=scoped?shopping.recommendations(products.filter(p=>shopping.allowed(p,intent)),intent).slice(0,3):[];
             ids=selected.map(p=>p.id);
+            if(scoped&&!selected.length)knowledgeStatus='not_found';
             message=selected.length?(en?'Products matching your request:\n':'Dạ, anh/chị tham khảo các sản phẩm trong danh mục:\n')+selected.map(p=>`• ${en?p.nameEn||p.name:p.name} (${p.region}) — ${p.price.toLocaleString('vi-VN')} ₫/${p.packaging||'đơn vị'}`).join('\n')
                 :scoped?(en?'No catalogue item matches these requirements. Would you like to adjust the province or product type?':'Chưa có sản phẩm phù hợp trong danh mục. Anh/chị muốn đổi tỉnh hoặc loại sản phẩm không?')
                 : (en?'Which product, province or gift budget are you interested in?':'Anh/chị muốn tìm sản phẩm, đặc sản tỉnh nào hoặc quà trong ngân sách bao nhiêu ạ?');
             message=locations?.regionalAdviceMessage(selected,intent,language)||message;
         }
-        const reply={message,text_response:message,productIds:ids,suggested_products:ids,combos,dynamic_chips:en?['Find products','Gift ideas','Store locations']:['Tìm đặc sản','Gợi ý quà biếu','Tìm điểm bán'],handoffAdmin:Boolean(intent.isComplaint||intent.isCSKH),localFallback:true,aiProvider:'local_catalog',integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
+        const reply={message,text_response:message,knowledgeStatus,productIds:ids,suggested_products:ids,combos,dynamic_chips:en?['Find products','Gift ideas','Store locations']:['Tìm đặc sản','Gợi ý quà biếu','Tìm điểm bán'],handoffAdmin:Boolean(intent.isComplaint||intent.isCSKH),localFallback:true,aiProvider:'local_catalog',integrations:{gemini:false,openai:false,claude:false,wikipedia:false}};
         return locations?locations.appendProductLocations(reply,products,intent,root.OcopStores,language):reply;
     }
     if(typeof module==='object'&&module.exports)module.exports={catalogReply,imageUnavailableReply};else root.OCOPChatFallback={catalogReply,imageUnavailableReply};

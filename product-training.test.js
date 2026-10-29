@@ -5,7 +5,7 @@ const fs=require('node:fs'),vm=require('node:vm');
 
 test('merchant FAQ answers the supplied tea question using current catalogue price and stars',()=>{
  const reply=answerTrainingQuery('Trà xanh cổ thụ Phìn Hồ mấy sao OCOP? Giá bao nhiêu?',PRODUCTS);
- assert.deepEqual(reply.productIds,[340]);assert.match(reply.message,/600\.000 VNĐ\/hộp/);assert.match(reply.message,/hậu ngọt/);
+ assert.deepEqual(reply.productIds,[340]);assert.match(reply.message,/600\.000 VNĐ\/hộp/);assert.match(reply.message,/OCOP 5 sao/);assert(reply.message.length<250);
  const changed=PRODUCTS.map(p=>p.id===340?{...p,price:650000,stars:4}:p);
  const updated=answerTrainingQuery('Trà xanh Phìn Hồ giá bao nhiêu?',changed);
  assert.match(updated.message,/650\.000/);assert.match(updated.message,/OCOP 4 sao/);assert(!updated.message.includes('600.000'));

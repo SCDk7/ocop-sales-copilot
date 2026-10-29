@@ -60,8 +60,9 @@ function trainedProductReply(products, intent, language) {
   const classification = stars >= 3 && stars <= 5 ? `, OCOP ${stars} sao theo danh mục cửa hàng` : '';
   const price = Number.isSafeInteger(product.price) && product.price > 0
     ? ` Giá niêm yết hiện tại là ${product.price.toLocaleString('vi-VN')} VNĐ/${product.packaging || 'đơn vị'}.` : ' Anh/chị liên hệ nhân viên để xác nhận giá hiện tại nhé.';
+  if(/gia|bao nhieu tien/.test(query)&&!/bao quan|han su dung|cau chuyen|cong dung|so sanh|huong vi|vi sao|vi gi|dac diem|nguon goc|xuat xu|o dau/.test(query))return {message:`Dạ, ${product.name}${classification}.${price}`,productIds:[product.id]};
   return {
-    message: [`Dạ, ${product.name}${classification}.${price}`, ...details.filter(Boolean), 'Anh/chị muốn xem thêm hình ảnh hay cần tư vấn chọn trà làm quà ạ?'].join('\n'),
+    message: [`Dạ, ${product.name}${classification}.${price}`, ...details.filter(Boolean)].join('\n'),
     productIds: [product.id]
   };
 }

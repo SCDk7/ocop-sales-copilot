@@ -1,63 +1,29 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const profile=require('./ocop-assistant-profile');
-
-test('the shared system prompt includes the OCOP identity, evidence boundaries, images and voice',()=>{
-    const source=fs.readFileSync('server.js','utf8');
-    const start=source.indexOf('function buildAISystemInstruction('),end=source.indexOf('const wikipediaSearchCache',start);
-    const context={assistantInstruction:profile.assistantInstruction,scenarioInstruction:require('./ai-scenarios').scenarioInstruction,visualSearchInstruction:require('./ai-visual-reply').visualSearchInstruction,webResearchInstruction:require('./ai-web-research').webResearchInstruction,
-        commerceShopping:{instruction:()=>''},productKnowledge:{search:()=>[]},AIShopping:require('./ai-shopping')};
-    vm.createContext(context);vm.runInContext(source.slice(start,end),context);
-    for(const options of [{},{hasImages:true},{includeTranscription:true},{combinedReply:true}]){
-        const prompt=context.buildAISystemInstruction({products:[],language:'vi'},options);
-        assert(prompt.includes(profile.assistantInstruction));
-        if(options.hasImages) {
-            assert(prompt.includes(context.visualSearchInstruction));
-            assert(!prompt.includes('với similar chỉ chọn tối đa 2'));
-        }
-        for(const rule of ['Trợ lý AI OCOP Việt Nam','2–4 gạch đầu dòng','Ảnh giống một sản phẩm OCOP không chứng minh','Giữ bản chép lời trung thực','Với khiếu nại chỉ hỏi chi tiết cần xử lý']) assert(prompt.includes(rule),rule);
-    }
+test('shared provider instruction requires understanding, website evidence, compact replies, honest images and voice',()=>{
+ for(const text of ['Trợ lý AI OCOP Việt Nam','HIỂU TRƯỚC KHI TRẢ LỜI','1–3 câu','Dạ','Thưa','Giữ bản chép lời trung thực','không tự tạo 98%',profile.missingInformation])assert(profile.assistantInstruction.includes(text),text);
+ const server=fs.readFileSync('server.js','utf8');assert(server.includes('assistantInstruction,'));assert(server.includes('analyzeCustomerRequest(validation.messages'));
 });
-
-test('follow-ups preserve catalogue data and do not sell during complaints',()=>{
-    const product={message:'• Trà — 120.000 ₫/hộp',productIds:[7],integrations:{gemini:false}};
-    const reply=profile.completeReply(product,'vi');
-    assert(reply.message.startsWith(product.message));
-    assert(reply.message.endsWith('Anh/chị có muốn xem thêm sản phẩm cùng loại không ạ?'));
-    assert.deepEqual(reply.productIds,[7]);assert.deepEqual(reply.integrations,product.integrations);
-    assert.equal(reply.text_response,reply.message);assert.equal(product.message,'• Trà — 120.000 ₫/hộp');
-    const support=profile.completeReply({...product,handoffAdmin:true},'vi');
-    assert(support.message.endsWith('Anh/chị cần em hỗ trợ bước nào tiếp theo ạ?'));
-    assert(!support.message.includes('xem thêm sản phẩm'));
+test('greetings are enforced idempotently without adding a generic follow-up',()=>{
+ for(const input of ['Giá 120.000 ₫/hộp.','Dạ, giá 120.000 ₫/hộp.','Thưa anh/chị, giá 120.000 ₫/hộp.']){
+  const message=profile.completeMessage(input);assert.match(message,/^(Dạ|Thưa)/);assert.equal(profile.completeMessage(message),message);assert(message.includes('120.000 ₫/hộp.'));assert(!message.includes('?'));
+ }
+ assert.equal(profile.completeMessage('Anh/chị muốn trà tỉnh nào ạ?'),'Dạ, Anh/chị muốn trà tỉnh nào ạ?');
 });
-
-test('uncertain photos ask for labels without inventing OCOP or origin',()=>{
-    const reply=profile.completeReply({message:'Chưa nhận diện được sản phẩm.',imageMatchStatus:'unknown',productIds:[]},'vi');
-    assert.match(reply.message,/ảnh nhãn rõ hơn hoặc tên sản phẩm/);
-    assert.deepEqual(reply.productIds,[]);
-    assert(!/3 sao|4 sao|5 sao|chính hãng/.test(reply.message));
+test('unknown catalogue facts use the exact missing-data response and preserve metadata',()=>{
+ const reply=profile.completeReply({message:'No result',knowledgeStatus:'not_found',productIds:[],requestAnalysis:{status:'completed'}});
+ assert.equal(reply.message,profile.missingInformation);assert.equal(reply.text_response,reply.message);assert.deepEqual(reply.productIds,[]);assert.equal(reply.requestAnalysis.status,'completed');
 });
-
-test('existing questions, links, errors and translations remain intact',()=>{
-    const text='Anh/chị muốn tìm trà tỉnh nào ạ?';
-    assert.equal(profile.completeMessage(text,'vi'),text);
-    const reply=profile.completeReply({message:'See https://example.com/?product=tea',productIds:[1]},'en');
-    assert(reply.message.endsWith('Would you like to see similar products?'));
-    assert(reply.message.includes('https://example.com/?product=tea'));
-    const error={error:'Unavailable'};assert.equal(profile.completeReply(error,'vi'),error);
-    assert.equal(profile.completeMessage('', 'vi'),'');
-    const browser={};vm.runInNewContext(fs.readFileSync('ocop-assistant-profile.js','utf8'),browser);
-    assert.equal(browser.OCOPAssistantProfile.completeMessage('Thông tin sản phẩm.','vi'),profile.completeMessage('Thông tin sản phẩm.','vi'));
+test('final formatting preserves URLs, facts, clarification and machine fields',()=>{
+ const original={message:'• Trà — 120.000 ₫/hộp\nhttps://example.com/?id=7',productIds:[7],integrations:{openai:false}};
+ const reply=profile.completeReply(original);assert.deepEqual(reply.productIds,[7]);assert.deepEqual(reply.integrations,original.integrations);assert(reply.message.includes(original.message));assert.equal(reply.text_response,reply.message);assert.equal(original.message[0],'•');
+ assert.equal(profile.completeMessage('','vi'),'');const error={error:'Unavailable'};assert.equal(profile.completeReply(error),error);
+ const browser={};vm.runInNewContext(fs.readFileSync('ocop-assistant-profile.js','utf8'),browser);assert.equal(browser.OCOPAssistantProfile.completeMessage('Thông tin.'),profile.completeMessage('Thông tin.'));
 });
-
-test('all chat API routes apply the profile only to successful replies',()=>{
-    const source=fs.readFileSync('server.js','utf8');
-    const middleware=source.slice(source.indexOf("app.use(['/api/ai/chat'"),source.indexOf("app.get('/health'"));
-    let routes,handler;
-    vm.runInNewContext(middleware,{app:{use(paths,callback){routes=paths;handler=callback}},completeReply:profile.completeReply});
-    for(const route of ['/api/ai/chat','/api/chat','/chat','/api/ai/audio-chat','/api/ai/search-image']) assert(routes.includes(route));
-    let sent,next=0;
-    const res={statusCode:200,json(body){sent=body;}};
-    handler({body:{language:'en'}},res,()=>next++);res.json({message:'Catalogue facts.',productIds:[1]});
-    assert.equal(next,1);assert(sent.message.endsWith('Would you like to see similar products?'));
-    res.statusCode=503;const error={message:'Service unavailable'};res.json(error);assert.equal(sent,error);
+test('every successful text, image and audio chat API passes through the final formatter',()=>{
+ const source=fs.readFileSync('server.js','utf8');const middleware=source.slice(source.indexOf("app.use(['/api/ai/chat'"),source.indexOf("app.get('/health'"));let routes,handler;
+ vm.runInNewContext(middleware,{app:{use(paths,callback){routes=paths;handler=callback}},completeReply:profile.completeReply});
+ for(const route of ['/api/ai/chat','/api/chat','/chat','/api/ai/audio-chat','/api/ai/search-image'])assert(routes.includes(route));
+ let sent;const res={statusCode:200,json(body){sent=body;}};handler({body:{language:'vi'}},res,()=>{});res.json({message:'Giá 120.000 ₫/hộp.'});assert.equal(sent.message,'Dạ, Giá 120.000 ₫/hộp.');
+ res.statusCode=503;const error={error:'Unavailable'};res.json(error);assert.equal(sent,error);
 });

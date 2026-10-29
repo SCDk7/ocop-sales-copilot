@@ -184,7 +184,7 @@ test('account access warnings stay inside the account panel and authorized acces
     context.openAccountCenter();
     const panel = document.body.children[0];
     const notice = panel.querySelectorAll('*').find(node => node.className === 'account-center-notice');
-    const controls = panel.querySelectorAll('button').filter(node => node.textContent === '🔒 Quản trị');
+    const controls = panel.querySelectorAll('button').filter(node => node.textContent === '🔒 Quản trị'||node.attributes['aria-label']==='Quản trị');
     assert.equal(controls.length, 2);
     for (const control of controls) {
         control.onclick();
@@ -198,20 +198,18 @@ test('account access warnings stay inside the account panel and authorized acces
     for (const role of ['admin', 'distributor']) {
         current = {username: role, role};
         context.openAccountCenter();
-        panel.querySelectorAll('button').find(node => node.textContent === '🔒 Quản trị').onclick();
+        panel.querySelectorAll('button').find(node => node.textContent === '🔒 Quản trị'||node.attributes['aria-label']==='Quản trị').onclick();
         assert.equal(panel.hidden, true);
         assert.equal(notice.hidden, true);
         assert.equal(events.at(-1), role === 'admin' ? 'webmaster' : 'distributor');
     }
 });
 
-test('offline account adapter preserves the current customer on reload', () => {
-    const values = new Map([['ocop_current_user', JSON.stringify({username: 'customer'})], ['ocop_users_db', '[]']]);
-    const root = {localStorage: {removeItem: key => values.delete(key)}};
-    root.window = root;
-    vm.runInNewContext(fs.readFileSync('account-client.js', 'utf8'), root);
-    assert.equal(JSON.parse(values.get('ocop_current_user')).username, 'customer');
-    assert.equal(values.get('ocop_users_db'), '[]');
+test('account adapter removes an unverified local identity rather than trusting browser roles', async () => {
+ const values=new Map([['ocop_current_user',JSON.stringify({username:'forged',role:'admin'})]]);
+ const root={fetch:async()=>{throw Error('No session should be requested');},Headers,URL,location:new URL('http://localhost/'),localStorage:{getItem:key=>values.get(key)||null,removeItem:key=>values.delete(key)},document:{readyState:'complete'}};
+ root.window=root;vm.runInNewContext(fs.readFileSync('account-client.js','utf8'),root);await root.accountReady;
+ assert.equal(values.has('ocop_current_user'),false);assert.equal(root.currentUser,null);
 });
 
 for (const page of ['index.html', 'index_2.html']) {

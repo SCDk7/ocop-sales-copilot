@@ -8,7 +8,7 @@ const { execFileSync } = require('node:child_process');
 async function verify(base, { kpi = false, commit } = {}) {
   const url = new URL(base);
   const request = async route => {
-    const response = await fetch(new URL(route, url), { signal: AbortSignal.timeout(45000), cache: 'no-store' });
+    const response = await fetch(new URL(route, url), { signal: AbortSignal.timeout(45000), cache: 'no-store',headers:route.startsWith('/api/ai/metrics')&&process.env.OCOP_METRICS_TOKEN?{Authorization:'Bearer '+process.env.OCOP_METRICS_TOKEN}:{} });
     assert.equal(response.status, 200, `${route}: HTTP ${response.status}`);
     return response;
   };

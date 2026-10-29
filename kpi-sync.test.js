@@ -83,6 +83,7 @@ test('KpiSyncService queues retries and recovers gracefully upon network failure
 
   const service = new KpiSyncService({
     targetUrl: 'https://offline-kpi.test.internal',
+    token:'explicit-test-sync-token',
     fetch: failingFetch
   });
 

@@ -3,7 +3,12 @@ const {getAIConfiguration}=require('./ai-configuration');
 const {appendProductLocations}=require('./product-locations');
 const fs = require('fs');
 const path = require('path');
+loadEnvironmentFile();
+const {localDemoAllowed}=require('./local-demo');
+if(process.env.OCOP_LOCAL_DEMO==='1'&&(!localDemoAllowed()||!['127.0.0.1','::1','localhost'].includes(process.env.HOST)))throw Error('Local demo requires a development environment and loopback binding; it is forbidden in production or on Render.');
 const express = require('express');
+const {createAPISecurity}=require('./api-security');
+const {createAIAccessStore}=require('./ai-access-store');
 const {createSpaFallback} = require('./spa-fallback');
 const { expandChatShorthand } = require('./chat-language.js');
 const AIShopping = require('./ai-shopping.js');
@@ -12,7 +17,7 @@ const { createReviewStore } = require('./product-reviews.js');
 const AIIntent = require('./ai-intent.js');
 const {analyzeCustomerRequest} = require('./ai-request-analysis');
 const {generatePreferredContent} = require('./ai-provider.js');
-const {waitForSignal} = require('./ai-deadline.js');
+const {waitForSignal,createChatDeadline} = require('./ai-deadline.js');
 const matchVisualFingerprints=require('./ai-visual-fingerprint').createVisualFingerprintMatcher(__dirname);
 const {planWikipedia} = require('./ai-wikipedia.js');
 const {composeDataReply,fastBudgetReply,imageBudgetReply} = require('./ai-data-reply.js');
@@ -58,9 +63,39 @@ function loadEnvironmentFile() {
   }
 }
 
-loadEnvironmentFile();
-
 const app = express();
+// Exact-origin CORS runs before authentication/rate-limit responses.
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const allowedOrigins=new Set([process.env.AUTH_FRONTEND_URL,process.env.RENDER_EXTERNAL_URL,'https://scdk7.github.io',...configuredAICorsOrigins].filter(Boolean));
+  const sameOrigin=origin===`${req.protocol}://${req.get('host')}`;
+  const loopback=['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress);
+  let localOrigin=false;
+  if(localDemoAllowed()&&loopback){
+    try{const url=new URL(origin);localOrigin=['http:','https:'].includes(url.protocol)&&['localhost','127.0.0.1','[::1]'].includes(url.hostname);}catch{}
+    if(origin==='null')localOrigin=true;
+  }
+  if(origin&&!sameOrigin&&!allowedOrigins.has(origin)&&!localOrigin)return res.status(403).json({error:'Origin is not allowed.'});
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+  res.setHeader('Access-Control-Expose-Headers','Retry-After, RateLimit, RateLimit-Policy');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-OCOP-Guest-Image, x-ocop-sync-token, x-ocop-signature, x-ocop-timestamp');
+  next();
+});
+
+
+const security=createAPISecurity({
+  resolveUser:token=>{const id=accountStore.session(token);return id?customers.find(c=>c.id===id&&(!c.demo||localDemoAllowed())):null;},
+  getAIAccess:id=>aiAccessStore.get(id)
+});
+security.mount(app);
+app.use((req,res,next)=>req.method==='OPTIONS'?res.status(204).end():next());
 app.use(['/api/ai/chat','/api/chat','/chat','/api/ai/search-image','/api/ai/audio-chat'], (req,res,next) => {
   const send=res.json.bind(res);
   res.json=body => send(res.statusCode < 400 ? completeReply(body,req.body?.language || 'vi') : body);
@@ -84,7 +119,8 @@ app.use((req,res,next)=>{
   next();
 });
 const PORT = Number(process.env.PORT) || 3000;
-const DATA_DIR = path.join(__dirname, '.private-data');
+const DATA_DIR = process.env.PRIVATE_DATA_DIR || path.join(__dirname, '.private-data');
+const aiAccessStore=createAIAccessStore(process.env.AI_ACCESS_FILE || path.join(DATA_DIR,'ai-access.json'));
 const USERS_FILE = process.env.CUSTOMERS_FILE || path.join(DATA_DIR, 'customers.json');
 const AUDIO_RECORDINGS_DIR = path.join(DATA_DIR, 'audio-recordings');
 const AUDIO_RECORDINGS_FILE = path.join(DATA_DIR, 'audio-recordings.json');
@@ -96,21 +132,16 @@ const MAX_OTP_ATTEMPTS = 5;
 const MAX_LOGIN_ATTEMPTS = 5;
 const MAX_REGISTRATION_REQUESTS = 5;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
-const AI_REQUEST_WINDOW_MS = 60 * 1000;
-const MAX_AI_REQUESTS_PER_WINDOW = 20;
 const MAX_AI_MESSAGES = 16;
 const MAX_AI_MESSAGE_LENGTH = 1200;
 const MAX_AI_IMAGE_BYTES = 1024 * 1024;
-const MAX_CHAT_IMAGE_BYTES = 100 * 1024 * 1024;
+const MAX_CHAT_IMAGE_BYTES = 10 * 1024 * 1024;
 const MAX_CHAT_IMAGES_PER_MESSAGE = 10;
 const MAX_STORED_CHAT_IMAGE_BYTES = 1024 * 1024 * 1024;
 const GEMINI_INLINE_IMAGE_LIMIT_BYTES = 70 * 1024 * 1024;
 const MAX_AUDIO_BYTES = 12 * 1024 * 1024;
 const MAX_AUDIO_RECORDING_BYTES = 1024 * 1024 * 1024;
 const AUDIO_ADMIN_SESSION_TTL_MS = 8 * 60 * 60 * 1000;
-const FILE_ORIGIN_AI_ROUTES = new Set([
-  '/api/ai/chat', '/api/chat', '/chat', '/api/ai/catalog', '/api/ai/images', '/api/ai/search-image', '/api/ai/audio-chat'
-]);
 const configuredAICorsOrigins = new Set(
   (process.env.AI_CORS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean)
 );
@@ -120,7 +151,6 @@ const loginAttempts = new Map();
 const registrationAttempts = new Map();
 const oauthStates = new Map();
 const oauthExchangeCodes = new Map();
-const aiRequestAttempts = new Map();
 const audioAdminLoginAttempts = new Map();
 const audioAdminSessions = new Map();
 
@@ -156,38 +186,33 @@ function requireCustomer(req,res,next){
   res.setHeader('Cache-Control','no-store');
   const token=(req.headers.authorization||'').replace(/^Bearer /,'');
   const id=accountStore.session(token);
-  const customer=customers.find(c=>c.id===id);
+  const customer=customers.find(c=>c.id===id&&(!c.demo||localDemoAllowed()));
   if(!customer)return res.status(401).json({error:'Vui lòng đăng ký hoặc đăng nhập để tiếp tục.'});
-  req.customer=customer;req.sessionToken=token;next();
+  req.customer=customer;req.authUser=customer;req.sessionToken=token;next();
 }
 
-// Universal CORS Middleware for seamless local & deployed frontend communication
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Vary', 'Origin');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-  } else {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-  }
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-goog-api-key, x-ocop-sync-token, x-ocop-signature, x-ocop-timestamp');
-  if (req.method === 'OPTIONS') {
-    return res.status(204).end();
-  }
-  next();
-});
-
-app.use((req, res, next) => {
-  if (req.path === '/api/ai/audio-chat' || req.path === '/api/ai/images' || req.path === '/api/ai/search-image') return next();
-  return express.json({ limit: req.method === 'POST' && /^\/api\/products\/\d+\/reviews$/.test(req.path) ? '3mb' : '256kb' })(req, res, next);
+  const route=req.path.toLowerCase().replace(/\/+$/,'');
+  if(route==='/api/ai/images'||route==='/api/ai/transcribe')return next();
+  const limit=route==='/api/ai/audio-chat'?'17mb':route==='/api/ai/search-image'?'2mb':req.method==='POST'&&/^\/api\/products\/\d+\/reviews$/.test(route)?'3mb':'256kb';
+  return express.json({limit})(req,res,next);
 });
 
 let customers = [];
 let audioRecordings = [];
 let chatImages = [];
 let aiWebsiteCatalog = { products: defaultProducts, updatedAt: new Date().toISOString() };
+app.use(security.validatePayload);
+app.use('/api/sync',(req,res,next)=>{if(requireAudioAdmin(req,res))next();});
+app.get('/api/admin/users/:id/ai-access',(req,res,next)=>{
+  if(!requireAudioAdmin(req,res))return;
+  try{if(!customers.some(c=>c.id===req.params.id))return res.status(404).json({error:'Account not found.'});res.json({userId:req.params.id,...aiAccessStore.get(req.params.id)});}catch(e){next(e);}
+});
+app.patch('/api/admin/users/:id/ai-access',(req,res,next)=>{
+  if(!requireAudioAdmin(req,res))return;
+  try{if(!customers.some(c=>c.id===req.params.id))return res.status(404).json({error:'Account not found.'});res.json({userId:req.params.id,...aiAccessStore.set(req.params.id,req.body?.ai_enabled,'authenticated-admin')});}catch(e){next(e);}
+});
+app.use(['/api/ai/chat','/api/chat','/chat','/api/ai/search-image','/api/ai/audio-chat'],createChatDeadline());
 app.use(['/api/ai/chat','/api/chat','/chat','/api/ai/search-image','/api/ai/audio-chat'],createResearchMiddleware({
   lookup:lookupGoogle,
   getConfiguration:()=>{const config=getAIModelConfiguration();return {...config,model:process.env.GEMINI_SEARCH_MODEL||config.model};},
@@ -195,16 +220,18 @@ app.use(['/api/ai/chat','/api/chat','/chat','/api/ai/search-image','/api/ai/audi
   timeoutMs: 1500
 }));
 app.get('/api/ai/metrics', (req,res)=>{
+  const expected=process.env.OCOP_METRICS_TOKEN||'',provided=String(req.headers.authorization||'').replace(/^Bearer /,'');
+  const serviceAccess=expected.length>=32&&provided.length<=512&&crypto.timingSafeEqual(crypto.createHash('sha256').update(expected).digest(),crypto.createHash('sha256').update(provided).digest());
+  if(!serviceAccess&&!requireAudioAdmin(req,res))return;
   res.setHeader('Cache-Control','no-store');
   const metrics=salesMetrics.snapshot(req.query.period);
   res.json({...metrics,...salesStore.businessStats(metrics.windowStart,metrics.windowEnd),allTimeDraftOrders:salesStore.stats().draftOrders});
 });
 app.get('/api/ai/shop-products',(req,res)=>res.json({products:defaultProducts.map(p=>salesStore.inventory(p.id))}));
 app.get('/api/ai/prices',(req,res)=>{res.setHeader('Cache-Control','no-store');res.json({products:defaultProducts.map(p=>({id:p.id,price:p.price,priceMin:p.priceMin,priceMax:p.priceMax,priceIsReference:p.priceIsReference}))});});
-app.post('/api/ai/draft-orders',(req,res,next)=>{
+app.post('/api/ai/draft-orders',requireCustomer,(req,res,next)=>{
   try{
-    if(isAIRateLimited(req.ip))return res.status(429).json({error:'Vui lòng chờ trước khi tạo thêm đơn nháp.'});
-    const draft=salesStore.createDraft(req.body||{},{consultationVerified:salesMetrics.hasSession(req.body?.sessionId)});
+    const draft=salesStore.createDraft(req.body||{},{ownerId:req.customer.id,consultationVerified:false});
     salesMetrics.recordDraft({id:draft.id,reused:draft.reused,sessionId:req.body?.sessionId});
     // AI DIGITAL BUSINESS CHALLENGE 2026: Automatic Real-Time Financial Sync
     kpiSyncService.syncFinancial({
@@ -218,13 +245,13 @@ app.post('/api/ai/draft-orders',(req,res,next)=>{
   }catch(error){next(error);}
 });
 
-app.get('/api/ai/draft-orders/:id',(req,res,next)=>{
+app.get('/api/ai/draft-orders/:id',requireCustomer,(req,res,next)=>{
   res.setHeader('Cache-Control','no-store');
-  try{res.json({draft:salesStore.customerOrder(req.params.id,String(req.headers.authorization||'').replace(/^Bearer /,''))});}catch(error){next(error);}
+  try{res.json({draft:salesStore.ownedOrder(req.customer.id,req.params.id)});}catch(error){next(error);}
 });
-app.post('/api/ai/draft-orders/:id/received',(req,res,next)=>{
+app.post('/api/ai/draft-orders/:id/received',requireCustomer,(req,res,next)=>{
   res.setHeader('Cache-Control','no-store');
-  try{res.json({draft:salesStore.confirmReceipt(req.params.id,String(req.headers.authorization||'').replace(/^Bearer /,''),req.body||{})});}catch(error){next(error);}
+  try{salesStore.ownedOrder(req.customer.id,req.params.id);res.json({draft:salesStore.confirmOwnedReceipt(req.customer.id,req.params.id,req.body||{})});}catch(error){next(error);}
 });
 
 // AI DIGITAL BUSINESS CHALLENGE 2026: CLOUD KPI DATA PIPELINE API ROUTES
@@ -275,6 +302,13 @@ app.put('/api/admin/sales/inventory/:productId',(req,res,next)=>{
 });
 app.get('/api/auth/me',requireCustomer,(req,res)=>res.json({user:publicCustomer(req.customer),state:accountStore.state(req.customer.id)}));
 app.post('/api/auth/logout',requireCustomer,(req,res,next)=>{try{accountStore.logout(req.sessionToken);res.json({ok:true});}catch(e){next(e);}});
+app.post('/api/auth/change-password',requireCustomer,(req,res,next)=>{
+  const {oldPassword,newPassword}=req.body||{};
+  if(typeof oldPassword!=='string'||oldPassword.length>128||typeof newPassword!=='string'||newPassword.length<8||newPassword.length>128)return res.status(400).json({error:'Mật khẩu mới phải dài 8–128 ký tự.'});
+  if(!req.customer.passwordHash||!verifyPassword(oldPassword,req.customer.passwordSalt,req.customer.passwordHash))return res.status(401).json({error:'Mật khẩu hiện tại không chính xác.'});
+  const previous={passwordSalt:req.customer.passwordSalt,passwordHash:req.customer.passwordHash};
+  try{const nextPassword=hashPassword(newPassword);Object.assign(req.customer,{passwordSalt:nextPassword.salt,passwordHash:nextPassword.hash});saveCustomers();accountStore.revoke(req.customer.id);res.json({ok:true});}catch(error){Object.assign(req.customer,previous);next(error);}
+});
 app.put('/api/account/state',requireCustomer,(req,res,next)=>{try{res.json({state:accountStore.update(req.customer.id,req.body||{})});}catch(e){next(e);}});
 app.post('/api/orders',requireCustomer,(req,res,next)=>{try{res.status(201).json({order:accountStore.order(req.customer.id,req.body||{})});}catch(e){next(e);}});
 app.post('/api/orders/:id/payment-reported',requireCustomer,(req,res,next)=>{try{res.json({state:accountStore.confirm(req.customer.id,req.params.id)});}catch(e){next(e);}});
@@ -296,14 +330,14 @@ app.get('/api/review-images/:id', (req,res,next) => {
     res.send(img.buffer);
   } catch (error) { next(error); }
 });
-app.post('/api/products/:id/reviews', (req, res, next) => {
+app.post('/api/products/:id/reviews', requireCustomer, (req, res, next) => {
   try {
     const key = req.ip || 'unknown';
     const now = Date.now();
     for (const [ip, times] of reviewAttempts) if (!times.some(time => now - time < 600000)) reviewAttempts.delete(ip);
     const attempts = (reviewAttempts.get(key) || []).filter(time => now - time < 600000);
     if (attempts.length >= 5) return res.status(429).json({ error: 'Vui lòng chờ trước khi gửi thêm đánh giá.' });
-    const result = reviewStore.add(Number(req.params.id), req.body);
+    const result = reviewStore.add(Number(req.params.id), {...req.body,name:req.customer.name.slice(0,60)}, {ownerId:req.customer.id});
     if (!result.duplicate) { attempts.push(now); reviewAttempts.set(key, attempts); }
     res.status(result.duplicate ? 200 : 201).json(result);
   } catch (error) { next(error); }
@@ -389,7 +423,7 @@ function getImageMimeType(buffer) {
   return null;
 }
 
-function saveChatImagesFromRequest(inputImages, messageText) {
+function saveChatImagesFromRequest(inputImages, messageText, ownerId) {
   if (!Array.isArray(inputImages) || inputImages.length < 1) {
     const error = new Error('Vui lòng chọn ít nhất một hình ảnh.');
     error.status = 400;
@@ -405,7 +439,7 @@ function saveChatImagesFromRequest(inputImages, messageText) {
       const buffer = inputImage && inputImage.buffer;
       const mimeType = getImageMimeType(buffer);
       if (!Buffer.isBuffer(buffer) || !buffer.length || buffer.length > MAX_CHAT_IMAGE_BYTES || !mimeType) {
-        const error = new Error('Chỉ chấp nhận ảnh JPEG, PNG, WebP, HEIC hoặc HEIF dưới 100 MB.');
+        const error = new Error('Chỉ chấp nhận ảnh JPEG, PNG, WebP, HEIC hoặc HEIF tối đa 10 MB.');
         error.status = 400;
         throw error;
       }
@@ -420,6 +454,7 @@ function saveChatImagesFromRequest(inputImages, messageText) {
       savedFiles.push(path.join(CHAT_IMAGES_DIR, fileName));
       additions.push({
         id,
+        ownerId,
         fileName,
         mimeType,
         bytes: buffer.length,
@@ -448,7 +483,7 @@ function saveChatImagesFromRequest(inputImages, messageText) {
   }
 }
 
-function saveAudioRecording(audio, language) {
+function saveAudioRecording(audio, language, ownerId) {
   const totalStoredBytes = audioRecordings.reduce((total, recording) => total + recording.bytes, 0);
   if (totalStoredBytes + audio.buffer.length > MAX_AUDIO_RECORDING_BYTES) {
     const error = new Error('Kho ghi âm đã đầy. Nhân viên cần xóa bớt bản ghi trước khi nhận thêm.');
@@ -464,6 +499,7 @@ function saveAudioRecording(audio, language) {
 
   const recording = {
     id,
+    ownerId,
     fileName,
     mimeType: audio.mimeType,
     bytes: audio.buffer.length,
@@ -526,12 +562,15 @@ function hashPassword(password, salt = crypto.randomBytes(16)) {
 }
 
 function verifyPassword(password, saltHex, hashHex) {
+  if(typeof saltHex!=='string'||!/^[a-f0-9]{32}$/.test(saltHex)||typeof hashHex!=='string'||!/^[a-f0-9]{128}$/.test(hashHex))return false;
   const expected = Buffer.from(hashHex, 'hex');
   const actual = crypto.scryptSync(password, Buffer.from(saltHex, 'hex'), expected.length);
   return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
 }
 
 function validateRegistration(body) {
+  const username=typeof body.username==='string'?body.username.trim():'';
+  if(username&&!/^[a-zA-Z][a-zA-Z0-9_.-]{2,39}$/.test(username))return {error:'Tên đăng nhập phải có 3–40 ký tự, bắt đầu bằng chữ cái.'};
   const name = String(body.name || '').trim().replace(/\s+/g, ' ');
   const phone = normalizePhone(body.phone);
   const address = String(body.address || '').trim();
@@ -545,8 +584,8 @@ function validateRegistration(body) {
   if (!phone) {
     return { error: 'Vui lòng nhập số điện thoại hợp lệ để nhận mã OTP.' };
   }
-  if (address.length < 3 || address.length > 300) {
-    return { error: 'Địa chỉ là bắt buộc và phải có tối đa 300 ký tự.' };
+  if (address.length > 300) {
+    return { error: 'Địa chỉ có tối đa 300 ký tự.' };
   }
   if (email && (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
     return { error: 'Địa chỉ Gmail / Email không hợp lệ.' };
@@ -558,7 +597,7 @@ function validateRegistration(body) {
     return { error: 'Mật khẩu xác nhận không khớp.' };
   }
 
-  return { customer: { name, normalizedName: normalizeName(name), phone, address, email, password } };
+  return { customer: { name, normalizedName: normalizeName(name), username,normalizedUsername:username.toLowerCase(),phone, address, email, password } };
 }
 
 function getTwilioConfiguration() {
@@ -1167,17 +1206,6 @@ function buildAIServiceUnavailable(language, wikiSources = []) {
   return {status:503,body:{message,text_response:message,error:'AI_TEMPORARILY_UNAVAILABLE',retryable:true,productIds:[],suggested_products:[],combos:[],understandingStatus:'needs_clarification',handoffAdmin:false,wikipediaSources:wikiSources.map(({title,url})=>({title,url})),integrations:{gemini:false,openai:false,wikipedia:wikiSources.length>0,googleSearch:false}}};
 }
 
-function isAIRateLimited(ip) {
-  const now = Date.now();
-  const attempts = aiRequestAttempts.get(ip);
-  if (attempts && attempts.resetAt > now && attempts.count >= MAX_AI_REQUESTS_PER_WINDOW) return true;
-  const nextAttempts = attempts && attempts.resetAt > now
-    ? { count: attempts.count + 1, resetAt: attempts.resetAt }
-    : { count: 1, resetAt: now + AI_REQUEST_WINDOW_MS };
-  aiRequestAttempts.set(ip, nextAttempts);
-  return false;
-}
-
 function validateAIImage(dataUrl) {
   const match = typeof dataUrl === 'string'
     ? /^data:image\/(jpeg|png|webp);base64,([A-Za-z0-9+/]+={0,2})$/.exec(dataUrl)
@@ -1196,6 +1224,7 @@ function validateAIImage(dataUrl) {
 }
 
 app.post('/api/ai/catalog', (req, res) => {
+  if(!requireAudioAdmin(req,res))return;
   const catalog = validateAIProductCatalog(req.body && req.body.products);
   if (catalog.error) return res.status(400).json({ error: catalog.error });
 
@@ -1209,21 +1238,22 @@ app.post('/api/ai/catalog', (req, res) => {
   });
 });
 
+app.post('/api/ai/guest-image-session',(req,res)=>{
+  if(!req.authUser?.guest)return res.status(400).json({error:'Guest image session is only for visitors.'});
+  res.json({guestToken:req.guestImageToken,expiresIn:3600});
+});
 app.post('/api/ai/images', express.raw({
   type: 'image/*',
   limit: `${MAX_CHAT_IMAGE_BYTES / (1024 * 1024)}mb`
 }), (req, res) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
-  if (isAIRateLimited(ip)) {
-    return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
-  }
 
   if (!Buffer.isBuffer(req.body)) {
     return res.status(400).json({ error: 'Tệp ảnh không hợp lệ.' });
   }
 
   try {
-    const savedImages = saveChatImagesFromRequest([{ buffer: req.body }], '');
+    const savedImages = saveChatImagesFromRequest([{ buffer: req.body }], '',req.authUser.id);
     const { id, mimeType, bytes, createdAt } = savedImages[0];
     return res.status(201).json({ image: { id, mimeType, bytes, createdAt } });
   } catch (error) {
@@ -1235,9 +1265,6 @@ app.post('/api/ai/images', express.raw({
 
 async function handleAIChatRequest(req, res) {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
-  if (isAIRateLimited(ip)) {
-    return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
-  }
 
   const requestBody = req.body && typeof req.body === 'object' ? req.body : {};
   const requestProducts = Array.isArray(requestBody.products)
@@ -1260,11 +1287,12 @@ async function handleAIChatRequest(req, res) {
       new Set(imageIds).size !== imageIds.length) {
     return res.status(400).json({ error: 'Danh sách ảnh đính kèm không hợp lệ.' });
   }
-  const attachedImages = imageIds.map(id => chatImages.find(image => image.id === id));
+  const attachedImages = imageIds.map(id => chatImages.find(image => image.id === id && image.ownerId === req.authUser.id));
   if (attachedImages.some(image => !image)) {
     return res.status(404).json({ error: 'Không tìm thấy ảnh đính kèm. Vui lòng tải ảnh lên lại.' });
   }
   const lastMessage = validation.messages[validation.messages.length - 1];
+  if(!attachedImages.length&&analysis.summary.dataUnavailable)return res.json({message:'Dạ thưa, hiện tại dữ liệu hệ thống chưa ghi nhận thông tin này ạ.',knowledgeStatus:'not_found',productIds:[],suggested_products:[],combos:[],imageIds});
   if (analysis.clarification) {
     const body=composeDataReply([], {requiredClarification:analysis.clarification},validation.language);
     return res.json({...body,combos:[],imageIds});
@@ -1272,6 +1300,8 @@ async function handleAIChatRequest(req, res) {
   const supportRequest=localIntent.isComplaint||localIntent.isCSKH;
   const commerceReply=!attachedImages.length&&!supportRequest&&commerceShopping.localReply({query:lastMessage.text,products:validation.products,intent:localIntent,language:validation.language});
   if(commerceReply)return res.json({...commerceReply,imageIds});
+  const productCodeReply=!attachedImages.length&&!supportRequest&&CatalogFacts.isProductCodeQuestion?.(lastMessage.text)&&CatalogFacts.answer(lastMessage.text,validation.products,validation.language,validation.messages.slice(0,-1));
+  if(productCodeReply)return res.json({...productCodeReply,imageIds});
   const trainedFAQReply = !attachedImages.length && !supportRequest && answerTrainingQuery(lastMessage.text,validation.products,validation.language,validation.messages.slice(0,-1));
   if(trainedFAQReply) return res.json({...trainedFAQReply,imageIds});
   const catalogFactReply = !attachedImages.length && !supportRequest && CatalogFacts.answer(lastMessage.text, validation.products, validation.language, validation.messages.slice(0,-1));
@@ -1302,9 +1332,10 @@ async function handleAIChatRequest(req, res) {
   };
   let semanticIntent = null;
   const salesToolRequest = /ton kho|con hang|con bao nhieu|het hang|kiem tra kho|stock|inventory|availability|in stock|tao don nhap|create.*draft/i.test(AIShopping.normalize(lastMessage.text));
-  const replyBudgetMs=Math.max(1500,Math.min(8000,Number(process.env.AI_CHAT_TIMEOUT_MS)||3500));
-  const replyDeadline = attachedImages.length ? Date.now() + 4500 : Date.now() + replyBudgetMs;
-  const replySignal = replyDeadline ? AbortSignal.timeout(attachedImages.length ? 4500 : replyBudgetMs) : undefined;
+  const replyBudgetMs=attachedImages.length?22000:Math.max(1500,Math.min(8000,Number(process.env.AI_CHAT_TIMEOUT_MS)||8000));
+  const replyDeadline = Math.min(req.aiDeadline||Infinity,Date.now()+replyBudgetMs);
+  const stageSignal=AbortSignal.timeout(Math.max(1,replyDeadline-Date.now()));
+  const replySignal=req.aiSignal?AbortSignal.any([req.aiSignal,stageSignal]):stageSignal;
   const directCatalogRequest = !attachedImages.length && !localIntent.isOrderGuide && !localIntent.isComplaint && !localIntent.isCSKH && !localIntent.isShipping && !localIntent.isUsage && !localIntent.isOcopKnowledge && !(localIntent.isStoreLookup && !localIntent.exactRegion && !localIntent.categoryOrKeyword)
     && Boolean(localIntent.isCombo || localIntent.isGift || localIntent.pricePreference || localIntent.categoryOrKeyword || localIntent.exactRegion || localIntent.regionKeyword || localIntent.maxPrice || localIntent.minStars);
   if(directCatalogRequest && !salesToolRequest) {
@@ -1321,7 +1352,7 @@ async function handleAIChatRequest(req, res) {
     let options = {};
     if (replyDeadline) {
       const intentTimeout = Math.max(1000,Math.min(12000,replyDeadline-Date.now()));
-      options = {signal:replySignal,timeoutMs:intentTimeout,perAttemptMs:intentTimeout,maxAttempts:1};
+      options = {signal:replySignal,timeoutMs:intentTimeout,perAttemptMs:intentTimeout,maxAttempts:1,fastest:true};
     }
     if(directCatalogRequest && !salesToolRequest){
       const promptProducts=filterProductsByIntent(validation.products,localIntent).filter(p=>AIShopping.allowed(p,localIntent));
@@ -1335,7 +1366,7 @@ async function handleAIChatRequest(req, res) {
         replyWikiSources=replyWikiSources.filter(source=>prefetchPlan.topics.some(topic=>relevantWikiSource(source,topic)) && !/chien dich|bieu tinh|battle|war|vu an|dai an|vtv|truyen hinh/.test(normalizeCatalogTerm(source.title)));
       }
       const remaining=Math.max(1,replyDeadline-Date.now());
-      options={signal:replySignal,timeoutMs:remaining,perAttemptMs:remaining,maxAttempts:1,replyContext:{systemInstruction:buildAISystemInstruction({...validation,filteredProducts:promptProducts},{customerIntent:promptIntent,combinedReply:true,wikiSources:replyWikiSources})}};
+      options={signal:replySignal,timeoutMs:remaining,perAttemptMs:remaining,maxAttempts:1,fastest:true,replyContext:{systemInstruction:buildAISystemInstruction({...validation,filteredProducts:promptProducts},{customerIntent:promptIntent,combinedReply:true,wikiSources:replyWikiSources})}};
     }
     // The vision request interprets the caption and the image together.
     // A separate text-only interpretation cannot see the attachment and must not block it.
@@ -1437,7 +1468,8 @@ async function handleAIChatRequest(req, res) {
       const kbMatches = searchProductByImageKnowledge({label:result.body.imageEvidence.label,productType:result.body.imageEvidence.productType}).filter(product => evidenceIds.has(product.id));
       if (kbMatches.length > 0) {
         const topIds = kbMatches.map(m => m.id).slice(0, 3);
-        const msg=formatVisualReply(kbMatches,{status:'similar',productType:result.body.imageEvidence.productType,language:validation.language});
+        const currentMatches=topIds.map(id=>validation.products.find(product=>product.id===id)).filter(Boolean);
+        const msg=formatVisualReply(currentMatches,{status:'similar',productType:result.body.imageEvidence.productType,language:validation.language});
         result = {
           status: 200,
           body: {
@@ -1537,7 +1569,6 @@ app.get('/api/ocop/financial-snapshot', (req, res) => {
   });
 });
 app.post('/api/ai/translate', async (req, res) => {
-  if (isAIRateLimited(req.ip || 'unknown')) return res.status(429).json({ error: 'Please try again shortly.' });
   const { texts, language } = req.body || {};
   if (!['vi', 'en'].includes(language) || !Array.isArray(texts) || !texts.length || texts.length > 100 ||
       texts.some(text => typeof text !== 'string' || text.length > 5000) || texts.join('').length > 24000) {
@@ -1568,11 +1599,8 @@ app.post('/api/ai/translate', async (req, res) => {
 app.post('/api/chat', handleAIChatRequest);
 app.post('/chat', handleAIChatRequest);
 
-app.post('/api/ai/search-image', express.json({ limit: '2mb' }), async (req, res) => {
+app.post('/api/ai/search-image', async (req, res) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
-  if (isAIRateLimited(ip)) {
-    return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
-  }
 
   const image = validateAIImage(req.body && req.body.imageData);
   if (!image) {
@@ -1586,11 +1614,11 @@ app.post('/api/ai/search-image', express.json({ limit: '2mb' }), async (req, res
         ? 'Identify the visible product and its distinctive features. Match it only with the supplied catalogue and recommend up to 3 visually similar products by ID. If no close match exists, return no product IDs and say so.'
         : 'Nhận diện sản phẩm và đặc điểm nổi bật nhìn thấy trong ảnh. Chỉ đối chiếu với danh mục được cung cấp và gợi ý tối đa 3 sản phẩm tương tự bằng ID. Nếu không có sản phẩm phù hợp, không trả về ID và hãy nói rõ.'
     }],
-    products: req.body.products
+    products: defaultProducts
   });
   if (validation.error) return res.status(400).json({ error: validation.error });
 
-  const result = await generateAIResponse(validation, { imageData: image });
+  const result = await generateAIResponse(validation, { imageData: image,replyDeadline:req.aiDeadline,replySignal:req.aiSignal });
   return res.status(result.status).json(result.body);
 });
 
@@ -1602,6 +1630,16 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     const buffers = await Promise.all(attachedImages.map(image => fs.promises.readFile(path.join(CHAT_IMAGES_DIR,image.fileName))));
     if (imageData) buffers.push(Buffer.from(imageData.data,'base64'));
     const matches = await matchCatalogImages(validation.products,buffers);
+    // Check downloaded reference bytes before the more expensive perceptual scan.
+    const referenceMatches=matches.some(ids=>!ids.length)?await matchReferenceImages(validation.products,buffers):[];
+    if(referenceMatches.length&&referenceMatches.every(ids=>ids.length>0)){
+      const productIds=[...new Set(referenceMatches.flat())].slice(0,3);
+      const selected=productIds.map(id=>validation.products.find(product=>product.id===id)).filter(Boolean);
+      const message=formatVisualReply(selected,{status:'similar',reference:true,language:validation.language});
+      return {status:200,body:{message,text_response:message,productIds,suggested_products:productIds,imageMatchStatus:'similar',
+        understandingStatus:'understood',responseMode:'reference_image_match',handoffAdmin:false,dynamic_chips:[],wikipediaSources:[],
+        integrations:{gemini:false,openai:false,claude:false,wikipedia:false,googleSearch:false}}};
+    }
     const resizedMatches=matches.some(ids=>!ids.length) ? await matchVisualFingerprints(validation.products,buffers) : [];
     matches.forEach((ids,index)=>{if(!ids.length && resizedMatches[index]?.length)matches[index]=resizedMatches[index];});
     if (matches.length && matches.every(ids => ids.length > 0)) {
@@ -1614,15 +1652,6 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
       return {status:200,body:{...combo,message,text_response:message,productIds:combo?.productIds||productIds,suggested_products:combo?.productIds||productIds,imageMatchStatus:unique?'exact':'similar',
         understandingStatus:'understood',responseMode:'catalog_image_match',handoffAdmin:false,dynamic_chips:[],wikipediaSources:[],
         integrations:{gemini:false,openai:false,wikipedia:false,googleSearch:false}}};
-    }
-    const referenceMatches = !userIntent.isComplaint && !userIntent.isCSKH ? await matchReferenceImages(validation.products,buffers) : [];
-    if (referenceMatches.length && referenceMatches.every(ids => ids.length > 0)) {
-      const productIds=[...new Set(referenceMatches.flat())].slice(0,3);
-      const selected=productIds.map(id=>validation.products.find(product=>product.id===id)).filter(Boolean);
-      const message=formatVisualReply(selected,{status:'similar',reference:true,language:validation.language});
-      return {status:200,body:{message,text_response:message,productIds,suggested_products:productIds,imageMatchStatus:'similar',
-        understandingStatus:'understood',responseMode:'reference_image_match',handoffAdmin:false,dynamic_chips:[],wikipediaSources:[],
-        integrations:{gemini:false,openai:false,claude:false,wikipedia:false,googleSearch:false}}};
     }
   }
   const unavailable = () => {
@@ -1648,8 +1677,8 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
   const controller = new AbortController();
   const totalAttachedImageBytes = attachedImages.reduce((total, image) => total + image.bytes, 0);
   const timeoutMs = replyDeadline ? Math.max(1,replyDeadline-Date.now()) : totalAttachedImageBytes > GEMINI_INLINE_IMAGE_LIMIT_BYTES
-    ? 600000
-    : attachedImages.length || imageData ? 30000 : 45000;
+    ? 22000
+    : attachedImages.length || imageData ? 22000 : 8000;
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
@@ -1713,7 +1742,7 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
             required: ['understandingStatus', 'message', 'comboIntroduction', 'productIds', 'imageMatchStatus', 'handoffAdmin', 'dynamic_chips',...(hasImages ? ['visibleLabel','recognizedProductType','observedFeatures'] : [])]
           }
         }
-      }, {signal:replySignal ? AbortSignal.any([controller.signal,replySignal]) : controller.signal,timeoutMs,perAttemptMs:timeoutMs,maxAttempts:hasImages||replyDeadline?1:3,...(enableSalesTools?{salesStore,knowledge:productKnowledge,enableTools:true,confirmedDraft,onToolResult:tool=>salesMetrics.recordTool({...tool,sessionId:metricsSessionId})}:{})});
+      }, {signal:replySignal ? AbortSignal.any([controller.signal,replySignal]) : controller.signal,timeoutMs,perAttemptMs:timeoutMs,maxAttempts:1,fastest:true,...(enableSalesTools?{salesStore,knowledge:productKnowledge,enableTools:true,confirmedDraft,onToolResult:tool=>salesMetrics.recordTool({...tool,sessionId:metricsSessionId})}:{})});
     if (!response.ok) {
       console.warn('Gemini unavailable after retries:', response.status, result.error?.message);
       return unavailable();
@@ -1822,7 +1851,6 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
 
 app.post('/api/ai/transcribe', express.raw({type:['audio/webm','audio/mp4','audio/ogg','audio/wav'],limit:'12mb'}),async(req,res)=>{
   const english=req.query.language==='en';
-  if(isAIRateLimited(req.ip || 'unknown'))return res.status(429).json({error:english?'Please try again shortly.':'Bạn chờ một chút rồi thử lại nhé.'});
   try{
     const configuration={...getAIModelConfiguration(),model:process.env.GEMINI_TRANSCRIPTION_MODEL || 'gemini-3.5-flash-lite'};
     const transcription=await transcribeAudio(req.body,req.headers['content-type'],english?'en':'vi',configuration);
@@ -1835,18 +1863,7 @@ app.post('/api/ai/transcribe', express.raw({type:['audio/webm','audio/mp4','audi
   }
 });
 
-app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res) => {
-  const ip = req.ip || req.socket.remoteAddress || 'unknown';
-  const now = Date.now();
-  const attempts = aiRequestAttempts.get(ip);
-  if (attempts && attempts.resetAt > now && attempts.count >= MAX_AI_REQUESTS_PER_WINDOW) {
-    return res.status(429).json({ error: 'Bạn đã gửi quá nhiều yêu cầu tới trợ lý. Vui lòng thử lại sau một phút.' });
-  }
-  const nextAttempts = attempts && attempts.resetAt > now
-    ? { count: attempts.count + 1, resetAt: attempts.resetAt }
-    : { count: 1, resetAt: now + AI_REQUEST_WINDOW_MS };
-  aiRequestAttempts.set(ip, nextAttempts);
-
+app.post('/api/ai/audio-chat', async (req, res) => {
   if (!req.body || req.body.recordingConsent !== true) {
     return res.status(400).json({ error: 'Cần có sự đồng ý ghi âm trước khi gửi tin nhắn thoại.' });
   }
@@ -1863,7 +1880,7 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
   }
 
   const audioBuffer = Buffer.from(audio.data, 'base64');
-  if (!audioBuffer.length || audioBuffer.length > MAX_AUDIO_BYTES) {
+  if (audioBuffer.length<12 || audioBuffer.length > MAX_AUDIO_BYTES || audioBuffer.toString('ascii',0,4)!=='RIFF' || audioBuffer.toString('ascii',8,12)!=='WAVE') {
     return res.status(400).json({ error: 'Bản ghi âm phải nhỏ hơn 12 MB.' });
   }
 
@@ -1879,7 +1896,7 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
     recording = saveAudioRecording({
       buffer: audioBuffer,
       mimeType: audio.mimeType
-    }, validation.language);
+    }, validation.language,req.authUser.id);
   } catch (error) {
     console.error('Unable to save customer audio recording:', error.message);
     return res.status(error.status || 500).json({
@@ -1890,7 +1907,7 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
   }
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 60000);
+  const timeout = setTimeout(() => controller.abort(),Math.max(1,Math.min(22000,(req.aiDeadline||Date.now()+22000)-Date.now())));
   try {
     const endpoint = new URL(
       `https://generativelanguage.googleapis.com/v1beta/models/${configuration.model}:generateContent`
@@ -1935,7 +1952,7 @@ app.post('/api/ai/audio-chat', express.json({ limit: '17mb' }), async (req, res)
           }
         }
       }),
-      signal: controller.signal
+      signal: req.aiSignal?AbortSignal.any([controller.signal,req.aiSignal]):controller.signal
     });
 
     const result = await response.json().catch(() => ({}));
@@ -2174,13 +2191,6 @@ app.get('/admin/recordings', (req, res) => {
   return res.sendFile(path.join(__dirname, 'admin-recordings.html'));
 });
 
-const aiRateLimitCleanup = setInterval(() => {
-  const now = Date.now();
-  for (const [ip, attempts] of aiRequestAttempts) {
-    if (attempts.resetAt <= now) aiRequestAttempts.delete(ip);
-  }
-}, AI_REQUEST_WINDOW_MS);
-aiRateLimitCleanup.unref();
 
 const audioAdminSessionCleanup = setInterval(() => {
   const now = Date.now();
@@ -2233,8 +2243,14 @@ async function sendOtpSms(phone, otp) {
 }
 
 function publicCustomer(customer) {
+  const demo=localDemoAllowed()&&customer.demo===true;
   return {
     id: customer.id,
+    role:demo&&['admin','distributor'].includes(customer.role)?customer.role:'customer',
+    ...(demo&&customer.adminId?{adminId:customer.adminId}:{}),
+    ...(demo&&customer.distributorCode?{distributorCode:customer.distributorCode}:{}),
+    username: customer.username||customer.id,
+    ai_enabled: aiAccessStore.get(customer.id).ai_enabled,
     name: customer.name,
     phone: customer.phone,
     email: customer.email,
@@ -2536,11 +2552,26 @@ app.post('/api/auth/oauth/exchange', (req, res) => {
   return res.json({ user: publicCustomer(customer), ...accountStore.login(customer.id) });
 });
 
+const passwordReset=require('./password-reset').createPasswordReset({
+  normalizePhone,findUser:phone=>customers.find(customer=>customer.phone===phone),sendOTP:sendOtpSms,
+  isConfigured:()=>Boolean(process.env.TWILIO_ACCOUNT_SID&&process.env.TWILIO_AUTH_TOKEN&&process.env.TWILIO_FROM_NUMBER),
+  updatePassword:async(id,password)=>{
+    const customer=customers.find(customer=>customer.id===id);if(!customer)throw Object.assign(Error('Không thể khôi phục tài khoản.'),{status:400});
+    const previous={passwordSalt:customer.passwordSalt,passwordHash:customer.passwordHash},salt=crypto.randomBytes(16);
+    accountStore.revoke(id);
+    customer.passwordSalt=salt.toString('hex');customer.passwordHash=crypto.scryptSync(password,salt,64).toString('hex');
+    try{saveCustomers();}catch(error){Object.assign(customer,previous);throw error;}
+  }
+});
+app.post('/api/auth/forgot-password',async(req,res,next)=>{try{res.json(await passwordReset.request(req.body?.phone));}catch(error){next(error);}});
+app.post('/api/auth/reset-password',async(req,res,next)=>{try{res.json(await passwordReset.reset(req.body||{}));}catch(error){next(error);}});
+
 app.post('/api/auth/register', async (req, res) => {
   const validation = validateRegistration(req.body || {});
   if (validation.error) return res.status(400).json({ error: validation.error });
 
   const customer = validation.customer;
+  if(customer.normalizedUsername&&customers.some(saved=>saved.normalizedUsername===customer.normalizedUsername||saved.normalizedName===customer.normalizedUsername))return res.status(409).json({error:'Tên đăng nhập đã được sử dụng.'});
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
   const now = Date.now();
   const requests = registrationAttempts.get(ip);
@@ -2619,8 +2650,11 @@ app.post('/api/auth/register/verify-otp', (req, res) => {
     return res.status(400).json({ error: `Mã OTP không đúng. Bạn còn ${MAX_OTP_ATTEMPTS - pending.attempts} lần thử.` });
   }
 
+  if(customers.some(saved=>saved.phone===pending.phone||saved.normalizedName===pending.normalizedName||(pending.normalizedUsername&&(saved.normalizedUsername===pending.normalizedUsername||saved.normalizedName===pending.normalizedUsername))))return res.status(409).json({error:'Thông tin đăng ký đã được sử dụng.'});
   const customer = {
     id: crypto.randomUUID(),
+    username:pending.username,
+    normalizedUsername:pending.normalizedUsername,
     name: pending.name,
     normalizedName: pending.normalizedName,
     phone: pending.phone,
@@ -2641,11 +2675,12 @@ app.post('/api/auth/register/verify-otp', (req, res) => {
 
   pendingRegistrations.delete(phone);
   otpSentAt.delete(phone);
-  return res.status(201).json({ user: publicCustomer(customer), ...accountStore.login(customer.id) });
+  return res.status(201).json({ user: publicCustomer(customer), message:'Tạo tài khoản thành công. Vui lòng đăng nhập.' });
 });
 
 app.post('/api/auth/login', (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
+  if(typeof req.body?.name!=='string'||!req.body.name.trim()||req.body.name.length>100||typeof req.body?.password!=='string'||req.body.password.length<(localDemoAllowed()?1:8)||req.body.password.length>128)return res.status(400).json({error:'Tài khoản hoặc mật khẩu không hợp lệ.'});
   const name = String((req.body && req.body.name) || '').trim();
   const password = String((req.body && req.body.password) || '');
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
@@ -2655,8 +2690,7 @@ app.post('/api/auth/login', (req, res) => {
     return res.status(429).json({ error: 'Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau 15 phút.' });
   }
 
-  const customer = customers.find((saved) => saved.normalizedName === normalizeName(name) &&
-    saved.passwordSalt && saved.passwordHash);
+  const customer = customers.find((saved) => (!saved.demo||localDemoAllowed()) && (saved.normalizedName === normalizeName(name)||saved.normalizedUsername===name.toLowerCase()||(normalizePhone(name)&&saved.phone===normalizePhone(name))) && saved.passwordSalt && saved.passwordHash);
   const passwordMatches = customer
     ? verifyPassword(password, customer.passwordSalt, customer.passwordHash)
     : (crypto.scryptSync(password, 'ocop-login-check', 64), false);
@@ -2683,6 +2717,7 @@ app.use((error, req, res, next) => {
 
 app.use('/kpi-site', (req,res)=>res.sendStatus(404));
 app.get(['/admin','/admin/'],(req,res)=>res.sendFile(path.join(__dirname,'admin-sales.html')));
+app.use(require('./public-assets').publicAssetGuard(__dirname));
 app.use(express.static(__dirname, {
   dotfiles: 'deny',
   setHeaders(res, filePath) {
@@ -2703,7 +2738,7 @@ app.use(createSpaFallback(path.join(__dirname, 'index.html')));
 customers = readCustomers();
 audioRecordings = readAudioRecordings();
 chatImages = readChatImages();
-app.listen(PORT, () => {
+app.listen(PORT, process.env.HOST||'0.0.0.0', () => {
   console.log('==================================================');
   console.log('🚀 Server OCOP Sales Copilot đang chạy thành công!');
   console.log(`👉 Truy cập ngay: http://localhost:${PORT}`);

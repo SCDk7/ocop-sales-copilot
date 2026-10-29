@@ -3,7 +3,7 @@ const http = require('node:http');
 const crypto = require('node:crypto');
 const { buildDashboard } = require('./build.cjs');
 
-const SECURE_SYNC_TOKEN = process.env.OCOP_KPI_SYNC_TOKEN || 'OCOP_2026_SECURE_TOKEN_AI_CHALLENGE_SYNC_998877';
+const SECURE_SYNC_TOKEN = process.env.OCOP_KPI_SYNC_TOKEN || '';
 
 // Pre-seeded baseline data reflecting the AI Digital Business Challenge 2026 proposal
 const initialVerifications = [
@@ -212,7 +212,7 @@ function createKpiServer({
 
   function verifyToken(req) {
     const incomingToken = req.headers['x-ocop-sync-token'] || (req.headers.authorization || '').replace(/^Bearer /, '');
-    return incomingToken === token;
+    return Boolean(token)&&typeof incomingToken==='string'&&incomingToken.length<=512&&crypto.timingSafeEqual(crypto.createHash('sha256').update(incomingToken).digest(),crypto.createHash('sha256').update(token).digest());
   }
 
   function readBody(req) {
@@ -290,7 +290,7 @@ function createKpiServer({
         target.searchParams.set('period', ['day', 'week', 'month', 'all'].includes(period) ? period : 'day');
         const response = await fetchMetrics(target, {
           signal: AbortSignal.timeout(5000),
-          headers: { Accept: 'application/json' }
+          headers: { Accept: 'application/json',...(process.env.OCOP_METRICS_TOKEN?{Authorization:'Bearer '+process.env.OCOP_METRICS_TOKEN}:{}) }
         });
         if (!response.ok) throw new Error('Metrics backend unavailable');
         const data = await response.json();

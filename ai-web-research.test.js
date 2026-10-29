@@ -4,6 +4,11 @@ const {lookupGoogle}=require('./ai-grounding');
 const products=[{id:1,name:'Trà sen Nhơn Trạch',region:'Đồng Nai',price:160000,stars:5,packaging:'hộp'}];
 const message=text=>[{role:'user',text}];
 const evidence={attempted:true,searched:true,status:'success',text:'⭐ Chứng nhận OCOP: nguồn chính thức ghi 4 sao.\nAnh/chị muốn biết thêm thành phần không ạ?',sources:[{title:'Cổng OCOP tỉnh',url:'https://dongnai.gov.vn/ocop/tea'}],suggestions:'<div>Google Search</div>',checkedAt:'2026-10-28T12:00:00Z'};
+test('website-first chat replies never wait for unsolicited public search',async()=>{
+ let calls=0,sent;const middleware=createResearchMiddleware({lookup:async()=>{calls++;return evidence;},getConfiguration:()=>({apiKey:'test'}),getProducts:()=>products});
+ const res={statusCode:200,json:body=>{sent=body;}};middleware({method:'POST',body:{messages:message('Trà sen Nhơn Trạch giá bao nhiêu?')}},res,()=>{});
+ await res.json({message:'Dạ, 160.000 ₫/hộp.',productIds:[1]});assert.equal(calls,0);assert.equal(sent.message,'Dạ, 160.000 ₫/hộp.');assert.equal(sent.webResearch,undefined);
+});
 
 test('every product question and existing catalogue FAQ gets a mandatory public research plan',()=>{
  for(const q of ['Trà sen Nhơn Trạch giá bao nhiêu?','Trà sen Nhơn Trạch có nguồn gốc ở đâu?','Đặc sản Hà Giang 5 sao','Gợi ý quà biếu dưới 500k']){
@@ -46,7 +51,7 @@ test('mandatory research middleware runs even for a direct FAQ response and forc
  let calls=0,sent;
  const middleware=createResearchMiddleware({lookup:async(query,config,language,options)=>{calls++;assert.equal(options.force,true);assert(options.timeoutMs<=8000);return evidence;},getConfiguration:()=>({apiKey:'test'}),getProducts:()=>products});
  for(let i=0;i<2;i++){
-  const req={method:'POST',body:{language:'vi',messages:message('Trà sen Nhơn Trạch mấy sao?')}};
+  const req={method:'POST',body:{language:'vi',messages:message('Google tra cứu trà sen Nhơn Trạch mấy sao?')}};
   const res={statusCode:200,json:body=>{sent=body;}};
   middleware(req,res,()=>{});await res.json({message:'Old FAQ answer.',productIds:[1]});
   assert.equal(sent.integrations.googleSearch,true);assert.equal(req.ocopWebResearch,true);
@@ -60,13 +65,13 @@ test('errors and private requests do not invoke public search; missing credentia
  const res={statusCode:400,json:body=>{sent=body;}},req={method:'POST',body:{messages:message('Trà sen Nhơn Trạch')}};
  make({apiKey:'test'})(req,res,()=>{});const error={error:'Bad input'};await res.json(error);assert.equal(sent,error);assert.equal(calls,0);
  const privateRes={statusCode:200,json:body=>{sent=body;}};make({apiKey:'test'})({method:'POST',body:{messages:message('Tôi muốn khiếu nại')}},privateRes,()=>{});await privateRes.json({message:'Please share the order reference.',handoffAdmin:true});assert.equal(calls,0);
- const missing={statusCode:200,json:body=>{sent=body;}};make({})(req,missing,()=>{});await missing.json({message:'FAQ',productIds:[1]});assert.equal(sent.webResearch.status,'not_configured');assert.equal(sent.webResearch.attempted,false);
+ const missing={statusCode:200,json:body=>{sent=body;}};make({})({...req,body:{messages:message('Google tra cứu trà sen Nhơn Trạch')}},missing,()=>{});await missing.json({message:'FAQ',productIds:[1]});assert.equal(sent.webResearch.status,'not_configured');assert.equal(sent.webResearch.attempted,false);
 });
 
 test('a stalled web provider cannot hold the chat response beyond the research budget',async()=>{
  let sent,signal;
  const middleware=createResearchMiddleware({lookup:async(query,config,language,options)=>{signal=options.signal;return new Promise(()=>{});},getConfiguration:()=>({apiKey:'test'}),getProducts:()=>products,timeoutMs:20});
- const req={method:'POST',body:{messages:[{role:'user',text:'Trà sen giá bao nhiêu?'}],language:'vi'}};
+ const req={method:'POST',body:{messages:[{role:'user',text:'Google tìm trà sen giá bao nhiêu?'}],language:'vi'}};
  const res={statusCode:200,json:body=>{sent=body;}};
  middleware(req,res,()=>{});
  await res.json({message:'Theo danh mục',productIds:[1]});

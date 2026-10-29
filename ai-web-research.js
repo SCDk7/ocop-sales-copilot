@@ -5,17 +5,18 @@
     const safeURL=node?require('./ai-grounding').safeURL:value=>{
         try {const url=new URL(value);return url.protocol==='https:'&&!url.username&&!url.password?url.href:null;}catch{return null;}
     };
-    const webResearchInstruction=`PUBLIC WEB RESEARCH: Act as an independent, trustworthy OCOP specialty research advisor. Every public product, regional-specialty or gift-advice question must go through the application's Google Search research stage, including existing FAQs. Prioritize government OCOP records, verified manufacturers and reputable reporting. Cite only URLs returned by a successful search. If no relevant verified source is returned, explicitly disclose the missing web verification and offer only clearly labelled catalogue facts. Never claim the search succeeded from model memory or Wikipedia alone. The catalogue controls purchasable product IDs, units and shop checkout prices. Official, dated certification sources may disagree with the catalogue: disclose the discrepancy, rather than asserting catalogue stars as independently verified. Web prices are references, not this shop's offer. Do not send account, order, payment, contact, address or complaint details to public search.`;
+    const webResearchInstruction=`WEBSITE FIRST: Answer briefly from the supplied website catalogue and verified tools, starting with Dạ or Thưa. Only research the public web when the customer explicitly requests it. Never fabricate missing facts or claim a search occurred without tool evidence. Cite only actual returned URLs. Website prices govern checkout. Never send private account, order, payment, contact or complaint information to public search.`;
     const norm=value=>shopping.normalize(String(value||''));
     const privateText=value=>{
         const text=String(value||''),q=norm(text);
         return /\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b|\b(?:\+?84|0)\d[\d ()-]{7,}\d\b/i.test(text)
             || /\b(?:otp|password|mat khau|ma don|order id|order number|tracking number|so tai khoan|so the|ten toi|toi ten|toi o|dia chi cua toi|dia chi nhan hang|nguoi nhan|so nha)\b|\b(?:ord-|ocop-draft-|kh\d{5,}|npp\d{5,}|ad\d{5,})/.test(q);
     };
-    function planWebResearch(messages,products=[],reply=null,{hasImages=false}={}){
+    function planWebResearch(messages,products=[],reply=null,{hasImages=false,websiteOnly=false}={}){
         const userMessages=(messages||[]).filter(row=>row.role==='user');
         const query=String(userMessages.at(-1)?.text || reply?.transcription || '').trim();
         const q=norm(query);
+        if(websiteOnly&&!/google|tra cuu (?:tren )?(?:web|internet|mang)|tim (?:kiem )?(?:tren )?(?:web|internet|google)|search (?:the )?(?:web|internet)|web search/.test(q))return {required:false,reason:'website_first'};
         if(!q && !hasImages)return {required:false,reason:'empty'};
         if(privateText(query))return {required:false,reason:'private_details'};
         if(/khieu nai|doi tra|hoan tien|complaint|refund|kiem tra.*don|tinh trang.*don|theo doi.*don|order status|track.*order|giao hang|shipping|phi ship|huong dan.*dat hang|ho tro dat hang|how.*place.*order|ton kho|con hang|con bao nhieu|het hang|stock|inventory|cho.*gap.*(?:admin|nhan vien)|nguoi that|human support/.test(q) || reply?.handoffAdmin)return {required:false,reason:'private_or_operational'};
@@ -70,11 +71,11 @@
         }
         return {...reply,message,text_response:message,googleSources:success?sources:[],googleSearchSuggestions:success?research.suggestions||'':'',webResearch:metadata,integrations:{...reply.integrations,googleSearch:success}};
     }
-    function createResearchMiddleware({lookup,getConfiguration,getProducts,timeoutMs=3500}){
+    function createResearchMiddleware({lookup,getConfiguration,getProducts,timeoutMs=3500,websiteOnly=true}){
         return (req,res,next)=>{
             if(req.method!=='POST')return next();
             const send=res.json.bind(res);req.ocopWebResearch=true;
-            const initial=planWebResearch(req.body?.messages,getProducts(),null,{hasImages:Boolean(req.body?.imageIds?.length || req.body?.imageData)});
+            const initial=planWebResearch(req.body?.messages,getProducts(),null,{hasImages:Boolean(req.body?.imageIds?.length || req.body?.imageData),websiteOnly});
             const run=async plan=>{
                 let config;try{config=getConfiguration();}catch{}
                 const attempted=Boolean(config?.apiKey),checkedAt=new Date().toISOString();
@@ -92,7 +93,7 @@
             };
             res.json=async body=>{
                 if(res.statusCode>=400 || !body?.message)return send(body);
-                const plan=initial.required?initial:planWebResearch(req.body?.messages,getProducts(),body,{hasImages:Boolean(req.body?.imageIds?.length || req.body?.imageData)});
+                const plan=initial.required?initial:planWebResearch(req.body?.messages,getProducts(),body,{hasImages:Boolean(req.body?.imageIds?.length || req.body?.imageData),websiteOnly});
                 if(!plan.required)return send(body);
                 const research=await run(plan).catch(()=>({attempted:true,status:'unavailable'}));
                 return send(applyWebResearch(body,research,plan,getProducts(),req.body?.language||'vi'));

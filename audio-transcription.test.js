@@ -3,7 +3,7 @@ const {transcribeAudio}=require('./audio-transcription');
 const audio=Buffer.concat([Buffer.from([0x1a,0x45,0xdf,0xa3]),Buffer.from('test audio')]);
 test('recorded WebM uses one Gemini request and only returns a transcript',async()=>{
  const text=await transcribeAudio(audio,'audio/webm;codecs=opus','vi',{},async(_config,payload,options)=>{
-  assert.equal(options.maxAttempts,1);assert.equal(payload.contents[0].parts[1].inline_data.mime_type,'audio/webm');
+  assert.equal(options.maxAttempts,1);assert.equal(options.timeoutMs,18000);assert.equal(options.fastest,true);assert.equal(payload.contents[0].parts[1].inline_data.mime_type,'audio/webm');
   return {response:{ok:true},data:{candidates:[{content:{parts:[{text:JSON.stringify({transcription:' tìm trà Hà Nội '})}]}}]}};
  });
  assert.equal(text,'tìm trà Hà Nội');

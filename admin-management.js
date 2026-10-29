@@ -18,6 +18,9 @@
     }
 }(typeof self !== 'undefined' ? self : this, function () {
     'use strict';
+    const productCodes=typeof module==='object'&&module.exports?require('./product-codes'):window.OCOPProductCodes;
+    let productGroupFilter='all';
+    let productCodeSearch='',productSearchTimer;
 
     // -------------------------------------------------------------
     // GENERATOR: MÃ 12 KÝ TỰ CHUẨN HÓA
@@ -344,7 +347,7 @@
 
     function getCatalogProducts() {
         if (typeof window !== 'undefined' && Array.isArray(window.PRODUCTS) && window.PRODUCTS.length > 0) {
-            return window.PRODUCTS;
+            return window.PRODUCTS.map(product=>productCodes.decorate(product));
         }
         return [];
     }
@@ -684,6 +687,7 @@
     }
 
     function switchAdminRole(role, distCode, adminUsername) {
+        productGroupFilter='all';productCodeSearch='';
         setActiveScope(role, distCode, adminUsername);
         if (typeof window !== 'undefined' && typeof window.showToast === 'function') {
             const scope = getActiveScope();
@@ -1041,7 +1045,21 @@
     // -------------------------------------------------------------
     // RENDER TAB 3: QUẢN LÝ HÀNG TỒN KHO (INVENTORY STOCK)
     // -------------------------------------------------------------
+    function renderProductGroupControls(products){
+        const options=Object.values(productCodes.groups).map(group=>`<option value="${group.prefix}"${productGroupFilter===group.prefix?' selected':''}>${group.prefix} · ${group.name} (${products.filter(product=>productCodes.groupFor(product).prefix===group.prefix).length})</option>`).join('');
+        return `<div class="flex flex-wrap items-center gap-3 mb-4"><label class="flex flex-wrap items-center gap-2 font-bold text-sky-900">Nhóm sản phẩm <select onchange="OcopAdminManagement.setProductGroup(this.value)" class="rounded-xl border border-sky-200 bg-white p-2 text-sm"><option value="all"${productGroupFilter==='all'?' selected':''}>Tất cả nhóm (${products.length})</option>${options}</select></label><input id="admin-mgmt-product-search" type="search" value="${escapeHtml(productCodeSearch)}" oninput="OcopAdminManagement.searchProducts(this.value)" placeholder="Tìm mã hoặc tên sản phẩm" aria-label="Tìm mã hoặc tên sản phẩm" class="min-w-0 rounded-xl border border-sky-200 bg-white p-2 text-sm"></div>`;
+    }
+    function setProductGroup(value){
+        productGroupFilter=value==='all'||Object.values(productCodes.groups).some(group=>group.prefix===value)?value:'all';
+        renderAdminManagementUI();
+    }
+    function searchProducts(value){
+        clearTimeout(productSearchTimer);
+        productSearchTimer=setTimeout(()=>{productCodeSearch=String(value||'').slice(0,120);renderAdminManagementUI();const input=document.getElementById('admin-mgmt-product-search');if(input){input.focus();}},200);
+    }
     function renderInventoryTabHtml(products, isMaster) {
+        const groupControls=renderProductGroupControls(products);
+        products=products.filter(product=>(productGroupFilter==='all'||productCodes.groupFor(product).prefix===productGroupFilter)&&productCodes.matches(product,productCodeSearch));
         let rows = products.map(p => {
             let statusBadge = '';
             if (p.stock > 50) {
@@ -1059,7 +1077,7 @@
                             <img src="${p.img || 'images/catalog/web-latest-1.jpg'}" alt="${p.name}" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shrink-0 shadow-2xs" onerror="this.src='images/catalog/web-latest-1.jpg'">
                             <div>
                                 <div class="font-bold text-slate-900 text-sm leading-snug">${p.name}</div>
-                                <div class="text-xs text-slate-500 font-medium mt-0.5">ID: #${p.id} · <span class="text-sky-700">${p.region}</span></div>
+                                <div class="text-xs text-slate-500 font-medium mt-0.5"><strong class="font-mono text-sky-800">${productCodes.codeFor(p)}</strong> · <span class="text-sky-700">${p.region}</span></div>
                             </div>
                         </div>
                     </td>
@@ -1084,7 +1102,7 @@
             rows = `<tr><td colspan="5" class="p-6 text-center text-slate-400 font-medium">Không có sản phẩm nào thuộc phân vùng này.</td></tr>`;
         }
 
-        return `
+        return groupControls+`
             <div class="space-y-4">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div>
@@ -1119,6 +1137,8 @@
     // RENDER TAB 4: QUẢN LÝ SỐ LƯỢNG ĐÃ BÁN (SALES VOLUME)
     // -------------------------------------------------------------
     function renderSalesTabHtml(products, totalRevenue, totalSold, isMaster) {
+        const groupControls=renderProductGroupControls(products);
+        products=products.filter(product=>(productGroupFilter==='all'||productCodes.groupFor(product).prefix===productGroupFilter)&&productCodes.matches(product,productCodeSearch));
         // Sắp xếp sản phẩm theo số lượng bán nhiều nhất
         const sorted = products.slice().sort((a, b) => (b.sold || 0) - (a.sold || 0));
 
@@ -1132,7 +1152,7 @@
                             <img src="${p.img || 'images/catalog/web-latest-1.jpg'}" alt="${p.name}" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shrink-0 shadow-2xs" onerror="this.src='images/catalog/web-latest-1.jpg'">
                             <div>
                                 <div class="font-bold text-slate-900 text-sm leading-snug">${p.name}</div>
-                                <div class="text-xs text-slate-500 font-medium mt-0.5">${p.region} · Đơn giá: <strong class="text-slate-800">${formatVND(p.price)}</strong></div>
+                                <div class="text-xs text-slate-500 font-medium mt-0.5"><strong class="font-mono text-sky-800">${productCodes.codeFor(p)}</strong> · ${p.region} · Đơn giá: <strong class="text-slate-800">${formatVND(p.price)}</strong></div>
                             </div>
                         </div>
                     </td>
@@ -1159,7 +1179,7 @@
             rows = `<tr><td colspan="6" class="p-6 text-center text-slate-400 font-medium">Chưa có số liệu bán hàng cho phân vùng này.</td></tr>`;
         }
 
-        return `
+        return groupControls+`
             <div class="space-y-4">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div>
@@ -1270,6 +1290,8 @@
         switchAdminTab: switchAdminTab,
         switchAdminRole: switchAdminRole,
         saveStockInput: saveStockInput,
+        setProductGroup: setProductGroup,
+        searchProducts: searchProducts,
         onRoleSelectChange: onRoleSelectChange,
         logoutAdmin: logoutAdmin
     };

@@ -24,7 +24,7 @@ function fixture(fetch){
   localStorage:{getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)},
   sessionStorage:{getItem:()=>null},location:{href:'http://localhost/draft-order.html?products=1'},history:{replaceState(){}},
   salesPage:{language:'vi',text:vi=>vi,api:path=>path},FormData:class{get(key){return formData[key]}},confirm:()=>true,dispatchEvent(){}};
- context.window=context;vm.createContext(context);
+ context.window=context;context.OCOPAuth={token:()=> 'b'.repeat(64)};vm.createContext(context);
  vm.runInContext(source.slice(0,source.indexOf('(async () => {')),context);
  const all=node=>[node,...(node.children||[]).flatMap(all)];
  return {context,nodes,values,all,
@@ -32,7 +32,7 @@ function fixture(fetch){
 }
 const draft=status=>({id:'OCOP-DRAFT-test',status,lines:[{name:'Trà',quantity:1,unitPrice:100000}],subtotal:100000,total:null,receiptToken:'a'.repeat(64),inventoryVerified:false});
 
-test('demo payment preview changes QR with method and amount, while COD has no QR',()=>{
+test('bank payment preview encodes bank details while MoMo remains demo and COD has no QR',()=>{
  let calls=0,method='vietqr';
  const {context,nodes,values,all}=fixture(()=>{calls++;});
  const before=JSON.stringify([...values]);
@@ -43,7 +43,7 @@ test('demo payment preview changes QR with method and amount, while COD has no Q
  const qr=()=>all(preview()).find(node=>node.tag==='img');
  context.updatePaymentPreview(100000);
  assert.equal(preview().dataset.method,'vietqr');
- const first=qr().src;assert.match(first,/^data:image\/gif;base64,/);
+ const first=qr().src;assert.match(first,/^https:\/\/img\.vietqr\.io\/image\/970418-8808661371-qr_only\.svg\?/);
  method='momo';context.updatePaymentPreview(100000);
  assert.equal(preview().dataset.method,'momo');assert.notEqual(qr().src,first);
  const momo=qr().src;context.updatePaymentPreview(200000);assert.notEqual(qr().src,momo);
@@ -73,13 +73,13 @@ test('an accepted order stays pending and has a tracking link without a receipt 
  assert.equal(JSON.parse(values.get('ocop_customer_orders'))[0].status,'pending_seller_confirmation');
  assert.equal(nodes.draftForm.hidden,true);assert.equal(values.has('ocop_cart'),false);
  const link=all(nodes.result).find(node=>node.tag==='a');
- assert.ok(link.href.includes('#receipt='));assert.ok(!new URL(link.href).search.includes('receipt'));
+ assert.equal(new URL(link.href).hash,'');assert.ok(!new URL(link.href).search.includes('receipt'));
 });
 
 test('receipt completion is shown only after customer confirmation and a successful server response',async()=>{
  let requests=0;
  const {context,nodes,values,all,render}=fixture(async(url,options)=>{
-  requests++;assert.match(url,/\/received$/);assert.equal(options.headers.Authorization,'Bearer '+'a'.repeat(64));
+  requests++;assert.match(url,/\/received$/);assert.equal(options.headers.Authorization,'Bearer '+'b'.repeat(64));
   assert.equal(JSON.parse(options.body).confirmed,true);
   return {ok:true,json:async()=>({draft:{...draft('completed'),customerReceivedAt:'2026-10-28T10:00:00Z'}})};
  });

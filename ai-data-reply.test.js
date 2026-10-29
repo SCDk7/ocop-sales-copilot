@@ -24,11 +24,12 @@ test('clear combo budgets are answered locally with verified totals and item cou
  assert.equal(fastBudgetReply(catalogue,{...analysis.intent,maxPrice:null}),null);
 });
 
-test('tea FAQ answers price, stars and origin without a model service',()=>{
+test('tea FAQ answers the requested price and stars briefly without a model service',()=>{
  const reply=composeDataReply([tea],{categoryOrKeyword:'trà xanh cổ thụ Phìn Hồ',knowledgeQuery:'Trà xanh cổ thụ Phìn Hồ mấy sao giá bao nhiêu'},'vi');
  assert.match(reply.message,/600\.000 VNĐ\/hộp/);
  assert.match(reply.message,/OCOP 5 sao/);
- assert.match(reply.message,/cổ thụ hàng trăm năm/);
+ assert(reply.message.length<250);
+ const origin=composeDataReply([tea],{categoryOrKeyword:'trà xanh cổ thụ Phìn Hồ',knowledgeQuery:'Trà xanh cổ thụ Phìn Hồ nguồn gốc ở đâu và giá bao nhiêu'},'vi');assert.match(origin.message,/cổ thụ hàng trăm năm/);
  assert.deepEqual(reply.productIds,[340]);
  const updated=composeDataReply([{...tea,price:620000,stars:4}],{categoryOrKeyword:'trà Phìn Hồ'},'vi');
  assert.match(updated.message,/620\.000/);assert.match(updated.message,/OCOP 4 sao/);

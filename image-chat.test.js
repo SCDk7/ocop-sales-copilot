@@ -22,7 +22,7 @@ test('the reported text query reaches the API fallback without an uninitialized 
   generateAIResponse:async()=>({status:503,body:{}})};
  vm.createContext(context);vm.runInContext(source.slice(source.indexOf('async function handleAIChatRequest('),source.indexOf("app.post('/api/ai/chat'")),context);
  let body,status=200;const res={status(code){status=code;return this},json(value){body=value;return value}};
- await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:query}]}},res);
+ await context.handleAIChatRequest({ip:'test',authUser:{id:'user-a'},body:{language:'vi',messages:[{role:'user',text:query}]}},res);
  assert.equal(status,200);assert(body.productIds.length>0);
  assert(body.productIds.every(id=>catalogue.find(p=>p.id===id).region==='Đồng Nai'));
  assert(body.productLocations.length>0);assert(body.message.includes('khu vực nào của Đồng Nai'));
@@ -38,13 +38,13 @@ test('the reported text query reaches the API fallback without an uninitialized 
  ];
  for(const [index,configure]of routes.entries()){
   configure();
-  await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:query}]}},res);
+  await context.handleAIChatRequest({ip:'test',authUser:{id:'user-a'},body:{language:'vi',messages:[{role:'user',text:query}]}},res);
   assert.equal(analyses,index+1,'request analysis runs before each shortcut reply');
   assert.equal(body.requestAnalysis.status,'completed');
  }
 });
 test('an attached photo bypasses text-only intent and reaches vision with its caption',async()=>{
- const image={id:'00000000-0000-0000-0000-000000000001',mimeType:'image/png',bytes:20,fileName:'test.png'};let visionCalls=0;
+ const image={ownerId:'user-a',id:'00000000-0000-0000-0000-000000000001',mimeType:'image/png',bytes:20,fileName:'test.png'};let visionCalls=0;
  const context={console,Date,AbortSignal,Promise,Set,process:{env:{}},analyzeCustomerRequest:require('./ai-request-analysis').analyzeCustomerRequest,commerceShopping:require('./commerce-shopping').createCommerceShopping(),appendProductLocations:require('./product-locations').appendProductLocations,OcopStores:{},AIShopping:shopping,AIIntent:{understand:()=>{throw Error('Text-only intent must not run')},merge:local=>local},
   isAIRateLimited:()=>false,validateAIRequest:body=>({...body,products}),getRestrictedTopicReply:()=>null,MAX_CHAT_IMAGES_PER_MESSAGE:10,chatImages:[image],saveChatImages:()=>{},aiWebsiteCatalog:{products},
   extractSearchIntents:shopping.analyze,planWikipedia:()=>({query:'',topics:[],skipReason:'private_or_image_context'}),getAIModelConfiguration:()=>({model:'test',apiKey:'test'}),
@@ -52,15 +52,15 @@ test('an attached photo bypasses text-only intent and reaches vision with its ca
   generateAIResponse:async(validation,options)=>{visionCalls++;assert.equal(options.attachedImages[0],image);assert.equal(validation.messages.at(-1).text,'Ảnh này là món gì?');return {status:200,body:{message:'Cà phê',productIds:[2],integrations:{gemini:true}}}}};
  vm.createContext(context);vm.runInContext(source.slice(source.indexOf('async function handleAIChatRequest('),source.indexOf("app.post('/api/ai/chat'")),context);
  let body,status;const res={status(code){status=code;return this},json(value){body=value;return value}};
- await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:'Ảnh này là món gì?'}],imageIds:[image.id]}},res);
+ await context.handleAIChatRequest({ip:'test',authUser:{id:'user-a'},body:{language:'vi',messages:[{role:'user',text:'Ảnh này là món gì?'}],imageIds:[image.id]}},res);
  assert.equal(visionCalls,1);assert.equal(status,200);assert.equal(body.productIds[0],2);
  assert.equal(body.geminiUnderstanding.status,'understood');
  context.searchProductByImageKnowledge=()=>{throw Error('A caption or filename cannot substitute for image recognition');};
  context.generateAIResponse=async()=>({status:200,body:{message:'Please send a clearer label',productIds:[],imageMatchStatus:'unknown'}});
- await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:'tea.jpg'}],imageIds:[image.id]}},res);
+ await context.handleAIChatRequest({ip:'test',authUser:{id:'user-a'},body:{language:'vi',messages:[{role:'user',text:'tea.jpg'}],imageIds:[image.id]}},res);
  assert.equal(body.imageMatchStatus,'unknown');assert.equal(body.productIds.length,0);
  context.generateAIResponse=async()=>({status:503,body:{message:'Image service unavailable',productIds:[],imageMatchStatus:'unknown'}});
- await context.handleAIChatRequest({ip:'test',body:{language:'vi',messages:[{role:'user',text:'tea.jpg'}],imageIds:[image.id]}},res);
+ await context.handleAIChatRequest({ip:'test',authUser:{id:'user-a'},body:{language:'vi',messages:[{role:'user',text:'tea.jpg'}],imageIds:[image.id]}},res);
  assert.equal(status,503);assert.equal(body.productIds.length,0);
 });
 test('resized JPEG catalogue photos match by pixels and plain colour images do not identify products',async()=>{
@@ -137,7 +137,7 @@ test('a downloaded reference photo returns a similar product without claiming ex
  assert.equal(result.status,200);assert.equal(result.body.responseMode,'reference_image_match');
  assert.equal(result.body.imageMatchStatus,'similar');assert.equal(result.body.integrations.gemini,false);
  assert.deepEqual(Array.from(result.body.productIds),[chosen.product.id]);
- assert.match(result.body.message,/chưa xác nhận đúng thương hiệu/);
+ assert.match(result.body.message,/tương tự, chưa có điểm khớp %/);
 });
 test('vision provider failure keeps retry available and asks for label text without inventing recognition',async()=>{
  const context=visionContext(async()=>({response:{ok:false,status:503},data:{error:{message:'Unavailable'}}}));
@@ -163,7 +163,7 @@ test('image matching respects visible region and never guesses from a caption or
  assert.equal(mienMatches.includes(425),true);
 });
 
-test('similar photo replies list three related products with canonical prices and no popularity claim',async()=>{
+test('similar photo replies highlight the best product with its actual price and honest match level',async()=>{
  const catalogue=[
   {id:10,name:'Trà sen Nhơn Trạch',region:'Đồng Nai',stars:4,price:160000,packaging:'hộp'},
   {id:11,name:'Trà sen Tây Hồ',region:'Hà Nội',stars:5,price:250000,packaging:'hộp'},
@@ -174,9 +174,9 @@ test('similar photo replies list three related products with canonical prices an
  const result=await context.generateAIResponse({language:'vi',products:catalogue,messages:[{role:'user',text:'Tìm món trong ảnh'}]},{imageData:{mimeType:'image/png',data:'test-image'}});
  assert.equal(result.body.imageMatchStatus,'similar');
  assert.deepEqual(Array.from(result.body.productIds),[10,11,12]);
- for(const text of ['Trà sen Nhơn Trạch','160.000 ₫/hộp','OCOP 4 sao','Trà sen Tây Hồ','250.000 ₫/hộp','Trà sen Huế','Hộp màu xanh','chưa tìm thấy chính xác']) assert(result.body.message.includes(text),text);
+ for(const text of ['Dạ','Trà sen Nhơn Trạch','160.000 ₫/hộp','tương tự, chưa có điểm khớp %']) assert(result.body.message.includes(text),text);
  assert(!/Mật ong|được ưa chuộng|bán chạy|1 đồng/.test(result.body.message));
- assert(result.body.message.endsWith('Anh/chị muốn tìm hiểu thành phần hay cách đặt mua sản phẩm nào ạ?'));
+ assert(!result.body.message.includes('98%'));assert(result.body.message.length<300);
 });
 
 test('an exact model ID needs a readable full product label, not just an asserted match',async()=>{
@@ -206,9 +206,9 @@ test('visual matching ranks the specific product line and separates sauce, mushr
 test('visual reply discloses missing producer data and never fills missing matches or stock facts',()=>{
  const product={id:1,name:'Trà sen',stars:4,price:160000,region:'Đồng Nai',packaging:'hộp'};
  const exact=formatVisualReply([product],{status:'exact'});
- assert.match(exact,/Chủ thể sản xuất chưa được cập nhật/);
+ assert.match(exact,/khớp ảnh\/nhãn trong danh mục/);assert(!exact.includes('Chủ thể:'));
  const similar=formatVisualReply([product],{status:'similar',language:'en',reference:true});
- assert.match(similar,/Trà sen/);assert(!similar.includes('Lotus Tea'));assert.equal((similar.match(/• \*\*/g)||[]).length,1);
+ assert.match(similar,/Trà sen/);assert(!similar.includes('Lotus Tea'));assert.match(similar,/percentage not available/);
  const unknown=formatVisualReply([],{productType:'Trà sen',status:'unknown'});
  assert.match(unknown,/nhãn rõ hơn/);assert(!unknown.includes('OCOP 4 sao'));
  assert(!formatVisualReply([],{productType:'unknown',status:'unknown'}).includes('**unknown**'));

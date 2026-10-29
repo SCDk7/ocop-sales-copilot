@@ -12,11 +12,16 @@
         const normalized = shopping.normalize(latest);
         const intent = shopping.resolve(history, products, options.extract || shopping.analyze);
         intent.knowledgeQuery = latest;
+        // A budget plus an explicit number of items is a basket request even without the word "combo".
+        if(intent.maxPrice>0&&(intent.minItems>1||intent.maxItems>1))intent.isCombo=true;
         const users = history.filter(message => message.role === 'user');
         const previous = shopping.normalize(users.at(-2)?.text || '');
         const supportFollowup = /ma don|order (?:id|number)|\b(?:ord|dh)[-_]?\d|gui anh|anh dinh kem/.test(normalized);
         intent.isComplaint = Boolean(intent.isComplaint || isComplaint(normalized) || (supportFollowup && isComplaint(previous)));
         intent.isCSKH = !intent.isComplaint && Boolean(intent.isCSKH || contact.test(normalized));
+        const requestedName=normalized.match(/(?:muon mua|can mua|tim mua|co ban|ban co)\s+(.+)/)?.[1]?.replace(/\b(?:khong|a|nhe|voi|giup|toi)\b/g,'').trim();
+        const dataUnavailable=Boolean(requestedName&&requestedName.length>=4&&!intent.isCombo&&!intent.isGift&&!intent.isComplaint&&!intent.isCSKH&&!intent.isOrderGuide&&!intent.categoryOrKeyword
+            &&!/^hang$|^san pham$|^dac san$/.test(requestedName)&&!products.some(product=>shopping.normalize(product.name).includes(requestedName)));
         const hasImages = Boolean(options.hasImages);
         const clarification = !hasImages && !intent.isComplaint && !intent.isCSKH
             ? shopping.budgetClarification(latest, options.language || 'vi', intent) : null;
@@ -31,6 +36,7 @@
             clarification,
             summary: {
                 status: 'completed', source: 'catalog_rules', task,
+                dataUnavailable,
                 contextUsed: history.length > 1, hasImages,
                 needsClarification: Boolean(clarification),
                 catalogueMatches: catalogueApplicable ? matchingProducts.length : null,

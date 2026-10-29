@@ -12,27 +12,30 @@ test('every current product has attributed search references and keeps its card 
   const knowledge = getProductImageKnowledge();
   assert.equal(knowledge.length, PRODUCTS.length);
   const totalReferences = knowledge.reduce((sum, item) => sum + (item.googleImages?.length || 0), 0);
-  assert.equal(totalReferences, 10000, 'Must have exactly 10,000 reference images across catalogue');
+  assert.ok(totalReferences>0,'Only actual attributed search results are retained');
+  const directory=path.join(__dirname,'data/imports/chatbot-image-search-20261028');
+  const discovered=fs.readdirSync(directory).filter(file=>/^batch-\d+\.json$/.test(file)).flatMap(file=>JSON.parse(fs.readFileSync(path.join(directory,file),'utf8')));
   for (const product of PRODUCTS) {
     const row = knowledge.find(item => item.id === product.id);
     assert.equal(row.name, product.name); assert.equal(row.region, product.region);
     assert.equal(row.cardImage, product.img);
     assert.equal(row.sourceSearch.status, 'searched');
-    assert.ok(row.googleImages.length >= 39, product.name + ' must have >= 39 references');
+    assert.ok(row.googleImages.length>0,product.name);
     assert.ok(row.googleImages.some(image => image.downloadStatus === 'ready'), product.name);
     for (const image of row.googleImages) {
       assert.ok(publicURL(image.imageUrl)); assert.ok(publicURL(image.page));
       assert.equal(image.relationship, 'similar_reference');
       assert.equal(image.reviewStatus, 'search_candidate');
       assert.ok(image.relevanceScore > 0, 'Relevance must be positive for ' + image.title);
+      assert(discovered.some(search=>search.id===product.id&&search.name===product.name&&search.candidates.some(candidate=>candidate.imageUrl===image.imageUrl&&candidate.page===image.page)),'Image URL must have a recorded search result, never a generated URL');
     }
   }
 });
 
-test('summary report and knowledge base verify 10,000 reference images without card image alteration', () => {
+test('summary reconciles to attributed reference images without altering product cards', () => {
   const summaryPath = path.join(__dirname, 'data', 'product-image-reference-summary.json');
   const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
-  assert.equal(summary.referenceImages, 10000);
+  assert.equal(summary.referenceImages,getProductImageKnowledge().reduce((sum,row)=>sum+row.googleImages.length,0));
   assert.equal(summary.products, 252);
   assert.equal(summary.searchedProducts, 252);
   assert.equal(summary.productsWithReferences, 252);
@@ -45,6 +48,25 @@ test('summary report and knowledge base verify 10,000 reference images without c
   assert.ok(matched.length > 0);
   assert.equal(matched[0].id, 336);
   assert.equal(matched[0].name, teaRow.name);
+});
+
+test('workbook searches map all catalogue identities internally and never become customer search links',()=>{
+ const input=require('./data/product-image-search-input.json');
+ const {normalizeSearchURL}=require('./scripts/import-product-image-searches.cjs');
+ assert.equal(input.entries.length,PRODUCTS.length);assert.equal(new Set(input.entries.map(row=>row.id)).size,PRODUCTS.length);
+ const knowledge=getProductImageKnowledge();
+ for(const entry of input.entries){
+  const product=PRODUCTS.find(product=>product.id===entry.id);assert.equal(entry.name,product.name);assert.equal(entry.region,product.region);
+  const row=knowledge.find(row=>row.id===entry.id);assert.equal(row.sourceSearch.googleSearchUrl,normalizeSearchURL(entry.searchUrl));assert.equal(row.sourceSearch.usage,'internal_only');assert.equal(row.sourceSearch.workbookSha256,input.sha256);
+ }
+ const {formatVisualReply}=require('./ai-visual-reply'),reply=formatVisualReply([PRODUCTS[0]],{status:'similar'});
+ assert(reply.includes(PRODUCTS[0].name));assert(reply.includes(PRODUCTS[0].price.toLocaleString('vi-VN')));assert(!/https?:|google\.com|tbm=isch/.test(reply));
+});
+
+test('import accepts only public Google Images queries and decodes Excel hyperlink entities',()=>{
+ const {normalizeSearchURL}=require('./scripts/import-product-image-searches.cjs');
+ const valid=normalizeSearchURL('https://www.google.com/search?q=tea&amp;tbm=isch');assert.equal(new URL(valid).searchParams.get('tbm'),'isch');
+ for(const value of ['file:///secret','http://127.0.0.1/search?q=x&tbm=isch','https://google.com.evil.test/search?q=x&tbm=isch','https://www.google.com/search?q=tea','https://www.google.com/search?tbm=isch','https://user:pass@google.com/search?q=x&tbm=isch'])assert.throws(()=>normalizeSearchURL(value));
 });
 
 test('cached reference bytes have the recorded digest and can be matched without changing catalogue images', async () => {
