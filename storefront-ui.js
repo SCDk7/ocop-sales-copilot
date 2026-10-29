@@ -40,6 +40,7 @@
 
     const document = root.document;
     const language = () => typeof currentLanguage === 'string' ? currentLanguage : document.documentElement.lang || 'vi';
+    const localize=(vi,en)=>{if(root.OCOPLanguage){const value=root.OCOPLanguage.text(vi,language());return value!==vi||language()==='vi'?value:root.OCOPLanguage.text(en,language());}return language()==='en'?en:vi;};
     const showMessage = text => { if (typeof root.showToast === 'function') root.showToast(text, 'success'); };
     const disablePanel = element => {
         if (!element) return;
@@ -66,10 +67,8 @@
     };
     function cleanUI() {
         const supportLabel = document.getElementById('i18n-intro-quick-ai');
-        if (supportLabel) supportLabel.textContent = language() === 'en' ? 'AI Support' : 'AI hỗ trợ';
-        const featureLabels=language()==='en'
-            ? ['63 Provinces Digital Map','Specialties from Vietnam','24/7 AI Assistant']
-            : ['Bản Đồ Số 63 Tỉnh Thành','Đặc Sản Vùng Miền Việt Nam','Trợ lý AI 24/7'];
+        if (supportLabel) supportLabel.textContent = localize('AI hỗ trợ','AI Support');
+        const featureLabels=["Bản Đồ Số 63 Tỉnh Thành","Đặc Sản Vùng Miền Việt Nam","Trợ lý AI 24/7"].map((value,index)=>localize(value,["63 Provinces Digital Map","Specialties from Vietnam","24/7 AI Assistant"][index]));
         featureLabels.forEach((label,index)=>{
             for(const id of [`i18n-intro-pillar${index+1}`,`i18n-hero-feat${index+1}-title`]){
                 const node=document.getElementById(id);
@@ -87,7 +86,7 @@
             if (stars) stars.textContent = `OCOP ${featured.stars} ★ • ${featured.region}`;
             const action = document.getElementById('hero-product-price');
             if (action) {
-                action.textContent = language() === 'en' ? 'View product' : 'Xem sản phẩm';
+                action.textContent = localize('Xem sản phẩm','View product');
                 action.title = name;
                 action.onclick = event => { event.stopPropagation(); root.openFeaturedProduct(); };
             }
@@ -102,19 +101,17 @@
             'i18n-intro-pillar3': 'Trợ lý AI 24/7',
             'i18n-intro-pillar4': 'AI Financial Engine',
             'i18n-sidebar-realtime': 'Điểm bán & hợp tác xã OCOP',
-            'chat-title': language() === 'en' ? 'OCOP VIETNAM AI ASSISTANT' : 'TRỢ LÝ AI OCOP VIỆT NAM',
+            'chat-title': localize('TRỢ LÝ AI OCOP VIỆT NAM','OCOP VIETNAM AI ASSISTANT'),
             'chat-greeting': greetings[language()] || greetings.vi,
-            'chat-guidance': language() === 'en' ? 'Tell me what you need or describe the issue with your order.' : 'Anh/chị cần tư vấn, hỗ trợ đơn hàng hay phản ánh vấn đề gì? Em sẽ hướng dẫn từng bước.'
+            'chat-guidance': localize('Anh/chị cần tư vấn, hỗ trợ đơn hàng hay phản ánh vấn đề gì? Em sẽ hướng dẫn từng bước.','Tell me what you need or describe the issue with your order.')
         };
         for (const [id, label] of Object.entries(titleMap)) {
             const el = document.getElementById(id);
             if (el && (id.startsWith('chat-') || isCashflowText(el.textContent))) el.textContent = label;
         }
         const chatInput = document.getElementById('ai-chat-input');
-        if (chatInput) chatInput.placeholder = language() === 'en' ? 'Ask for advice, support or make a complaint...' : 'Nhập yêu cầu tư vấn, hỗ trợ hoặc khiếu nại...';
-        const supportActions = language() === 'en'
-            ? [['Product advice','Please help me choose an OCOP product.'],['Place an order','How do I place an order?'],['Check an order','Please check my order status.'],['Complaints / returns','I need help with a complaint about my order.']]
-            : [['Tư vấn sản phẩm','Tôi cần tư vấn chọn đặc sản OCOP.'],['Hỗ trợ đặt hàng','Hướng dẫn tôi đặt hàng.'],['Kiểm tra đơn hàng','Tôi cần kiểm tra đơn hàng của mình.'],['Khiếu nại / đổi trả','Tôi cần hỗ trợ khiếu nại về đơn hàng.']];
+        if (chatInput) chatInput.placeholder = localize('Nhập yêu cầu tư vấn, hỗ trợ hoặc khiếu nại...','Ask for advice, support or make a complaint...');
+        const supportActions=[["Tư vấn sản phẩm","Tôi cần tư vấn chọn đặc sản OCOP."],["Hỗ trợ đặt hàng","Hướng dẫn tôi đặt hàng."],["Kiểm tra đơn hàng","Tôi cần kiểm tra đơn hàng của mình."],["Khiếu nại / đổi trả","Tôi cần hỗ trợ khiếu nại về đơn hàng."]].map((pair,index)=>pair.map((value,column)=>localize(value,[["Product advice","Please help me choose an OCOP product."],["Place an order","How do I place an order?"],["Check an order","Please check my order status."],["Complaints / returns","I need help with a complaint about my order."]][index][column])));
         const sendSupportPrompt = prompt => {
             const input = document.getElementById('ai-chat-input');
             if (input) { input.value = prompt; root.sendAIMessage?.(); }
@@ -151,9 +148,7 @@
         }
         for (const id of ['chat-disclaimer','chat-verification-note']) {
             const el = document.getElementById(id);
-            if (el) el.textContent = language() === 'en'
-                ? 'Prices and product details follow the shop catalogue. Please confirm stock and store addresses before ordering or visiting.'
-                : 'Giá và thông tin theo danh mục cửa hàng. Anh/chị xác nhận tồn kho, địa chỉ điểm bán trước khi đặt mua hoặc đến xem.';
+            if (el) el.textContent = localize('Giá và thông tin theo danh mục cửa hàng. Anh/chị xác nhận tồn kho, địa chỉ điểm bán trước khi đặt mua hoặc đến xem.','Prices and product details follow the shop catalogue. Please confirm stock and store addresses before ordering or visiting.');
         }
         (compactCards[language()] || compactCards.vi).forEach(([title,description,badge],index) => {
             for (const [id,text] of [[`i18n-why-pillar${index+1}`,title],[`i18n-why-pillar${index+1}-desc`,description],[`i18n-why-badge${index+1}`,badge]]) {
@@ -168,17 +163,17 @@
             if (!isCashflowText(text)) return;
             const id = productIdFor(button);
             if (id) {
-                button.textContent = language() === 'en' ? 'View product' : 'Xem sản phẩm';
+                button.textContent = localize('Xem sản phẩm','View product');
                 button.title = button.textContent;
                 button.setAttribute('aria-label', button.textContent);
                 button.removeAttribute('onclick');
                 button.onclick = event => { event.stopPropagation(); viewProduct(id); };
             } else if (/addProductsToCart/.test(action)) {
-                button.textContent = language() === 'en' ? 'Add to cart' : 'Thêm vào giỏ hàng';
+                button.textContent = localize('Thêm vào giỏ hàng','Add to cart');
             } else disablePanel(button);
         });
         document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(input => {
-            if (isCashflowText(input.placeholder)) input.placeholder = language() === 'en' ? 'Search OCOP products...' : 'Tìm đặc sản OCOP...';
+            if (isCashflowText(input.placeholder)) input.placeholder = localize('Tìm đặc sản OCOP...','Search OCOP products...');
         });
         // Do not inspect or mutate the Leaflet map, controls or province selection.
         const walker = document.createTreeWalker(document.body, 4);
@@ -222,9 +217,9 @@
         function render() {
             drawer.replaceChildren();
             const header = document.createElement('div'); header.style.cssText = 'display:flex;justify-content:space-between;align-items:center';
-            const title = document.createElement('h3'); title.textContent = language() === 'en' ? 'Shopping cart' : 'Giỏ hàng';
+            const title = document.createElement('h3'); title.textContent = localize('Giỏ hàng','Shopping cart');
             header.append(title, button('✕', () => { drawer.hidden = true; })); drawer.append(header);
-            if (!manager.cart.length) { const empty = document.createElement('p'); empty.textContent = language() === 'en' ? 'Your cart is empty.' : 'Giỏ hàng chưa có sản phẩm.'; drawer.append(empty); }
+            if (!manager.cart.length) { const empty = document.createElement('p'); empty.textContent = localize('Giỏ hàng chưa có sản phẩm.','Your cart is empty.'); drawer.append(empty); }
             let total = 0;
             for (const item of manager.cart) {
                 const product = source.find(p => p.id === item.id); if (!product) continue;
@@ -233,7 +228,7 @@
                 const name = document.createElement('strong'); name.textContent = typeof root.getProductName === 'function' ? root.getProductName(product) : product.name;
                 const price = document.createElement('p'); price.textContent = product.price.toLocaleString('vi-VN') + ' ₫ × ' + item.quantity;
                 const actions = document.createElement('div'); actions.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap';
-                actions.append(button('−', () => root.updateCartQty(item.id,-1)),button('+', () => root.updateCartQty(item.id,1)),button(language() === 'en' ? 'Remove' : 'Xóa', () => root.removeFromCart(item.id)),button(language() === 'en' ? 'Order' : 'Đặt mua', () => {
+                actions.append(button('−', () => root.updateCartQty(item.id,-1)),button('+', () => root.updateCartQty(item.id,1)),button(localize('Xóa','Remove'), () => root.removeFromCart(item.id)),button(localize('Đặt mua','Order'), () => {
                     if (typeof root.openOnlineOrderModal !== 'function') return;
                     root.openOnlineOrderModal(item.id);
                     if (item.quantity > 1 && typeof root.changeOrderQty === 'function') root.changeOrderQty(item.quantity - 1);
@@ -241,12 +236,12 @@
                 }));
                 row.append(name, price, actions); drawer.append(row);
             }
-            const subtotal = document.createElement('p'); subtotal.style.fontWeight = '800'; subtotal.textContent = (language() === 'en' ? 'Subtotal: ' : 'Tạm tính: ') + total.toLocaleString('vi-VN') + ' ₫'; drawer.append(subtotal);
-            const note = document.createElement('p'); note.textContent = language() === 'en' ? 'Shipping and the final total are shown when placing an order.' : 'Phí giao hàng và tổng thanh toán hiển thị khi đặt mua.'; note.style.fontSize = '12px'; drawer.append(note);
+            const subtotal = document.createElement('p'); subtotal.style.fontWeight = '800'; subtotal.textContent = (localize('Tạm tính: ','Subtotal: ')) + total.toLocaleString('vi-VN') + ' ₫'; drawer.append(subtotal);
+            const note = document.createElement('p'); note.textContent = localize('Phí giao hàng và tổng thanh toán hiển thị khi đặt mua.','Shipping and the final total are shown when placing an order.'); note.style.fontSize = '12px'; drawer.append(note);
             const count = manager.getItemCount();
             for (const id of ['cart-count','cart-count-badge','intro-cart-count','header-cart-count']) { const badge = document.getElementById(id); if (badge) badge.textContent = String(count); }
         }
-        root.addToCart = id => { const p = source.find(p => p.id === Number(id)); if (!p) return; manager.addToCart(p,1); render(); showMessage(language() === 'en' ? 'Added to cart' : 'Đã thêm vào giỏ hàng'); };
+        root.addToCart = id => { const p = source.find(p => p.id === Number(id)); if (!p) return; manager.addToCart(p,1); render(); showMessage(localize('Đã thêm vào giỏ hàng','Added to cart')); };
         root.activateProductReconciliation = root.addToCart;
         root.addProductsToCart = ids => { for (const id of new Set(ids)) root.addToCart(id); root.toggleCart(true); };
         root.removeFromCart = id => { manager.removeFromCart(Number(id)); render(); };
@@ -327,8 +322,8 @@
             template.content.querySelectorAll('button').forEach(button => {
                 if (!isCashflowText(button.textContent)) return;
                 const id = productIdFor(button);
-                if (id) { button.textContent = language() === 'en' ? 'View product' : 'Xem sản phẩm'; button.setAttribute('onclick', `openQuickView(${Number(id)})`); }
-                else button.textContent = language() === 'en' ? 'Add to cart' : 'Thêm vào giỏ hàng';
+                if (id) { button.textContent = localize('Xem sản phẩm','View product'); button.setAttribute('onclick', `openQuickView(${Number(id)})`); }
+                else button.textContent = localize('Thêm vào giỏ hàng','Add to cart');
             });
             return template.innerHTML;
         });
@@ -342,7 +337,7 @@
         const showToast = root.showToast;
         if (typeof showToast === 'function') root.showToast = function (text, ...args) {
             if (isCashflowText(text)) return;
-            return showToast.call(this, text, ...args);
+            return showToast.call(this, localize(text,text), ...args);
         };
         installShoppingCart();
         protectChatFromPreviewReload();

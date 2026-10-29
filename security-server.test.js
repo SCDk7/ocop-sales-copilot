@@ -17,6 +17,11 @@ test('real API enforces authenticated ownership, image isolation, admin-only liv
  let started=false;for(let i=0;i<100;i++){try{const r=await fetch(base+'/health');if(r.ok){started=true;break;}}catch{}if(child.exitCode!==null)throw Error('Server failed: '+log);await new Promise(r=>setTimeout(r,100));}
  assert.ok(started,'Server started: '+log);
  const request=(route,token,body,method='POST',extra={})=>fetch(base+route,{method,headers:{...(token?{Authorization:'Bearer '+token}:{}),...(body!==undefined?{'Content-Type':'application/json'}:{}),...extra},...(body!==undefined?{body:JSON.stringify(body)}:{})});
+ const agentHome=await request('/',null,undefined,'GET',{Accept:'text/markdown',Origin:'https://scdk7.github.io'});
+ assert.equal(agentHome.status,200);assert.match(agentHome.headers.get('content-type'),/^text\/markdown/);assert.match(agentHome.headers.get('vary'),/Accept/);assert.match(agentHome.headers.get('vary'),/Origin/);assert.match(await agentHome.text(),/^# OCOP Sales/);
+ const agentMissing=await request('/__ora-404-probe',null,undefined,'GET',{Accept:'text/markdown'});assert.equal(agentMissing.status,404);assert.match(agentMissing.headers.get('content-type'),/^text\/markdown/);assert.match(await agentMissing.text(),/llms\.txt/);
+ for(const route of ['/about','/contact','/privacy','/catalog','/llms.txt','/sitemap.xml','/robots.txt'])assert.equal((await request(route,null,undefined,'GET',{Accept:'*/*'})).status,200,route);
+ assert.equal((await request('/site.config.json',null,undefined,'GET')).status,404,'public discovery cannot expose backend configuration');
  assert.equal((await request('/api/chat',null,{message:'hello'})).status,401);
  const crossOrigin=await request('/api/chat',null,{message:'hello'},'POST',{Origin:'https://scdk7.github.io'});assert.equal(crossOrigin.status,401);assert.equal(crossOrigin.headers.get('access-control-allow-origin'),'https://scdk7.github.io');
  const login=await request('/api/auth/login',null,{name:'alice-user',password});assert.equal(login.status,200);const loginBody=await login.json();assert.equal(loginBody.user.ai_enabled,true);assert.match(loginBody.token,/^[a-f0-9]{64}$/);
