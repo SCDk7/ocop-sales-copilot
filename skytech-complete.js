@@ -1456,12 +1456,162 @@
     // HỆ THỐNG ĐẶT MUA ONLINE SHIP TẬN NƠI & THU PHÍ NỀN TẢNG 10.000Đ CHO CHỦ WEB
     // =========================================================================
     let currentOrderProduct = null;
-    let currentOrderQty = Math.max(1, parseInt(initialQty, 10) || 1);
+    let currentOrderQty = 1;
     let onlineOrderSubmitting = false;
     let onlineOrderRequest;
+    let qrCountdownInterval = null;
+    let qrTimeRemaining = 300; // 5 phút = 300 giây
+
+    function formatQrTimer(sec) {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+
+    window.startQrCountdown = function (resetTime = true) {
+        if (resetTime) {
+            qrTimeRemaining = 300;
+        }
+        const updateDisplay = () => {
+            const text = formatQrTimer(qrTimeRemaining);
+            const bidvCount = document.getElementById('bidv-qr-countdown');
+            if (bidvCount) bidvCount.textContent = text;
+            const momoCount = document.getElementById('momo-qr-countdown');
+            if (momoCount) momoCount.textContent = text;
+        };
+        updateDisplay();
+
+        if (qrCountdownInterval) {
+            clearInterval(qrCountdownInterval);
+            qrCountdownInterval = null;
+        }
+
+        qrCountdownInterval = setInterval(() => {
+            qrTimeRemaining--;
+            if (qrTimeRemaining <= 0) {
+                qrTimeRemaining = 300;
+                window.renewQrCode();
+            }
+            updateDisplay();
+        }, 1000);
+    };
+
+    window.stopQrCountdown = function () {
+        if (qrCountdownInterval) {
+            clearInterval(qrCountdownInterval);
+            qrCountdownInterval = null;
+        }
+    };
+
+    window.renewQrCode = function () {
+        // Tự động sinh mã giao dịch/nội dung chuyển khoản ngẫu nhiên mới (8 ký tự)
+        const rand8 = Math.random().toString(36).substring(2, 10).toUpperCase();
+        window.currentOrderCode = 'OCOP-' + rand8;
+
+        const memoText = 'OCOP ' + rand8;
+        const bidvMemo = document.getElementById('bidv-transfer-memo');
+        if (bidvMemo) bidvMemo.textContent = memoText;
+
+        const momoMemo = document.getElementById('momo-transfer-memo');
+        if (momoMemo) momoMemo.textContent = memoText;
+
+        let grandTotal = 0;
+        if (currentOrderProduct) {
+            const unitPrice = currentOrderProduct.price || 0;
+            const goodsTotal = unitPrice * currentOrderQty;
+            const shippingFee = 25000;
+            const platformFee = 10000;
+            const voucherDiscount = window.orderAppliedVoucher ? window.orderAppliedVoucher.discount : 0;
+            grandTotal = Math.max(0, goodsTotal + shippingFee + platformFee - voucherDiscount);
+        } else {
+            const grandTotalEl = document.getElementById('calc-grand-total');
+            if (grandTotalEl) grandTotal = parseInt(grandTotalEl.textContent.replace(/\D/g, ''), 10) || 0;
+        }
+
+        const t = Date.now();
+        const bidvImg = document.getElementById('bidv-vietqr-img');
+        if (bidvImg) {
+            bidvImg.src = 'https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=' + grandTotal + '&addInfo=' + encodeURIComponent(memoText) + '&accountName=HOANG%20NGUYEN%20THANH%20BINH&t=' + t;
+        }
+
+        const momoQr = document.getElementById('order-momo-qr');
+        if (momoQr) {
+            momoQr.src = 'https://api.vietqr.io/image/970422-0971280030-compact2.png?amount=' + grandTotal + '&addInfo=' + encodeURIComponent(memoText) + '&t=' + t;
+        }
+    };
+
+    window.goToOrderStep1 = function () {
+        const step1 = document.getElementById('order-step-1');
+        const step2 = document.getElementById('order-step-2');
+        if (step1) step1.classList.remove('hidden');
+        if (step2) step2.classList.add('hidden');
+        window.stopQrCountdown();
+        const modalContent = document.querySelector('#online-order-modal > div');
+        if (modalContent) modalContent.scrollTop = 0;
+    };
+
+    window.goToOrderStep2 = function () {
+        const nameInput = document.getElementById('order-cust-name');
+        const phoneInput = document.getElementById('order-cust-phone');
+        const addrInput = document.getElementById('order-cust-address');
+
+        const customerName = nameInput?.value?.trim();
+        const customerPhone = phoneInput?.value?.trim();
+        const customerAddress = addrInput?.value?.trim();
+
+        if (!customerName) {
+            alert('Vui lòng nhập Họ và tên người nhận hàng!');
+            nameInput?.focus();
+            return false;
+        }
+
+        const digitsOnly = (customerPhone || '').replace(/\D/g, '');
+        if (!customerPhone || /[^0-9]/.test(customerPhone) || digitsOnly.length < 10 || digitsOnly.length > 11 || !digitsOnly.startsWith('0')) {
+            alert('Số điện thoại nhận hàng không hợp lệ! Vui lòng chỉ nhập 10 chữ số (bắt đầu bằng số 0, cấm nhập chữ cái).');
+            phoneInput?.focus();
+            return false;
+        }
+
+        if (!customerAddress) {
+            alert('Vui lòng nhập Địa chỉ nhận hàng chi tiết!');
+            addrInput?.focus();
+            return false;
+        }
+
+        // Tóm tắt thông tin người nhận ở Bước 2
+        const step2Name = document.getElementById('step2-recipient-name');
+        if (step2Name) step2Name.textContent = customerName;
+
+        const step2Phone = document.getElementById('step2-recipient-phone');
+        if (step2Phone) step2Phone.textContent = customerPhone;
+
+        const step2Address = document.getElementById('step2-recipient-address');
+        if (step2Address) step2Address.textContent = customerAddress;
+
+        const grandTotalEl = document.getElementById('calc-grand-total');
+        const step2Total = document.getElementById('step2-grand-total');
+        if (grandTotalEl && step2Total) {
+            step2Total.textContent = grandTotalEl.textContent;
+        }
+
+        // Chuyển view sang Bước 2
+        const step1 = document.getElementById('order-step-1');
+        const step2 = document.getElementById('order-step-2');
+        if (step1) step1.classList.add('hidden');
+        if (step2) step2.classList.remove('hidden');
+
+        const modalContent = document.querySelector('#online-order-modal > div');
+        if (modalContent) modalContent.scrollTop = 0;
+
+        // Bắt đầu đếm ngược 5 phút và cập nhật mã QR
+        window.startQrCountdown(true);
+
+        return true;
+    };
 
     window.openOnlineOrderModal = function (productId, initialQty = 1) {
-        window.currentOrderCode = 'OCOP-' + Math.floor(100000 + Math.random() * 900000);
+        const rand8 = Math.random().toString(36).substring(2, 10).toUpperCase();
+        window.currentOrderCode = 'OCOP-' + rand8;
         const prodList = window.products || (typeof PRODUCTS !== 'undefined' ? PRODUCTS : []);
         const p = prodList.find(item => item.id === Number(productId) || String(item.id) === String(productId));
         if (!p) {
@@ -1470,10 +1620,13 @@
         }
 
         currentOrderProduct = p;
-        currentOrderQty = 1;
+        currentOrderQty = initialQty || 1;
 
         const modal = document.getElementById('online-order-modal');
         if (!modal) return;
+
+        // Luôn trở về Bước 1 khi mở modal
+        window.goToOrderStep1();
 
         const storeInfo = window.OcopStores ? window.OcopStores.getOcopStoreInfo(productId) : null;
         const storeName = storeInfo ? storeInfo.primaryStore.name : ('Showroom OCOP ' + p.region);
@@ -1529,6 +1682,8 @@
     };
 
     window.closeOnlineOrderModal = function () {
+        window.stopQrCountdown();
+        window.goToOrderStep1();
         const modal = document.getElementById('online-order-modal');
         if (modal) {
             modal.classList.add('hidden');
@@ -1581,6 +1736,9 @@
         const grandTotalEl = document.getElementById('calc-grand-total');
         if (grandTotalEl) grandTotalEl.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
 
+        const step2Total = document.getElementById('step2-grand-total');
+        if (step2Total) step2Total.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+
         const bidvAmt = document.getElementById('bidv-transfer-amount');
         if (bidvAmt) bidvAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
         const momoAmt = document.getElementById('momo-transfer-amount');
@@ -1589,21 +1747,29 @@
         if (codAmt) codAmt.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
 
         if (!window.currentOrderCode) {
-            window.currentOrderCode = 'OCOP-' + Math.floor(100000 + Math.random() * 900000);
+            const rand8 = Math.random().toString(36).substring(2, 10).toUpperCase();
+            window.currentOrderCode = 'OCOP-' + rand8;
         }
+
+        const memoSuffix = window.currentOrderCode.replace(/^OCOP-?/, '') || Math.random().toString(36).substring(2, 10).toUpperCase();
+        const memoText = 'OCOP ' + memoSuffix;
 
         const bidvImg = document.getElementById('bidv-vietqr-img');
         if (bidvImg) {
-            bidvImg.src = 'https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=' + grandTotal + '&addInfo=' + encodeURIComponent('OCOP ' + window.currentOrderCode) + '&accountName=HOANG%20NGUYEN%20THANH%20BINH';
+            bidvImg.src = 'https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=' + grandTotal + '&addInfo=' + encodeURIComponent(memoText) + '&accountName=HOANG%20NGUYEN%20THANH%20BINH';
         }
         const bidvMemo = document.getElementById('bidv-transfer-memo');
         if (bidvMemo) {
-            bidvMemo.textContent = 'OCOP ' + window.currentOrderCode;
+            bidvMemo.textContent = memoText;
         }
 
         const momoQr = document.getElementById('order-momo-qr');
         if (momoQr) {
-            momoQr.src = 'https://api.vietqr.io/image/970422-0971280030-compact2.png?amount=' + grandTotal + '&addInfo=' + encodeURIComponent('OCOP ' + window.currentOrderCode);
+            momoQr.src = 'https://api.vietqr.io/image/970422-0971280030-compact2.png?amount=' + grandTotal + '&addInfo=' + encodeURIComponent(memoText);
+        }
+        const momoMemo = document.getElementById('momo-transfer-memo');
+        if (momoMemo) {
+            momoMemo.textContent = memoText;
         }
     };
 
@@ -1643,7 +1809,7 @@
         if (panelCod) panelCod.classList.toggle('hidden', active !== 'cod');
     };
 
-    window.applyOrderVoucher = function() {
+    window.applyOrderVoucher = function () {
         const input = document.getElementById('order-voucher-input');
         const statusEl = document.getElementById('order-voucher-status');
         if (!input || !statusEl) return;
@@ -1698,7 +1864,7 @@
         window.updateOrderCalculations();
     };
 
-    window.removeOrderVoucher = function() {
+    window.removeOrderVoucher = function () {
         window.orderAppliedVoucher = null;
         const input = document.getElementById('order-voucher-input');
         if (input) input.value = '';
@@ -1710,7 +1876,7 @@
         window.updateOrderCalculations();
     };
 
-    window.handleBuyNow = function(productId) {
+    window.handleBuyNow = function (productId) {
         const user = typeof window.getCurrentCustomer === 'function' ? window.getCurrentCustomer() : null;
         if (!user || !user.username) {
             window.pendingBuyNowProductId = productId;
@@ -1729,7 +1895,7 @@
         }
     };
 
-    window.submitOnlineOrder = async function () {
+    window.submitOnlineOrder = async function (methodOverride) {
         if (!currentOrderProduct || onlineOrderSubmitting) return;
 
         const nameInput = document.getElementById('order-cust-name');
@@ -1744,26 +1910,34 @@
 
         if (!customerName) {
             alert('Vui lòng nhập Họ và tên người nhận hàng!');
+            window.goToOrderStep1();
             nameInput?.focus();
             return;
         }
         const digitsOnly = (customerPhone || '').replace(/\D/g, '');
         if (!customerPhone || /[^0-9]/.test(customerPhone) || digitsOnly.length < 10 || digitsOnly.length > 11 || !digitsOnly.startsWith('0')) {
             alert('Số điện thoại nhận hàng không hợp lệ! Vui lòng chỉ nhập 10 chữ số (bắt đầu bằng số 0, cấm nhập chữ cái).');
+            window.goToOrderStep1();
             phoneInput?.focus();
             return;
         }
         if (!customerAddress) {
             alert('Vui lòng nhập Địa chỉ nhận hàng chi tiết!');
+            window.goToOrderStep1();
             addrInput?.focus();
             return;
         }
 
-        const paymentInput = document.querySelector('input[name="order-payment"]:checked');
-        const payVal = paymentInput ? paymentInput.value : 'bidv';
+        let payVal = methodOverride;
+        if (!payVal) {
+            const paymentInput = document.querySelector('input[name="order-payment"]:checked');
+            payVal = paymentInput ? paymentInput.value : 'bidv';
+        }
         const paymentMethod = payVal === 'bidv'
             ? 'Chuyển khoản BIDV (VietQR)'
             : (payVal === 'momo' ? 'Ví MoMo (0971280030)' : 'Thanh toán khi nhận hàng (Ship COD)');
+
+        window.stopQrCountdown();
 
         onlineOrderSubmitting = true;
         try {
@@ -1774,9 +1948,20 @@
             const voucherDiscount = window.orderAppliedVoucher ? window.orderAppliedVoucher.discount : 0;
             const grandTotal = Math.max(0, goodsTotal + shippingFee + platformFee - voucherDiscount);
 
-            const orderCode = window.currentOrderCode || ('OCOP-' + Math.floor(100000 + Math.random() * 900000));
+            const orderCode = window.currentOrderCode || ('OCOP-' + Math.random().toString(36).substring(2, 10).toUpperCase());
             const orderId = '#' + orderCode;
             const storeName = document.getElementById('order-store-name')?.textContent || ('Showroom OCOP ' + currentOrderProduct.region);
+
+            let vatInvoice = null;
+            const vatToggle = document.getElementById('order-vat-toggle');
+            if (vatToggle && vatToggle.checked) {
+                vatInvoice = {
+                    company: document.getElementById('order-vat-company')?.value?.trim() || '',
+                    taxId: document.getElementById('order-vat-taxid')?.value?.trim() || '',
+                    email: document.getElementById('order-vat-email')?.value?.trim() || '',
+                    address: document.getElementById('order-vat-address')?.value?.trim() || ''
+                };
+            }
 
             const newOrder = {
                 orderId: orderId,
@@ -1788,6 +1973,7 @@
                 customerPhone: customerPhone,
                 shippingAddress: customerAddress,
                 customerNote: customerNote,
+                vatInvoice: vatInvoice,
                 qty: currentOrderQty,
                 unitPrice: unitPrice,
                 goodsTotal: goodsTotal,
@@ -1797,7 +1983,7 @@
                 discount: voucherDiscount,
                 grandTotal: grandTotal,
                 paymentMethod: paymentMethod,
-                status: 'Đã xác nhận',
+                status: 'PENDING',
                 createdAt: new Date().toLocaleString('vi-VN')
             };
 

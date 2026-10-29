@@ -4781,114 +4781,123 @@
  <button onclick="activateO2ODispatch()" class="hidden">Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền</button>
  </div>
  <!-- 10.2 MODAL ĐẶT MUA ONLINE & GIAO HÀNG TẬN NƠI (THU PHÍ NỀN TẢNG 10.000Đ/ĐƠN CHO CHỦ WEB) -->
- <div id="online-order-modal" class="fixed inset-0 z-[99999] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in" onclick="if(event.target === this) closeOnlineOrderModal()">
- <div class="bg-white border-2 border-sky-400 rounded-3xl max-w-xl w-full shadow-2xl overflow-hidden text-slate-800 animate-pop-in flex flex-col" style="max-height: calc(100dvh - 2rem); overflow-y: auto;">
- <!-- Header Modal -->
- <div class="bg-gradient-to-r from-sky-700 via-sky-800 to-slate-900 text-white p-4 sm:p-5 flex items-center justify-between border-b border-sky-300/40 relative">
- <div class="flex items-center space-x-3">
- <span class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md text-lg">
- <i class="fa-solid fa-truck-fast"></i>
- </span>
- <div>
- <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-black/40 px-2.5 py-0.5 rounded-full border border-amber-400/30 mb-0.5">
- <i class="fa-solid fa-certificate"></i>
- <span>O2O E-Commerce • Ship Tận Nơi</span>
- </div>
- <h3 class="font-black text-base sm:text-lg text-white tracking-wide">
- 🚚 ĐẶT MUA ONLINE & GIAO HÀNG TẬN NƠI
- </h3>
- </div>
- </div>
- <button type="button" onclick="closeOnlineOrderModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm font-bold cursor-pointer transition" title="Đóng">
- <i class="fa-solid fa-xmark"></i>
- </button>
- </div>
- <!-- Body Modal -->
- <div class="p-4 sm:p-6 space-y-4 text-xs">
- <!-- 1. Thông Tin Sản Phẩm & Cửa Hàng Gửi Đi -->
- <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 flex items-start gap-3.5">
- <img id="order-prod-img" src="" alt="Sản phẩm" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-sky-300 shrink-0 bg-white shadow-xs">
- <div class="flex-1 min-w-0 space-y-1">
- <span id="order-prod-stars" class="inline-block text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300"></span>
- <h4 id="order-prod-name" class="font-black text-sm text-slate-900 leading-snug line-clamp-2"></h4>
- <div class="text-sm font-black text-sky-700" id="order-prod-price"></div>
- 
- <!-- Cửa Hàng / HTX Xuất Hàng -->
- <div class="mt-2 pt-2 border-t border-sky-200/80 text-[11px] space-y-0.5">
- <div class="font-bold text-slate-800 flex items-center gap-1">
- <i class="fa-solid fa-store text-sky-600 text-[10px]"></i>
- <span>Cửa hàng gửi đi:</span>
- <span id="order-store-name" class="text-sky-700 font-extrabold truncate"></span>
- </div>
- <div class="text-slate-600 flex items-start gap-1 text-[10.5px]">
- <i class="fa-solid fa-location-dot text-slate-400 mt-0.5 text-[9px]"></i>
- <span id="order-store-address" class="line-clamp-1"></span>
- </div>
- </div>
- </div>
- </div>
- <!-- 2. Chọn Số Lượng -->
- <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
- <span class="font-bold text-slate-700">Số lượng đặt mua:</span>
- <div class="flex items-center gap-2">
- <button type="button" onclick="changeOrderQty(-1)" class="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer shadow-2xs transition active:scale-95">-</button>
- <input type="number" id="order-qty-input" value="1" min="1" max="99" onchange="updateOrderCalculations()" class="w-14 text-center py-1.5 border border-slate-300 rounded-lg font-black text-sm text-slate-900 bg-white">
- <button type="button" onclick="changeOrderQty(1)" class="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer shadow-2xs transition active:scale-95">+</button>
- </div>
- </div>
- <!-- 3. Form Thông Tin Nhận Hàng -->
- <div class="space-y-3 pt-1">
- <h5 class="font-black text-slate-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
- <i class="fa-solid fa-user text-sky-600"></i> Thông Tin Nhận Hàng:
- </h5>
- <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
- <div>
- <label class="block text-[11px] font-bold text-slate-600 mb-1">Họ và tên người nhận <span class="text-rose-600">*</span></label>
- <input type="text" id="order-cust-name" placeholder="Ví dụ: Nguyễn Văn An" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
- </div>
- <div>
- <label class="block text-[11px] font-bold text-slate-600 mb-1">Số điện thoại nhận hàng <span class="text-rose-600">*</span></label>
- <input type="tel" id="order-cust-phone" inputmode="numeric" pattern="[0-9]{10,11}" maxlength="11" autocomplete="tel" placeholder="Ví dụ: 0912345678" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateOrderPhone(this);" onkeypress="return /[0-9]/.test(event.key)" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
-<p id="order-phone-error" class="hidden text-[11px] text-rose-600 font-bold mt-1">⚠️ Số điện thoại chỉ được chứa chữ số (bắt đầu bằng số 0, cấm nhập chữ cái).</p>
- </div>
- </div>
- <div>
- <label class="block text-[11px] font-bold text-slate-600 mb-1">Địa chỉ giao hàng chi tiết <span class="text-rose-600">*</span></label>
- <input type="text" id="order-cust-address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
- </div>
- <div>
- <label class="block text-[11px] font-bold text-slate-600 mb-1">Ghi chú đơn hàng (Tùy chọn)</label>
- <input type="text" id="order-cust-note" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi đến..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-700 focus:border-sky-500 focus:outline-none bg-white">
- </div>
-                    <!-- Yêu cầu xuất hóa đơn VAT điện tử (Ưu điểm B2B từ EGA AutoCare) -->
-                    <div class="pt-2 border-t border-slate-200">
-                        <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800 select-none">
-                            <input type="checkbox" id="order-vat-toggle" onchange="document.getElementById('order-vat-fields').classList.toggle('hidden', !this.checked)" class="accent-emerald-600 w-4 h-4 rounded">
-                            <span>🏢 Xuất hóa đơn VAT cho Doanh nghiệp / Tổ chức</span>
-                        </label>
-                        <div id="order-vat-fields" class="hidden mt-2 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
-                            <div>
-                                <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Tên công ty / Doanh nghiệp:</label>
-                                <input type="text" id="order-vat-company" placeholder="Công ty TNHH / Cổ phần..." class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Mã số thuế (MST):</label>
-                                    <input type="text" id="order-vat-taxid" placeholder="VD: 0101234567" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+ <!-- 10.2 MODAL ĐẶT MUA ONLINE & GIAO HÀNG TẬN NƠI (THU PHÍ NỀN TẢNG 10.000Đ/ĐƠN CHO CHỦ WEB) -->
+    <!-- 10.2 MODAL ĐẶT MUA ONLINE & GIAO HÀNG TẬN NƠI (THU PHÍ NỀN TẢNG 10.000Đ/ĐƠN CHO CHỦ WEB) -->
+    <div id="online-order-modal" class="fixed inset-0 z-[99999] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in" onclick="if(event.target === this) closeOnlineOrderModal()">
+        <div class="bg-white border-2 border-sky-400 rounded-3xl max-w-xl w-full shadow-2xl overflow-hidden text-slate-800 animate-pop-in flex flex-col" style="max-height: calc(100dvh - 2rem); overflow-y: auto;">
+            <!-- Header Modal -->
+            <div class="bg-gradient-to-r from-sky-700 via-sky-800 to-slate-900 text-white p-4 sm:p-5 flex items-center justify-between border-b border-sky-300/40 relative">
+                <div class="flex items-center space-x-3">
+                    <span class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md text-lg">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </span>
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-black/40 px-2.5 py-0.5 rounded-full border border-amber-400/30 mb-0.5">
+                            <i class="fa-solid fa-certificate"></i>
+                            <span>O2O E-Commerce • Ship Tận Nơi</span>
+                        </div>
+                        <h3 class="font-black text-base sm:text-lg text-white tracking-wide">
+                            🚚 ĐẶT MUA ONLINE &amp; GIAO HÀNG TẬN NƠI
+                        </h3>
+                    </div>
+                </div>
+                <button type="button" onclick="closeOnlineOrderModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm font-bold cursor-pointer transition" title="Đóng">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Body Modal -->
+            <div class="p-4 sm:p-6 space-y-4 text-xs">
+                <!-- ================= BƯỚC 1: ĐIỀN THÔNG TIN & BẢNG TÍNH TIỀN ================= -->
+                <div id="order-step-1" class="space-y-4">
+                    <!-- 1. Thông Tin Sản Phẩm & Cửa Hàng Gửi Đi -->
+                    <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 flex items-start gap-3.5">
+                        <img id="order-prod-img" src="" alt="Sản phẩm" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-sky-300 shrink-0 bg-white shadow-xs">
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <span id="order-prod-stars" class="inline-block text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300"></span>
+                            <h4 id="order-prod-name" class="font-black text-sm text-slate-900 leading-snug line-clamp-2"></h4>
+                            <div class="text-sm font-black text-sky-700" id="order-prod-price"></div>
+
+                            <!-- Cửa Hàng / HTX Xuất Hàng -->
+                            <div class="mt-2 pt-2 border-t border-sky-200/80 text-[11px] space-y-0.5">
+                                <div class="font-bold text-slate-800 flex items-center gap-1">
+                                    <i class="fa-solid fa-store text-sky-600 text-[10px]"></i>
+                                    <span>Cửa hàng gửi đi:</span>
+                                    <span id="order-store-name" class="text-sky-700 font-extrabold truncate"></span>
                                 </div>
-                                <div>
-                                    <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Email nhận hóa đơn:</label>
-                                    <input type="email" id="order-vat-email" placeholder="ketoan@company.com" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                                <div class="text-slate-600 flex items-start gap-1 text-[10.5px]">
+                                    <i class="fa-solid fa-location-dot text-slate-400 mt-0.5 text-[9px]"></i>
+                                    <span id="order-store-address" class="line-clamp-1"></span>
                                 </div>
-                            </div>
-                            <div>
-                                <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Địa chỉ theo ĐKKD:</label>
-                                <input type="text" id="order-vat-address" placeholder="Địa chỉ ghi trên giấy phép ĐKKD..." class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
                             </div>
                         </div>
                     </div>
- </div>
- <!-- 3.5. Nhập Mã Giảm Giá / Voucher OCOP (Shopee Style) -->
+
+                    <!-- 2. Chọn Số Lượng -->
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
+                        <span class="font-bold text-slate-700">Số lượng đặt mua:</span>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="changeOrderQty(-1)" class="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer shadow-2xs transition active:scale-95">-</button>
+                            <input type="number" id="order-qty-input" value="1" min="1" max="99" onchange="updateOrderCalculations()" class="w-14 text-center py-1.5 border border-slate-300 rounded-lg font-black text-sm text-slate-900 bg-white">
+                            <button type="button" onclick="changeOrderQty(1)" class="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer shadow-2xs transition active:scale-95">+</button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Form Thông Tin Nhận Hàng -->
+                    <div class="space-y-3 pt-1">
+                        <h5 class="font-black text-slate-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
+                            <i class="fa-solid fa-user text-sky-600"></i> Thông Tin Nhận Hàng:
+                        </h5>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Họ và tên người nhận <span class="text-rose-600">*</span></label>
+                                <input type="text" id="order-cust-name" placeholder="Ví dụ: Nguyễn Văn An" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Số điện thoại nhận hàng <span class="text-rose-600">*</span></label>
+                                <input type="tel" id="order-cust-phone" inputmode="numeric" pattern="[0-9]{10,11}" maxlength="11" autocomplete="tel" placeholder="Ví dụ: 0912345678" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateOrderPhone(this);" onkeypress="return /[0-9]/.test(event.key)" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                                <p id="order-phone-error" class="hidden text-[11px] text-rose-600 font-bold mt-1">⚠️ Số điện thoại chỉ được chứa chữ số (bắt đầu bằng số 0, cấm nhập chữ cái).</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Địa chỉ giao hàng chi tiết <span class="text-rose-600">*</span></label>
+                            <input type="text" id="order-cust-address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Ghi chú đơn hàng (Tùy chọn)</label>
+                            <input type="text" id="order-cust-note" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi đến..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-700 focus:border-sky-500 focus:outline-none bg-white">
+                        </div>
+
+                        <!-- Yêu cầu xuất hóa đơn VAT điện tử (Ưu điểm B2B từ EGA AutoCare) -->
+                        <div class="pt-2 border-t border-slate-200">
+                            <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800 select-none">
+                                <input type="checkbox" id="order-vat-toggle" onchange="document.getElementById('order-vat-fields').classList.toggle('hidden', !this.checked)" class="accent-emerald-600 w-4 h-4 rounded">
+                                <span>🏢 Xuất hóa đơn VAT cho Doanh nghiệp / Tổ chức</span>
+                            </label>
+                            <div id="order-vat-fields" class="hidden mt-2 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Tên công ty / Doanh nghiệp:</label>
+                                    <input type="text" id="order-vat-company" placeholder="Công ty TNHH / Cổ phần..." class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Mã số thuế (MST):</label>
+                                        <input type="text" id="order-vat-taxid" placeholder="VD: 0101234567" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Email nhận hóa đơn:</label>
+                                        <input type="email" id="order-vat-email" placeholder="ketoan@company.com" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Địa chỉ theo ĐKKD:</label>
+                                    <input type="text" id="order-vat-address" placeholder="Địa chỉ ghi trên giấy phép ĐKKD..." class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3.5. Nhập Mã Giảm Giá / Voucher OCOP (Shopee Style) -->
                     <div class="p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 space-y-2">
                         <div class="flex items-center justify-between">
                             <label class="block text-[11px] font-black text-amber-900 uppercase tracking-wide flex items-center gap-1.5">
@@ -4908,148 +4917,229 @@
                             <button type="button" onclick="document.getElementById('order-voucher-input').value='GIAM20K'; applyOrderVoucher();" class="px-2 py-0.5 rounded-md bg-white border border-amber-300 text-amber-800 text-[10.5px] font-bold hover:bg-amber-100 cursor-pointer transition">GIAM20K (-20k)</button>
                         </div>
                     </div>
-                    <!-- 4. Phương Thức Thanh Toán (BIDV 8808661371, MoMo 0971280030, Ship COD) -->
- <div class="space-y-2.5 pt-1">
- <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">Chọn hình thức thanh toán:</label>
- <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
- <label id="payment-label-bidv" onclick="switchOrderPaymentMethod('bidv')" class="flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition">
- <input type="radio" name="order-payment" value="bidv" checked onchange="switchOrderPaymentMethod('bidv')" class="accent-sky-600">
- <span class="truncate">🏦 CK BIDV (VietQR)</span>
- </label>
- <label id="payment-label-momo" onclick="switchOrderPaymentMethod('momo')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-pink-400 transition">
- <input type="radio" name="order-payment" value="momo" onchange="switchOrderPaymentMethod('momo')" class="accent-pink-600">
- <span class="truncate">📱 Ví MoMo (0971280030)</span>
- </label>
- <label id="payment-label-cod" onclick="switchOrderPaymentMethod('cod')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-emerald-400 transition">
- <input type="radio" name="order-payment" value="cod" onchange="switchOrderPaymentMethod('cod')" class="accent-sky-600">
- <span class="truncate">🚚 Ship COD Tận Nơi</span>
- </label>
- </div>
-                    <div id="panel-payment-bidv" class="p-3.5 rounded-2xl bg-gradient-to-br from-sky-50 via-white to-blue-50 border-2 border-sky-300 space-y-2.5 shadow-2xs">
-                        <div class="flex flex-col sm:flex-row items-center gap-3">
-                            <img id="bidv-vietqr-img" src="https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=0&addInfo=OCOP&accountName=HOANG%20NGUYEN%20THANH%20BINH" alt="Mã VietQR BIDV" class="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border-2 border-sky-400 p-1 bg-white shadow-sm shrink-0 object-contain">
-                            <div class="space-y-1.5 text-[11px] text-slate-800 flex-1 min-w-0">
-                                <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#0284C7] text-white font-black text-[10px] mb-1">
-                                    <span>🏦 BIDV - CN Đông Đồng Nai</span>
+
+                    <!-- 5. Bảng Tạm Tính Chi Phí Minh Bạch -->
+                    <div class="p-4 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-2 text-xs">
+                        <div class="flex items-center justify-between text-slate-700">
+                            <span>Tiền hàng gốc (Trả về HTX/Cửa hàng - <span id="calc-qty-display">1</span> sản phẩm):</span>
+                            <span class="font-bold text-slate-900" id="calc-goods-total">0 ₫</span>
+                        </div>
+                        <div id="calc-voucher-row" class="hidden flex items-center justify-between text-emerald-800 font-bold bg-emerald-50 p-2.5 rounded-xl border border-emerald-300">
+                            <div class="flex items-center gap-1.5">
+                                <i class="fa-solid fa-tag text-emerald-600"></i>
+                                <span>Giảm giá Voucher OCOP (<strong id="calc-voucher-code" class="text-emerald-900 font-black"></strong>):</span>
+                                <button type="button" onclick="removeOrderVoucher()" class="text-rose-600 hover:text-rose-800 underline text-[10.5px] ml-1 cursor-pointer font-bold">(Hủy mã)</button>
+                            </div>
+                            <span id="calc-voucher-discount" class="text-sm font-black text-emerald-700">-0 ₫</span>
+                        </div>
+                        <div class="flex items-center justify-between text-slate-700">
+                            <span>Phí vận chuyển tiêu chuẩn (Ship tận nơi):</span>
+                            <span class="font-bold text-slate-800">25.000 ₫</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sky-900 font-bold bg-sky-100/90 p-2.5 rounded-xl border border-sky-300">
+                            <div>
+                                <div class="flex items-center gap-1.5 text-sky-900 font-black">
+                                    <i class="fa-solid fa-bolt text-amber-500"></i>
+                                    <span>Phí dịch vụ nền tảng &amp; Bảo đảm OCOP (Chủ Web):</span>
                                 </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <span class="text-slate-500">Ngân hàng:</span>
-                                    <span class="font-bold text-slate-900 text-right">BIDV (Ngân hàng TMCP Đầu tư và Phát triển Việt Nam) - CN Đông Đồng Nai</span>
-                                </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <span class="text-slate-500">Số tài khoản:</span>
-                                    <div class="flex items-center gap-1">
-                                        <strong class="font-mono text-sm text-[#0284C7] font-black">8808661371</strong>
-                                        <button type="button" onclick="copyToClipboard('8808661371', 'Đã sao chép STK BIDV 8808661371!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">Sao chép</button>
+                                <div class="text-[10px] text-sky-700 font-normal">Phí kết nối &amp; kiểm định đơn hàng O2O của nền tảng</div>
+                            </div>
+                            <span class="text-sm font-black text-sky-700">+10.000 ₫</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-2.5 border-t border-sky-200">
+                            <span class="text-sm font-black text-slate-900">💰 TỔNG THANH TOÁN:</span>
+                            <span class="text-lg font-black text-rose-600" id="calc-grand-total">0 ₫</span>
+                        </div>
+                    </div>
+
+                    <!-- Nút Bước 1: Chuyển sang Bước 2 Chọn Thanh Toán -->
+                    <button type="button" id="btn-order-step1-next" onclick="goToOrderStep2()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-sky-600 via-sky-700 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer transition hover:scale-[1.01] active:scale-95">
+                        <i class="fa-solid fa-box text-base"></i>
+                        <span>📦 Tiến Hành Đặt Hàng (Chọn Thanh Toán) →</span>
+                    </button>
+                </div>
+
+                <!-- ================= BƯỚC 2: CHỌN PHƯƠNG THỨC THANH TOÁN ================= -->
+                <div id="order-step-2" class="hidden space-y-4">
+                    <!-- Thanh điều hướng quay lại Bước 1 -->
+                    <div class="flex items-center justify-between pb-1 border-b border-sky-100">
+                        <button type="button" onclick="goToOrderStep1()" class="inline-flex items-center gap-1.5 text-xs font-bold text-sky-700 hover:text-sky-900 bg-sky-50 hover:bg-sky-100 px-3 py-1.5 rounded-xl border border-sky-200 transition cursor-pointer">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <span>← Quay lại sửa địa chỉ &amp; số lượng</span>
+                        </button>
+                        <span class="text-[10.5px] font-black uppercase tracking-wider text-sky-700 bg-sky-100 px-2.5 py-0.5 rounded-full border border-sky-300">
+                            Bước 2: Chọn Thanh Toán
+                        </span>
+                    </div>
+
+                    <!-- Tóm tắt đơn hàng & Thông tin người nhận từ Bước 1 -->
+                    <div class="p-3.5 rounded-2xl bg-gradient-to-r from-sky-50 via-white to-blue-50 border border-sky-200 space-y-2 shadow-2xs">
+                        <h5 class="font-black text-slate-900 text-xs sm:text-sm uppercase tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-credit-card text-sky-600"></i>
+                            <span>💳 BƯỚC 2: CHỌN PHƯƠNG THỨC THANH TOÁN CHO ĐƠN HÀNG</span>
+                        </h5>
+                        <div class="text-xs text-slate-700 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 border-t border-sky-100 pt-2">
+                            <div>
+                                <span class="font-bold text-slate-900">Người nhận: </span>
+                                <span id="step2-recipient-name" class="font-semibold text-slate-800"></span>
+                                <span class="text-slate-400 mx-1">•</span>
+                                <span id="step2-recipient-phone" class="font-mono font-bold text-sky-700"></span>
+                            </div>
+                            <div class="text-left sm:text-right">
+                                <span class="font-bold text-slate-900">Tổng thanh toán: </span>
+                                <span id="step2-grand-total" class="font-black text-rose-600 text-sm sm:text-base">0 ₫</span>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-slate-600 flex items-start gap-1.5">
+                            <i class="fa-solid fa-location-dot text-slate-400 mt-0.5 shrink-0"></i>
+                            <span id="step2-recipient-address" class="line-clamp-2"></span>
+                        </div>
+                    </div>
+
+                    <!-- Lựa chọn 3 Hình thức Thanh toán -->
+                    <div class="space-y-2.5 pt-1">
+                        <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">Chọn hình thức thanh toán:</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                            <label id="payment-label-bidv" onclick="switchOrderPaymentMethod('bidv')" class="flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition">
+                                <input type="radio" name="order-payment" value="bidv" checked onchange="switchOrderPaymentMethod('bidv')" class="accent-sky-600">
+                                <span class="truncate">🏦 CK BIDV (VietQR)</span>
+                            </label>
+                            <label id="payment-label-momo" onclick="switchOrderPaymentMethod('momo')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-pink-400 transition">
+                                <input type="radio" name="order-payment" value="momo" onchange="switchOrderPaymentMethod('momo')" class="accent-pink-600">
+                                <span class="truncate">📱 Ví MoMo (0971280030)</span>
+                            </label>
+                            <label id="payment-label-cod" onclick="switchOrderPaymentMethod('cod')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-emerald-400 transition">
+                                <input type="radio" name="order-payment" value="cod" onchange="switchOrderPaymentMethod('cod')" class="accent-sky-600">
+                                <span class="truncate">🚚 Ship COD Tận Nơi</span>
+                            </label>
+                        </div>
+
+                        <!-- Panel 1: BIDV VietQR -->
+                        <div id="panel-payment-bidv" class="p-3.5 rounded-2xl bg-gradient-to-br from-sky-50 via-white to-blue-50 border-2 border-sky-300 space-y-3 shadow-2xs">
+                            <div class="flex items-center justify-between bg-amber-50 border border-amber-300 rounded-xl px-3 py-1.5 text-[11px] text-amber-900 font-bold">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-regular fa-clock text-amber-600"></i>
+                                    <span>⏱️ Mã QR hết hạn sau:</span>
+                                </span>
+                                <span id="bidv-qr-countdown" class="font-mono font-black text-sm text-rose-600 bg-white px-2 py-0.5 rounded-md border border-amber-300 shadow-2xs">05:00</span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-center gap-3">
+                                <img id="bidv-vietqr-img" src="https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=0&addInfo=OCOP&accountName=HOANG%20NGUYEN%20THANH%20BINH" alt="Mã VietQR BIDV" class="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border-2 border-sky-400 p-1 bg-white shadow-sm shrink-0 object-contain">
+                                <div class="space-y-1.5 text-[11px] text-slate-800 flex-1 min-w-0">
+                                    <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#0284C7] text-white font-black text-[10px] mb-1">
+                                        <span>🏦 BIDV - CN Đông Đồng Nai</span>
                                     </div>
-                                </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <span class="text-slate-500">Chủ tài khoản:</span>
-                                    <strong class="font-bold text-slate-900 uppercase">HOANG NGUYEN THANH BINH</strong>
-                                </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <span class="text-slate-500">Số tiền:</span>
-                                    <div class="flex items-center gap-1">
-                                        <strong id="bidv-transfer-amount" class="text-rose-600 font-black text-sm">0 ₫</strong>
-                                        <button type="button" onclick="copyToClipboard((document.getElementById('bidv-transfer-amount')?.textContent||'0').replace(/\D/g,''), 'Đã sao chép số tiền!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">Sao chép</button>
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span class="text-slate-500">Ngân hàng:</span>
+                                        <span class="font-bold text-slate-900 text-right">BIDV (Ngân hàng TMCP Đầu tư và Phát triển VN)</span>
                                     </div>
-                                </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <span class="text-slate-500">Nội dung CK:</span>
-                                    <div class="flex items-center gap-1">
-                                        <strong id="bidv-transfer-memo" class="font-mono text-amber-700 font-black bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">OCOP-ORD</strong>
-                                        <button type="button" onclick="copyToClipboard(document.getElementById('bidv-transfer-memo')?.textContent||'OCOP', 'Đã sao chép nội dung chuyển khoản!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">Sao chép</button>
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span class="text-slate-500">Số tài khoản:</span>
+                                        <div class="flex items-center gap-1">
+                                            <strong class="font-mono text-sm text-[#0284C7] font-black">8808661371</strong>
+                                            <button type="button" onclick="copyToClipboard('8808661371', 'Đã sao chép STK BIDV 8808661371!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">Sao chép</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span class="text-slate-500">Chủ tài khoản:</span>
+                                        <strong class="font-bold text-slate-900 uppercase">HOANG NGUYEN THANH BINH</strong>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span class="text-slate-500">Số tiền:</span>
+                                        <div class="flex items-center gap-1">
+                                            <strong id="bidv-transfer-amount" class="text-rose-600 font-black text-sm">0 ₫</strong>
+                                            <button type="button" onclick="copyToClipboard((document.getElementById('bidv-transfer-amount')?.textContent||'0').replace(/\D/g,''), 'Đã sao chép số tiền!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">Sao chép</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span class="text-slate-500">Nội dung CK:</span>
+                                        <div class="flex items-center gap-1">
+                                            <strong id="bidv-transfer-memo" class="font-mono text-amber-700 font-black bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">OCOP-ORD</strong>
+                                            <button type="button" onclick="copyToClipboard(document.getElementById('bidv-transfer-memo')?.textContent||'OCOP', 'Đã sao chép nội dung chuyển khoản!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">Sao chép</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <p class="text-[10px] text-slate-500 italic text-center border-t border-sky-100 pt-1.5">
+                                Quét mã VietQR trên app ngân hàng để chuyển khoản nhanh 24/7, tự động điền đúng STK và nội dung.
+                            </p>
+                            <button type="button" onclick="submitOnlineOrder('bidv')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-sky-600 via-sky-700 to-blue-700 hover:from-sky-500 hover:to-blue-600 text-white font-black text-sm shadow-md flex items-center justify-center gap-2 cursor-pointer transition hover:scale-[1.01] active:scale-95">
+                                <i class="fa-solid fa-circle-check text-base"></i>
+                                <span>✅ Tôi Đã Chuyển Khoản &amp; Hoàn Tất Đơn Hàng</span>
+                            </button>
                         </div>
-                        <p class="text-[10px] text-slate-500 italic text-center border-t border-sky-100 pt-1.5">
-                            Quét mã VietQR trên app ngân hàng để chuyển khoản nhanh 24/7, tự động điền đúng STK và nội dung.
-                        </p>
-                    </div>
-                    <!-- Panel 2: MoMo Box -->
-                    <div id="panel-payment-momo" class="hidden p-3.5 rounded-2xl bg-gradient-to-br from-pink-50 via-white to-rose-50 border-2 border-pink-300 space-y-2.5 shadow-2xs">
-                        <div class="flex flex-col sm:flex-row items-center gap-3">
-                            <img id="order-momo-qr" src="" alt="Mã MoMo" class="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border-2 border-pink-400 p-1 bg-white shadow-sm shrink-0 object-contain">
-                            <div class="space-y-1 text-[11px] text-slate-800 flex-1 min-w-0">
-                                <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#D82D8B] text-white font-black text-[10px] mb-1">
-                                    <span>📱 Ví Điện Tử MoMo</span>
-                                </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <span class="text-slate-500">SĐT nhận MoMo:</span>
-                                    <div class="flex items-center gap-1">
-                                        <strong class="font-mono text-sm text-[#D82D8B] font-black">0971280030</strong>
-                                        <button type="button" onclick="copyToClipboard('0971280030', 'Đã sao chép SĐT MoMo 0971280030!')" class="px-2 py-0.5 rounded bg-pink-100 hover:bg-pink-200 text-pink-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép SĐT</button>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between gap-1">
-                                    <span class="text-slate-500">Số tiền chuyển:</span>
-                                    <strong id="momo-transfer-amount" class="text-rose-600 font-black text-sm">0 ₫</strong>
-                                </div>
-                                <div class="flex items-center justify-between gap-1 pt-1 border-t border-pink-200">
-                                    <span class="text-slate-500">Lời nhắn chuyển:</span>
-                                    <div class="flex items-center gap-1">
-                                        <strong id="momo-transfer-memo" class="font-mono text-xs text-pink-800 font-black">OCOP 8829</strong>
-                                        <button type="button" onclick="copyToClipboard(document.getElementById('momo-transfer-memo').textContent, 'Đã sao chép lời nhắn chuyển tiền!')" class="px-2 py-0.5 rounded bg-pink-100 hover:bg-pink-200 text-pink-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép</button>
-                                    </div>
-                                </div>
-                                <p class="text-[9.5px] text-slate-500 italic pt-0.5">*(Quét QR bằng App MoMo hoặc chuyển tiền theo SĐT 0971280030)*</p>
+
+                        <!-- Panel 2: MoMo Box -->
+                        <div id="panel-payment-momo" class="hidden p-3.5 rounded-2xl bg-gradient-to-br from-pink-50 via-white to-rose-50 border-2 border-pink-300 space-y-3 shadow-2xs">
+                            <div class="flex items-center justify-between bg-pink-50 border border-pink-300 rounded-xl px-3 py-1.5 text-[11px] text-pink-900 font-bold">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-regular fa-clock text-pink-600"></i>
+                                    <span>⏱️ Mã QR hết hạn sau:</span>
+                                </span>
+                                <span id="momo-qr-countdown" class="font-mono font-black text-sm text-rose-600 bg-white px-2 py-0.5 rounded-md border border-pink-300 shadow-2xs">05:00</span>
                             </div>
+                            <div class="flex flex-col sm:flex-row items-center gap-3">
+                                <img id="order-momo-qr" src="" alt="Mã MoMo" class="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border-2 border-pink-400 p-1 bg-white shadow-sm shrink-0 object-contain">
+                                <div class="space-y-1 text-[11px] text-slate-800 flex-1 min-w-0">
+                                    <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#D82D8B] text-white font-black text-[10px] mb-1">
+                                        <span>📱 Ví Điện Tử MoMo</span>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span class="text-slate-500">SĐT nhận MoMo:</span>
+                                        <div class="flex items-center gap-1">
+                                            <strong class="font-mono text-sm text-[#D82D8B] font-black">0971280030</strong>
+                                            <button type="button" onclick="copyToClipboard('0971280030', 'Đã sao chép SĐT MoMo 0971280030!')" class="px-2 py-0.5 rounded bg-pink-100 hover:bg-pink-200 text-pink-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép SĐT</button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span class="text-slate-500">Chủ tài khoản:</span>
+                                        <strong class="font-bold text-slate-900 uppercase">HOANG NGUYEN THANH BINH</strong>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span class="text-slate-500">Số tiền chuyển:</span>
+                                        <strong id="momo-transfer-amount" class="text-rose-600 font-black text-sm">0 ₫</strong>
+                                    </div>
+                                    <div class="flex items-center justify-between gap-1 pt-1 border-t border-pink-200">
+                                        <span class="text-slate-500">Lời nhắn chuyển:</span>
+                                        <div class="flex items-center gap-1">
+                                            <strong id="momo-transfer-memo" class="font-mono text-xs text-pink-800 font-black">OCOP 8829</strong>
+                                            <button type="button" onclick="copyToClipboard(document.getElementById('momo-transfer-memo').textContent, 'Đã sao chép lời nhắn chuyển tiền!')" class="px-2 py-0.5 rounded bg-pink-100 hover:bg-pink-200 text-pink-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép</button>
+                                        </div>
+                                    </div>
+                                    <p class="text-[9.5px] text-slate-500 italic pt-0.5">*(Quét QR bằng App MoMo hoặc chuyển tiền theo SĐT 0971280030)*</p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="submitOnlineOrder('momo')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-600 to-pink-700 hover:from-pink-500 hover:to-rose-500 text-white font-black text-sm shadow-md flex items-center justify-center gap-2 cursor-pointer transition hover:scale-[1.01] active:scale-95">
+                                <i class="fa-solid fa-circle-check text-base"></i>
+                                <span>✅ Tôi Đã Chuyển Khoản &amp; Hoàn Tất Đơn Hàng</span>
+                            </button>
+                        </div>
+
+                        <!-- Panel 3: COD Box -->
+                        <div id="panel-payment-cod" class="hidden p-4 rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-2 border-emerald-300 space-y-3 shadow-2xs">
+                            <div class="flex items-center gap-2 font-black text-slate-900 text-xs sm:text-sm">
+                                <i class="fa-solid fa-box-open text-emerald-600 text-base"></i>
+                                <span>Thanh toán trực tiếp cho Shipper khi nhận hàng (Ship COD)</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-amber-50/80 border border-amber-300 text-xs text-amber-900 leading-relaxed">
+                                <div class="font-black flex items-center gap-1.5 text-amber-800 mb-1">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                    <span>Chính sách nhận hàng &amp; thanh toán:</span>
+                                </div>
+                                <span>Bưu tá sẽ giao hàng đến tận tay bạn. Bạn được kiểm tra kiện hàng niêm phong và thanh toán đúng số tiền <strong id="cod-transfer-amount" class="text-rose-600 font-black">0 ₫</strong> bằng tiền mặt cho shipper khi nhận hàng (Đã bao gồm tiền hàng, 25.000đ phí ship và 10.000đ phí dịch vụ nền tảng Bảo đảm OCOP).</span>
+                            </div>
+                            <button type="button" onclick="submitOnlineOrder('cod')" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-black text-sm shadow-md flex items-center justify-center gap-2 cursor-pointer transition hover:scale-[1.01] active:scale-95">
+                                <i class="fa-solid fa-circle-check text-base"></i>
+                                <span>✅ Hoàn Tất Đặt Đơn Ship COD</span>
+                            </button>
                         </div>
                     </div>
- <!-- Panel 3: COD Box -->
- <div id="panel-payment-cod" class="hidden p-3.5 rounded-2xl bg-slate-50 border border-slate-300 space-y-1.5">
- <div class="flex items-center gap-2 font-black text-slate-900 text-xs">
- <i class="fa-solid fa-box-open text-sky-600 text-sm"></i>
- <span>Thanh toán trực tiếp cho Shipper khi nhận hàng (Ship COD)</span>
- </div>
- <p class="text-[11px] text-slate-600 leading-relaxed">
- Bưu tá sẽ giao hàng đến tận tay bạn. Bạn được kiểm tra kiện hàng niêm phong và thanh toán tổng tiền <strong id="cod-transfer-amount" class="text-rose-600 font-black">0 ₫</strong> (Đã bao gồm tiền hàng, 25.000đ phí ship và 10.000đ phí dịch vụ nền tảng Chủ Web).
- </p>
- </div>
- </div>
- <!-- 5. Bảng Tạm Tính Chi Phí Minh Bạch -->
- <div class="p-4 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-2 text-xs">
- <div class="flex items-center justify-between text-slate-700">
- <span>Tiền hàng gốc (Trả về HTX/Cửa hàng - <span id="calc-qty-display">1</span> sản phẩm):</span>
- <span class="font-bold text-slate-900" id="calc-goods-total">0 ₫</span>
- </div>
- <div id="calc-voucher-row" class="hidden flex items-center justify-between text-emerald-800 font-bold bg-emerald-50 p-2.5 rounded-xl border border-emerald-300">
-                        <div class="flex items-center gap-1.5">
-                            <i class="fa-solid fa-tag text-emerald-600"></i>
-                            <span>Giảm giá Voucher OCOP (<strong id="calc-voucher-code" class="text-emerald-900 font-black"></strong>):</span>
-                            <button type="button" onclick="removeOrderVoucher()" class="text-rose-600 hover:text-rose-800 underline text-[10.5px] ml-1 cursor-pointer font-bold">(Hủy mã)</button>
-                        </div>
-                        <span id="calc-voucher-discount" class="text-sm font-black text-emerald-700">-0 ₫</span>
-                    </div>
-                    <div class="flex items-center justify-between text-slate-700">
-                        <span>Phí vận chuyển tiêu chuẩn (Ship tận nơi):</span>
- <span class="font-bold text-slate-800">25.000 ₫</span>
- </div>
- <div class="flex items-center justify-between text-sky-900 font-bold bg-sky-100/90 p-2.5 rounded-xl border border-sky-300">
- <div>
- <div class="flex items-center gap-1.5 text-sky-900 font-black">
- <i class="fa-solid fa-bolt text-amber-500"></i>
- <span>Phí dịch vụ nền tảng & Bảo đảm OCOP (Chủ Web):</span>
- </div>
- <div class="text-[10px] text-sky-700 font-normal">Phí kết nối & kiểm định đơn hàng O2O của nền tảng</div>
- </div>
- <span class="text-sm font-black text-sky-700">+10.000 ₫</span>
- </div>
- <div class="flex items-center justify-between pt-2.5 border-t border-sky-200">
- <span class="text-sm font-black text-slate-900">💰 TỔNG THANH TOÁN:</span>
- <span class="text-lg font-black text-rose-600" id="calc-grand-total">0 ₫</span>
- </div>
- </div>
- <!-- Nút Xác Nhận Đặt Hàng -->
- <button type="button" onclick="submitOnlineOrder()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer transition hover:scale-[1.01] active:scale-95">
- <i class="fa-solid fa-circle-check text-lg"></i>
- <span>✅ Xác Nhận Đặt Hàng Online</span>
- </button>
- </div>
- </div>
- </div>
- <!-- 10.3 MODAL XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<!-- 10.3 MODAL XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG -->
  <div id="order-success-modal" class="fixed inset-0 z-[99999] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-sm animate-fade-in" onclick="if(event.target === this) closeOrderSuccessModal()">
  <div class="bg-white border-2 border-emerald-400 rounded-3xl max-w-md w-full shadow-2xl p-6 text-slate-800 animate-pop-in space-y-4 text-center relative">
  <button type="button" onclick="closeOrderSuccessModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-bold absolute top-4 right-4 cursor-pointer transition">✖</button>
@@ -5462,7 +5552,7 @@
  <!-- ============================================================== -->
  <script src="product-codes.js?v=804e37553039"></script>
 <script src="product-search.js?v=e1e340296562"></script>
-<script src="data.js?v=7de7b37e7190"></script>
+<script src="data.js?v=bac3f355ae37"></script>
  <script src="ocop-stores.js?v=e967d59dd2fa"></script>
  <script src="ai-business-knowledge.js?v=1a8ddae50121"></script>
  <script src="assets/vendor/leaflet/leaflet.js?v=3104b526504d"></script>
@@ -16838,7 +16928,7 @@ let productSearchTimer;
 <link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=6082bfd08879"></script>
 <script src="checkout-payment.js?v=65d79782c7c2"></script>
-<script src="skytech-complete.js?v=4011fa48e640"></script>
+<script src="skytech-complete.js?v=974f6a17a70d"></script>
 <script src="cart-ui.js?v=5cd216c94e9c"></script>
 <script src="password-recovery.js?v=92dfd0e3dc3a"></script>
 <script src="account-center.js?v=15b862ef8f27"></script>
