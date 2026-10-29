@@ -206,7 +206,7 @@ header h1 {
 }
 
 /* Nút Đăng Ký Điểm Bán */
-#btn-header-ocr,
+body.is-admin-logged-in #btn-header-ocr,
 .header-right-actions button[onclick*="openPartnerRegistrationModal"] {
     background: #0284C7 !important;
     border: 1px solid #0284C7 !important;
@@ -228,7 +228,7 @@ header h1 {
 }
 
 /* Nút Quản Trị Chủ Web */
-#btn-header-admin-pin,
+body.is-admin-logged-in #btn-header-admin-pin,
 .header-right-actions button[onclick*="openChallengeProposalModal"],
 .header-right-actions button[onclick*="promptAdminPinModal"] {
     background: #0F172A !important;
@@ -3507,3 +3507,19 @@ body #ocop-intro-overlay h1.intro-hero-title #i18n-intro-title2 { display: block
 #ai-chat-window #ai-chat-composer textarea#ai-chat-input{display:block;box-sizing:border-box;min-width:0;flex:1 1 0%;min-height:40px;max-height:144px;resize:none;overflow-y:auto;line-height:20px;white-space:pre-wrap;overflow-wrap:anywhere;background:#f2f9ff!important;color:#142f46!important;border:1px solid #83bff0!important;border-radius:16px;padding:9px 12px;font-family:inherit;font-size:14px}
 #ai-chat-window #ai-chat-composer textarea#ai-chat-input:focus{outline:2px solid #397fb6;outline-offset:1px}
 #ai-chat-window #ai-chat-composer textarea#ai-chat-input::placeholder{color:#526f85!important}
+
+
+/* KHÓA CỨNG: ẨN TUYỆT ĐỐI CÁC TÍNH NĂNG QUẢN TRỊ KHI CHƯA ĐĂNG NHẬP ADMIN */
+body:not(.is-admin-logged-in) #btn-header-admin-pin,
+body:not(.is-admin-logged-in) #btn-header-ocr,
+body:not(.is-admin-logged-in) [data-admin-only="true"],
+body:not(.is-admin-logged-in) button[onclick*="promptAdminPinModal"],
+body:not(.is-admin-logged-in) button[onclick*="openFinancialDashboardModal"],
+body:not(.is-admin-logged-in) .nav-btn-finance,
+body:not(.is-admin-logged-in) .glass-panel:has(#i18n-ai-financial-badge),
+body:not(.is-admin-logged-in) #btn-ordersuccess-admin {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+

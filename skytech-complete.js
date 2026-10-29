@@ -1014,59 +1014,69 @@
     };
 
     
-    window.syncAdminHeaderButtonsVisibility = function () {
-        const ocrBtn = document.getElementById('btn-header-ocr');
-        const adminBtn = document.getElementById('btn-header-admin-pin');
-        if (!ocrBtn && !adminBtn) return;
-
+    window.syncAdminRoleState = function () {
         let user = null;
         try {
             const raw = localStorage.getItem('ocop_current_user');
             if (raw) user = JSON.parse(raw);
         } catch (e) {}
 
-        const adminUsernames = ['admin', 'ad', 'thaonguyenad01', 'kimnganad02', 'vinhphucad03', 'thanhbinhad04', 'nppdemo'];
+        const adminUsernames = ['admin', 'thaonguyenad01', 'kimnganad02', 'vinhphucad03', 'thanhbinhad04'];
         const uName = (user?.username || user?.loginId || user?.email || '').toLowerCase().trim();
+        const roleStr = String(user?.role || user?.roleLabel || '').toLowerCase();
 
-        let isAdmin = false;
-        if (user) {
-            if (adminUsernames.includes(uName)) {
-                isAdmin = true;
-            } else if (user.role === 'admin' || user.role === 'super_admin' || user.role === 'distributor' || user.isAdmin || user.isDistributor) {
-                isAdmin = true;
-            } else if (uName.startsWith('ad') || uName.startsWith('npp')) {
-                isAdmin = true;
-            }
-            if (uName === 'khachhang' || user.role === 'customer') {
-                isAdmin = false;
-            }
-        }
+        const isAdmin = Boolean(user && (
+            adminUsernames.includes(uName) ||
+            roleStr.includes('admin') ||
+            user.isAdmin === true
+        ) && uName !== 'khachhang' && roleStr !== 'customer');
+
+        const adminBtn = document.getElementById('btn-header-admin-pin');
+        const ocrBtn = document.getElementById('btn-header-ocr');
+        const orderSuccessAdminBtn = document.getElementById('btn-ordersuccess-admin');
+        const adminElements = document.querySelectorAll('[data-admin-only="true"]');
 
         if (isAdmin) {
-            if (ocrBtn) {
-                ocrBtn.classList.remove('hidden');
-                ocrBtn.style.setProperty('display', 'inline-flex', 'important');
-            }
+            if (document.body) document.body.classList.add('is-admin-logged-in');
             if (adminBtn) {
                 adminBtn.classList.remove('hidden');
                 adminBtn.style.setProperty('display', 'inline-flex', 'important');
             }
-        } else {
             if (ocrBtn) {
-                ocrBtn.classList.add('hidden');
-                ocrBtn.style.setProperty('display', 'none', 'important');
+                ocrBtn.classList.remove('hidden');
+                ocrBtn.style.setProperty('display', 'inline-flex', 'important');
             }
+            adminElements.forEach(el => {
+                el.classList.remove('hidden');
+                el.style.removeProperty('display');
+            });
+        } else {
+            if (document.body) document.body.classList.remove('is-admin-logged-in');
             if (adminBtn) {
                 adminBtn.classList.add('hidden');
                 adminBtn.style.setProperty('display', 'none', 'important');
             }
+            if (ocrBtn) {
+                ocrBtn.classList.add('hidden');
+                ocrBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (orderSuccessAdminBtn) {
+                orderSuccessAdminBtn.classList.add('hidden');
+                orderSuccessAdminBtn.style.setProperty('display', 'none', 'important');
+            }
+            adminElements.forEach(el => {
+                el.classList.add('hidden');
+                el.style.setProperty('display', 'none', 'important');
+            });
         }
     };
+    window.syncAdminHeaderButtonsVisibility = window.syncAdminRoleState;
     if (typeof window !== 'undefined') {
-        window.addEventListener('DOMContentLoaded', window.syncAdminHeaderButtonsVisibility);
-        window.addEventListener('storage', window.syncAdminHeaderButtonsVisibility);
+        window.addEventListener('DOMContentLoaded', window.syncAdminRoleState);
+        window.addEventListener('load', window.syncAdminRoleState);
+        window.addEventListener('storage', window.syncAdminRoleState);
     }
-
+    
     window.closeAdminPinModal = function () {
         const modal = document.getElementById('admin-pin-modal');
         if (modal) {

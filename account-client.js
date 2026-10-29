@@ -24,11 +24,11 @@
   if(imageGuest&&response.status===401){guestImageToken='';try{root.sessionStorage?.removeItem(GUEST_IMAGE);}catch{}}
   return response;
  }
- function clear(){try{localStorage.removeItem(TOKEN);localStorage.removeItem('ocop_current_user');}catch{}root.currentUser=null;root.OCOPCustomerSession?.syncIdentity();}
+ function clear(){try{localStorage.removeItem(TOKEN);localStorage.removeItem('ocop_current_user');}catch{}root.currentUser=null;root.OCOPCustomerSession?.syncIdentity();root.syncAdminRoleState?.();}
  function accept(body){
   const user={...body.user,username:body.user.username||body.user.id,fullName:body.user.name,role:['admin','distributor'].includes(body.user.role)?body.user.role:'customer'};
   if(body.token)localStorage.setItem(TOKEN,body.token);
-  localStorage.setItem('ocop_current_user',JSON.stringify(user));root.currentUser=user;root.OCOPCustomerSession?.syncIdentity();root.updateCustomerHeaderUI?.();return user;
+  localStorage.setItem('ocop_current_user',JSON.stringify(user));root.currentUser=user;root.OCOPCustomerSession?.syncIdentity();root.updateCustomerHeaderUI?.();root.syncAdminRoleState?.();return user;
  }
  async function request(route,body,extraHeaders={}){
   let response;
