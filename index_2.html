@@ -3967,12 +3967,57 @@
  <button id="tab-register" type="button" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
  </div>
  <!-- Nút Điền Nhanh Tài Khoản Demo Ban Giám Khảo (1 chạm) -->
- <div id="auth-quick-demo-container" class="mb-3">
- <button type="button" onclick="quickFillDemoJudge()" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-100 via-yellow-100 to-amber-200 hover:from-amber-200 hover:to-yellow-200 border border-amber-400 text-amber-950 font-black text-[11px] flex items-center justify-center gap-1.5 transition shadow-xs cursor-pointer">
- <i class="fa-solid fa-bolt text-amber-700"></i>
- <span>Điền nhanh Tài khoản Demo Ban Giám Khảo</span>
- </button>
- </div>
+ <!-- BẢNG CHỌN TÀI KHOẢN DEMO 1 CHẠM (GIÁM KHẢO / KHÁCH TEST) -->
+                    <div id="auth-quick-demo-container" class="mb-3 p-3 bg-sky-50/90 border border-sky-200 rounded-2xl space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-black text-sky-950 flex items-center gap-1">
+                                <i class="fa-solid fa-bolt text-amber-500"></i>
+                                <span>⚡ Tài khoản trải nghiệm nhanh (Dành cho Giám khảo / Khách test):</span>
+                            </span>
+                        </div>
+
+                        <!-- 3 Vai Trò Cốt Lõi -->
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <button type="button" onclick="quickSelectDemoAccount('khachhang')" class="px-2 py-1.5 rounded-xl bg-white hover:bg-sky-100 border border-sky-200 text-slate-800 font-bold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" title="Khách Hàng Mua Sắm (khachhang / 123456)">
+                                <span class="text-xs">👤</span>
+                                <span class="truncate">Khách hàng</span>
+                            </button>
+                            <button type="button" onclick="quickSelectDemoAccount('admin')" class="px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 font-black text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" title="Admin Tổng (admin / 000000)">
+                                <span class="text-xs">👑</span>
+                                <span class="truncate">Admin Tổng</span>
+                            </button>
+                            <button type="button" onclick="quickSelectDemoAccount('nppdemo')" class="px-2 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-900 font-bold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" title="Nhà Phân Phối / Đối Tác HTX (nppdemo / NppDemo@2026)">
+                                <span class="text-xs">🏪</span>
+                                <span class="truncate">Nhà phân phối</span>
+                            </button>
+                        </div>
+
+                        <!-- Dãy 4 Admin Thành viên DigitalFest 2026 -->
+                        <div class="pt-1.5 border-t border-sky-200/60">
+                            <div class="text-[10px] font-semibold text-slate-500 mb-1 flex items-center gap-1">
+                                <i class="fa-solid fa-user-shield text-sky-600 text-[9px]"></i>
+                                <span>Admin Thành viên (DigitalFest 2026):</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-1.5">
+                                <button type="button" onclick="quickSelectDemoAccount('ThaoNguyenad01')" class="px-2 py-1.5 rounded-xl bg-white hover:bg-sky-100 border border-sky-200 text-sky-900 font-bold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" title="Admin 1: Thảo Nguyên (Trưởng Nhóm) - ThaoNguyenad01 / 0000000">
+                                    <span>👩‍💼</span>
+                                    <span class="truncate">Thảo Nguyên (ad01)</span>
+                                </button>
+                                <button type="button" onclick="quickSelectDemoAccount('KimNganad02')" class="px-2 py-1.5 rounded-xl bg-white hover:bg-sky-100 border border-sky-200 text-sky-900 font-bold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" title="Admin 2: Kim Ngân (Điều Phối O2O) - KimNganad02 / 1111111">
+                                    <span>👩‍💼</span>
+                                    <span class="truncate">Kim Ngân (ad02)</span>
+                                </button>
+                                <button type="button" onclick="quickSelectDemoAccount('VinhPhucad03')" class="px-2 py-1.5 rounded-xl bg-white hover:bg-sky-100 border border-sky-200 text-sky-900 font-bold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" title="Admin 3: Vĩnh Phúc (Quản Trị Tài Chính) - VinhPhucad03 / 2222222">
+                                    <span>👨‍💼</span>
+                                    <span class="truncate">Vĩnh Phúc (ad03)</span>
+                                </button>
+                                <button type="button" onclick="quickSelectDemoAccount('ThanhBinhad04')" class="px-2 py-1.5 rounded-xl bg-white hover:bg-sky-100 border border-sky-200 text-sky-900 font-bold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer" title="Admin 4: Thanh Bình (Phát Triển Đối Tác HTX) - ThanhBinhad04 / 3333333">
+                                    <span>👨‍💼</span>
+                                    <span class="truncate">Thanh Bình (ad04)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
  <div id="auth-social-login" class="flex flex-col gap-2 mb-3" aria-label="Đăng nhập nhanh">
  <button id="auth-google-btn" type="button" onclick="openGoogleChooser()" class="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 font-bold text-gray-700 hover:bg-gray-50 transition cursor-pointer">
  <i class="fa-brands fa-google text-red-500 text-sm"></i><span data-auth-social-label="google">Tiếp tục với Google</span>
@@ -5090,6 +5135,33 @@
  <div id="cust-auth-alert" class="hidden p-3 rounded-xl text-xs font-bold items-center gap-2"></div>
  <!-- TAB 1: ĐĂNG NHẬP -->
  <div id="cust-pane-login" class="space-y-3.5">
+
+                        <!-- BẢNG CHỌN TÀI KHOẢN DEMO 1 CHẠM TRONG CUSTOMER MODAL -->
+                        <div id="cust-quick-demo-container" class="p-3 bg-sky-50/90 border border-sky-200 rounded-2xl space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-black text-sky-950 flex items-center gap-1">
+                                    <i class="fa-solid fa-bolt text-amber-500"></i>
+                                    <span>⚡ Đăng nhập nhanh 1 chạm (Giám khảo / Khách test):</span>
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button type="button" onclick="quickSelectDemoAccount('khachhang')" class="px-2 py-1.5 rounded-xl bg-white hover:bg-sky-100 border border-sky-200 text-slate-800 font-bold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
+                                    <span>👤 Khách hàng</span>
+                                </button>
+                                <button type="button" onclick="quickSelectDemoAccount('admin')" class="px-2 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 font-black text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
+                                    <span>👑 Admin Tổng</span>
+                                </button>
+                                <button type="button" onclick="quickSelectDemoAccount('nppdemo')" class="px-2 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-900 font-bold text-[10.5px] shadow-2xs transition flex items-center justify-center gap-1 cursor-pointer">
+                                    <span>🏪 NPP Demo</span>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-4 gap-1 pt-1 border-t border-sky-200/60">
+                                <button type="button" onclick="quickSelectDemoAccount('ThaoNguyenad01')" class="px-1.5 py-1 rounded-lg bg-white hover:bg-sky-100 border border-sky-200 text-sky-900 font-bold text-[10px] truncate shadow-2xs cursor-pointer" title="ThaoNguyenad01">ad01</button>
+                                <button type="button" onclick="quickSelectDemoAccount('KimNganad02')" class="px-1.5 py-1 rounded-lg bg-white hover:bg-sky-100 border border-sky-200 text-sky-900 font-bold text-[10px] truncate shadow-2xs cursor-pointer" title="KimNganad02">ad02</button>
+                                <button type="button" onclick="quickSelectDemoAccount('VinhPhucad03')" class="px-1.5 py-1 rounded-lg bg-white hover:bg-sky-100 border border-sky-200 text-sky-900 font-bold text-[10px] truncate shadow-2xs cursor-pointer" title="VinhPhucad03">ad03</button>
+                                <button type="button" onclick="quickSelectDemoAccount('ThanhBinhad04')" class="px-1.5 py-1 rounded-lg bg-white hover:bg-sky-100 border border-sky-200 text-sky-900 font-bold text-[10px] truncate shadow-2xs cursor-pointer" title="ThanhBinhad04">ad04</button>
+                            </div>
+                        </div>
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Tài khoản (Tên đăng nhập hoặc Số điện thoại) <span class="text-rose-600">*</span></label>
  <input type="text" id="cust-login-user" placeholder="Ví dụ: khachhang hoặc 0912345678" class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
@@ -12644,44 +12716,162 @@ let productSearchTimer;
         const OCOP_CURRENT_USER_KEY = 'ocop_current_user';
         const DEFAULT_DEMO_USERS = [
             {
-                id: 'usr_bgk2026',
-                name: 'Ban Giám Khảo Digital Fest 2026',
-                loginId: 'bgk2026@ocop.vn',
-                email: 'bgk2026@ocop.vn',
-                phone: '0988882026',
-                address: 'Hội đồng Thẩm định Quốc gia 2026',
-                password: '12345678',
-                role: 'Ban Giám Khảo & Chuyên Gia Thẩm Định',
+                id: 'usr_khachhang',
+                username: 'khachhang',
+                loginId: 'khachhang',
+                email: 'khachhang@ocop.vn',
+                name: 'Khách Hàng Trải Nghiệm Demo',
+                fullName: 'Khách Hàng Trải Nghiệm Demo',
+                password: '123456',
+                phone: '0912345678',
+                address: 'Số 1 Tràng Tiền, Hoàn Kiếm, Hà Nội',
+                role: 'customer',
+                roleLabel: 'Khách Hàng Mua Sắm',
                 provider: 'Local',
                 verified: true
             },
             {
-                id: 'usr_htx_dongnai',
-                name: 'Quản Trị Viên HTX OCOP Đồng Nai',
-                loginId: 'htx.ocop.dongnai@gmail.com',
-                email: 'htx.ocop.dongnai@gmail.com',
-                phone: '0918234567',
-                address: 'TP. Biên Hòa, Tỉnh Đồng Nai',
+                id: 'usr_admin',
+                username: 'admin',
+                loginId: 'admin',
+                email: 'admin@ocop.vn',
+                name: 'Admin Điều Hành Chung',
+                fullName: 'Admin Điều Hành Chung',
+                password: '000000',
+                adminId: 'AD01',
+                phone: '0988880000',
+                address: 'Trụ sở Điều hành OCOP Quốc gia',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị Hệ Thống',
+                isAdmin: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_nppdemo',
+                username: 'nppdemo',
+                loginId: 'nppdemo',
+                email: 'nppdemo@ocop.vn',
+                name: 'Nhà Phân Phối OCOP Toàn Quốc',
+                fullName: 'Nhà Phân Phối OCOP Toàn Quốc',
+                password: 'NppDemo@2026',
+                distributorCode: 'NPP26DEMO001',
+                phone: '0971280030',
+                address: 'Tổng kho Phân phối OCOP Toàn quốc',
+                role: 'distributor',
+                roleLabel: 'Nhà Phân Phối / Đối Tác HTX',
+                isDistributor: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_ad01',
+                username: 'ThaoNguyenad01',
+                loginId: 'ThaoNguyenad01',
+                email: 'thaonguyen.ad01@ocop.vn',
+                name: 'Admin Thảo Nguyên (Trưởng Nhóm)',
+                fullName: 'Admin Thảo Nguyên (Trưởng Nhóm)',
+                password: '0000000',
+                adminId: 'AD01',
+                phone: '0988880001',
+                address: 'Ban Điều hành OCOP DigitalFest 2026',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị',
+                isAdmin: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_ad02',
+                username: 'KimNganad02',
+                loginId: 'KimNganad02',
+                email: 'kimngan.ad02@ocop.vn',
+                name: 'Admin Kim Ngân (Điều Phối O2O)',
+                fullName: 'Admin Kim Ngân (Điều Phối O2O)',
+                password: '1111111',
+                adminId: 'AD02',
+                phone: '0988880002',
+                address: 'Trung tâm Điều phối O2O Showroom',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị',
+                isAdmin: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_ad03',
+                username: 'VinhPhucad03',
+                loginId: 'VinhPhucad03',
+                email: 'vinhphuc.ad03@ocop.vn',
+                name: 'Admin Vĩnh Phúc (Quản Trị Tài Chính)',
+                fullName: 'Admin Vĩnh Phúc (Quản Trị Tài Chính)',
+                password: '2222222',
+                adminId: 'AD03',
+                phone: '0988880003',
+                address: 'Bộ phận Tài chính & Dòng tiền OCOP',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị',
+                isAdmin: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_ad04',
+                username: 'ThanhBinhad04',
+                loginId: 'ThanhBinhad04',
+                email: 'thanhbinh.ad04@ocop.vn',
+                name: 'Admin Thanh Bình (Phát Triển Đối Tác HTX)',
+                fullName: 'Admin Thanh Bình (Phát Triển Đối Tác HTX)',
+                password: '3333333',
+                adminId: 'AD04',
+                phone: '0988880004',
+                address: 'Phòng Phát triển Đối tác Hợp tác xã',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị',
+                isAdmin: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_bgk2026',
+                username: 'bgk2026',
+                loginId: 'bgk2026@ocop.vn',
+                email: 'bgk2026@ocop.vn',
+                name: 'Ban Giám Khảo Digital Fest 2026',
+                fullName: 'Ban Giám Khảo Digital Fest 2026',
                 password: '12345678',
-                role: 'Đối tác HTX & Quản trị viên O2O',
+                phone: '0988882026',
+                address: 'Hội đồng Thẩm định Quốc gia 2026',
+                role: 'admin',
+                roleLabel: 'Ban Giám Khảo & Chuyên Gia Thẩm Định',
+                isAdmin: true,
                 provider: 'Local',
                 verified: true
             }
         ];
         function getStoredUsers() {
+            let users = [];
             try {
                 const raw = localStorage.getItem(OCOP_USERS_KEY);
                 if (raw) {
                     const parsed = JSON.parse(raw);
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                    if (Array.isArray(parsed) && parsed.length > 0) users = parsed;
                 }
             } catch (e) {
                 console.warn('Error reading stored users:', e);
             }
+            DEFAULT_DEMO_USERS.forEach(def => {
+                const idx = users.findIndex(u => (u.username && u.username.toLowerCase() === def.username.toLowerCase()) || (u.loginId && u.loginId.toLowerCase() === def.loginId.toLowerCase()));
+                if (idx === -1) {
+                    users.push(def);
+                } else {
+                    users[idx] = Object.assign({}, def, users[idx]);
+                }
+            });
             try {
-                localStorage.setItem(OCOP_USERS_KEY, JSON.stringify(DEFAULT_DEMO_USERS));
+                localStorage.setItem(OCOP_USERS_KEY, JSON.stringify(users));
             } catch (_) {}
-            return [...DEFAULT_DEMO_USERS];
+            return users;
         }
         function saveStoredUsers(users) {
             try {
@@ -12937,20 +13127,128 @@ let productSearchTimer;
                 throw err;
             }
         }
-        function quickFillDemoJudge() {
-            if (authTab !== 'login') {
-                switchAuthTab('login');
-            }
+        window.quickSelectDemoAccount = async function (username) {
+            const users = (typeof DEFAULT_DEMO_USERS !== 'undefined') ? DEFAULT_DEMO_USERS : [];
+            const account = users.find(u => u.username === username || u.loginId === username);
+            if (!account) return;
+
+            // 1. Tự động điền đúng Tên đăng nhập và Mật khẩu vào form
             const nameInput = document.getElementById('auth-name');
             const passInput = document.getElementById('auth-password');
-            if (nameInput) nameInput.value = 'bgk2026@ocop.vn';
-            if (passInput) passInput.value = '12345678';
+            if (nameInput) nameInput.value = account.username;
+            if (passInput) passInput.value = account.password;
+
+            const custUser = document.getElementById('cust-login-user');
+            const custPass = document.getElementById('cust-login-pass');
+            if (custUser) custUser.value = account.username;
+            if (custPass) custPass.value = account.password;
+
+            if (typeof switchAuthTab === 'function' && typeof authTab !== 'undefined' && authTab !== 'login') {
+                switchAuthTab('login');
+            }
+            if (typeof switchCustomerAuthTab === 'function') {
+                switchCustomerAuthTab('login');
+            }
+
             const status = document.getElementById('auth-social-status');
             if (status) {
-                status.textContent = '⚡ Đã tự động điền tài khoản Demo Ban Giám Khảo. Nhấn "Đăng Nhập" ngay!';
-                status.className = 'mb-3 rounded-xl border border-amber-300 bg-amber-50 text-amber-900 px-3 py-2 text-xs leading-relaxed font-bold';
+                status.textContent = '⚡ Đang đăng nhập: ' + account.name + '...';
+                status.className = 'mb-3 rounded-xl border border-sky-300 bg-sky-50 text-sky-900 px-3 py-2 text-xs leading-relaxed font-bold';
                 status.classList.remove('hidden');
             }
+
+            // 2. Tự động kích hoạt đăng nhập
+            try {
+                let loggedInUser = null;
+                try {
+                    if (window.OCOPAuth && typeof window.OCOPAuth.login === 'function') {
+                        loggedInUser = await window.OCOPAuth.login(account.username, account.password);
+                    }
+                } catch (netErr) {
+                    console.warn('OCOPAuth.login net error, activating local demo account:', netErr.message);
+                }
+
+                const isAdm = account.role === 'admin' || account.isAdmin || ['admin', 'ThaoNguyenad01', 'KimNganad02', 'VinhPhucad03', 'ThanhBinhad04'].includes(account.username);
+                const isDist = account.role === 'distributor' || account.isDistributor || account.username === 'nppdemo';
+
+                if (!loggedInUser) {
+                    loggedInUser = {
+                        id: account.id,
+                        username: account.username,
+                        fullName: account.name,
+                        name: account.name,
+                        phone: account.phone,
+                        address: account.address,
+                        role: isAdm ? 'admin' : (isDist ? 'distributor' : 'customer'),
+                        isAdmin: isAdm,
+                        isDistributor: isDist,
+                        adminId: account.adminId || (isAdm ? 'AD01' : null),
+                        distributorCode: account.distributorCode || (isDist ? 'NPP26DEMO001' : null)
+                    };
+                    try {
+                        localStorage.setItem('ocop_current_user', JSON.stringify(loggedInUser));
+                        localStorage.setItem('ocop-session-token', 'a'.repeat(64));
+                    } catch (_) {}
+                    if (typeof saveCurrentUser === 'function') saveCurrentUser(loggedInUser);
+                    if (window.OCOPCustomerSession && typeof window.OCOPCustomerSession.syncIdentity === 'function') {
+                        window.OCOPCustomerSession.syncIdentity();
+                    }
+                    if (typeof updateCustomerHeaderUI === 'function') updateCustomerHeaderUI();
+                }
+
+                // Đóng modal đăng nhập
+                document.getElementById('auth-modal')?.classList.add('hidden');
+                if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
+
+                const roleText = account.roleLabel || account.role;
+                if (typeof showToast === 'function') {
+                    showToast('✅ Đăng nhập thành công: ' + account.name + ' (' + roleText + ')', 'success');
+                }
+
+                // 3. Phân quyền tự động khi đăng nhập
+                if (isAdm) {
+                    // Cấp quyền Admin, mở Bảng duyệt đơn hàng và mở thẳng Bảng Quản Trị Doanh Thu & Lợi Nhuận Chủ Web
+                    sessionStorage.setItem('ocop_admin_pin_verified', 'true');
+                    sessionStorage.setItem('admin_pin_verified', 'true');
+                    setTimeout(() => {
+                        if (typeof window.openRealFinancialDashboard === 'function') {
+                            window.openRealFinancialDashboard();
+                        } else if (typeof window.openFinancialDashboardModal === 'function') {
+                            window.openFinancialDashboardModal();
+                        } else if (typeof window.promptAdminPinModal === 'function') {
+                            window.promptAdminPinModal();
+                        }
+                        if (typeof window.renderAdminOnlineOrdersTable === 'function') {
+                            window.renderAdminOnlineOrdersTable();
+                        }
+                    }, 300);
+                } else if (isDist) {
+                    // Mở cổng Quản trị Nhà Phân Phối
+                    setTimeout(() => {
+                        if (window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal === 'function') {
+                            window.OcopAdminManagement.openAdminManagementModal('distributor', account.distributorCode || 'NPP26DEMO001');
+                        } else if (typeof window.promptAdminPinModal === 'function') {
+                            window.promptAdminPinModal();
+                        }
+                    }, 300);
+                } else {
+                    // Khách hàng demo: Hiển thị trạng thái khách hàng, đặt đơn ở chế độ ⏳ Chờ xác nhận, theo dõi lịch sử đơn mua
+                    setTimeout(() => {
+                        if (typeof window.openCustomerAuthModal === 'function') {
+                            window.openCustomerAuthModal();
+                            if (typeof window.switchCustomerAuthTab === 'function') {
+                                window.switchCustomerAuthTab('orders');
+                            }
+                        }
+                    }, 300);
+                }
+            } catch (err) {
+                if (typeof showToast === 'function') showToast(err.message || 'Lỗi đăng nhập.', 'error');
+            }
+        };
+
+        function quickFillDemoJudge() {
+            window.quickSelectDemoAccount('admin');
         }
         function togglePasswordVisibility(inputId, btn) {
             const input=document.getElementById(inputId);if(!input)return;
@@ -16057,19 +16355,23 @@ let productSearchTimer;
     function initCustomerAccountSystem() {
         try {
             let customers = JSON.parse(localStorage.getItem('ocop_customers') || 'null');
-            if (!Array.isArray(customers) || customers.length === 0) {
-                customers = [
-                    {
-                        username: 'khachhang',
-                        password: '123456',
-                        fullName: 'Nguyễn Văn An (Mẫu)',
-                        phone: '0912345678',
-                        address: 'Số 1 Tràng Tiền, Hoàn Kiếm, Hà Nội',
+            if (!Array.isArray(customers)) customers = [];
+            
+            const defUsers = (typeof DEFAULT_DEMO_USERS !== 'undefined') ? DEFAULT_DEMO_USERS : [];
+            defUsers.forEach(d => {
+                if (!customers.some(c => c.username && c.username.toLowerCase() === d.username.toLowerCase())) {
+                    customers.push({
+                        username: d.username,
+                        password: d.password,
+                        fullName: d.name,
+                        phone: d.phone,
+                        address: d.address,
+                        role: d.role,
                         createdAt: new Date().toISOString()
-                    }
-                ];
-                localStorage.setItem('ocop_customers', JSON.stringify(customers));
-            }
+                    });
+                }
+            });
+            localStorage.setItem('ocop_customers', JSON.stringify(customers));
         } catch (e) {
             console.warn('initCustomerAccountSystem error:', e);
         }
