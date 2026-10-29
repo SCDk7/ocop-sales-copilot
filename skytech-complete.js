@@ -4340,40 +4340,9 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         }
     };
 
-    // 9. NÂNG CẤP 252 THẺ SẢN PHẨM: 2 NÚT HÀNG NGANG 2 CỘT CÂN ĐỐI BO TRÒN 999PX
+    // 9. BẢO TỒN NGUYÊN BẢN THẺ SẢN PHẨM & CỤM 3 NÚT GỐC CỦA THẢO NGUYÊN
     function enhanceProductCardElements() {
-        const cards = document.querySelectorAll('#product-grid > div');
-        cards.forEach(card => {
-            // Remove any AI story buttons on all cards
-            card.querySelectorAll('.btn-card-ai-story').forEach(btn => btn.remove());
-
-            let productId = card.getAttribute('data-product-id');
-            if (!productId) {
-                const btn = card.querySelector('[onclick*="openStoreLocator"], [onclick*="openOnlineOrderModal"], [onclick*="activateProductReconciliation"]');
-                if (btn) {
-                    const match = btn.getAttribute('onclick')?.match(/\d+/);
-                    if (match) productId = match[0];
-                }
-            }
-            if (productId) productId = parseInt(productId, 10);
-            if (!productId) return;
-
-            // Check if card footer has the 2 buttons
-            const footer = card.querySelector('.product-card-footer') || card;
-            const hasBuyBtn = footer.querySelector('.btn-card-buy-online');
-            const storeBtn = footer.querySelector('.btn-card-store');
-
-            if (!hasBuyBtn) {
-                const grid = document.createElement('div');
-                grid.className = 'grid grid-cols-2 gap-2';
-                grid.innerHTML = '<button type="button" onclick="openStoreLocator(' + productId + ')" class="btn-card-store" style="background: #F0F9FF !important; color: #0284C7 !important; border: 1.5px solid #BAE6FD !important; font-weight: 700 !important; padding: 8px 6px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 4px !important; cursor: pointer !important; font-size: 11.5px !important; transition: all 0.2s ease !important;" title="Xem thông tin điểm bán, showroom & liên hệ"><i class="fa-solid fa-location-dot text-sky-600 text-[11px]"></i><span class="truncate">📍 Điểm Bán</span></button>' +
-                    '<button type="button" onclick="openOnlineOrderModal(' + productId + ')" class="btn-card-buy-online" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important; font-weight: 700 !important; padding: 8px 6px !important; border-radius: 12px !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 4px !important; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25) !important; cursor: pointer !important; border: none !important; font-size: 11.5px !important; transition: all 0.2s ease !important;" title="Đặt mua online giao hàng tận nơi"><i class="fa-solid fa-cart-shopping text-white text-[11px]"></i><span class="truncate">🛒 Mua Online</span></button>';
-                if (storeBtn) storeBtn.remove();
-                const oldCluster = footer.querySelector('.product-action-cluster');
-                if (oldCluster) oldCluster.remove();
-                footer.appendChild(grid);
-            }
-        });
+        // Giữ nguyên thiết kế thẻ sản phẩm chuẩn gốc 100%: Nút Chi tiết 100% và hàng 3 nút: Mua ngay, Giỏ hàng, Yêu thích
     }
 
     // 10. ĐỔI AVATAR AI CHATBOT SANG ROBOT AI TRẮNG - XANH DƯƠNG & CẬP NHẬT CÂU CHÀO

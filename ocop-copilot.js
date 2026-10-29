@@ -164,7 +164,11 @@
         PAYMENT_COD: 'PAYMENT_COD',               // 2. Thanh toán COD
         ORDER_TRACK: 'ORDER_TRACK',               // 3. Tra cứu thông tin giao hàng & đơn hàng
         COMPLAINT_CSKH: 'COMPLAINT_CSKH',         // 4. Khiếu nại, sự cố giao hàng, kết nối CSKH
-        OCOP_KNOWLEDGE: 'OCOP_KNOWLEDGE',         // Tư vấn kiến thức OCOP
+        OCOP_KNOWLEDGE: 'OCOP_KNOWLEDGE',         // Tư vấn kiến thức OCOP 3★–5★ & tem QR HTX
+        TEA_BREWING_GUIDE: 'TEA_BREWING_GUIDE',   // Hướng dẫn pha trà chuẩn OCOP
+        STORAGE_GUIDE: 'STORAGE_GUIDE',           // Hướng dẫn bảo quản & tránh mốc
+        CORPORATE_GIFT: 'CORPORATE_GIFT',         // Quà tặng doanh nghiệp & hóa đơn VAT
+        INSPECTION_POLICY: 'INSPECTION_POLICY',   // Chính sách đồng kiểm & đổi mới 1-1 trong 7 ngày
         FINANCIAL_DISPATCH: 'FINANCIAL_DISPATCH', // Tác vụ tài chính chuyên sâu Đồng Nai/Hà Nội (giữ tương thích)
         GENERAL_GREETING: 'GENERAL_GREETING'      // Chào hỏi tổng quát
     };
@@ -202,6 +206,11 @@
             return INTENTS.ORDER_CREATE;
         }
 
+        // Quà tặng doanh nghiệp & hóa đơn VAT
+        if (/(doanh nghiep|hoa don vat|xuat hoa don|in logo|cong ty|qua tang cong ty|set qua doanh nghiep|corporate gift|b2b)/i.test(norm)) {
+            return INTENTS.CORPORATE_GIFT;
+        }
+
         // Tư vấn combo theo ngân sách (khách đưa ra số tiền hoặc từ khóa combo)
         const budget = parseBudget(text);
         if (budget !== null || /(combo|set qua|gio qua|goi qua|bo qua|budget|gift set|bundle)/i.test(norm)) {
@@ -214,8 +223,23 @@
             return INTENTS.SEARCH_PROVINCE;
         }
 
-        // Thắc mắc về OCOP
-        if (/(ocop la gi|may sao|tieu chuan|chung nhan|xuat xu|bao hanh|chinh sach|what is ocop)/i.test(norm)) {
+        // Hướng dẫn pha trà OCOP
+        if (/(pha tra|cach pha tra|uong tra|nhiet do pha|ham tra|ham che|brew tea|how to brew|tea brewing)/i.test(norm)) {
+            return INTENTS.TEA_BREWING_GUIDE;
+        }
+
+        // Hướng dẫn bảo quản & tránh mốc
+        if (/(bao quan|tranh moc|de duoc bao lau|han su dung|cach giu|huong dan bao quan|preserve|storage|shelf life|expiry)/i.test(norm)) {
+            return INTENTS.STORAGE_GUIDE;
+        }
+
+        // Đồng kiểm & Đổi mới 1-1 7 ngày
+        if (/(dong kiem|kiem tra truoc|duoc xem hang|kiem tra hang|doi moi 1-1|doi 1-1|7 ngay|bao hanh 7 ngay|chinh sach doi|chinh sach bao hanh|inspection|7 days return)/i.test(norm)) {
+            return INTENTS.INSPECTION_POLICY;
+        }
+
+        // Thắc mắc về OCOP, sao OCOP & tem QR truy xuất HTX
+        if (/(ocop la gi|may sao|tieu chuan|chung nhan|xuat xu|tem qr|truy xuat|htx ban dia|hop tac xa|bao hanh|chinh sach|what is ocop)/i.test(norm)) {
             return INTENTS.OCOP_KNOWLEDGE;
         }
 
@@ -956,6 +980,36 @@
     }
 
     // ── 5. BỘ ĐIỀU PHỐI TIN NHẮN TRUNG TÂM (MAIN DISPATCHER) ───────────────
+
+    // Helper render thẻ sản phẩm rút gọn có nút [🛒 Đặt Mua Online Ngay]
+    function renderCompactKnowledgeProductCard(recommendedProducts, title, language = 'vi') {
+        const en = language === 'en';
+        if (!recommendedProducts || recommendedProducts.length === 0) return '';
+        return `
+            <div class="mt-3 space-y-2">
+                <div class="flex items-center justify-between text-xs font-bold text-sky-900 bg-sky-50 p-2 rounded-xl border border-sky-200">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-star text-amber-500"></i> ${title}</span>
+                </div>
+                ${recommendedProducts.map(p => `
+                    <div class="rounded-xl border border-gray-200 bg-white p-2.5 shadow-xs flex items-center justify-between gap-3">
+                        <img src="${p.img || 'chat-avatar.jpg'}" alt="${p.name}" class="w-12 h-12 rounded-lg object-cover border border-gray-100 flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-bold text-gray-900 text-xs truncate">${en && p.nameEn ? p.nameEn : p.name}</p>
+                            <p class="text-[10px] text-amber-800 font-semibold">${p.region} • ${p.stars || 4}★ SAO OCOP</p>
+                            <p class="text-[#0284C7] font-black text-xs mt-0.5">${formatMoney(p.price)}</p>
+                        </div>
+                        <div class="flex flex-col gap-1 flex-shrink-0">
+                            <button type="button" onclick="addToCart(${p.id})" class="px-2.5 py-1 rounded-lg bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold text-[10px] cursor-pointer transition">
+                                + ${en ? 'Cart' : 'Giỏ'}
+                            </button>
+                            <button type="button" onclick="if(typeof openOnlineOrderModal==='function'){openOnlineOrderModal(${p.id});}else{OcopSalesCopilot.openOrderModal([${p.id}]);} " class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-sky-600 to-blue-600 text-white font-black text-[10px] cursor-pointer transition flex items-center gap-1 shadow-xs" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important;"><i class="fa-solid fa-cart-shopping text-[9px]"></i> 🛒 ${en ? 'Order Online' : 'Đặt Mua Online Ngay'}</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
     function processUserMessage(rawQuery, languageOverride, catalogProducts = []) {
         const lang = languageOverride || detectLanguage(rawQuery);
         const intent = classifyIntent(rawQuery, lang);
@@ -1045,29 +1099,138 @@
             return renderCSKHSupportCard(code, '', lang);
         }
 
-        // 8. Phân loại: Kiến thức OCOP
-        if (intent === INTENTS.OCOP_KNOWLEDGE) {
+        // 8.1 Hướng dẫn Pha Trà OCOP chuẩn vị
+        if (intent === INTENTS.TEA_BREWING_GUIDE) {
+            const teaItems = catalogProducts.filter(p => /(tra|che|tea)/i.test(p.name + ' ' + (p.category || ''))).slice(0, 2);
             const md = en
-                ? `🌿 **About the Vietnam National OCOP Program**\n\n` +
-              `• **What is OCOP?** 'One Commune One Product' is a national economic development program elevating local agricultural specialties and handicraft heritage.\n` +
-              `• **3-Star OCOP**: Quality regional products with standard local market certification.\n` +
-              `• **4-Star OCOP**: Superior regional products meeting rigorous national standards with strong market reach.\n` +
-              `• **5-Star OCOP**: National Masterpieces with export potential and world-class craftsmanship.\n` +
-              `• **Quality Guarantee**: 100% of products featured are verified with QR origin tracing.\n\n` +
-              `👉 *Would you like me to recommend a 5-star gift combo or specialties from a specific province?*`
-            : `🌿 **Giới Thiệu Chương Trình OCOP Quốc Gia (Mỗi Xã Một Sản Phẩm)**\n\n` +
-              `• **OCOP là gì?** Là chương trình phát triển kinh tế quốc gia, chuẩn hóa và nâng tầm các đặc sản truyền thống, thảo dược và thủ công mỹ nghệ làng nghề Việt Nam.\n` +
-              `• **OCOP 3 Sao**: Đặc sản địa phương đạt chuẩn chất lượng, bao bì và an toàn thực phẩm.\n` +
-              `• **OCOP 4 Sao**: Đặc sản cấp tỉnh/khu vực tiêu biểu, quy trình sản xuất tiên tiến, thị trường rộng lớn.\n` +
-              `• **OCOP 5 Sao**: Quốc bảo đặc sản Quốc gia, đại diện cho tinh hoa văn hóa và chất lượng xuất khẩu toàn cầu.\n` +
-              `• **Cam kết**: 100% sản phẩm trên hệ thống có tem truy xuất nguồn gốc chính hãng từ Hợp tác xã.\n\n` +
-              `👉 *Quý khách muốn em tư vấn combo quà tặng 5 sao hay đặc sản của tỉnh thành nào ạ?*`;
+                ? `🍵 **Authentic OCOP Vietnamese Tea Brewing Masterguide:**\n\n` +
+                  `• **Step 1 (Warm Teaware):** Rinse teapot and cups with 100°C boiling water to awaken aromas.\n` +
+                  `• **Step 2 (Ratio):** Use **5g – 8g of tea leaves** per 150ml – 200ml teapot.\n` +
+                  `• **Step 3 (Water Temperature):** Optimal brewing water is **85°C – 90°C** (never use roaring 100°C water directly on ancient Shan Tuyet leaves to prevent burning and harsh bitterness).\n` +
+                  `• **Step 4 (Awaken):** Pour hot water over leaves and decant immediately within 3 seconds.\n` +
+                  `• **Step 5 (Infuse):** Steep for **30 – 45 seconds**. Pour all tea into a sharing pitcher to maintain equal infusion strength and enjoy the lingering sweet aftertaste (hậu ngọt).\n\n` +
+                  `👉 *Tap below to order authentic certified OCOP teas directly:*\n`
+                : `🍵 **Hướng Dẫn Pha Trà OCOP Thơm Ngon Chuẩn Vị Bản Địa:**\n\n` +
+                  `• **Bước 1 (Tráng ấm chén):** Dùng nước sôi 100°C tráng đều ấm và chén để làm nóng dụng cụ pha, giúp dậy hương trà tối đa.\n` +
+                  `• **Bước 2 (Định lượng):** Lấy khoảng **5g – 8g trà** (khoảng 1 muỗng) cho ấm dung tích 150ml – 200ml.\n` +
+                  `• **Bước 3 (Nhiệt độ nước):** Dùng nước nóng khoảng **85°C – 90°C** (tránh đổ trực tiếp nước sôi sùng sục 100°C làm cháy lá non và vị chát gắt).\n` +
+                  `• **Bước 4 (Đánh thức trà):** Rót nước ngập lá trà rồi rót ra ngay trong vòng 3 giây.\n` +
+                  `• **Bước 5 (Hãm & Thưởng trà):** Châm nước vào ấm, hãm trong **30 – 45 giây**. Rót hết nước trà ra tống rồi chia đều ra các chén để thưởng thức trọn vẹn vị thanh ngọt hậu tự nhiên.\n\n` +
+                  `👉 *Quý khách có thể bấm đặt mua trà OCOP thượng hạng giao tận nơi bên dưới:*\n`;
 
             return {
                 message: md,
+                localMarkup: renderCompactKnowledgeProductCard(teaItems, en ? 'Featured OCOP Teas' : 'Đặc Sản Trà OCOP Tiêu Biểu', lang),
                 dynamic_chips: en
-                    ? ['Combo under 500k', 'Specialties of Dong Nai', 'Specialties of Ben Tre', 'Create Order']
-                    : ['Combo quà 500k', 'Đặc sản Đồng Nai', 'Đặc sản Bến Tre', 'Tạo đơn hàng ngay']
+                    ? ['Ancient Shan Tuyet Tea', 'Dong Nai Bitter Melon Tea', 'Gift Combo under 500k', 'Order Online Now']
+                    : ['Trà Shan Tuyết Cổ Thụ', 'Trà Khổ Qua Rừng Đồng Nai', 'Combo quà 500k', 'Đặt mua online ngay']
+            };
+        }
+
+        // 8.2 Hướng dẫn Bảo quản & Tránh ẩm mốc
+        if (intent === INTENTS.STORAGE_GUIDE) {
+            const sampleItems = catalogProducts.slice(0, 2);
+            const md = en
+                ? `🌿 **OCOP Specialty Storage Guide (Prevent Mold & Preserve Freshness):**\n\n` +
+                  `• **Teas & Dried Herbs:** Store in sealed ceramic/tin canisters or airtight zip bags in a cool, dry place away from direct sunlight.\n` +
+                  `• **Wild Forest Honey:** Keep at room temperature (20°C – 27°C). **Do not refrigerate** to prevent natural glucose crystallization.\n` +
+                  `• **Roasted Nuts & Confectionery:** Reseal zip bag tightly after opening; never use a wet utensil inside containers.\n` +
+                  `• **Expiry Date:** Every product carries verified production and expiry dates (typically 6–12 months) inspected by local cooperatives.\n\n` +
+                  `👉 *All products are freshly dispatched from local cooperatives:*\n`
+                : `🌿 **Hướng Dẫn Bảo Quản Đặc Sản OCOP Tránh Ẩm Mốc & Giữ Trọn Dinh Dưỡng:**\n\n` +
+                  `• **Đối với Trà & Cà phê:** Đựng trong hũ gốm/thủy tinh hoặc túi zip kín khí, để nơi khô ráo, tránh ánh sáng mặt trời trực tiếp và không để gần gia vị có mùi nồng.\n` +
+                  `• **Đối với Mật ong rừng:** Bảo quản ở nhiệt độ phòng (20°C – 27°C) nơi thoáng mát. **Tuyệt đối không bảo quản trong ngăn mát tủ lạnh** vì dễ gây hiện tượng kết tinh đường tự nhiên.\n` +
+                  `• **Đối với Hạt sấy & Bánh mứt:** Sau khi mở bao bì, miết chặt khóa zip hoặc bảo quản trong hũ kín. Không dùng thìa ướt để lấy thực phẩm.\n` +
+                  `• **Hạn sử dụng:** Toàn bộ đặc sản đều có tem ghi rõ ngày sản xuất và hạn dùng (thường từ 6 – 12 tháng) được HTX kiểm định an toàn VSTP.\n\n` +
+                  `👉 *Bấm nút đặt hàng nhanh để nhận sản phẩm sản xuất mới nhất trong tuần:*\n`;
+
+            return {
+                message: md,
+                localMarkup: renderCompactKnowledgeProductCard(sampleItems, en ? 'Fresh OCOP Specialties' : 'Đặc Sản OCOP Date Mới Nhất', lang),
+                dynamic_chips: en
+                    ? ['Storage advice', 'U Minh Honey', 'Roasted Cashews', 'Order Online Now']
+                    : ['Hạn sử dụng trà', 'Mật ong rừng U Minh', 'Hạt điều rang muối', 'Đặt mua online ngay']
+            };
+        }
+
+        // 8.3 Tư vấn Quà tặng Doanh nghiệp & Hóa đơn VAT
+        if (intent === INTENTS.CORPORATE_GIFT) {
+            const giftItems = catalogProducts.filter(p => p.stars === 5 || p.price >= 120000).slice(0, 2);
+            const md = en
+                ? `🎁 **Corporate OCOP Gift Consultation & Official VAT Invoicing:**\n\n` +
+                  `• **Elegance & Heritage:** Curated luxury 3★–5★ specialty gift sets from 63 provinces.\n` +
+                  `• **Branding & Customization:** Free corporate logo printing, tailored ribbons and bilingual greeting cards.\n` +
+                  `• **Budget Tiers:** Flexible tiers at 300,000₫ – 500,000₫ – 1,000,000₫ – 2,500,000₫/set.\n` +
+                  `• **Legality & Invoicing:** Full official VAT (e-Invoice) and genuine cooperative origin certificates.\n\n` +
+                  `👉 *Explore popular corporate gift sets below or connect with our B2B Manager:*\n`
+                : `🎁 **Dịch Vụ Quà Tặng Doanh Nghiệp OCOP 3★–5★ Sang Trọng & Ý Nghĩa:**\n\n` +
+                  `• **Đẳng cấp & Bản sắc:** Set quà kết tinh tinh hoa đặc sản 63 tỉnh thành, chuẩn hóa chất lượng OCOP quốc gia.\n` +
+                  `• **Thiết kế riêng:** Hỗ trợ in logo doanh nghiệp, thiệp chúc mừng và đóng hộp quà cao cấp theo yêu cầu.\n` +
+                  `• **Linh hoạt ngân sách:** Đáp ứng trọn gói các phân khúc: 300.000₫ – 500.000₫ – 1.000.000₫ – 2.500.000₫/set.\n` +
+                  `• **Pháp lý minh bạch:** Cung cấp đầy đủ **Hóa đơn GTGT (VAT)**, hợp đồng mua bán và hồ sơ chứng nhận OCOP từ các Hợp tác xã chính hãng.\n\n` +
+                  `👉 *Quý khách xem mẫu hộp quà gợi ý bên dưới hoặc kết nối CSKH để nhận báo giá chiết khấu:*\n`;
+
+            return {
+                message: md,
+                localMarkup: renderCompactKnowledgeProductCard(giftItems, en ? 'Corporate Gift Sets' : 'Gợi Ý Quà Tặng OCOP Tiêu Biểu', lang),
+                dynamic_chips: en
+                    ? ['Corporate Gift 500k', 'Corporate Gift 1M', 'VAT Invoice inquiry', 'Contact B2B Admin']
+                    : ['Set quà 500k', 'Hộp quà VIP 1 triệu', 'Xuất hóa đơn VAT', 'Liên hệ Admin B2B']
+            };
+        }
+
+        // 8.4 Chính sách Đồng kiểm & Đổi mới 1-1 trong 7 ngày
+        if (intent === INTENTS.INSPECTION_POLICY) {
+            const inspectItems = catalogProducts.slice(0, 2);
+            const md = en
+                ? `🛡️ **100% Parcel Inspection Rights & 7-Day 1-to-1 Replacement Guarantee:**\n\n` +
+                  `• **Open Box Inspection:** You have the full right to **open and inspect packages** before paying the courier.\n` +
+                  `• **7-Day 1-to-1 Replacement:** Free 1-to-1 replacement or 100% refund within 7 days for any courier damage or defect.\n` +
+                  `• **Authentic QR Stamp:** Every box carries a verified QR code issued by registered local cooperatives.\n\n` +
+                  `👉 *Enjoy 100% peace of mind shopping below:*\n`
+                : `🛡️ **Chính Sách Đồng Kiểm & Đổi Mới 1-1 Trong 7 Ngày Toàn Diện:**\n\n` +
+                  `• **Quyền lợi Đồng kiểm 100%:** Khi nhận hàng từ Shipper, quý khách hoàn toàn được quyền **mở hộp kiểm tra ngoại quan**, số lượng và tem niêm phong sản phẩm trước khi thanh toán.\n` +
+                  `• **Đổi mới 1-1 trong 7 ngày:** Nếu phát hiện sản phẩm bị móp méo, vỡ hỏng do vận chuyển, giao sai món hoặc không đúng chất lượng cam kết, hệ thống sẽ **thu hồi và gửi đổi sản phẩm mới ngay trong 24h** hoàn toàn miễn phí.\n` +
+                  `• **Cam kết hoàn tiền:** Hoàn tiền 100% nếu quý khách không hài lòng về chất lượng nguồn gốc xuất xứ.\n` +
+                  `• **Tem QR truy xuất:** Mỗi kiện hàng đều dán tem QR HTX bản địa để quý khách quét kiểm tra chứng nhận nguồn gốc xuất xứ tức thì.\n\n` +
+                  `👉 *Quý khách hoàn toàn an tâm đặt mua đặc sản chính hãng ngay hôm nay:*\n`;
+
+            return {
+                message: md,
+                localMarkup: renderCompactKnowledgeProductCard(inspectItems, en ? 'Guaranteed OCOP Specialties' : 'Sản Phẩm Đảm Bảo Quyền Lợi Đồng Kiểm', lang),
+                dynamic_chips: en
+                    ? ['Inspection policy', 'Return within 7 days', 'Track Order', 'Order Online Now']
+                    : ['Quyền đồng kiểm', 'Đổi trả trong 7 ngày', 'Tra cứu đơn hàng', 'Đặt mua online ngay']
+            };
+        }
+
+        // 8.5 Kiến thức OCOP 3★–5★ & Tem QR HTX bản địa
+        if (intent === INTENTS.OCOP_KNOWLEDGE) {
+            const fiveStarItems = catalogProducts.filter(p => p.stars === 5).slice(0, 2);
+            const md = en
+                ? `🌿 **Vietnam National OCOP Standards & Cooperative QR Origin Tracing:**\n\n` +
+                  `• **What is OCOP?** 'One Commune One Product' is Vietnam's national program elevating traditional agricultural specialties and handicraft villages across 63 provinces.\n` +
+                  `• **OCOP 3-Star (District/Provincial):** Certified food safety standards, clear packaging, and traceable local production.\n` +
+                  `• **OCOP 4-Star (Provincial/Regional):** High-standard regional treasures adhering to VietGAP/HACCP/ISO, wide commercial distribution.\n` +
+                  `• **OCOP 5-Star (National Masterpiece):** Recognized by the Prime Minister & Central Council, global export quality embodying Vietnamese cultural heritage.\n` +
+                  `• **Cooperative QR Tracing:** 100% of products are stamped with verifiable QR codes linking directly to local cooperatives (HTX).\n` +
+                  `• **Buyer Protection:** Full parcel inspection before payment and 7-day 1-to-1 replacement.\n\n` +
+                  `👉 *Explore certified 5-star national treasures below:*\n`
+                : `🌿 **Hệ Thống Tiêu Chuẩn OCOP Quốc Gia (Mỗi Xã Một Sản Phẩm) & Tem QR HTX Bản Địa:**\n\n` +
+                  `• **OCOP là gì?** Là chương trình phát triển kinh tế nông thôn quốc gia, chuẩn hóa và bảo tồn đặc sản tinh hoa truyền thống từ 63 tỉnh thành Việt Nam.\n` +
+                  `• **OCOP 3 Sao (Cấp Huyện/Tỉnh):** Sản phẩm đạt chuẩn an toàn thực phẩm, bao bì truy xuất nguồn gốc, quy mô sản xuất ổn định tại địa phương.\n` +
+                  `• **OCOP 4 Sao (Cấp Tỉnh/Vùng):** Sản phẩm tiêu biểu vùng miền, quy trình tiên tiến đạt chuẩn VietGAP/HACCP/ISO, có tiềm năng thương mại lớn.\n` +
+                  `• **OCOP 5 Sao (Quốc Bảo Quốc Gia):** Do Thủ tướng Chính phủ và Hội đồng Trung ương công nhận, chất lượng đỉnh cao và đại diện Việt Nam xuất khẩu toàn cầu.\n` +
+                  `• **Tem QR Truy Xuất HTX Bản Địa:** 100% sản phẩm phân phối đều dán tem QR định danh truy xuất nguồn gốc tận Hợp tác xã / Cơ sở sản xuất.\n` +
+                  `• **Chính sách:** Đồng kiểm khi nhận hàng và bảo hành đổi mới 1-1 trong vòng 7 ngày.\n\n` +
+                  `👉 *Quý khách muốn em tư vấn combo quà tặng 5 sao hay đặc sản của tỉnh thành nào ạ?*`;
+
+            return {
+                message: md,
+                localMarkup: renderCompactKnowledgeProductCard(fiveStarItems.length ? fiveStarItems : catalogProducts.slice(0, 2), en ? 'Certified 5-Star National Treasures' : 'Quốc Bảo OCOP 5 Sao Tiêu Biểu', lang),
+                dynamic_chips: en
+                    ? ['5-Star OCOP Gifts', 'Cooperative QR stamps', 'Specialties of Dong Nai', 'Order Online Now']
+                    : ['Đặc sản 5 Sao', 'Tem QR truy xuất HTX', 'Đặc sản Đồng Nai', 'Đặt mua online ngay']
             };
         }
 
