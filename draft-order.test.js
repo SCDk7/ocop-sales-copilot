@@ -86,6 +86,7 @@ test('checkout locks immediately, ignores double clicks and retries an ambiguous
  await nodes.draftForm.onsubmit({preventDefault(){}});
  for(let i=0;i<100&&!calls.length;i++)await new Promise(resolve=>setTimeout(resolve,5));
  assert.equal(calls.length,1);const key=calls[0].headers['Idempotency-Key'];assert.match(key,require('./transactional-store').UUID);
+ assert.equal(JSON.parse(calls[0].body).idempotencyKey,key,'older backend instances receive the same retry key during rollout');
  rejectRequest(Error('response lost'));await first;assert.equal(nodes.submit.disabled,false);assert.equal(nodes.submit.textContent,'Confirm order');
  const retry=nodes.draftForm.onsubmit({preventDefault(){}});
  for(let i=0;i<100&&calls.length<2;i++)await new Promise(resolve=>setTimeout(resolve,5));

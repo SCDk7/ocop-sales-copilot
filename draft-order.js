@@ -483,6 +483,9 @@ form.onsubmit = async event => {
                 }
         };
         key = await window.OCOPCheckoutIntent.bind('draft', {user:window.currentUser?.id||null,payload});
+        // Keep older backend instances usable during a rolling frontend rollout.
+        // The updated backend still requires and trusts the header, not this field.
+        payload.idempotencyKey = key;
         const response = await fetch(salesPage.api('/api/ai/draft-orders'), {
             method: 'POST',
             signal: AbortSignal.timeout(20000),
