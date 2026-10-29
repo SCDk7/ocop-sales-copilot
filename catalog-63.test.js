@@ -22,5 +22,8 @@ test('new combo prices, item units and latest requirements stay consistent',()=>
 });
 test('embedded scripts parse and no old embedded catalogue remains',()=>{
  const html=fs.readFileSync('index.html','utf8');assert(!html.includes('const CORE_OCOP_PRODUCTS = ['));
- for(const m of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g))new vm.Script(m[1]);
+ for(const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)){
+  if(/type="application\/(?:ld\+)?json"/.test(m[1]))JSON.parse(m[2]);
+  else new vm.Script(m[2]);
+ }
 });

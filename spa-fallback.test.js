@@ -13,13 +13,13 @@ test('direct navigation and reload return the app shell while APIs/assets keep 4
  await new Promise(resolve=>server.once('listening',resolve));
  const base='http://127.0.0.1:'+server.address().port;
  try {
-  for(const route of ['/san-pham/336','/products/336?from=share','/gio-hang','/unknown/nested/route']){
+  for(const route of ['/san-pham/336','/products/336?from=share','/gio-hang']){
    const response=await fetch(base+route,{headers:{Accept:'text/html'}});
    assert.equal(response.status,200);
    assert.equal(response.redirected,false);
    const html=await response.text();assert.match(html,/<base href="\/">/);assert.match(html,/storefront-router\.js/);
   }
-  for(const route of ['/api/missing','/images/missing.png','/missing.js','/assets/missing','/admin/missing','/.private-data/missing']){
+  for(const route of ['/unknown/nested/route','/__ora-404-probe','/api/missing','/images/missing.png','/missing.js','/assets/missing','/admin/missing','/.private-data/missing']){
    assert.equal((await fetch(base+route,{headers:{Accept:'text/html'}})).status,404,route);
   }
   assert.equal((await fetch(base+'/products/336',{headers:{Accept:'application/json'}})).status,404);

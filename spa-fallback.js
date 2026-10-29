@@ -1,9 +1,12 @@
 'use strict';
 const path = require('node:path');
+const {resolveRoute}=require('./storefront-router');
 
-function createSpaFallback(indexFile) {
+function createSpaFallback(indexFile,{isProduct=()=>true}={}) {
     return (req, res, next) => {
         if (!['GET', 'HEAD'].includes(req.method)) return next();
+        const route=resolveRoute(req.path);
+        if(!route||(route.type==='product'&&!isProduct(route.id)))return next();
         // Missing APIs and assets must keep their own 404 response.
         if (/^\/(?:api|admin|kpi-site|images|scripts|assets|node_modules|scratch)(?:\/|$)/i.test(req.path) ||
             req.path.split('/').some(part => part.startsWith('.')) ||
