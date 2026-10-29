@@ -6,7 +6,7 @@ test('real API enforces authenticated ownership, image isolation, admin-only liv
  const salt=crypto.randomBytes(16).toString('hex'),password='TestPassword@2026';
  const users=['alice','bob'].map(id=>({id,name:id,normalizedName:id,username:id+'-user',normalizedUsername:id+'-user',phone:'0901234567',address:'12 Test Street',passwordSalt:salt,passwordHash:crypto.scryptSync(password,Buffer.from(salt,'hex'),64).toString('hex')}));
  fs.writeFileSync(path.join(dir,'customers.json'),JSON.stringify(users));
- const accounts=createAccountStore(path.join(dir,'account-data.json'),require('./data').PRODUCTS),a=accounts.login('alice').token,b=accounts.login('bob').token;
+ const accounts=createAccountStore(path.join(dir,'account-data.json'),require('./data').PRODUCTS,{databaseFile:path.join(dir,'commerce.sqlite'),namespace:'accounts'}),a=accounts.login('alice').token,b=accounts.login('bob').token;
  const admin=crypto.randomBytes(32).toString('hex'),port=34000+crypto.randomInt(10000);
  const privateFiles=Object.fromEntries(['PRODUCT_REVIEWS_FILE','SALES_DATA_FILE','AI_METRICS_FILE','SALES_CONVERSATIONS_FILE'].map(key=>[key,path.join(dir,key.toLowerCase()+'.json')]));
  const child=spawn(process.execPath,['server.js'],{cwd:__dirname,env:{...process.env,...privateFiles,PORT:String(port),PRIVATE_DATA_DIR:dir,CUSTOMERS_FILE:path.join(dir,'customers.json'),ACCOUNT_DATA_FILE:path.join(dir,'account-data.json'),AI_ACCESS_FILE:path.join(dir,'ai-access.json'),GEMINI_API_KEY:'',OPENAI_API_KEY:'',ANTHROPIC_API_KEY:'',CLAUDE_API_KEY:'',TWILIO_ACCOUNT_SID:'',TWILIO_AUTH_TOKEN:'',TWILIO_FROM_NUMBER:'',AUDIO_ADMIN_PASSWORD:admin,OCOP_KPI_URL:'http://127.0.0.1:1',OCOP_KPI_SYNC_TOKEN:'',TRUST_PROXY:'',AI_ENABLED:'true'},windowsHide:true,stdio:['ignore','pipe','pipe']});
@@ -25,8 +25,22 @@ test('real API enforces authenticated ownership, image isolation, admin-only liv
  assert.equal((await request('/api/ai/translate',a,{texts:['a'],language:'en',apiKey:'browser-key'})).status,400);
  assert.equal((await request('/api/sync/global-state',a,{})).status,401);
  assert.equal((await request('/api/ai/catalog',a,{products:[]})).status,401);
- const draftBody={confirmed:true,idempotencyKey:'http-security-idempotent-123',items:[{productId:require('./data').PRODUCTS[0].id,quantity:1}],customer:{name:'Alice',phone:'0901234567',address:'12 Test Street'},ownerId:'bob'};
- const draftResponse=await request('/api/ai/draft-orders',a,draftBody);assert.equal(draftResponse.status,201,(await draftResponse.clone().text())+' '+log);const draft=(await draftResponse.json()).draft;
+ const draftBody={confirmed:true,idempotencyKey:crypto.randomUUID(),items:[{productId:require('./data').PRODUCTS[0].id,quantity:1}],customer:{name:'Alice',phone:'0901234567',address:'12 Test Street'},ownerId:'bob'};
+ const draftResponse=await request('/api/ai/draft-orders',a,draftBody,'POST',{'Idempotency-Key':draftBody.idempotencyKey});assert.equal(draftResponse.status,201,(await draftResponse.clone().text())+' '+log);const draft=(await draftResponse.json()).draft;
+ assert.equal((await request('/api/ai/draft-orders',a,draftBody)).status,400,'body key alone cannot bypass the required header');
+ const duplicateDrafts=await Promise.all(Array.from({length:5},()=>request('/api/ai/draft-orders',a,draftBody,'POST',{'Idempotency-Key':draftBody.idempotencyKey})));
+ for(const duplicate of duplicateDrafts){assert.equal(duplicate.status,201);assert.equal(duplicate.headers.get('idempotency-replayed'),'true');assert.deepEqual((await duplicate.json()).draft,draft);}
+ assert.equal((await request('/api/ai/draft-orders',a,{...draftBody,customer:{...draftBody.customer,address:'34 Different Street'}},'POST',{'Idempotency-Key':draftBody.idempotencyKey})).status,409);
+ const orderBody={items:[{id:require('./data').PRODUCTS[0].id,qty:1}]},orderKey=crypto.randomUUID();
+ assert.equal((await request('/api/orders',a,orderBody)).status,400);
+ assert.equal((await request('/api/orders',a,orderBody,'POST',{'Idempotency-Key':draftBody.idempotencyKey})).status,409,'one user/key constraint spans both checkout routes');
+ const orderResponse=await request('/api/orders',a,orderBody,'POST',{'Idempotency-Key':orderKey});assert.equal(orderResponse.status,201);const orderResult=await orderResponse.json();
+ const replayedOrder=await request('/api/orders',a,orderBody,'POST',{'Idempotency-Key':orderKey});assert.equal(replayedOrder.status,201);assert.deepEqual(await replayedOrder.json(),orderResult);
+ const paymentKey=crypto.randomUUID(),reportRoute='/api/orders/'+orderResult.order.id+'/payment-reported';
+ assert.equal((await request(reportRoute,a,{})).status,400);
+ const report=await request(reportRoute,a,{},'POST',{'Idempotency-Key':paymentKey});assert.equal(report.status,200);const reportBody=await report.json();
+ const reportReplay=await request(reportRoute,a,{},'POST',{'Idempotency-Key':paymentKey});assert.equal(reportReplay.status,200);assert.deepEqual(await reportReplay.json(),reportBody);
+ assert.equal((await request(reportRoute,b,{},'POST',{'Idempotency-Key':crypto.randomUUID()})).status,404);
  assert.equal((await request('/api/ai/draft-orders/'+draft.id,b,undefined,'GET')).status,404);
  assert.equal((await request('/api/ai/draft-orders/'+draft.id+'/received',b,{confirmed:true})).status,404);
  assert.equal((await request('/api/ai/draft-orders/'+draft.id,draft.receiptToken,undefined,'GET')).status,401);

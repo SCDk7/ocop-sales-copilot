@@ -4,7 +4,7 @@ const items = document.getElementById('items');
 const status = document.getElementById('status');
 const result = document.getElementById('result');
 let products = [];
-let key = crypto.randomUUID();
+let key = window.OCOPCheckoutIntent.begin('draft');
 let submitted = false;
 let submitting = false;
 let appliedVoucher = null;
@@ -174,7 +174,7 @@ function addRow(initialId, initialQty = 1) {
 
 function changed() {
     if (submitted) {
-        key = crypto.randomUUID();
+        key = window.OCOPCheckoutIntent.reset('draft');
         submitted = false;
         result.hidden = true;
     }
@@ -446,6 +446,8 @@ form.onsubmit = async event => {
     submitting = true;
     const submit = document.getElementById('submit');
     submit.disabled = true;
+    const submitLabel = submit.textContent;
+    submit.textContent = salesPage.text('Đang xử lý…', 'Processing…');
     status.className = '';
     status.textContent = salesPage.text('Đang xác nhận và gửi đơn hàng…', 'Submitting your order…');
 
@@ -458,6 +460,7 @@ form.onsubmit = async event => {
     if (!lines.length) {
         status.className = 'error';
         status.textContent = salesPage.text('Vui lòng chọn ít nhất một sản phẩm!', 'Please choose at least one product!');
+        submit.textContent = submitLabel;
         submit.disabled = false;
         submitting = false;
         return;
@@ -466,13 +469,10 @@ form.onsubmit = async event => {
     const payMethodVal = data.get('payment_method');
     const paymentMethodLabel = payMethodVal === 'vietqr' ? 'BIDV / VietQR' : (payMethodVal === 'momo' ? 'Ví MoMo (mô phỏng)' : 'Ship COD Tận Nơi');
     try {
-        const response = await fetch(salesPage.api('/api/ai/draft-orders'), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization:'Bearer '+(window.OCOPAuth?.token()||'') },
-            body: JSON.stringify({
+        await window.accountReady;
+        const payload = {
                 sessionId: (() => { try { return sessionStorage.getItem("ocop-consultation-session"); } catch { return null; } })(),
                 confirmed: data.get('confirmed') === 'on',
-                idempotencyKey: key,
                 items: lines,
                 customer: {
                     name: data.get('name'),
@@ -481,11 +481,18 @@ form.onsubmit = async event => {
                     paymentMethod: paymentMethodLabel,
                     voucherCode: appliedVoucher ? appliedVoucher.code : ''
                 }
-            })
+        };
+        key = await window.OCOPCheckoutIntent.bind('draft', {user:window.currentUser?.id||null,payload});
+        const response = await fetch(salesPage.api('/api/ai/draft-orders'), {
+            method: 'POST',
+            signal: AbortSignal.timeout(20000),
+            headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key, Authorization:'Bearer '+(window.OCOPAuth?.token()||'') },
+            body: JSON.stringify(payload)
         });
         const body = await response.json();
         if (!response.ok) throw new Error(salesPage.text(body.error || 'Không gửi được đơn hàng.', response.status === 409 ? 'Inventory is insufficient or this request was changed.' : 'Please check the recipient, phone, address and quantities, then retry.'));
         lastDraft = body.draft;
+        window.OCOPCheckoutIntent.finish('draft');
         receiptAccess = lastDraft.receiptToken || '';
         submitted = true;
         rememberDraft(lastDraft);
@@ -497,8 +504,9 @@ form.onsubmit = async event => {
         try { localStorage.removeItem('ocop_cart');window.OCOPCustomerSession?.clearCart(); } catch (_) {}
     } catch (error) {
         status.className = 'error';
-        status.textContent = salesPage.text('Chưa gửi được đơn hàng. Giỏ hàng vẫn được giữ. ', 'Your order was not submitted. Your cart is preserved. ') + error.message;
+        status.textContent = salesPage.text('Chưa nhận được xác nhận đơn hàng. Giỏ hàng vẫn được giữ; hãy thử lại để kiểm tra cùng yêu cầu. ', 'Order confirmation was not received. Your cart is preserved; retry to check the same request. ') + error.message;
     } finally {
+        submit.textContent = submitLabel;
         submit.disabled = false;
         submitting = false;
     }

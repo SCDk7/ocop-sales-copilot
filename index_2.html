@@ -94,7 +94,7 @@
 <script src="ai-request-analysis.js?v=1c706a4af39d"></script>
 <script src="chat-fallback.js?v=dc9fba15d056"></script>
  <script src="chat-language.js?v=6239eb709716"></script>
- <link rel="stylesheet" href="assets/tailwind.css?v=a277d89efe4f">
+ <link rel="stylesheet" href="assets/tailwind.css?v=fd015ecf5cba">
  <!-- Font Awesome Icons & Google Fonts -->
  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=5a4d854df191">
     <link rel="stylesheet" href="assets/vendor/fonts/jakarta.css?v=c9e3631b1193">
@@ -102,7 +102,7 @@
  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=a78371028241">
  <!-- Project Stylesheets -->
  <link rel="stylesheet" href="style.css?v=8aec987c157e">
-    <link rel="stylesheet" href="skytech-complete.css?v=65f0b8f3bf02">
+    <link rel="stylesheet" href="skytech-complete.css?v=9525f99f496d">
  <!-- <link rel="stylesheet" href="styledangcap.css"> -->
  <!-- <link rel="stylesheet" href="SuaLoiKoClick.css"> -->
  <style>
@@ -293,7 +293,7 @@
                 max-width: 100% !important;
             }
             #product-grid {
-                grid-template-columns: 1fr !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             }
         }
         /* ============================================================= */
@@ -308,8 +308,8 @@
         }
         @media (max-width: 767px) {
             #product-grid {
-                grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
-                gap: 16px !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 10px !important;
             }
         }
         @media (min-width: 768px) and (max-width: 1023px) {
@@ -3735,7 +3735,7 @@
  </div>
  </div>
  <p id="image-search-status" class="hidden mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-900" role="status"></p>
- <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+ <div id="product-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
  <!-- Render danh mục sản phẩm từ dữ liệu -->
  </div>
  <div id="no-products-msg" style="display: none;" class="text-center py-16 bg-white/80 rounded-3xl border border-dashed border-gray-300 shadow-sm animate-fade-in">
@@ -15376,7 +15376,8 @@
 <script src="script.js?v=bf8bacaa3ad7"></script>
 <script src="product-reviews-ui.js?v=782e5b2fd959"></script>
 <script src="admin-management.js?v=fdf4802bf20f"></script>
-<script src="account-client.js?v=db26afeddcec"></script>
+<script src="checkout-intent.js?v=c225c3c7d1e6"></script>
+<script src="account-client.js?v=43ceb3947413"></script>
 <script src="chat-dictation.js?v=7a197c4ca498"></script>
 <script>
     window.chatDictation = ChatDictation.mount({

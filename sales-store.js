@@ -1,16 +1,20 @@
 'use strict';
-const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const crypto=require('node:crypto');
 const productCodes=require('./product-codes');
-function createSalesStore(file,products) {
+function createSalesStore(file,products,options={}) {
  const catalogue=new Map(products.map(p=>[p.id,p]));
- let db={inventory:{},drafts:[]};
- try{db=JSON.parse(fs.readFileSync(file,'utf8'));if(!db.inventory||!Array.isArray(db.drafts))throw new Error('Invalid sales store');}catch(e){if(e.code!=='ENOENT')throw e;}
+ const storage=require('./transactional-store').createTransactionalStore(file,{inventory:{},drafts:[]},options);
+ let db=storage.read();
  db.prices??={};
- for(const draft of db.drafts)for(const line of draft.lines||[]){const product=catalogue.get(line.productId);if(product&&!line.productCode)line.productCode=productCodes.codeFor(product);}
+ function normalize(){
+  for(const draft of db.drafts)for(const line of draft.lines||[]){const product=catalogue.get(line.productId);if(product&&!line.productCode)line.productCode=productCodes.codeFor(product);}
+  for(const [id,row] of Object.entries(db.prices||{}))applyPrice(id,row.price);
+ }
+ normalize();
  function applyPrice(id,price){const p=catalogue.get(Number(id));if(p){Object.assign(p,{price,priceMin:price,priceMax:price,priceIsReference:false});}}
  for(const [id,row] of Object.entries(db.prices))applyPrice(id,row.price);
  const fail=(message,status=400)=>{throw Object.assign(new Error(message),{status});};
- function save(next){fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file+'.tmp',JSON.stringify(next,null,2),{mode:0o600});fs.renameSync(file+'.tmp',file);db=next;}
+ function save(next){storage.save(next);db=next;}
  function receiptToken(draft){return crypto.createHmac('sha256',db.receiptSecret).update(draft.id+'\n'+draft.idempotencyKey).digest('hex');}
  function issueReceiptAccess(draft){
   if(!db.receiptSecret){const next=structuredClone(db);next.receiptSecret=crypto.randomBytes(32).toString('hex');save(next);}
@@ -127,6 +131,6 @@ function createSalesStore(file,products) {
   return customerOrder(id,receiptToken(draft));
  }
  function confirmOwnedReceipt(ownerId,id,body){ownedOrder(ownerId,id);const draft=db.drafts.find(d=>d.id===id);return confirmReceipt(id,receiptToken(draft),body);}
- return {inventory,setInventory,updateProduct,createDraft,transition,customerOrder,confirmReceipt,ownedOrder,confirmOwnedReceipt,businessStats,list:()=>structuredClone(db.drafts),stats:()=>({draftOrders:db.drafts.length,inventoryProducts:Object.keys(db.inventory).length})};
+ return {...storage.wrap({inventory,inventoryList:()=>products.map(p=>inventory(p.id)),setInventory,updateProduct,createDraft,transition,customerOrder,confirmReceipt,ownedOrder,confirmOwnedReceipt,businessStats,list:()=>structuredClone(db.drafts),stats:()=>({draftOrders:db.drafts.length,inventoryProducts:Object.keys(db.inventory).length})},value=>{db=value;db.prices??={};normalize();}),execute:storage.execute,cleanup:storage.cleanup};
 }
 module.exports={createSalesStore};

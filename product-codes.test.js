@@ -19,7 +19,8 @@ test('inventory and new or existing draft orders retain the canonical code and o
  const inventory=store.inventory(product.id);assert.equal(inventory.productCode,product.productCode);assert.equal(inventory.productGroupCode,'TD');
  const draft=store.createDraft({confirmed:true,idempotencyKey:'product-code-test-12345',items:[{productId:product.id,quantity:1,productCode:'QT99999'}],customer:{name:'Test',phone:'0901234567',address:'12 Nguyen Trai, Dong Nai'}});
  assert.equal(draft.lines[0].productCode,'TD00336');assert.equal(draft.lines[0].productId,336);
- const old=JSON.parse(fs.readFileSync(file,'utf8'));delete old.drafts[0].lines[0].productCode;fs.writeFileSync(file,JSON.stringify(old));
+ const storage=require('./transactional-store').createTransactionalStore(file,{});
+ const old=storage.read();delete old.drafts[0].lines[0].productCode;storage.wrap({write:()=>storage.save(old)},()=>{}).write();
  const restarted=createSalesStore(file,[product]);assert.equal(restarted.list()[0].lines[0].productCode,'TD00336');assert.equal(restarted.inventory(336).stock,5);
 });
 test('admin and distributor scopes expose the same product codes while retaining ownership filters',()=>{

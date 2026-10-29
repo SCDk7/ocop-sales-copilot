@@ -20,11 +20,12 @@ function fixture(fetch){
  const document={getElementById:id=>nodes[id]||null,createElement:tag=>new Element(tag),addEventListener(){},querySelector:selector=>selector==='h1'?heading:selector==='h1 + p'?intro:null};
  nodes.items.children=[{querySelector:selector=>selector==='select'?{value:'1'}:{value:'1'}}];
  const formData={name:'Customer',phone:'0901234567',address:'12 Nguyen Trai, Dong Nai',confirmed:'on',payment_method:'cod'};
- const context={document,fetch,URL,URLSearchParams,Event,crypto:require('node:crypto'),
+ const context={document,fetch,URL,URLSearchParams,Event,TextEncoder,AbortSignal,crypto:require('node:crypto'),
   localStorage:{getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)},
   sessionStorage:{getItem:()=>null},location:{href:'http://localhost/draft-order.html?products=1'},history:{replaceState(){}},
   salesPage:{language:'vi',text:vi=>vi,api:path=>path},FormData:class{get(key){return formData[key]}},confirm:()=>true,dispatchEvent(){}};
  context.window=context;context.OCOPAuth={token:()=> 'b'.repeat(64)};vm.createContext(context);
+ vm.runInContext(fs.readFileSync('checkout-intent.js','utf8'),context);
  vm.runInContext(source.slice(0,source.indexOf('(async () => {')),context);
  const all=node=>[node,...(node.children||[]).flatMap(all)];
  return {context,nodes,values,all,
@@ -58,7 +59,7 @@ test('a rejected checkout preserves the cart and never fabricates a successful o
  for(const failure of [async()=>{throw new TypeError('Failed to fetch')},async()=>({ok:false,status:409,json:async()=>({error:'Hết hàng'})})]){
   const {nodes,values}=fixture(failure);
   await nodes.draftForm.onsubmit({preventDefault(){}});
-  assert.equal(nodes.status.className,'error');assert.match(nodes.status.textContent,/Chưa gửi được/);
+  assert.equal(nodes.status.className,'error');assert.match(nodes.status.textContent,/Chưa nhận được xác nhận/);
   assert.ok(values.has('ocop_cart'));assert.equal(values.has('ocop_customer_orders'),false);
   assert.equal(nodes.result.children.length,0);
  }
@@ -74,6 +75,22 @@ test('an accepted order stays pending and has a tracking link without a receipt 
  assert.equal(nodes.draftForm.hidden,true);assert.equal(values.has('ocop_cart'),false);
  const link=all(nodes.result).find(node=>node.tag==='a');
  assert.equal(new URL(link.href).hash,'');assert.ok(!new URL(link.href).search.includes('receipt'));
+});
+
+test('checkout locks immediately, ignores double clicks and retries an ambiguous network result with the same UUID header',async()=>{
+ const calls=[];let rejectRequest;
+ const {nodes}=fixture((_url,options)=>{calls.push(options);return new Promise((_resolve,reject)=>{rejectRequest=reject;});});
+ nodes.submit.textContent='Confirm order';
+ const first=nodes.draftForm.onsubmit({preventDefault(){}});
+ assert.equal(nodes.submit.disabled,true);assert.notEqual(nodes.submit.textContent,'Confirm order');
+ await nodes.draftForm.onsubmit({preventDefault(){}});
+ for(let i=0;i<100&&!calls.length;i++)await new Promise(resolve=>setTimeout(resolve,5));
+ assert.equal(calls.length,1);const key=calls[0].headers['Idempotency-Key'];assert.match(key,require('./transactional-store').UUID);
+ rejectRequest(Error('response lost'));await first;assert.equal(nodes.submit.disabled,false);assert.equal(nodes.submit.textContent,'Confirm order');
+ const retry=nodes.draftForm.onsubmit({preventDefault(){}});
+ for(let i=0;i<100&&calls.length<2;i++)await new Promise(resolve=>setTimeout(resolve,5));
+ assert.equal(calls.length,2);assert.equal(calls[1].headers['Idempotency-Key'],key);
+ assert.equal(calls[1].body,calls[0].body);rejectRequest(Error('still offline'));await retry;
 });
 
 test('receipt completion is shown only after customer confirmation and a successful server response',async()=>{

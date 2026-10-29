@@ -104,8 +104,9 @@ test('cancelled orders cannot confirm receipt and old completion records do not 
  const {file,store}=fixture(t);const draft=store.createDraft(body());
  store.transition(draft.id,{action:'cancel'});
  assert.throws(()=>store.confirmReceipt(draft.id,draft.receiptToken,{confirmed:true}),{status:409});
- const data=JSON.parse(fs.readFileSync(file,'utf8'));
- data.drafts[0].status='completed';data.drafts[0].completedAt=new Date().toISOString();fs.writeFileSync(file,JSON.stringify(data));
+ const storage=require('./transactional-store').createTransactionalStore(file,{});
+ const data=storage.read();
+ data.drafts[0].status='completed';data.drafts[0].completedAt=new Date().toISOString();storage.wrap({write:()=>storage.save(data)},()=>{}).write();
  const restarted=createSalesStore(file,structuredClone(products));
  assert.equal(restarted.businessStats('2020-01-01T00:00:00Z','2099-01-01T00:00:00Z').completedOrders,0);
  assert.throws(()=>restarted.transition(draft.id,{action:'complete'}),{status:409});

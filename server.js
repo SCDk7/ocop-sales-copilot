@@ -83,9 +83,9 @@ app.use((req, res, next) => {
   } else {
     res.setHeader('Access-Control-Allow-Origin', '*');
   }
-  res.setHeader('Access-Control-Expose-Headers','Retry-After, RateLimit, RateLimit-Policy');
+  res.setHeader('Access-Control-Expose-Headers','Retry-After, RateLimit, RateLimit-Policy, Idempotency-Replayed');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-OCOP-Guest-Image, x-ocop-sync-token, x-ocop-signature, x-ocop-timestamp');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Idempotency-Key, X-OCOP-Guest-Image, x-ocop-sync-token, x-ocop-signature, x-ocop-timestamp');
   next();
 });
 
@@ -168,9 +168,11 @@ try {
 
 const reviewStore = createReviewStore(process.env.PRODUCT_REVIEWS_FILE || path.join(DATA_DIR, 'product-reviews.json'), defaultProducts.map(p => p.id));
 const reviewAttempts = new Map();
-const accountStore = createAccountStore(process.env.ACCOUNT_DATA_FILE || path.join(DATA_DIR, 'account-data.json'), defaultProducts);
+const commerceDatabase=process.env.COMMERCE_DATABASE_FILE||path.join(DATA_DIR,'commerce.sqlite');
+const accountStore = createAccountStore(process.env.ACCOUNT_DATA_FILE || path.join(DATA_DIR, 'account-data.json'), defaultProducts,{databaseFile:commerceDatabase,namespace:'accounts'});
 const productKnowledge=createKnowledge(defaultProducts);
-const salesStore=createSalesStore(process.env.SALES_DATA_FILE || path.join(DATA_DIR,'sales-store.json'),defaultProducts);
+const salesStore=createSalesStore(process.env.SALES_DATA_FILE || path.join(DATA_DIR,'sales-store.json'),defaultProducts,{databaseFile:commerceDatabase,namespace:'sales'});
+setInterval(()=>{try{salesStore.cleanup();}catch(error){console.error('Idempotency cleanup failed:',error.message);}},3600000).unref();
 const commerceShopping=createCommerceShopping({knowledge:productKnowledge,salesStore});
 app.get('/api/ai/commerce', (req,res)=>{
   let config;try{config=getAIConfiguration();}catch(_){}
@@ -227,21 +229,23 @@ app.get('/api/ai/metrics', (req,res)=>{
   const metrics=salesMetrics.snapshot(req.query.period);
   res.json({...metrics,...salesStore.businessStats(metrics.windowStart,metrics.windowEnd),allTimeDraftOrders:salesStore.stats().draftOrders});
 });
-app.get('/api/ai/shop-products',(req,res)=>res.json({products:defaultProducts.map(p=>salesStore.inventory(p.id))}));
-app.get('/api/ai/prices',(req,res)=>{res.setHeader('Cache-Control','no-store');res.json({products:defaultProducts.map(p=>({id:p.id,price:p.price,priceMin:p.priceMin,priceMax:p.priceMax,priceIsReference:p.priceIsReference}))});});
+app.get('/api/ai/shop-products',(req,res)=>res.json({products:salesStore.inventoryList()}));
+app.get('/api/ai/prices',(req,res)=>{res.setHeader('Cache-Control','no-store');salesStore.inventoryList();res.json({products:defaultProducts.map(p=>({id:p.id,price:p.price,priceMin:p.priceMin,priceMax:p.priceMax,priceIsReference:p.priceIsReference}))});});
 app.post('/api/ai/draft-orders',requireCustomer,(req,res,next)=>{
   try{
-    const draft=salesStore.createDraft(req.body||{},{ownerId:req.customer.id,consultationVerified:false});
-    salesMetrics.recordDraft({id:draft.id,reused:draft.reused,sessionId:req.body?.sessionId});
-    // AI DIGITAL BUSINESS CHALLENGE 2026: Automatic Real-Time Financial Sync
-    kpiSyncService.syncFinancial({
-      id: draft.id,
-      type: 'draft_order',
-      grossRevenue: draft.total || draft.subtotal || 0,
-      sessionId: req.body?.sessionId,
-      products: draft.lines || []
-    }).catch(err => console.warn('KPI draft sync notice:', err.message));
-    res.status(draft.reused?200:201).json({draft:{id:draft.id,status:draft.status,lines:draft.lines,subtotal:draft.subtotal,shippingFee:draft.shippingFee,total:draft.total,inventoryVerified:draft.inventoryVerified,reserved:Boolean(draft.reserved),paymentStatus:draft.paymentStatus||"unpaid",paymentMethod:draft.paymentMethod,voucherCode:draft.voucherCode,trackingNumber:draft.trackingNumber||null,createdAt:draft.createdAt,customerReceivedAt:draft.customerReceivedAt||null,completedAt:draft.completedAt||null,receiptToken:draft.receiptToken,reused:draft.reused}});
+    const key=req.get('Idempotency-Key');
+    const payload={...(req.body||{}),idempotencyKey:key};
+    const response=salesStore.execute(req.customer.id,key,'create-draft',payload,()=>{
+      const draft=salesStore.createDraft(payload,{ownerId:req.customer.id,consultationVerified:false});
+      return {status:201,body:{draft:{id:draft.id,status:draft.status,lines:draft.lines,subtotal:draft.subtotal,shippingFee:draft.shippingFee,total:draft.total,inventoryVerified:draft.inventoryVerified,reserved:Boolean(draft.reserved),paymentStatus:draft.paymentStatus||"unpaid",paymentMethod:draft.paymentMethod,voucherCode:draft.voucherCode,trackingNumber:draft.trackingNumber||null,createdAt:draft.createdAt,customerReceivedAt:draft.customerReceivedAt||null,completedAt:draft.completedAt||null,receiptToken:draft.receiptToken,reused:draft.reused}}};
+    });
+    res.setHeader('Idempotency-Replayed',String(response.replayed));
+    res.status(response.status).json(response.body);
+    if(!response.replayed){
+      const draft=response.body.draft;
+      salesMetrics.recordDraft({id:draft.id,reused:false,sessionId:payload.sessionId});
+      kpiSyncService.syncFinancial({id:draft.id,type:'draft_order',grossRevenue:draft.total||draft.subtotal||0,sessionId:payload.sessionId,products:draft.lines||[]}).catch(err=>console.warn('KPI draft sync notice:',err.message));
+    }
   }catch(error){next(error);}
 });
 
@@ -310,8 +314,14 @@ app.post('/api/auth/change-password',requireCustomer,(req,res,next)=>{
   try{const nextPassword=hashPassword(newPassword);Object.assign(req.customer,{passwordSalt:nextPassword.salt,passwordHash:nextPassword.hash});saveCustomers();accountStore.revoke(req.customer.id);res.json({ok:true});}catch(error){Object.assign(req.customer,previous);next(error);}
 });
 app.put('/api/account/state',requireCustomer,(req,res,next)=>{try{res.json({state:accountStore.update(req.customer.id,req.body||{})});}catch(e){next(e);}});
-app.post('/api/orders',requireCustomer,(req,res,next)=>{try{res.status(201).json({order:accountStore.order(req.customer.id,req.body||{})});}catch(e){next(e);}});
-app.post('/api/orders/:id/payment-reported',requireCustomer,(req,res,next)=>{try{res.json({state:accountStore.confirm(req.customer.id,req.params.id)});}catch(e){next(e);}});
+app.post('/api/orders',requireCustomer,idempotentAccount('create-order',req=>({order:accountStore.order(req.customer.id,req.body||{})}),201));
+app.post('/api/orders/:id/payment-reported',requireCustomer,idempotentAccount('report-payment',req=>({state:accountStore.confirm(req.customer.id,req.params.id)})));
+function idempotentAccount(operation,work,status=200){
+ return (req,res,next)=>{try{
+  const response=accountStore.execute(req.customer.id,req.get('Idempotency-Key'),operation,{id:req.params.id||null,body:req.body||{}},()=>({status,body:work(req)}));
+  res.setHeader('Idempotency-Replayed',String(response.replayed));res.status(response.status).json(response.body);
+ }catch(error){next(error);}};
+}
 
 app.get('/api/reviews/summary', (req, res) => {
   res.setHeader('Cache-Control', 'no-store');

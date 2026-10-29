@@ -3097,7 +3097,49 @@ body {
 /* Catalog columns follow the available content width. */
 #product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
 @media (max-width: 1199px) { #product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
-@media (max-width: 419px) { #product-grid { grid-template-columns: minmax(0, 1fr) !important; } }
+@media (max-width: 767px) {
+    body #product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+    body #product-grid .product-card { min-width: 0; }
+    body #product-grid .product-card .product-card-body {
+        grid-template-rows: 36px 32px minmax(30px, auto);
+        padding: 5px 7px !important;
+    }
+    body #product-grid .product-card .product-card-body > div:first-child {
+        height: auto !important;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: start;
+        gap: 3px;
+    }
+    body #product-grid .product-card [data-review-summary] { max-width: 100%; }
+    body #product-grid .product-card-price {
+        height: auto !important;
+        min-height: 30px !important;
+        padding: 4px !important;
+        justify-content: flex-end;
+    }
+    body #product-grid .product-card-price > span:first-child { display: none !important; }
+    body #product-grid .product-card-price .product-price-value {
+        min-width: 0;
+        font-size: clamp(10px, 2.7vw, 12px) !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+        text-align: right;
+    }
+    body #product-grid .product-card-footer { padding: 5px 7px !important; }
+    body #product-grid .product-card-footer .product-action-row {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1.7fr) repeat(2, minmax(0, 1fr));
+        gap: 4px !important;
+    }
+    body #product-grid .product-card-footer .product-action-row > button {
+        min-width: 0 !important;
+        width: 100%;
+        height: 36px !important;
+        min-height: 36px !important;
+    }
+    body #product-grid .product-action-buy > i { display: none; }
+}
 
 /* The chat must fit short landscape screens as well as narrow phones. */
 #ai-chat-window {

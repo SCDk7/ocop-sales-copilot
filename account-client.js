@@ -30,9 +30,9 @@
   if(body.token)localStorage.setItem(TOKEN,body.token);
   localStorage.setItem('ocop_current_user',JSON.stringify(user));root.currentUser=user;root.OCOPCustomerSession?.syncIdentity();root.updateCustomerHeaderUI?.();return user;
  }
- async function request(route,body){
+ async function request(route,body,extraHeaders={}){
   let response;
-  try{response=await apiFetch(endpoint(route),{method:'POST',headers:{'Content-Type':'application/json'},signal:AbortSignal.timeout(15000),body:JSON.stringify(body)});}
+  try{response=await apiFetch(endpoint(route),{method:'POST',headers:{'Content-Type':'application/json',...extraHeaders},signal:AbortSignal.timeout(15000),body:JSON.stringify(body)});}
   catch(error){
    const local=location.protocol==='file:'||['localhost','127.0.0.1','[::1]'].includes(location.hostname);
    throw Error(local?'Không kết nối được máy chủ đăng nhập. Mở Terminal và chạy npm run dev, sau đó thử lại.':'Chưa kết nối được máy chủ đăng nhập. Vui lòng thử lại sau ít phút.');
@@ -58,8 +58,8 @@
  root.OCOPAuth={fetch:apiFetch,login,logout,register,changePassword,forgotPassword,resetPassword,finishOAuth,token,endpoint};
  root.logoutAccount=logout;
  root.requireAccountCheckout=async()=>{await root.accountReady;if(!token()){root.openCustomerAuthModal?.();throw Error('Vui lòng đăng nhập để đặt hàng.');}return true;};
- root.createAccountOrder=async body=>(await request('/api/orders',body)).order;
- root.reportAccountPayment=id=>request('/api/orders/'+encodeURIComponent(id)+'/payment-reported',{});
+ root.createAccountOrder=async body=>{const key=await root.OCOPCheckoutIntent.bind('account-order',{user:root.currentUser?.id,body});return (await request('/api/orders',body,{'Idempotency-Key':key})).order;};
+ root.reportAccountPayment=async id=>{const key=await root.OCOPCheckoutIntent.bind('payment:'+id,{user:root.currentUser?.id,id});return request('/api/orders/'+encodeURIComponent(id)+'/payment-reported',{}, {'Idempotency-Key':key});};
  async function restore(){
   if(!token()){clear();return;}
   try{const response=await apiFetch(endpoint('/api/auth/me'),{signal:AbortSignal.timeout(8000)});if(response.ok)accept(await response.json());else if(response.status===401)clear();}catch{}

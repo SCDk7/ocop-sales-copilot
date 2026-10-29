@@ -315,7 +315,12 @@ test('Central navigation bar Flexbox layout, wishlist removal, and 5-language sy
     assert(html.includes('display: flex !important'), 'Flex display rule');
     assert(html.includes('flex-direction: row !important'), 'Row direction rule');
     assert(html.includes('flex-wrap: nowrap !important'), 'Nowrap flex rule');
-    assert(html.includes('gap: 16px !important'), '16px gap rule');
+    for (const page of ['index.html', 'index_2.html']) {
+        const mobileGrid = fs.readFileSync(page, 'utf8').match(/@media \(max-width: 767px\) \{\s*#product-grid \{([^}]+)\}/);
+        assert(mobileGrid, `${page}: mobile product grid exists`);
+        assert.match(mobileGrid[1], /repeat\(2, minmax\(0, 1fr\)\)/, `${page}: two product cards per row`);
+        assert.match(mobileGrid[1], /gap: 10px !important/, `${page}: compact mobile card spacing`);
+    }
     assert(html.includes('white-space: nowrap !important'), 'Text nowrap rule');
     assert(html.includes('font-size: 14px !important'), 'Font size 14px rule');
     assert(html.includes('padding: 6px 14px !important'), 'Padding 6px 14px rule');
