@@ -142,7 +142,7 @@ test('a downloaded reference photo returns a similar product without claiming ex
 test('vision provider failure keeps retry available and asks for label text without inventing recognition',async()=>{
  const context=visionContext(async()=>({response:{ok:false,status:503},data:{error:{message:'Unavailable'}}}));
  const result=await context.generateAIResponse({language:'vi',products,messages:[{role:'user',text:'Tìm món trong ảnh'}]},{imageData:{mimeType:'image/png',data:'test-image'}});
- assert.equal(result.status,503);assert.equal(result.body.error,'IMAGE_ANALYSIS_UNAVAILABLE');assert.equal(result.body.imageMatchStatus,'unknown');assert(result.body.retryable);assert.equal(result.body.productIds.length,0);assert.match(result.body.message,/tên sản phẩm.*trên nhãn/);
+ assert.equal(result.status,503);assert.equal(result.body.error,'IMAGE_ANALYSIS_UNAVAILABLE');assert.equal(result.body.imageMatchStatus,'unknown');assert(result.body.retryable);assert.equal(result.body.productIds.length,0);assert.match(result.body.message,/mô tả chi tiết sản phẩm.*tên sản phẩm/);
 });
 
 test('readable coffee evidence recovers a related catalogue match even when vision reports unknown',async()=>{

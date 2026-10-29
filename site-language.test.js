@@ -15,6 +15,12 @@ test('one locale persists across page navigation and explicit URL preference ove
  const changed=browser(storage,'http://localhost:3000/privacy?lang=ja');assert.equal(changed.api.get(),'ja');changed.api.set('zh');assert.equal(changed.root.location.search,'?lang=zh');
  assert.equal(locale.normalize('ja-JP'),'ja');assert.equal(locale.normalize('not-supported'),'vi');
 });
+test('flash sale cards and live voucher labels follow the selected language',()=>{
+ for(const lang of ['en','zh','ko','ja'])for(const value of ['SIÊU KHUYẾN MÃI OCOP','Còn:','Lưu Mã','ĐƠN TỪ 299K','TRI ÂN 2026','Giảm liền 30K','TOP 1 BÁN CHẠY']){
+  assert.notEqual(locale.text(value,lang),value,`${value} remains Vietnamese in ${lang}`);
+ }
+ assert.equal(locale.text('Mã: OCOP50K','zh'),'代码： OCOP50K');
+});
 test('shared UI and sales phrases cover all five languages while preserving numbers, SKUs and unit quantities',()=>{
  for(const row of ui.rows){assert.equal(row.length,5);assert.ok(row.every(label=>typeof label==='string'&&label.length>0),JSON.stringify(row));}
  for(const lang of locale.languages){assert.equal(locale.text('Quên mật khẩu?',lang),ui.rows.find(row=>row[0]==='Quên mật khẩu?')[locale.languages.indexOf(lang)]);assert.ok(locale.text('TẠO TÀI KHOẢN',lang));}

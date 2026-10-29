@@ -5,12 +5,12 @@
  function saved(){try{const query=new URL(root.location.href).searchParams.get('lang');if(languages.includes(query))return query;const stored=root.localStorage?.getItem('ocop-language');if(languages.includes(stored))return stored;}catch{}return normalize(root.document?.documentElement.lang);}
  let current=saved();
  const dictionary=()=>root.OCOPUITranslations?.rows||(typeof module==='object'&&module.exports?require('./ui-translations').rows:[]);
- let cachedLength=-1,lookup=new Map(),prefixes=[];
+ let cachedLength=-1,lookup=new Map(),requiredLookup=new Map(),prefixes=[];
  function text(value,lang=current){
   const input=String(value??''),plain=input.trim(),rows=dictionary();lang=normalize(lang);
-  if(cachedLength!==rows.length){cachedLength=rows.length;lookup=new Map();for(const row of rows)for(const label of row)if(!lookup.has(label.trim()))lookup.set(label.trim(),row);prefixes=[...lookup].filter(([label])=>/[:：]$/.test(label)).sort((a,b)=>b[0].length-a[0].length);}
+  if(cachedLength!==rows.length){cachedLength=rows.length;lookup=new Map();requiredLookup=new Map();for(const row of rows)for(const label of row){const key=label.trim();if(!lookup.has(key))lookup.set(key,row);const withoutStar=key.replace(/\s*\*$/,'');if(!requiredLookup.has(withoutStar))requiredLookup.set(withoutStar,row);}prefixes=[...lookup].filter(([label])=>/[:：]$/.test(label)).sort((a,b)=>b[0].length-a[0].length);}
   const index=languages.indexOf(lang),row=lookup.get(plain);if(row)return input.replace(plain,row[index].trim());
-  const required=rows.find(entry=>entry.some(label=>label.trim().replace(/\s*\*$/,'')===plain));if(required)return input.replace(plain,required[index].trim().replace(/\s*\*$/,''));
+  const required=requiredLookup.get(plain);if(required)return input.replace(plain,required[index].trim().replace(/\s*\*$/,''));
   const decorated=/^([\p{Extended_Pictographic}\uFE0F\u200D\s]+)(\S.*)$/u.exec(plain);if(decorated){const translated=text(decorated[2],lang);if(translated!==decorated[2])return input.replace(plain,decorated[1]+translated);}
   const prefix=prefixes.find(([label])=>plain.startsWith(label));if(prefix)return input.replace(prefix[0],prefix[1][index].trim());
   const count=/^(\d+)\s+(?:sản phẩm|items|件商品|개 상품|商品)$/.exec(plain);if(count)return count[1]+' '+({vi:'sản phẩm',en:'items',zh:'件商品',ko:'개 상품',ja:'商品'})[lang];

@@ -6,7 +6,7 @@ function write(file,value){const target=path.join(root,file);fs.mkdirSync(path.d
 function build(){
  const products=require('../data').PRODUCTS;
  const homeMarkdown=content.markdown('/',products);
- write('index.md',homeMarkdown);write('index.html.md',homeMarkdown);write('index_2.html.md',homeMarkdown);
+ write('index.md',homeMarkdown);
  for(const route of Object.keys(content.pages).filter(route=>route!=='/')){
   write(route.slice(1)+'/index.html',content.html(route,products));
   write(route.slice(1)+'.md',content.markdown(route,products));

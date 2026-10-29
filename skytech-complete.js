@@ -4559,6 +4559,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
     // SMOOTH MOUSE WHEEL SCROLL ASSURANCE FOR EXTERNAL MOUSE & TOUCHPAD (BẤT KỲ ĐÂU TRÊN MÀN HÌNH)
     (function initUniversalMouseWheelScroll() {
+        if (typeof window === 'undefined' || typeof document === 'undefined') return;
         function getScrollableContainer(el) {
             let cur = el;
             while (cur && cur !== document.body && cur !== document.documentElement) {
@@ -4838,7 +4839,10 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
             }
         }
         if (typeof showToast === 'function') {
-            showToast('🎟️ Đã lưu mã [' + code + ']: ' + desc + '! Áp dụng khi đặt hàng.', 'success');
+            const language=window.OCOPLanguage?.get?.()||'vi';
+            const localizedDesc=window.OCOPLanguage?.text?.(desc,language)||desc;
+            const notices={vi:`🎟️ Đã lưu mã [${code}]: ${localizedDesc}. Áp dụng khi đặt hàng.`,en:`🎟️ Saved code [${code}]: ${localizedDesc}. Apply it at checkout.`,zh:`🎟️ 已保存优惠码 [${code}]：${localizedDesc}。结账时使用。`,ko:`🎟️ 쿠폰 [${code}] 저장 완료: ${localizedDesc}. 결제 시 사용하세요.`,ja:`🎟️ クーポン [${code}] を保存：${localizedDesc}。注文時にご利用ください。`};
+            showToast(notices[language]||notices.vi, 'success');
         }
     };
 

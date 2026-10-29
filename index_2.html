@@ -97,19 +97,21 @@
 <link rel="describedby" type="text/plain" href="llms.txt">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://ocop-sales-copilot.onrender.com/#organization","name":"OCOP Sales","url":"https://ocop-sales-copilot.onrender.com/","description":"Mục đích, phạm vi thông tin và cách sử dụng website OCOP Sales.","logo":"https://ocop-sales-copilot.onrender.com/assets/ocop-logo.svg","contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://ocop-sales-copilot.onrender.com/contact","availableLanguage":["vi","en","zh","ko","ja"]}},{"@type":"WebSite","@id":"https://ocop-sales-copilot.onrender.com/#website","name":"OCOP Sales","url":"https://ocop-sales-copilot.onrender.com/","description":"OCOP Sales giúp tìm đặc sản và nông sản OCOP Việt Nam, tham khảo giá, tìm điểm bán và nhận tư vấn mua hàng.","inLanguage":"vi","publisher":{"@id":"https://ocop-sales-copilot.onrender.com/#organization"}},{"@type":"WebApplication","name":"OCOP Sales","url":"https://ocop-sales-copilot.onrender.com/","description":"OCOP Sales giúp tìm đặc sản và nông sản OCOP Việt Nam, tham khảo giá, tìm điểm bán và nhận tư vấn mua hàng.","applicationCategory":"ShoppingApplication","operatingSystem":"Web browser","browserRequirements":"JavaScript is required for interactive shopping; public information is also available as HTML and Markdown.","publisher":{"@id":"https://ocop-sales-copilot.onrender.com/#organization"}}]}</script>
 <!-- PUBLIC DISCOVERY END -->
- <script src="customer-session.js?v=04611a3c4b35"></script>
+ <script src="customer-session.js?v=3f6c651f884f"></script>
  <script src="voice-engine.js?v=fb7c587f8eb7"></script>
- <script src="ai-shopping.js?v=63d92806c70e"></script>
-<script src="ai-web-research.js?v=18d72c462cdb"></script>
-<script src="ocop-assistant-profile.js?v=960757c1965c"></script>
+ <script src="ai-shopping.js?v=013db6c43e56"></script>
+<script src="ai-web-research.js?v=8f844e34875d"></script>
+<script src="ocop-assistant-profile.js?v=d4bef09105d1"></script>
 <script src="data/tea-knowledge.js?v=8757f3258ad7"></script>
 <script src="product-training.js?v=94fdfcc3129c"></script>
 <script src="catalog-facts.js?v=097ae56b7ac5"></script>
-<script src="product-consultant.js?v=68220bb323fd"></script>
-<script src="ai-scenarios.js?v=72e8e9f5058d"></script>
+<script src="customer-question-guide.js?v=19b49ae88c97"></script>
+<script src="product-consultant.js?v=e93f4668469d"></script>
+<script src="ai-scenarios.js?v=e8111c2241ca"></script>
 <script src="product-locations.js?v=24739bc83737"></script>
-<script src="ai-request-analysis.js?v=073d26cd533e"></script>
-<script src="chat-fallback.js?v=88b87e0ce84f"></script>
+<script src="ai-request-analysis.js?v=1c706a4af39d"></script>
+<script src="chat-fallback.js?v=0a2941f9b2ea"></script>
+<script src="client-image-match.js?v=cd2ffc124245"></script>
  <script src="chat-language.js?v=6239eb709716"></script>
  <link rel="stylesheet" href="assets/tailwind.css?v=fd015ecf5cba">
  <!-- Font Awesome Icons & Google Fonts -->
@@ -119,7 +121,7 @@
  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=a78371028241">
  <!-- Project Stylesheets -->
  <link rel="stylesheet" href="style.css?v=8aec987c157e">
-    <link rel="stylesheet" href="skytech-complete.css?v=690767e701a1">
+    <link rel="stylesheet" href="skytech-complete.css?v=9caf0167d7ef">
  <!-- <link rel="stylesheet" href="styledangcap.css"> -->
  <!-- <link rel="stylesheet" href="SuaLoiKoClick.css"> -->
  <style>
@@ -260,17 +262,20 @@
             align-items: start !important;
             width: 100% !important;
         }
-        @media (min-width: 1024px) {
+        @media (min-width: 768px) {
             #catalog-layout-wrapper {
                 display: grid !important;
-                grid-template-columns: 290px minmax(0, 1fr) !important;
-                gap: 32px !important;
+                grid-template-columns: clamp(240px, 27vw, 290px) minmax(0, 1fr) !important;
+                gap: clamp(16px, 2vw, 32px) !important;
                 align-items: start !important;
+            }
+            #catalog-sidebar {
+                display: block !important;
             }
         }
         #catalog-sidebar {
-            width: 290px !important;
-            min-width: 290px !important;
+            width: 100% !important;
+            min-width: 0 !important;
             max-width: 290px !important;
             box-sizing: border-box !important;
         }
@@ -287,7 +292,7 @@
             max-width: 100% !important;
             overflow-x: hidden !important;
         }
-        @media (min-width: 1024px) {
+        @media (min-width: 768px) {
             #catalog-sidebar {
                 align-self: stretch !important;
             }
@@ -796,7 +801,6 @@
         }
         html {
             overflow-x: hidden;
-            overflow-y: auto !important;
         }
         /* Sky Blue & Clean Tech SaaS Theme - AI Digital Business 2026 */
         /* Dark Tech Base: #0d1117, linear-gradient(180deg, #07120e 0%, #0b0f14 100%) */
@@ -1715,11 +1719,6 @@
             z-index: 100;
             color-scheme: light !important;
             overscroll-behavior: contain;
-            overscroll-behavior-y: auto !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            -webkit-overflow-scrolling: touch !important;
-            touch-action: pan-y !important;
         }
         #ocop-intro-overlay::before,
         #ocop-intro-overlay::after,
@@ -2474,7 +2473,7 @@
             font-weight: 800 !important;
         }
     </style>
-<link rel="stylesheet" href="assets/checkout-payment.css?v=016e2182cfbf">
+<link rel="stylesheet" href="assets/checkout-payment.css?v=ded8caeae4a3">
     <!-- KHÓA CỨNG: ẨN TUYỆT ĐỐI CÁC TÍNH NĂNG QUẢN TRỊ KHI CHƯA ĐĂNG NHẬP ADMIN -->
     <style id="admin-role-gate-css">
     body:not(.is-admin-logged-in) #btn-header-admin-pin,
@@ -2755,22 +2754,9 @@
  <button type="button" onclick="openAllStoresModal()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs">
  <span id="header-nav-stores-label">🗺️ Điểm Bán OCOP</span>
  </button>
- <button type="button" id="btn-header-back-intro" onclick="openIntroModal()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" title="Quay lại trang đầu tiên (Bản đồ OCOP)">
- <span id="header-nav-back-intro-label">🔙 Quay lại</span>
- </button>
  </nav>
  <!-- Quick Action Cluster: Cart + CTAs + Language + Login -->
  <div class="header-right-actions flex items-center space-x-2 flex-shrink-0" style="gap: 8px !important;">
- <!-- Action Button 1: 🛒 Giỏ hàng & ⚡ Đăng Ký Điểm Bán -->
- <button type="button" id="btn-header-ocr" data-admin-only="true" onclick="openPartnerRegistrationModal()" class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; color: #92400E !important; background: #FFFBEB !important; border: 1.5px solid #FCD34D !important;" title="Đăng ký điểm bán OCOP">
-<i class="fa-solid fa-bolt text-amber-500"></i>
-<span id="btn-header-ocr-text">⚡ Đăng Ký Điểm Bán</span>
-</button>
- <!-- Action Button 2: 🔐 Quản Trị Doanh Thu -->
- <button type="button" id="btn-header-admin-pin" data-admin-only="true" onclick="promptAdminPinModal()" class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" style="white-space: nowrap !important; height: 38px; background: #F0F9FF !important; color: #0284C7 !important; border: 1.5px solid #38BDF8 !important;" title="Khu vực Quản trị Doanh thu Nền tảng OCOP">
-<i class="fa-solid fa-chart-pie text-sky-600"></i>
-<span id="header-admin-pin-text">🔐 Quản Trị Doanh Thu</span>
-</button>
  <!-- Language Dropdown (đặt gần nút Đăng Nhập) -->
  <button type="button" id="header-cart-toggle" onclick="toggleCart(true)" class="header-cart-button" aria-label="M&#7903; gi&#7887; h&#224;ng"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i><span>Gi&#7887; h&#224;ng</span><span id="header-cart-count">0</span></button>
     <div class="lang-dropdown-container flex-shrink-0" id="header-lang-dropdown-container" style="position: relative !important; z-index: 1000000 !important;">
@@ -2801,13 +2787,6 @@
  <span class="item-label">日本語</span>
  </button>
  </div>
- </div>
- <!-- Action Button Admin/NPP: Chỉ hiển thị khi đăng nhập tài khoản Admin hoặc Nhà Phân Phối -->
- <div id="header-admin-action-wrap" class="items-center" style="display: none !important;">
- <button type="button" id="btn-header-admin-portal" onclick="if(window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal==='function'){window.OcopAdminManagement.openAdminManagementModal();}else if(typeof openAdminHubModal==='function'){openAdminHubModal();}else{promptAdminPinModal();}" class="px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-sm" style="white-space: nowrap !important; height: 38px; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important; color: #FFFFFF !important; border: 1.5px solid #38BDF8 !important;" title="Khu vực Quản trị Nền tảng OCOP">
- <i class="fa-solid fa-crown text-amber-300" id="header-admin-portal-icon"></i>
- <span id="header-admin-portal-text">👑 Quản Trị Hệ Thống</span>
- </button>
  </div>
  <!-- Action Button 0: 👤 Tài Khoản Khách Hàng (Đăng Nhập) -->
  <button type="button" id="btn-customer-account" onclick="openCustomerAuthModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs" title="Tài khoản khách hàng (Đăng nhập / Đăng ký / Đổi mật khẩu)">
@@ -3991,58 +3970,1120 @@
  <button id="tab-register" type="button" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
  </div>
  <!-- Nút Điền Nhanh Tài Khoản Demo Ban Giám Khảo (1 chạm) -->
+ <div id="auth-social-login" class="flex flex-col gap-2 mb-3" aria-label="Đăng nhập nhanh">
+ <button id="auth-google-btn" type="button" onclick="openGoogleChooser()" class="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 font-bold text-gray-700 hover:bg-gray-50 transition cursor-pointer">
+ <i class="fa-brands fa-google text-red-500 text-sm"></i><span data-auth-social-label="google">Tiếp tục với Google</span>
+ </button>
+ <div class="flex items-center gap-3 text-[10px] text-gray-400"><span class="h-px flex-1 bg-gray-200"></span><span data-auth-social-label="separator">hoặc đăng nhập bằng tài khoản</span><span class="h-px flex-1 bg-gray-200"></span></div>
+ </div>
+ <p id="auth-social-status" class="hidden mb-3 rounded-xl border px-3 py-2 text-xs leading-relaxed" role="status" aria-live="polite"></p>
+ <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
+ <div id="name-field">
+ <label for="auth-name" id="auth-name-label" class="block font-bold text-gray-700 mb-1">Tài khoản (Email / Số điện thoại / Tên đăng nhập) *</label>
+ <input type="text" id="auth-name" autocomplete="username" required placeholder="Nhập email, số điện thoại hoặc tên đăng nhập" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+ </div>
+ <div id="phone-field" class="hidden">
+ <label for="auth-phone" class="block font-bold text-gray-700 mb-1">Số điện thoại *</label>
+ <input type="tel" id="auth-phone" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10,11}" maxlength="11" placeholder="0912345678" oninput="this.value = this.value.replace(/[^0-9]/g, '')" onkeypress="return /[0-9]/.test(event.key)" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+ </div>
+ <div id="email-field" class="hidden">
+ <label for="auth-email" class="block font-bold text-gray-700 mb-1">Gmail / Email *</label>
+ <input type="email" id="auth-email" autocomplete="email" placeholder="example@gmail.com" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+ </div>
+ <div id="address-field" class="hidden">
+ <label for="auth-address" class="block font-bold text-gray-700 mb-1">Tỉnh / Thành phố hoặc Địa chỉ *</label>
+ <input type="text" id="auth-address" autocomplete="street-address" maxlength="300" placeholder="Tỉnh/Thành phố hoặc địa chỉ HTX" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+ </div>
+ <div id="password-field">
+ <label for="auth-password" class="block font-bold text-gray-700 mb-1">Mật khẩu *</label>
+ <div class="relative">
+ <input type="password" id="auth-password" autocomplete="current-password" minlength="1" required placeholder="Nhập mật khẩu" class="w-full border border-gray-200 rounded-xl pl-3 pr-9 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+ <button type="button" onclick="togglePasswordVisibility('auth-password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer p-1" title="Hiện/Ẩn mật khẩu"><i class="fa-solid fa-eye text-xs"></i></button>
+ </div>
+ </div>
+ <div id="password-confirm-field" class="hidden">
+ <label for="auth-password-confirm" class="block font-bold text-gray-700 mb-1">Xác nhận lại mật khẩu *</label>
+ <div class="relative">
+ <input type="password" id="auth-password-confirm" autocomplete="new-password" placeholder="Nhập lại mật khẩu" class="w-full border border-gray-200 rounded-xl pl-3 pr-9 py-2.5 focus:outline-none focus:border-ocopGreen bg-gray-50 text-xs">
+ <button type="button" onclick="togglePasswordVisibility('auth-password-confirm', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer p-1" title="Hiện/Ẩn mật khẩu"><i class="fa-solid fa-eye text-xs"></i></button>
+ </div>
+ </div>
+ <button type="submit" id="auth-submit-btn" class="w-full bg-ocopGreen text-white py-3 rounded-xl font-bold hover:bg-ocopGreenLight transition shadow-md mt-2 cursor-pointer text-xs">
+ Đăng Nhập
+ </button>
+ </form>
+ </div>
+ </div>
+ </div>
+ <!-- 8. POPUP QUICK VIEW CHI TIẾT SẢN PHẨM -->
+ <div id="quickview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+ <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeQuickView()"></div>
+ <div class="relative bg-white rounded-3xl max-w-2xl w-full shadow-2xl z-10 border border-amber-200 animate-pop-in" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+ <button onclick="closeQuickView()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-8 h-8 flex items-center justify-center text-sm z-20 transition cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+ <div class="grid grid-cols-1 md:grid-cols-2" id="quickview-content"></div>
+ </div>
+ </div>
+ <!-- 8.1 MODAL CHI TIẾT ĐIỂM BÁN & CỬA HÀNG OCOP CỦA SẢN PHẨM -->
+    <div id="ocop-store-modal" class="fixed inset-0 z-[10000000] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md">
+        <div class="absolute inset-0" onclick="closeStoreLocator()"></div>
+        <div class="relative bg-white rounded-3xl max-w-3xl w-full shadow-2xl z-10 border-2 border-emerald-400/60 animate-pop-in flex flex-col overflow-hidden my-auto" style="max-height: min(88vh, 760px);">
+            <!-- Header Modal (Cố định ở trên, không bị trượt dưới thanh menu) -->
+            <div class="p-4 bg-gradient-to-r from-emerald-950 via-emerald-800 to-teal-900 text-white rounded-t-3xl flex items-center justify-between border-b border-emerald-600/40 relative shrink-0">
+                <div class="flex items-center space-x-2.5">
+                    <span class="w-9 h-9 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md shrink-0">
+                        <i class="fa-solid fa-store text-base"></i>
+                    </span>
+                    <div>
+                        <h3 class="font-black text-sm sm:text-base text-amber-200 tracking-wide flex items-center gap-1.5">
+                            <span>MẠNG LƯỚI ĐIỂM BÁN & CỬA HÀNG OCOP CHÍNH HÃNG</span>
+                        </h3>
+                        <p class="text-[11px] text-emerald-100 font-medium">Xác thực chứng nhận OCOP Quốc Gia & Chỉ dẫn đường đến cửa hàng</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeStoreLocator()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-gray-900 flex items-center justify-center text-sm transition cursor-pointer shrink-0" aria-label="Đóng">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Nội dung chi tiết cửa hàng (cuộn mượt, không bao giờ bị cắt chữ hay mất nút) -->
+            <div id="ocop-store-modal-body" class="p-4 sm:p-6 space-y-4 overflow-y-auto flex-1 overscroll-contain bg-slate-50/60 pb-10"></div>
+        </div>
+    </div>
+    <!-- 8.2 MODAL BẢN ĐỒ & DANH BẠ ĐIỂM BÁN OCOP TOÀN QUỐC -->
+    <div id="ocop-all-stores-modal" class="fixed inset-0 z-[10000000] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md">
+        <div class="absolute inset-0" onclick="closeAllStoresModal()"></div>
+        <div class="store-directory-panel relative bg-white rounded-3xl max-w-4xl w-full shadow-2xl z-10 border-2 border-emerald-400/60 animate-pop-in flex flex-col overflow-hidden my-auto" style="max-height: min(88vh, 780px);">
+            <!-- Header Modal -->
+            <div class="p-4 bg-gradient-to-r from-emerald-950 via-emerald-800 to-teal-900 text-white rounded-t-3xl flex items-center justify-between border-b border-emerald-600/40 shrink-0">
+                <div class="flex items-center space-x-2.5">
+                    <span class="w-9 h-9 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md shrink-0">
+                        <i class="fa-solid fa-map-location-dot text-base"></i>
+                    </span>
+                    <div>
+                        <h3 class="font-black text-sm sm:text-base text-amber-200 tracking-wide">
+                            DANH BẠ CÁC TRUNG TÂM & ĐIỂM BÁN OCOP TRỌNG ĐIỂM QUỐC GIA
+                        </h3>
+                        <p class="text-[11px] text-emerald-100 font-medium">Hệ thống phân phối chính hãng được Sở Công Thương & Bộ NN&PTNT phê duyệt</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeAllStoresModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-gray-900 flex items-center justify-center text-sm transition cursor-pointer shrink-0" aria-label="Đóng">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Body -->
+            <div class="p-4 sm:p-6 space-y-4 overflow-y-auto flex-1 overscroll-contain bg-slate-50/60 pb-10" id="ocop-all-stores-body"></div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- 8.3 MODAL BẢNG ĐIỀU KHIỂN QUẢN TRỊ TÀI CHÍNH AI (AI FINANCIAL ENGINE) -->
+ <!-- ============================================================== -->
+ <div id="ai-financial-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4">
+ <div class="absolute inset-0 bg-black/75 backdrop-blur-sm" onclick="closeFinancialDashboardModal()"></div>
+ <div class="relative bg-white rounded-3xl max-w-5xl w-full shadow-2xl z-10 border-2 border-emerald-500 animate-pop-in flex flex-col" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+ <!-- Header Modal -->
+ <div class="p-4 sm:p-5 bg-gradient-to-r from-emerald-950 via-ocopGreen to-slate-900 text-white rounded-t-3xl flex items-center justify-between border-b border-amber-400/40 relative">
+ <div class="flex items-center space-x-3">
+ <span class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md text-lg">
+ <i class="fa-solid fa-chart-pie"></i>
+ </span>
+ <div>
+ <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-black/40 px-2.5 py-0.5 rounded-full border border-amber-400/30 mb-0.5">
+ <i class="fa-solid fa-microchip"></i>
+ <span>AI Financial Engine • Mô phỏng / Simulation</span>
+ </div>
+ <h3 class="font-black text-base sm:text-lg text-amber-200 tracking-wide">
+ 📊 QUẢN TRỊ DOANH THU & HOA HỒNG CHỦ WEB (ADMIN)
+ </h3>
+ </div>
+ </div>
+ <div class="flex items-center gap-2" style="position: sticky; top: 12px; right: 12px; z-index: 999999;">
  
-
-                                <div class="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950/70">
-                                    <table class="w-full text-left text-[11px] border-collapse">
-                                        <thead>
-                                            <tr class="border-b border-zinc-800 text-zinc-400 font-semibold bg-zinc-900/90">
-                                                <th class="py-1.5 px-2.5">Tên đăng nhập</th>
-                                                <th class="py-1.5 px-2.5">Mật khẩu</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-zinc-800/80">
-                                            <tr onclick="quickSelectDemoAccount('ThaoNguyenad01')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập ThaoNguyenad01">
-                                                <td class="py-1.5 px-2.5 font-mono">
-                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">ThaoNguyenad01</span>
-                                                </td>
-                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
-                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">0000000</span>
-                                                </td>
-                                            </tr>
-                                            <tr onclick="quickSelectDemoAccount('KimNganad02')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập KimNganad02">
-                                                <td class="py-1.5 px-2.5 font-mono">
-                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">KimNganad02</span>
-                                                </td>
-                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
-                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">1111111</span>
-                                                </td>
-                                            </tr>
-                                            <tr onclick="quickSelectDemoAccount('VinhPhucad03')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập VinhPhucad03">
-                                                <td class="py-1.5 px-2.5 font-mono">
-                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">VinhPhucad03</span>
-                                                </td>
-                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
-                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">2222222</span>
-                                                </td>
-                                            </tr>
-                                            <tr onclick="quickSelectDemoAccount('ThanhBinhad04')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập ThanhBinhad04">
-                                                <td class="py-1.5 px-2.5 font-mono">
-                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">ThanhBinhad04</span>
-                                                </td>
-                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
-                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">3333333</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+ <button type="button" onclick="closeFinancialDashboardModal()" id="btn-close-fin-modal-sticky" style="position: sticky; top: 12px; right: 12px; z-index: 999999; background: #EF4444 !important; color: #FFFFFF !important; padding: 8px 18px !important; border-radius: 999px !important; cursor: pointer; font-weight: 700 !important; border: none !important; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;" title="Đóng Bảng Quản Trị">
+ <span>✖ Đóng</span>
+ </button>
+ </div>
+            </div>
+ <!-- Body Modal -->
+ <div class="p-4 sm:p-6 space-y-6 bg-gradient-to-b from-emerald-50/20 via-white to-amber-50/20">
+ <!-- Cổng Quản Trị HTX Caption -->
+ <div class="p-3.5 rounded-2xl border border-amber-400/40 text-xs leading-relaxed font-medium" style="background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;">
+ <i class="fa-solid fa-lock text-amber-300 mr-1.5"></i>
+ <strong style="color: #0F172A !important;">Cổng Quản Trị Dành Riêng Cho Chủ HTX & Doanh Nghiệp OCOP:</strong> <span style="color: #1E293B !important;">Tự động hóa quản trị tài chính, mô phỏng kịch bản kinh doanh What-if và trích xuất chiến lược tối ưu lợi nhuận từ dữ liệu thực tế.</span> <span style="color: #0284C7 !important; font-weight: 700 !important;">Khách hàng mua sắm không cần dùng phần này.</span>
+ </div>
+ <!-- Bộ lọc kênh dòng tiền & Nút báo cáo giọng nói -->
+ <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 rounded-2xl bg-white border border-emerald-200/80 shadow-xs">
+ <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto">
+ <span class="text-xs font-bold text-gray-500 shrink-0">Nguồn dòng tiền:</span>
+ <button type="button" onclick="filterFinancialChannel('all')" id="btn-channel-all" class="px-3 py-1.5 rounded-xl text-xs font-black bg-ocopGreen text-white shadow-xs cursor-pointer">Tất cả kênh (100%)</button>
+ <button type="button" onclick="filterFinancialChannel('qr')" id="btn-channel-qr" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer">Quét QR tại Showroom (64%)</button>
+ <button type="button" onclick="filterFinancialChannel('preorder')" id="btn-channel-preorder" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer">Đặt trước Pre-Order (36%)</button>
+ </div>
+ <button type="button" onclick="playVoiceFinancialBriefing()" style="display: none !important;" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-black shadow-md flex items-center justify-center gap-2 cursor-pointer transition hover:scale-105">
+ <i class="fa-solid fa-volume-high text-sm animate-pulse"></i>
+ <span>AI Báo Cáo Bằng Giọng Nói Cho Nông Dân</span>
+ </button>
+ </div>
+ <!-- Khung hiển thị âm thanh / kịch bản giọng nói AI -->
+ <div id="voice-briefing-box" class="hidden p-4" style="display: none !important;" rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-950 space-y-3 animate-fade-in shadow-xs">
+ <div class="flex flex-wrap items-center justify-between gap-2 font-black text-xs text-amber-900 border-b border-amber-200 pb-2">
+ <span class="flex items-center gap-1.5"><i class="fa-solid fa-microphone-lines text-amber-600"></i> BẢN TIN TÀI CHÍNH GIỌNG NÓI BÌNH DÂN (VOICE-FIRST NEURAL AI):</span>
+ <div class="flex items-center gap-1.5">
+ <span class="text-[10px] text-amber-800 font-bold">Vùng miền:</span>
+ <button type="button" id="btn-voice-region-nam" onclick="setBriefingRegion('nam')" class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-500 text-slate-900 shadow-xs cursor-pointer">Miền Nam</button>
+ <button type="button" id="btn-voice-region-trung" onclick="setBriefingRegion('trung')" class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-100 hover:bg-amber-200 text-amber-900 cursor-pointer">Miền Trung</button>
+ <button type="button" id="btn-voice-region-bac" onclick="setBriefingRegion('bac')" class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-100 hover:bg-amber-200 text-amber-900 cursor-pointer">Miền Bắc</button>
+ <button type="button" onclick="stopVoiceBriefing()" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-100 hover:bg-rose-200 text-rose-800 cursor-pointer ml-1" title="Dừng đọc"><i class="fa-solid fa-stop"></i> Dừng</button>
+ </div>
+ </div>
+ <div id="voice-engine-status" class="text-[11px] text-amber-800 font-medium italic"></div>
+ <p id="voice-briefing-text" class="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium">
+ "Dạ chào cô chú chủ Hợp tác xã! Tháng này điểm bán OCOP của mình hoạt động rất khởi sắc. Tổng doanh thu đạt <strong>842 triệu 500 nghìn đồng</strong>, trong đó bà con quét mã QR mua trực tiếp tại sạp chiếm 64%. Sau khi AI bóc tách tiền vốn nhập hàng và đóng gói, <strong>tiền lời ròng thực nhận của cô chú là 269 triệu 600 nghìn đồng</strong>. Nhờ AI gộp đơn bao bì chống sốc, tiền lời của mình đã <strong>tăng thêm 18.4%</strong> so với tháng trước. Chiết khấu hoa hồng 5% cho nền tảng và 7% cho các cháu cộng tác viên đã được khấu trừ tự động minh bạch 100%, không bị sai sót một đồng nào nhé cô chú!"
+ </p>
+ </div>
+ <!-- KHỐI MÔ PHỎNG DÒNG TIỀN WHAT-IF SIMULATOR TRỰC QUAN -->
+ <div class="p-5 rounded-3xl space-y-4 shadow-xl relative overflow-hidden" style="background: #FFFFFF; border: 1px solid #BAE6FD; box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);">
+ <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-amber-400/20 pb-3">
+ <div class="space-y-0.5">
+ <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/30">
+ <i class="fa-solid fa-sliders text-amber-400"></i>
+ <span>Real-time Scenario Modeling</span>
+ </div>
+ <h4 class="font-black text-base flex items-center gap-2" style="color: #0C4A6E !important; font-size: 1.1rem !important; font-weight: 800 !important;">
+ <span>BỘ MÔ PHỎNG DÒNG TIỀN WHAT-IF (AI CASHFLOW SIMULATOR)</span>
+ </h4>
+ <p class="text-[11px] text-slate-300">Kéo thanh trượt để thử nghiệm kịch bản sản lượng & tối ưu giá vốn tự động theo mô hình B2B2C</p>
+ </div>
+ <button type="button" onclick="exportFinancialReport()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 text-xs font-black shadow-md flex items-center gap-2 cursor-pointer transition hover:scale-105 shrink-0">
+ <i class="fa-solid fa-file-pdf text-rose-800"></i>
+ <span>Xuất Báo Cáo HTX (PDF/Print)</span>
+ </button>
+ </div>
+ <!-- 3 Thanh trượt điều khiển tham số -->
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+ <!-- Thanh 1: Sản lượng phân phối -->
+ <div class="p-3.5 rounded-2xl space-y-2" style="background: #F0F9FF !important; border: 1px solid #BAE6FD !important;">
+ <div class="flex justify-between items-center text-xs font-bold">
+ <span class="text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-boxes-stacked text-emerald-400"></i> Sản lượng giỏ quà:</span>
+ <span id="sim-volume-val" class="font-black text-amber-300 text-sm">2,500 giỏ quà</span>
+ </div>
+ <input id="sim-volume" type="range" min="500" max="15000" step="250" value="2500" oninput="updateFinancialSimulator()" class="w-full accent-amber-400 cursor-pointer h-2 bg-slate-700 rounded-lg">
+ <div class="flex justify-between text-[10px] text-slate-400 font-medium">
+ <span>500</span>
+ <span>Mặc định: 2,500</span>
+ <span>15,000</span>
+ </div>
+ </div>
+ <!-- Thanh 2: Tối ưu COGS nhờ AI -->
+ <div class="p-3.5 rounded-2xl space-y-2" style="background: #F0F9FF !important; border: 1px solid #BAE6FD !important;">
+ <div class="flex justify-between items-center text-xs font-bold">
+ <span class="text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Tối ưu COGS (AI):</span>
+ <span id="sim-cogs-val" class="font-black text-emerald-400 text-sm">-12%</span>
+ </div>
+ <input id="sim-cogs-reduction" type="range" min="0" max="25" step="1" value="12" oninput="updateFinancialSimulator()" class="w-full accent-emerald-400 cursor-pointer h-2 bg-slate-700 rounded-lg">
+ <div class="flex justify-between text-[10px] text-slate-400 font-medium">
+ <span>0% (Nguyên bản)</span>
+ <span>Gom đơn bao bì</span>
+ <span>-25% (Tối đa)</span>
+ </div>
+ </div>
+ <!-- Thanh 3: Chiết khấu Showroom O2O (CHM) -->
+ <div class="p-3.5 rounded-2xl space-y-2" style="background: #F0F9FF !important; border: 1px solid #BAE6FD !important;">
+ <div class="flex justify-between items-center text-xs font-bold">
+ <span class="text-slate-300 flex items-center gap-1.5"><i class="fa-solid fa-handshake text-blue-400"></i> Chiết khấu O2O (CHM):</span>
+ <span id="sim-chm-val" class="font-black text-sky-400 text-sm">8%</span>
+ </div>
+ <input id="sim-chm-rate" type="range" min="5" max="15" step="0.5" value="8" oninput="updateFinancialSimulator()" class="w-full accent-sky-400 cursor-pointer h-2 bg-slate-700 rounded-lg">
+ <div class="flex justify-between text-[10px] text-slate-400 font-medium">
+ <span>5% (Tối thiểu)</span>
+ <span>Chuẩn: 8%</span>
+ <span>15% (Đại lý VIP)</span>
+ </div>
+ </div>
+ </div>
+ <!-- CSS Stacked Cashflow Bar (Thanh phân bổ dòng tiền trực quan) -->
+ <div class="space-y-2 pt-1">
+ <div class="flex justify-between items-center text-xs font-bold text-slate-300">
+ <span class="flex items-center gap-1.5"><i class="fa-solid fa-chart-pie text-amber-400"></i> Cấu trúc phân bổ dòng tiền (100% Doanh thu):</span>
+ <span class="text-[11px] font-semibold text-emerald-400">Đơn giá chuẩn: 350.000 ₫ / giỏ quà</span>
+ </div>
+ <div class="w-full h-8 rounded-xl overflow-hidden flex bg-slate-950 border border-amber-400/30 p-0.5 shadow-inner">
+ <div id="sim-bar-cogs" class="h-full bg-slate-500 transition-all duration-300 flex items-center justify-center text-[10px] font-black text-white overflow-hidden px-1 rounded-l-lg" style="width: 50%;" title="COGS: 50%">COGS 50%</div>
+ <div id="sim-bar-opex" class="h-full bg-purple-600 transition-all duration-300 flex items-center justify-center text-[10px] font-black text-white overflow-hidden px-1" style="width: 7.5%;" title="OPEX: 7.5%">OPEX 7.5%</div>
+ <div id="sim-bar-chm" class="h-full bg-blue-600 transition-all duration-300 flex items-center justify-center text-[10px] font-black text-white overflow-hidden px-1" style="width: 8%;" title="CHM: 8%">CHM 8%</div>
+ <div id="sim-bar-profit" class="h-full bg-emerald-500 transition-all duration-300 flex items-center justify-center text-[10px] font-black text-slate-950 overflow-hidden px-1 rounded-r-lg" style="width: 34.5%;" title="Lợi Nhuận: 34.5%">Lợi Nhuận 34.5%</div>
+ </div>
+ <!-- 4 Chú thích của thanh dòng tiền -->
+ <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] pt-1 font-semibold">
+ <div class="flex items-center gap-1.5 text-slate-300">
+ <span class="w-3 h-3 rounded-md bg-slate-500 inline-block shrink-0"></span>
+ <span id="sim-lbl-cogs">Giá Vốn COGS: 50.0%</span>
+ </div>
+ <div class="flex items-center gap-1.5 text-purple-300">
+ <span class="w-3 h-3 rounded-md bg-purple-600 inline-block shrink-0"></span>
+ <span id="sim-lbl-opex">Vận Hành OPEX: 7.5%</span>
+ </div>
+ <div class="flex items-center gap-1.5 text-blue-300">
+ <span class="w-3 h-3 rounded-md bg-blue-600 inline-block shrink-0"></span>
+ <span id="sim-lbl-chm">Hoa Hồng CHM: 8.0%</span>
+ </div>
+ <div class="flex items-center gap-1.5 text-emerald-300 font-bold">
+ <span class="w-3 h-3 rounded-md bg-emerald-500 inline-block shrink-0"></span>
+ <span id="sim-lbl-profit">Lợi Nhuận Ròng: 34.5%</span>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- 4 Thẻ Thống Kê Quản Trị Cốt Lõi (Admin Revenue KPI Grid) -->
+ <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+ <!-- 1. Tổng Doanh Thu Toàn Sàn (GMV) -->
+ <div class="p-4 rounded-2xl bg-white border-2 border-emerald-300 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+ <div class="flex items-center justify-between text-slate-600 mb-2">
+ <span class="text-xs font-black uppercase tracking-wider text-emerald-800">💰 Tổng Doanh Thu Sàn (GMV)</span>
+ <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-black shadow-xs"><i class="fa-solid fa-sack-dollar"></i></span>
+ </div>
+ <div>
+ <div class="text-2xl font-black text-emerald-600" id="fin-stat-revenue">842.500.000 ₫</div>
+ <div class="text-[11px] text-emerald-800 font-bold flex items-center gap-1 mt-1">
+ <i class="fa-solid fa-arrow-trend-up text-emerald-600"></i>
+ <span>Bán giúp các HTX toàn quốc (+24.6%)</span>
+ </div>
+ </div>
+ </div>
+ <!-- 2. Doanh Thu Trả Về Các HTX / Điểm Bán OCOP -->
+ <div class="p-4 rounded-2xl bg-white border-2 border-amber-300 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+ <div class="flex items-center justify-between text-slate-600 mb-2">
+ <span class="text-xs font-black uppercase tracking-wider text-amber-900">🏪 Doanh Thu Trả Về HTX</span>
+ <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-sm font-black shadow-xs"><i class="fa-solid fa-store"></i></span>
+ </div>
+ <div>
+ <div class="text-2xl font-black text-amber-800" id="fin-stat-stores-payout">775.100.000 ₫</div>
+ <div class="text-[11px] text-amber-900 font-bold flex items-center gap-1 mt-1">
+ <i class="fa-solid fa-hand-holding-dollar text-amber-600"></i>
+ <span id="fin-stat-stores-payout-sub">Tiền hàng gốc & lãi trả về 63 HTX (92%)</span>
+ </div>
+ </div>
+ </div>
+ <!-- 3. Lợi Nhuận Ròng / Hoa Hồng Chủ Web -->
+ <div class="p-4 rounded-2xl bg-white border-2 border-sky-400 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+ <div class="flex items-center justify-between text-slate-600 mb-2">
+ <span class="text-xs font-black uppercase tracking-wider text-sky-900">💎 Hoa Hồng & Lãi Chủ Web</span>
+ <span class="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-sm font-black shadow-xs"><i class="fa-solid fa-gem"></i></span>
+ </div>
+ <div>
+ <div class="text-2xl font-black text-sky-600" id="fin-stat-commission">67.400.000 ₫</div>
+ <div class="text-[11px] text-sky-800 font-bold flex items-center gap-1 mt-1">
+ <i class="fa-solid fa-percent text-sky-600"></i>
+ <span id="fin-stat-commission-sub">8.0% hoa hồng Smart Commission (CHM)</span>
+ </div>
+ </div>
+ </div>
+ <!-- 4. Tổng Đơn Hàng Thành Công & Tỷ Lệ Chuyển Đổi AI Copilot -->
+ <div class="p-4 rounded-2xl bg-white border-2 border-indigo-300 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+ <div class="flex items-center justify-between text-slate-600 mb-2">
+ <span class="text-xs font-black uppercase tracking-wider text-indigo-900">📦 Đơn Hàng & Chuyển Đổi AI</span>
+ <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-black shadow-xs"><i class="fa-solid fa-robot"></i></span>
+ </div>
+ <div>
+ <div class="text-2xl font-black text-indigo-700" id="fin-stat-orders-ai">2,840 đơn (31.8% CR)</div>
+ <div class="text-[11px] text-indigo-800 font-bold flex items-center gap-1 mt-1">
+ <i class="fa-solid fa-qrcode text-indigo-600"></i>
+ <span>Đối soát tự động VietQR • Chuẩn 100%</span>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- HỘP GỢI Ý CHIẾN LƯỢC AI (AI ACTIONABLE INSIGHTS) -->
+ <div class="p-5 rounded-2xl bg-gradient-to-r from-sky-50 via-blue-50 to-emerald-50 border-2 border-sky-300 shadow-xs space-y-3">
+ <div class="flex flex-wrap items-center justify-between border-b border-sky-200 pb-2.5 gap-2">
+ <div class="flex items-center gap-2">
+ <span class="w-8 h-8 rounded-xl bg-sky-600 text-white flex items-center justify-center text-sm shadow-2xs">
+ <i class="fa-solid fa-lightbulb text-amber-300"></i>
+ </span>
+ <div>
+ <h4 class="font-black text-sm text-slate-900 uppercase">3 Đề Xuất Chiến Lược Tối Ưu Doanh Thu Từ AI </h4>
+ <p class="text-[11px] text-slate-600 font-medium">Trích xuất tự động từ hành vi tìm kiếm của 12.000+ du khách & dữ liệu luân chuyển sạp OCOP</p>
+ </div>
+ </div>
+ <span class="text-[10px] font-black uppercase tracking-wider bg-sky-200/80 text-sky-800 px-3 py-1 rounded-full border border-sky-300">
+ AI Actionable Insights
+ </span>
+ </div>
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+ <div class="p-3.5 rounded-xl bg-white border border-sky-200 shadow-2xs space-y-1.5">
+ <span class="text-[10px] font-black text-sky-700 uppercase flex items-center gap-1"><i class="fa-solid fa-arrow-trend-up text-emerald-500"></i> Xu hướng tiêu dùng Đồng Nai</span>
+ <h5 class="text-xs font-black text-slate-900">Combo Quà Sức Khỏe Dịp Lễ</h5>
+ <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Nhu cầu Trà khổ qua rừng Hiệp Vân & Bưởi Tân Triều tại Đồng Nai đang tăng 35%. Đề xuất đóng gói combo quà sức khỏe kết hợp chiết khấu 8% cho CTV để bứt phá doanh số.</p>
+ </div>
+ <div class="p-3.5 rounded-xl bg-white border border-emerald-200 shadow-2xs space-y-1.5">
+ <span class="text-[10px] font-black text-emerald-700 uppercase flex items-center gap-1"><i class="fa-solid fa-boxes-packing text-amber-500"></i> Tối ưu chi phí vốn (COGS)</span>
+ <h5 class="text-xs font-black text-slate-900">Gom Đơn Bao Bì Giấy Tái Chế</h5>
+ <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Liên kết gom đơn sản xuất hộp đựng trà và túi kraft với 15 HTX lân cận giúp giảm trực tiếp 12% giá vốn đóng gói, bảo toàn biên lợi nhuận ròng trên 32%.</p>
+ </div>
+ <div class="p-3.5 rounded-xl bg-white border border-blue-200 shadow-2xs space-y-1.5">
+ <span class="text-[10px] font-black text-blue-700 uppercase flex items-center gap-1"><i class="fa-solid fa-qrcode text-sky-500"></i> Kênh phân phối O2O Showroom</span>
+ <h5 class="text-xs font-black text-slate-900">Phân Phối 64% Qua Quét QR Sạp</h5>
+ <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Dòng tiền từ du khách quét mã QR tại Showroom Long Khánh & Biên Hòa đạt tốc độ quay vòng vốn 14 ngày (nhanh gấp 2.8 lần gửi đại lý bán lẻ truyền thống).</p>
+ </div>
+ </div>
+ </div>
+ <!-- Bảng Chi Tiết Dòng Sản Phẩm OCOP (Product-Level Breakdown) -->
+ <div class="bg-white rounded-2xl p-4 sm:p-5 border border-amber-200/90 shadow-sm space-y-3">
+ <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
+ <div>
+ <h4 class="font-black text-sm text-gray-900 flex items-center gap-2">
+ <i class="fa-solid fa-list-check text-ocopGreen"></i>
+ <span>Bóc Tách Chi Phí Vốn (COGS) & Tiền Lời Từng Dòng Sản Phẩm OCOP</span>
+ </h4>
+ <p class="text-[11px] text-gray-500">Dữ liệu tài chính mẫu mô phỏng cỗ máy tính toán tự động của AI Financial Engine</p>
+ </div>
+ <span class="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-900 px-2.5 py-1 rounded-full">
+ Thuật Toán COGS Bóc Tách Đa Tầng
+ </span>
+ </div>
+ <div class="overflow-x-auto">
+ <table class="w-full text-left text-xs">
+ <thead class="bg-amber-50/80 text-amber-950 font-black uppercase text-[10px] tracking-wider border-b border-amber-200">
+ <tr>
+ <th class="py-2.5 px-3">Sản Phẩm OCOP</th>
+ <th class="py-2.5 px-2">Giá Bán</th>
+ <th class="py-2.5 px-2">Chi Phí Vốn (COGS)</th>
+ <th class="py-2.5 px-2">Chiết Khấu (5%+7%)</th>
+ <th class="py-2.5 px-2">Tiền Lời / Đơn vị</th>
+ <th class="py-2.5 px-2">Biên LN</th>
+ <th class="py-2.5 px-3 text-right">Tổng Tiền Lời Tháng</th>
+ </tr>
+ </thead>
+ <tbody class="divide-y divide-gray-100 font-medium text-gray-800" id="fin-table-body">
+ <tr class="hover:bg-amber-50/40 transition">
+ <td class="py-3 px-3 font-bold text-gray-900">Gốm sứ tâm linh Bát Tràng (Hà Nội - 5★)</td>
+ <td class="py-3 px-2">2.000.000 ₫</td>
+ <td class="py-3 px-2 text-gray-600">1.200.000 ₫ (60%)</td>
+ <td class="py-3 px-2 text-blue-700">240.000 ₫ (12%)</td>
+ <td class="py-3 px-2 font-black text-amber-800">560.000 ₫</td>
+ <td class="py-3 px-2"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">28.0%</span></td>
+ <td class="py-3 px-3 text-right font-black text-ocopGreen">69.440.000 ₫</td>
+ </tr>
+ <tr class="hover:bg-amber-50/40 transition">
+ <td class="py-3 px-3 font-bold text-gray-900">Chè Shan tuyết Suối Giàng (Yên Bái - 5★)</td>
+ <td class="py-3 px-2">1.800.000 ₫</td>
+ <td class="py-3 px-2 text-gray-600">1.050.000 ₫ (58%)</td>
+ <td class="py-3 px-2 text-blue-700">216.000 ₫ (12%)</td>
+ <td class="py-3 px-2 font-black text-amber-800">534.000 ₫</td>
+ <td class="py-3 px-2"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">29.7%</span></td>
+ <td class="py-3 px-3 text-right font-black text-ocopGreen">52.332.000 ₫</td>
+ </tr>
+ <tr class="hover:bg-amber-50/40 transition">
+ <td class="py-3 px-3 font-bold text-gray-900">Nước mắm Cát Hải cốt đặc biệt (Hải Phòng - 5★)</td>
+ <td class="py-3 px-2">400.000 ₫</td>
+ <td class="py-3 px-2 text-gray-600">230.000 ₫ (57.5%)</td>
+ <td class="py-3 px-2 text-blue-700">48.000 ₫ (12%)</td>
+ <td class="py-3 px-2 font-black text-amber-800">122.000 ₫</td>
+ <td class="py-3 px-2"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">30.5%</span></td>
+ <td class="py-3 px-3 text-right font-black text-ocopGreen">41.480.000 ₫</td>
+ </tr>
+ <tr class="hover:bg-amber-50/40 transition">
+ <td class="py-3 px-3 font-bold text-gray-900">Yến sào đảo vách đá thiên nhiên (Khánh Hòa - 5★)</td>
+ <td class="py-3 px-2">5.000.000 ₫</td>
+ <td class="py-3 px-2 text-gray-600">3.200.000 ₫ (64%)</td>
+ <td class="py-3 px-2 text-blue-700">600.000 ₫ (12%)</td>
+ <td class="py-3 px-2 font-black text-amber-800">1.200.000 ₫</td>
+ <td class="py-3 px-2"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">24.0%</span></td>
+ <td class="py-3 px-3 text-right font-black text-ocopGreen">38.400.000 ₫</td>
+ </tr>
+ <tr class="hover:bg-amber-50/40 transition">
+ <td class="py-3 px-3 font-bold text-gray-900">Sâm Ngọc Linh Tu Mơ Rông mật rừng (Kon Tum - 5★)</td>
+ <td class="py-3 px-2">7.000.000 ₫</td>
+ <td class="py-3 px-2 text-gray-600">4.600.000 ₫ (65.7%)</td>
+ <td class="py-3 px-2 text-blue-700">840.000 ₫ (12%)</td>
+ <td class="py-3 px-2 font-black text-amber-800">1.560.000 ₫</td>
+ <td class="py-3 px-2"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">22.3%</span></td>
+ <td class="py-3 px-3 text-right font-black text-ocopGreen">26.520.000 ₫</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ <!-- BẢNG DANH SÁCH ĐƠN HÀNG SHIP ONLINE MỚI NHẤT (DOANH THU & PHÍ CHỦ WEB +10.000Đ/ĐƠN) -->
+  <div class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-sky-300 shadow-sm space-y-3" id="admin-online-orders-box">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pb-2.5 border-b border-sky-100">
+      <div>
+        <h4 class="font-black text-sm uppercase flex items-center gap-2" style="color: #0F172A !important;">
+          <i class="fa-solid fa-truck-fast text-sky-600"></i>
+          <span>DANH SÁCH ĐƠN HÀNG SHIP ONLINE MỚI NHẤT (PHÍ NỀN TẢNG +10.000Đ/ĐƠN)</span>
+        </h4>
+        <p class="text-[11px] text-slate-500 font-medium">Tự động cộng +10.000đ/đơn vào Hoa Hồng & Lãi Chủ Web và đối soát doanh thu thực tế</p>
+      </div>
+      <span class="text-[10px] font-black uppercase tracking-wider bg-sky-100 text-sky-900 px-3 py-1 rounded-full border border-sky-300">
+        Dữ liệu Real-Time O2O
+      </span>
+    </div>
+    <div class="overflow-x-auto" id="admin-online-orders-table-container">
+      <!-- Live Table inserted by renderAdminOnlineOrdersTable() -->
+    </div>
+  </div>
+  <!-- Đề xuất Tối ưu Hóa Chi Phí từ AI (AI Cost Optimization Advisor) -->
+ <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-amber-500/10 to-transparent border border-emerald-300 p-4 space-y-2">
+ <div class="flex items-center gap-2 font-black text-xs text-ocopGreen">
+ <i class="fa-solid fa-brain text-amber-600"></i>
+ <span>AI TỰ ĐỘNG ĐỀ XUẤT CẮT GIẢM CHI PHÍ THỪA (ĐÓNG GÓP TĂNG +18.4% TIỀN LỜI):</span>
+ </div>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-700">
+ <div class="p-3 bg-white rounded-xl border border-emerald-200">
+ <span class="font-bold text-emerald-900 block mb-1">1. Tối ưu gom đơn bao bì thủy tinh nước mắm:</span>
+ <span>AI phát hiện chi phí đóng thùng xốp lẻ từng chai khiến tiền lời giảm 6%. Đề xuất gộp lô 6 chai theo thùng định hình, giúp tiết kiệm 18.000đ/thùng.</span>
+ </div>
+ <div class="p-3 bg-white rounded-xl border border-amber-200">
+ <span class="font-bold text-amber-900 block mb-1">2. Tái cấu trúc tỷ lệ chiết khấu CTV theo mùa vụ:</span>
+ <span>Các dòng danh trà cao cấp dịp lễ có nhu cầu tự nhiên cao, AI đề xuất giảm 2% chiết khấu CTV và chuyển thành ngân sách quà tặng kèm để giữ trọn tiền lời cho HTX.</span>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- Footer Modal -->
+ <div class="p-4 rounded-b-3xl flex flex-wrap items-center justify-between gap-3 text-xs" style="background: #F8FAFC !important; border-top: 1px solid #BAE6FD !important; color: #475569 !important;">
+ <span class="font-medium" style="color: #334155 !important;">Bản quyền giải pháp: <strong style="color: #0284C7 !important;">OCOP Sales Team</strong> • Dự thi AI Digital Business Challenge 2026</span>
+ <button type="button" onclick="closeFinancialDashboardModal()" class="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black shadow-md transition cursor-pointer" style="background: #EF4444 !important; color: #FFFFFF !important;">✖ Đóng Bảng Quản Trị</button>
+ </div>
+ </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- 8.4 MODAL THUYẾT MINH ĐỀ ÁN "AI DIGITAL BUSINESS CHALLENGE 2026" -->
+ <!-- ============================================================== -->
+ <div id="ai-challenge-proposal-modal" class="fixed inset-0 z-50 hidden flex" style="display: none !important;" data-hidden-safe="true items-center justify-center p-3 sm:p-4">
+ <div class="absolute inset-0 bg-black/75 backdrop-blur-sm" onclick="closeChallengeProposalModal()"></div>
+ <div class="relative bg-white rounded-3xl max-w-5xl w-full shadow-2xl z-10 border-2 border-amber-400 animate-pop-in flex flex-col" style="max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain">
+ <!-- Header Modal -->
+ <div class="p-4 sm:p-5 bg-gradient-to-r from-amber-950 via-emerald-950 to-slate-900 text-white rounded-t-3xl flex items-center justify-between border-b border-amber-400/50">
+ <div class="flex items-center space-x-3">
+ <span class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md text-lg">
+ <i class="fa-solid fa-trophy"></i>
+ </span>
+ <div>
+ <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-black/50 px-2.5 py-0.5 rounded-full border border-amber-400/40 mb-0.5">
+ <span>Cuộc Thi AI Digital Business Challenge 2026 • Thuyết Minh Đề Án</span>
+ </div>
+ <h3 class="font-black text-base sm:text-lg text-amber-200 tracking-wide">
+ HỒ SƠ ĐỀ ÁN CHIẾN LƯỢC KINH DOANH SỐ OCOP 4.0
+ </h3>
+ </div>
+ </div>
+ <button onclick="closeChallengeProposalModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white text-white hover:text-gray-900 flex items-center justify-center text-sm transition cursor-pointer">
+ <i class="fa-solid fa-xmark"></i>
+ </button>
+ </div>
+ <!-- Proposal Navigation Tabs -->
+ <div class="bg-amber-50/90 border-b border-amber-200 px-4 sm:px-6 pt-3 flex gap-2 overflow-x-auto text-xs font-black">
+ <button type="button" onclick="switchProposalTab('tab-model')" id="btn-prop-model" class="py-2.5 px-4 rounded-t-xl bg-white border-t-2 border-x border-amber-300 text-ocopGreen shadow-xs cursor-pointer">1. Mô Hình B2B2C / O2O</button>
+ <button type="button" onclick="switchProposalTab('tab-kpis')" id="btn-prop-kpis" class="py-2.5 px-4 rounded-t-xl hover:bg-white/60 text-gray-600 cursor-pointer">2. Chỉ Số KPIs & Metrics</button>
+ <button type="button" onclick="switchProposalTab('tab-diff')" id="btn-prop-diff" class="py-2.5 px-4 rounded-t-xl hover:bg-white/60 text-gray-600 cursor-pointer">3. Đột Phá Công Nghệ</button>
+ <button type="button" onclick="switchProposalTab('tab-scale')" id="btn-prop-scale" class="py-2.5 px-4 rounded-t-xl hover:bg-white/60 text-gray-600 cursor-pointer">4. Mở Rộng Quy Mô (Scalability)</button>
+ <button type="button" onclick="switchProposalTab('tab-compare')" id="btn-prop-compare" class="py-2.5 px-4 rounded-t-xl hover:bg-white/60 text-gray-600 cursor-pointer">5. So Sánh Với E-Commerce Thường</button>
+ </div>
+ <!-- Tab Contents -->
+ <div class="p-4 sm:p-6 space-y-5 bg-white text-gray-800 text-xs sm:text-sm">
+ <!-- TAB 1: MÔ HÌNH B2B2C / O2O -->
+ <div id="tab-model" class="space-y-4">
+ <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-2">
+ <span class="text-xs font-black uppercase text-ocopGreen tracking-wider">Bản Chất Mô Hình Kinh Doanh</span>
+ <h4 class="text-base sm:text-lg font-black text-gray-900">Hệ Sinh Thái Số Ba Bên Kết Nối & Tối Ưu Hóa Dòng Tiền</h4>
+ <p class="text-gray-700 leading-relaxed font-medium">
+ Dự án chuyển đổi triệt để khỏi mô hình bán lẻ trực tuyến (B2C thuần túy) sang <strong>Nền tảng / Hệ sinh thái số đa kết nối (B2B2C & O2O)</strong>. Nền tảng không ôm hàng tồn kho, mà đóng vai trò là "Trục công nghệ kết nối" kết hợp công cụ quản trị tài chính AI (AI Financial Engine) bảo vệ dòng tiền cho người sản xuất.
+ </p>
+ </div>
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+ <div class="p-4 rounded-2xl border border-amber-200 bg-amber-50/50 space-y-2">
+ <span class="font-black text-amber-900 text-xs uppercase flex items-center gap-1.5"><i class="fa-solid fa-wheat-awn text-amber-600"></i> Bên 1: Nhà Vựa / HTX OCOP</span>
+ <p class="text-xs text-gray-600 leading-relaxed">
+ Được trang bị công cụ số hóa siêu tốc (Lightweight MVP) và bảng quản trị tài chính AI. Theo dõi doanh thu, bóc tách giá vốn COGS và tối ưu tiền lời mà không cần biết kế toán.
+ </p>
+ </div>
+ <div class="p-4 rounded-2xl border border-emerald-200 bg-emerald-50/50 space-y-2">
+ <span class="font-black text-emerald-900 text-xs uppercase flex items-center gap-1.5"><i class="fa-solid fa-users text-ocopGreen"></i> Bên 2: Người Tiêu Dùng & Du Khách</span>
+ <p class="text-xs text-gray-600 leading-relaxed">
+ Định vị cửa hàng O2O chính xác, kiểm tra Quyết định phê duyệt OCOP 4-5 sao, lắng nghe câu chuyện văn hóa vùng miền tự động và mua hàng chuẩn nguồn gốc.
+ </p>
+ </div>
+ <div class="p-4 rounded-2xl border border-blue-200 bg-blue-50/50 space-y-2">
+ <span class="font-black text-blue-900 text-xs uppercase flex items-center gap-1.5"><i class="fa-solid fa-network-wired text-blue-600"></i> Bên 3: Nền Tảng (Platform)</span>
+ <p class="text-xs text-gray-600 leading-relaxed">
+ Thu phí hoa hồng giao dịch 5-8% (Take rate), quản trị chiết khấu cộng tác viên minh bạch, hợp nhất dòng tiền quét QR tại sạp và đơn đặt trước online với sai số 0%.
+ </p>
+ </div>
+ <!-- 6 GIẢI PHÁP AI TRỌNG TÂM - INFOGRAPHIC TỔNG THỂ ĐỀ ÁN -->
+ <div class="pt-3 border-t border-slate-100 space-y-3">
+ <div class="flex items-center justify-between">
+ <h4 class="font-black text-sm text-slate-900 uppercase flex items-center gap-2">
+ <i class="fa-solid fa-shapes text-sky-600"></i>
+ <span>6 Trụ Cột Đột Phá AI — Khớp 6 Tiêu Chí DigitalFest Đồng Nai 2026</span>
+ </h4>
+ <span class="text-[10px] font-black uppercase tracking-wider bg-sky-100 text-sky-800 px-2.5 py-0.5 rounded-full">
+ Strategic Blueprint
+ </span>
+ </div>
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+ <div class="p-3.5 rounded-xl border border-sky-200 bg-sky-50/40 space-y-1.5 shadow-2xs">
+ <div class="flex items-center justify-between text-[10px] font-black uppercase text-sky-700">
+ <span>Tiêu chí 1</span>
+ <i class="fa-solid fa-gears"></i>
+ </div>
+ <h5 class="font-black text-xs text-slate-900">1. Tự Động Hóa Vận Hành & COGS</h5>
+ <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Bóc tách giá vốn COGS tự động, tính tiền lời ròng real-time với sai số 0.00%. Số hóa HTX trong 2 giờ với Lightweight MVP.</p>
+ </div>
+ <div class="p-3.5 rounded-xl border border-sky-200 bg-sky-50/40 space-y-1.5 shadow-2xs">
+ <div class="flex items-center justify-between text-[10px] font-black uppercase text-sky-700">
+ <span>Tiêu chí 2</span>
+ <i class="fa-solid fa-wand-magic-sparkles"></i>
+ </div>
+ <h5 class="font-black text-xs text-slate-900">2. AI Marketing & Content Studio</h5>
+ <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Tự động hóa 1-click: Sáng tạo câu chuyện văn hóa vùng miền (Storytelling), bài đăng viral TikTok/FB và xuất khẩu đa ngữ (EN/KO/JA).</p>
+ </div>
+ <div class="p-3.5 rounded-xl border border-sky-200 bg-sky-50/40 space-y-1.5 shadow-2xs">
+ <div class="flex items-center justify-between text-[10px] font-black uppercase text-sky-700">
+ <span>Tiêu chí 3</span>
+ <i class="fa-solid fa-microphone-lines"></i>
+ </div>
+ <h5 class="font-black text-xs text-slate-900">3. Voice AI Tiếp Cận Toàn Dân</h5>
+ <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Báo cáo tài chính bằng giọng nói Neural AI 3 miền Bắc - Trung - Nam, giúp bà con nông dân và chủ HTX cao tuổi nắm bắt dòng tiền dễ dàng.</p>
+ </div>
+ <div class="p-3.5 rounded-xl border border-sky-200 bg-sky-50/40 space-y-1.5 shadow-2xs">
+ <div class="flex items-center justify-between text-[10px] font-black uppercase text-sky-700">
+ <span>Tiêu chí 4</span>
+ <i class="fa-solid fa-map-location-dot"></i>
+ </div>
+ <h5 class="font-black text-xs text-slate-900">4. Bản Đồ Số O2O & Định Vị Điểm Bán</h5>
+ <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Kết nối trực quan du khách tới 500+ Showroom OCOP trên toàn quốc, dẫn đường tận nơi qua Google Maps, trọng tâm Tỉnh Đồng Nai.</p>
+ </div>
+ <div class="p-3.5 rounded-xl border border-sky-200 bg-sky-50/40 space-y-1.5 shadow-2xs">
+ <div class="flex items-center justify-between text-[10px] font-black uppercase text-sky-700">
+ <span>Tiêu chí 5</span>
+ <i class="fa-solid fa-chart-line"></i>
+ </div>
+ <h5 class="font-black text-xs text-slate-900">5. AI Cashflow What-if Simulator</h5>
+ <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Mô phỏng tức thì tác động của sản lượng, gom đơn bao bì và chiết khấu CTV tới lợi nhuận ròng, bảo toàn biên lợi nhuận trên 30%.</p>
+ </div>
+ <div class="p-3.5 rounded-xl border border-sky-200 bg-sky-50/40 space-y-1.5 shadow-2xs">
+ <div class="flex items-center justify-between text-[10px] font-black uppercase text-sky-700">
+ <span>Tiêu chí 6</span>
+ <i class="fa-solid fa-handshake"></i>
+ </div>
+ <h5 class="font-black text-xs text-slate-900">6. Smart Commission (CHM 5-8%)</h5>
+ <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Cơ chế đối soát hoa hồng thông minh tự động hợp nhất dòng tiền tại sạp O2O và trực tuyến, thanh toán minh bạch không tranh chấp.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- TAB 2: CHỈ SỐ KPIS & METRICS -->
+ <div id="tab-kpis" class="hidden space-y-4">
+ <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+ <div class="p-4 rounded-2xl border-2 border-emerald-200 bg-emerald-50/50 space-y-1">
+ <span class="text-[10px] font-black uppercase text-gray-500">Chỉ số 1</span>
+ <h5 class="font-black text-sm text-ocopGreen">Tổng Giá Trị Giao Dịch (GMV)</h5>
+ <div class="text-lg font-black text-gray-900">Tăng trưởng 35% / Quý</div>
+ <p class="text-[11px] text-gray-600">Đo lường toàn bộ dòng tiền lưu thông qua mạng lưới showroom O2O và pre-order.</p>
+ </div>
+ <div class="p-4 rounded-2xl border-2 border-amber-300 bg-amber-50/50 space-y-1">
+ <span class="text-[10px] font-black uppercase text-gray-500">Chỉ số 2</span>
+ <h5 class="font-black text-sm text-amber-800">Tăng Trưởng Tiền Lời Ròng</h5>
+ <div class="text-lg font-black text-gray-900">+15% đến +20% Biên LN</div>
+ <p class="text-[11px] text-gray-600">Nhờ AI Financial Engine cắt giảm chi phí vốn (COGS) thừa và bao bì lãng phí.</p>
+ </div>
+ <div class="p-4 rounded-2xl border-2 border-purple-200 bg-purple-50/50 space-y-1">
+ <span class="text-[10px] font-black uppercase text-gray-500">Chỉ số 3</span>
+ <h5 class="font-black text-sm text-purple-800">Độ Chính Xác Tài Chính</h5>
+ <div class="text-lg font-black text-gray-900">100% (Sai số 0.00%)</div>
+ <p class="text-[11px] text-gray-600">Thuật toán đối soát tự động Doanh thu, Tiền lời, Chiết khấu hoa hồng tuyệt đối.</p>
+ </div>
+ <div class="p-4 rounded-2xl border-2 border-blue-200 bg-blue-50/50 space-y-1">
+ <span class="text-[10px] font-black uppercase text-gray-500">Chỉ số 4</span>
+ <h5 class="font-black text-sm text-blue-800">Độ Chuẩn Xác AI RAG</h5>
+ <div class="text-lg font-black text-gray-900">&gt; 95% Độ Chính Xác</div>
+ <p class="text-[11px] text-gray-600">AI trích xuất đúng Hợp tác xã, địa chỉ showroom, hotline và căn cứ pháp lý OCOP.</p>
+ </div>
+ <div class="p-4 rounded-2xl border-2 border-rose-200 bg-rose-50/50 space-y-1">
+ <span class="text-[10px] font-black uppercase text-gray-500">Chỉ số 5</span>
+ <h5 class="font-black text-sm text-rose-800">Thời Gian Phản Hồi AI</h5>
+ <div class="text-lg font-black text-gray-900">&lt; 3 Giây / Phản Hồi</div>
+ <p class="text-[11px] text-gray-600">Tối ưu kiến trúc truy vấn đa tầng, giữ chân khách hàng và tăng tỷ lệ chốt đơn.</p>
+ </div>
+ </div>
+ </div>
+ <!-- TAB 3: ĐỘT PHÁ CÔNG NGHỆ -->
+ <div id="tab-diff" class="hidden space-y-4">
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div class="p-4 rounded-2xl border border-emerald-300 bg-white shadow-xs space-y-2">
+ <div class="flex items-center gap-2 font-black text-ocopGreen text-sm">
+ <span class="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center text-ocopGreen"><i class="fa-solid fa-chart-pie"></i></span>
+ <span>1. AI Financial Dashboard Dành Cho Nông Dân</span>
+ </div>
+ <p class="text-xs text-gray-600 leading-relaxed font-medium">
+ Biến các báo cáo tài chính phức tạp thành giao diện đồ họa 3 màu trực quan kèm tính năng <strong>đọc báo cáo bằng giọng nói</strong>, giúp các cô chú nông dân lớn tuổi làm chủ HTX cũng hiểu ngay hôm nay mình thu về bao nhiêu tiền lời ròng.
+ </p>
+ </div>
+ <div class="p-4 rounded-2xl border border-amber-300 bg-white shadow-xs space-y-2">
+ <div class="flex items-center gap-2 font-black text-amber-900 text-sm">
+ <span class="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center text-amber-800"><i class="fa-solid fa-feather-pointed"></i></span>
+ <span>2. Storytelling Văn Hóa & Tự Hào Vùng Miền</span>
+ </div>
+ <p class="text-xs text-gray-600 leading-relaxed font-medium">
+ AI RAG kết hợp với dữ liệu tri thức thổ nhưỡng để tự động dệt nên câu chuyện xuất xứ, độ cao, khí hậu và bàn tay nghệ nhân bản địa, biến một món hàng hóa bình thường thành món quà tặng chứa đựng chiều sâu văn hóa dân tộc.
+ </p>
+ </div>
+ <div class="p-4 rounded-2xl border border-blue-300 bg-white shadow-xs space-y-2">
+ <div class="flex items-center gap-2 font-black text-blue-900 text-sm">
+ <span class="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center text-blue-800"><i class="fa-solid fa-microphone-lines"></i></span>
+ <span>3. Voice-First AI Đa Vùng Miền Bắc - Trung - Nam</span>
+ </div>
+ <p class="text-xs text-gray-600 leading-relaxed font-medium">
+ Hệ thống nhận diện giọng nói tiếng Việt tối ưu cho mọi phương ngữ địa phương. Khách du lịch có thể hỏi bằng giọng miền Nam, miền Trung; cô chú bán hàng miền Tây, Tây Bắc có thể điều khiển hệ thống rảnh tay dễ dàng.
+ </p>
+ </div>
+ <div class="p-4 rounded-2xl border border-purple-300 bg-white shadow-xs space-y-2">
+ <div class="flex items-center gap-2 font-black text-purple-900 text-sm">
+ <span class="w-8 h-8 rounded-xl bg-purple-100 flex items-center justify-center text-purple-800"><i class="fa-solid fa-bolt-lightning"></i></span>
+ <span>4. Onboarding Siêu Tốc "Lightweight MVP"</span>
+ </div>
+ <p class="text-xs text-gray-600 leading-relaxed font-medium">
+ Zero-tech onboarding: Chủ cơ sở chỉ cần chụp ảnh bảng giá và giấy chứng nhận OCOP, AI tự động quét OCR, khởi tạo gian hàng số hóa và trợ lý bán hàng riêng biệt chỉ trong 2-3 giờ, không tốn chi phí thuê IT.
+ </p>
+ </div>
+ </div>
+ </div>
+ <!-- TAB 4: MỞ RỘNG QUY MÔ (SCALABILITY) -->
+ <div id="tab-scale" class="hidden space-y-4">
+ <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-300 space-y-3">
+ <h4 class="font-black text-sm text-amber-950">Lộ Trình Mở Rộng 3 Giai Đoạn (Scalability Roadmap)</h4>
+ <div class="space-y-3 text-xs">
+ <div class="p-3 bg-white rounded-xl border border-amber-200">
+ <span class="font-black text-ocopGreen block mb-1">Giai đoạn 1 (2026): Thí điểm 520+ Điểm bán tại 63 Tỉnh Thành</span>
+ <span class="text-gray-600">Hoàn thiện bộ cỗ máy AI Financial Engine, chuẩn hóa danh bạ 500+ điểm bán và tối ưu tỷ lệ tăng trưởng tiền lời 15-20% cho các HTX thí điểm.</span>
+ </div>
+ <div class="p-3 bg-white rounded-xl border border-amber-200">
+ <span class="font-black text-amber-800 block mb-1">Giai đoạn 2 (Cuối 2026): Mở Rộng Liên Kết Vùng (Smart Regional OCOP Mall)</span>
+ <span class="text-gray-600">Nhân rộng quy mô từ cửa hàng đơn lẻ lên mô hình quản lý tập trung cấp Huyện/Tỉnh, phối hợp với Trung tâm Khuyến nông & Sở NN&PTNT biến nền tảng thành cổng quảng bá nông sản số cấp tỉnh.</span>
+ </div>
+ <div class="p-3 bg-white rounded-xl border border-amber-200">
+ <span class="font-black text-blue-800 block mb-1">Giai đoạn 3 (2027): Đa Kênh (Omnichannel) & Đa Ngôn Ngữ Du Lịch Quốc Tế</span>
+ <span class="text-gray-600">Mở cổng API đồng bộ dữ liệu Doanh thu & Tiền lời với TikTok Shop, Shopee; kích hoạt module dịch thuật thời gian thực (Anh, Hàn, Trung, Nhật) hướng dẫn showroom và thanh toán QR cho du khách quốc tế.</span>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- TAB 5: BẢNG SO SÁNH ĐỐI THỦ -->
+ <div id="tab-compare" class="hidden space-y-4">
+ <div class="overflow-x-auto">
+ <table class="w-full text-left text-xs">
+ <thead class="bg-gray-100 text-gray-900 font-black uppercase text-[10px]">
+ <tr>
+ <th class="py-2.5 px-3">Tiêu Chí Đánh Giá</th>
+ <th class="py-2.5 px-3 bg-emerald-100 text-ocopGreen">OCOP Sales (Đề Án)</th>
+ <th class="py-2.5 px-3">Sàn TMĐT Thông Thường (Shopee/Lazada)</th>
+ <th class="py-2.5 px-3">Phần Mềm Kế Toán Truyền Thống</th>
+ </tr>
+ </thead>
+ <tbody class="divide-y divide-gray-100 font-medium">
+ <tr>
+ <td class="py-3 px-3 font-bold">Mô hình hoạt động</td>
+ <td class="py-3 px-3 font-black text-ocopGreen bg-emerald-50/50">Hệ sinh thái B2B2C / O2O kết nối điểm bán thực tế</td>
+ <td class="py-3 px-3 text-gray-500">Chợ B2C online thuần túy, cạnh tranh phá giá</td>
+ <td class="py-3 px-3 text-gray-500">Phần mềm đơn lẻ, không có kênh kết nối khách</td>
+ </tr>
+ <tr>
+ <td class="py-3 px-3 font-bold">Quản trị tiền lời & COGS</td>
+ <td class="py-3 px-3 font-black text-ocopGreen bg-emerald-50/50">AI tự động bóc tách, tối ưu tăng tiền lời 15-20%</td>
+ <td class="py-3 px-3 text-gray-500">Không có (người bán tự chịu chi phí và phá giá)</td>
+ <td class="py-3 px-3 text-gray-500">Phức tạp, đòi hỏi kế toán viên có bằng cấp</td>
+ </tr>
+ <tr>
+ <td class="py-3 px-3 font-bold">Thân thiện với nông dân</td>
+ <td class="py-3 px-3 font-black text-ocopGreen bg-emerald-50/50">Voice-first AI & Báo cáo giọng nói bình dân</td>
+ <td class="py-3 px-3 text-gray-500">Giao diện phức tạp, nhiều thao tác kỹ thuật</td>
+ <td class="py-3 px-3 text-gray-500">Nông dân không thể tự nhập chứng từ định khoản</td>
+ </tr>
+ <tr>
+ <td class="py-3 px-3 font-bold">Thời gian Onboarding</td>
+ <td class="py-3 px-3 font-black text-ocopGreen bg-emerald-50/50">2-3 giờ (Chỉ cần chụp ảnh menu & chứng nhận)</td>
+ <td class="py-3 px-3 text-gray-500">Vài ngày kiểm duyệt gian hàng và kho bãi</td>
+ <td class="py-3 px-3 text-gray-500">Vài tuần cài đặt và đào tạo nhân sự</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ <!-- Footer Modal -->
+ <div class="p-4 rounded-b-3xl flex flex-wrap items-center justify-between gap-3 text-xs" style="background: #062017 !important; border-top: 1px solid rgba(251, 191, 36, 0.3) !important; color: #fde68a !important;">
+ <span class="font-medium" style="color: #fde68a !important;">Hồ sơ dự thi: <strong style="color: #fde047 !important;">AI Digital Business Challenge 2026</strong> • Mã số đề án: <strong style="color: #fde047 !important;">OCOP-AI-2026</strong></span>
+ <button type="button" onclick="closeChallengeProposalModal()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black shadow-md transition cursor-pointer">Đóng Hồ Sơ</button>
+ </div>
+ </div>
+ </div>
+ <!-- 10. B2B2C O2O DISPATCH ACTION BRIDGE -->
+ <div id="cart-drawer" class="hidden" style="display:none !important;" aria-hidden="true">
+ <div id="cart-items" class="hidden"></div>
+ <div id="cart-voucher-row" class="hidden"><span id="cart-voucher-label"></span><span id="cart-voucher-discount"></span></div>
+ <span id="cart-cogs">0 ₫</span>
+ <span id="cart-opex">0 ₫</span>
+ <span id="cart-subtotal">0 ₫</span>
+ <span id="cart-total">0 ₫</span>
+ <span id="i18n-cart-subtotal">Tổng doanh thu (Gross Revenue)</span>
+ <span id="i18n-cart-cogs-label">Giá vốn hàng bán (COGS)</span>
+ <span id="i18n-cart-chm-label">Chi phí vận hành (OPEX)</span>
+ <span id="i18n-cart-total">Tiền lời (Net Profit)</span>
+ <span id="i18n-cart-empty">Bảng mô phỏng</span>
+ <button onclick="activateO2ODispatch()" class="hidden">Xuất Báo Cáo Tài Chính AI & Đối Soát Dòng Tiền</button>
+ </div>
+ <!-- 10.2 MODAL ĐẶT MUA ONLINE & GIAO HÀNG TẬN NƠI (THU PHÍ NỀN TẢNG 10.000Đ/ĐƠN CHO CHỦ WEB) -->
+ <div id="online-order-modal" class="fixed inset-0 z-[99999] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in" onclick="if(event.target === this) closeOnlineOrderModal()">
+ <div class="bg-white border-2 border-sky-400 rounded-3xl max-w-xl w-full shadow-2xl overflow-hidden text-slate-800 animate-pop-in flex flex-col" style="max-height: calc(100dvh - 2rem); overflow-y: auto;">
+ <!-- Header Modal -->
+ <div class="bg-gradient-to-r from-sky-700 via-sky-800 to-slate-900 text-white p-4 sm:p-5 flex items-center justify-between border-b border-sky-300/40 relative">
+ <div class="flex items-center space-x-3">
+ <span class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md text-lg">
+ <i class="fa-solid fa-truck-fast"></i>
+ </span>
+ <div>
+ <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-black/40 px-2.5 py-0.5 rounded-full border border-amber-400/30 mb-0.5">
+ <i class="fa-solid fa-certificate"></i>
+ <span>O2O E-Commerce • Ship Tận Nơi</span>
+ </div>
+ <h3 class="font-black text-base sm:text-lg text-white tracking-wide">
+ 🚚 ĐẶT MUA ONLINE & GIAO HÀNG TẬN NƠI
+ </h3>
+ </div>
+ </div>
+ <button type="button" onclick="closeOnlineOrderModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm font-bold cursor-pointer transition" title="Đóng">
+ <i class="fa-solid fa-xmark"></i>
+ </button>
+ </div>
+ <!-- Body Modal -->
+ <div class="p-4 sm:p-6 space-y-4 text-xs">
+ <!-- 1. Thông Tin Sản Phẩm & Cửa Hàng Gửi Đi -->
+ <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 flex items-start gap-3.5">
+ <img id="order-prod-img" src="" alt="Sản phẩm" class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl border border-sky-300 shrink-0 bg-white shadow-xs">
+ <div class="flex-1 min-w-0 space-y-1">
+ <span id="order-prod-stars" class="inline-block text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300"></span>
+ <h4 id="order-prod-name" class="font-black text-sm text-slate-900 leading-snug line-clamp-2"></h4>
+ <div class="text-sm font-black text-sky-700" id="order-prod-price"></div>
+ 
+ <!-- Cửa Hàng / HTX Xuất Hàng -->
+ <div class="mt-2 pt-2 border-t border-sky-200/80 text-[11px] space-y-0.5">
+ <div class="font-bold text-slate-800 flex items-center gap-1">
+ <i class="fa-solid fa-store text-sky-600 text-[10px]"></i>
+ <span>Cửa hàng gửi đi:</span>
+ <span id="order-store-name" class="text-sky-700 font-extrabold truncate"></span>
+ </div>
+ <div class="text-slate-600 flex items-start gap-1 text-[10.5px]">
+ <i class="fa-solid fa-location-dot text-slate-400 mt-0.5 text-[9px]"></i>
+ <span id="order-store-address" class="line-clamp-1"></span>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- 2. Chọn Số Lượng -->
+ <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
+ <span class="font-bold text-slate-700">Số lượng đặt mua:</span>
+ <div class="flex items-center gap-2">
+ <button type="button" onclick="changeOrderQty(-1)" class="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer shadow-2xs transition active:scale-95">-</button>
+ <input type="number" id="order-qty-input" value="1" min="1" max="99" onchange="updateOrderCalculations()" class="w-14 text-center py-1.5 border border-slate-300 rounded-lg font-black text-sm text-slate-900 bg-white">
+ <button type="button" onclick="changeOrderQty(1)" class="w-8 h-8 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-black text-sm flex items-center justify-center cursor-pointer shadow-2xs transition active:scale-95">+</button>
+ </div>
+ </div>
+ <!-- 3. Form Thông Tin Nhận Hàng -->
+ <div class="space-y-3 pt-1">
+ <h5 class="font-black text-slate-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
+ <i class="fa-solid fa-user text-sky-600"></i> Thông Tin Nhận Hàng:
+ </h5>
+ <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+ <div>
+ <label class="block text-[11px] font-bold text-slate-600 mb-1">Họ và tên người nhận <span class="text-rose-600">*</span></label>
+ <input type="text" id="order-cust-name" placeholder="Ví dụ: Nguyễn Văn An" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ </div>
+ <div>
+ <label class="block text-[11px] font-bold text-slate-600 mb-1">Số điện thoại nhận hàng <span class="text-rose-600">*</span></label>
+ <input type="tel" id="order-cust-phone" inputmode="numeric" pattern="[0-9]{10,11}" maxlength="11" autocomplete="tel" placeholder="Ví dụ: 0912345678" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateOrderPhone(this);" onkeypress="return /[0-9]/.test(event.key)" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+<p id="order-phone-error" class="hidden text-[11px] text-rose-600 font-bold mt-1">⚠️ Số điện thoại chỉ được chứa chữ số (bắt đầu bằng số 0, cấm nhập chữ cái).</p>
+ </div>
+ </div>
+ <div>
+ <label class="block text-[11px] font-bold text-slate-600 mb-1">Địa chỉ giao hàng chi tiết <span class="text-rose-600">*</span></label>
+ <input type="text" id="order-cust-address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
+ </div>
+ <div>
+ <label class="block text-[11px] font-bold text-slate-600 mb-1">Ghi chú đơn hàng (Tùy chọn)</label>
+ <input type="text" id="order-cust-note" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi đến..." class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-700 focus:border-sky-500 focus:outline-none bg-white">
+ </div>
+                    <!-- Yêu cầu xuất hóa đơn VAT điện tử (Ưu điểm B2B từ EGA AutoCare) -->
+                    <div class="pt-2 border-t border-slate-200">
+                        <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800 select-none">
+                            <input type="checkbox" id="order-vat-toggle" onchange="document.getElementById('order-vat-fields').classList.toggle('hidden', !this.checked)" class="accent-emerald-600 w-4 h-4 rounded">
+                            <span>🏢 Xuất hóa đơn VAT cho Doanh nghiệp / Tổ chức</span>
+                        </label>
+                        <div id="order-vat-fields" class="hidden mt-2 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
+                            <div>
+                                <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Tên công ty / Doanh nghiệp:</label>
+                                <input type="text" id="order-vat-company" placeholder="Công ty TNHH / Cổ phần..." class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Mã số thuế (MST):</label>
+                                    <input type="text" id="order-vat-taxid" placeholder="VD: 0101234567" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Email nhận hóa đơn:</label>
+                                    <input type="email" id="order-vat-email" placeholder="ketoan@company.com" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
                                 </div>
                             </div>
-                            <div class="text-[10px] text-zinc-400 italic text-center pt-0.5 flex items-center justify-center gap-1">
-                                <span>⚡</span>
-                                <span>Bấm vào tài khoản bất kỳ để tự động điền & đăng nhập 1 chạm</span>
+                            <div>
+                                <label class="block text-[10.5px] font-bold text-slate-600 mb-0.5">Địa chỉ theo ĐKKD:</label>
+                                <input type="text" id="order-vat-address" placeholder="Địa chỉ ghi trên giấy phép ĐKKD..." class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs bg-white">
                             </div>
                         </div>
+                    </div>
+ </div>
+ <!-- 3.5. Nhập Mã Giảm Giá / Voucher OCOP (Shopee Style) -->
+                    <div class="p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-[11px] font-black text-amber-900 uppercase tracking-wide flex items-center gap-1.5">
+                                <i class="fa-solid fa-ticket text-amber-600"></i> Mã Giảm Giá / Voucher OCOP:
+                            </label>
+                            <span class="text-[10px] text-amber-800 font-bold bg-amber-200/80 px-2 py-0.5 rounded-md">Voucher Ưu Đãi</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="order-voucher-input" placeholder="Nhập mã: OCOP2026, FREESHIP, GIAM20K..." class="flex-1 px-3 py-2 border border-amber-300 rounded-xl text-xs font-bold text-slate-900 uppercase bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <button type="button" onclick="applyOrderVoucher()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs shadow-xs transition active:scale-95 cursor-pointer whitespace-nowrap">Áp Dụng</button>
+                        </div>
+                        <div id="order-voucher-status" class="hidden text-[11px] font-bold"></div>
+                        <div class="flex flex-wrap items-center gap-1.5 pt-1">
+                            <span class="text-[10.5px] text-slate-500 font-medium">Gợi ý mã:</span>
+                            <button type="button" onclick="document.getElementById('order-voucher-input').value='OCOP2026'; applyOrderVoucher();" class="px-2 py-0.5 rounded-md bg-white border border-amber-300 text-amber-800 text-[10.5px] font-bold hover:bg-amber-100 cursor-pointer transition">OCOP2026 (-50k)</button>
+                            <button type="button" onclick="document.getElementById('order-voucher-input').value='FREESHIP'; applyOrderVoucher();" class="px-2 py-0.5 rounded-md bg-white border border-amber-300 text-amber-800 text-[10.5px] font-bold hover:bg-amber-100 cursor-pointer transition">FREESHIP (-25k)</button>
+                            <button type="button" onclick="document.getElementById('order-voucher-input').value='GIAM20K'; applyOrderVoucher();" class="px-2 py-0.5 rounded-md bg-white border border-amber-300 text-amber-800 text-[10.5px] font-bold hover:bg-amber-100 cursor-pointer transition">GIAM20K (-20k)</button>
+                        </div>
+                    </div>
+                    <!-- 4. Phương Thức Thanh Toán (BIDV 8808661371, MoMo 0971280030, Ship COD) -->
+ <div class="space-y-2.5 pt-1">
+ <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wide">Chọn hình thức thanh toán:</label>
+ <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+ <label id="payment-label-bidv" onclick="switchOrderPaymentMethod('bidv')" class="flex items-center gap-2 p-2.5 rounded-xl border-2 border-sky-500 bg-sky-50/70 cursor-pointer font-black text-slate-900 transition">
+ <input type="radio" name="order-payment" value="bidv" checked onchange="switchOrderPaymentMethod('bidv')" class="accent-sky-600">
+ <span class="truncate">🏦 CK BIDV (VietQR)</span>
+ </label>
+ <label id="payment-label-momo" onclick="switchOrderPaymentMethod('momo')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-pink-400 transition">
+ <input type="radio" name="order-payment" value="momo" onchange="switchOrderPaymentMethod('momo')" class="accent-pink-600">
+ <span class="truncate">📱 Ví MoMo (0971280030)</span>
+ </label>
+ <label id="payment-label-cod" onclick="switchOrderPaymentMethod('cod')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-300 bg-white cursor-pointer font-bold text-slate-700 hover:border-emerald-400 transition">
+ <input type="radio" name="order-payment" value="cod" onchange="switchOrderPaymentMethod('cod')" class="accent-sky-600">
+ <span class="truncate">🚚 Ship COD Tận Nơi</span>
+ </label>
+ </div>
+                    <div id="panel-payment-bidv" class="p-3.5 rounded-2xl bg-gradient-to-br from-sky-50 via-white to-blue-50 border-2 border-sky-300 space-y-2.5 shadow-2xs">
+                        <div class="flex flex-col sm:flex-row items-center gap-3">
+                            <img id="bidv-vietqr-img" src="https://img.vietqr.io/image/BIDV-8808661371-compact2.png?amount=0&addInfo=OCOP&accountName=HOANG%20NGUYEN%20THANH%20BINH" alt="Mã VietQR BIDV" class="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border-2 border-sky-400 p-1 bg-white shadow-sm shrink-0 object-contain">
+                            <div class="space-y-1.5 text-[11px] text-slate-800 flex-1 min-w-0">
+                                <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#0284C7] text-white font-black text-[10px] mb-1">
+                                    <span>🏦 BIDV - CN Đông Đồng Nai</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">Ngân hàng:</span>
+                                    <span class="font-bold text-slate-900 text-right">BIDV (Ngân hàng TMCP Đầu tư và Phát triển Việt Nam) - CN Đông Đồng Nai</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">Số tài khoản:</span>
+                                    <div class="flex items-center gap-1">
+                                        <strong class="font-mono text-sm text-[#0284C7] font-black">8808661371</strong>
+                                        <button type="button" onclick="copyToClipboard('8808661371', 'Đã sao chép STK BIDV 8808661371!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">Sao chép</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">Chủ tài khoản:</span>
+                                    <strong class="font-bold text-slate-900 uppercase">HOANG NGUYEN THANH BINH</strong>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">Số tiền:</span>
+                                    <div class="flex items-center gap-1">
+                                        <strong id="bidv-transfer-amount" class="text-rose-600 font-black text-sm">0 ₫</strong>
+                                        <button type="button" onclick="copyToClipboard((document.getElementById('bidv-transfer-amount')?.textContent||'0').replace(/\D/g,''), 'Đã sao chép số tiền!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">Sao chép</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">Nội dung CK:</span>
+                                    <div class="flex items-center gap-1">
+                                        <strong id="bidv-transfer-memo" class="font-mono text-amber-700 font-black bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">OCOP-ORD</strong>
+                                        <button type="button" onclick="copyToClipboard(document.getElementById('bidv-transfer-memo')?.textContent||'OCOP', 'Đã sao chép nội dung chuyển khoản!')" class="px-2 py-0.5 rounded bg-sky-100 hover:bg-sky-200 text-sky-800 text-[10px] font-bold cursor-pointer transition">Sao chép</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-slate-500 italic text-center border-t border-sky-100 pt-1.5">
+                            Quét mã VietQR trên app ngân hàng để chuyển khoản nhanh 24/7, tự động điền đúng STK và nội dung.
+                        </p>
+                    </div>
+                    <!-- Panel 2: MoMo Box -->
+                    <div id="panel-payment-momo" class="hidden p-3.5 rounded-2xl bg-gradient-to-br from-pink-50 via-white to-rose-50 border-2 border-pink-300 space-y-2.5 shadow-2xs">
+                        <div class="flex flex-col sm:flex-row items-center gap-3">
+                            <img id="order-momo-qr" src="" alt="Mã MoMo" class="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border-2 border-pink-400 p-1 bg-white shadow-sm shrink-0 object-contain">
+                            <div class="space-y-1 text-[11px] text-slate-800 flex-1 min-w-0">
+                                <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#D82D8B] text-white font-black text-[10px] mb-1">
+                                    <span>📱 Ví Điện Tử MoMo</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">SĐT nhận MoMo:</span>
+                                    <div class="flex items-center gap-1">
+                                        <strong class="font-mono text-sm text-[#D82D8B] font-black">0971280030</strong>
+                                        <button type="button" onclick="copyToClipboard('0971280030', 'Đã sao chép SĐT MoMo 0971280030!')" class="px-2 py-0.5 rounded bg-pink-100 hover:bg-pink-200 text-pink-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép SĐT</button>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between gap-1">
+                                    <span class="text-slate-500">Số tiền chuyển:</span>
+                                    <strong id="momo-transfer-amount" class="text-rose-600 font-black text-sm">0 ₫</strong>
+                                </div>
+                                <div class="flex items-center justify-between gap-1 pt-1 border-t border-pink-200">
+                                    <span class="text-slate-500">Lời nhắn chuyển:</span>
+                                    <div class="flex items-center gap-1">
+                                        <strong id="momo-transfer-memo" class="font-mono text-xs text-pink-800 font-black">OCOP 8829</strong>
+                                        <button type="button" onclick="copyToClipboard(document.getElementById('momo-transfer-memo').textContent, 'Đã sao chép lời nhắn chuyển tiền!')" class="px-2 py-0.5 rounded bg-pink-100 hover:bg-pink-200 text-pink-800 text-[10px] font-bold cursor-pointer transition">📋 Sao chép</button>
+                                    </div>
+                                </div>
+                                <p class="text-[9.5px] text-slate-500 italic pt-0.5">*(Quét QR bằng App MoMo hoặc chuyển tiền theo SĐT 0971280030)*</p>
+                            </div>
+                        </div>
+                    </div>
+ <!-- Panel 3: COD Box -->
+ <div id="panel-payment-cod" class="hidden p-3.5 rounded-2xl bg-slate-50 border border-slate-300 space-y-1.5">
+ <div class="flex items-center gap-2 font-black text-slate-900 text-xs">
+ <i class="fa-solid fa-box-open text-sky-600 text-sm"></i>
+ <span>Thanh toán trực tiếp cho Shipper khi nhận hàng (Ship COD)</span>
+ </div>
+ <p class="text-[11px] text-slate-600 leading-relaxed">
+ Bưu tá sẽ giao hàng đến tận tay bạn. Bạn được kiểm tra kiện hàng niêm phong và thanh toán tổng tiền <strong id="cod-transfer-amount" class="text-rose-600 font-black">0 ₫</strong> (Đã bao gồm tiền hàng, 25.000đ phí ship và 10.000đ phí dịch vụ nền tảng Chủ Web).
+ </p>
+ </div>
+ </div>
+ <!-- 5. Bảng Tạm Tính Chi Phí Minh Bạch -->
+ <div class="p-4 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-2 text-xs">
+ <div class="flex items-center justify-between text-slate-700">
+ <span>Tiền hàng gốc (Trả về HTX/Cửa hàng - <span id="calc-qty-display">1</span> sản phẩm):</span>
+ <span class="font-bold text-slate-900" id="calc-goods-total">0 ₫</span>
+ </div>
+ <div id="calc-voucher-row" class="hidden flex items-center justify-between text-emerald-800 font-bold bg-emerald-50 p-2.5 rounded-xl border border-emerald-300">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-tag text-emerald-600"></i>
+                            <span>Giảm giá Voucher OCOP (<strong id="calc-voucher-code" class="text-emerald-900 font-black"></strong>):</span>
+                            <button type="button" onclick="removeOrderVoucher()" class="text-rose-600 hover:text-rose-800 underline text-[10.5px] ml-1 cursor-pointer font-bold">(Hủy mã)</button>
+                        </div>
+                        <span id="calc-voucher-discount" class="text-sm font-black text-emerald-700">-0 ₫</span>
+                    </div>
+                    <div class="flex items-center justify-between text-slate-700">
+                        <span>Phí vận chuyển tiêu chuẩn (Ship tận nơi):</span>
+ <span class="font-bold text-slate-800">25.000 ₫</span>
+ </div>
+ <div class="flex items-center justify-between text-sky-900 font-bold bg-sky-100/90 p-2.5 rounded-xl border border-sky-300">
+ <div>
+ <div class="flex items-center gap-1.5 text-sky-900 font-black">
+ <i class="fa-solid fa-bolt text-amber-500"></i>
+ <span>Phí dịch vụ nền tảng & Bảo đảm OCOP (Chủ Web):</span>
+ </div>
+ <div class="text-[10px] text-sky-700 font-normal">Phí kết nối & kiểm định đơn hàng O2O của nền tảng</div>
+ </div>
+ <span class="text-sm font-black text-sky-700">+10.000 ₫</span>
+ </div>
+ <div class="flex items-center justify-between pt-2.5 border-t border-sky-200">
+ <span class="text-sm font-black text-slate-900">💰 TỔNG THANH TOÁN:</span>
+ <span class="text-lg font-black text-rose-600" id="calc-grand-total">0 ₫</span>
+ </div>
+ </div>
+ <!-- Nút Xác Nhận Đặt Hàng -->
+ <button type="button" onclick="submitOnlineOrder()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-700 to-teal-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer transition hover:scale-[1.01] active:scale-95">
+ <i class="fa-solid fa-circle-check text-lg"></i>
+ <span>✅ Xác Nhận Đặt Hàng Online</span>
+ </button>
+ </div>
+ </div>
+ </div>
+ <!-- 10.3 MODAL XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG -->
+ <div id="order-success-modal" class="fixed inset-0 z-[99999] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-sm animate-fade-in" onclick="if(event.target === this) closeOrderSuccessModal()">
+ <div class="bg-white border-2 border-emerald-400 rounded-3xl max-w-md w-full shadow-2xl p-6 text-slate-800 animate-pop-in space-y-4 text-center relative">
+ <button type="button" onclick="closeOrderSuccessModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-bold absolute top-4 right-4 cursor-pointer transition">✖</button>
+ 
+ <div class="w-16 h-16 rounded-3xl bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center text-3xl shadow-inner">
+ <i class="fa-solid fa-circle-check"></i>
+ </div>
+ 
+ <div class="space-y-1">
+ <h3 class="text-xl font-black text-slate-900">🎉 ĐẶT HÀNG THÀNH CÔNG!</h3>
+ <p class="text-xs text-slate-500">Mã vận đơn O2O: <strong id="success-order-id" class="text-sky-700 font-mono text-sm">#OCOP-8829</strong></p>
+ </div>
+ <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-left text-xs space-y-2">
+ <div class="flex items-center justify-between">
+ <span class="text-slate-500">Sản phẩm:</span>
+ <span id="success-order-product" class="font-bold text-slate-900 text-right truncate max-w-[200px]"></span>
+ </div>
+ <div class="flex items-center justify-between">
+ <span class="text-slate-500">Nơi đóng gói:</span>
+ <span id="success-order-store" class="font-bold text-sky-700 text-right truncate max-w-[200px]"></span>
+ </div>
+ <div class="flex items-start justify-between">
+ <span class="text-slate-500 shrink-0">Địa chỉ ship:</span>
+ <span id="success-order-address" class="font-semibold text-slate-800 text-right text-[11px] line-clamp-2 pl-2"></span>
+ </div>
+ <div class="flex items-center justify-between pt-2 border-t border-slate-200 font-bold">
+ <span class="text-slate-900">Tổng thu khách:</span>
+ <span id="success-order-total" class="text-sm font-black text-rose-600"></span>
+ </div>
+ <div class="text-[10px] text-emerald-700 italic text-center pt-1" id="success-order-fee-note">
+ (Đã bao gồm 10.000đ phí dịch vụ nền tảng & đảm bảo OCOP)
+ </div>
+ </div>
+ <div class="flex flex-col gap-2 pt-1">
+ <button type="button" id="btn-ordersuccess-admin" data-admin-only="true" onclick="closeOrderSuccessModal(); promptAdminPinModal();" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-500 hover:to-sky-600 text-white font-bold text-xs shadow-md flex items-center justify-center gap-1.5 cursor-pointer" style="display: none !important;">
+ <i class="fa-solid fa-lock text-amber-300"></i>
+ <span>Xem Bảng Quản Trị Doanh Thu (Quản Trị Viên)</span>
+ </button>
+ <button type="button" onclick="closeOrderSuccessModal()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer">
+ 🛍️ Tiếp Tục Mua Sắm Đặc Sản
+ </button>
+ </div>
+ </div>
+ </div>
+ <!-- 10.4 MODAL TÀI KHOẢN KHÁCH HÀNG (ĐĂNG NHẬP / ĐĂNG KÝ / ĐỔI MẬT KHẨU / ĐƠN HÀNG) -->
+ <div id="customer-auth-modal" class="fixed inset-0 z-[100005] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-fade-in" onclick="if(event.target === this) closeCustomerAuthModal()">
+ <div class="bg-white border-2 border-sky-400 rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden text-slate-800 animate-pop-in flex flex-col" style="max-height: calc(100dvh - 2rem); overflow-y: auto;">
+ <!-- Header -->
+ <div class="bg-gradient-to-r from-sky-700 via-sky-800 to-slate-900 text-white p-4 sm:p-5 flex items-center justify-between border-b border-sky-300/40 relative">
+ <div class="flex items-center space-x-3">
+ <span class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md text-lg">
+ <i class="fa-solid fa-user-shield"></i>
+ </span>
+ <div>
+ <div class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-amber-300 bg-black/40 px-2.5 py-0.5 rounded-full border border-amber-400/30 mb-0.5">
+ <i class="fa-solid fa-id-card"></i>
+ <span>Cổng Khách Hàng OCOP</span>
+ </div>
+ <h3 class="font-black text-base sm:text-lg text-white tracking-wide" id="customer-modal-title">
+ 👤 QUẢN LÝ TÀI KHOẢN KHÁCH HÀNG
+ </h3>
+ </div>
+ </div>
+ <button type="button" onclick="closeCustomerAuthModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-sm font-bold cursor-pointer transition" title="Đóng">
+ <i class="fa-solid fa-xmark"></i>
+ </button>
+ </div>
+ <!-- Tabs Navigation -->
+ <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-black">
+ <button type="button" id="tab-btn-cust-login" onclick="switchCustomerAuthTab('login')" class="flex-1 py-3 px-2 text-center transition border-b-2 border-sky-600 text-sky-700 bg-white cursor-pointer">
+ 🔑 Đăng Nhập
+ </button>
+ <button type="button" id="tab-btn-cust-register" onclick="switchCustomerAuthTab('register')" class="flex-1 py-3 px-2 text-center transition border-b-2 border-transparent text-slate-500 hover:text-slate-800 cursor-pointer">
+ 📝 Đăng Ký
+ </button>
+ </div>
+ <!-- Body Modal -->
+ <div class="p-5 space-y-4 text-xs">
+ <!-- Alert banner -->
+ <div id="cust-auth-alert" class="hidden p-3 rounded-xl text-xs font-bold items-center gap-2"></div>
+ <!-- TAB 1: ĐĂNG NHẬP -->
+ <div id="cust-pane-login" class="space-y-3.5">
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Tài khoản (Tên đăng nhập hoặc Số điện thoại) <span class="text-rose-600">*</span></label>
  <input type="text" id="cust-login-user" placeholder="Ví dụ: khachhang hoặc 0912345678" class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
@@ -4321,9 +5362,11 @@
  </div>
             <div class="pt-6 border-t border-sky-200 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px] gap-2">
                 <p>© 2026 OCOP Sales Copilot. All rights reserved.</p>
-                <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+                <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-2">
                     <a href="terms/" class="hover:text-sky-700 font-medium">Thông tin đặt hàng</a>
+                    <span aria-hidden="true">·</span>
                     <span data-public-info-links><a href="about/" class="hover:text-sky-700 font-medium">Giới thiệu</a> · <a href="contact/" class="hover:text-sky-700 font-medium">Liên hệ</a></span>
+                    <span aria-hidden="true">·</span>
                     <a href="privacy/" class="hover:text-sky-700 font-medium">Chính sách bảo mật</a>
                 </div>
             </div>
@@ -4332,11 +5375,14 @@
  <!-- ============================================================== -->
  <!-- JAVASCRIPT XỬ LÝ HOÀN CHỈNH TOÀN BỘ CHỨC NĂNG WEBSITE -->
  <!-- ============================================================== -->
- <script src="product-codes.js?v=804e37553039"></script>
-<script src="product-search.js?v=e1e340296562"></script>
+ <script src="ui-translations.js?v=6785f42c3d47"></script>
+ <script src="sales-translations.js?v=311929c34e76"></script>
+ <script src="site-language.js?v=ad9c1b68bc99"></script>
+ <script src="product-codes.js?v=56b4fc46df38"></script>
+<script src="product-search.js?v=48ab84c2fb78"></script>
 <script src="data.js?v=bac3f355ae37"></script>
  <script src="ocop-stores.js?v=e967d59dd2fa"></script>
- <script src="ai-business-knowledge.js?v=1a8ddae50121"></script>
+ <script src="ai-business-knowledge.js?v=08196d7c741a"></script>
  <script src="assets/vendor/leaflet/leaflet.js?v=3104b526504d"></script>
  <script>
         // -------------------------------------------------------------
@@ -4394,6 +5440,8 @@
         let currentCategory = 'all';
         function getSavedLanguage() {
             try {
+                const requested = new URLSearchParams(window.location.search).get('lang');
+                if (['vi', 'en', 'zh', 'ko', 'ja'].includes(requested)) return requested;
                 const saved = localStorage.getItem('ocop-language');
                 return ['vi', 'en', 'zh', 'ko', 'ja'].includes(saved) ? saved : 'vi';
             } catch (error) {
@@ -5464,7 +6512,7 @@
                         <div class="product-detail-row w-full mb-1.5">
                             <button type="button" onclick="openQuickView(${p.id})" class="btn-card-details lofi-btn-detail w-full flex items-center justify-center gap-1.5 py-1 px-2 rounded-lg font-bold text-xs bg-white hover:bg-sky-50 text-sky-900 border border-sky-300 transition-all shadow-2xs cursor-pointer h-[30px]" style="background: #FFFFFF !important; color: #0284C7 !important; border: 1.5px solid #BAE6FD !important;" title="Xem chi tiết sản phẩm, câu chuyện OCOP & showroom">
                                 <i class="fa-solid fa-circle-info text-sky-600 text-xs"></i>
-                                <span>ℹ️ Chi tiết</span>
+                                <span>Chi tiết</span>
                             </button>
                         </div>
                         <!-- 6. HÀNG 3 NÚT NẰM NGANG: MUA NGAY, GIỎ HÀNG, YÊU THÍCH -->
@@ -8805,6 +9853,10 @@
             };
             const messageText = text || (fallbackMsgMap[currentLanguage] || fallbackMsgMap.vi);
             if ((!text && !messageImages.length) || isAIRequestPending) return;
+            const shoppingIntent = AIShopping.resolve([...aiConversationHistory, { role: 'user', text: messageText }], products);
+            const localImageMatchPromise = messageImages.length && !shoppingIntent.isComplaint && !shoppingIntent.isCSKH
+                ? window.OCOPClientImageMatch?.match(messageImages.map(image => image.file), products, requestLanguage).catch(() => null)
+                : Promise.resolve(null);
             window.chatDictation?.stop(true);
             isAIRequestPending = true;
             const sendButton = document.getElementById('chat-send-button');
@@ -8843,11 +9895,11 @@
 
             // Giả lập AI đang gõ
             const checkingImgMap = {
-                vi: 'Đang kiểm tra ảnh và đối chiếu danh mục trước khi trả lời...',
-                en: 'Checking the image and matching the catalogue before replying...',
-                zh: '正在比对图像并核验特产名录…',
-                ko: '이미지를 확인하고 공인 카탈로그와 대조 중…',
-                ja: '画像を確認しカタログと照合中…'
+                vi: 'Đang kiểm tra ảnh...',
+                en: 'Checking image...',
+                zh: '正在检查图片…',
+                ko: '이미지 확인 중…',
+                ja: '画像を確認中…'
             };
             const findingOptMap = {
                 vi: 'Đang tìm lựa chọn phù hợp...',
@@ -8870,10 +9922,17 @@
                 </div>
             `);
             messagesEl.scrollTop = messagesEl.scrollHeight;
-            const chatSignal=AbortSignal.timeout(Math.max(1,30000-(Date.now()-sendStartedAt)));
+            const chatSignal=AbortSignal.timeout(Math.max(1,(messageImages.length?18000:25000)-(Date.now()-sendStartedAt)));
             try {
                 const hasSession=Boolean(window.OCOPAuth?.token());
-                if(messageImages.length)await uploadPendingAIChatImages(messageImages,chatSignal);
+                let result = messageImages.length && localImageMatchPromise
+                    ? await Promise.race([localImageMatchPromise, new Promise(resolve => setTimeout(() => resolve(null), 1800))])
+                    : null;
+                let uploadSucceeded = true;
+                if(messageImages.length && !result){
+                    try { await uploadPendingAIChatImages(messageImages,chatSignal); }
+                    catch(error){ uploadSucceeded=false; console.warn('Image upload unavailable; checking local image index:',error); }
+                }
                 if(!sameCustomer())return;
                 // Persist a small preview in background without delaying request
                 messageImages.forEach(image => {
@@ -8881,10 +9940,9 @@
                         if (image.sentPreviewElement) image.sentPreviewElement.src = url;
                     }).catch(() => {});
                 });
-                let result = null;
                 if(!hasSession&&!messageImages.length)result=generateResilientAIResponse(messageText,requestLanguage,null,false);
                 try {
-                    if(!result){
+                    if(!result&&uploadSucceeded){
                     const response = await window.OCOPAuth.fetch(getAIEndpoint('/api/ai/chat'), {
                         method:'POST',headers:{'Content-Type':'application/json'},
                         signal: chatSignal,
@@ -8899,6 +9957,10 @@
                 } catch (netErr) {
                     console.warn('API /api/ai/chat network timeout or unavailable, switching to resilient AI Dispatch:', netErr);
                 }
+                if(messageImages.length && (!result || result.imageMatchStatus==='unknown')){
+                    const localResult=await localImageMatchPromise;
+                    if(localResult)result=localResult;
+                }
                 if (!result || (!result.message && !result.text_response)) {
                     result = generateResilientAIResponse(messageText, requestLanguage, result, messageImages.length > 0);
                 }
@@ -8906,7 +9968,6 @@
                 result.productIds = result.suggested_products || result.productIds || [];
 
                 if(!sameCustomer())return;
-                const shoppingIntent = AIShopping.resolve([...aiConversationHistory, { role: 'user', text: messageText }], products);
                 const shoppingQuery = AIShopping.normalize(messageText);
                 if ((result.integrations?.gemini || result.integrations?.openai) && !messageImages.length && result.understandingStatus !== 'needs_clarification' && !shoppingIntent.isComplaint && !shoppingIntent.isCSKH && !shoppingIntent.isShipping && !shoppingIntent.isUsage && !shoppingIntent.isOcopKnowledge && shoppingIntent.maxPrice && (shoppingIntent.isCombo || shoppingIntent.isGift)) {
                     if (!('combo' in result)) {
@@ -9446,20 +10507,10 @@
             );
         }
         function renderAIProductRecommendations(recommendations, title, note) {
-            const pinBtnText = {
-                vi: 'Ghim vị trí điểm bán',
-                en: 'Pin Showroom Location',
-                zh: '固定展厅位置',
-                ko: '쇼룸 위치 고정',
-                ja: 'ショールーム位置を固定'
+            const addCartText = {
+                vi: 'Thêm vào giỏ hàng', en: 'Add to cart', zh: '加入购物车', ko: '장바구니에 담기', ja: 'カートに追加'
             };
-            const cashFlowBtnText = {
-                vi: 'Xem dòng tiền mô phỏng',
-                en: 'View Simulated Cash Flow',
-                zh: '查看模拟现金流',
-                ko: '시뮬레이션 흐름 보기',
-                ja: 'キャッシュフローシミュレーション'
-            };
+            const buyNowText = { vi:'Mua ngay', en:'Buy now', zh:'立即购买', ko:'바로 구매', ja:'今すぐ購入' };
             const showroomBadgeText = {
                 vi: 'Điểm bán O2O',
                 en: 'O2O Showroom',
@@ -9509,11 +10560,8 @@
                     </div>
                     <p class="mt-1.5 text-[10px] text-slate-300 leading-relaxed">${escapeAIHtml(getProductDescription(product))}</p>
                     <div class="mt-2.5 flex gap-2">
-                        <button onclick="openStoreLocator(${product.id})" class="flex-1 rounded-xl border border-amber-400/80 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-amber-700 px-2.5 py-1.5 text-[10.5px] font-black text-slate-950 shadow flex items-center justify-center gap-1 cursor-pointer transition">
-                            <i class="fa-solid fa-map-pin text-[10px]"></i>
-                            <span>${pinBtnText[currentLanguage] || pinBtnText.vi}</span>
-                        </button>
-                        <button onclick="openOnlineOrderModal(${product.id})" class="flex-1 rounded-xl border border-sky-400/60 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 px-2.5 py-1.5 text-[10.5px] font-black text-white shadow flex items-center justify-center gap-1 cursor-pointer transition" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important;"><i class="fa-solid fa-cart-shopping text-[10px]"></i><span>🛒 Đặt Mua Online Ngay</span></button>
+                        <button onclick="openOnlineOrderModal(${product.id})" class="flex-1 rounded-xl border border-sky-400/60 bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 px-2.5 py-1.5 text-[10.5px] font-black text-white shadow flex items-center justify-center gap-1 cursor-pointer transition" style="background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important; color: #FFFFFF !important;"><i class="fa-solid fa-bolt text-[10px]"></i><span>${buyNowText[currentLanguage] || buyNowText.vi}</span></button>
+                        <button type="button" onclick="addToCart(${product.id})" class="flex-1 rounded-xl border border-sky-400/60 bg-sky-100 hover:bg-sky-200 px-2 py-1.5 text-[10.5px] font-black text-sky-900 shadow flex items-center justify-center gap-1 cursor-pointer transition" title="${addCartText[currentLanguage] || addCartText.vi}"><i class="fa-solid fa-cart-plus text-[10px]"></i><span>${addCartText[currentLanguage] || addCartText.vi}</span></button>
                     </div>
                 </article>
             `}).join('');
@@ -9549,11 +10597,11 @@
                 ja: '調整総規模 GMV:'
             };
             const btnLabels = {
-                vi: 'Mô phỏng dòng tiền & Điều phối chuỗi cung ứng',
-                en: 'Simulate Cash Flow & Coordinate Supply Chain',
-                zh: '查看模拟现金流与供应链调度',
-                ko: '시뮬레이션 흐름 보기 및 공급망 조율',
-                ja: 'キャッシュフローシミュレーション＆サプライチェーン調整'
+                vi: 'Thêm combo vào giỏ hàng',
+                en: 'Add combo to cart',
+                zh: '将组合加入购物车',
+                ko: '세트를 장바구니에 담기',
+                ja: 'セットをカートに追加'
             };
             const bundleCards = combos.map((combo,index) => {
                 const total = combo.reduce((sum, product) => sum + product.price, 0);
@@ -9582,7 +10630,7 @@
                             <span class="font-black text-amber-400">${total.toLocaleString('vi-VN')} ₫</span>
                         </div>
                         <button type="button" onclick="addProductsToCart([${productIds}])" class="mt-2.5 w-full rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:to-amber-700 px-2.5 py-2 text-[11px] font-black text-slate-950 shadow-md flex items-center justify-center gap-1.5 cursor-pointer transition">
-                            <i class="fa-solid fa-network-wired text-xs"></i>
+                            <i class="fa-solid fa-cart-shopping text-xs"></i>
                             <span>${btnLabels[currentLanguage] || btnLabels.vi}</span>
                         </button>
                     </article>
@@ -9715,7 +10763,7 @@
                 .filter(Boolean);
             if (!selectedProducts.length) {
                 const noProdMap = {
-                    vi: 'Không có sản phẩm hợp lệ để đưa vào phân tích dòng tiền.',
+                    vi: 'Không có sản phẩm hợp lệ để thêm vào giỏ hàng.',
                     en: 'No valid products were selected.',
                     zh: '没有选择用于现金流分析的有效产品。',
                     ko: '현금 흐름 분석에 추가할 유효한 제품이 없습니다.',
@@ -9742,11 +10790,11 @@
             updateCartBadge();
             renderCartItems();
             const addManyMap = {
-                vi: `Đã đưa ${selectedProducts.length} sản phẩm OCOP vào Bảng phân tích dòng tiền AI Simulated!`,
-                en: `Added ${selectedProducts.length} product(s) to AI Cash Flow Analysis.`,
-                zh: `已将 ${selectedProducts.length} 个 OCOP 特产同步至 AI 现金流模拟看板！`,
-                ko: `${selectedProducts.length}개의 OCOP 제품을 AI 현금 흐름 분석표에 추가했습니다!`,
-                ja: `${selectedProducts.length} 個の OCOP 特産品を AI キャッシュフロー分析に追加しました！`
+                vi: `Đã thêm ${selectedProducts.length} sản phẩm vào giỏ hàng.`,
+                en: `Added ${selectedProducts.length} product(s) to the cart.`,
+                zh: `已将 ${selectedProducts.length} 件商品加入购物车。`,
+                ko: `${selectedProducts.length}개 상품을 장바구니에 담았습니다.`,
+                ja: `${selectedProducts.length}点の商品をカートに追加しました。`
             };
             showToast(addManyMap[currentLanguage] || addManyMap.vi, 'success');
             if (document.getElementById('cart-drawer').classList.contains('hidden')) toggleCart();
@@ -11292,119 +12340,26 @@
         const OCOP_CURRENT_USER_KEY = 'ocop_current_user';
         const DEFAULT_DEMO_USERS = [
             {
-                id: 'usr_khachhang',
-                username: 'khachhang',
-                loginId: 'khachhang',
-                email: 'khachhang@ocop.vn',
-                name: 'Khách hàng demo',
-                fullName: 'Khách Hàng Demo',
-                password: '123456',
-                phone: '0912345678',
-                address: 'Số 1 Tràng Tiền, Hoàn Kiếm, Hà Nội',
-                role: 'customer',
-                roleLabel: 'Khách Hàng Mua Sắm',
+                id: 'usr_bgk2026',
+                name: 'Ban Giám Khảo Digital Fest 2026',
+                loginId: 'bgk2026@ocop.vn',
+                email: 'bgk2026@ocop.vn',
+                phone: '0988882026',
+                address: 'Hội đồng Thẩm định Quốc gia 2026',
+                password: '12345678',
+                role: 'Ban Giám Khảo & Chuyên Gia Thẩm Định',
                 provider: 'Local',
                 verified: true
             },
             {
-                id: 'usr_admin',
-                username: 'admin',
-                loginId: 'admin',
-                email: 'admin@ocop.vn',
-                name: 'Admin demo',
-                fullName: 'Admin Demo',
-                password: '000000',
-                adminId: 'AD01',
-                phone: '0988880000',
-                address: 'Trụ sở Điều hành OCOP Quốc gia',
-                role: 'admin',
-                roleLabel: 'Admin Quản Trị Hệ Thống',
-                isAdmin: true,
-                provider: 'Local',
-                verified: true
-            },
-            {
-                id: 'usr_nppdemo',
-                username: 'nppdemo',
-                loginId: 'nppdemo',
-                email: 'nppdemo@ocop.vn',
-                name: 'Nhà phân phối demo',
-                fullName: 'Nhà Phân Phối Demo OCOP',
-                password: 'NppDemo@2026',
-                distributorCode: 'NPP26DEMO001',
-                phone: '0971280030',
-                address: 'Tổng kho Phân phối OCOP Toàn quốc',
-                role: 'distributor',
-                roleLabel: 'Nhà Phân Phối / Đối Tác HTX',
-                isDistributor: true,
-                provider: 'Local',
-                verified: true
-            },
-            {
-                id: 'usr_ad01',
-                username: 'ThaoNguyenad01',
-                loginId: 'ThaoNguyenad01',
-                email: 'thaonguyen.ad01@ocop.vn',
-                name: 'Thảo Nguyên (Admin 01)',
-                fullName: 'Thảo Nguyên (Admin 01)',
-                password: '0000000',
-                adminId: 'AD01',
-                phone: '0988880001',
-                address: 'Ban Điều hành OCOP DigitalFest 2026',
-                role: 'admin',
-                roleLabel: 'Admin Quản Trị',
-                isAdmin: true,
-                provider: 'Local',
-                verified: true
-            },
-            {
-                id: 'usr_ad02',
-                username: 'KimNganad02',
-                loginId: 'KimNganad02',
-                email: 'kimngan.ad02@ocop.vn',
-                name: 'Kim Ngân (Admin 02)',
-                fullName: 'Kim Ngân (Admin 02)',
-                password: '1111111',
-                adminId: 'AD02',
-                phone: '0988880002',
-                address: 'Trung tâm Điều phối O2O Showroom',
-                role: 'admin',
-                roleLabel: 'Admin Quản Trị',
-                isAdmin: true,
-                provider: 'Local',
-                verified: true
-            },
-            {
-                id: 'usr_ad03',
-                username: 'VinhPhucad03',
-                loginId: 'VinhPhucad03',
-                email: 'vinhphuc.ad03@ocop.vn',
-                name: 'Vĩnh Phúc (Admin 03)',
-                fullName: 'Vĩnh Phúc (Admin 03)',
-                password: '2222222',
-                adminId: 'AD03',
-                phone: '0988880003',
-                address: 'Bộ phận Tài chính & Dòng tiền OCOP',
-                role: 'admin',
-                roleLabel: 'Admin Quản Trị',
-                isAdmin: true,
-                provider: 'Local',
-                verified: true
-            },
-            {
-                id: 'usr_ad04',
-                username: 'ThanhBinhad04',
-                loginId: 'ThanhBinhad04',
-                email: 'thanhbinh.ad04@ocop.vn',
-                name: 'Thanh Bình (Admin 04)',
-                fullName: 'Thanh Bình (Admin 04)',
-                password: '3333333',
-                adminId: 'AD04',
-                phone: '0988880004',
-                address: 'Phòng Phát triển Đối tác Hợp tác xã',
-                role: 'admin',
-                roleLabel: 'Admin Quản Trị',
-                isAdmin: true,
+                id: 'usr_htx_dongnai',
+                name: 'Quản Trị Viên HTX OCOP Đồng Nai',
+                loginId: 'htx.ocop.dongnai@gmail.com',
+                email: 'htx.ocop.dongnai@gmail.com',
+                phone: '0918234567',
+                address: 'TP. Biên Hòa, Tỉnh Đồng Nai',
+                password: '12345678',
+                role: 'Đối tác HTX & Quản trị viên O2O',
                 provider: 'Local',
                 verified: true
             }
@@ -13316,6 +14271,8 @@
             } catch (error) {
                 console.warn('Language preference could not be saved to browser storage:', error);
             }
+            window.OCOPLanguage?.set(currentLanguage, { source: 'storefront' });
+            window.OCOPLanguage?.translate(document);
         }
         const remainingTextNodes = new WeakMap();
         const remainingAttributes = new WeakMap();
@@ -13326,6 +14283,13 @@
                 const el = typeof sel === 'string' ? document.querySelector(sel) : sel;
                 if (el && texts[lang]) el.textContent = texts[lang];
             };
+            safeSetText('#contact-footer > div > div:last-child > p', {
+                vi: '© 2026 OCOP Sales Copilot. Bảo lưu mọi quyền.',
+                en: '© 2026 OCOP Sales Copilot. All rights reserved.',
+                zh: '© 2026 OCOP Sales Copilot. 版权所有。',
+                ko: '© 2026 OCOP Sales Copilot. 모든 권리 보유.',
+                ja: '© 2026 OCOP Sales Copilot. 無断転載を禁じます。'
+            });
             // A. Header Navigation & Actions
             safeSetText('#header-nav-products-label', {
                 vi: '🌟 Đặc Sản 63 Tỉnh Thành',
@@ -13340,13 +14304,6 @@
                 zh: '🗺️ OCOP销售门店',
                 ko: '🗺️ OCOP 매장 안내',
                 ja: '🗺️ OCOP販売店舗'
-            });
-            safeSetText('#header-nav-back-intro-label', {
-                vi: '🔙 Quay lại',
-                en: '🔙 Back / Map',
-                zh: '🔙 返回首页',
-                ko: '🔙 메인/지도',
-                ja: '🔙 ホーム/地図'
             });
             safeSetText('#header-cart-toggle span:not(#header-cart-count)', {
                 vi: 'Giỏ hàng',
@@ -14568,9 +15525,9 @@
 <script src="script.js?v=bf8bacaa3ad7"></script>
 <script src="product-reviews-ui.js?v=782e5b2fd959"></script>
 <script src="admin-management.js?v=5900fd520c05"></script>
-<script src="checkout-intent.js?v=dc8a0fa122ec"></script>
+<script src="checkout-intent.js?v=c225c3c7d1e6"></script>
 <script src="account-client.js?v=a0731c6997d4"></script>
-<script src="chat-dictation.js?v=aa49ac3471ea"></script>
+<script src="chat-dictation.js?v=7a197c4ca498"></script>
 <script>
     window.chatDictation = ChatDictation.mount({
         input: document.getElementById('ai-chat-input'),
@@ -14625,7 +15582,7 @@
         window.searchDictations.push(controller);
     });
 </script>
-<script src="shop-prices.js?v=e8a0aac06d13"></script>
+<script src="shop-prices.js?v=e97e3e80787b"></script>
  
 <script>
     // -------------------------------------------------------------
@@ -15134,118 +16091,24 @@ function updateCustomerHeaderUI() {
         }
     }
     window.switchCustomerAuthTab = switchCustomerAuthTab;
-async function handleCustomerLoginSubmit() {
+    async function handleCustomerLoginSubmit() {
         const button=document.getElementById('btn-cust-login-submit');if(button?.disabled)return;
         if(button){button.disabled=true;button.setAttribute?.('aria-busy','true');}
         try {
-            const userInput = document.getElementById('cust-login-user')?.value?.trim();
-            const passInput = document.getElementById('cust-login-pass')?.value;
-            const user = await window.OCOPAuth.login(userInput, passInput);
-            const input = document.getElementById('cust-login-pass');
-            if(input){input.value='';input.type='password';}
-            updateCustomerHeaderUI();
-            closeCustomerAuthModal();
-
-            const uName = String(user?.username || userInput || '').toLowerCase();
-            const isAdmin = Boolean(user?.role === 'admin' || user?.isAdmin || ['admin', 'thaonguyenad01', 'kimnganad02', 'vinhphucad03', 'thanhbinhad04'].includes(uName));
-            const isDist = Boolean(user?.role === 'distributor' || user?.isDistributor || uName === 'nppdemo');
-
-            if (isAdmin) {
-                sessionStorage.setItem('ocop_admin_pin_verified', 'true');
-                sessionStorage.setItem('admin_pin_verified', 'true');
-                if (typeof showToast === 'function') {
-                    showToast('Đăng nhập Quản trị viên thành công! Đang mở Bảng Quản Trị...', 'success');
-                }
-                setTimeout(() => {
-                    if (typeof window.openRealFinancialDashboard === 'function') {
-                        window.openRealFinancialDashboard();
-                    } else if (typeof window.openAdminHubModal === 'function') {
-                        window.openAdminHubModal();
-                    } else if (typeof window.promptAdminPinModal === 'function') {
-                        window.promptAdminPinModal();
-                    }
-                    if (typeof window.renderAdminOnlineOrdersTable === 'function') {
-                        window.renderAdminOnlineOrdersTable();
-                    }
-                }, 200);
-            } else if (isDist) {
-                if (typeof showToast === 'function') {
-                    showToast('Đăng nhập Nhà phân phối thành công!', 'success');
-                }
-                setTimeout(() => {
-                    if (window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal === 'function') {
-                        window.OcopAdminManagement.openAdminManagementModal('distributor', user.distributorCode || 'NPP26DEMO001');
-                    }
-                }, 200);
-            } else {
-                if (typeof showToast === 'function') {
-                    showToast('Đăng nhập thành công!', 'success');
-                }
-            }
+            await window.OCOPAuth.login(document.getElementById('cust-login-user')?.value?.trim(),document.getElementById('cust-login-pass')?.value);
+            const input=document.getElementById('cust-login-pass');if(input){input.value='';input.type='password';}
+            updateCustomerHeaderUI();closeCustomerAuthModal();
         } catch(error){showCustomerAuthAlert(error.message,'error');}
         finally{if(button){button.disabled=false;button.removeAttribute?.('aria-busy');}}
     }
     window.handleCustomerLoginSubmit = handleCustomerLoginSubmit;
-window.quickSelectDemoAccount = async function (username) {
-        const demoAccounts = {
-            'khachhang': { user: 'khachhang', pass: '123456', name: 'Khách hàng demo', role: 'customer' },
-            'admin': { user: 'admin', pass: '000000', name: 'Admin demo', role: 'admin' },
-            'nppdemo': { user: 'nppdemo', pass: 'NppDemo@2026', name: 'Nhà phân phối demo', role: 'distributor' },
-            'ThaoNguyenad01': { user: 'ThaoNguyenad01', pass: '0000000', name: 'Admin Thảo Nguyên (ad01)', role: 'admin' },
-            'KimNganad02': { user: 'KimNganad02', pass: '1111111', name: 'Admin Kim Ngân (ad02)', role: 'admin' },
-            'VinhPhucad03': { user: 'VinhPhucad03', pass: '2222222', name: 'Admin Vĩnh Phúc (ad03)', role: 'admin' },
-            'ThanhBinhad04': { user: 'ThanhBinhad04', pass: '3333333', name: 'Admin Thanh Bình (ad04)', role: 'admin' }
-        };
-        const acc = demoAccounts[username];
-        if (!acc) return;
-
-        // 1. Điền vào form customer-auth-modal
-        const custUser = document.getElementById('cust-login-user');
-        const custPass = document.getElementById('cust-login-pass');
-        if (custUser) custUser.value = acc.user;
-        if (custPass) custPass.value = acc.pass;
-
-        // 2. Điền vào form auth-modal nếu có
-        const authName = document.getElementById('auth-name');
-        const authPass = document.getElementById('auth-password');
-        if (authName) authName.value = acc.user;
-        if (authPass) authPass.value = acc.pass;
-
-        // Chuyển tab sang đăng nhập nếu đang ở tab khác
-        if (typeof switchCustomerAuthTab === 'function') switchCustomerAuthTab('login');
-        if (typeof switchAuthTab === 'function') switchAuthTab('login');
-
-        // 3. Thực hiện đăng nhập trực tiếp qua OCOPAuth
-        try {
-            if (window.OCOPAuth && typeof window.OCOPAuth.login === 'function') {
-                await window.OCOPAuth.login(acc.user, acc.pass);
-                if (custPass) { custPass.value = ''; custPass.type = 'password'; }
-                if (authPass) { authPass.value = ''; authPass.type = 'password'; }
-                if (typeof updateCustomerHeaderUI === 'function') updateCustomerHeaderUI();
-                if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
-                document.getElementById('auth-modal')?.classList.add('hidden');
-                if (typeof showToast === 'function') {
-                    showToast('Đăng nhập thành công: ' + acc.name, 'success');
-                }
-                if (acc.role === 'admin') {
-                    sessionStorage.setItem('ocop_admin_pin_verified', 'true');
-                    sessionStorage.setItem('admin_pin_verified', 'true');
-                }
-            } else if (typeof handleCustomerLoginSubmit === 'function') {
-                await handleCustomerLoginSubmit();
-            }
-        } catch (err) {
-            if (typeof showCustomerAuthAlert === 'function') {
-                showCustomerAuthAlert(err.message || 'Chưa đăng nhập được.', 'error');
-            }
-            if (typeof showToast === 'function') {
-                showToast(err.message || 'Chưa đăng nhập được.', 'error');
-            }
-        }
-    };
-    window.quickFillDemoJudge = function () {
-        window.quickSelectDemoAccount('admin');
-    };
+    for (const id of ['cust-login-user', 'cust-login-pass']) {
+        document.getElementById(id)?.addEventListener('keydown', event => {
+            if (event.key !== 'Enter' || event.isComposing || event.repeat) return;
+            event.preventDefault();
+            handleCustomerLoginSubmit();
+        });
+    }
     async function handleCustomerRegisterSubmit() {
         const value=id=>document.getElementById(id)?.value||'';
         if(value('cust-reg-pass')!==value('cust-reg-pass2')){showCustomerAuthAlert('Mật khẩu xác nhận chưa khớp.','error');return;}
@@ -15322,21 +16185,18 @@ window.quickSelectDemoAccount = async function (username) {
 </script>
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->
 <link rel="stylesheet" href="store-directory-light.css?v=cb405b0da1a4">
-<link rel="stylesheet" href="cart-ui.css?v=1ffce2310bef">
+<link rel="stylesheet" href="cart-ui.css?v=80dd2dc99bc9">
 <link rel="stylesheet" href="account-center.css?v=94f51ea5f466">
 <link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=6082bfd08879"></script>
 <script src="checkout-payment.js?v=5eb2ae0cd06e"></script>
-<script src="skytech-complete.js?v=b999cf5c3393"></script>
+<script src="skytech-complete.js?v=9bd56dd7b58e"></script>
 <script src="cart-ui.js?v=5cd216c94e9c"></script>
-<script src="password-recovery.js?v=92dfd0e3dc3a"></script>
-<script src="account-center.js?v=15b862ef8f27"></script>
+<script src="password-recovery.js?v=04114d6e16e8"></script>
+<script src="account-center.js?v=f8f5b8415f67"></script>
 <script src="storefront-ui.js?v=50b7d1778fe1"></script>
 <script src="ui-branding.js?v=66dc84bfc24e"></script>
 <script src="storefront-navigation.js?v=aaa5e336b621"></script>
 <script src="storefront-router.js?v=a1b02371d840"></script>
 </body>
 </html>
-
-
-

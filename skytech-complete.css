@@ -3510,6 +3510,76 @@ body #ocop-intro-overlay h1.intro-hero-title #i18n-intro-title2 { display: block
 #ai-chat-window #ai-chat-composer textarea#ai-chat-input:focus{outline:2px solid #397fb6;outline-offset:1px}
 #ai-chat-window #ai-chat-composer textarea#ai-chat-input::placeholder{color:#526f85!important}
 
+/* Keep chat in one corner and leave the catalog visible on tablet widths. */
+@media (max-width: 767px) {
+    #ai-chat-widget #ai-chat-window {
+        left: auto !important;
+        right: 10px !important;
+        bottom: calc(var(--mobile-nav-height, 48px) + 10px) !important;
+        width: min(380px, calc(100vw - 20px)) !important;
+        height: min(500px, calc(var(--chat-viewport-height, 100dvh) - var(--mobile-nav-height, 48px) - 24px)) !important;
+        max-height: calc(var(--chat-viewport-height, 100dvh) - var(--mobile-nav-height, 48px) - 24px) !important;
+        resize: none !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    body #product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+/* Product footers line up across every card in the same catalogue row. */
+body #product-grid .product-card { height: 100% !important; }
+body #product-grid .product-card-footer { margin-top: auto !important; }
+body #product-grid .product-card-footer .product-action-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+}
+body #product-grid .product-card-footer .product-action-row > button {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+.ai-product-recommendations article > .mt-2\.5.flex > button {
+    min-width: 0;
+}
+.ai-product-recommendations article > .mt-2\.5.flex > button span {
+    overflow-wrap: anywhere;
+}
+
+/* Keep floating shortcuts clear of footer copy, including the mobile tab bar. */
+:is(html.catalog-browsing, body.catalog-browsing, body:has(#ocop-intro-overlay.hidden)) #back-to-top-btn {
+    bottom: 84px !important;
+}
+:is(html.catalog-browsing, body.catalog-browsing, body:has(#ocop-intro-overlay.hidden)) #ai-chat-widget {
+    bottom: 84px !important;
+}
+@media (max-width: 767px) {
+    :is(html.catalog-browsing, body.catalog-browsing, body:has(#ocop-intro-overlay.hidden)) :is(#back-to-top-btn, #ai-chat-widget) {
+        bottom: calc(var(--mobile-nav-height, 48px) + 32px) !important;
+    }
+}
+
+/* Keep image messages and controls inside the chat at every viewport width. */
+#ai-chat-widget #ai-chat-window { box-sizing: border-box; max-width: calc(100vw - 16px) !important; }
+#ai-chat-window #ai-chat-header > div:first-child { min-width: 0; }
+#ai-chat-window #chat-title { overflow-wrap: anywhere; }
+#ai-chat-window #ai-chat-messages > div { min-width: 0; }
+#ai-chat-window #ai-chat-messages .bg-white { box-sizing: border-box; min-width: 0; max-width: calc(100% - 36px) !important; }
+#ai-chat-window #ai-chat-messages img { max-width: 100%; }
+#ai-chat-window #ai-chat-messages .ai-product-recommendations { min-width: 0; max-width: 100%; }
+@media (max-width: 390px) {
+    #ai-chat-window #ai-chat-header { gap: 6px; padding: 9px !important; }
+    #ai-chat-window #chat-title { font-size: 10px; line-height: 1.25; }
+    #ai-chat-window #chat-reset-label { display: none; }
+    #ai-chat-window #ai-chat-composer { padding: 8px !important; }
+}
+@media (max-height: 480px) and (orientation: landscape) {
+    #ai-chat-window #ai-chat-quick-replies { display: none; }
+    #ai-chat-window #ai-chat-header { padding-block: 8px !important; }
+}
+
 
 /* KHÓA CỨNG: ẨN TUYỆT ĐỐI CÁC TÍNH NĂNG QUẢN TRỊ KHI CHƯA ĐĂNG NHẬP ADMIN */
 body:not(.is-admin-logged-in) #btn-header-admin-pin,

@@ -27,6 +27,7 @@ const {assistantInstruction,completeReply} = require('./ocop-assistant-profile.j
 const {webResearchInstruction,createResearchMiddleware} = require('./ai-web-research.js');
 const CatalogFacts = require('./catalog-facts'); const ProductConsultant = require('./product-consultant');
 const {answerTrainingQuery} = require('./product-training');
+const CustomerQuestionGuide = require('./customer-question-guide');
 const {createCommerceShopping} = require('./commerce-shopping');
 const {createKnowledge}=require('./product-knowledge');
 const {createSalesStore}=require('./sales-store');
@@ -1303,12 +1304,16 @@ async function handleAIChatRequest(req, res) {
     return res.status(404).json({ error: 'Không tìm thấy ảnh đính kèm. Vui lòng tải ảnh lên lại.' });
   }
   const lastMessage = validation.messages[validation.messages.length - 1];
+  const generalCompliance=!attachedImages.length&&typeof CustomerQuestionGuide!=='undefined'&&!CustomerQuestionGuide.findProduct(lastMessage.text,validation.products)&&CustomerQuestionGuide.answerGeneralCompliance(lastMessage.text,validation.language);
+  if(generalCompliance)return res.json({...generalCompliance,imageIds});
   if(!attachedImages.length&&analysis.summary.dataUnavailable)return res.json({message:'Dạ thưa, hiện tại dữ liệu hệ thống chưa ghi nhận thông tin này ạ.',knowledgeStatus:'not_found',productIds:[],suggested_products:[],combos:[],imageIds});
   if (analysis.clarification) {
     const body=composeDataReply([], {requiredClarification:analysis.clarification},validation.language);
     return res.json({...body,combos:[],imageIds});
   }
   const supportRequest=localIntent.isComplaint||localIntent.isCSKH;
+  const customerQuestionReply=!attachedImages.length&&!supportRequest&&typeof CustomerQuestionGuide!=='undefined'&&CustomerQuestionGuide.answer(lastMessage.text,validation.products,validation.language,validation.messages.slice(0,-1));
+  if(customerQuestionReply)return res.json({...customerQuestionReply,imageIds});
   const commerceReply=!attachedImages.length&&!supportRequest&&commerceShopping.localReply({query:lastMessage.text,products:validation.products,intent:localIntent,language:validation.language});
   if(commerceReply)return res.json({...commerceReply,imageIds});
   const productCodeReply=!attachedImages.length&&!supportRequest&&CatalogFacts.isProductCodeQuestion?.(lastMessage.text)&&CatalogFacts.answer(lastMessage.text,validation.products,validation.language,validation.messages.slice(0,-1));
@@ -1669,8 +1674,8 @@ async function generateAIResponse(validation, { attachedImages = [], imageData =
     const result=buildAIServiceUnavailable(validation.language,wikiSources);
     if (hasImages) {
       const message=validation.language==='en'
-        ? 'I received your image, but could not check it against the catalogue right now. Please type the product name or brand visible on the label, or try checking the image again.'
-        : 'Mình đã nhận ảnh nhưng hiện chưa kiểm tra được ảnh với danh mục. Anh/chị gõ tên sản phẩm hoặc thương hiệu trên nhãn để mình tìm trong kho, hoặc bấm Thử lại để kiểm tra ảnh nhé.';
+        ? 'Dạ, I could not identify the image. Could you describe the product or tell me its name?'
+        : 'Dạ, em chưa nhận diện được ảnh. Quý khách có thể mô tả chi tiết sản phẩm hoặc cho em tên sản phẩm ạ?';
       result.body={...result.body,message,text_response:message,error:'IMAGE_ANALYSIS_UNAVAILABLE',imageMatchStatus:'unknown'};
     }
     return result;

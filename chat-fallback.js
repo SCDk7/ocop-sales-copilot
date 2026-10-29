@@ -5,14 +5,20 @@
     const webResearch=typeof module==='object'&&module.exports?require('./ai-web-research'):root.OCOPWebResearch;
     function imageUnavailableReply(language='vi',query='',products=[],history=[],imageEvidence=null) {
         const analysis=analyzer.analyzeCustomerRequest([...history,{role:'user',text:query}],products,{language,hasImages:true});
-        const message = language === 'en'
-            ? 'Image recognition is currently unavailable. Please provide the product name or visible label text so I can help with product information or your complaint.'
-            : analysis.intent.isCombo || analysis.intent.maxPrice
-                ? 'Em chưa xác định chắc món trong ảnh. Anh/chị cho em tên món hoặc gửi ảnh nhãn rõ hơn để em chọn combo đúng ngân sách và có món đó nhé.'
-                : 'Em chưa xác định chắc sản phẩm trong ảnh. Anh/chị gửi ảnh nhãn rõ hơn hoặc cho em tên sản phẩm để em đối chiếu đúng yêu cầu nhé.';
+        const messages={
+            vi:'Dạ, em chưa nhận diện được ảnh. Quý khách có thể mô tả chi tiết sản phẩm hoặc cho em tên sản phẩm ạ?',
+            en:'Dạ, I could not identify the image. Could you describe the product or tell me its name?',
+            zh:'Dạ，我还无法识别这张图片。请描述商品详情或告知商品名称，好吗？',
+            ko:'Dạ, 이미지를 식별하지 못했습니다. 상품의 특징이나 이름을 알려주시겠어요?',
+            ja:'Dạ、画像を認識できませんでした。商品の特徴か名前を教えていただけますか？'
+        };
+        const message=messages[language]||messages.vi;
         return profile.completeReply({message,text_response:message,productIds:[],suggested_products:[],combos:[],dynamic_chips:[],imageMatchStatus:'unknown',understandingStatus:'needs_clarification',handoffAdmin:Boolean(analysis.intent.isComplaint||analysis.intent.isCSKH),localFallback:true,aiProvider:'local_catalog',requestAnalysis:{...analysis.summary,needsClarification:true},integrations:{gemini:false,openai:false,claude:false,wikipedia:false}},language);
     }
     function catalogReply(query,products,language='vi',history=[]){
+        const questionGuide=typeof module==='object'&&module.exports?require('./customer-question-guide'):root.OCOPCustomerQuestionGuide;
+        const generalCompliance=!questionGuide?.findProduct(query,products)&&questionGuide?.answerGeneralCompliance(query,language);
+        if(generalCompliance)return profile.completeReply({...generalCompliance,localFallback:true,aiProvider:'local_catalog'},language);
         const analysis=analyzer.analyzeCustomerRequest([...history,{role:'user',text:query}],products,{language});
         const reply=catalogReplyAfterAnalysis(query,products,language,history,analysis);
         const plan=webResearch?.planWebResearch([...history,{role:'user',text:query}],products,reply,{websiteOnly:true});
@@ -31,6 +37,9 @@
         }
         const codeFacts=typeof module==='object'&&module.exports?require('./catalog-facts'):root.OCOPCatalogFacts;
         if(codeFacts?.isProductCodeQuestion(query))return {...codeFacts.answer(query,products,language,history),localFallback:true,aiProvider:'local_catalog'};
+        const questionGuide=typeof module==='object'&&module.exports?require('./customer-question-guide'):root.OCOPCustomerQuestionGuide;
+        const guidedReply=questionGuide?.answer(query,products,language,history);
+        if(guidedReply)return {...guidedReply,localFallback:true,aiProvider:'local_catalog'};
         const training=typeof module==='object'&&module.exports?require('./product-training'):root.OCOPProductTraining;
         const trainedReply=training?.answerTrainingQuery(query,products,language,history);
         if(trainedReply) return {...trainedReply,localFallback:true};

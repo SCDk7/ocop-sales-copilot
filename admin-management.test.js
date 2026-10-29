@@ -321,14 +321,15 @@ test('Role-based Admin access control: strictly visible to Admin and Distributor
 
     // 1. Validation in index.html for role-based gating
     assert.ok(indexHtml.includes('function isCurrentUserAdminOrDistributor'), 'isCurrentUserAdminOrDistributor helper must exist');
-    assert.ok(indexHtml.includes('id="header-admin-action-wrap"'), 'Header admin wrap element exists');
-    assert.ok(indexHtml.includes('id="btn-header-admin-portal"'), 'Header admin portal button exists');
+    assert.ok(!indexHtml.includes('id="header-admin-action-wrap"'), 'Redundant header admin action is removed');
+    assert.ok(!indexHtml.includes('id="btn-header-admin-portal"'), 'Redundant header admin button is removed');
+    assert.ok(!indexHtml.includes('id="btn-header-admin-pin"'), 'Revenue shortcut is removed from the header');
+    assert.ok(!indexHtml.includes('id="btn-header-ocr"'), 'Registration shortcut is removed from the header');
     assert.ok(indexHtml.includes('id="cust-admin-quick-actions"'), 'Customer profile quick actions ID exists');
     assert.ok(indexHtml.includes('id="mobile-cro-admin-btn"'), 'Mobile bottom nav admin button exists');
     assert.ok(indexHtml.includes('id="btn-ordersuccess-admin"'), 'Order success admin button exists');
 
     // Initial HTML attributes must have hidden styles
-    assert.ok(indexHtml.includes('id="header-admin-action-wrap" class="items-center" style="display: none !important;"'), 'Header admin portal wrap is hidden by default');
     assert.ok(indexHtml.includes('id="cust-admin-quick-actions"') && indexHtml.includes('style="display: none !important;"'), 'Profile quick actions is hidden by default');
     assert.ok(indexHtml.includes('id="mobile-cro-admin-btn"') && indexHtml.includes('style="display: none !important;"'), 'Mobile admin button is hidden by default');
     assert.ok(indexHtml.includes('id="btn-ordersuccess-admin"') && indexHtml.includes('style="display: none !important;"'), 'Order success admin button is hidden by default');

@@ -3,6 +3,17 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const {isCashflowText, stripFinancialLines, cleanReply} = require('./storefront-ui');
 
+test('chat recommendation cards offer only buy now and add to cart',()=>{
+ const html=require('node:fs').readFileSync('index.html','utf8');
+ const start=html.indexOf('function renderAIProductRecommendations('),end=html.indexOf('function renderAIComboRecommendations(',start);
+ assert.ok(start>0&&end>start);
+ const section=html.slice(start,end);
+ assert.ok(section.includes('openOnlineOrderModal(${product.id})'));
+ assert.ok(section.includes('addToCart(${product.id})'));
+ assert.ok(!section.includes('openStoreLocator(${product.id})'));
+ assert.equal((section.match(/<button\b/g)||[]).length,2);
+});
+
 test('combo preset buttons open the chat and submit their selected prompt',()=>{
  const fs=require('node:fs'),vm=require('node:vm');const source=fs.readFileSync('storefront-ui.js','utf8');
  const start=source.indexOf('        root.triggerAIComboPrompt =');const end=source.indexOf('        // Disable only',start);
