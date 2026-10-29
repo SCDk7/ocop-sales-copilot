@@ -1,7 +1,7 @@
 (function(root){
  'use strict';
  const node=typeof module==='object'&&module.exports;
- const qrFactory=node?require('qrcode-generator'):root.qrcode;
+ const qrFactory=node?(function(){try{return require('qrcode-generator');}catch(_){return require('./assets/vendor/qrcode/qrcode.js');}})():root.qrcode;
  function paymentMethod(value){const text=String(value||'');return /momo/i.test(text)?'momo':/vietqr|bidv/i.test(text)?'vietqr':/cod|cash/i.test(text)?'cod':null;}
  function demoPayload(method,amount,orderId='PREVIEW'){
   return JSON.stringify({kind:'OCOP_DEMO',method,amount:Number.isSafeInteger(amount)&&amount>=0?amount:0,currency:'VND',orderId:String(orderId)});
