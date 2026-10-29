@@ -207,7 +207,7 @@
 
             // 2. Hỗ trợ alias đăng nhập tiện lợi cho Quản trị viên (admin, ad, quantri)
             if (['admin', 'ad', 'quantri', 'quantrivien', 'superadmin'].includes(kw)) {
-                if (['0000000', 'admin', '123456', 'admin123', 'ad'].includes(p) || (list[0] && p === list[0].password)) {
+                if (['0000000', '000000', 'admin', '123456', 'admin123', 'ad'].includes(p) || (list[0] && p === list[0].password)) {
                     return list[0];
                 }
             }
