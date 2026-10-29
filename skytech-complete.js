@@ -4580,8 +4580,8 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
     // SMOOTH MOUSE WHEEL SCROLL ASSURANCE FOR EXTERNAL MOUSE & TOUCHPAD (BẤT KỲ ĐÂU TRÊN MÀN HÌNH)
     (function initUniversalMouseWheelScroll() {
-        // Mở khóa cuộn trang 100%: Trong môi trường trình duyệt thực tế, không chặn wheel event để đảm bảo 60FPS
-        if (typeof navigator !== 'undefined') {
+        // Mở khóa cuộn trang 100%: Trong trình duyệt thực tế, không chặn con lăn chuột để đảm bảo cuộn mượt 60FPS
+        if (typeof document !== 'undefined' && typeof document.body?.appendChild === 'function') {
             return;
         }
         function getScrollableContainer(el) {
@@ -4744,37 +4744,7 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
         }, { capture: true, passive: false });
     
 
-    // GLOBAL ESCAPE & UNIVERSAL MODAL CLOSER
-    window.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' || e.key === 'Esc') {
-            const modalIds = [
-                'partner-registration-modal',
-                'ai-financial-modal',
-                'auth-modal',
-                'customer-auth-modal',
-                'quickview-modal',
-                'ocop-store-modal',
-                'ocop-all-stores-modal',
-                'online-order-modal',
-                'order-success-modal',
-                'admin-pin-modal',
-                'admin-login-modal',
-                'admin-hub-modal',
-                'admin-management-modal',
-                'tiktok-studio-modal'
-            ];
-            modalIds.forEach(function (id) {
-                const m = document.getElementById(id);
-                if (m && (!m.classList.contains('hidden') || (m.style.display && m.style.display !== 'none'))) {
-                    m.classList.add('hidden');
-                    m.style.setProperty('display', 'none', 'important');
-                }
-            });
-            if (typeof window.stopQrCountdown === 'function') window.stopQrCountdown();
-            document.body.style.overflow = 'auto';
-            document.documentElement.style.overflow = 'auto';
-        }
-    });
+
 
 })();
 
@@ -4970,3 +4940,35 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
     } else {
         window.initHeroPromoCountdown();
     }
+
+    // GLOBAL ESCAPE & UNIVERSAL MODAL CLOSER
+    window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            const modalIds = [
+                'partner-registration-modal',
+                'ai-financial-modal',
+                'auth-modal',
+                'customer-auth-modal',
+                'quickview-modal',
+                'ocop-store-modal',
+                'ocop-all-stores-modal',
+                'online-order-modal',
+                'order-success-modal',
+                'admin-pin-modal',
+                'admin-login-modal',
+                'admin-hub-modal',
+                'admin-management-modal',
+                'tiktok-studio-modal'
+            ];
+            modalIds.forEach(function (id) {
+                const m = document.getElementById(id);
+                if (m && (!m.classList.contains('hidden') || (m.style.display && m.style.display !== 'none'))) {
+                    m.classList.add('hidden');
+                    m.style.setProperty('display', 'none', 'important');
+                }
+            });
+            if (typeof window.stopQrCountdown === 'function') window.stopQrCountdown();
+            document.body.style.overflow = 'auto';
+            document.documentElement.style.overflow = 'auto';
+        }
+    });

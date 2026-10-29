@@ -12323,7 +12323,8 @@ let productSearchTimer;
                 </div>
             `;
             modal.classList.remove('hidden');
-            // preservePageScrollState();
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
         }
         function closeStoreLocator() {
             const modal = document.getElementById('ocop-store-modal');
@@ -12489,7 +12490,8 @@ let productSearchTimer;
             modal.style.setProperty('display', 'flex', 'important');
             body.scrollTop = 0;
             document.getElementById('header-stores-toggle')?.setAttribute('aria-expanded', 'true');
-            // preservePageScrollState();
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
             modal.querySelector('button[onclick="closeAllStoresModal()"]')?.focus({preventScroll: true});
         }
         function closeAllStoresModal() {
@@ -17033,7 +17035,7 @@ function updateCustomerHeaderUI() {
 <link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=6082bfd08879"></script>
 <script src="checkout-payment.js?v=130d5ba22e63"></script>
-<script src="skytech-complete.js?v=0303c84728d1"></script>
+<script src="skytech-complete.js?v=3cf03195fdd7"></script>
 <script src="cart-ui.js?v=5cd216c94e9c"></script>
 <script src="password-recovery.js?v=92dfd0e3dc3a"></script>
 <script src="account-center.js?v=15b862ef8f27"></script>
