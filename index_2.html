@@ -3982,7 +3982,117 @@
  <button id="tab-register" type="button" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-xl text-gray-500 hover:text-gray-800 font-bold cursor-pointer">Đăng Ký</button>
  </div>
  <!-- Nút Điền Nhanh Tài Khoản Demo Ban Giám Khảo (1 chạm) -->
- <div id="auth-social-login" class="flex flex-col gap-2 mb-3" aria-label="Đăng nhập nhanh">
+ 
+                        <!-- BẢNG TÀI KHOẢN DEMO TRÊN MÁY (1 CHẠM ĐIỀN & ĐĂNG NHẬP) -->
+                        <div id="auth-quick-demo-container" class="p-3.5 bg-zinc-900 border border-zinc-800 text-zinc-200 rounded-2xl space-y-2.5 shadow-sm text-xs">
+                            <div class="text-[11.5px] font-medium text-zinc-300 leading-snug">
+                                Hiện tại bạn đăng nhập được <strong class="text-white font-bold">bản chạy trên máy</strong> tại <code class="px-1.5 py-0.5 rounded bg-zinc-950 text-sky-400 font-mono text-[11px] border border-zinc-800">http://localhost:3000</code> bằng:
+                            </div>
+
+                            <!-- Bảng 1: 3 Vai Trò Cốt Lõi -->
+                            <div class="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950/70">
+                                <table class="w-full text-left text-[11px] border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-zinc-800 text-zinc-400 font-semibold bg-zinc-900/90">
+                                            <th class="py-1.5 px-2.5">Loại tài khoản</th>
+                                            <th class="py-1.5 px-2.5">Tên đăng nhập</th>
+                                            <th class="py-1.5 px-2.5">Mật khẩu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-zinc-800/80">
+                                        <tr onclick="quickSelectDemoAccount('khachhang')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập Khách hàng demo">
+                                            <td class="py-2 px-2.5 font-medium text-zinc-200">
+                                                👤 Khách hàng demo
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-sky-300 border border-zinc-700/70 group-hover:border-sky-500 transition">khachhang</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono text-zinc-300">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">123456</span>
+                                            </td>
+                                        </tr>
+                                        <tr onclick="quickSelectDemoAccount('admin')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập Admin demo">
+                                            <td class="py-2 px-2.5 font-medium text-amber-300">
+                                                👑 Admin demo
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-300 border border-zinc-700/70 group-hover:border-amber-500 transition">admin</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono text-zinc-300">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">000000</span>
+                                            </td>
+                                        </tr>
+                                        <tr onclick="quickSelectDemoAccount('nppdemo')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập Nhà phân phối demo">
+                                            <td class="py-2 px-2.5 font-medium text-indigo-300">
+                                                🏪 Nhà phân phối demo
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-indigo-300 border border-zinc-700/70 group-hover:border-indigo-500 transition">nppdemo</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono text-zinc-300">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">NppDemo@2026</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Bảng 2: 4 Tài Khoản Admin -->
+                            <div class="pt-1">
+                                <div class="text-[11px] font-medium text-zinc-300 mb-1.5">
+                                    Vẫn có đủ <strong class="text-amber-300 font-bold">4 tài khoản admin</strong> trong bản demo trên máy. Lúc trước mình liệt kê thiếu:
+                                </div>
+                                <div class="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950/70">
+                                    <table class="w-full text-left text-[11px] border-collapse">
+                                        <thead>
+                                            <tr class="border-b border-zinc-800 text-zinc-400 font-semibold bg-zinc-900/90">
+                                                <th class="py-1.5 px-2.5">Tên đăng nhập</th>
+                                                <th class="py-1.5 px-2.5">Mật khẩu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-zinc-800/80">
+                                            <tr onclick="quickSelectDemoAccount('ThaoNguyenad01')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập ThaoNguyenad01">
+                                                <td class="py-1.5 px-2.5 font-mono">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">ThaoNguyenad01</span>
+                                                </td>
+                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">0000000</span>
+                                                </td>
+                                            </tr>
+                                            <tr onclick="quickSelectDemoAccount('KimNganad02')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập KimNganad02">
+                                                <td class="py-1.5 px-2.5 font-mono">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">KimNganad02</span>
+                                                </td>
+                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">1111111</span>
+                                                </td>
+                                            </tr>
+                                            <tr onclick="quickSelectDemoAccount('VinhPhucad03')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập VinhPhucad03">
+                                                <td class="py-1.5 px-2.5 font-mono">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">VinhPhucad03</span>
+                                                </td>
+                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">2222222</span>
+                                                </td>
+                                            </tr>
+                                            <tr onclick="quickSelectDemoAccount('ThanhBinhad04')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập ThanhBinhad04">
+                                                <td class="py-1.5 px-2.5 font-mono">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">ThanhBinhad04</span>
+                                                </td>
+                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">3333333</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="text-[10px] text-zinc-400 italic text-center pt-0.5 flex items-center justify-center gap-1">
+                                <span>⚡</span>
+                                <span>Bấm vào tài khoản bất kỳ để tự động điền & đăng nhập 1 chạm</span>
+                            </div>
+                        </div>
+                        <div id="auth-social-login" class="flex flex-col gap-2 mb-3" aria-label="Đăng nhập nhanh">
  <button id="auth-google-btn" type="button" onclick="openGoogleChooser()" class="w-full flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2.5 font-bold text-gray-700 hover:bg-gray-50 transition cursor-pointer">
  <i class="fa-brands fa-google text-red-500 text-sm"></i><span data-auth-social-label="google">Tiếp tục với Google</span>
  </button>
@@ -5099,6 +5209,116 @@
  <div id="cust-auth-alert" class="hidden p-3 rounded-xl text-xs font-bold items-center gap-2"></div>
  <!-- TAB 1: ĐĂNG NHẬP -->
  <div id="cust-pane-login" class="space-y-3.5">
+
+                        <!-- BẢNG TÀI KHOẢN DEMO TRÊN MÁY (1 CHẠM ĐIỀN & ĐĂNG NHẬP) -->
+                        <div id="cust-quick-demo-container" class="p-3.5 bg-zinc-900 border border-zinc-800 text-zinc-200 rounded-2xl space-y-2.5 shadow-sm text-xs">
+                            <div class="text-[11.5px] font-medium text-zinc-300 leading-snug">
+                                Hiện tại bạn đăng nhập được <strong class="text-white font-bold">bản chạy trên máy</strong> tại <code class="px-1.5 py-0.5 rounded bg-zinc-950 text-sky-400 font-mono text-[11px] border border-zinc-800">http://localhost:3000</code> bằng:
+                            </div>
+
+                            <!-- Bảng 1: 3 Vai Trò Cốt Lõi -->
+                            <div class="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950/70">
+                                <table class="w-full text-left text-[11px] border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-zinc-800 text-zinc-400 font-semibold bg-zinc-900/90">
+                                            <th class="py-1.5 px-2.5">Loại tài khoản</th>
+                                            <th class="py-1.5 px-2.5">Tên đăng nhập</th>
+                                            <th class="py-1.5 px-2.5">Mật khẩu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-zinc-800/80">
+                                        <tr onclick="quickSelectDemoAccount('khachhang')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập Khách hàng demo">
+                                            <td class="py-2 px-2.5 font-medium text-zinc-200">
+                                                👤 Khách hàng demo
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-sky-300 border border-zinc-700/70 group-hover:border-sky-500 transition">khachhang</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono text-zinc-300">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">123456</span>
+                                            </td>
+                                        </tr>
+                                        <tr onclick="quickSelectDemoAccount('admin')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập Admin demo">
+                                            <td class="py-2 px-2.5 font-medium text-amber-300">
+                                                👑 Admin demo
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-300 border border-zinc-700/70 group-hover:border-amber-500 transition">admin</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono text-zinc-300">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">000000</span>
+                                            </td>
+                                        </tr>
+                                        <tr onclick="quickSelectDemoAccount('nppdemo')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập Nhà phân phối demo">
+                                            <td class="py-2 px-2.5 font-medium text-indigo-300">
+                                                🏪 Nhà phân phối demo
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-indigo-300 border border-zinc-700/70 group-hover:border-indigo-500 transition">nppdemo</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 font-mono text-zinc-300">
+                                                <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">NppDemo@2026</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Bảng 2: 4 Tài Khoản Admin -->
+                            <div class="pt-1">
+                                <div class="text-[11px] font-medium text-zinc-300 mb-1.5">
+                                    Vẫn có đủ <strong class="text-amber-300 font-bold">4 tài khoản admin</strong> trong bản demo trên máy. Lúc trước mình liệt kê thiếu:
+                                </div>
+                                <div class="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950/70">
+                                    <table class="w-full text-left text-[11px] border-collapse">
+                                        <thead>
+                                            <tr class="border-b border-zinc-800 text-zinc-400 font-semibold bg-zinc-900/90">
+                                                <th class="py-1.5 px-2.5">Tên đăng nhập</th>
+                                                <th class="py-1.5 px-2.5">Mật khẩu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-zinc-800/80">
+                                            <tr onclick="quickSelectDemoAccount('ThaoNguyenad01')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập ThaoNguyenad01">
+                                                <td class="py-1.5 px-2.5 font-mono">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">ThaoNguyenad01</span>
+                                                </td>
+                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">0000000</span>
+                                                </td>
+                                            </tr>
+                                            <tr onclick="quickSelectDemoAccount('KimNganad02')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập KimNganad02">
+                                                <td class="py-1.5 px-2.5 font-mono">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">KimNganad02</span>
+                                                </td>
+                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">1111111</span>
+                                                </td>
+                                            </tr>
+                                            <tr onclick="quickSelectDemoAccount('VinhPhucad03')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập VinhPhucad03">
+                                                <td class="py-1.5 px-2.5 font-mono">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">VinhPhucad03</span>
+                                                </td>
+                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">2222222</span>
+                                                </td>
+                                            </tr>
+                                            <tr onclick="quickSelectDemoAccount('ThanhBinhad04')" class="hover:bg-zinc-800/70 cursor-pointer transition group" title="Bấm để đăng nhập ThanhBinhad04">
+                                                <td class="py-1.5 px-2.5 font-mono">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-amber-200 border border-zinc-700/70 group-hover:border-amber-500 transition">ThanhBinhad04</span>
+                                                </td>
+                                                <td class="py-1.5 px-2.5 font-mono text-zinc-300">
+                                                    <span class="px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-200 border border-zinc-700/70">3333333</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="text-[10px] text-zinc-400 italic text-center pt-0.5 flex items-center justify-center gap-1">
+                                <span>⚡</span>
+                                <span>Bấm vào tài khoản bất kỳ để tự động điền & đăng nhập 1 chạm</span>
+                            </div>
+                        </div>
  <div>
  <label class="block text-[11px] font-bold text-slate-700 mb-1">Tài khoản (Tên đăng nhập hoặc Số điện thoại) <span class="text-rose-600">*</span></label>
  <input type="text" id="cust-login-user" placeholder="Ví dụ: khachhang hoặc 0912345678" class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:border-sky-500 focus:outline-none bg-white">
@@ -12348,26 +12568,119 @@
         const OCOP_CURRENT_USER_KEY = 'ocop_current_user';
         const DEFAULT_DEMO_USERS = [
             {
-                id: 'usr_bgk2026',
-                name: 'Ban Giám Khảo Digital Fest 2026',
-                loginId: 'bgk2026@ocop.vn',
-                email: 'bgk2026@ocop.vn',
-                phone: '0988882026',
-                address: 'Hội đồng Thẩm định Quốc gia 2026',
-                password: '12345678',
-                role: 'Ban Giám Khảo & Chuyên Gia Thẩm Định',
+                id: 'usr_khachhang',
+                username: 'khachhang',
+                loginId: 'khachhang',
+                email: 'khachhang@ocop.vn',
+                name: 'Khách hàng demo',
+                fullName: 'Khách Hàng Demo',
+                password: '123456',
+                phone: '0912345678',
+                address: 'Số 1 Tràng Tiền, Hoàn Kiếm, Hà Nội',
+                role: 'customer',
+                roleLabel: 'Khách Hàng Mua Sắm',
                 provider: 'Local',
                 verified: true
             },
             {
-                id: 'usr_htx_dongnai',
-                name: 'Quản Trị Viên HTX OCOP Đồng Nai',
-                loginId: 'htx.ocop.dongnai@gmail.com',
-                email: 'htx.ocop.dongnai@gmail.com',
-                phone: '0918234567',
-                address: 'TP. Biên Hòa, Tỉnh Đồng Nai',
-                password: '12345678',
-                role: 'Đối tác HTX & Quản trị viên O2O',
+                id: 'usr_admin',
+                username: 'admin',
+                loginId: 'admin',
+                email: 'admin@ocop.vn',
+                name: 'Admin demo',
+                fullName: 'Admin Demo',
+                password: '000000',
+                adminId: 'AD01',
+                phone: '0988880000',
+                address: 'Trụ sở Điều hành OCOP Quốc gia',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị Hệ Thống',
+                isAdmin: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_nppdemo',
+                username: 'nppdemo',
+                loginId: 'nppdemo',
+                email: 'nppdemo@ocop.vn',
+                name: 'Nhà phân phối demo',
+                fullName: 'Nhà Phân Phối Demo OCOP',
+                password: 'NppDemo@2026',
+                distributorCode: 'NPP26DEMO001',
+                phone: '0971280030',
+                address: 'Tổng kho Phân phối OCOP Toàn quốc',
+                role: 'distributor',
+                roleLabel: 'Nhà Phân Phối / Đối Tác HTX',
+                isDistributor: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_ad01',
+                username: 'ThaoNguyenad01',
+                loginId: 'ThaoNguyenad01',
+                email: 'thaonguyen.ad01@ocop.vn',
+                name: 'Thảo Nguyên (Admin 01)',
+                fullName: 'Thảo Nguyên (Admin 01)',
+                password: '0000000',
+                adminId: 'AD01',
+                phone: '0988880001',
+                address: 'Ban Điều hành OCOP DigitalFest 2026',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị',
+                isAdmin: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_ad02',
+                username: 'KimNganad02',
+                loginId: 'KimNganad02',
+                email: 'kimngan.ad02@ocop.vn',
+                name: 'Kim Ngân (Admin 02)',
+                fullName: 'Kim Ngân (Admin 02)',
+                password: '1111111',
+                adminId: 'AD02',
+                phone: '0988880002',
+                address: 'Trung tâm Điều phối O2O Showroom',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị',
+                isAdmin: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_ad03',
+                username: 'VinhPhucad03',
+                loginId: 'VinhPhucad03',
+                email: 'vinhphuc.ad03@ocop.vn',
+                name: 'Vĩnh Phúc (Admin 03)',
+                fullName: 'Vĩnh Phúc (Admin 03)',
+                password: '2222222',
+                adminId: 'AD03',
+                phone: '0988880003',
+                address: 'Bộ phận Tài chính & Dòng tiền OCOP',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị',
+                isAdmin: true,
+                provider: 'Local',
+                verified: true
+            },
+            {
+                id: 'usr_ad04',
+                username: 'ThanhBinhad04',
+                loginId: 'ThanhBinhad04',
+                email: 'thanhbinh.ad04@ocop.vn',
+                name: 'Thanh Bình (Admin 04)',
+                fullName: 'Thanh Bình (Admin 04)',
+                password: '3333333',
+                adminId: 'AD04',
+                phone: '0988880004',
+                address: 'Phòng Phát triển Đối tác Hợp tác xã',
+                role: 'admin',
+                roleLabel: 'Admin Quản Trị',
+                isAdmin: true,
                 provider: 'Local',
                 verified: true
             }
@@ -16101,6 +16414,66 @@ function updateCustomerHeaderUI() {
         finally{if(button){button.disabled=false;button.removeAttribute?.('aria-busy');}}
     }
     window.handleCustomerLoginSubmit = handleCustomerLoginSubmit;
+window.quickSelectDemoAccount = async function (username) {
+        const demoAccounts = {
+            'khachhang': { user: 'khachhang', pass: '123456', name: 'Khách hàng demo', role: 'customer' },
+            'admin': { user: 'admin', pass: '000000', name: 'Admin demo', role: 'admin' },
+            'nppdemo': { user: 'nppdemo', pass: 'NppDemo@2026', name: 'Nhà phân phối demo', role: 'distributor' },
+            'ThaoNguyenad01': { user: 'ThaoNguyenad01', pass: '0000000', name: 'Admin Thảo Nguyên (ad01)', role: 'admin' },
+            'KimNganad02': { user: 'KimNganad02', pass: '1111111', name: 'Admin Kim Ngân (ad02)', role: 'admin' },
+            'VinhPhucad03': { user: 'VinhPhucad03', pass: '2222222', name: 'Admin Vĩnh Phúc (ad03)', role: 'admin' },
+            'ThanhBinhad04': { user: 'ThanhBinhad04', pass: '3333333', name: 'Admin Thanh Bình (ad04)', role: 'admin' }
+        };
+        const acc = demoAccounts[username];
+        if (!acc) return;
+
+        // 1. Điền vào form customer-auth-modal
+        const custUser = document.getElementById('cust-login-user');
+        const custPass = document.getElementById('cust-login-pass');
+        if (custUser) custUser.value = acc.user;
+        if (custPass) custPass.value = acc.pass;
+
+        // 2. Điền vào form auth-modal nếu có
+        const authName = document.getElementById('auth-name');
+        const authPass = document.getElementById('auth-password');
+        if (authName) authName.value = acc.user;
+        if (authPass) authPass.value = acc.pass;
+
+        // Chuyển tab sang đăng nhập nếu đang ở tab khác
+        if (typeof switchCustomerAuthTab === 'function') switchCustomerAuthTab('login');
+        if (typeof switchAuthTab === 'function') switchAuthTab('login');
+
+        // 3. Thực hiện đăng nhập trực tiếp qua OCOPAuth
+        try {
+            if (window.OCOPAuth && typeof window.OCOPAuth.login === 'function') {
+                await window.OCOPAuth.login(acc.user, acc.pass);
+                if (custPass) { custPass.value = ''; custPass.type = 'password'; }
+                if (authPass) { authPass.value = ''; authPass.type = 'password'; }
+                if (typeof updateCustomerHeaderUI === 'function') updateCustomerHeaderUI();
+                if (typeof closeCustomerAuthModal === 'function') closeCustomerAuthModal();
+                document.getElementById('auth-modal')?.classList.add('hidden');
+                if (typeof showToast === 'function') {
+                    showToast('Đăng nhập thành công: ' + acc.name, 'success');
+                }
+                if (acc.role === 'admin') {
+                    sessionStorage.setItem('ocop_admin_pin_verified', 'true');
+                    sessionStorage.setItem('admin_pin_verified', 'true');
+                }
+            } else if (typeof handleCustomerLoginSubmit === 'function') {
+                await handleCustomerLoginSubmit();
+            }
+        } catch (err) {
+            if (typeof showCustomerAuthAlert === 'function') {
+                showCustomerAuthAlert(err.message || 'Chưa đăng nhập được.', 'error');
+            }
+            if (typeof showToast === 'function') {
+                showToast(err.message || 'Chưa đăng nhập được.', 'error');
+            }
+        }
+    };
+    window.quickFillDemoJudge = function () {
+        window.quickSelectDemoAccount('admin');
+    };
     async function handleCustomerRegisterSubmit() {
         const value=id=>document.getElementById(id)?.value||'';
         if(value('cust-reg-pass')!==value('cust-reg-pass2')){showCustomerAuthAlert('Mật khẩu xác nhận chưa khớp.','error');return;}
