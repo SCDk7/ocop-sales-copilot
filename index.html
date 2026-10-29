@@ -119,7 +119,7 @@
  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=a78371028241">
  <!-- Project Stylesheets -->
  <link rel="stylesheet" href="style.css?v=8aec987c157e">
-    <link rel="stylesheet" href="skytech-complete.css?v=462d09feb6d6">
+    <link rel="stylesheet" href="skytech-complete.css?v=188e6adb0248">
  <!-- <link rel="stylesheet" href="styledangcap.css"> -->
  <!-- <link rel="stylesheet" href="SuaLoiKoClick.css"> -->
  <style>
@@ -796,6 +796,7 @@
         }
         html {
             overflow-x: hidden;
+            overflow-y: auto !important;
         }
         /* Sky Blue & Clean Tech SaaS Theme - AI Digital Business 2026 */
         /* Dark Tech Base: #0d1117, linear-gradient(180deg, #07120e 0%, #0b0f14 100%) */
@@ -1714,6 +1715,11 @@
             z-index: 100;
             color-scheme: light !important;
             overscroll-behavior: contain;
+            overscroll-behavior-y: auto !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            -webkit-overflow-scrolling: touch !important;
+            touch-action: pan-y !important;
         }
         #ocop-intro-overlay::before,
         #ocop-intro-overlay::after,
@@ -2748,6 +2754,9 @@
  </button>
  <button type="button" onclick="openAllStoresModal()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs">
  <span id="header-nav-stores-label">🗺️ Điểm Bán OCOP</span>
+ </button>
+ <button type="button" id="btn-header-back-intro" onclick="openIntroModal()" class="header-nav-btn px-3 py-1.5 rounded-xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-bold flex items-center gap-1.5 transition whitespace-nowrap cursor-pointer shadow-xs" title="Quay lại trang đầu tiên (Bản đồ OCOP)">
+ <span id="header-nav-back-intro-label">🔙 Quay lại</span>
  </button>
  </nav>
  <!-- Quick Action Cluster: Cart + CTAs + Language + Login -->
@@ -4146,7 +4155,7 @@
  </div>
  </div>
  <!-- 8.1 MODAL CHI TIẾT ĐIỂM BÁN & CỬA HÀNG OCOP CỦA SẢN PHẨM -->
-    <div id="ocop-store-modal" class="fixed inset-0 z-[10000000] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md">
+    <div id="ocop-store-modal" class="fixed inset-0 z-[10000000] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md" onclick="if(event.target === this) closeStoreLocator()">
         <div class="absolute inset-0" onclick="closeStoreLocator()"></div>
         <div class="relative bg-white rounded-3xl max-w-3xl w-full shadow-2xl z-10 border-2 border-emerald-400/60 animate-pop-in flex flex-col overflow-hidden my-auto" style="max-height: min(88vh, 760px);">
             <!-- Header Modal (Cố định ở trên, không bị trượt dưới thanh menu) -->
@@ -4171,7 +4180,7 @@
         </div>
     </div>
     <!-- 8.2 MODAL BẢN ĐỒ & DANH BẠ ĐIỂM BÁN OCOP TOÀN QUỐC -->
-    <div id="ocop-all-stores-modal" class="fixed inset-0 z-[10000000] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md">
+    <div id="ocop-all-stores-modal" class="fixed inset-0 z-[10000000] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md" onclick="if(event.target === this) closeAllStoresModal()">
         <div class="absolute inset-0" onclick="closeAllStoresModal()"></div>
         <div class="store-directory-panel relative bg-white rounded-3xl max-w-4xl w-full shadow-2xl z-10 border-2 border-emerald-400/60 animate-pop-in flex flex-col overflow-hidden my-auto" style="max-height: min(88vh, 780px);">
             <!-- Header Modal -->
@@ -14617,6 +14626,13 @@
                 ko: '🗺️ OCOP 매장 안내',
                 ja: '🗺️ OCOP販売店舗'
             });
+            safeSetText('#header-nav-back-intro-label', {
+                vi: '🔙 Quay lại',
+                en: '🔙 Back / Map',
+                zh: '🔙 返回首页',
+                ko: '🔙 메인/지도',
+                ja: '🔙 ホーム/地図'
+            });
             safeSetText('#header-cart-toggle span:not(#header-cart-count)', {
                 vi: 'Giỏ hàng',
                 en: 'Cart',
@@ -16555,7 +16571,7 @@ window.quickSelectDemoAccount = async function (username) {
 <link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=6082bfd08879"></script>
 <script src="checkout-payment.js?v=5eb2ae0cd06e"></script>
-<script src="skytech-complete.js?v=22c29fa0685c"></script>
+<script src="skytech-complete.js?v=b999cf5c3393"></script>
 <script src="cart-ui.js?v=5cd216c94e9c"></script>
 <script src="password-recovery.js?v=92dfd0e3dc3a"></script>
 <script src="account-center.js?v=15b862ef8f27"></script>

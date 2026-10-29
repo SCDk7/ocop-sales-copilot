@@ -4559,10 +4559,6 @@ Bạn đang tìm món quà sức khỏe, sang trọng và đậm đà bản sắ
 
     // SMOOTH MOUSE WHEEL SCROLL ASSURANCE FOR EXTERNAL MOUSE & TOUCHPAD (BẤT KỲ ĐÂU TRÊN MÀN HÌNH)
     (function initUniversalMouseWheelScroll() {
-        // Mở khóa cuộn trang 100%: Trong trình duyệt thực tế, không chặn con lăn chuột để đảm bảo cuộn mượt 60FPS
-        if (typeof document !== 'undefined' && typeof document.body?.appendChild === 'function') {
-            return;
-        }
         function getScrollableContainer(el) {
             let cur = el;
             while (cur && cur !== document.body && cur !== document.documentElement) {

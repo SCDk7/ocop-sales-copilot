@@ -2861,13 +2861,15 @@ html:not(.catalog-browsing) body:not(.catalog-browsing) #ocop-intro-overlay:not(
     -webkit-overflow-scrolling: touch !important;
     overscroll-behavior: contain !important;
 }
-@media (min-width: 1024px) {
-    html:not(.catalog-browsing) #ocop-intro-overlay:not(.hidden),
-    html:not(.catalog-browsing) body:not(.catalog-browsing) #ocop-intro-overlay:not(.hidden) {
-        overflow-y: auto !important;
-        height: 100vh !important;
-        max-height: 100vh !important;
-    }
+#ocop-intro-overlay:not(.hidden),
+html:not(.catalog-browsing) #ocop-intro-overlay:not(.hidden),
+html:not(.catalog-browsing) body:not(.catalog-browsing) #ocop-intro-overlay:not(.hidden) {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
 }
 
 html:has(.storefront-header) { scroll-padding-top: calc(var(--storefront-nav-height, 60px) + 12px); }
