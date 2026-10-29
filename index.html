@@ -114,19 +114,19 @@
  <script src="ui-translations.js?v=df82d3edd746"></script>
  <script src="sales-translations.js?v=311929c34e76"></script>
  <script src="site-language.js?v=df2d88d4b11b"></script>
- <script src="customer-session.js?v=3f6c651f884f"></script>
+ <script src="customer-session.js?v=04611a3c4b35"></script>
  <script src="voice-engine.js?v=fb7c587f8eb7"></script>
- <script src="ai-shopping.js?v=013db6c43e56"></script>
-<script src="ai-web-research.js?v=8f844e34875d"></script>
-<script src="ocop-assistant-profile.js?v=d4bef09105d1"></script>
+ <script src="ai-shopping.js?v=63d92806c70e"></script>
+<script src="ai-web-research.js?v=18d72c462cdb"></script>
+<script src="ocop-assistant-profile.js?v=960757c1965c"></script>
 <script src="data/tea-knowledge.js?v=8757f3258ad7"></script>
 <script src="product-training.js?v=94fdfcc3129c"></script>
 <script src="catalog-facts.js?v=097ae56b7ac5"></script>
-<script src="product-consultant.js?v=e93f4668469d"></script>
-<script src="ai-scenarios.js?v=e8111c2241ca"></script>
+<script src="product-consultant.js?v=68220bb323fd"></script>
+<script src="ai-scenarios.js?v=72e8e9f5058d"></script>
 <script src="product-locations.js?v=24739bc83737"></script>
-<script src="ai-request-analysis.js?v=1c706a4af39d"></script>
-<script src="chat-fallback.js?v=dc9fba15d056"></script>
+<script src="ai-request-analysis.js?v=073d26cd533e"></script>
+<script src="chat-fallback.js?v=88b87e0ce84f"></script>
  <script src="chat-language.js?v=6239eb709716"></script>
  <link rel="stylesheet" href="assets/tailwind.css?v=fd015ecf5cba">
  <!-- Font Awesome Icons & Google Fonts -->
@@ -2505,7 +2505,7 @@
             animation: none !important;
         }
 </style>
-<link rel="stylesheet" href="assets/checkout-payment.css?v=ded8caeae4a3"></head>
+<link rel="stylesheet" href="assets/checkout-payment.css?v=016e2182cfbf"></head>
 <body class="bg-ocop-ambient text-gray-800 antialiased relative min-h-screen flex flex-col justify-between">
  <!-- THANH TIẾN TRÌNH CUỘN HOÀNG KIM (GOLDEN SCROLL PROGRESS BAR) -->
  <div id="scroll-progress-container" class="fixed top-0 left-0 right-0 h-1 z-[99999] bg-transparent pointer-events-none" aria-hidden="true">
@@ -5584,11 +5584,11 @@
  <!-- ============================================================== -->
  <!-- JAVASCRIPT XỬ LÝ HOÀN CHỈNH TOÀN BỘ CHỨC NĂNG WEBSITE -->
  <!-- ============================================================== -->
- <script src="product-codes.js?v=56b4fc46df38"></script>
-<script src="product-search.js?v=48ab84c2fb78"></script>
+ <script src="product-codes.js?v=804e37553039"></script>
+<script src="product-search.js?v=e1e340296562"></script>
 <script src="data.js?v=bac3f355ae37"></script>
  <script src="ocop-stores.js?v=e967d59dd2fa"></script>
- <script src="ai-business-knowledge.js?v=08196d7c741a"></script>
+ <script src="ai-business-knowledge.js?v=1a8ddae50121"></script>
  <script src="assets/vendor/leaflet/leaflet.js?v=3104b526504d"></script>
  <script>
         // -------------------------------------------------------------
@@ -12323,8 +12323,7 @@ let productSearchTimer;
                 </div>
             `;
             modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
+            // preservePageScrollState();
         }
         function closeStoreLocator() {
             const modal = document.getElementById('ocop-store-modal');
@@ -12490,8 +12489,7 @@ let productSearchTimer;
             modal.style.setProperty('display', 'flex', 'important');
             body.scrollTop = 0;
             document.getElementById('header-stores-toggle')?.setAttribute('aria-expanded', 'true');
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
+            // preservePageScrollState();
             modal.querySelector('button[onclick="closeAllStoresModal()"]')?.focus({preventScroll: true});
         }
         function closeAllStoresModal() {
@@ -16235,9 +16233,9 @@ let productSearchTimer;
 <script src="script.js?v=bf8bacaa3ad7"></script>
 <script src="product-reviews-ui.js?v=782e5b2fd959"></script>
 <script src="admin-management.js?v=fdf4802bf20f"></script>
-<script src="checkout-intent.js?v=c225c3c7d1e6"></script>
-<script src="account-client.js?v=43ceb3947413"></script>
-<script src="chat-dictation.js?v=7a197c4ca498"></script>
+<script src="checkout-intent.js?v=dc8a0fa122ec"></script>
+<script src="account-client.js?v=dff33e3c48cd"></script>
+<script src="chat-dictation.js?v=aa49ac3471ea"></script>
 <script>
     window.chatDictation = ChatDictation.mount({
         input: document.getElementById('ai-chat-input'),
@@ -16292,7 +16290,7 @@ let productSearchTimer;
         window.searchDictations.push(controller);
     });
 </script>
-<script src="shop-prices.js?v=e97e3e80787b"></script>
+<script src="shop-prices.js?v=e8a0aac06d13"></script>
  
 <script>
     // -------------------------------------------------------------
@@ -16708,7 +16706,7 @@ function updateCustomerHeaderUI() {
         const user = getCurrentCustomer();
         modal.classList.remove('hidden');
         modal.style.setProperty('display', 'flex', 'important');
-        document.body.style.overflow = 'hidden';
+        // document.body.style.overflow = "auto";
         if (user && user.username) {
             switchCustomerAuthTab('orders');
         } else {
@@ -17030,15 +17028,15 @@ function updateCustomerHeaderUI() {
 </script>
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->
 <link rel="stylesheet" href="store-directory-light.css?v=cb405b0da1a4">
-<link rel="stylesheet" href="cart-ui.css?v=80dd2dc99bc9">
+<link rel="stylesheet" href="cart-ui.css?v=1ffce2310bef">
 <link rel="stylesheet" href="account-center.css?v=94f51ea5f466">
 <link rel="stylesheet" href="admin-management.css?v=17d81dd95d9d">
 <script src="voucher-pool.js?v=6082bfd08879"></script>
 <script src="checkout-payment.js?v=130d5ba22e63"></script>
-<script src="skytech-complete.js?v=cab5ad6394b5"></script>
+<script src="skytech-complete.js?v=0303c84728d1"></script>
 <script src="cart-ui.js?v=5cd216c94e9c"></script>
-<script src="password-recovery.js?v=04114d6e16e8"></script>
-<script src="account-center.js?v=f8f5b8415f67"></script>
+<script src="password-recovery.js?v=92dfd0e3dc3a"></script>
+<script src="account-center.js?v=15b862ef8f27"></script>
 <script src="storefront-ui.js?v=50b7d1778fe1"></script>
 <script src="ui-branding.js?v=66dc84bfc24e"></script>
 <script src="storefront-navigation.js?v=aaa5e336b621"></script>

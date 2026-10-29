@@ -1732,7 +1732,7 @@
         modal.classList.remove('hidden');
         modal.style.setProperty('display', 'flex', 'important');
         modal.style.setProperty('z-index', '99999', 'important');
-        document.body.style.overflow = 'hidden';
+        // document.body.style.overflow = "auto";
     };
 
     window.closeOnlineOrderModal = function () {
@@ -2129,7 +2129,7 @@
         successModal.classList.remove('hidden');
         successModal.style.setProperty('display', 'flex', 'important');
         successModal.style.setProperty('z-index', '99999', 'important');
-        document.body.style.overflow = 'hidden';
+        // document.body.style.overflow = "auto";
     };
 
     window.closeOrderSuccessModal = function () {
@@ -2845,7 +2845,7 @@
             if (typeof updateFinancialSimulator === 'function') {
                 updateFinancialSimulator();
             }
-            document.body.style.overflow = 'hidden';
+            // document.body.style.overflow = "auto";
         }
     }
 
