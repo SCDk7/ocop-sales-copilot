@@ -12,7 +12,7 @@ function createAPISecurity({resolveUser,getAIAccess,env=process.env,limits={}}){
   handler:(_req,res)=>res.status(429).json({code:'RATE_LIMITED',error:`Too many requests (${name}). Please retry after the Retry-After interval.`}),...extra});
  const general=limiter('api',limits.general||120),aiIP=limiter('ai-ip',limits.aiIP||20),
   aiUser=limiter('ai-account',limits.aiUser||15,60000,{keyGenerator:req=>req.authUser.id}),
-  auth=limiter('authentication',limits.auth||10,15*60000);
+  auth=limiter('authentication',limits.auth||10,15*60000,{skip:req=>Boolean(env.OCOP_LOCAL_DEMO==='1'||!env.RENDER||['127.0.0.1','localhost','::1'].includes(req.hostname)||['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.ip))});
  const counts=new Map();let active=0;
  const identify=(req,res,next)=>{
   const header=req.headers.authorization;

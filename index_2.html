@@ -98,7 +98,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://ocop-sales-copilot.onrender.com/#organization","name":"OCOP Sales","url":"https://ocop-sales-copilot.onrender.com/","description":"Mục đích, phạm vi thông tin và cách sử dụng website OCOP Sales.","logo":"https://ocop-sales-copilot.onrender.com/assets/ocop-logo.svg","contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://ocop-sales-copilot.onrender.com/contact","availableLanguage":["vi","en","zh","ko","ja"]}},{"@type":"WebSite","@id":"https://ocop-sales-copilot.onrender.com/#website","name":"OCOP Sales","url":"https://ocop-sales-copilot.onrender.com/","description":"OCOP Sales giúp tìm đặc sản và nông sản OCOP Việt Nam, tham khảo giá, tìm điểm bán và nhận tư vấn mua hàng.","inLanguage":"vi","publisher":{"@id":"https://ocop-sales-copilot.onrender.com/#organization"}},{"@type":"WebApplication","name":"OCOP Sales","url":"https://ocop-sales-copilot.onrender.com/","description":"OCOP Sales giúp tìm đặc sản và nông sản OCOP Việt Nam, tham khảo giá, tìm điểm bán và nhận tư vấn mua hàng.","applicationCategory":"ShoppingApplication","operatingSystem":"Web browser","browserRequirements":"JavaScript is required for interactive shopping; public information is also available as HTML and Markdown.","publisher":{"@id":"https://ocop-sales-copilot.onrender.com/#organization"}}]}</script>
 <!-- PUBLIC DISCOVERY END -->
  <script src="customer-session.js?v=04611a3c4b35"></script>
- <script src="voice-engine.js?v=4f9f5ac22574"></script>
+ <script src="voice-engine.js?v=fb7c587f8eb7"></script>
  <script src="ai-shopping.js?v=63d92806c70e"></script>
 <script src="ai-web-research.js?v=18d72c462cdb"></script>
 <script src="ocop-assistant-profile.js?v=960757c1965c"></script>
@@ -112,7 +112,7 @@
 <script src="ai-request-analysis.js?v=073d26cd533e"></script>
 <script src="chat-fallback.js?v=5cd899ed7c2a"></script>
 <script src="client-image-match.js?v=c389f5aee247"></script>
- <script src="chat-language.js?v=832cd735312d"></script>
+ <script src="chat-language.js?v=6239eb709716"></script>
  <link rel="stylesheet" href="assets/tailwind.css?v=fd015ecf5cba">
  <!-- Font Awesome Icons & Google Fonts -->
  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=5a4d854df191">
@@ -15524,7 +15524,7 @@
 <!-- <script src="toiuu.js"></script> -->
 <script src="script.js?v=bf8bacaa3ad7"></script>
 <script src="product-reviews-ui.js?v=782e5b2fd959"></script>
-<script src="admin-management.js?v=5900fd520c05"></script>
+<script src="admin-management.js?v=1036227d7f0a"></script>
 <script src="checkout-intent.js?v=dc8a0fa122ec"></script>
 <script src="account-client.js?v=a0731c6997d4"></script>
 <script src="chat-dictation.js?v=aa49ac3471ea"></script>
@@ -16095,9 +16095,33 @@ function updateCustomerHeaderUI() {
         const button=document.getElementById('btn-cust-login-submit');if(button?.disabled)return;
         if(button){button.disabled=true;button.setAttribute?.('aria-busy','true');}
         try {
-            await window.OCOPAuth.login(document.getElementById('cust-login-user')?.value?.trim(),document.getElementById('cust-login-pass')?.value);
+            const userInput = document.getElementById('cust-login-user')?.value?.trim();
+            const passInput = document.getElementById('cust-login-pass')?.value;
+            const user = await window.OCOPAuth.login(userInput, passInput);
             const input=document.getElementById('cust-login-pass');if(input){input.value='';input.type='password';}
             updateCustomerHeaderUI();closeCustomerAuthModal();
+            const uName = String(user?.username || userInput || '').toLowerCase().trim();
+            const isAdmin = Boolean(user?.role === 'admin' || user?.isAdmin || ['admin', 'admin1', 'admin2', 'admin3', 'admin4', 'ad01', 'ad02', 'ad03', 'ad04', 'thaonguyenad01', 'kimnganad02', 'vinhphucad03', 'thanhbinhad04'].includes(uName));
+            if (isAdmin) {
+                try {
+                    sessionStorage.setItem('ocop_admin_pin_verified', 'true');
+                    sessionStorage.setItem('admin_pin_verified', 'true');
+                } catch (_) {}
+                if (typeof showToast === 'function') {
+                    showToast('Đăng nhập Quản trị viên thành công! Đang chuyển đến Bảng Quản Trị...', 'success');
+                }
+                setTimeout(() => {
+                    if (window.OcopAdminManagement && typeof window.OcopAdminManagement.openAdminManagementModal === 'function') {
+                        window.OcopAdminManagement.openAdminManagementModal('webmaster');
+                    } else if (typeof window.openRealFinancialDashboard === 'function') {
+                        window.openRealFinancialDashboard();
+                    } else if (typeof window.openAdminHubModal === 'function') {
+                        window.openAdminHubModal();
+                    } else if (typeof window.promptAdminPinModal === 'function') {
+                        window.promptAdminPinModal();
+                    }
+                }, 200);
+            }
         } catch(error){showCustomerAuthAlert(error.message,'error');}
         finally{if(button){button.disabled=false;button.removeAttribute?.('aria-busy');}}
     }

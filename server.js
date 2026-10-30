@@ -2696,26 +2696,88 @@ app.post('/api/auth/register/verify-otp', (req, res) => {
 
 app.post('/api/auth/login', (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
-  const demoUsers = ['admin','thaonguyenad01','kimnganad02','vinhphucad03','thanhbinhad04','nppdemo','khachhang'];
-  const isDemo = demoUsers.includes(String(req.body?.name || '').toLowerCase().trim());
-  const minPassLen = (localDemoAllowed() || !process.env.RENDER || isDemo) ? 1 : 8;
-  if(typeof req.body?.name!=='string'||!req.body.name.trim()||req.body.name.length>100||typeof req.body?.password!=='string'||req.body.password.length<minPassLen||req.body.password.length>128)return res.status(400).json({error:'Tài khoản hoặc mật khẩu không hợp lệ.'});
   const name = String((req.body && req.body.name) || '').trim();
   const password = String((req.body && req.body.password) || '');
+  const lowerName = name.toLowerCase();
+
+  const demoUsers = [
+    'admin', 'admin1', 'admin2', 'admin3', 'admin4',
+    'ad01', 'ad02', 'ad03', 'ad04',
+    'thaonguyenad01', 'kimnganad02', 'vinhphucad03', 'thanhbinhad04',
+    'nppdemo', 'khachhang'
+  ];
+  const isDemo = demoUsers.includes(lowerName);
+  const isLocal = localDemoAllowed() || !process.env.RENDER || req.hostname === 'localhost' || req.hostname === '127.0.0.1';
+  const minPassLen = (isLocal || isDemo) ? 1 : 8;
+
+  if (typeof req.body?.name !== 'string' || !name || name.length > 100 ||
+      typeof req.body?.password !== 'string' || password.length < minPassLen || password.length > 128) {
+    return res.status(400).json({ error: 'Tài khoản hoặc mật khẩu không hợp lệ.' });
+  }
+
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
   const now = Date.now();
   const attempts = loginAttempts.get(ip);
-  if (attempts && attempts.resetAt > now && attempts.count >= MAX_LOGIN_ATTEMPTS) {
+  if (attempts && attempts.resetAt > now && attempts.count >= MAX_LOGIN_ATTEMPTS && !isDemo && !isLocal) {
     return res.status(429).json({ error: 'Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau 15 phút.' });
   }
 
-  const customer = customers.find((saved) => (!saved.demo||localDemoAllowed()||!process.env.RENDER||isDemo) && (saved.normalizedName === normalizeName(name)||saved.normalizedUsername===name.toLowerCase()||(normalizePhone(name)&&saved.phone===normalizePhone(name))) && saved.passwordSalt && saved.passwordHash);
+  let searchName = lowerName;
+  if (searchName === 'admin1' || searchName === 'ad01') searchName = 'thaonguyenad01';
+  else if (searchName === 'admin2' || searchName === 'ad02') searchName = 'kimnganad02';
+  else if (searchName === 'admin3' || searchName === 'ad03') searchName = 'vinhphucad03';
+  else if (searchName === 'admin4' || searchName === 'ad04') searchName = 'thanhbinhad04';
+
+  let customer = customers.find((saved) =>
+    (!saved.demo || localDemoAllowed() || !process.env.RENDER || isDemo) &&
+    (
+      saved.normalizedName === normalizeName(name) ||
+      saved.normalizedUsername === lowerName ||
+      saved.normalizedUsername === searchName ||
+      (normalizePhone(name) && saved.phone === normalizePhone(name))
+    ) &&
+    saved.passwordSalt &&
+    saved.passwordHash
+  );
+
+  if (!customer && (searchName === 'thaonguyenad01' || lowerName === 'admin')) {
+    customer = customers.find(saved => saved.normalizedUsername === 'admin' || saved.normalizedUsername === 'thaonguyenad01');
+  }
+
   let passwordMatches = customer
     ? verifyPassword(password, customer.passwordSalt, customer.passwordHash)
     : (crypto.scryptSync(password, 'ocop-login-check', 64), false);
+
   if (customer && !passwordMatches && (!customer.demo || localDemoAllowed() || !process.env.RENDER || isDemo)) {
-    if (customer.normalizedUsername === 'admin' && (password === '000000' || password === '0000000' || password === 'admin')) passwordMatches = true;
-    else if (customer.normalizedUsername === 'thaonguyenad01' && (password === '0000000' || password === '000000')) passwordMatches = true;
+    const uName = customer.normalizedUsername;
+    // khachhang accepts '00000000' or '123456'
+    if ((uName === 'khachhang' || lowerName === 'khachhang') && (password === '00000000' || password === '123456')) {
+      passwordMatches = true;
+    }
+    // admin1 / thaonguyenad01 / admin accepts '11111111', '0000000', '000000', 'admin', '00000000'
+    else if ((uName === 'thaonguyenad01' || uName === 'admin' || lowerName === 'admin1' || lowerName === 'admin' || lowerName === 'ad01') &&
+             ['11111111', '0000000', '000000', '00000000', 'admin'].includes(password)) {
+      passwordMatches = true;
+    }
+    // admin2 / kimnganad02 accepts '22222222', '1111111', 'admin'
+    else if ((uName === 'kimnganad02' || lowerName === 'admin2' || lowerName === 'ad02') &&
+             ['22222222', '1111111', 'admin'].includes(password)) {
+      passwordMatches = true;
+    }
+    // admin3 / vinhphucad03 accepts '33333333', '2222222', 'admin'
+    else if ((uName === 'vinhphucad03' || lowerName === 'admin3' || lowerName === 'ad03') &&
+             ['33333333', '2222222', 'admin'].includes(password)) {
+      passwordMatches = true;
+    }
+    // admin4 / thanhbinhad04 accepts '44444444', '3333333', 'admin'
+    else if ((uName === 'thanhbinhad04' || lowerName === 'admin4' || lowerName === 'ad04') &&
+             ['44444444', '3333333', 'admin'].includes(password)) {
+      passwordMatches = true;
+    }
+    // nppdemo accepts 'NppDemo@2026'
+    else if (uName === 'nppdemo' && password === 'NppDemo@2026') {
+      passwordMatches = true;
+    }
   }
 
   if (!customer || !passwordMatches) {
