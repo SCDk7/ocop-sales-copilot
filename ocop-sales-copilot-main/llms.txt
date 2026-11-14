@@ -1,0 +1,28 @@
+# OCOP Sales
+
+> Website tra cứu đặc sản và nông sản Việt Nam, hỗ trợ lựa chọn theo địa phương, nhóm sản phẩm và ngân sách.
+
+Use this website to find Vietnamese agricultural products and regional specialties in the store catalogue. Prices and OCOP star ratings are store-provided data, not independently verified certificates. Official organization contact details are not published yet.
+
+## When to use this / Khi nào nên sử dụng
+
+- [Tìm sản phẩm theo tên, mã, địa phương hoặc ngân sách](https://ocop-sales-copilot.onrender.com/catalog.md): Read the catalogue, then compare the customer's requirements. Do not infer availability from a missing stock value.
+- [Tư vấn trước khi đặt hàng](https://ocop-sales-copilot.onrender.com/index.md): Explain the website's shopping and image-matching capabilities; image similarity does not establish product origin or certification.
+- [Hỗ trợ đơn hàng và khiếu nại](https://ocop-sales-copilot.onrender.com/contact.md): Direct the customer to website CSKH and ask for the order reference; never request bank passwords or OTPs.
+
+## How to use / Cách truy cập
+
+- [Trang chủ dạng Markdown](https://ocop-sales-copilot.onrender.com/): GET with Accept: text/markdown; HTML remains available with Accept: text/html. Wildcard requests default to HTML.
+- [Danh mục JSON công khai](https://ocop-sales-copilot.onrender.com/api/ai/shop-products): GET, no login required. Use productId, productCode, name, region and price; null stock means unverified. Do not fabricate certification claims.
+- [Quy trình đặt hàng](https://ocop-sales-copilot.onrender.com/terms.md): Order creation requires the customer's authenticated session, explicit confirmation and a UUID v4 Idempotency-Key header. Retry the same intent with the same key. Never submit an order merely because an agent found a matching product.
+
+## Thông tin và quyền riêng tư
+
+- [Giới thiệu](https://ocop-sales-copilot.onrender.com/about.md): Project scope and limitations.
+- [Liên hệ](https://ocop-sales-copilot.onrender.com/contact.md): Support channels; no unverified phone, email or street address.
+- [Quyền riêng tư](https://ocop-sales-copilot.onrender.com/privacy.md): Technical draft describing browser storage, accounts, orders and optional external providers; owner review is required before publication.
+
+## Optional
+
+- [Sitemap XML](https://ocop-sales-copilot.onrender.com/sitemap.xml): Public indexable pages only.
+- [Robots](https://ocop-sales-copilot.onrender.com/robots.txt): Crawl guidance does not grant access to private APIs.

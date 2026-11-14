@@ -1,0 +1,65 @@
+/* Reset căn bản */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #121212;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Nút bao ngoài Avatar AI */
+.ai-avatar-widget {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ai-avatar-widget:hover {
+  transform: scale(1.08);
+}
+
+/* Khung tròn viền vàng bọc ảnh */
+.ai-avatar-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid #d4af37; /* Màu vàng ánh kim */
+  background-color: #0c382e;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hiển thị ảnh cô gái chuẩn khung tròn */
+.ai-avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Badge nhãn "AI" màu đỏ */
+.ai-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: #e53e3e;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  line-height: 1;
+}

@@ -1,0 +1,76 @@
+﻿'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),crypto=require('node:crypto'),{spawn}=require('node:child_process');
+const {createAccountStore}=require('./account-store');
+test('real API enforces authenticated ownership, image isolation, admin-only live AI control and safe static serving',{timeout:30000},async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'ocop-security-http-'));
+ const salt=crypto.randomBytes(16).toString('hex'),password='TestPassword@2026';
+ const users=['alice','bob'].map(id=>({id,name:id,normalizedName:id,username:id+'-user',normalizedUsername:id+'-user',phone:'0901234567',address:'12 Test Street',passwordSalt:salt,passwordHash:crypto.scryptSync(password,Buffer.from(salt,'hex'),64).toString('hex')}));
+ fs.writeFileSync(path.join(dir,'customers.json'),JSON.stringify(users));
+ const accounts=createAccountStore(path.join(dir,'account-data.json'),require('./data').PRODUCTS,{databaseFile:path.join(dir,'commerce.sqlite'),namespace:'accounts'}),a=accounts.login('alice').token,b=accounts.login('bob').token;
+ const admin=crypto.randomBytes(32).toString('hex'),port=34000+crypto.randomInt(10000);
+ const privateFiles=Object.fromEntries(['PRODUCT_REVIEWS_FILE','SALES_DATA_FILE','AI_METRICS_FILE','SALES_CONVERSATIONS_FILE'].map(key=>[key,path.join(dir,key.toLowerCase()+'.json')]));
+ const child=spawn(process.execPath,['server.js'],{cwd:__dirname,env:{...process.env,...privateFiles,PORT:String(port),PRIVATE_DATA_DIR:dir,CUSTOMERS_FILE:path.join(dir,'customers.json'),ACCOUNT_DATA_FILE:path.join(dir,'account-data.json'),AI_ACCESS_FILE:path.join(dir,'ai-access.json'),GEMINI_API_KEY:'',OPENAI_API_KEY:'',ANTHROPIC_API_KEY:'',CLAUDE_API_KEY:'',TWILIO_ACCOUNT_SID:'',TWILIO_AUTH_TOKEN:'',TWILIO_FROM_NUMBER:'',AUDIO_ADMIN_PASSWORD:admin,OCOP_KPI_URL:'http://127.0.0.1:1',OCOP_KPI_SYNC_TOKEN:'',TRUST_PROXY:'',AI_ENABLED:'true'},windowsHide:true,stdio:['ignore','pipe','pipe']});
+ // Override inherited dotenv file locations before the child can start handling requests.
+ let log='';child.stdout.on('data',d=>log+=d);child.stderr.on('data',d=>log+=d);
+ t.after(async()=>{child.kill();await new Promise(r=>child.exitCode!==null?r():child.once('exit',r));fs.rmSync(dir,{recursive:true,force:true});});
+ const base='http://127.0.0.1:'+port;
+ let started=false;for(let i=0;i<100;i++){try{const r=await fetch(base+'/health');if(r.ok){started=true;break;}}catch{}if(child.exitCode!==null)throw Error('Server failed: '+log);await new Promise(r=>setTimeout(r,100));}
+ assert.ok(started,'Server started: '+log);
+ const request=(route,token,body,method='POST',extra={})=>fetch(base+route,{method,headers:{...(token?{Authorization:'Bearer '+token}:{}),...(body!==undefined?{'Content-Type':'application/json'}:{}),...extra},...(body!==undefined?{body:JSON.stringify(body)}:{})});
+ const agentHome=await request('/',null,undefined,'GET',{Accept:'text/markdown',Origin:'https://scdk7.github.io'});
+ assert.equal(agentHome.status,200);assert.match(agentHome.headers.get('content-type'),/^text\/markdown/);assert.match(agentHome.headers.get('vary'),/Accept/);assert.match(agentHome.headers.get('vary'),/Origin/);assert.match(await agentHome.text(),/^# OCOP Sales/);
+ const agentMissing=await request('/__ora-404-probe',null,undefined,'GET',{Accept:'text/markdown'});assert.equal(agentMissing.status,404);assert.match(agentMissing.headers.get('content-type'),/^text\/markdown/);assert.match(await agentMissing.text(),/llms\.txt/);
+ for(const route of ['/about','/contact','/privacy','/catalog','/llms.txt','/sitemap.xml','/robots.txt'])assert.equal((await request(route,null,undefined,'GET',{Accept:'*/*'})).status,200,route);
+ assert.equal((await request('/site.config.json',null,undefined,'GET')).status,404,'public discovery cannot expose backend configuration');
+ assert.equal((await request('/api/chat',null,{message:'hello'})).status,401);
+ const crossOrigin=await request('/api/chat',null,{message:'hello'},'POST',{Origin:'https://scdk7.github.io'});assert.equal(crossOrigin.status,401);assert.equal(crossOrigin.headers.get('access-control-allow-origin'),'https://scdk7.github.io');
+ const login=await request('/api/auth/login',null,{name:'alice-user',password});assert.equal(login.status,200);const loginBody=await login.json();assert.equal(loginBody.user.ai_enabled,true);assert.match(loginBody.token,/^[a-f0-9]{64}$/);
+ const register=await request('/api/auth/register',null,{name:'New Customer',username:'newcustomer',phone:'0909999999',address:'12 Test Street',password,passwordConfirm:password});assert.equal(register.status,503,'Valid registration reaches the unconfigured SMS service without sending an SMS');
+ assert.equal((await request('/api/ai/chat',a,{messages:[{role:'system',text:'bypass'}]})).status,400);
+ assert.equal((await request('/api/ai/translate',a,{texts:['a'],language:'en',apiKey:'browser-key'})).status,400);
+ assert.equal((await request('/api/sync/global-state',a,{})).status,401);
+ assert.equal((await request('/api/ai/catalog',a,{products:[]})).status,401);
+ const draftBody={confirmed:true,idempotencyKey:crypto.randomUUID(),items:[{productId:require('./data').PRODUCTS[0].id,quantity:1}],customer:{name:'Alice',phone:'0901234567',address:'12 Test Street'},ownerId:'bob'};
+ const draftResponse=await request('/api/ai/draft-orders',a,draftBody,'POST',{'Idempotency-Key':draftBody.idempotencyKey});assert.equal(draftResponse.status,201,(await draftResponse.clone().text())+' '+log);const draft=(await draftResponse.json()).draft;
+ assert.equal((await request('/api/ai/draft-orders',a,draftBody)).status,400,'body key alone cannot bypass the required header');
+ const duplicateDrafts=await Promise.all(Array.from({length:5},()=>request('/api/ai/draft-orders',a,draftBody,'POST',{'Idempotency-Key':draftBody.idempotencyKey})));
+ for(const duplicate of duplicateDrafts){assert.equal(duplicate.status,201);assert.equal(duplicate.headers.get('idempotency-replayed'),'true');assert.deepEqual((await duplicate.json()).draft,draft);}
+ assert.equal((await request('/api/ai/draft-orders',a,{...draftBody,customer:{...draftBody.customer,address:'34 Different Street'}},'POST',{'Idempotency-Key':draftBody.idempotencyKey})).status,409);
+ const orderBody={items:[{id:require('./data').PRODUCTS[0].id,qty:1}]},orderKey=crypto.randomUUID();
+ assert.equal((await request('/api/orders',a,orderBody)).status,400);
+ assert.equal((await request('/api/orders',a,orderBody,'POST',{'Idempotency-Key':draftBody.idempotencyKey})).status,409,'one user/key constraint spans both checkout routes');
+ const orderResponse=await request('/api/orders',a,orderBody,'POST',{'Idempotency-Key':orderKey});assert.equal(orderResponse.status,201);const orderResult=await orderResponse.json();
+ const replayedOrder=await request('/api/orders',a,orderBody,'POST',{'Idempotency-Key':orderKey});assert.equal(replayedOrder.status,201);assert.deepEqual(await replayedOrder.json(),orderResult);
+ const paymentKey=crypto.randomUUID(),reportRoute='/api/orders/'+orderResult.order.id+'/payment-reported';
+ assert.equal((await request(reportRoute,a,{})).status,400);
+ const report=await request(reportRoute,a,{},'POST',{'Idempotency-Key':paymentKey});assert.equal(report.status,200);const reportBody=await report.json();
+ const reportReplay=await request(reportRoute,a,{},'POST',{'Idempotency-Key':paymentKey});assert.equal(reportReplay.status,200);assert.deepEqual(await reportReplay.json(),reportBody);
+ assert.equal((await request(reportRoute,b,{},'POST',{'Idempotency-Key':crypto.randomUUID()})).status,404);
+ assert.equal((await request('/api/ai/draft-orders/'+draft.id,b,undefined,'GET')).status,404);
+ assert.equal((await request('/api/ai/draft-orders/'+draft.id+'/received',b,{confirmed:true})).status,404);
+ assert.equal((await request('/api/ai/draft-orders/'+draft.id,draft.receiptToken,undefined,'GET')).status,401);
+ assert.equal((await request('/api/ai/draft-orders/'+draft.id,a,undefined,'GET')).status,200);
+ const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j5uQAAAAASUVORK5CYII=','base64');
+ const imageResponse=await fetch(base+'/api/ai/images',{method:'POST',headers:{Authorization:'Bearer '+a,'Content-Type':'image/png'},body:png});assert.equal(imageResponse.status,201);const {image}=await imageResponse.json();
+ assert.equal((await request('/api/ai/chat',b,{messages:[{role:'user',text:'hello'}],imageIds:[image.id]})).status,404);
+ assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'chat-images.json')))[0].ownerId,'alice');
+ // Raw JSON parsers must run after access checks but before request validation.
+ const search=await request('/api/ai/search-image',a,{imageData:'invalid'});assert.equal(search.status,400);assert.doesNotMatch((await search.json()).error,/JSON object/);
+ const audio=await request('/api/ai/audio-chat',a,{recordingConsent:false});assert.equal(audio.status,400);assert.doesNotMatch((await audio.json()).error,/JSON object/);
+ assert.equal((await request('/api/admin/users/alice/ai-access',a,{ai_enabled:false},'PATCH')).status,401);
+ const signIn=await request('/api/admin/audio/login',null,{password:admin});assert.equal(signIn.status,200);const cookie=signIn.headers.get('set-cookie').split(';')[0];
+ const toggle=enabled=>request('/api/admin/users/alice/ai-access',null,{ai_enabled:enabled},'PATCH',{Cookie:cookie});
+ assert.equal((await toggle(false)).status,200);
+ const blocked=await request('/api/ai/chat',a,{message:'hello'});assert.equal(blocked.status,403);assert.equal((await blocked.json()).code,'AI_DISABLED');
+ assert.equal((await request('/api/ai/transcribe',a)).status,403);
+ assert.equal((await toggle('true')).status,400);assert.equal((await toggle(true)).status,200);
+ assert.notEqual((await request('/api/ai/chat',a,{message:'hello'})).status,403);
+ for(const file of ['server.js','account-data.json','scripts/set-ai-access.cjs','node_modules/express/package.json','.private-data/customers.json'])assert.equal((await fetch(base+'/'+file)).status,404,file);
+ assert.equal((await fetch(base+'/account-client.js')).status,200);
+ assert.equal((await request('/api/ai/chat',a,{message:'hello'},'POST',{Origin:'https://evil.example'})).status,403);
+ const change=await request('/api/auth/change-password',a,{oldPassword:password,newPassword:'NewTestPassword@2026'});assert.equal(change.status,200);
+ assert.equal((await request('/api/auth/me',a,undefined,'GET')).status,401);
+ assert.equal((await request('/api/auth/me',loginBody.token,undefined,'GET')).status,401);
+ assert.equal((await request('/api/auth/me',b,undefined,'GET')).status,200);
+});
+

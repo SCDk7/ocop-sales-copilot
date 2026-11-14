@@ -1,0 +1,79 @@
+/* Layout shared by both storefront entrypoints. */
+#admin-management-modal #admin-mgmt-container {
+    width: min(1280px, 100%);
+    max-width: 1280px;
+    height: min(820px, calc(100dvh - 24px));
+    max-height: calc(100dvh - 24px);
+    min-height: 0;
+    border: 1px solid #7dd3fc;
+    border-radius: 20px;
+    background: #f0f9ff;
+    color: #111827;
+    box-shadow: 0 20px 60px #0f172a40;
+}
+#admin-mgmt-container .admin-mgmt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: 16px;
+    padding: 18px 24px;
+    border-bottom: 1px solid #bae6fd;
+    background: #e0f2fe;
+    color: #111827;
+}
+#admin-mgmt-container #admin-mgmt-title { margin: 0; font-size: 22px; line-height: 1.3; font-weight: 800; color: #111827; }
+#admin-mgmt-container .admin-mgmt-subtitle { margin-top: 4px; color: #475569; font-size: 12px; line-height: 1.5; }
+#admin-mgmt-container .admin-mgmt-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0; }
+#admin-mgmt-container .admin-mgmt-account { display: grid; gap: 4px; min-width: 0; max-width: 320px; color: #334155; font-size: 11px; font-weight: 600; }
+#admin-mgmt-container #admin-role-selector { width: 100%; min-width: 0; padding: 8px 28px 8px 10px; border: 1px solid #7dd3fc; border-radius: 9px; background: #fff !important; color: #111827 !important; font-size: 12px !important; font-weight: 600; text-overflow: ellipsis; cursor: pointer; color-scheme: light; }
+#admin-mgmt-container #admin-role-selector option { background: #fff !important; color: #111827 !important; }
+#admin-mgmt-container .admin-mgmt-header .fa-layer-group { color: #0369a1; }
+#admin-mgmt-container .admin-mgmt-actions > button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 8px 12px; border: 1px solid #fecdd3; border-radius: 9px; background: #fff1f2; color: #9f1239; font-size: 12px; font-weight: 700; white-space: nowrap; cursor: pointer; }
+#admin-mgmt-container #admin-mgmt-close { border-color: #0284c7; background: #0284c7; color: #fff; }
+#admin-mgmt-container #admin-mgmt-close:hover { background: #0369a1; }
+#admin-mgmt-container :is(button, select, input):focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+#admin-mgmt-container .admin-mgmt-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: #7dd3fc #f0f9ff; }
+#admin-mgmt-container .admin-mgmt-scope { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 12px 24px; border-bottom: 1px solid #e0f2fe; background: #f0f9ff; font-size: 12px; }
+#admin-mgmt-container .admin-mgmt-scope > div { flex-wrap: wrap; }
+#admin-mgmt-container .admin-mgmt-scope-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid #bae6fd; border-radius: 8px; background: #fff; color: #0c4a6e; font-weight: 700; overflow-wrap: anywhere; }
+#admin-mgmt-container .admin-mgmt-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 18px 24px; }
+#admin-mgmt-container .admin-mgmt-stats > div { min-width: 0; padding: 14px; border: 1px solid #bae6fd; border-radius: 12px; background: #fff; }
+#admin-mgmt-container .admin-mgmt-stats > div > div { overflow-wrap: anywhere; }
+#admin-mgmt-container .admin-mgmt-revenue { margin-top: 4px; font-size: 12px; font-weight: 600; color: #475569; }
+#admin-mgmt-container .admin-mgmt-tabs { position: sticky; top: 0; z-index: 2; display: flex; gap: 4px; padding: 0 24px; overflow-x: auto; border-block: 1px solid #e0f2fe; background: #fff; scrollbar-width: thin; }
+#admin-mgmt-container .admin-mgmt-tabs > button { flex-shrink: 0; padding: 14px 16px; white-space: nowrap; font-size: 13px; }
+#admin-mgmt-container .admin-mgmt-tabs > button[aria-pressed=true] { border-bottom-color: #0284c7; background: #e0f2fe; color: #075985; }
+#admin-mgmt-container .admin-mgmt-content { min-width: 0; padding: 24px; background: #f8fcff; }
+#admin-mgmt-container .admin-mgmt-content .overflow-x-auto { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-color: #7dd3fc #f0f9ff; }
+#admin-mgmt-container table { width: 100%; min-width: 850px; border-collapse: collapse; }
+#admin-mgmt-container th { padding: 12px 14px; background: #eaf5fc; color: #334155; white-space: nowrap; }
+#admin-mgmt-container td { padding: 14px; line-height: 1.5; }
+#admin-mgmt-container tbody tr:hover { background: #f0f9ff; }
+#admin-mgmt-container .admin-mgmt-footer { flex-shrink: 0; padding: 12px 24px; border-top: 1px solid #bae6fd; background: #fff; color: #64748b; font-size: 12px; }
+@media (max-width: 1000px) {
+    #admin-mgmt-container .admin-mgmt-header { align-items: flex-start; flex-direction: column; gap: 12px; }
+    #admin-mgmt-container .admin-mgmt-actions { width: 100%; }
+    #admin-mgmt-container .admin-mgmt-account { flex: 1; max-width: none; }
+    #admin-mgmt-container .admin-mgmt-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+    #admin-management-modal #admin-mgmt-container { border-radius: 14px; }
+    #admin-mgmt-container .admin-mgmt-header { padding: 14px; }
+    #admin-mgmt-container #admin-mgmt-title { font-size: 19px; }
+    #admin-mgmt-container .admin-mgmt-subtitle { font-size: 11px; }
+    #admin-mgmt-container .admin-mgmt-account { flex-basis: 100%; }
+    #admin-mgmt-container .admin-mgmt-actions > button { flex: 1; }
+    #admin-mgmt-container .admin-mgmt-scope { padding: 10px 14px; }
+    #admin-mgmt-container .admin-mgmt-stats { padding: 14px; gap: 8px; }
+    #admin-mgmt-container .admin-mgmt-stats > div { padding: 10px; }
+    #admin-mgmt-container .admin-mgmt-tabs { padding-inline: 8px; }
+    #admin-mgmt-container .admin-mgmt-tabs > button { padding: 12px; }
+    #admin-mgmt-container .admin-mgmt-content { padding: 14px; }
+    #admin-mgmt-container .admin-mgmt-footer { padding: 10px 14px; font-size: 11px; }
+}
+@media (max-height: 600px) {
+    #admin-mgmt-container .admin-mgmt-header { padding-block: 10px; gap: 8px; }
+    #admin-mgmt-container .admin-mgmt-subtitle,
+    #admin-mgmt-container .admin-mgmt-account > span { display: none; }
+}

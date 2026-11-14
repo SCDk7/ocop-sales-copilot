@@ -1,0 +1,45 @@
+# Bản tổng hợp code OCOP — 10/10/2026
+
+Đã lấy `origin/main` tại commit `73a338d` (bao gồm bản danh mục `dab74d1`) và gộp với các nâng cấp cục bộ. Bản lưu trước khi gộp nằm trong `.private-data/github-sync-backup-2026-10-10T05-37-48-728Z/`; file `.env` và dữ liệu riêng được giữ ngoài Git.
+
+## Đối chiếu bản GitHub người dùng gửi ngày 10/10/2026
+
+- Đã đọc file HTML đính kèm có 11.129 dòng và dùng nó trong phép gộp ba chiều với các nâng cấp hiện tại.
+- Nội dung file đính kèm khớp `b891810:index.html` sau khi chuẩn hóa xuống dòng và bỏ dòng trống cuối file. Không có tính năng mới trong file đính kèm khác với bản GitHub đã nhập.
+- Kết quả gộp giữ 11.061 dòng, các hàm tham khảo từ GitHub, luồng chat backend, sửa combo/ngân sách, nút đăng nhập có trạng thái, nhập giọng nói Gemini, giỏ hàng khách và đồng bộ giá.
+- KPI tiếp tục là website riêng trong `kpi-site`, không đưa vào giao diện bán hàng.
+- Lưu bản người dùng gửi và bản trước khi gộp trong `.private-data/pasted-github-integration/`, không đưa tệp đính kèm hoặc dữ liệu riêng lên GitHub.
+
+## Các giao diện sau khi tổng hợp
+
+| Giao diện | Địa chỉ cục bộ | Chức năng |
+| --- | --- | --- |
+| Khách hàng | http://localhost:3000/ | Danh mục, lọc tỉnh, Gemini/Wikipedia, tư vấn theo ngân sách, ảnh, giọng nói, giỏ hàng và đặt hàng |
+| Người bán | http://localhost:3000/admin | Cập nhật giá/tồn kho, duyệt đơn nháp và xử lý hội thoại chuyển giao; yêu cầu đăng nhập quản trị |
+| KPI riêng | http://localhost:3002/ | Chỉ số từ backend, biểu đồ, lọc thời gian và xuất CSV |
+
+Khởi động cửa hàng bằng `npm.cmd start`; khởi động KPI bằng `npm.cmd run start:kpi`.
+
+## Các quyết định khi gộp
+
+- Giữ các nâng cấp giao diện, lọc tỉnh và đọc câu trả lời bằng `voice-engine.js` từ GitHub. Nhập giọng nói tiếp tục dùng `ChatDictation` với backend Gemini.
+- Giữ luồng Gemini hiện tại, ràng buộc ngân sách/địa phương, truy xuất hồ sơ sản phẩm, giá/tồn kho từ backend, đơn nháp và KPI thực tế.
+- Giữ giỏ hàng khách hàng với số tiền hàng, mã ưu đãi và nút đặt hàng. Bảng tài chính minh họa có cửa sổ riêng và được đánh dấu mô phỏng.
+- Không chèn lợi nhuận, chi phí vận hành hoặc tuyên bố đối soát giả vào câu trả lời khách hàng. Các API đề án/tài chính minh họa trả `dataMode: "simulation"`.
+- Danh mục GitHub thay tên toàn bộ 252 sản phẩm nhưng tái sử dụng mã và ảnh của danh mục đang bán. Giữ danh mục bán hàng hiện tại để tránh gắn sai ảnh, tồn kho, đánh giá hoặc đơn hàng; lưu bản GitHub ở `data/imports/github-catalog-dab74d1.json` để đối chiếu trước khi nhập chính thức.
+- Điểm bán chỉ được gắn vào sản phẩm khi tên và tỉnh khớp danh mục hiện hành. Dữ liệu điểm bán là tham khảo chưa xác minh; hiện không có bản ghi tương thích để công bố theo mã sản phẩm.
+- Giữ cấu hình quyền terminal cục bộ; không nhập quy tắc cho phép mọi lệnh từ GitHub.
+
+## Trạng thái đăng nhập
+
+Google đã có cấu hình và nút mở được trang đăng nhập Google tại localhost. Facebook chưa có cấu hình, đang chờ chủ tài khoản hoàn tất xác minh nhà phát triển Meta. Hai nút hiển thị tiến trình và lỗi trực tiếp trong khung đăng nhập.
+
+## Kiểm tra
+
+- 139 bài kiểm tra tự động đều đạt; build CSS thành công.
+- Kiểm tra trình duyệt ở chiều rộng 360, 390, 768 và 1280 px, tiếng Việt/Anh: không tràn ngang, không lỗi JavaScript.
+- Chọn Đồng Nai từ trạng thái miền Bắc trả đúng 4 sản phẩm Đồng Nai; giỏ hàng hiển thị đúng tổng tiền và nút đặt hàng.
+- Kiểm tra bấm Google/Facebook ở cả đăng nhập và đăng ký, cùng khả năng bấm lại khi mất kết nối.
+- Backend khởi động lại thành công; API đơn nháp/hội thoại quản trị yêu cầu xác thực; KPI riêng hoạt động ở cổng 3002.
+
+Bản nâng cấp bổ sung website KPI độc lập, sửa lựa chọn combo có dấu phân cách và giữ ngân sách hiện tại. 144 kiểm tra tự động đạt. render.yaml có cấu hình cửa hàng và dịch vụ KPI riêng; /health công bố mã commit Render để đối chiếu phiên bản. Chạy node scripts/verify-deployment.cjs sau khi hosting triển khai; dịch vụ KPI dùng thêm URL riêng và --kpi. Chỉ kết luận triển khai hoàn tất sau khi nội dung và API trên hosting được kiểm tra.
