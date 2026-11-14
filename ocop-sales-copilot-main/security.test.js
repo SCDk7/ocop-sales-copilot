@@ -57,6 +57,8 @@ test('browser assets contain no provider transports or key slots, and server-onl
  const {publicAssetGuard}=require('./public-assets'),app=express();app.use(publicAssetGuard(__dirname));app.use(express.static(__dirname));const base=await serve(t,app);
  for(const file of ['server.js','api-security.js','account-store.js','ai-access-store.js','openai-client.js','claude-client.js','gemini-client.js','package-lock.json','node_modules/express/package.json','scripts/set-ai-access.cjs','security.test.js','.env'])assert.equal((await fetch(base+'/'+file)).status,404,file);
  for(const file of ['index.html','index_2.html','account-client.js','assets/ocop-logo.svg'])assert.equal((await fetch(base+'/'+file)).status,200,file);
+ assert.equal((await fetch(base+'/data/dong-nai-boundary.geojson')).status,200);
+ assert.equal((await fetch(base+'/data/vietnam-provinces.geojson')).status,404);
  for(const file of ['index.html','index_2.html','AI tot hon.js'])assert.doesNotMatch(fs.readFileSync(file,'utf8'),/api\.openai\.com|api\.anthropic\.com|generativelanguage\.googleapis\.com|GEMINI_API_KEY/);
 });
 test('browser transport sends the customer token only to the backend and validates saved identities',async()=>{

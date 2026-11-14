@@ -1455,6 +1455,12 @@ app.get('/api/ai/image-knowledge', (req, res) => {
   res.json(getProductImageKnowledge());
 });
 
+app.get('/api/public/google-maps-config', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const apiKey = (process.env.GOOGLE_MAPS_EMBED_API_KEY || '').trim();
+  return res.json(apiKey ? { configured: true, apiKey } : { configured: false });
+});
+
 app.get('/api/ocop/stores', (req, res) => {
   const stores = Object.fromEntries(defaultProducts.flatMap(product => {
     const location = locationForProduct(product, OcopStores);

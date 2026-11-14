@@ -9,6 +9,7 @@ function publicAssetGuard(root,{notFound}={}){
  for(const name of pages){
   files.add('/'+name);
   const html=fs.readFileSync(path.join(root,name),'utf8');
+  if(html.includes("fetch('./data/dong-nai-boundary.geojson'")&&fs.existsSync(path.join(root,'data','dong-nai-boundary.geojson')))files.add('/data/dong-nai-boundary.geojson');
   for(const match of html.matchAll(/\b(?:src|href)=["']([^"'#?]+)(?:[^"']*)["']/g)){
    const url=match[1];if(/^(?:https?:|\/\/|data:|javascript:)/i.test(url))continue;
    const target=path.resolve(root,url.startsWith('/')?'.'+url:path.join(path.dirname(name),url));

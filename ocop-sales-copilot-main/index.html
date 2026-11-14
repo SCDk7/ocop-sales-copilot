@@ -80,21 +80,20 @@
  <meta http-equiv="Expires" content="0">
  <meta name="ocop-api-base" content="">
  <!-- PUBLIC DISCOVERY START -->
-<title>OCOP Đồng Nai — Đặc sản và điểm bán</title>
-<meta name="description" content="Tra cứu đặc sản OCOP Đồng Nai, điểm bán theo danh bạ nội bộ và nhận tư vấn từ dữ liệu cửa hàng.">
+<title>OCOP Sales — Đặc sản và nông sản OCOP Việt Nam</title>
+<meta name="description" content="OCOP Sales giúp tìm đặc sản và nông sản OCOP Việt Nam, tham khảo giá, tìm điểm bán và nhận tư vấn mua hàng.">
 <link rel="canonical" href="https://ocop-sales-copilot.onrender.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="OCOP Sales">
-<meta property="og:title" content="OCOP Đồng Nai — Đặc sản và điểm bán">
-<meta property="og:description" content="Tra cứu đặc sản OCOP Đồng Nai, điểm bán theo danh bạ nội bộ và nhận tư vấn từ dữ liệu cửa hàng.">
+<meta property="og:title" content="OCOP Sales — Đặc sản và nông sản OCOP Việt Nam">
+<meta property="og:description" content="OCOP Sales giúp tìm đặc sản và nông sản OCOP Việt Nam, tham khảo giá, tìm điểm bán và nhận tư vấn mua hàng.">
 <meta property="og:url" content="https://ocop-sales-copilot.onrender.com/">
 <meta property="og:image" content="https://ocop-sales-copilot.onrender.com/assets/ocop-social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="OCOP Đồng Nai — Đặc sản và điểm bán">
+<meta property="og:image:alt" content="OCOP Sales — Đặc sản và nông sản OCOP Việt Nam">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="text/markdown" href="index.md">
-<link rel="alternate" type="application/geo+json" href="data/dong-nai-boundary.geojson">
 <link rel="describedby" type="text/plain" href="llms.txt">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://ocop-sales-copilot.onrender.com/#organization","name":"OCOP Sales","url":"https://ocop-sales-copilot.onrender.com/","description":"Mục đích, phạm vi thông tin và cách sử dụng website OCOP Sales.","logo":"https://ocop-sales-copilot.onrender.com/assets/ocop-logo.svg","contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://ocop-sales-copilot.onrender.com/contact","availableLanguage":["vi","en","zh","ko","ja"]}},{"@type":"WebSite","@id":"https://ocop-sales-copilot.onrender.com/#website","name":"OCOP Sales","url":"https://ocop-sales-copilot.onrender.com/","description":"OCOP Sales giúp tìm đặc sản và nông sản OCOP Việt Nam, tham khảo giá, tìm điểm bán và nhận tư vấn mua hàng.","inLanguage":"vi","publisher":{"@id":"https://ocop-sales-copilot.onrender.com/#organization"}},{"@type":"WebApplication","name":"OCOP Sales","url":"https://ocop-sales-copilot.onrender.com/","description":"OCOP Sales giúp tìm đặc sản và nông sản OCOP Việt Nam, tham khảo giá, tìm điểm bán và nhận tư vấn mua hàng.","applicationCategory":"ShoppingApplication","operatingSystem":"Web browser","browserRequirements":"JavaScript is required for interactive shopping; public information is also available as HTML and Markdown.","publisher":{"@id":"https://ocop-sales-copilot.onrender.com/#organization"}}]}</script>
 <!-- PUBLIC DISCOVERY END -->
@@ -2502,6 +2501,9 @@
         box-shadow: none !important;
     }
     .province-map .leaflet-container { background: #E0F2FE !important; }
+    #province-map, #province-map * { pointer-events: none !important; }
+    #dong-nai-map-modal { z-index: 2147483000 !important; }
+    #dong-nai-map-modal > .relative { max-height: 96dvh; }
     .dong-nai-map-pin span {
         display: block;
         width: 18px;
@@ -2514,6 +2516,12 @@
     }
     .dong-nai-map-pin { background: transparent; border: 0; }
     .province-map-status { color: #475569; font-size: .75rem; line-height: 1.45; }
+    #dong-nai-expanded-map {
+        height: min(58dvh, 620px);
+        min-height: 280px;
+    }
+    #dong-nai-expanded-map iframe { display: block; width: 100%; height: 100%; min-height: 280px; border: 0; }
+    #dong-nai-expanded-map [hidden] { display: none !important; }
     #province-stores-panel h4 { flex-wrap: wrap; }
     #ai-chat-window {
         width: min(380px, calc(100vw - 24px)) !important;
@@ -2523,6 +2531,10 @@
     #ai-chat-window #ai-chat-composer button,
     #ai-chat-window #ai-chat-composer textarea { min-height: 44px; }
     @media (max-width: 640px) {
+        #dong-nai-expanded-map {
+            height: min(46dvh, 420px);
+            min-height: 250px;
+        }
         #ocop-intro-overlay .province-map,
         #ocop-intro-overlay #province-map {
             height: clamp(190px, 27vh, 235px) !important;
@@ -2707,11 +2719,18 @@
  <i class="fa-solid fa-compass"></i>
  <span id="i18n-intro-region-header" style="color: #0C4A6E !important; font-weight: 800 !important;">ĐIỂM BÁN OCOP ĐỒNG NAI</span>
  </span>
- <span class="intro-region-caption" id="i18n-intro-region-caption" style="color: #334155 !important; font-weight: 600 !important;">Bản đồ tham khảo; chỉ ghim điểm có tọa độ chính thức.</span>
+ <span class="intro-region-caption" id="i18n-intro-region-caption" style="color: #334155 !important; font-weight: 600 !important;">Chỉ ghim điểm OCOP có tọa độ đã được duyệt.</span>
  </div>
  </div>
  <div>
+ <div class="relative">
  <div id="province-map" class="province-map" role="region" aria-label="Bản đồ mini các khu vực điểm bán OCOP Đồng Nai"></div>
+ <button id="province-map-expand" type="button" onclick="openDongNaiMapModal()" aria-controls="dong-nai-map-modal" aria-label="Phóng to bản đồ và tra cứu điểm bán OCOP Đồng Nai đã duyệt" class="group absolute inset-0 z-[500] flex items-end justify-center rounded-[14px] bg-transparent p-2 text-white transition hover:bg-slate-950/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-400">
+ <span id="province-map-expand-label" class="rounded-full bg-slate-950/85 px-3 py-1.5 text-[10px] font-bold text-white shadow-md transition group-hover:bg-sky-800">
+ <i class="fa-solid fa-magnifying-glass-plus mr-1 text-sky-200" aria-hidden="true"></i><span id="province-map-expand-label-text">Nhấn bản đồ để phóng to và tra cứu</span>
+ </span>
+ </button>
+ </div>
  <div class="mt-1.5 flex flex-wrap items-center justify-between gap-1.5">
  <p id="province-selection-status" class="province-map-status m-0" role="status" aria-live="polite">
  Đang tải bản đồ Đồng Nai từ dữ liệu cục bộ...
@@ -4074,7 +4093,7 @@
             <div id="ocop-store-modal-body" class="p-4 sm:p-6 space-y-4 overflow-y-auto flex-1 overscroll-contain bg-slate-50/60 pb-10"></div>
         </div>
     </div>
-    <!-- 8.2 MODAL BẢN ĐỒ & DANH BẠ ĐIỂM BÁN OCOP TOÀN QUỐC -->
+    <!-- 8.3 MODAL BẢN ĐỒ & DANH BẠ ĐIỂM BÁN OCOP TOÀN QUỐC -->
     <div id="ocop-all-stores-modal" class="fixed inset-0 z-[10000000] hidden flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md">
         <div class="absolute inset-0" onclick="closeAllStoresModal()"></div>
         <div class="store-directory-panel relative bg-white rounded-3xl max-w-4xl w-full shadow-2xl z-10 border-2 border-emerald-400/60 animate-pop-in flex flex-col overflow-hidden my-auto" style="max-height: min(88vh, 780px);">
@@ -4100,7 +4119,7 @@
         </div>
     </div>
     <!-- ============================================================== -->
-    <!-- 8.3 MODAL BẢNG ĐIỀU KHIỂN QUẢN TRỊ TÀI CHÍNH AI (AI FINANCIAL ENGINE) -->
+    <!-- 8.4 MODAL BẢNG ĐIỀU KHIỂN QUẢN TRỊ TÀI CHÍNH AI (AI FINANCIAL ENGINE) -->
  <!-- ============================================================== -->
  <div id="ai-financial-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4">
  <div class="absolute inset-0 bg-black/75 backdrop-blur-sm" onclick="closeFinancialDashboardModal()"></div>
@@ -5484,6 +5503,9 @@
         let provinceProductsHidden = false;
         let provinceMap = null;
         let provinceBoundaryLayer = null;
+        let googleMapsEmbedApiKey = '';
+        let googleMapsConfigPromise = null;
+        let expandedDongNaiMapReturnFocus = null;
         let currentUser = null;
         let authTab = 'login';
         let authStep = 'form';
@@ -5656,6 +5678,11 @@
             initDraggableResizableChatbox();
             // Lắng nghe phím Esc để thoát intro nhanh
             window.addEventListener('keydown', (e) => {
+                const mapModal = document.getElementById('dong-nai-map-modal');
+                if (e.key === 'Escape' && mapModal && !mapModal.classList.contains('hidden')) {
+                    closeDongNaiMapModal();
+                    return;
+                }
                 if (e.key === 'Escape' && !document.getElementById('ocop-intro-overlay').classList.contains('hidden')) {
                     enterOcopMarket('all');
                 }
@@ -7696,6 +7723,208 @@
             }
         };
         window.initializeProvinceMap = initializeProvinceMap;
+        const DONG_NAI_VISITOR_SITES = [
+            {
+                name: 'Vườn trải nghiệm ca cao Suối Cát',
+                typeLabel: 'Nhà vườn trải nghiệm',
+                locality: 'Xã Suối Cát, huyện Xuân Lộc (theo nguồn năm 2024)',
+                description: 'Bài viết năm 2024 ghi nhận HTX ra mắt vườn trải nghiệm cây ca cao.',
+                mapQuery: 'Vườn trải nghiệm ca cao HTX Dịch vụ nông nghiệp Ca cao Suối Cát, Xuân Lộc, Đồng Nai, Việt Nam',
+                sourceNote: 'Thông tin năm 2024; nên xác nhận hoạt động trước khi đến. Nguồn không xác nhận chứng nhận OCOP.',
+                sourceUrl: 'https://nongthon.vietnamtourism.gov.vn/dong-nai-hieu-qua-trong-phat-trien-nong-nghiep-ket-hop-du-lich-sinh-thai/'
+            },
+            {
+                name: 'Vườn trái cây Hòa Khánh',
+                typeLabel: 'Nhà vườn trái cây',
+                locality: 'Đồng Nai; nguồn không nêu địa chỉ chi tiết',
+                description: 'Chú thích ảnh trong bài viết năm 2024 ghi nhận trải nghiệm hái trái cây tại vườn Hòa Khánh.',
+                mapQuery: 'Vườn Hòa Khánh, Đồng Nai, Việt Nam',
+                sourceNote: 'Nên xác nhận địa chỉ và hoạt động trước khi đến; nguồn không xác nhận chứng nhận OCOP.',
+                sourceUrl: 'https://nongthon.vietnamtourism.gov.vn/dong-nai-hieu-qua-trong-phat-trien-nong-nghiep-ket-hop-du-lich-sinh-thai/'
+            },
+            {
+                name: 'Du lịch cộng đồng vườn Xuân Bắc',
+                typeLabel: 'Du lịch cộng đồng nhà vườn',
+                locality: 'Xã Xuân Bắc, huyện Xuân Lộc (theo nguồn năm 2024)',
+                description: 'Bài viết năm 2024 giới thiệu hoạt động tham quan các vườn cây ăn trái của tổ hợp tác.',
+                mapQuery: 'Tổ hợp tác du lịch cộng đồng Xuân Bắc, Xuân Lộc, Đồng Nai, Việt Nam',
+                sourceNote: 'Thông tin năm 2024; nên xác nhận hoạt động trước khi đến. Nguồn không xác nhận chứng nhận OCOP.',
+                sourceUrl: 'https://nongthon.vietnamtourism.gov.vn/dong-nai-hieu-qua-trong-phat-trien-nong-nghiep-ket-hop-du-lich-sinh-thai/'
+            }
+        ];
+        function getApprovedDongNaiMapLocations() {
+            const stores = window.OcopStores?.getStoresByProvince?.('Đồng Nai') || [];
+            return stores.filter(store => {
+                const approved = store?.approved === true || store?.approvalStatus === 'approved' || store?.verificationStatus === 'approved';
+                const { lat, lng } = store?.coordinates || {};
+                return approved && Number.isFinite(lat) && Number.isFinite(lng) &&
+                    lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+            });
+        }
+        function normalizeDongNaiMapSearchText(value) {
+            return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').toLowerCase().trim();
+        }
+        function getDongNaiMapEntries() {
+            const visitorSites = DONG_NAI_VISITOR_SITES.map(site => ({
+                ...site,
+                type: 'visitor',
+                searchText: normalizeDongNaiMapSearchText([site.name, site.typeLabel, site.locality, site.description].join(' '))
+            }));
+            const approvedStores = getApprovedDongNaiMapLocations().map(store => {
+                const coordinates = store.coordinates;
+                const name = store.primaryStore?.name || store.producerName || store.productName || 'Điểm OCOP Đồng Nai';
+                const address = store.primaryStore?.address || store.producerAddress || '';
+                return {
+                    type: 'store',
+                    store,
+                    name,
+                    typeLabel: 'Điểm bán OCOP đã duyệt',
+                    locality: address,
+                    description: store.productName || '',
+                    mapQuery: `${coordinates.lat},${coordinates.lng}`,
+                    searchText: normalizeDongNaiMapSearchText([name, store.productName, store.producerName, address].filter(Boolean).join(' '))
+                };
+            });
+            return [...visitorSites, ...approvedStores];
+        }
+        function setDongNaiMapExternalLink(location) {
+            const link = document.getElementById('dong-nai-google-maps-external-link');
+            if (!link) return;
+            const query = location?.mapQuery || 'Đồng Nai, Việt Nam';
+            const url = new URL('https://www.google.com/maps/search/');
+            url.searchParams.set('api', '1');
+            url.searchParams.set('query', query);
+            link.href = url.toString();
+            link.textContent = location ? `Mở Google Maps: ${location.name}` : 'Mở Google Maps tại Đồng Nai';
+        }
+        function showDongNaiGoogleMap(location) {
+            setDongNaiMapExternalLink(location);
+            if (!googleMapsEmbedApiKey) return;
+            const frame = document.getElementById('dong-nai-google-map-frame');
+            const fallback = document.getElementById('dong-nai-google-map-fallback');
+            if (!frame) return;
+            const url = new URL('https://www.google.com/maps/embed/v1/search');
+            url.searchParams.set('key', googleMapsEmbedApiKey);
+            url.searchParams.set('q', location?.mapQuery || 'Đồng Nai, Việt Nam');
+            url.searchParams.set('zoom', location?.type === 'store' ? '15' : '11');
+            frame.src = url.toString();
+            frame.hidden = false;
+            if (fallback) fallback.hidden = true;
+        }
+        function searchApprovedDongNaiMapLocations(query = '') {
+            const resultsNode = document.getElementById('dong-nai-map-results');
+            const countNode = document.getElementById('dong-nai-map-results-count');
+            if (!resultsNode || !countNode) return;
+            const normalizedQuery = normalizeDongNaiMapSearchText(query);
+            const entries = getDongNaiMapEntries();
+            const matches = entries.filter(location =>
+                !normalizedQuery || location.searchText.includes(normalizedQuery)
+            );
+            resultsNode.replaceChildren();
+            countNode.textContent = `${matches.length} / ${entries.length} gợi ý Đồng Nai phù hợp`;
+            if (!matches.length) {
+                const empty = document.createElement('p');
+                empty.className = 'm-0 rounded-lg bg-white p-3 text-xs leading-relaxed text-slate-600';
+                empty.textContent = 'Không tìm thấy nhà vườn từ nguồn chính thức hoặc điểm OCOP đã duyệt phù hợp.';
+                resultsNode.append(empty);
+                return;
+            }
+            matches.forEach(location => {
+                const card = document.createElement('article');
+                card.className = 'rounded-xl border border-sky-100 bg-white p-3 shadow-sm';
+                const title = document.createElement('strong');
+                title.className = 'block break-words text-xs font-extrabold text-slate-900';
+                title.textContent = location.name;
+                const detail = document.createElement('span');
+                detail.className = 'mt-1 block break-words text-[11px] leading-relaxed text-slate-600';
+                detail.textContent = [location.typeLabel, location.locality, location.description, location.sourceNote].filter(Boolean).join(' · ');
+                const actions = document.createElement('div');
+                actions.className = 'mt-2 flex flex-wrap items-center gap-3';
+                const mapButton = document.createElement('button');
+                mapButton.type = 'button';
+                mapButton.className = 'min-h-9 rounded-lg bg-sky-700 px-3 py-1.5 text-[11px] font-bold text-white hover:bg-sky-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500';
+                mapButton.textContent = 'Xem trên bản đồ';
+                mapButton.addEventListener('click', () => showDongNaiGoogleMap(location));
+                actions.append(mapButton);
+                if (location.sourceUrl) {
+                    const source = document.createElement('a');
+                    source.href = location.sourceUrl;
+                    source.target = '_blank';
+                    source.rel = 'noopener noreferrer';
+                    source.className = 'text-[11px] font-semibold text-sky-800 underline';
+                    source.textContent = 'Nguồn chính thức · 2024';
+                    actions.append(source);
+                }
+                card.append(title, detail, actions);
+                resultsNode.append(card);
+            });
+        }
+        async function initializeExpandedDongNaiMap() {
+            const frame = document.getElementById('dong-nai-google-map-frame');
+            const fallback = document.getElementById('dong-nai-google-map-fallback');
+            const status = document.getElementById('dong-nai-expanded-map-status');
+            if (!googleMapsConfigPromise) {
+                googleMapsConfigPromise = fetch(getAIEndpoint('/api/public/google-maps-config'), { cache: 'no-store' })
+                    .then(async response => {
+                        if (!response.ok) throw new Error('Không tải được cấu hình Google Maps.');
+                        return response.json();
+                    })
+                    .then(config => {
+                        googleMapsEmbedApiKey = config.configured && typeof config.apiKey === 'string' ? config.apiKey.trim() : '';
+                        return googleMapsEmbedApiKey;
+                    })
+                    .catch(error => {
+                        googleMapsConfigPromise = null;
+                        throw error;
+                    });
+            }
+            try {
+                await googleMapsConfigPromise;
+                if (googleMapsEmbedApiKey) {
+                    showDongNaiGoogleMap(null);
+                    if (status) status.textContent = 'Google Maps Đồng Nai. Nhà vườn được gợi ý từ nguồn du lịch chính thức; nguồn không xác nhận chứng nhận OCOP cho từng điểm.';
+                } else {
+                    if (frame) frame.hidden = true;
+                    if (fallback) fallback.hidden = false;
+                    setDongNaiMapExternalLink(null);
+                    if (status) status.textContent = 'Chưa cấu hình khóa Google Maps Embed. Danh sách gợi ý vẫn giới hạn ở nguồn chính thức; không tự gắn chứng nhận OCOP.';
+                }
+            } catch (error) {
+                if (frame) frame.hidden = true;
+                if (fallback) fallback.hidden = false;
+                setDongNaiMapExternalLink(null);
+                if (status) status.textContent = error.message || 'Không thể tải cấu hình Google Maps.';
+            }
+            searchApprovedDongNaiMapLocations(document.getElementById('dong-nai-map-search')?.value || '');
+        }
+        async function openDongNaiMapModal() {
+            const modal = document.getElementById('dong-nai-map-modal');
+            if (!modal) return;
+            if (modal.classList.contains('hidden')) expandedDongNaiMapReturnFocus = document.activeElement;
+            modal.classList.remove('hidden');
+            modal.hidden = false;
+            modal.inert = false;
+            modal.setAttribute('aria-hidden', 'false');
+            modal.style.setProperty('display', 'flex', 'important');
+            preservePageScrollState();
+            await initializeExpandedDongNaiMap();
+            document.getElementById('dong-nai-map-search')?.focus({ preventScroll: true });
+        }
+        function closeDongNaiMapModal() {
+            const modal = document.getElementById('dong-nai-map-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.hidden = true;
+            modal.inert = true;
+            modal.setAttribute('aria-hidden', 'true');
+            modal.style.setProperty('display', 'none', 'important');
+            restorePageScrollState();
+            expandedDongNaiMapReturnFocus?.focus?.({ preventScroll: true });
+            expandedDongNaiMapReturnFocus = null;
+        }
+        window.openDongNaiMapModal = openDongNaiMapModal;
+        window.closeDongNaiMapModal = closeDongNaiMapModal;
+        window.searchApprovedDongNaiMapLocations = searchApprovedDongNaiMapLocations;
         function handleSearchKeydown(event) {
             if (event.key === 'Escape') {
                 clearSearchInput();
@@ -13116,7 +13345,7 @@
             'i18n-ticker3-copy': '📋 Product details from the shop catalogue',
             'i18n-ticker4-copy': '🔒 No external product-data search',
             'i18n-intro-region-header': 'OCOP STORES IN DONG NAI',
-            'i18n-intro-region-caption': 'Reference boundary; only pin locations with verified coordinates.',
+            'i18n-intro-region-caption': 'Reference boundary; only show approved OCOP locations with verified coordinates.',
             'province-map-select-label': 'Dong Nai store map',
             'province-map-select-placeholder': 'Dong Nai',
             'province-map-clear': 'Clear selection',
@@ -15284,7 +15513,19 @@
             setText('i18n-intro-pillar4', { vi: 'Không tra cứu web', en: 'No web search', zh: '不进行网络搜索', ko: '웹 검색 안 함', ja: 'ウェブ検索なし' });
             setText('i18n-intro-pillar4-sub', { vi: 'Nếu thiếu dữ liệu, chatbot sẽ nói rõ chưa có thông tin.', en: 'If information is missing, the chatbot will say so.', zh: '如果缺少信息，聊天助手会明确说明。', ko: '정보가 없으면 챗봇이 명확히 안내합니다.', ja: '情報がない場合、チャットボットが明確に伝えます。' });
             setText('i18n-intro-region-header', { vi: 'ĐIỂM BÁN OCOP ĐỒNG NAI', en: 'OCOP STORES IN DONG NAI', zh: '同奈省 OCOP 销售点', ko: '동나이 OCOP 판매처', ja: 'ドンナイのOCOP販売店' });
-            setText('i18n-intro-region-caption', { vi: 'Ranh giới tham khảo; chỉ ghim điểm có tọa độ chính thức.', en: 'Reference boundary; only pin locations with verified coordinates.', zh: '参考边界；仅在坐标经核实后添加地图标记。', ko: '참고용 경계입니다. 좌표가 확인된 위치만 지도에 표시합니다.', ja: '参考用の境界です。座標が確認された地点のみ地図に表示します。' });
+            setText('i18n-intro-region-caption', { vi: 'Ranh giới tham khảo; chỉ ghim điểm OCOP đã duyệt có tọa độ xác minh.', en: 'Reference boundary; only show approved OCOP locations with verified coordinates.', zh: '参考边界；仅显示已批准且坐标经核实的 OCOP 地点。', ko: '참고용 경계이며, 승인되고 좌표가 확인된 OCOP 위치만 표시합니다.', ja: '参考用の境界です。承認済みで座標が確認されたOCOP地点のみ表示します。' });
+            setText('province-map-expand-label-text', { vi: 'Nhấn bản đồ để phóng to và tra cứu', en: 'Open map to search', zh: '打开地图并搜索', ko: '지도를 열어 검색', ja: '地図を開いて検索' });
+            setText('dong-nai-map-modal-title', { vi: 'Gợi ý nhà vườn & điểm OCOP Đồng Nai', en: 'Dong Nai gardens and OCOP locations', zh: '同奈省农园与 OCOP 地点', ko: '동나이 농장 및 OCOP 위치', ja: 'ドンナイの農園とOCOP地点' });
+            setText('dong-nai-map-modal-subtitle', { vi: 'Nhà vườn có nguồn du lịch chính thức và điểm OCOP đã duyệt; không tự xác nhận chứng nhận.', en: 'Officially sourced gardens and approved OCOP locations; no unsupported certifications.', zh: '仅显示有官方旅游来源的农园和已批准的 OCOP 地点；不推测认证。', ko: '공식 관광 출처의 농장과 승인된 OCOP 위치만 표시합니다.', ja: '公式観光情報源の農園と承認済みOCOP地点のみ表示します。' });
+            setText('dong-nai-map-search-label', { vi: 'Tìm trong gợi ý Đồng Nai đã xác minh nguồn', en: 'Search sourced Dong Nai suggestions', zh: '搜索有来源的同奈省推荐地点', ko: '출처가 확인된 동나이 추천 검색', ja: '出典確認済みのドンナイ候補を検索' });
+            const dongNaiMapSearch = document.getElementById('dong-nai-map-search');
+            if (dongNaiMapSearch) dongNaiMapSearch.placeholder = ({
+                vi: 'Tên nhà vườn, địa phương hoặc sản phẩm',
+                en: 'Garden, locality, or product',
+                zh: '地点、生产者或地址',
+                ko: '장소, 생산자 또는 주소',
+                ja: '場所、事業者、住所'
+            })[l] || 'Tên điểm, chủ thể hoặc địa chỉ';
             const luckyTitle = document.querySelector('#intro-lucky-card span.tracking-wide');
             if (luckyTitle) {
                 const luckyTitleMap = {
@@ -16421,6 +16662,42 @@ function updateCustomerHeaderUI() {
         initCustomerAccountSystem();
     }
 </script>
+<!-- BẢN ĐỒ TRA CỨU ĐIỂM OCOP ĐỒNG NAI -->
+<div id="dong-nai-map-modal" class="fixed inset-0 z-[10000001] hidden items-center justify-center bg-slate-950/75 p-2 backdrop-blur-sm sm:p-4" role="dialog" aria-modal="true" aria-labelledby="dong-nai-map-modal-title" aria-hidden="true" hidden inert>
+    <div class="absolute inset-0" onclick="closeDongNaiMapModal()"></div>
+    <div class="relative z-10 flex max-h-[96dvh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-sky-200 bg-white shadow-2xl sm:rounded-3xl">
+        <header class="flex shrink-0 items-center justify-between gap-3 bg-gradient-to-r from-sky-950 via-sky-800 to-emerald-900 px-4 py-3 text-white sm:px-5">
+            <div class="min-w-0">
+                <h2 id="dong-nai-map-modal-title" class="m-0 text-sm font-black text-white sm:text-base">Tra cứu điểm OCOP Đồng Nai</h2>
+                <p id="dong-nai-map-modal-subtitle" class="mb-0 mt-1 text-[10px] leading-relaxed text-sky-100 sm:text-xs">Chỉ hiển thị điểm bán có tọa độ và trạng thái duyệt trong danh bạ nội bộ.</p>
+            </div>
+            <button type="button" onclick="closeDongNaiMapModal()" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-white transition hover:bg-white hover:text-slate-900" aria-label="Đóng bản đồ">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </header>
+        <div class="grid min-h-0 flex-1 gap-3 overflow-y-auto p-3 sm:gap-4 sm:p-4 lg:grid-cols-[minmax(0,1.65fr)_minmax(280px,0.8fr)]">
+            <div id="dong-nai-expanded-map" class="min-h-[280px] overflow-hidden rounded-xl border border-sky-200 bg-sky-50 sm:min-h-[360px]" role="region" aria-label="Google Maps Đồng Nai">
+                <iframe id="dong-nai-google-map-frame" title="Google Maps Đồng Nai" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen hidden></iframe>
+                <div id="dong-nai-google-map-fallback" class="flex h-full min-h-[280px] flex-col items-center justify-center gap-3 bg-sky-50 p-5 text-center" hidden>
+                    <p class="m-0 max-w-md text-xs leading-relaxed text-slate-700">Bản đồ nhúng cần khóa Google Maps Embed được cấu hình trên máy chủ. Các gợi ý bên cạnh vẫn chỉ lấy từ nguồn du lịch chính thức; chứng nhận OCOP của từng nhà vườn chưa được xác nhận.</p>
+                    <a id="dong-nai-google-maps-external-link" href="https://www.google.com/maps/search/?api=1&amp;query=%C4%90%E1%BB%93ng+Nai%2C+Vi%E1%BB%87t+Nam" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-sky-700 px-4 py-2 text-xs font-bold text-white hover:bg-sky-800">Mở Google Maps tại Đồng Nai</a>
+                </div>
+            </div>
+            <aside class="flex min-h-[220px] flex-col rounded-xl border border-slate-200 bg-slate-50 p-3 sm:min-h-[360px]">
+                <label id="dong-nai-map-search-label" for="dong-nai-map-search" class="mb-1.5 text-xs font-extrabold text-slate-800">Tìm trong gợi ý Đồng Nai đã xác minh nguồn</label>
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400" aria-hidden="true"></i>
+                    <input id="dong-nai-map-search" type="search" oninput="searchApprovedDongNaiMapLocations(this.value)" placeholder="Tên nhà vườn, địa phương hoặc sản phẩm" class="min-h-11 w-full rounded-xl border border-slate-300 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
+                </div>
+                <p id="dong-nai-map-results-count" class="mb-2 mt-2 text-[11px] font-bold text-slate-500" aria-live="polite">Đang kiểm tra danh bạ đã duyệt...</p>
+                <div id="dong-nai-map-results" class="min-h-0 flex-1 space-y-2 overflow-y-auto" aria-live="polite">
+                    <p class="m-0 rounded-lg bg-white p-3 text-xs leading-relaxed text-slate-600">Chỉ gợi ý nhà vườn được nêu trong nguồn chính thức và điểm OCOP đã duyệt. Không tự suy đoán tọa độ hoặc chứng nhận OCOP.</p>
+                </div>
+            </aside>
+        </div>
+        <p id="dong-nai-expanded-map-status" class="m-0 shrink-0 border-t border-slate-200 bg-slate-50 px-3 py-2 text-[10px] leading-relaxed text-slate-600 sm:px-4 sm:text-xs" role="status" aria-live="polite">Gợi ý không phải bảng xếp hạng; nguồn du lịch năm 2024 không xác nhận chứng nhận OCOP cho từng điểm.</p>
+    </div>
+</div>
 <!-- MODERN SKY-TECH & CLEAN SAPPHIRE (100% COMPLETE OVERHAUL) -->
 <link rel="stylesheet" href="store-directory-light.css?v=c2b4d9c3eb64">
 <link rel="stylesheet" href="cart-ui.css?v=c7f0d0e48d95">

@@ -14,6 +14,13 @@ for (const page of ['index.html', 'index_2.html']) {
         const skytech = fs.readFileSync('skytech-complete.js', 'utf8');
         assert.ok(html.includes('id="province-map" class="province-map" role="region" aria-label="Bản đồ mini các khu vực điểm bán OCOP Đồng Nai"'));
         assert.ok(html.includes("fetch('./data/dong-nai-boundary.geojson'"));
+        assert.ok(html.includes('id="dong-nai-google-map-frame"'));
+        assert.ok(html.includes("fetch(getAIEndpoint('/api/public/google-maps-config')"));
+        assert.ok(html.includes('Vườn trải nghiệm ca cao Suối Cát'));
+        assert.ok(html.includes('Vườn trái cây Hòa Khánh'));
+        assert.ok(html.includes('Du lịch cộng đồng vườn Xuân Bắc'));
+        assert.ok(html.includes('Nguồn không xác nhận chứng nhận OCOP.'));
+        assert.ok(html.includes('https://nongthon.vietnamtourism.gov.vn/dong-nai-hieu-qua-trong-phat-trien-nong-nghiep-ket-hop-du-lich-sinh-thai/'));
         assert.ok(html.includes('vi: \'Điểm bán Đồng Nai\''));
         assert.ok(html.includes('vi: \'Đặc sản Đồng Nai\''));
         assert.ok(html.includes('data/dong-nai-ocop-certified.js?v='));
