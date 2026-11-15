@@ -415,6 +415,7 @@
             overflow: hidden !important;
             display: -webkit-box !important;
             -webkit-line-clamp: 2 !important;
+            line-clamp: 2 !important;
             -webkit-box-orient: vertical !important;
             margin: 0.25rem 0 !important;
         }
@@ -1997,7 +1998,9 @@
                 position: relative !important;
                 padding: 8px 12px !important;
                 border-radius: 18px !important;
-                space-y: 5px !important;
+            }
+            #ocop-intro-overlay .intro-regions > * + * {
+                margin-top: 5px !important;
             }
             #ocop-intro-overlay .intro-region-heading {
                 margin-bottom: 3px !important;
@@ -3030,7 +3033,7 @@
  </div>
  <div class="hero-featured-column lg:col-span-5 space-y-4">
  <!-- KHỐI 2: TRƯNG BÀY SẢN PHẨM NỔI BẬT NHẤT (CARD TƯƠNG TÁC CAO CẤP) -->
- <div id="featured-product-card" role="button" tabindex="0" aria-label="Xem sản phẩm" onclick="openFeaturedProduct()" onkeydown="if(event.target === this &amp;&amp; (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openFeaturedProduct(); }" class="border border-sky-200 p-4 rounded-3xl shadow-lg relative overflow-hidden bg-white" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.08) !important;">
+ <div id="featured-product-card" role="button" tabindex="0" aria-label="Xem sản phẩm" onclick="openFeaturedProduct()" onkeydown="if (event.target === this) { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openFeaturedProduct(); } }" class="border border-sky-200 p-4 rounded-3xl shadow-lg relative overflow-hidden bg-white" style="background: #FFFFFF !important; border: 1.5px solid #BAE6FD !important; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.08) !important;">
      
      <!-- Header tiêu đề & Tabs chọn sản phẩm -->
      <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
